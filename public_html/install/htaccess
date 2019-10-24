@@ -35,9 +35,11 @@ ErrorDocument 500 "Internal Server Error"
   # Force HTTPS (Standard SSL)
   #RewriteCond %{HTTPS} off
   #RewriteCond %{REQUEST_METHOD} !=POST
+  #RewriteCond %{REQUEST_URI} !^\.well-known/
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
   # Force HTTPS (CloudFlare Flexi SSL / Load Balancing Servers)
+  #RewriteCond %{HTTPS} off
   #RewriteCond %{HTTP:X-Forwarded-Proto} =http
   #RewriteCond %{REQUEST_METHOD} !=POST
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
@@ -67,12 +69,12 @@ ErrorDocument 500 "Internal Server Error"
 
 # Cacheable external content
 <IfModule mod_headers.c>
-  <FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">
-    Header set Cache-Control "max-age=604800, public, must-revalidate"
-  </FilesMatch>
-
   <FilesMatch "\.(css)$">
     Header set Cache-Control "max-age=86400, public, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "\.(eot|gif|ico|jpe?g|js|otf|pdf|png|svg|ttf|tiff?|woff2?)$">
+    Header set Cache-Control "max-age=604800, public, must-revalidate"
   </FilesMatch>
 </IfModule>
 

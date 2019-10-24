@@ -2,12 +2,23 @@
 
   class url_index {
 
-    //function routes() {}
+    function routes() {
+      return array(
+        array(
+          'pattern' => '#^(?:index\.php)?$#',
+          'page' => 'index',
+          'params' => '',
+          'options' => array(
+            'redirect' => true,
+          ),
+        ),
+      );
+    }
 
-  	function rewrite($parsed_link, $language_code) {
+    function rewrite(ent_link $link, $language_code) {
 
-      $parsed_link['path'] = ''; // Remove index file for site root
+      $link->path = ''; // Remove index file for site root
 
-      return $parsed_link;
+      return $link;
     }
   }

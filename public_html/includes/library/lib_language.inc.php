@@ -4,13 +4,10 @@
     public static $selected = array();
     public static $languages = array();
     private static $_cache = array();
-    private static $_cache_id = '';
+    private static $_cache_token;
     private static $_loaded_translations = array();
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
     // Bind selected language to session
       if (!isset(session::$data['language'])) session::$data['language'] = array();
@@ -28,9 +25,9 @@
         self::set(self::$selected['code']);
       }
 
-      self::$_cache_id = cache::cache_id('translations', array('endpoint', 'language'));
+      self::$_cache_token = cache::token('translations', array('endpoint', 'language'), 'file');
 
-      if (!self::$_cache['translations'] = cache::get(self::$_cache_id, 'file')) {
+      if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         $translations_query = database::query(
           "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_TRANSLATIONS ."
           where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
@@ -41,29 +38,19 @@
           self::$_cache['translations'][self::$selected['code']][$translation['code']] = $translation['text'];
         }
       }
-    }
 
-    //public static function initiate() {
-    //}
-
-    public static function startup() {
-
-      header('Content-Language: '. self::$selected['code']);
+      event::register('before_capture', array(__CLASS__, 'before_capture'));
+      event::register('before_output', array(__CLASS__, 'before_output'));
+      event::register('shutdown', array(__CLASS__, 'shutdown'));
     }
 
     public static function before_capture() {
-
-      if (empty(self::$selected['code'])) trigger_error('Error: No language set', E_USER_ERROR);
+      header('Content-Language: '. self::$selected['code']);
     }
 
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
+    public static function before_output() {
+      if (empty(self::$selected['code'])) trigger_error('Error: No language set', E_USER_ERROR);
+    }
 
     public static function shutdown() {
 
@@ -73,7 +60,7 @@
         where code in ('". implode("', '", database::input(self::$_loaded_translations)) ."');"
       );
 
-      cache::set(self::$_cache_id, 'file', self::$_cache['translations']);
+      cache::set(self::$_cache_token, self::$_cache['translations']);
     }
 
     ######################################################################
@@ -105,7 +92,7 @@
       session::$data['language'] = self::$languages[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        setcookie('language_code', $code, strtotime('+3 months'), WS_DIR_HTTP_HOME);
+        setcookie('language_code', $code, strtotime('+3 months'), WS_DIR_APP);
       }
 
     // Set system locale
@@ -128,20 +115,27 @@
 
     public static function identify() {
 
+      $all_languages = array_keys(self::$languages);
+
+      $enabled_languages = array();
+      foreach (self::$languages as $language) {
+        if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
+      }
+
     // Return language from URI query
       if (!empty($_GET['language'])) {
-        if (isset(self::$languages[$_GET['language']])) return $_GET['language'];
+        if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
       }
 
     // Return language from URI path
-      $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_HTTP_HOME))));
-      if (isset(self::$languages[$code])) return $code;
+      $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
+      if (in_array($code, $all_languages)) return $code;
 
     // Return language from session
-      if (isset(self::$selected['code']) && isset(self::$languages[self::$selected['code']])) return self::$selected['code'];
+      if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)) return self::$selected['code'];
 
     // Return language from cookie
-      if (isset($_COOKIE['language_code']) && isset(self::$languages[$_COOKIE['language_code']])) return $_COOKIE['language_code'];
+      if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $all_languages)) return $_COOKIE['language_code'];
 
     // Return language from browser request headers
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -153,7 +147,7 @@
       }
       foreach ($browser_locales as $browser_locale) {
         if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
-          if (!empty($reg[1]) && isset(self::$languages[$reg[1]])) return $reg[1];
+          if (!empty($reg[1]) && in_array($reg[1], $enabled_languages)) return $reg[1];
         }
       }
 
@@ -165,18 +159,17 @@
           limit 1;"
         );
         $country = database::fetch($countries_query);
-        if (!empty($country['language_code']) && isset(self::$languages[$country['language_code']])) return $country['language_code'];
+        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
       }
 
     // Return default language
-      if (isset(self::$languages[settings::get('default_language_code')])) return settings::get('default_language_code');
+      if (in_array(settings::get('default_language_code'), $all_languages)) return settings::get('default_language_code');
 
     // Return system language
-      if (isset(self::$languages[settings::get('store_language_code')])) return settings::get('store_language_code');
+      if (in_array(settings::get('store_language_code'), $all_languages)) return settings::get('store_language_code');
 
     // Return first language
-      $languages = array_keys(self::$languages);
-      return array_shift($languages);
+      return (!empty($enabled_languages)) ? $enabled_languages[0] : $all_languages[0];
     }
 
     public static function translate($code, $default=null, $language_code=null) {
@@ -184,10 +177,10 @@
       $code = strtolower($code);
 
       if (empty($language_code)) {
-        $language_code = language::$selected['code'];
+        $language_code = self::$selected['code'];
       }
 
-      if (empty($language_code) || empty(language::$languages[$language_code])) {
+      if (empty($language_code) || empty(self::$languages[$language_code])) {
         trigger_error('Unknown language code for translation ('. $language_code .')', E_USER_WARNING);
         return;
       }
@@ -278,29 +271,29 @@
             return iconv('UTF-8', "$locale", strftime($format, $timestamp));
 
           case (preg_match('#\.1250$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'ISO-8859-2');
+            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-2');
 
           case (preg_match('#\.(1251|1252|1254)$#', $locale, $matches)):
-            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'Windows-'.$matches[1]);
+            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'Windows-'.$matches[1]);
 
           case (preg_match('#\.(1255|1256)$#', $locale, $matches)):
-            return iconv(language::$selected['charset'], "Windows-{$matches[1]}", strftime($format, $timestamp));
+            return iconv(self::$selected['charset'], "Windows-{$matches[1]}", strftime($format, $timestamp));
 
           case (preg_match('#\.1257$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'ISO-8859-13');
+            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-13');
 
           case (preg_match('#\.(932|936|950)$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'CP'.$matches[1]);
+            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'CP'.$matches[1]);
 
           case (preg_match('#\.(949)$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'EUC-KR');
+            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'EUC-KR');
 
           //case (preg_match('#\.(x-iscii-ma)$i#', $locale)):
           //  return '???';
 
           default:
             trigger_error("Unknown charset for system locale ($locale)", E_USER_NOTICE);
-            return mb_convert_encoding(strftime($format, $timestamp), language::$selected['charset'], 'auto');
+            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'auto');
         }
       }
 
@@ -314,16 +307,11 @@
 
       if ($from_charset == $to_charset) return $variable;
 
-      if (function_exists('mb_convert_variables')) {
-        if (mb_convert_variables($to_charset, $from_charset, $variable)) {
-          return $variable;
-        } else {
-          trigger_error('Could not encode variable from '. $from_charset .' to '. $to_charset, E_USER_WARNING);
-        }
-      } else {
-        trigger_error('Missing Multibyte PHP extension', E_USER_ERROR);
+      if (!mb_convert_variables($to_charset, $from_charset, $variable)) {
+        trigger_error('Could not encode variable from '. $from_charset .' to '. $to_charset, E_USER_WARNING);
+        return false;
       }
 
-      return false;
+      return $variable;
     }
   }

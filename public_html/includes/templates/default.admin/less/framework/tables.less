@@ -12,8 +12,8 @@
     padding: @default-gutter-size/2 @default-gutter-size;
   }
 
-  > * > tr > td,
-  > * > tr > th {
+  > * > tr > th,
+  > * > tr > td {
     padding: 6px 12px;
     line-height: @default-line-height;
     vertical-align: top;
@@ -30,6 +30,11 @@
     &.border-bottom {
       border-bottom: 1px solid @default-border-color;
     }
+    @media print {
+      &.border-top, &.border-left, &.border-right, &.border-bottom {
+        border-color: #000 !important;
+      }
+    }
   }
 
   > thead > tr > th {
@@ -37,6 +42,9 @@
     text-align: left;
     vertical-align: bottom;
     border-bottom: 2px solid @default-border-color;
+    @media print {
+      border-color: #000 !important;
+    }
     &.main {
       width: 100%;
     }
@@ -46,12 +54,18 @@
     padding: 6px 12px;
     text-align: left;
     border-top: 1px solid @default-border-color;
+    @media print {
+      border-color: #000 !important;
+    }
   }
 
   &.table-bordered {
     border: 1px solid @default-border-color;
     > * > tr > td {
       border-top: 1px solid @default-border-color;
+      @media print {
+        border-color: #000 !important;
+      }
     }
   }
 
@@ -62,6 +76,11 @@
     > tbody > tr:nth-of-type(even) {
       background: @table-striped-row-background-even;
     }
+    @media print {
+      > tbody > tr {
+        border-bottom: 1px solid #000;
+      }
+    }
   }
 
   &.table-hover {
@@ -70,6 +89,29 @@
       &:hover {
         background: @table-row-hover-background;
       }
+    }
+  }
+
+  &.table-sortable th[data-sort] {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &.table-dragable {
+    > tbody .grabable {
+      cursor: n-resize;
+    }
+    > tbody > tr.grabbed {
+      user-input: unset;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &.table-input {
+    > tbody > tr > td {
+      vertical-align: middle;
     }
   }
 

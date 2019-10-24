@@ -1,48 +1,41 @@
 /* Grid - Bootstrap Compatible */
 
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+
 .row {
-  margin: 0 -@default-gutter-size;
-  display: flex;
-  flex-flow: row wrap;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: @default-gutter-size;
+  margin-bottom: @default-gutter-size;
   &.half-gutter {
-    margin: 0 -@default-gutter-size/2;
-    > *[class*=col-] {
-      padding: 0 @default-gutter-size/2;
-    }
+    grid-gap: @default-gutter-size/2;
   }
   &.column {
     flex-direction: column;
   }
-  > *[class*=col-] {
-    padding: 0 @default-gutter-size;
-  }
-}
-
-*[class*=col-] {
-  position: relative;
-  &.td {
-    width: initial;
+  [class*="col-"] {
+    grid-column: span 12;
   }
 }
 
 .make-grid-columns(@device) {
-  .col-@{device}-auto { flex: 1 1 auto; }
-  .col-@{device}-halfs { flex: 0 0 50%; }
-  .col-@{device}-thirds { flex: 0 0 33.33333333%; }
-  .col-@{device}-fourths { flex: 0 0 25%; }
-  .col-@{device}-fifths { flex: 0 0 20%; }
-  .col-@{device}-1 { flex: 0 0 100%/12; }
-  .col-@{device}-2 { flex: 0 0 100%/12*2; }
-  .col-@{device}-3 { flex: 0 0 100%/12*3; }
-  .col-@{device}-4 { flex: 0 0 100%/12*4; }
-  .col-@{device}-5 { flex: 0 0 100%/12*5; }
-  .col-@{device}-6 { flex: 0 0 100%/12*6; }
-  .col-@{device}-7 { flex: 0 0 100%/12*7; }
-  .col-@{device}-8 { flex: 0 0 100%/12*8; }
-  .col-@{device}-9 { flex: 0 0 100%/12*9; }
-  .col-@{device}-10 { flex: 0 0 100%/12*10; }
-  .col-@{device}-11 { flex: 0 0 100%/12*11; }
-  .col-@{device}-12 { flex: 0 0 100%/12*12; }
+  .col-@{device}-1 { grid-column: span 1 !important; }
+  .col-@{device}-2 { grid-column: span 2 !important; }
+  .col-@{device}-3 { grid-column: span 3 !important; }
+  .col-@{device}-4 { grid-column: span 4 !important; }
+  .col-@{device}-5 { grid-column: span 5 !important; }
+  .col-@{device}-6 { grid-column: span 6 !important; }
+  .col-@{device}-7 { grid-column: span 7 !important; }
+  .col-@{device}-8 { grid-column: span 8 !important; }
+  .col-@{device}-9 { grid-column: span 9 !important; }
+  .col-@{device}-10 { grid-column: span 10 !important; }
+  .col-@{device}-11 { grid-column: span 11 !important; }
+  .col-@{device}-12 { grid-column: span 12 !important; }
 }
 
 .make-grid-columns(xs);
@@ -76,6 +69,6 @@
 
 @media print {
   .hidden-print {
-    display: none;
+    display: none !important;
   }
 }

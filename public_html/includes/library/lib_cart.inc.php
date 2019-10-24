@@ -6,10 +6,7 @@
     public static $items = array();
     public static $total = array();
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
       if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
         session::$data['cart'] = array(
@@ -18,9 +15,6 @@
       }
 
       self::$data = &session::$data['cart'];
-    }
-
-    public static function initiate() {
 
     // Recover a previous cart uid if possible
       if (empty(self::$data['uid'])) {
@@ -34,7 +28,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_HTTP_HOME);
+          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_APP);
         }
       }
 
@@ -42,9 +36,6 @@
         "delete from ". DB_TABLE_CART_ITEMS ."
         where date_created < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
       );
-    }
-
-    public static function startup() {
 
     // Load/Refresh
       self::load();
@@ -74,21 +65,6 @@
       }
     }
 
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
-
     ######################################################################
 
     public static function reset() {
@@ -116,9 +92,9 @@
         database::query(
           "update ". DB_TABLE_CART_ITEMS ." set
           cart_uid = '". database::input(self::$data['uid']) ."',
-          customer_id = ".(int)customer::$data['id'] ."
+          customer_id = ". (int)customer::$data['id'] ."
           where cart_uid = '". database::input(self::$data['uid']) ."'
-          or customer_id = ".(int)customer::$data['id'] .";"
+          or customer_id = ". (int)customer::$data['id'] .";"
         );
       }
 
@@ -216,7 +192,7 @@
 
       // Build options structure
         $sanitized_options = array();
-        foreach($product->options as $option) {
+        foreach ($product->options as $option) {
 
         // Check group
           $possible_groups = array_filter(array_unique(reference::option_group($option['id'])->name));
@@ -236,7 +212,7 @@
             case 'checkbox':
 
               $matched_values = array();
-              foreach($option['values'] as $value) {
+              foreach ($option['values'] as $value) {
                 $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
                 $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
                 if (!empty($matched_value)) {
@@ -249,14 +225,18 @@
             case 'input':
             case 'textarea':
 
+              $value = array_values($option['values'])[0];
               $matched_value = $options[$matched_group];
-              $item['extras'] += $value['price_adjust'];
+
+              if (!empty($matched_value)) {
+                $item['extras'] += $option['price_adjust'];
+              }
               break;
 
             case 'radio':
             case 'select':
 
-              foreach($option['values'] as $value) {
+              foreach ($option['values'] as $value) {
                 $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
                 $matched_value = @reset(array_intersect(array($options[$matched_group]), array_values($possible_values)));
                 if (!empty($matched_value)) {
@@ -397,7 +377,7 @@
       self::_calculate_total();
 
       if (!$force) {
-        header('Location: '. document::ilink());
+        header('Location: '. document::link());
         exit;
       }
     }
@@ -418,7 +398,7 @@
       self::_calculate_total();
 
       if (!$force) {
-        header('Location: '. document::ilink());
+        header('Location: '. document::link());
         exit;
       }
     }

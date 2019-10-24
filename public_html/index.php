@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.1.6
+ * LiteCart® 2.2.0
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -24,45 +24,19 @@
       )));
     } else {
       http_response_code(503);
-      include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'pages/maintenance_mode.inc.php');
-      require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+      include vmod::check(FS_DIR_APP . 'pages/maintenance_mode.inc.php');
+      require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
       exit;
     }
   }
 
-  if (!empty(route::$route) && is_file(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . route::$route['page'] .'.inc.php')) {
+// Load routes
+  route::load(FS_DIR_APP . 'includes/routes/url_*.inc.php');
 
-    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . route::$route['page'] .'.inc.php');
+// Append default route
+  route::add('#^([0-9a-zA-Z_/\.]+)(?:\.php)?$#', '$1');
 
-  } else {
+// Go
+  route::process();
 
-    http_response_code(404);
-
-    if (preg_match('#\.[a-z]{2,4}$#', route::$request)) exit;
-
-    $not_found_file = FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'not_found.log';
-
-    $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : array();
-    $lines[] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $lines = array_unique($lines);
-
-    sort($lines);
-
-    if (count($lines) >= 100) {
-      $email = new email();
-      $email->add_recipient(settings::get('store_email'))
-            ->set_subject('[Not Found Report] '. settings::get('store_name'))
-            ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))
-            ->send();
-      file_put_contents($not_found_file, '');
-    } else {
-      file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
-    }
-
-    echo '<div>'
-       . '  <h1>HTTP 404 - Not Found</h1>'
-       . '  <p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>'
-       . '</div>';
-  }
-
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

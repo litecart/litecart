@@ -14,9 +14,9 @@ ALTER TABLE `lc_products_options` ADD `NOK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'NOK' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1162 WHERE `code` = 'USD' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 8.0364 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1097 WHERE `code` = 'EUR' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 9.4268 WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('NO VAT Zone', '', NOW(), NOW());
@@ -31,7 +31,7 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Food', '', NOW(), NOW()),
 ('Cultural', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `customer_type`, `tax_id_rule`, `date_updated`, `date_created`) VALUES
-(1, @NO_VAT_ZONE, 'percent', 'NO VAT 25%', '', 25.0000, 'both', 'both', NOW(), NOW()),
-(1, @NO_VAT_ZONE, 'percent', 'NO VAT 15%', '', 15.0000, 'both', 'both', NOW(), NOW()),
-(1, @NO_VAT_ZONE, 'percent', 'NO VAT 10%', '', 10.0000, 'both', 'both', NOW(), NOW());
+INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
+(1, @NO_VAT_ZONE, 'percent', 'NO VAT 25%', '', 25.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @NO_VAT_ZONE, 'percent', 'NO VAT 15%', '', 15.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @NO_VAT_ZONE, 'percent', 'NO VAT 10%', '', 10.0000, 1, 1, 1, 1, NOW(), NOW());

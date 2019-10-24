@@ -2,23 +2,16 @@
 
   class form {
 
-    //public static function construct() {
-    //}
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function initiate() {
-    //}
-
-    public static function startup() {
+    public static function init() {
 
     // Is there incoming ajax data that needs decoding?
       if (!empty($_POST) && strtolower(language::$selected['charset']) != 'utf-8') {
 
         $unicoded_content = false;
         if (strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset=utf-8') !== false) $unicoded_content = true;
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset') === false) $flag_unicoded = true;
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+          if (strpos(strtolower($_SERVER['CONTENT_TYPE']), 'charset') === false) $unicoded_content = true;
+        }
 
         if ($unicoded_content) {
           function utf8_decode_recursive($input) {
@@ -33,21 +26,6 @@
         }
       }
     }
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

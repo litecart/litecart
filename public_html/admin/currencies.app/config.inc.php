@@ -1,8 +1,9 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_currencies', 'Currencies'),
     'default' => 'currencies',
+    'priority' => 0,
     'theme' => array(
       'color' => '#f3b91c',
       'icon' => 'fa-money',

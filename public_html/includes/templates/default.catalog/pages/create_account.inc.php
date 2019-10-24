@@ -1,14 +1,14 @@
-<aside id="sidebar">
+<div id="sidebar">
   <div id="column-left">
-    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php'); ?>
   </div>
-</aside>
+</div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
   {snippet:breadcrumbs}
 
-  <div id="box-create-account" class="box">
+  <section id="box-create-account" class="box">
 
     <h1><?php echo language::translate('title_create_account', 'Create Account'); ?></h1>
 
@@ -16,13 +16,13 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-          <?php echo functions::form_draw_text_field('tax_id', true); ?>
+          <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
+          <?php echo functions::form_draw_text_field('company', true); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
-          <?php echo functions::form_draw_text_field('company', true); ?>
+          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+          <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
       </div>
 
@@ -98,28 +98,36 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label class="checkbox">
-            <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
-          </label>
-        </div>
+      <div class="form-group">
+        <label class="checkbox">
+          <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
+        </label>
+      </div>
 
-        <?php if (settings::get('captcha_enabled')) { ?>
+      <?php if ($consent) { ?>
+      <p class="consent">
+        <div class="checkbox">
+          <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required="required"') .' '. $consent .'</label>'; ?>
+        </div>
+      </p>
+      <?php } ?>
+
+      <?php if (settings::get('captcha_enabled')) { ?>
+      <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
           <?php echo functions::form_draw_captcha_field('captcha', 'create_account', 'required="required"'); ?>
         </div>
-        <?php } ?>
       </div>
+      <?php } ?>
 
       <div class="btn-group">
         <?php echo functions::form_draw_button('create_account', language::translate('title_create_account', 'Create Account')); ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</main>
+  </section>
+</div>
 
 <script>
   $('#box-create-account').on('change', ':input', function() {

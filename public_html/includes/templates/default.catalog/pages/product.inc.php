@@ -1,14 +1,16 @@
-<aside id="sidebar">
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
-</aside>
+<div id="sidebar">
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_category_tree.inc.php'); ?>
 
-<main id="content">
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
+</div>
+
+<div id="content">
   {snippet:notices}
   {snippet:breadcrumbs}
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/box_product.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_product.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_similar_products.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_similar_products.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php'); ?>
-</main>
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_also_purchased_products.inc.php'); ?>
+</div>

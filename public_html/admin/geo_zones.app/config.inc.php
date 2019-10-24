@@ -1,8 +1,9 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_geo_zones', 'Geo Zones'),
     'default' => 'geo_zones',
+    'priority' => 0,
     'theme' => array(
       'color' => '#4398e7',
       'icon' => 'fa-globe',

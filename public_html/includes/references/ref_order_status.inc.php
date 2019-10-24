@@ -47,7 +47,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_ORDER_STATUSES_INFO ."
-            where order_status_id = '". (int)$this->_id ."'
+            where order_status_id = ". (int)$this->_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -65,12 +65,11 @@
 
           $query = database::query(
             "select from ". DB_TABLE_ORDER_STATUSES ."
-            where id = '". (int)$this->_id ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
-          $row = database::fetch($query);
 
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) $this->_data[$key] = $value;
 

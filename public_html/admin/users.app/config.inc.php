@@ -1,8 +1,9 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_users', 'Users'),
     'default' => 'users',
+    'priority' => 0,
     'theme' => array(
       'color' => '#f79a2e',
       'icon' => 'fa-star',

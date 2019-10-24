@@ -1,17 +1,17 @@
-<aside id="sidebar">
+<div id="sidebar">
   <div id="column-left">
-    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
-    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_account_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_account_links.inc.php'); ?>
   </div>
-</aside>
+</div>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
 
-  <div id="box-edit-account" class="box">
-    <h1 class="title"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></h1>
+  <section id="box-edit-account" class="box">
+    <h1 class="title"><?php echo language::translate('title_sign_in_and_security', 'Sign-In and Security'); ?></h1>
 
-    <?php echo functions::form_draw_form_begin('customer_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
+    <?php echo functions::form_draw_form_begin('customer_account_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
         <div class="form-group col-md-6">
@@ -20,21 +20,42 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label class="checkbox">
-            <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
-          </label>
+          <label><?php echo language::translate('title_password', 'Password'); ?></label>
+          <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-          <?php echo functions::form_draw_text_field('tax_id', true); ?>
+          <label><?php echo language::translate('title_new_password', 'New Password'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
+          <?php echo functions::form_draw_password_field('new_password', ''); ?>
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
+          <label><?php echo language::translate('title_confirm_new_password', 'Confirm New Password'); ?></label>
+          <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
+        </div>
+      </div>
+
+      <p><?php echo functions::form_draw_button('save_account', language::translate('title_save', 'Save')); ?></p>
+
+    <?php echo functions::form_draw_form_end(); ?>
+  </section>
+
+  <section id="box-edit-details" class="box">
+    <h1 class="title"><?php echo language::translate('title_customer_profile', 'Customer Profile'); ?></h1>
+
+    <?php echo functions::form_draw_form_begin('customer_details_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
           <?php echo functions::form_draw_text_field('company', true); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+          <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
       </div>
 
@@ -93,30 +114,18 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-          <?php echo functions::form_draw_password_field('new_password', '', 'autocomplete="off"'); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_confirm_new_password', 'Confirm New Password'); ?></label>
-          <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
-        </div>
+      <div class="form-group">
+        <label class="checkbox">
+          <?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
+        </label>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_password', 'Password'); ?></label>
-          <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?>
-        </div>
-      </div>
-
-      <p><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?></p>
+      <p><?php echo functions::form_draw_button('save_details', language::translate('title_save', 'Save')); ?></p>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</main>
+  </section>
+
+</div>
 
 <script>
   $('form[name="customer_form"]').on('input propertyChange', ':input', function() {

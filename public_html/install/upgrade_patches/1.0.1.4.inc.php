@@ -1,7 +1,7 @@
 <?php
 
   $deleted_files = array(
-    FS_DIR_HTTP_ROOT . WS_DIR_LIBRARY . 'lib_custom.inc.php',
+    FS_DIR_APP . 'includes/library/lib_custom.inc.php',
   );
 
   foreach ($deleted_files as $pattern) {

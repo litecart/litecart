@@ -1,23 +1,25 @@
-<footer id="footer">
+<footer id="footer" class="hidden-print">
 
-  <div class="row">
-    <div class="hidden-xs col-sm-fourths col-md-fifths categories">
+ <hr />
+
+  <div class="columns">
+    <section class="categories hidden-xs">
       <h3 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
       <ul class="list-unstyled">
         <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
       </ul>
-    </div>
+    </section>
 
     <?php if ($manufacturers) { ?>
-    <div class="hidden-xs hidden-sm col-md-fifths manufacturers">
+    <section class="manufacturers hidden-xs hidden-sm">
       <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
       <ul class="list-unstyled">
       <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
       </ul>
-    </div>
+    </section>
     <?php } ?>
 
-    <div class="col-xs-halfs col-sm-fourths col-md-fifths account">
+    <section class="account">
       <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
       <ul class="list-unstyled">
         <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
@@ -31,16 +33,16 @@
         <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
         <?php } ?>
       </ul>
-    </div>
+    </section>
 
-    <div class="col-xs-halfs col-sm-fourths col-md-fifths information">
+    <section class="information">
       <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
       <ul class="list-unstyled">
         <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
       </ul>
-    </div>
+    </section>
 
-    <div class="hidden-xs col-sm-fourths col-md-fifths contact">
+    <section class="contact hidden-xs">
       <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
 
       <p><?php echo nl2br(settings::get('store_postal_address')); ?></p>
@@ -50,11 +52,13 @@
       <?php } ?>
 
       <p><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
-    </div>
+    </section>
   </div>
-</footer>
 
-<div id="copyright" class="twelve-eighty">
-  <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
-  <div class="notice">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a></div>
-</div>
+  <section id="copyright">
+    <div class="notice twelve-eighty">
+      <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
+      Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
+    </div>
+  </section>
+</footer>

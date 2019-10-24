@@ -67,12 +67,31 @@
 
           break;
 
+        case 'attributes':
+
+          $this->_data['attributes'] = array();
+
+          $product_attributes_query = database::query(
+            "select pa.*, ag.code, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
+            left join ". DB_TABLE_ATTRIBUTE_GROUPS ." ag on (ag.id = pa.group_id)
+            left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
+            left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
+            where product_id = ". (int)$this->_id ."
+            order by group_name, value_name, custom_value;"
+          );
+
+          while ($attribute = database::fetch($product_attributes_query)) {
+            $this->_data['attributes'][$attribute['group_id'].'-'.$attribute['value_id']] = $attribute;
+          }
+
+          break;
+
         case 'name':
         case 'short_description':
         case 'description':
+        case 'technical_data':
         case 'head_title':
         case 'meta_description':
-        case 'attributes':
 
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_INFO ."
@@ -127,7 +146,7 @@
           while ($product_to_category = database::fetch($products_to_categories_query)) {
             $categories_info_query = database::query(
               "select * from ". DB_TABLE_CATEGORIES_INFO ."
-              where category_id = '". (int)$product_to_category['category_id'] ."'
+              where category_id = ". (int)$product_to_category['category_id'] ."
               and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
               order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
             );
@@ -158,7 +177,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
-            where delivery_status_id = '". (int)$this->_data['delivery_status_id'] ."'
+            where delivery_status_id = ". (int)$this->_data['delivery_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -193,7 +212,7 @@
 
           if (empty($this->_data['manufacturer_id'])) return;
 
-          $this->_data['manufacturer'] = reference::manufacturer($this->manufacturer_id);
+          $this->_data['manufacturer'] = reference::manufacturer($this->manufacturer_id, $this->_language_codes[0]);
 
           break;
 
@@ -213,7 +232,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['id'])) {
               $option_group_query = database::query(
                 "select * from ". DB_TABLE_OPTION_GROUPS ."
-                where id = '". (int)$product_option['group_id'] ."'
+                where id = ". (int)$product_option['group_id'] ."
                 limit 1;"
               );
               $option_group = database::fetch($option_group_query);
@@ -225,7 +244,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['name'])) {
               $option_group_info_query = database::query(
                 "select * from ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi
-                where group_id = '". (int)$product_option['group_id'] ."'
+                where group_id = ". (int)$product_option['group_id'] ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
@@ -241,7 +260,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['id'])) {
               $option_value_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES ."
-                where id = '". (int)$product_option['value_id'] ."'
+                where id = ". (int)$product_option['value_id'] ."
                 limit 1;"
               );
               $option_value = database::fetch($option_value_query);
@@ -253,7 +272,7 @@
             if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['name'])) {
               $option_values_info_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES_INFO ." pcvi
-                where value_id = '". (int)$product_option['value_id'] ."'
+                where value_id = ". (int)$product_option['value_id'] ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
@@ -310,7 +329,7 @@
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
             where product_id = ". (int)$this->_id ."
-            ". (!empty($option_id) ? "and id = '". (int)$option_id ."'" : '') ."
+            ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
           );
 
@@ -343,12 +362,12 @@
 
               $options_values_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES_INFO ."
-                where value_id = '". (int)$value_id ."'
+                where value_id = ". (int)$value_id ."
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
 
-              while($option_value_info = database::fetch($options_values_query)) {
+              while ($option_value_info = database::fetch($options_values_query)) {
                 foreach ($option_value_info as $key => $value) {
                   if (in_array($key, array('id', 'value_id', 'language_code'))) continue;
                   if (empty($row[$key][$option_value_info['value_id']])) $row[$key][$option_value_info['value_id']] = $value;
@@ -369,11 +388,11 @@
 
           $query = database::query(
             "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-            where product_id = '". (int)$this->_id ."';"
+            where product_id = ". (int)$this->_id .";"
           );
 
           while ($row = database::fetch($query)) {
-            $this->_data['parents'][$row['category_id']] = reference::category($row['category_id']);
+            $this->_data['parents'][$row['category_id']] = reference::category($row['category_id'], $this->_language_codes[0]);
           }
 
           break;
@@ -397,40 +416,6 @@
 
           break;
 
-        case 'product_groups':
-
-          $this->_data['product_groups'] = array();
-
-          if (count($this->product_group_ids)) {
-            foreach ($this->product_group_ids as $pair) {
-
-              list($group_id, $value_id) = explode('-', $pair);
-
-              $query = database::query(
-                "select name from ". DB_TABLE_PRODUCT_GROUPS_INFO ."
-                where product_group_id = '". (int)$group_id ."'
-                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
-
-              while ($row = database::fetch($query)) {
-                if (empty($this->_data['product_groups'][$pair]['group'])) $this->_data['product_groups'][$pair]['group'] = $row['name'];
-              }
-
-              $query = database::query(
-                "select name from ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ."
-                where product_group_value_id = '". (int)$value_id ."'
-                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
-              while ($row = database::fetch($query)) {
-                if (empty($this->_data['product_groups'][$pair]['value'])) $this->_data['product_groups'][$pair]['value'] = $row['name'];
-              }
-            }
-          }
-
-          break;
-
         case 'quantity_unit':
 
           $this->_data['quantity_unit'] = array(
@@ -446,13 +431,11 @@
             limit 1;"
           );
 
-          if (!database::num_rows($quantity_unit_query)) return;
-
-          $this->_data['quantity_unit'] = database::fetch($quantity_unit_query);
+          if (!$this->_data['quantity_unit'] = database::fetch($quantity_unit_query)) return;
 
           $query = database::query(
             "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
-            where quantity_unit_id = '". (int)$this->quantity_unit_id ."'
+            where quantity_unit_id = ". (int)$this->quantity_unit_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -471,16 +454,15 @@
 
           $query = database::query(
             "select id, orderable from ". DB_TABLE_SOLD_OUT_STATUSES ."
-            where id = '". (int)$this->sold_out_status_id ."'
+            where id = ". (int)$this->sold_out_status_id ."
             limit 1;"
           );
-          $this->_data['sold_out_status'] = database::fetch($query);
 
-          if (empty($this->_data['sold_out_status'])) return;
+          if (!$this->_data['sold_out_status'] = database::fetch($query)) return;
 
           $query = database::query(
             "select * from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
-            where sold_out_status_id = '". (int)$this->_data['sold_out_status_id'] ."'
+            where sold_out_status_id = ". (int)$this->_data['sold_out_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -501,9 +483,8 @@
             where id = ". (int)$this->_id ."
             limit 1;"
           );
-          $row = database::fetch($query);
 
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) {
             switch($key) {

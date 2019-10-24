@@ -1,0 +1,399 @@
+<?php
+
+  class ent_email {
+    public $data;
+
+    public function __construct($email_id=null, $charset=null) {
+
+      if ($email_id !== null) {
+        $this->load($email_id);
+      } else {
+        $this->reset();
+      }
+
+      $this->data['charset'] = $charset ? $charset : language::$selected['charset'];
+    }
+
+    public function reset() {
+
+      $this->data = array();
+
+      $fields_query = database::query(
+        "show fields from ". DB_TABLE_EMAILS .";"
+      );
+
+      while ($field = database::fetch($fields_query)) {
+        $this->data[$field['Field']] = null;
+      }
+
+      $this->data['sender'] = array(
+        'email' => settings::get('store_email'),
+        'name' => settings::get('store_name'),
+      );
+
+      $this->data['recipients'] = array();
+      $this->data['ccs'] = array();
+      $this->data['bccs'] = array();
+      $this->data['multiparts'] = array();
+
+      $this->previous = $this->data;
+
+      return $this;
+    }
+
+    public function load($email_id) {
+
+      if (!preg_match('#^[0-9]+$#', $email_id)) throw new Exception('Invalid email (ID: '. $email_id .')');
+
+      $this->reset();
+
+      $email_query = database::query(
+        "select * from ". DB_TABLE_EMAILS ."
+        where id = ". (int)$email_id ."
+        limit 1;"
+      );
+
+      if ($email = database::fetch($email_query)) {
+        $this->data = array_replace($this->data, array_intersect_key($email, $this->data));
+      } else {
+        throw new Exception('Could not find email (ID: '. (int)$email_id .') in database.');
+      }
+
+      $this->data['sender'] = json_decode($email['sender'], true);
+      $this->data['recipients'] = json_decode($email['recipients'], true);
+      $this->data['ccs'] = json_decode($email['ccs'], true);
+      $this->data['bccs'] = json_decode($email['bccs'], true);
+      $this->data['multiparts'] = json_decode($email['multiparts'], true);
+
+      return $this;
+    }
+
+    public function save() {
+
+      if (empty($this->data['id'])) {
+        database::query(
+          "insert into ". DB_TABLE_EMAILS ."
+          (status, code, date_created) values
+          ('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+        );
+
+        $this->data['id'] = database::insert_id();
+      }
+
+      database::query(
+        "update ". DB_TABLE_EMAILS ." set
+        status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
+        code = '". database::input($this->data['code']) ."',
+        charset = '". database::input($this->data['charset']) ."',
+        sender = '". database::input(json_encode($this->data['sender'], JSON_UNESCAPED_SLASHES)) ."',
+        recipients = '". database::input(json_encode($this->data['recipients'], JSON_UNESCAPED_SLASHES)) ."',
+        ccs = '". database::input(json_encode($this->data['ccs'], JSON_UNESCAPED_SLASHES)) ."',
+        bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
+        subject = '". database::input($this->data['subject']) ."',
+        multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES)) ."',
+        date_scheduled = '". database::input($this->data['date_scheduled']) ."',
+        date_sent = '". database::input($this->data['date_sent']) ."',
+        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        where id = ". (int)$this->data['id'] .";"
+      );
+
+      $this->previous = $this->data;
+
+      $this->cleanup();
+
+      cache::clear_cache('email');
+    }
+
+    public function set_sender($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
+
+      $this->data['sender'] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
+    public function set_subject($subject) {
+
+      $this->data['subject'] = trim(preg_replace('#\R#', '', $subject));
+
+      return $this;
+    }
+
+    public function set_multiparts($multiparts) {
+
+      $this->data['multiparts'] = $multiparts;
+
+      return $this;
+    }
+
+    public function add_body($content, $html=false, $charset=null) {
+
+      if (empty($content)) {
+        trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
+        return $this;
+      }
+      if (!$charset) $charset = $this->data['charset'];
+
+      $this->data['multiparts'][] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. $charset . "\r\n"
+                                   . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
+                                   . trim($content);
+
+      return $this;
+    }
+
+    public function add_attachment($file, $filename=null, $parse_as_string=false) {
+
+      if (!$filename) $filename = pathinfo($file, PATHINFO_BASENAME);
+
+      $data = $parse_as_string ? $file : file_get_contents($file);
+
+      if ($parse_as_string) {
+        file_put_contents($tmpfile=tempnam(sys_get_temp_dir(), 'lc_'), $data);
+        $mime_type = mime_content_type($tmpfile);
+        unlink($tmpfile);
+      } else {
+        $mime_type = mime_content_type($file);
+      }
+
+      $this->data['multiparts'][] = 'Content-Type: '. $mime_type . "\r\n"
+                                   . 'Content-Disposition: attachment; filename="'. basename($filename) . '"' . "\r\n"
+                                   . 'Content-Transfer-Encoding: base64' . "\r\n\r\n"
+                                   . chunk_split(base64_encode($data)) . "\r\n\r\n";
+
+      return $this;
+    }
+
+    public function add_recipient($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
+
+      $this->data['recipients'][] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
+    public function add_cc($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+
+      $this->data['ccs'][] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
+    public function add_bcc($email, $name=null) {
+
+      $email = trim($email);
+
+      if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
+
+      $this->data['bccs'][] = array(
+        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
+        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+      );
+
+      return $this;
+    }
+
+    public function format_contact($contact) {
+
+      if (empty($contact['name'])) return '<'. $contact['email'] .'>';
+
+      if (strtoupper(language::$selected['charset']) == 'UTF-8') {
+        return '=?utf-8?b?'. base64_encode($contact['name']) .'?= <'. $contact['email'] .'>';
+      }
+
+      if (strpos($contact['name'], '"') !== false || strpos($contact['name'], ',') !== false) {
+        return '"'. addcslashes($contact['name'], '"') .'" <'. $contact['email'] .'>';
+      }
+
+      return $contact['name'] .' <'. $contact['email'] .'>';
+    }
+
+    public function cleanup($time_ago='-30 days') {
+
+      database::query(
+        "delete from ". DB_TABLE_EMAILS ."
+        where status in ('sent', 'error')
+        and date_updated < '". date('Y-m-d H:i:s', strtotime($time_ago)) ."';"
+      );
+
+      cache::clear_cache('email');
+    }
+
+    public function send() {
+
+      $this->save();
+
+      if ($this->data['status'] == 'sent') {
+        trigger_error('Email already marked as sent', E_USER_WARNING);
+        return false;
+      }
+
+    // Prepare headers
+      $headers = array(
+        'From' => $this->format_contact($this->data['sender']),
+        'Reply-To' => $this->format_contact($this->data['sender']),
+        'Return-Path' => $this->format_contact($this->data['sender']),
+        'MIME-Version' => '1.0',
+        'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
+      );
+
+    // Add "To"
+      if (!empty($this->data['recipients'])) {
+        $tos = array();
+        foreach ($this->data['recipients'] as $to) {
+          $tos[] = $this->format_contact($to);
+        }
+        $headers['To'] = implode(', ', $tos);
+      }
+
+    // Add "Cc"
+      if (!empty($this->data['ccs'])) {
+        $ccs = array();
+        foreach ($this->data['ccs'] as $cc) {
+          $ccs[] = $this->format_contact($cc);
+        }
+        $headers['Cc'] = implode(', ', $ccs);
+      }
+
+    // Prepare subject
+      if (strtoupper(language::$selected['charset']) == 'UTF-8') {
+        $headers['Subject'] = '=?utf-8?b?'. base64_encode($this->data['subject']) .'?=';
+      } else {
+        $headers['Subject'] = $this->data['subject'];
+      }
+
+      $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
+      $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
+
+      array_walk($headers,
+        function (&$v, $k) {
+          $v = $k.': '.$v;
+        }
+      );
+
+      $headers = implode("\r\n", $headers);
+
+    // Prepare body
+      $body = '';
+      foreach ($this->data['multiparts'] as $multipart) {
+          $body .= '--'. $multipart_boundary_string . "\r\n"
+                 . $multipart . "\r\n\r\n";
+      }
+
+      if (empty($body)) {
+        trigger_error('Cannot send email with an empty body', E_USER_WARNING);
+        return false;
+      }
+
+    // Deliver via SMTP
+      if (settings::get('smtp_status')) {
+
+        try {
+
+          $smtp = new wrap_smtp(
+            settings::get('smtp_host'),
+            settings::get('smtp_port'),
+            settings::get('smtp_username'),
+            settings::get('smtp_password')
+          );
+
+          $smtp->connect();
+
+          $recipients = array();
+
+          foreach ($this->data['recipients'] as $recipient) {
+            $recipients[] = $recipient['email'];
+          }
+
+          foreach ($this->data['ccs'] as $cc) {
+            $recipients[] = $cc['email'];
+          }
+
+          foreach ($this->data['bccs'] as $bcc) {
+            $recipients[] = $bcc['email'];
+          }
+
+          $data = $headers . "\r\n"
+                . $body;
+
+          $result = $smtp->send($this->data['sender']['email'], $recipients, $data);
+
+        } catch(Exception $e) {
+          trigger_error('Failed sending email "'. $this->data['subject'] .'": '. $e->getMessage(), E_USER_WARNING);
+        }
+
+        $smtp->disconnect();
+
+    // Deliver via PHP mail()
+      } else {
+
+        $headers = preg_replace('#(To:.*\r\n)#', '', $headers);
+        $headers = preg_replace('#(Subject:.*\r\n)#', '', $headers);
+
+        if (!empty($this->data['bccs'])) {
+          $bccs = array();
+          foreach ($this->data['bccs'] as $bcc) {
+            $bccs[] = $this->format_contact($bcc);
+          }
+          $headers .= 'Bcc: '. implode(', ', $bccs) . "\r\n";
+        }
+
+        $recipients = array();
+        foreach ($this->data['recipients'] as $recipient) {
+          $recipients[] = $this->format_contact($recipient);
+        }
+        $recipients = implode(', ', $recipients);
+
+        if (strtoupper(language::$selected['charset']) == 'UTF-8') {
+          $subject = '=?utf-8?b?'. base64_encode($this->data['subject']) .'?=';
+        } else {
+          $subject = $this->data['subject'];
+        }
+
+        if (!$result = mail($recipients, $subject, $body, $headers)) {
+          trigger_error('Failed sending email "'. $this->data['subject'] .'"', E_USER_WARNING);
+        }
+      }
+
+      if (!empty($result)) {
+        $this->data['status'] = 'sent';
+        $this->data['date_sent'] = date('Y-m-d H:i:s');
+      } else {
+        $this->data['status'] = 'error';
+      }
+
+      $this->save();
+
+      return !empty($result) ? true : false;
+    }
+
+    public function delete() {
+
+      database::query(
+        "delete from ". DB_TABLE_EMAILS ."
+        where id = ". (int)$this->data['id'] .";"
+      );
+
+      $this->reset();
+
+      cache::clear_cache('email');
+    }
+  }

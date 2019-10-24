@@ -14,9 +14,9 @@ ALTER TABLE `lc_products_options` ADD `SEK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'SEK' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1106 WHERE `code` = 'USD' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 9.76 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 0.1044 WHERE `code` = 'EUR' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 10.68 WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
 INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('SE VAT Zone', '', NOW(), NOW());
@@ -65,13 +65,10 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Reduced', '', NOW(), NOW()),
 ('Groceries', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `customer_type`, `tax_id_rule`, `date_updated`, `date_created`) VALUES
-(1, @SE_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 'both', 'both', NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 'individuals', 'both', NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 'companies', 'without', NOW(), NOW()),
-(2, @SE_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 'both', 'both', NOW(), NOW()),
-(2, @EU_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 'individuals', 'both', NOW(), NOW()),
-(2, @EU_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 'companies', 'without', NOW(), NOW()),
-(3, @SE_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 'both', 'both', NOW(), NOW()),
-(3, @EU_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 'individuals', 'both', NOW(), NOW()),
-(3, @EU_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 'companies', 'without', NOW(), NOW());
+INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
+(1, @SE_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @EU_VAT_ZONE, 'percent', 'SE VAT 25%', '', 25.0000, 0, 1, 1, 1, NOW(), NOW()),
+(2, @SE_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 1, 1, 1, 1, NOW(), NOW()),
+(2, @EU_VAT_ZONE, 'percent', 'SE VAT 6%', '', 6.0000, 0, 1, 1, 1, NOW(), NOW()),
+(3, @SE_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 1, 1, 1, 1, NOW(), NOW()),
+(3, @EU_VAT_ZONE, 'percent', 'SE VAT 12%', '', 12.0000, 0, 1, 1, 1, NOW(), NOW());

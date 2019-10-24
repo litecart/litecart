@@ -12,7 +12,7 @@
       if (empty($_POST['email'])) throw new Exception(language::translate('error_must_enter_email', 'You must enter a valid email address'));
       if (empty($_POST['message'])) throw new Exception(language::translate('error_must_enter_message', 'You must enter a message'));
 
-      $email = new email();
+      $email = new ent_email();
       $email->set_sender($_POST['email'], $_POST['name'])
             ->add_recipient(settings::get('store_email'), settings::get('store_name'))
             ->set_subject($_POST['subject'])
@@ -20,18 +20,18 @@
 
       $result = $email->send();
 
-      if ($result) {
-        notices::add('success', language::translate('success_your_email_was_sent', 'Your email has successfully been sent'));
-        header('Location: '. document::ilink());
-        exit;
-      } else {
+      if (!$result) {
         throw new Exception(language::translate('error_sending_email_for_unknown_reason', 'The email could not be sent for an unknown reason'));
       }
+
+      notices::add('success', language::translate('success_your_email_was_sent', 'Your email has successfully been sent'));
+      header('Location: '. document::link());
+      exit;
 
     } catch (Exception $e) {
       notices::add('errors', $e->getMessage());
     }
   }
 
-  $box_contact_us = new view();
+  $box_contact_us = new ent_view();
   echo $box_contact_us->stitch('views/box_contact_us');

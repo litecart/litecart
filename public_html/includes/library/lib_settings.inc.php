@@ -1,12 +1,10 @@
 <?php
 
   class settings {
+
     private static $_cache;
 
-    //public static function construct() {
-    //}
-
-    public static function load_dependencies() {
+    public static function init() {
 
       $configuration_query = database::query(
         "select * from ". DB_TABLE_SETTINGS ."
@@ -18,33 +16,12 @@
 
     // Check version
       if (settings::get('platform_database_version') != PLATFORM_VERSION) {
-        trigger_error('Platform database version ('. settings::get('platform_database_version') .') does not match platform version ('. PLATFORM_VERSION .')', E_USER_WARNING);
+        trigger_error('Platform database version ('. settings::get('platform_database_version') .') does not match platform version ('. PLATFORM_VERSION .'). Did you run /install/upgrade.php?', E_USER_WARNING);
       }
 
     // Set time zone
       date_default_timezone_set(self::get('store_timezone'));
     }
-
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
 
     ######################################################################
 

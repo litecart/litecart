@@ -3,11 +3,17 @@
   class ref_page {
 
     private $_id;
+    private $_language_codes;
     private $_data = array();
 
-    function __construct($page_id) {
+    function __construct($page_id, $language_code=null) {
 
       $this->_id = (int)$page_id;
+      $this->_language_codes = array_unique(array(
+        !empty($language_code) ? $language_code : language::$selected['code'],
+        settings::get('default_language_code'),
+        settings::get('store_language_code'),
+      ));
     }
 
     public function &__get($name) {
@@ -40,34 +46,118 @@
         case 'meta_description':
 
           $query = database::query(
-            "select language_code, title, content, meta_description from ". DB_TABLE_PAGES_INFO ."
-            where page_id = '". (int)$this->_id ."'
-            and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
+            "select * from ". DB_TABLE_PAGES_INFO ."
+            where page_id = ". (int)$this->_id ."
+            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
 
           while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) $this->_data[$key][$row['language_code']] = $value;
+            foreach ($row as $key => $value) {
+              if (in_array($key, array('id', 'page_id', 'language_code'))) continue;
+              if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
+            }
           }
 
-        // Fix missing translations
-            foreach (array_keys(language::$languages) as $language_code) {
-            if (empty($this->_data['title'][$language_code])) {
-              if (!empty($this->_data['title'][settings::get('default_language_code')])) {
-                $this->_data['title'][$language_code] = $this->_data['title'][settings::get('default_language_code')];
-              } else {
-                $this->_data['title'][$language_code] = '[untitled]';
-              }
-            }
-            foreach (array('content', 'head_title', 'meta_description') as $key) {
-              if (empty($this->_data[$key][$language_code])) {
-                if (!empty($this->_data[$key][settings::get('default_language_code')])) {
-                  $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
-                } else {
-                  $this->_data[$key][$language_code] = '';
-                }
-              }
-            }
+          break;
+
+        case 'parent':
+
+          if (!empty($this->parent_id)) {
+            $this->_data['parent'] = reference::page($page['parent_id'], $this->_language_codes[0]);
           }
+
+          break;
+
+        case 'path':
+
+          $this->_data['path'] = array();
+          $page_index_id = $this->id;
+
+          $failsafe = 0;
+          while (true) {
+            $page_query = database::query(
+              "select id, parent_id from ". DB_TABLE_PAGES ."
+              where id = ". (int)$page_index_id ."
+              limit 1;"
+            );
+
+            $page = database::fetch($page_query);
+
+            if ($page) {
+              $this->_data['path'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
+            }
+
+            if (!empty($page['parent_id'])) {
+              $page_index_id = $page['parent_id'];
+            } else {
+              break;
+            }
+
+            if (++$failsafe == 10) trigger_error('Endless loop while building page path', E_USER_ERROR);
+          }
+
+          $this->_data['path'] = array_reverse($this->_data['path'], true);
+
+          break;
+
+        case 'siblings':
+
+          $this->_data['siblings'] = array();
+
+          if (empty($this->parent_id)) return;
+
+          $query = database::query(
+            "select id from ". DB_TABLE_PAGES ."
+            where status
+            and parent_id = ". (int)$this->parent_id ."
+            and id != ". (int)$this->_id .";"
+          );
+
+          while ($row = database::fetch($query)) {
+            $this->_data['siblings'][$row['id']] = reference::page($row['id'], $this->_language_codes[0]);
+          }
+
+          break;
+
+        case 'descendants':
+
+          $this->_data['descendants'] = array();
+
+          $iterator = function($parent_id, &$iterator) {
+
+            $descendants = array();
+
+            $pages_query = database::query(
+              "select id from ". DB_TABLE_PAGES ."
+              where parent_id = ". (int)$parent_id .";"
+            );
+
+            while ($page = database::fetch($pages_query)) {
+              $descendants[$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
+              $descendants += $iterator($page['id'], $iterator);
+            }
+
+            return $descendants;
+          };
+
+          $this->_data['descendants'] = $iterator($this->_id, $iterator);
+
+          break;
+
+        case 'subpages': // To be deprecated
+        case 'children':
+
+          $this->_data['subpages'] = array();
+
+            $page_query = database::query(
+              "select id, parent_id from ". DB_TABLE_PAGES ."
+              where parent_id = ". (int)$this->_id .";"
+            );
+
+            while ($page = database::fetch($page_query)) {
+              $this->_data['subpages'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
+            }
 
           break;
 
@@ -75,12 +165,11 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_PAGES ."
-            where id = '". (int)$this->_id ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
-          $row = database::fetch($query);
 
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) $this->_data[$key] = $value;
 

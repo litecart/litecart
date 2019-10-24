@@ -1,8 +1,9 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_catalog', 'Catalog'),
     'default' => 'catalog',
+    'priority' => 0,
     'theme' => array(
       'color' => '#d0cb2b',
       'icon' => 'fa-th',
@@ -14,8 +15,8 @@
         'params' => array(),
       ),
       array(
-        'title' => language::translate('title_product_groups', 'Product Groups'),
-        'doc' => 'product_groups',
+        'title' => language::translate('title_attribute_groups', 'Attribute Groups'),
+        'doc' => 'attribute_groups',
         'params' => array(),
       ),
       array(
@@ -55,11 +56,12 @@
       ),
     ),
     'docs' => array(
+      'attribute_groups' => 'attribute_groups.inc.php',
+      'attribute_values.json' => 'attribute_values.json.inc.php',
       'catalog' => 'catalog.inc.php',
+      'edit_attribute_group' => 'edit_attribute_group.inc.php',
       'edit_product' => 'edit_product.inc.php',
       'edit_category' => 'edit_category.inc.php',
-      'product_groups' => 'product_groups.inc.php',
-      'edit_product_group' => 'edit_product_group.inc.php',
       'option_groups' => 'option_groups.inc.php',
       'edit_option_group' => 'edit_option_group.inc.php',
       'manufacturers' => 'manufacturers.inc.php',

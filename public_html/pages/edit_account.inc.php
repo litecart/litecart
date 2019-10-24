@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'));
 
-  $customer = new ctrl_customer(customer::$data['id']);
+  $customer = new ent_customer(customer::$data['id']);
 
   if (empty($_POST)) {
     foreach ($customer->data as $key => $value) {
@@ -18,20 +18,16 @@
     }
   }
 
-  if (isset($_POST['save'])) {
+  if (isset($_POST['save_account'])) {
 
     try {
       if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
-      if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
-      if (!isset($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' and id != '". $customer->data['id'] ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database.'));
+      if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' and id != ". (int)$customer->data['id'] ." limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database.'));
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_email_missing', 'You must enter an email address.'));
 
-      if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_current_password', 'You must enter your current password to save changes'));
-
-      if (customer::$data['password'] != functions::password_checksum(customer::$data['email'], $_POST['password'])) {
+      if (!password_verify($_POST['password'], customer::$data['password_hash'])) {
         throw new Exception(language::translate('error_wrong_password', 'Wrong password'));
       }
 
@@ -39,6 +35,34 @@
         if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
         if (isset($_POST['new_password']) && isset($_POST['confirmed_password']) && $_POST['new_password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
       }
+
+      $fields = array(
+        'email',
+      );
+
+      foreach ($fields as $field) {
+        if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
+      }
+
+      if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
+
+      $customer->save();
+      customer::$data = $customer->data;
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['save_details'])) {
+
+    try {
+      if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
+      if (!isset($_POST['newsletter'])) $_POST['newsletter'] = 0;
 
       if (empty($_POST['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
       if (empty($_POST['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
@@ -63,7 +87,6 @@
       }
 
       $fields = array(
-        'email',
         'tax_id',
         'company',
         'firstname',
@@ -118,13 +141,11 @@
         }
       }
 
-      if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
-
       $customer->save();
       customer::$data = $customer->data;
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
-      header('Location: '. document::ilink());
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -132,5 +153,5 @@
     }
   }
 
-  $_page = new view();
+  $_page = new ent_view();
   echo $_page->stitch('pages/edit_account');

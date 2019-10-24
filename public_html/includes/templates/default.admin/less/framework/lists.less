@@ -1,27 +1,26 @@
 /* Lists - Bootstrap Compatible */
 
 ul.list-unstyled {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   li {
-    margin: 0px;
-    padding: 3px 0px;
+    margin: 0;
+    padding: @default-gutter-size/4 0;
     list-style: none;
   }
   ul {
     margin-left: 18px;
-    padding: 0px;
-    border:1px #000;
+    padding: 0;
   }
 }
 
 ul.list-inline {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   li {
     display: inline-block;
-    margin: 0px;
-    padding: 3px;
+    margin: 0;
+    padding: @default-gutter-size/4;
     list-style: none;
   }
 }
@@ -30,8 +29,7 @@ ul.list-inline {
   padding-left: 0;
   margin-bottom: 0;
   .list-group-item:first-child {
-    border-top-right-radius: @default-border-radius;
-    border-top-left-radius: @default-border-radius;
+    border-radius: @default-border-radius;
   }
   .list-group-item {
     position: relative;

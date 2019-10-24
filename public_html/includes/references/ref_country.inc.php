@@ -64,9 +64,7 @@
             limit 1;"
           );
 
-          $row = database::fetch($query);
-
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) $this->_data[$key] = $value;
 
@@ -77,6 +75,8 @@
     public function format_address($address) {
 
       $address = array(
+        '%code' => !empty($address['code']) ? $address['code'] : '',
+        '%tax_id' => !empty($address['tax_id']) ? $address['tax_id'] : '',
         '%company' => !empty($address['company']) ? $address['company'] : '',
         '%firstname' => !empty($address['firstname']) ? $address['firstname'] : '',
         '%lastname' => !empty($address['lastname']) ? $address['lastname'] : '',

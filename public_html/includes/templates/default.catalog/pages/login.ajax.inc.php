@@ -1,4 +1,4 @@
-<div class="box-login" class="box">
+<section class="box-login" class="box">
 
   <h2 class="title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 
@@ -26,4 +26,4 @@
     </p>
 
   <?php echo functions::form_draw_form_end(); ?>
-</div>
+</section>

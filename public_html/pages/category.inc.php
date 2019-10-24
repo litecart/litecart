@@ -6,6 +6,11 @@
     exit;
   }
 
+  if (!empty($_GET['attributes'])) {
+    $_GET['attributes'] = array_map('array_filter', $_GET['attributes']);
+    $_GET['attributes'] = array_filter($_GET['attributes']);
+  }
+
   $category = reference::category($_GET['category_id']);
 
   if (empty($category->id)) {
@@ -32,12 +37,12 @@
 
   functions::draw_lightbox();
 
-  $_page = new view();
+  $_page = new ent_view();
 
-  $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (!$_page->snippets = cache::get($box_category_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+  $box_category_cache_token = cache::token('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
+  if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
-  $_page->snippets = array(
+    $_page->snippets = array(
       'id' => $category->id,
       'name' => $category->name,
       'short_description' => $category->short_description,
@@ -45,7 +50,8 @@
       'h1_title' => $category->h1_title ? $category->h1_title : $category->name,
       'head_title' => $category->head_title ? $category->head_title : $category->name,
       'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
-      'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->image, 1024, 0, 'FIT_ONLY_BIGGER'),
+      'image' => null,
+      'images' => array(),
       'subcategories' => array(),
       'products' => array(),
       'sort_alternatives' => array(
@@ -55,6 +61,16 @@
         'date' => language::translate('title_date', 'Date'),
       ),
     );
+
+  // Images
+    list($width, $height) = functions::image_scale_by_width(980, settings::get('category_image_ratio'));
+    foreach ($category->images as $image) {
+      $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('category_image_clipping'));
+    }
+
+    if (!empty($_page->snippets['images'])) {
+      $_page->snippets['image'] = $_page->snippets['images'][0];
+    }
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
@@ -75,15 +91,13 @@
         break;
     }
 
-    $products_query = functions::catalog_products_query(
-      array(
-        'category_id' => $category->id,
-        'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
-        'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
-        'sort' => $_GET['sort'],
-        'campaigns_first' => true,
-      )
-    );
+    $products_query = functions::catalog_products_query(array(
+      'categories' => array($category->id),
+      'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
+      'attributes' => !empty($_GET['attributes']) ? $_GET['attributes'] : null,
+      'sort' => $_GET['sort'],
+      'campaigns_first' => true,
+    ));
 
     if (database::num_rows($products_query)) {
       if ($_GET['page'] > 1) database::seek($products_query, $items_per_page * ($_GET['page'] - 1));
@@ -109,7 +123,7 @@
     $_page->snippets['num_products_total'] = (int)database::num_rows($products_query);
     $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
 
-    cache::set($box_category_cache_id, 'file', $_page->snippets);
+    cache::set($box_category_cache_token, $_page->snippets);
   }
 
   echo $_page->stitch('pages/category');

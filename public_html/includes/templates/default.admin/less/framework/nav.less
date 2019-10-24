@@ -15,10 +15,9 @@
     > a {
       position: relative;
       display: block;
-      padding: @default-gutter-size;
+      padding: 15px;
       color: inherit;
       text-decoration: none;
-      transition: all 125ms linear;
     }
     &.disabled > a {
       color: fade(#777, 25%);
@@ -99,7 +98,9 @@
 }
 
 .nav-tabs {
+  background: @default-color;
   border-bottom: 1px solid @default-border-color;
+  padding-top: @default-gutter-size/4;
   > li {
     > a {
       margin-right: 2px;
@@ -117,7 +118,7 @@
 }
 
 .tab-content {
-  padding: @default-gutter-size 0;
+  margin: @default-gutter-size 0;
   .tab-pane {
     > .title {
      margin-top: 0;

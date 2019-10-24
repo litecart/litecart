@@ -1,4 +1,4 @@
-<div id="box-checkout-shipping" class="box">
+<section id="box-checkout-shipping" class="box">
   <h2 class="title"><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
 
   <div class="options btn-group-vertical">
@@ -8,7 +8,7 @@
       <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-sm-3 thumbnail" style="margin: 0;">
-          <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />
         </div>
 
         <div class="col-sm-9 text-left" style="padding-bottom: 0;">
@@ -30,7 +30,7 @@
     <?php } ?>
 
   </div>
-</div>
+</section>
 
 <script>
   $('#box-checkout-shipping .option.active :input').prop('disabled', false);

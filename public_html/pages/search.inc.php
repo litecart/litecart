@@ -5,6 +5,12 @@
 
   $_GET['query'] = trim($_GET['query']);
 
+  if (empty($_GET['query'])) {
+    http_response_code(400);
+    notices::add('errors', language::translate('error_must_provide_search_query', 'You must provide a search query'));
+    return;
+  }
+
   document::$snippets['title'][] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])) : language::translate('title_search_results', 'Search Results');
 
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
@@ -12,7 +18,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new view();
+  $_page = new ent_view();
   $_page->snippets = array(
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
     'products' => array(),
@@ -30,10 +36,26 @@
 
   $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
-    match(pi.name, pi.short_description, pi.description) against ('*". database::input($_GET['query']) ."*' in boolean mode) as relevance
+    (
+      if(p.id = '". database::input($_GET['query']) ."', 10, 0)
+      + (match(pi.name) against ('". database::input($_GET['query']) ."' in boolean mode))
+      + (match(pi.short_description) against ('". database::input($_GET['query']) ."' in boolean mode) / 2)
+      + (match(pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) / 3)
+      + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
+      + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
+      + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
+      + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
+      + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
+      + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
+      + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
+      + if (p.id in (
+        select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        where sku regexp '". database::input($code_regex) ."'
+      ), 5, 0)
+    ) as relevance
 
     from (
-      select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, product_groups, image, tax_class_id, quantity, views, purchases, date_updated, date_created
+      select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, tax_class_id, quantity, views, purchases, date_updated, date_created
       from ". DB_TABLE_PRODUCTS ."
       where status
       and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -45,12 +67,12 @@
     left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
 
     left join (
-      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
+      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
       from ". DB_TABLE_PRODUCTS_PRICES ."
     ) pp on (pp.product_id = p.id)
 
     left join (
-      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
+      select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
       from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
       where (start_date <= '". date('Y-m-d H:i:s') ."')
       and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
@@ -58,10 +80,6 @@
     ) pc on (pc.product_id = p.id)
 
     having relevance > 0
-    ". ((!empty($_GET['query'])) ? "or p.code regexp '". database::input($code_regex) ."'" : "") ."
-    ". ((!empty($_GET['query'])) ? "or p.sku regexp '". database::input($code_regex) ."'" : "") ."
-    ". ((!empty($_GET['query'])) ? "or p.mpn regexp '". database::input($code_regex) ."'" : "") ."
-    ". ((!empty($_GET['query'])) ? "or p.gtin regexp '". database::input($code_regex) ."'" : "") ."
 
     order by %sql_sort;";
 

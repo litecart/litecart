@@ -11,6 +11,7 @@
     public $priority = 0;
 
     public function __construct() {
+      $this->name = language::translate(__CLASS__.':title', 'Cash on Delivery');
     }
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -24,8 +25,8 @@
       }
 
       $method = array(
-        'title' => language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
-        'description' => '',
+        'title' => $this->name,
+        'description' => language::translate(__CLASS__.':description', ''),
         'options' => array(
           array(
             'id' => 'cod',
@@ -42,10 +43,10 @@
       return $method;
     }
 
-    public function pre_check() {
+    public function pre_check($order) {
     }
 
-    public function transfer() {
+    public function transfer($order) {
       return array(
         'action' => '',
         'method' => '',
@@ -53,7 +54,7 @@
       );
     }
 
-    public function verify() {
+    public function verify($order) {
       return array(
         'order_status_id' => $this->settings['order_status_id'],
         'payment_transaction_id' => '',
@@ -61,7 +62,7 @@
       );
     }
 
-    public function after_process() {
+    public function after_process($order) {
     }
 
     function settings() {
@@ -78,7 +79,7 @@
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_icon', 'Icon'),
           'description' => language::translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
-          'function' => 'input()',
+          'function' => 'text()',
         ),
         array(
           'key' => 'fee',
@@ -92,7 +93,7 @@
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_tax_class', 'Tax Class'),
           'description' => language::translate(__CLASS__.':description_tax_class', 'The tax class for the fee.'),
-          'function' => 'tax_classes()',
+          'function' => 'tax_class()',
         ),
         array(
           'key' => 'order_status_id',
@@ -106,14 +107,14 @@
           'default_value' => '',
           'title' => language::translate('title_geo_zone_limitation', 'Geo Zone Limitation'),
           'description' => language::translate('modules:description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
-          'function' => 'geo_zones()',
+          'function' => 'geo_zone()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate('title_priority', 'Priority'),
           'description' => language::translate('modules:description_priority', 'Process this module in the given priority order.'),
-          'function' => 'int()',
+          'function' => 'number()',
         ),
       );
     }

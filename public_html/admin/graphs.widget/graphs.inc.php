@@ -1,10 +1,10 @@
 <?php
 
-  document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'chartist/chartist.min.css" />';
-  document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_EXT .'chartist/chartist.min.js"></script>';
+  document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/chartist/chartist.min.css" />';
+  document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_APP .'ext/chartist/chartist.min.js"></script>';
 
-  $widget_graphs_cache_id = cache::cache_id('widget_graphs');
-  if (cache::capture($widget_graphs_cache_id, 'file', 300)) {
+  $widget_graphs_cache_token = cache::token('widget_graphs', array('site'), 'file', 300);
+  if (cache::capture($widget_graphs_cache_token)) {
 
   // Order Statuses flagged as Sale
     $order_statuses = array();
@@ -26,7 +26,7 @@
     );
 
     $monthly_sales = array();
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales'] = (int)$orders['total_sales'];
     }
 
@@ -38,7 +38,7 @@
       order by month asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales_last_year'] = (int)$orders['total_sales'];
     }
 
@@ -65,7 +65,7 @@
       order by weekday asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $daily_sales[$orders['weekday']]['total_sales'] = (int)$orders['total_sales'];
     }
 
@@ -77,7 +77,7 @@
       order by weekday asc;"
     );
 
-    while($orders = database::fetch($orders_query)) {
+    while ($orders = database::fetch($orders_query)) {
       $daily_sales[$orders['weekday']]['average_sales'] = (int)$orders['average_sales'];
     }
 
@@ -127,8 +127,8 @@
 // Monthly Sales
 
   var data = {
-    labels: <?php echo json_encode(array_column($monthly_sales, 'label')); ?>,
-    series: <?php echo json_encode(array(array_column($monthly_sales, 'total_sales_last_year'), array_column($monthly_sales, 'total_sales'))); ?>
+    labels: <?php echo json_encode(array_column($monthly_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
+    series: <?php echo json_encode(array(array_column($monthly_sales, 'total_sales_last_year'), array_column($monthly_sales, 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {
@@ -153,8 +153,8 @@
 // Daily Sales
 
   var data = {
-    labels: <?php echo json_encode(array_column($daily_sales, 'label')); ?>,
-    series: <?php echo json_encode(array(array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales'))); ?>
+    labels: <?php echo json_encode(array_column($daily_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
+    series: <?php echo json_encode(array(array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {
@@ -175,6 +175,6 @@
   new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
 </script>
 <?php
-    cache::end_capture($widget_graphs_cache_id);
+    cache::end_capture($widget_graphs_cache_token);
   }
 ?>

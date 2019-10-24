@@ -7,9 +7,8 @@
       where iso_code_2 = '". database::input($address['country_code']) ."'
       limit 1;"
     );
-    $country = database::fetch($country_query);
 
-    if (empty($country)) {
+    if (!$country = database::fetch($country_query)) {
       trigger_error('Invalid country code for address format', E_USER_WARNING);
       return;
     }
@@ -31,7 +30,7 @@
         $c = mb_strlen($string);
         $parts[] = mb_substr($string, 0, 1);
         $string = mb_substr($string, 1);
-      } while(!empty($string));
+      } while (!empty($string));
 
     } else {
       $parts = array($string);

@@ -1,36 +1,8 @@
 <?php
 
   class reference {
+
     private static $_cache;
-
-    //public static function construct() {
-    //}
-
-    //public static function load_dependencies() {
-    //}
-
-    //public static function initiate() {
-    //}
-
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    //public static function after_capture() {
-    //}
-
-    //public static function prepare_output() {
-    //}
-
-    //public static function before_output() {
-    //}
-
-    //public static function shutdown() {
-    //}
-
-    ######################################################################
 
     public static function __callStatic($resource, $arguments) {
 
@@ -43,21 +15,21 @@
         self::$_cache[$resource] = array();
       }
 
-      $checksum = md5(json_encode($arguments));
+      $checksum = md5(json_encode($arguments, JSON_UNESCAPED_SLASHES));
 
       if (isset(self::$_cache[$resource][$checksum])) {
         return self::$_cache[$resource][$checksum];
       }
 
       $component = null;
-      if (preg_match('#^(ref|ctrl)_#', $resource, $matches)) {
+      if (preg_match('#^(ref|ent)_#', $resource, $matches)) {
         $component = $matches[1];
         $resource = preg_replace('#^'. preg_quote($component, '#') .'_(.*)$#', '$1', $resource);
       }
 
       switch(true) {
         case ($component == 'ref'):
-        case (!$component && is_file(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'ref_'.basename($resource).'.inc.php')):
+        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/references/ref_'.basename($resource).'.inc.php'))):
 
           $class_name = 'ref_'.$resource;
 
@@ -72,10 +44,10 @@
 
           return self::$_cache[$resource][$checksum];
 
-        case ($component == 'ctrl'):
-        case (!$component && is_file(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_'.basename($resource).'.inc.php')):
+        case ($component == 'ent'):
+        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/entities/ent_'.basename($resource).'.inc.php'))):
 
-          $class_name = 'ctrl_'.$resource;
+          $class_name = 'ent_'.$resource;
           $object = new $class_name($arguments[0]);
 
           self::$_cache[$resource][$checksum] = new StdClass;

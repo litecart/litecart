@@ -3,17 +3,23 @@
   class ref_category {
 
     private $_id;
+    private $_cache_token;
     private $_language_codes;
     private $_data = array();
 
     function __construct($category_id, $language_code=null) {
 
       $this->_id = (int)$category_id;
+      $this->_cache_token = cache::token('category_'.(int)$category_id, array($language_code), 'file');
       $this->_language_codes = array_unique(array(
         !empty($language_code) ? $language_code : language::$selected['code'],
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
+
+      if ($cache = cache::get($this->_cache_token)) {
+        $this->_data = $cache;
+      }
     }
 
     public function &__get($name) {
@@ -51,7 +57,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES_INFO ."
-            where category_id = '". (int)$this->_id ."'
+            where category_id = ". (int)$this->_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -61,6 +67,21 @@
               if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
+          }
+
+          break;
+
+        case 'images':
+
+          $this->_data['images'] = array();
+
+          $query = database::query(
+            "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+            where category_id = ". (int)$this->_id ."
+            order by priority asc, id asc;"
+          );
+          while ($row = database::fetch($query)) {
+            $this->_data['images'][$row['id']] = $row['filename'];
           }
 
           break;
@@ -77,31 +98,18 @@
 
         case 'path':
 
-          $this->_data['path'] = array();
-          $category_index_id = $this->id;
+          $this->_data['path'] = array($this->_id => $this);
+
+          $current = $this;
 
           $failsafe = 0;
-          while (true) {
-            $category_query = database::query(
-              "select id, parent_id from ". DB_TABLE_CATEGORIES ."
-              where id = ". (int)$category_index_id ."
-              limit 1;"
-            );
-
-            $category = database::fetch($category_query);
-
-            if ($category) {
-              $this->_data['path'][$category['id']] = reference::category($category['id'], $this->_language_codes[0]);
-            }
-
-            if (!empty($category['parent_id'])) {
-              $category_index_id = $category['parent_id'];
-            } else {
-              break;
-            }
-
-            if (++$failsafe == 10) die('x');
+          while (!empty($current->parent_id)) {
+            $this->_data['path'][$current->parent_id] = $current;
+            $current = reference::category($current->parent_id, $current->_language_codes[0]);
+            if (++$failsafe == 10) trigger_error('Endless loop while building category path', E_USER_ERROR);
           }
+
+          $this->_data['path'] = array_reverse($this->_data['path'], true);
 
           break;
 
@@ -130,24 +138,42 @@
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
             where status
-            and parent_id = '". (int)$this->parent_id ."'
-            and id != '". database::input($this->_id) ."';"
+            and parent_id = ". (int)$this->parent_id ."
+            and id != ". (int)$this->_id .";"
           );
 
-          while($row = database::fetch($query)) {
+          while ($row = database::fetch($query)) {
             $this->_data['siblings'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
           }
 
           break;
 
         case 'descendants':
-        case 'subcategories':
+
+          $this->_data['descendants'] = array();
+
+          $query = database::query(
+            "select id from ". DB_TABLE_CATEGORIES ."
+            where parent_id = '". (int)$this->_id ."';"
+          );
+
+          while ($row = database::fetch($query)) {
+            foreach ($row as $key => $value) {
+              $this->_data['descendants'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
+              $this->_data['descendants'] += reference::category($row['id'], $this->_language_codes[0])->descendants;
+            }
+          }
+
+          break;
+
+        case 'subcategories': // To be deprecated
+        case 'children':
 
           $this->_data['subcategories'] = array();
 
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
-            where parent_id = '". (int)$this->_id ."';"
+            where parent_id = ". (int)$this->_id .";"
           );
 
           while ($row = database::fetch($query)) {
@@ -162,13 +188,11 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES ."
-            where id = '". (int)$this->_id ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
 
-          $row = database::fetch($query);
-
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           foreach ($row as $key => $value) {
             switch($key) {
@@ -184,5 +208,7 @@
 
           break;
       }
+
+      cache::set($this->_cache_token, $this->_data);
     }
   }

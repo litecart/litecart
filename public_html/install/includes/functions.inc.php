@@ -1,25 +1,13 @@
 <?php
 
-// Function to absolute path from relative path
-  function file_absolute_path($path=null) {
+// Function to return absolute path from relative path
+  function file_absolute_path($path) {
 
-    if (empty($path)) $path = dirname(__FILE__);
-
-    $path = realpath($path);
-    $path = str_replace('\\', '/', $path);
-    $parts = array_filter(explode('/', $path), 'strlen');
-    $absolutes = array();
-
-    foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
-      }
+    if ($path = realpath($path)) {
+      $path = str_replace('\\', '/', $path);
     }
 
-    return ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? '' : '/') . implode('/', $absolutes);
+    return $path;
   }
 
 // Function to delete recursive data
@@ -60,7 +48,7 @@
       $result = file_put_contents($file, $contents);
     }
 
-    return $result;
+    return !empty($result) ? true : false;
   }
 
 // Function to rename file or folder

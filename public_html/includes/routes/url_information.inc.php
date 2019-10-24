@@ -8,29 +8,25 @@
           'pattern' => '#^.*-i-([0-9]+)/?$#',
           'page' => 'information',
           'params' => 'page_id=$1',
-          'redirect' => true,
+          'options' => array(
+            'redirect' => true,
+          ),
         ),
       );
     }
 
-    function rewrite($parsed_link, $language_code) {
+    function rewrite(ent_link $link, $language_code) {
 
-      if (empty($parsed_link['query']['page_id'])) return false;
+      if (empty($link->query['page_id'])) return false;
 
-      $page_query = database::query(
-        "select page_id, title from ". DB_TABLE_PAGES_INFO ."
-        where page_id = '". (int)$parsed_link['query']['page_id'] ."'
-        and language_code = '". database::input($language_code) ."'
-        limit 1;"
-      );
-      $page = database::fetch($page_query);
+      $page = reference::page($link->query['page_id'], $language_code);
+      if (empty($page->id)) return $link;
 
       if (empty($page)) return false;
 
-      $parsed_link['path'] = functions::general_path_friendly($page['title'], $language_code) .'-i-'. $page['page_id'];
+      $link->path = functions::general_path_friendly($page->title, $language_code) .'-i-'. $page->id;
+      $link->unset_query('page_id');
 
-      unset($parsed_link['query']['page_id']);
-
-      return $parsed_link;
+      return $link;
     }
   }

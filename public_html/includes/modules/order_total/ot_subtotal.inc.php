@@ -10,7 +10,7 @@
     public $priority = 0;
 
     public function __construct() {
-      $this->name = language::translate(__CLASS__.':title_subtotal', 'Subtotal');
+      $this->name = language::translate(__CLASS__.':title', 'Subtotal');
     }
 
     public function process($order) {
@@ -29,7 +29,7 @@
       }
 
       $output[] = array(
-        'title' => language::translate('title_subtotal', 'Subtotal'),
+        'title' => $this->name,
         'value' => $value,
         'tax' => $tax,
         'calculate' => false,
@@ -52,7 +52,7 @@
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
-          'function' => 'int()',
+          'function' => 'number()',
         ),
       );
     }

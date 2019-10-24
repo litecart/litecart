@@ -7,7 +7,7 @@
 
   echo '<h1>Installer</h1>' . PHP_EOL;
 
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '>=') ? E_ALL & ~E_STRICT : E_ALL);
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'Off');
   ini_set('display_errors', 'On');
@@ -42,11 +42,11 @@
 
   echo '<p>Checking PHP version... ';
 
-  if (version_compare(PHP_VERSION, '5.3', '<')) {
-    die('<span class="error">[Error] PHP 5.3+ required - Detected '. PHP_VERSION .'</span></p>');
+  if (version_compare(PHP_VERSION, '5.4', '<')) {
+    die('<span class="error">[Error] PHP 5.4+ required - Detected '. PHP_VERSION .'</span></p>');
   } else if (version_compare(PHP_VERSION, '7.1', '<')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">PHP 7.1+ recommended</span></span></p>';
+       . '<span class="warning">[Warning] PHP 7.3+ recommended - Detected '. PHP_VERSION .' that has reached end of life</span></span></p>';
   } else {
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
@@ -102,9 +102,9 @@
 
   if (version_compare($version['VERSION()'], '5.5', '<')) {
     die($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
-  } else if (version_compare($version['VERSION()'], '5.6', '<')) {
+  } else if (version_compare($version['VERSION()'], '5.7', '<')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">MySQL 5.6+ recommended</span></span></p>';
+       . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
   } else {
     echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
@@ -318,8 +318,8 @@
 
   database::query(
     "insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_users`') ."
-    (`id`, `status`, `username`, `password`, `date_updated`, `date_created`)
-    values ('1', '1', '". database::input($_REQUEST['username']) ."', '". password_checksum('1', $_REQUEST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+    (`id`, `status`, `username`, `password_hash`, `date_updated`, `date_created`)
+    values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
 
   ### Set platform database version #############################
@@ -356,7 +356,7 @@
         if ($dir == 'demo') continue;
         if ($dir == 'default') continue;
 
-        foreach(glob('data/'. $dir .'/*.sql') as $file) {
+        foreach (glob('data/'. $dir .'/*.sql') as $file) {
           $sql = file_get_contents($file);
 
           if (empty($sql)) continue;
@@ -403,10 +403,63 @@
 
   if (!empty($_REQUEST['demo_data'])) {
     echo '<p>Copying demo files...';
+
     if (file_xcopy('data/demo/public_html/', $installation_path)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+    }
+  }
+
+  ### Files > Development Type ##################################
+
+  echo '<p>Preparing CSS files...' . PHP_EOL;
+
+  if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
+
+    $files_to_delete = array(
+      '../includes/templates/default.catalog/css/app.css',
+      '../includes/templates/default.catalog/css/checkout.css',
+      '../includes/templates/default.catalog/css/framework.css',
+      '../includes/templates/default.catalog/css/printable.css',
+    );
+
+    foreach ($files_to_delete as $file) {
+      echo 'Delete '. $file;
+      if (file_delete($file)) {
+        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+      } else {
+        echo '<span class="error">[Error]</span></p>' . PHP_EOL;
+      }
+    }
+
+  } else {
+
+    $files_to_delete = array(
+      '../includes/templates/default.catalog/less/',
+      '../includes/templates/default.catalog/css/*.min.css',
+      '../includes/templates/default.catalog/css/*.min.css.map',
+    );
+
+    foreach ($files_to_delete as $file) {
+      echo 'Delete '. $file;
+      if (file_delete($file)) {
+        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+      } else {
+        echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
+      }
+    }
+
+    foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
+      echo 'Modify '. $file . PHP_EOL;
+      $contents = file_get_contents($file);
+      $search_replace = array(
+        'app.min.css' => 'app.css',
+        'checkout.min.css'  => 'checkout.css',
+        'framework.min.css' => 'framework.css',
+        'printable.min.css' => 'printable.css',
+      );
+      file_put_contents($file, strtr($contents, $search_replace));
     }
   }
 

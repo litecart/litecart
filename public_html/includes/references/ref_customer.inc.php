@@ -37,18 +37,16 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_CUSTOMERS ."
-            where id = '". database::input($this->_id) ."'
+            where id = ". (int)$this->_id ."
             limit 1;"
           );
-          $row = database::fetch($query);
-          if (empty($row)) trigger_error('Could not find customer ('. $this->_id .') in database.', E_USER_WARNING);
 
-          if (database::num_rows($query) == 0) return;
+          if (!$row = database::fetch($query)) return;
 
           $map = array(
             'id',
             'email',
-            'password',
+            'password_hash',
             'tax_id',
             'company',
             'firstname',
@@ -63,6 +61,7 @@
             'different_shipping_address',
             'newsletter',
           );
+
           foreach ($map as $key) {
             $this->_data[$key] = $row[$key];
           }
@@ -79,6 +78,7 @@
             'shipping_zone_code' => 'zone_code',
             'shipping_phone' => 'phone',
           );
+
           foreach ($key_map as $skey => $tkey) {
             $this->_data['shipping_address'][$tkey] = $row[$skey];
           }

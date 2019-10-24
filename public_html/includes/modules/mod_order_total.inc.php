@@ -1,6 +1,6 @@
 <?php
 
-  class mod_order_total extends module {
+  class mod_order_total extends abs_module {
 
     public function __construct() {
       $this->load('order_total');

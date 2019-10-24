@@ -5,7 +5,7 @@ ALTER TABLE `lc_translations` ADD `text_fi` text NOT NULL AFTER `text_en`;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'EUR' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
-UPDATE `lc_currencies` SET `value` = 1.0597 WHERE `code` = 'USD' LIMIT 1;
+UPDATE `lc_currencies` SET `value` = 0.8525 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_currencies` SET `value` = 1 WHERE `code` = 'EUR' LIMIT 1;
 -- --------------------------------------------------------
@@ -56,13 +56,10 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Groceries', '', NOW(), NOW()),
 ('Culture', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `customer_type`, `tax_id_rule`, `date_updated`, `date_created`) VALUES
-(1, @FI_VAT_ZONE, 'percent', 'FI VAT 24%', '', 24.0000, 'both', 'both', NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'FI VAT 24%', '', 24.0000, 'individuals', 'both', NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'FI VAT 24%', '', 24.0000, 'companies', 'without', NOW(), NOW()),
-(2, @FI_VAT_ZONE, 'percent', 'FI VAT 14%', '', 14.0000, 'both', 'both', NOW(), NOW()),
-(2, @EU_VAT_ZONE, 'percent', 'FI VAT 14%', '', 14.0000, 'individuals', 'both', NOW(), NOW()),
-(2, @EU_VAT_ZONE, 'percent', 'FI VAT 14%', '', 14.0000, 'companies', 'without', NOW(), NOW()),
-(3, @FI_VAT_ZONE, 'percent', 'FI VAT 10%', '', 10.0000, 'both', 'both', NOW(), NOW()),
-(3, @EU_VAT_ZONE, 'percent', 'FI VAT 10%', '', 10.0000, 'individuals', 'both', NOW(), NOW()),
-(3, @EU_VAT_ZONE, 'percent', 'FI VAT 10%', '', 10.0000, 'companies', 'without', NOW(), NOW());
+INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
+(1, @FI_VAT_ZONE, 'percent', 'FI VAT 24%', '', 24.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @EU_VAT_ZONE, 'percent', 'FI VAT 24%', '', 24.0000, 0, 1, 1, 1, NOW(), NOW()),
+(2, @FI_VAT_ZONE, 'percent', 'FI VAT 14%', '', 14.0000, 1, 1, 1, 1, NOW(), NOW()),
+(2, @EU_VAT_ZONE, 'percent', 'FI VAT 14%', '', 14.0000, 0, 1, 1, 1, NOW(), NOW()),
+(3, @FI_VAT_ZONE, 'percent', 'FI VAT 10%', '', 10.0000, 1, 1, 1, 1, NOW(), NOW()),
+(3, @EU_VAT_ZONE, 'percent', 'FI VAT 10%', '', 10.0000, 0, 1, 1, 1, NOW(), NOW());

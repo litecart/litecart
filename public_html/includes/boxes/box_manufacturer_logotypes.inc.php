@@ -1,7 +1,7 @@
 <?php
 
-  $box_manufacturer_logotypes_cache_id = cache::cache_id('box_manufacturer_logotypes', array());
-  if (cache::capture($box_manufacturer_logotypes_cache_id, 'file')) {
+  $box_manufacturer_logotypes_cache_token = cache::token('box_manufacturer_logotypes', array(), 'file');
+  if (cache::capture($box_manufacturer_logotypes_cache_token)) {
 
     $manufacturers_query = database::query(
       "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
@@ -13,7 +13,7 @@
 
     if (database::num_rows($manufacturers_query)) {
 
-      $box_manufacturer_logotypes = new view();
+      $box_manufacturer_logotypes = new ent_view();
 
       $box_manufacturer_logotypes->snippets['logotypes'] = array();
 
@@ -22,9 +22,9 @@
           'title' => $manufacturer['name'],
           'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
           'image' => array(
-            'original' => WS_DIR_IMAGES . $manufacturer['image'],
-            'thumbnail_1x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 30, 'FIT'),
-            'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 0, 60, 'FIT'),
+            'original' => 'images/' . $manufacturer['image'],
+            'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 0, 30, 'FIT'),
+            'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 0, 60, 'FIT'),
           ),
         );
       }
@@ -32,5 +32,5 @@
       echo $box_manufacturer_logotypes->stitch('views/box_manufacturer_logotypes');
     }
 
-    cache::end_capture($box_manufacturer_logotypes_cache_id);
+    cache::end_capture($box_manufacturer_logotypes_cache_token);
   }

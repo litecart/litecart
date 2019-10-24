@@ -9,13 +9,11 @@
     public $website = 'http://www.litecart.net';
     public $priority = 0;
 
-    public function process($force) {
+    public function process($force, $last_pushed) {
 
       if (empty($this->settings['status'])) return;
 
       if (empty($this->settings['email_recipient'])) $this->settings['email_recipient'] = settings::get('store_email');
-
-      $last_run = settings::get(__CLASS__.':last_run');
 
       if (empty($force)) {
         if (!empty($this->settings['working_hours'])) {
@@ -24,46 +22,36 @@
         }
 
         switch ($this->settings['report_frequency']) {
-          case 'Immediately':
-            break;
           case 'Hourly':
-            if (strtotime($last_run) > strtotime('-1 hour')) return;
+            if (date('Ymdh', strtotime($last_run)) == date('Ymdh')) return;
             break;
           case 'Daily':
-            if (strtotime($last_run) > strtotime('-1 day')) return;
+            if (date('Ymd', strtotime($last_run)) == date('Ymd')) return;
             break;
           case 'Weekly':
-            if (strtotime($last_run) > strtotime('-1 week')) return;
+            if (date('W', strtotime($last_run)) == date('W')) return;
             break;
           case 'Monthly':
-            if (strtotime($last_run) > strtotime('-1 month')) return;
+            if (date('Ym', strtotime($last_run)) == date('Ym')) return;
             break;
         }
       }
 
-      database::query(
-        "update ". DB_TABLE_SETTINGS ."
-        set value = '". date('Y-m-d H:i:s') . "'
-        where `key` = '".__CLASS__.":last_run'
-        limit 1;"
-      );
-
       $error_log_file = ini_get('error_log');
-      $contents = file_get_contents($error_log_file);
 
-      if (empty($contents)) {
-        echo 'Nothing to report';
-        return;
-      }
+      if (!$contents = file_get_contents($error_log_file)) return;
 
       echo 'Sending report to '. $this->settings['email_recipient'];
 
-      $email = new email();
+      $email = new ent_email();
       $email->add_recipient($this->settings['email_recipient'])
             ->set_subject('[Error Report] '. settings::get('store_name'))
             ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents);
 
-      if ($email->send() !== true) return;
+      if ($email->send() !== true) {
+        echo ' [Failed]';
+        return;
+      }
 
       file_put_contents($error_log_file, '');
     }
@@ -79,6 +67,13 @@
           'function' => 'toggle("e/d")',
         ),
         array(
+          'key' => 'working_hours',
+          'default_value' => '07:00-21:00',
+          'title' => language::translate(__CLASS__.':title_working_hours', 'Working Hours'),
+          'description' => language::translate(__CLASS__.':description_working_hours', 'During what hours of the day the job would operate e.g. 07:00-21:00.'),
+          'function' => 'text()',
+        ),
+        array(
           'key' => 'report_frequency',
           'default_value' => 'Weekly',
           'title' => language::translate(__CLASS__.':title_report_frequency', 'Report Frequency'),
@@ -86,42 +81,19 @@
           'function' => 'radio("Immediately","Hourly","Daily","Weekly","Monthly")',
         ),
         array(
-          'key' => 'working_hours',
-          'default_value' => '07:00-21:00',
-          'title' => language::translate(__CLASS__.':title_working_hours', 'Working Hours'),
-          'description' => language::translate(__CLASS__.':description_working_hours', 'During what hours of the day the job would operate e.g. 07:00-21:00.'),
-          'function' => 'input()',
-        ),
-        array(
           'key' => 'email_recipient',
           'default_value' => settings::get('store_email'),
           'title' => language::translate(__CLASS__.':title_email_recipient', 'Email Recipient'),
           'description' => language::translate(__CLASS__.':description_email_recipient', 'The email address where reports will be sent.'),
-          'function' => 'input()',
+          'function' => 'text()',
         ),
         array(
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
-          'function' => 'int()',
+          'function' => 'number()',
         ),
-      );
-    }
-
-    public function install() {
-      database::query(
-        "insert into ". DB_TABLE_SETTINGS ."
-        (title, description, `key`, value, date_created, date_updated)
-        values ('Errors Last Reported', 'Time when errors where last reported by the background job.', '".__CLASS__.":last_run', '', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-      );
-    }
-
-    public function uninstall() {
-      database::query(
-        "delete from ". DB_TABLE_SETTINGS ."
-        where `key` = '".__CLASS__.":last_run'
-        limit 1;"
       );
     }
   }

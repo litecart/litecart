@@ -5,10 +5,11 @@
 
   document::$template = settings::get('store_template_admin');
 
-  breadcrumbs::add(language::translate('title_admin_panel', 'Admin Panel'), WS_DIR_ADMIN);
+  breadcrumbs::reset();
+  breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
 
 // Build apps list menu
-    $box_apps_menu = new view();
+    $box_apps_menu = new ent_view();
     $box_apps_menu->snippets['apps'] = array();
 
     foreach (functions::admin_get_apps() as $app) {
@@ -68,7 +69,7 @@
         notices::add('warnings', language::translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
       }
 
-      if (file_exists(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'install/')) {
+      if (file_exists(FS_DIR_APP . 'install/')) {
         notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
       }
 
@@ -77,12 +78,12 @@
       }
 
     // Widgets
-      $box_widgets = new view();
+      $box_widgets = new ent_view();
       $box_widgets->snippets['widgets'] = array();
 
       foreach (functions::admin_get_widgets() as $widget) {
         ob_start();
-        include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $widget['dir'] . $widget['file']);
+        include vmod::check(FS_DIR_ADMIN . $widget['dir'] . $widget['file']);
 
         $box_widgets->snippets['widgets'][] = array(
           'code' => basename($widget['dir'], '.widget'),
@@ -97,22 +98,36 @@
 
       if (empty(user::$data['permissions']) || (!empty(user::$data['permissions'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['permissions'][$_GET['app']]['docs']))) {
 
-        require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
+        if (!is_file(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php')) {
+          http_response_code(404);
+          die('App not found');
+        }
+
+        if (empty($_GET['doc'])) $_GET['doc'] = $app_config['default'];
+
+        require vmod::check(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
+
+        if (empty($app_config['docs'][$_GET['doc']])) {
+          http_response_code(404);
+          die('Doc not found');
+        }
 
         if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
 
-        breadcrumbs::add($app_config['name'], $app_config['default']);
+        breadcrumbs::add($app_config['name'], document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $app_config['default'])));
 
-        $_page = new view();
+        $_page = new ent_view();
         $_page->snippets = array(
           'app' => $_GET['app'],
-          'doc' => !empty($_GET['doc']) ? $_GET['doc'] : $app_config['default'],
+          'doc' => $_GET['doc'],
           'theme' => array(
             'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
             'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
           ),
-          'help_link' => document::link('http://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : ''))),
         );
+
+        //document::$snippets['help_link'] = document::link('https://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : '')));
+        document::$snippets['help_link'] = document::link('https://wiki.litecart.net/');
 
         $app_icon = '<span class="fa-stack icon-wrapper">' . PHP_EOL
                   . '  ' . functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $_page->snippets['theme']['color'] .';"') . PHP_EOL
@@ -121,10 +136,10 @@
 
         ob_start();
         if (!empty($_GET['doc'])) {
-          if (empty($app_config['docs'][$_GET['doc']]) || !file_exists(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']])) trigger_error($_GET['app'] .'.app/'. htmlspecialchars($_GET['doc']) . ' is not a valid admin document', E_USER_ERROR);
-          include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
+          if (empty($app_config['docs'][$_GET['doc']]) || !file_exists(FS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']])) trigger_error($_GET['app'] .'.app/'. htmlspecialchars($_GET['doc']) . ' is not a valid admin document', E_USER_ERROR);
+          include vmod::check(FS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$_GET['doc']]);
         } else {
-          include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
+          include vmod::check(FS_DIR_ADMIN . $_GET['app'].'.app/' . $app_config['docs'][$app_config['default']]);
         }
         $_page->snippets['doc'] = ob_get_clean();
 
@@ -140,4 +155,4 @@
       }
     }
 
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

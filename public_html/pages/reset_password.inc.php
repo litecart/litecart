@@ -40,6 +40,11 @@
         }
       }
 
+      if (settings::get('captcha_enabled')) {
+        $captcha = functions::captcha_get('reset_password');
+        if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+      }
+
     // Process
 
       if (empty($_REQUEST['reset_token'])) {
@@ -51,8 +56,8 @@
 
         database::query(
           "update ". DB_TABLE_CUSTOMERS ."
-          set password_reset_token = '". database::input(json_encode($reset_token)) ."'
-          where id = '". (int)$customer['id'] ."'
+          set password_reset_token = '". database::input(json_encode($reset_token), JSON_UNESCAPED_SLASHES) ."'
+          where id = ". (int)$customer['id'] ."
           limit 1;"
         );
 
@@ -66,7 +71,7 @@
         $subject = language::translate('title_reset_password', 'Reset Password');
         $message = strtr(language::translate('email_body_reset_password', "You recently requested to reset your password for %store_name. If you did not request a password reset, please ignore this email. Visit the link below to reset your password:\r\n\r\n%link\r\n\r\nReset Token: %token"), $aliases);
 
-        $email = new email();
+        $email = new ent_email();
         $email->add_recipient($customer['email'], $customer['firstname'] .' '. $customer['lastname'])
               ->set_subject($subject)
               ->add_body($message)
@@ -81,11 +86,11 @@
         database::query(
           "update ". DB_TABLE_CUSTOMERS ."
           set password_reset_token = ''
-          where id = '". (int)$customer['id'] ."'
+          where id = ". (int)$customer['id'] ."
           limit 1;"
         );
 
-        $customer = new ctrl_customer($customer['id']);
+        $customer = new ent_customer($customer['id']);
         $customer->set_password($_POST['new_password']);
 
         notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
@@ -100,5 +105,5 @@
   }
 
 
-  $_page = new view();
+  $_page = new ent_view();
   echo $_page->stitch('pages/reset_password');

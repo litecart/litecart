@@ -1,12 +1,6 @@
 <?php
-  $template_config = array(
-    array(
-      'key' => 'product_modal_window',
-      'default_value' => '1',
-      'title' => language::translate('template:title_product_modal_window', 'Product Modal Window'),
-      'description' => language::translate('template:description_product_modal_window', 'Enables or disables the product modal window.'),
-      'function' => 'toggle("e/d")',
-    ),
+
+  return $template_config = array(
     array(
       'key' => 'sidebar_parallax_effect',
       'default_value' => '1',

@@ -1,8 +1,9 @@
 <?php
 
-  $app_config = array(
+  return $app_config = array(
     'name' => language::translate('title_languages', 'Languages'),
     'default' => 'languages',
+    'priority' => 0,
     'theme' => array(
       'color' => '#4475a4',
       'icon' => 'fa-comments',

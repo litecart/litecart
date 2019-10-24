@@ -4,10 +4,10 @@
 
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
 
-  $manufacturers_cache_id = cache::cache_id('manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
-  if (cache::capture($manufacturers_cache_id, 'file')) {
+  $manufacturers_cache_token = cache::token('manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
+  if (cache::capture($manufacturers_cache_token)) {
 
-    $_page = new view();
+    $_page = new ent_view();
 
     $manufacturers_query = database::query(
       "select m.id, m.name, m.image, mi.short_description, mi.link
@@ -19,14 +19,14 @@
 
     $_page->snippets['manufacturers'] = array();
 
-    while($manufacturer = database::fetch($manufacturers_query)) {
+    while ($manufacturer = database::fetch($manufacturers_query)) {
       $_page->snippets['manufacturers'][] = array(
         'id' => $manufacturer['id'],
         'name' => $manufacturer['name'],
         'image' => array(
-          'original' => WS_DIR_IMAGES . $manufacturer['image'],
-          'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 320, 100, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
-          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer['image'], 640, 200, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+          'original' => 'images/' . $manufacturer['image'],
+          'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 320, 100, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 640, 200, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
         ),
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
       );
@@ -34,5 +34,5 @@
 
     echo $_page->stitch('pages/manufacturers');
 
-    cache::end_capture($manufacturers_cache_id);
+    cache::end_capture($manufacturers_cache_token);
   }

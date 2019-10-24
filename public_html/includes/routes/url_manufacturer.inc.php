@@ -8,27 +8,23 @@
           'pattern' => '#^.*-m-([0-9]+)/?$#',
           'page' => 'manufacturer',
           'params' => 'manufacturer_id=$1',
-          'redirect' => true,
+          'options' => array(
+            'redirect' => true,
+          ),
         ),
       );
     }
 
-  	function rewrite($parsed_link, $language_code) {
+    function rewrite(ent_link $link, $language_code) {
 
-      if (empty($parsed_link['query']['manufacturer_id'])) return;
+      if (empty($link->query['manufacturer_id'])) return;
 
-      $manufacturer_query = database::query(
-        "select id, name from ". DB_TABLE_MANUFACTURERS ."
-        where id = '". (int)$parsed_link['query']['manufacturer_id'] ."'
-        limit 1;"
-      );
-      $manufacturer = database::fetch($manufacturer_query);
-      if (empty($manufacturer)) return;
+      $manufacturer = reference::manufacturer($link->query['manufacturer_id'], $language_code);
+      if (empty($manufacturer->id)) return $link;
 
-      $parsed_link['path'] = functions::general_path_friendly($manufacturer['name'], $language_code) .'-m-'. $manufacturer['id'] .'/';
+      $link->path = functions::general_path_friendly($manufacturer->name, $language_code) .'-m-'. $manufacturer->id .'/';
+      $link->unset_query('manufacturer_id');
 
-      unset($parsed_link['query']['manufacturer_id']);
-
-      return $parsed_link;
+      return $link;
     }
   }

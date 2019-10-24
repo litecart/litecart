@@ -1,27 +1,36 @@
 /* Boxes */
 
-.twelve-eighty {
-  min-width: 280px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
 .box {
-  margin-bottom: @default-gutter-size;
+  margin: @default-gutter-size 0;
+
   &.white {
+    margin: @default-gutter-size;
     padding: @default-gutter-size;
     border-radius: @default-border-radius;
     background: #fff;
+  }
+  &.border {
+    margin: @default-gutter-size;
+    padding: @default-gutter-size;
+    border: 1px solid @default-border-color;
+    border-radius: @default-border-radius;
+  }
+
+  > .title {
+    margin-top: 0;
   }
 }
 
 #box-campaign-products, #box-latest-products, #box-popular-products, #box-similar-products, #box-also-purchased-products {
   .title {
-    font-weight: normal;
-    font-size: 2em;
     margin: 0 0 @default-gutter-size 0;
-    padding-bottom: @default-gutter-size/2;
-    border-bottom: 2px solid @default-title-border-color;
+  }
+}
+
+#box-also-purchased-products {
+  @media(min-width: @media-breakpoint-md) {
+    position: sticky;
+    top: 0;
   }
 }
 

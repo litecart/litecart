@@ -6,7 +6,7 @@
     private static $_page_parse_start;
     private static $_capture_parse_start;
 
-    public static function construct() {
+    public static function init() {
 
       self::$_data = array(
         'page_parse_time' => 0, // s
@@ -21,18 +21,15 @@
 
     // Set time stamp for execution
       self::$_page_parse_start = microtime(true);
+
+      event::register('before_capture', array(__CLASS__, 'before_capture'));
+      event::register('after_capture', array(__CLASS__, 'after_capture'));
+      event::register('before_output', array(__CLASS__, 'before_output'));
     }
 
-    //public static function load_dependencies() {
-    //}
+    ######################################################################
 
-    //public static function startup() {
-    //}
-
-    //public static function before_capture() {
-    //}
-
-    public static function capture() {
+    public static function before_capture() {
       self::$_capture_parse_start = microtime(true);
     }
 
@@ -42,9 +39,6 @@
         error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. $_SERVER['REQUEST_URI']);
       }
     }
-
-    //public static function prepare_output() {
-    //}
 
     public static function before_output() {
 
@@ -73,16 +67,12 @@
                . '  - Network Requests: ' . self::get('http_requests') . PHP_EOL
                . '  - Network Requests Duration: ' . number_format(self::get('http_duration')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('http_duration')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
                . '  - Output Optimization: ' . number_format(self::get('output_optimization')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('output_optimization')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+               . '  - vQmod: ' . number_format(vmod::get_time_elapsed()*1000, 0, '.', ' ') . ' ms (' . number_format(vmod::get_time_elapsed()/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
                . '-->';
 
         $GLOBALS['output'] = preg_replace('#</html>$#', '</html>' . PHP_EOL . $stats, $GLOBALS['output']);
       }
     }
-
-    //public static function shutdown() {
-    //}
-
-    ######################################################################
 
     public static function set($key, $value) {
       self::$_data[$key] = $value;
