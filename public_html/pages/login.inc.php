@@ -52,7 +52,7 @@
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
-        throw new Exception(language::translate('error_wrong_password', 'Wrong password or the account does not exist'));
+        throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
       }
 
       if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
@@ -84,7 +84,7 @@
       }
 
       if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($customer['email'] . $customer['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('customer_remember_me', $customer['email'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       }
 

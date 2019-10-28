@@ -27,7 +27,7 @@
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_email_missing', 'You must enter an email address.'));
 
-      if (customer::$data['password'] != functions::password_checksum(customer::$data['email'], $_POST['password'])) {
+      if (!password_verify($_POST['password'], customer::$data['password_hash'])) {
         throw new Exception(language::translate('error_wrong_password', 'Wrong password'));
       }
 

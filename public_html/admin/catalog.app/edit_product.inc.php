@@ -120,6 +120,20 @@
   functions::draw_lightbox();
 ?>
 <style>
+#categories {
+  max-height: 310px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all 200ms linear;
+}
+#categories:hover {
+  width: 150%;
+  z-index: 999;
+}
+#categories label {
+  white-space: nowrap;
+}
+
 #images .thumbnail {
   margin: 0;
 }
@@ -169,7 +183,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <div class="form-control" style="overflow-y: auto; max-height: 200px;">
+                <div id="categories" class="form-control">
 <?php
   function custom_catalog_tree($category_id=0, $depth=1, $count=0) {
 

@@ -117,13 +117,13 @@
       user::load($user['id']);
 
       if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($user['username'] . $user['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
       } else {
         setcookie('remember_me', null, -1, WS_DIR_APP);
       }
 
-      if (empty($_REQUEST['redirect_url']) || basename(parse_url($_REQUEST['redirect_url'], PHP_URL_PATH)) != basename(__FILE__)) {
+      if (empty($_REQUEST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN . basename(__FILE__), '#') . '#', $_SERVER['REQUEST_URI'])) {
         $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
       }
 

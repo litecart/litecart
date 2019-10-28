@@ -1,8 +1,34 @@
 <?php
+
   class vmod {
+
     private static $_time_elapsed = 0;
+    private static $_root;
+
+    public static function init() {
+
+      $timestamp = microtime(true);
+
+      self::$_root = rtrim(str_replace('\\', '/', realpath(__DIR__.'/../../')), '/') . '/';
+
+      if (!is_file(self::$_root . 'vqmod/vqmod.php')) return;
+
+      require_once self::$_root . 'vqmod/vqmod.php';
+
+      vqmod::$replaces['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
+
+      $config = file_get_contents(self::$_root.'includes/config.inc.php');
+      preg_match('#define\(\'BACKEND_ALIAS\',\s+\'(.*?)\'\);#', $config, $matches);
+      vqmod::$replaces['#^admin/#'] = $matches[1] . '/';
+
+      vqmod::bootup();
+
+      self::$_time_elapsed += microtime(true) - $timestamp;
+    }
 
     public static function check($file) {
+
+      if (!class_exists('vqmod', false)) return $file;
 
       $timestamp = microtime(true);
 
@@ -14,18 +40,7 @@
         }
       }
 
-      if (!class_exists('vqmod', false)) {
-        if (is_file(FS_DIR_APP . 'vqmod/vqmod.php')) {
-          require_once FS_DIR_APP . 'vqmod/vqmod.php';
-          vqmod::$replaces['#^(admin/)#'] = substr(WS_DIR_ADMIN, strlen(WS_DIR_APP));
-          vqmod::$replaces['#^(includes/controllers/ctrl_)#'] = 'includes/entities/ent_';
-          vqmod::bootup(FS_DIR_APP, true);
-        }
-      }
-
-      if (class_exists('vqmod', false)) {
-        $modified_file = vqmod::modcheck($file);
-      }
+      $modified_file = vqmod::modcheck($file);
 
       self::$_time_elapsed += microtime(true) - $timestamp;
 
