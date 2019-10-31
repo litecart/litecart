@@ -23,13 +23,15 @@
 
       foreach ($xml->file as $file) {
         foreach (explode(',', $file['name']) as $filename) {
-          $filename = FS_DIR_APP . (isset($file['path']) ? $file['path'] : '') . $filename;
+          $filename = (isset($file['path']) ? $file['path'] : '') . $filename;
 
           if (!empty(VQMod::$replaces)) {
             foreach (VQMod::$replaces as $search => $replace) {
               $filename = preg_replace($search, $replace, $filename);
             }
           }
+
+          $filename = FS_DIR_APP . $filename;
 
           foreach (glob($filename) as $file) {
             if (in_array($file, array('.', '..'))) continue;
