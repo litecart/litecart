@@ -13,7 +13,7 @@
     private $_components;
     private $_serialized;
 
-    public function __construct(string $link='') {
+    public function __construct($link='') {
 
       $this->reset();
 
