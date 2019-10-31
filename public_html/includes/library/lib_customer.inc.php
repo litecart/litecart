@@ -156,18 +156,18 @@
       }
 
     // Unset zone if not in country
-      if (!empty(self::$data['zone_code']) && !isset(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
+      if (!empty(self::$data['zone_code']) && empty(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
         self::$data['zone_code'] = '';
+      }
+
+    // Set first zone in country
+      if (empty(self::$data['zone_code']) && !empty(reference::country(self::$data['country_code'])->zones)) {
+        self::$data['zone_code'] = array_keys(reference::country(self::$data['country_code'])->zones)[0];
       }
 
     // Set shipping country if empty
       if (empty(self::$data['shipping_address']['country_code'])) {
         self::$data['shipping_address']['country_code'] = self::$data['country_code'];
-        self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
-      }
-
-    // Set shipping zone if empty
-      if (empty(self::$data['shipping_address']['zone_code'])) {
         self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
       }
 

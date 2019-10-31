@@ -109,7 +109,11 @@
               <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
             </td>
             <td style="width: 50%">
+              <?php if (!empty($setting['multiple'])) { ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+              <?php } else { ?>
               <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+              <?php } ?>
             </td>
           </tr>
           <?php } ?>

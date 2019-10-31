@@ -488,10 +488,6 @@
 
           foreach ($row as $key => $value) {
             switch($key) {
-              case 'product_groups':
-                $this->_data['product_group_ids'] = explode(',', $row['product_groups']);
-                break;
-
               case 'keywords':
                 $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : array();
                 break;

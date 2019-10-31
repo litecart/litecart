@@ -31,9 +31,7 @@
         limit 2;"
       );
 
-      if (database::num_rows($customers_query) != 1) return;
-
-      $address = database::fetch($customers_query);
+      if (!$address = database::fetch($customers_query)) return;
 
     // Return company
       if (!empty($address['company'])) {

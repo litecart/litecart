@@ -49,7 +49,7 @@
       //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>';
 
     // Local content
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/css/font-awesome.min.css" />';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/font-awesome.min.css" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.4.1.min.js"></script>';
 
     // Hreflang

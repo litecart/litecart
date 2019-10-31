@@ -8,6 +8,8 @@
     FS_DIR_APP . 'data/blacklist.txt',
     FS_DIR_APP . 'data/whitelist.txt',
     FS_DIR_APP . 'ext/jquery/jquery-3.3.1.min.js',
+    FS_DIR_APP . 'ext/fontawesome/css',
+    FS_DIR_APP . 'ext/fontawesome/fonts',
     FS_DIR_APP . 'includes/classes/email.inc.php',
     FS_DIR_APP . 'includes/classes/http_client.inc.php',
     FS_DIR_APP . 'includes/classes/index.html',
