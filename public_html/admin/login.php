@@ -8,10 +8,6 @@
     $_POST['username'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
   }
 
-  if (empty($_POST['redirect_url'])) {
-    $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
-  }
-
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
@@ -123,12 +119,12 @@
         setcookie('remember_me', null, -1, WS_DIR_APP);
       }
 
-      if (empty($_REQUEST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN . basename(__FILE__), '#') . '#', $_SERVER['REQUEST_URI'])) {
+      if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN . basename(__FILE__), '#') . '#', $_POST['redirect_url'])) {
         $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
       }
 
       notices::add('success', str_replace(array('%username'), array(user::$data['username']), language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
-      header('Location: '. $_REQUEST['redirect_url']);
+      header('Location: '. $_POST['redirect_url']);
       exit;
 
     } catch (Exception $e) {
