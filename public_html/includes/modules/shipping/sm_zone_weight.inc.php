@@ -29,7 +29,7 @@
 
         $name = language::translate(__CLASS__.':title_option_name_zone_'.$i);
 
-        if (!functions::reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
+        if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($customer['shipping_address']['zone_code'], $this->settings['geo_zone_id_'.$i]))) continue;
 
         $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
 

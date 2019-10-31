@@ -19,9 +19,10 @@
       if (empty($this->settings['status'])) return;
 
       $country_code = !empty($customer['shipping_address']['country_code']) ? $customer['shipping_address']['country_code'] : $customer['country_code'];
+      $zone_code = !empty($customer['shipping_address']['zone_code']) ? $customer['shipping_address']['zone_code'] : $customer['zone_code'];
 
-      if (!empty($this->settings['geo_zone_id'])) {
-        if (functions::reference_in_geo_zone($this->settings['geo_zone_id'], $country_code, $customer['zone_code']) != true) return;
+      if (!empty($this->settings['geo_zones'])) {
+        if (!reference::country($country_code)->in_geo_zone($zone_code, $this->settings['geo_zones'])) return;
       }
 
       $method = array(
