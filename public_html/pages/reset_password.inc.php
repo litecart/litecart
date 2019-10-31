@@ -36,7 +36,7 @@
         if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
 
         if ($_POST['new_password'] != $_POST['confirmed_password']) {
-          throw new Exception(language::translate('error_passwords_did_not_match', 'Passwords not not match'));
+          throw new Exception(language::translate('error_passwords_did_not_match', 'Passwords did not match'));
         }
       }
 
