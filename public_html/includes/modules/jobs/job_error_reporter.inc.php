@@ -9,7 +9,7 @@
     public $website = 'http://www.litecart.net';
     public $priority = 0;
 
-    public function process($force, $last_pushed) {
+    public function process($force, $last_run) {
 
       if (empty($this->settings['status'])) return;
 
