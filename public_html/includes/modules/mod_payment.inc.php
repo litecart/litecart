@@ -81,12 +81,12 @@
 
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
         $this->data['selected'] = array();
-        notices::add('errors', language::translate('error_invalid_payment_option', 'Cannot set an invalid payment option.'));
+        //notices::add('errors', language::translate('error_invalid_payment_option', 'Cannot set an invalid payment option.'));
         return;
       }
 
       if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
-        notices::add('errors', language::translate('error_cannot_select_payment_option_with_error', 'Cannot set a payment option that contains errors.'));
+        //notices::add('errors', language::translate('error_cannot_select_payment_option_with_error', 'Cannot set a payment option that contains errors.'));
         return;
       }
 

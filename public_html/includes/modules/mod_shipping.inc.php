@@ -82,12 +82,12 @@
       $this->data['selected'] = array();
 
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
-        notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
+        //notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
         return;
       }
 
       if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
-        notices::add('errors', language::translate('error_cannot_select_shipping_option_with_error', 'Cannot set a shipping option that contains errors.'));
+        //notices::add('errors', language::translate('error_cannot_select_shipping_option_with_error', 'Cannot set a shipping option that contains errors.'));
         return;
       }
 
