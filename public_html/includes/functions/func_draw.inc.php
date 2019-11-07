@@ -107,7 +107,7 @@
 
   // Watermark Original Image
     if (settings::get('product_image_watermark')) {
-      $listing_product->snippets['image']['original'] = functions::image_process(DOCUMENT_ROOT . $listing_product->snippets['image']['original'], array('watermark' => true));
+      $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], array('watermark' => true));
     }
 
     return $listing_product->stitch('views/listing_product_'.$listing_type);

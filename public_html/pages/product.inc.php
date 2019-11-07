@@ -171,9 +171,9 @@
 
 // Watermark Images
   if (settings::get('product_image_watermark')) {
-    $_page->snippets['image']['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['image']['original'], array('watermark' => true));
+    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['image']['original'], array('watermark' => true));
     foreach (array_keys($_page->snippets['extra_images']) as $key) {
-      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
+      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
     }
   }
 
