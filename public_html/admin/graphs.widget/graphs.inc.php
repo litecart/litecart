@@ -72,7 +72,7 @@
     $orders_query = database::query(
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(payment_due - tax_total) from ". DB_TABLE_ORDERS ."
       where order_status_id in ('". implode("', '", $order_statuses) ."')
-      and (date_created > '". date('Y-m-d H:i:s', strtotime('-30 days', strtotime('Monday this week'))) ."' and date_created < '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
+      and (date_created > '". date('Y-m-d H:i:s', strtotime('-3 months', strtotime('Monday this week'))) ."' and date_created < '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
       group by weekday
       order by weekday asc;"
     );
