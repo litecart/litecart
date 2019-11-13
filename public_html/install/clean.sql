@@ -12,8 +12,6 @@ DROP TABLE IF EXISTS `lc_categories`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories_filters`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_categories_images`;
--- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_countries`;
