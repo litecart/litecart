@@ -121,9 +121,8 @@
             order by end_date asc
             limit 1;"
           );
-          $products_campaign = database::fetch($products_campaigns_query);
 
-          if (!empty($products_campaign)) {
+          if ($products_campaign = database::fetch($products_campaigns_query)) {
             $this->_data['campaign'] = $products_campaign;
             if ($products_campaign[$this->_currency_code] > 0) {
               $this->_data['campaign']['price'] = (float)currency::convert($products_campaign[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
@@ -235,9 +234,11 @@
                 where id = ". (int)$product_option['group_id'] ."
                 limit 1;"
               );
-              $option_group = database::fetch($option_group_query);
-              foreach (array('id', 'function', 'required') as $key) {
-                $this->_data['options'][$product_option['group_id']][$key] = $option_group[$key];
+
+              if ($option_group = database::fetch($option_group_query)) {
+                foreach (array('id', 'function', 'required') as $key) {
+                  $this->_data['options'][$product_option['group_id']][$key] = $option_group[$key];
+                }
               }
             }
 
@@ -263,9 +264,11 @@
                 where id = ". (int)$product_option['value_id'] ."
                 limit 1;"
               );
-              $option_value = database::fetch($option_value_query);
-              foreach (array('id', 'value') as $key) {
-                $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $option_value[$key];
+
+              if ($option_value = database::fetch($option_value_query)) {
+                foreach (array('id', 'value') as $key) {
+                  $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $option_value[$key];
+                }
               }
             }
 

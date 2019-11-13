@@ -82,9 +82,7 @@
               limit 1;"
             );
 
-            $page = database::fetch($page_query);
-
-            if ($page) {
+            if ($page = database::fetch($page_query)) {
               $this->_data['path'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
             }
 

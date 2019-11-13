@@ -17,9 +17,10 @@
         where email = '". database::input($_REQUEST['email']) ."'
         limit 1;"
       );
-      $customer = database::fetch($customer_query);
 
-      if (empty($customer)) throw new Exception(language::translate('error_email_not_in_database', 'The email address does not exist in our database.'));
+      if (!$customer = database::fetch($customer_query)) {
+        throw new Exception(language::translate('error_email_not_in_database', 'The email address does not exist in our database.'));
+      }
 
       if (empty($customer['status'])) throw new Exception(language::translate('error_account_inactive', 'Your account is inactive, contact customer support'));
 
