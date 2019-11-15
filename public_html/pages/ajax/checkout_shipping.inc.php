@@ -16,8 +16,10 @@
       notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
       $shipping->select($module_id, $option_id, $_POST);
-      header('Location: '. $_SERVER['REQUEST_URI']);
-      exit;
+      if (route::$route['page'] != 'order_process') {
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
+      }
     }
   }
 
