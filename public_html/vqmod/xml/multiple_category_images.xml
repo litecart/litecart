@@ -327,7 +327,7 @@
 	<file name="pages/category.inc.php">
 		<operation error="log">
 			<search position="after"><![CDATA[
-      'image' => 'images/' . $category->image,
+      'image' => $category->image ? 'images/' . $category->image : '',
       ]]></search>
 			<add><![CDATA[
       'images' => array(),
@@ -343,10 +343,6 @@
     list($width, $height) = functions::image_scale_by_width(980, '1:1');
     foreach ($category->images as $image) {
       $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('category_image_clipping'));
-    }
-
-    if (!empty($_page->snippets['images'])) {
-      $_page->snippets['image'] = $_page->snippets['images'][0];
     }
       ]]></add>
 		</operation>

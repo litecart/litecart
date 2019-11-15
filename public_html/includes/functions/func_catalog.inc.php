@@ -16,7 +16,7 @@
       limit 1;"
     );
 
-    if ($category = database::fetch($categories_query)) return;
+    if (!$category = database::fetch($categories_query)) array();
 
     if (!empty($category['parent_id'])) {
       $trail = functions::catalog_category_trail($category['parent_id']);
