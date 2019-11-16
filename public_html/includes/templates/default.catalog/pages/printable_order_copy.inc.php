@@ -99,7 +99,7 @@ h1 {
       <thead>
         <tr>
           <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
-          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
           <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
           <th class="text-right"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
           <th class="text-right"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
@@ -110,7 +110,7 @@ h1 {
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
           <td><?php echo (float)$item['quantity']; ?></td>
-          <td><?php echo $item['sku']; ?></td>
+          <td><?php echo $item['gtin']; ?></td>
           <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php
     if (!empty($item['options'])) {
