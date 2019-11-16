@@ -1,127 +1,180 @@
 <?php
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
-  breadcrumbs::add(language::translate('title_newsletter', 'Newsletter'));
+  if (isset($_POST['add'])) {
 
-  if (!isset($_GET['template'])) $_GET['template'] = 'raw';
+    try {
+      if (empty($_POST['recipients'])) throw new Exception(language::translate('error_must_provide_recipients', 'You must provide recipients'));
+
+      $added = 0;
+      foreach (preg_split('#\R+#', $_POST['recipients']) as $recipient) {
+        if (!functions::validate_email($recipient)) continue;
+
+        database::query(
+          "insert ignore into ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+          (email, date_created)
+          values ('". database::input($recipient) ."', '". date('Y-m-d H:i:s') ."');"
+        );
+
+        if (database::affected_rows()) $added++;
+      }
+
+      notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), array('%n' => $added)));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['delete'])) {
+
+    try {
+      if (empty($_POST['recipients'])) throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
+
+      database::query(
+        "delete from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+        where id in ('". implode("', '", database::input($_POST['recipients'])) ."');"
+      );
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (!empty($_GET['action']) && $_GET['action'] == 'export') {
+
+    ob_clean();
+
+    header('Content-Type: text/plain; charset='. language::$selected['code']);
+
+    $recipients_query = database::query(
+      "select email from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+      where id
+      ". (!empty($_GET['query']) ? "c.email like '%". database::input($_GET['query']) ."%'" : "") ."
+      order by date_created desc;"
+    );
+
+    while ($recipient = database::fetch($recipients_query)) {
+      echo $recipient['email'] . PHP_EOL;
+    }
+
+    exit;
+  }
+
+// Table Rows
+  $recipients = array();
+
+  $recipients_query = database::query(
+    "select * from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+    where id
+    ". (!empty($_GET['query']) ? "and email like '%". database::input($_GET['query']) ."%'" : "") ."
+    order by date_created desc;"
+  );
+
+  if ($_GET['page'] > 1) database::seek($recipients_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+
+  $page_items = 0;
+  while ($recipient = database::fetch($recipients_query)) {
+    $recipients[] = $recipient;
+    if (++$page_items == settings::get('data_table_rows_per_page')) break;
+  }
+
+// Number of Rows
+  $num_rows = database::num_rows($recipients_query);
+
+// Pagination
+  $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+  functions::draw_lightbox();
 ?>
-<style>
-#service-providers li a {
-  position: relative;
-  padding: 10px;
-}
-#service-providers li img {
-  position: absolute;
-  top: 12px;
-  left: 10px;
-  width: 32px;
-  height: 32px;
-  vertical-align: middle;
-}
-#service-providers li .name {
-  font-size: 1.5em;
-  margin-left: 40px;
-  text-align: left;
-}
-#service-providers li .offer {
-  margin-left: 40px;
-  text-align: left;
-}
-</style>
-
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_newsletter', 'Newsletter'); ?>
+    <?php echo $app_icon; ?> <?php echo language::translate('title_newletter_recipients', 'Newsletter Recipients'); ?>
   </div>
+
+  <div class="panel-action">
+    <ul class="list-inline">
+      <li><?php echo functions::form_draw_button('add_recipient', language::translate('title_add_new_recipient', 'Add New Recipient'), 'button', '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(null, array('action' => 'export')), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
+    </ul>
+  </div>
+
+  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+    <?php echo functions::form_draw_hidden_field('app', true); ?>
+    <?php echo functions::form_draw_hidden_field('doc', true); ?>
+    <div class="panel-filter">
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+    </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="panel-body">
-    <h2><?php echo language::translate('title_list_of_subscribers', 'List of Subscribers'); ?></h2>
+    <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
 
-    <p class="btn-group">
-      <a class="btn btn-default<?php echo (empty($_GET['template']) || $_GET['template'] == 'raw') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'raw'), array('app', 'doc')); ?>">Raw</a>
-      <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'email') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'email'), array('app', 'doc')); ?>">Email Formatted</a>
-      <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'csv') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'csv'), array('app', 'doc')); ?>">CSV</a>
-    </ul>
+      <table class="table table-striped table-hover data-table">
+        <thead>
+          <tr>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo language::translate('title_id', 'ID'); ?></th>
+            <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
+            <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
 
-    <div class="row" style="margin-bottom: 2em;">
-      <div class="col-md-6">
-        <h2><?php echo language::translate('title_customers', 'Customers'); ?></h2>
-<?php
-  $output = '';
+        <tbody>
+          <?php foreach ($recipients as $recipient) { ?>
+          <tr>
+            <td><?php echo functions::form_draw_checkbox('recipients['.$recipient['id'].']', $recipient['id']); ?></td>
+            <td><?php echo $recipient['id']; ?></td>
+            <td><?php echo $recipient['email']; ?></td>
+            <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_recipient', 'recipient_id' => $recipient['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          </tr>
+          <?php } ?>
+        </tbody>
 
-    switch($_GET['template']) {
-      case 'csv':
-        $output .= 'Firstname;Lastname;Email Address' . PHP_EOL;
-        break;
-    }
+        <tfoot>
+          <tr>
+            <td colspan="5"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
+          </tr>
+        </tfoot>
+      </table>
 
-  $customers_query = database::query(
-    "select firstname, lastname, email from ". DB_TABLE_CUSTOMERS ."
-    where newsletter
-    order by firstname, lastname;"
-  );
-  while ($customer = database::fetch($customers_query)) {
-    switch($_GET['template']) {
-      case 'email':
-        $output .= '"'. $customer['firstname'] .' '. $customer['lastname'] .'" <'. $customer['email'] .'>;' . PHP_EOL;
-        break;
-      case 'csv':
-        $output .= implode(';', array($customer['firstname'], $customer['lastname'], $customer['email'])) . PHP_EOL;
-        break;
-      case 'raw':
-        $output .= $customer['email'] . PHP_EOL;
-        break;
-    }
-  }
-
-  echo functions::form_draw_textarea('subscribers', $output, 'style="height: 400px;"');
-?>
+      <div class="btn-group">
+        <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', '', 'delete'); ?>
       </div>
 
-      <div class="col-md-6">
-        <h2><?php echo language::translate('title_guests', 'Guests'); ?></h2>
-<?php
-  $output = '';
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
 
-    switch($_GET['template']) {
-      case 'csv':
-        $output .= 'Firstname;Lastname;Email Address' . PHP_EOL;
-        break;
-    }
-
-  $customers_query = database::query(
-    "select customer_firstname as firstname, customer_lastname as lastname, customer_email as email from ". DB_TABLE_ORDERS ."
-    where customer_id = 0
-    group by customer_email
-    order by customer_firstname, customer_lastname;"
-  );
-  while ($customer = database::fetch($customers_query)) {
-    switch($_GET['template']) {
-      case 'email':
-        $output .= '"'. $customer['firstname'] .' '. $customer['lastname'] .'" <'. $customer['email'] .'>;' . PHP_EOL;
-        break;
-      case 'csv':
-        $output .= implode(';', array($customer['firstname'], $customer['lastname'], $customer['email'])) . PHP_EOL;
-        break;
-      case 'raw':
-      default:
-        $output .= $customer['email'] . PHP_EOL;
-        break;
-    }
-  }
-
-  echo functions::form_draw_textarea('subscribers', $output, 'style="height: 400px;"');
-?>
-      </div>
-    </div>
-
-    <ul id="service-providers" class="list-inline">
-      <li>
-        <a href="http://eepurl.com/JAeav" target="_blank" class="btn btn-default">
-          <img src="<?php echo WS_DIR_ADMIN . 'customers.app/mailchimp.png'; ?>" alt="" />
-          <div class="name">MailChimp</div>
-          <div class="offer">LiteCart gives you $30 free credits</div>
-        </a>
-      </li>
-    </ul>
+  <div class="panel-footer">
+    <?php echo functions::draw_pagination($num_pages); ?>
   </div>
 </div>
+
+<div id="modal-add-recipients" class="modal fade" style="width: 640px; display: none;">
+  <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
+
+    <div class="form-group">
+      <label><?php echo language::translate('title_recipients', 'Recipients'); ?></label>
+      <?php echo functions::form_draw_textarea('recipients', '', 'style="height: 480px;"'); ?>
+    </div>
+
+    <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
+
+  <?php echo functions::form_draw_form_end(); ?>
+</div>
+
+<script>
+  $('button[name="add_recipient"]').click(function(){
+    $.featherlight('#modal-add-recipients');
+    $('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
+  })
+</script>

@@ -38,6 +38,8 @@ DROP TABLE IF EXISTS `lc_manufacturers_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_modules`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_newsletter_recipients`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_option_groups`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_option_groups_info`;

@@ -191,6 +191,14 @@
   </div>
   <?php } ?>
 
+  <?php if (empty(customer::$data['newsletter'])) { ?>
+  <div class="newsletter">
+    <label class="checkbox">
+      <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
+    </label>
+  </div>
+  <?php } ?>
+
   <div>
     <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
   </div>

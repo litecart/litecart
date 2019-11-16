@@ -313,6 +313,14 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_newsletter_recipients` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`email` VARCHAR(128) NOT NULL,
+	`date_created` DATETIME NOT NULL,
+	PRIMARY KEY (`id`),
+  UNIQUE INDEX `email` (`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_option_groups` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `function` VARCHAR(32) NOT NULL,

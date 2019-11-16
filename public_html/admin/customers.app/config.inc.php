@@ -20,8 +20,8 @@
         'params' => array(),
       ),
       array(
-        'title' => language::translate('title_newsletter', 'Newsletter'),
-        'doc' => 'newsletter',
+        'title' => language::translate('title_newsletter_recipients', 'Newsletter Recipients'),
+        'doc' => 'newsletter_recipients',
         'params' => array(),
       ),
     ),
@@ -32,6 +32,6 @@
       'csv' => 'csv.inc.php',
       'edit_customer' => 'edit_customer.inc.php',
       'get_address.json' => 'get_address.json.inc.php',
-      'newsletter' => 'newsletter.inc.php',
+      'newsletter_recipients' => 'newsletter_recipients.inc.php',
     ),
   );

@@ -30,6 +30,7 @@
       }
 
       $this->data['status'] = 1;
+      $this->data['newsletter'] = null;
 
       $this->previous = $this->data;
     }
@@ -65,6 +66,18 @@
         }
         $this->data['shipping_address']['country_code'] = $this->data['country_code'];
         $this->data['shipping_address']['zone_code'] = $this->data['zone_code'];
+      }
+
+      $newsletter_recipient_query = database::query(
+        "select id from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+        where email = '". database::input($this->data['email']) ."'
+        limit 1;"
+      );
+
+      if (database::num_rows($newsletter_recipient_query)) {
+        $this->data['newsletter'] = true;
+      } else {
+        $this->data['newsletter'] = false;
       }
 
       $this->previous = $this->data;
@@ -117,12 +130,32 @@
           shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
           shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
           shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
-          newsletter = '". (!empty($this->data['newsletter']) ? '1' : '0') ."',
           notes = '". database::input($this->data['notes']) ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
+
+      if (!empty($this->previous['email']) && $this->previous['email'] != $this->data['email']) {
+        database::query(
+          "update ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+          set email = '". database::input($this->data['email']) ."'
+          where email = '". database::input($this->previous['email']) ."';"
+        );
+      }
+
+      if (!empty($this->data['newsletter'])) {
+        database::query(
+          "insert ignore into ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+          (email, date_created)
+          values ('". database::input($this->data['email']) ."', '". date('Y-m-d H:i:s') ."');"
+        );
+      } else if (!empty($this->previous['id'])) {
+        database::query(
+          "delete from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+          where email = '". database::input($this->data['email']) ."';"
+        );
+      }
 
       $customer_modules = new mod_customer();
 
@@ -164,6 +197,12 @@
       database::query(
         "delete from ". DB_TABLE_CUSTOMERS ."
         where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
+        where email = '". database::input($this->data['newsletter']) ."'
         limit 1;"
       );
 
