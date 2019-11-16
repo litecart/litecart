@@ -7,6 +7,7 @@
     private static $_checked = array();                 // Array of files that have already passed check() and
     private static $_checksums = array();               // Array of checksums for time comparison
     private static $_aliases = array();                 // Array of path aliases
+    public static $time_elapsed = 0;                    // Array of path aliases
 
     public static function init() {
 
@@ -14,6 +15,8 @@
 
       self::$_aliases['#^(admin/)#'] = BACKEND_ALIAS . '/';
       self::$_aliases['#^(includes/controllers/ctrl_)#'] = 'includes/entities/ent_';
+      $timestamp = microtime(true);
+
 
       $last_modified = null;
 
@@ -81,6 +84,8 @@
 
         file_put_contents($cache_file, $serialized);
       }
+
+      self::$time_elapsed += microtime(true) - $timestamp;
     }
 
   // Return a modified file
@@ -91,8 +96,11 @@
         return $file;
       }
 
+      $timestamp = microtime(true);
+
       if (!is_file($file)) {
         // check here if there is a modification creating the file
+        self::$time_elapsed += microtime(true) - $timestamp;
         return $file;
       } else {
         $file = str_replace('\\', '/', realpath($file));
@@ -103,6 +111,7 @@
 
     // Returned already checked file
       if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
+        self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file];
       }
 
@@ -125,11 +134,13 @@
     // Return original if nothing to modify
       if (empty($queue)) {
         if (is_file($modified_file)) unset($modified_file);
+        self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file] = $file;
       }
 
     // Return modified file if checksum matches
       if (!empty(self::$_checksums[$short_file]) && self::$_checksums[$short_file] == $checksum) {
+        self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file] = $modified_file;
       }
 
@@ -206,6 +217,7 @@
 
     // Return original if nothing was modified
       if ($buffer == $original) {
+        self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file] = $file;
       }
 
@@ -215,6 +227,8 @@
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
       file_put_contents(FS_DIR_APP . 'cache/vmod_checked.cache', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+      self::$time_elapsed += microtime(true) - $timestamp;
 
       return $modified_file;
     }
