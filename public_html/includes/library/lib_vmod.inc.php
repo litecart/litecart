@@ -22,8 +22,8 @@
 
     // If no cache is requested by browser
       if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-        //if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) $last_modified = time();
-        //if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) $last_modified = time();
+        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) $last_modified = time();
+        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) $last_modified = time();
 
       } else {
 
@@ -355,7 +355,7 @@
             if ($find_node->getAttribute('trim') != 'false') {
               $find = ltrim(rtrim($find, " "), "\r\n");
 
-              if ($insert_node->getAttribute('position') == 'replace') {
+              if ($find_node->getAttribute('position') == 'replace') {
                 $find = rtrim($find, "\r\n");
               }
             }
