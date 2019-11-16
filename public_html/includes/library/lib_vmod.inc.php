@@ -13,10 +13,10 @@
 
       if (!self::$enabled) return;
 
-      self::$_aliases['#^(admin/)#'] = BACKEND_ALIAS . '/';
-      self::$_aliases['#^(includes/controllers/ctrl_)#'] = 'includes/entities/ent_';
       $timestamp = microtime(true);
 
+      self::$_aliases['#^admin/#'] = BACKEND_ALIAS . '/';
+      self::$_aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
 
       $last_modified = null;
 
@@ -271,9 +271,14 @@
           $patterns = explode(',', $vmod['files'][$key]['name']);
 
           foreach ($patterns as $pattern) {
-            $path_file_pattern = $vmod['files'][$key]['path'].$pattern;
+            $path_and_file = $vmod['files'][$key]['path'].$pattern;
 
-            self::$_files_to_modifications[$path_file_pattern][] = array(
+          // Apply path aliases
+            if (!empty(self::$_aliases)) {
+              $path_and_file = preg_replace(array_keys(self::$_aliases), array_values(self::$_aliases), $path_and_file);
+            }
+
+            self::$_files_to_modifications[$path_and_file][] = array(
               'id' => $vmod['id'],
               //'index' => $vmod['files'][$key]['path'].$vmod['files'][$key]['name'],
               'date_modified' => $vmod['date_modified'],
