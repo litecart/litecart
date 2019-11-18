@@ -788,11 +788,32 @@
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
+        '%order_items' => null,
+        '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', array('order_id' => $this->data['id'], 'public_key' => $this->data['public_key']), false, array(), $this->data['language_code']),
         '%order_status' => $order_status->name,
         '%store_name' => settings::get('store_name'),
         '%store_url' => document::ilink('', array(), false, array(), $this->data['language_code']),
       );
+
+      foreach ($this->data['items'] as $item) {
+
+        if (!empty($item['product_id'])) {
+          $product = reference::product($item['product_id'], $language_code);
+
+          $options = array();
+          if (!empty($item['options'])) {
+            foreach ($item['options'] as $k => $v) {
+              $options[] = $k .': '. $v;
+            }
+          }
+
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+
+        } else {
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+        }
+      }
 
       $subject = strtr($order_status->email_subject, $aliases);
       $message = strtr($order_status->email_message, $aliases);
