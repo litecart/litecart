@@ -8,7 +8,9 @@
 
     function __construct($country_code) {
 
-      if (!preg_match('#[A-Z]{2}#', $country_code)) trigger_error('Invalid country code ('. $country_code .')', E_USER_ERROR);
+      if (!preg_match('#[A-Z]{2}#', $country_code)) {
+        trigger_error('Invalid country code ('. $country_code .')', E_USER_WARNING);
+      }
 
       $this->_country_code = $country_code;
     }

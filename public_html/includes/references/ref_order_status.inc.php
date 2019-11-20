@@ -6,11 +6,13 @@
     private $_language_codes;
     private $_data = array();
 
-    function __construct($order_status_id, $language_code='') {
+    function __construct($order_status_id, $language_code=null) {
+
+      if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_id = (int)$order_status_id;
       $this->_language_codes = array_unique(array(
-        !empty($language_code) ? $language_code : language::$selected['code'],
+        $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
