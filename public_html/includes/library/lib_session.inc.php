@@ -49,7 +49,7 @@
 
       if (ini_get('session.use_cookies')) {
         $params = session_get_cookie_params();
-        setcookie(session_name(), null, -1, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        header('Set-Cookie: '. session_name() .'=; path='. WS_DIR_APP .'; expires=-1; SameSite=Strict');
       }
 
       return session_destroy();

@@ -27,7 +27,7 @@
           if ($checksum == $key) {
             self::load($customer['id']);
           } else {
-            setcookie('customer_remember_me', null, -1, WS_DIR_APP);
+            header('Set-Cookie: customer_remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
           }
         }
       }
@@ -57,7 +57,7 @@
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
             if (!empty($_COOKIE['cookies_accepted'])) {
-              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_APP);
+              header('Set-Cookie: skip_regional_settings_screen=1; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
             }
           }
         }

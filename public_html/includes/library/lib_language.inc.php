@@ -92,7 +92,7 @@
       session::$data['language'] = self::$languages[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        setcookie('language_code', $code, strtotime('+3 months'), WS_DIR_APP);
+        header('Set-Cookie: language_code='. $code .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
       }
 
     // Set system locale

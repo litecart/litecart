@@ -6,7 +6,7 @@
 
   user::reset();
 
-  setcookie('remember_me', null, -1, WS_DIR_APP);
+  header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
 
   header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php'));
   exit;

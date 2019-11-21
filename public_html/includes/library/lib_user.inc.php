@@ -60,7 +60,7 @@
 
           } else {
 
-            setcookie('remember_me', null, -1, WS_DIR_APP);
+            header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
 
             if (++$user['login_attempts'] < 3) {
               database::query(
@@ -81,8 +81,7 @@
           }
 
         } else {
-
-          setcookie('remember_me', null, -1, WS_DIR_APP);
+          header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
         }
       }
     }
