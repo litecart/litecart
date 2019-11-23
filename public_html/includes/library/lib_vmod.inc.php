@@ -362,7 +362,7 @@
 
           // Offset
             $offset_before = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-before'));
-            $offset_after  = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-after')+1);
+           $offset_after  = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-after')+2);
 
           // Whitespace
             $find = preg_split('#(\r\n|\r|\n)#', $find);
