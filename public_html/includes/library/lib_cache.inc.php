@@ -62,15 +62,9 @@
 
     ######################################################################
 
-    public static function cache_id() {
-      trigger_error('The method cache::cache_id() is deprecated, use instead cache::token()', E_USER_DEPRECATED);
-      return;
-    }
-
     public static function token($keyword, $dependencies=array(), $storage='file', $ttl=900) {
 
       $storage_types = array(
-        //'database',
         'file',
         'session',
         //'memory',
@@ -178,11 +172,6 @@
 
     public static function get($token, $max_age=900, $no_hard_refresh=false) {
 
-      if (is_string($token)) {
-        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
-        return;
-      }
-
       if (empty(self::$enabled)) return;
 
       if (empty($no_hard_refresh)) {
@@ -197,9 +186,6 @@
       }
 
       switch ($token['storage']) {
-
-        case 'database': // Reserved, but not implemented
-          return;
 
         case 'file':
 
@@ -236,15 +222,7 @@
 
     public static function set($token, $data) {
 
-      if (is_string($token)) {
-        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
-        return;
-      }
-
       switch ($token['storage']) {
-
-        case 'database': // Reserved, but not implemented
-          return false;
 
         case 'file':
 
@@ -282,11 +260,6 @@
     // Output recorder (This option is not affected by $enabled as fresh data is always recorded)
     public static function capture($token, $max_age=900, $force=false) {
 
-      if (is_string($token)) {
-        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
-        return;
-      }
-
       if (isset(self::$_recorders[$token['id']])) trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
 
       $_data = self::get($token, $max_age, $force);
@@ -307,11 +280,6 @@
     }
 
     public static function end_capture($token=null) {
-
-      if (is_string($token)) {
-        trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
-        return false;
-      }
 
       if (empty($token['id'])) $token['id'] = current(array_reverse(self::$_recorders));
 

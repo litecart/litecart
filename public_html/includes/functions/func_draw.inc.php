@@ -4,11 +4,6 @@
 
     switch(true) {
 
-    // Fontawesome (Deprecated)
-      case (substr($class, 0, 3) == 'fa '):
-        trigger_error('Fonticon syntax "fa " is deprecated, use instead "fa-"', E_USER_DEPRECATED);
-        return draw_fonticon(substr($class, 3), $parameters);
-
     // Fontawesome
       case (substr($class, 0, 3) == 'fa-'):
         //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document

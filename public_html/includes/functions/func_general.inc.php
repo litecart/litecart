@@ -138,18 +138,3 @@
 
     return $text;
   }
-
-  function general_order_public_checksum($order_id) {
-
-    trigger_error(__METHOD__.'() is deprecated. Use instead reference::order(id)->public_key', E_USER_DEPRECATED);
-
-    $query = database::query(
-      "select public_key from ". DB_TABLE_ORDERS ."
-      where id = ". (int)$order_id ."
-      limit 1;"
-    );
-
-    $order = database::fetch($query);
-
-    return $order['public_key'];
-  }

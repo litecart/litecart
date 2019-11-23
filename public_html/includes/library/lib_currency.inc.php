@@ -140,12 +140,6 @@
 
     public static function format($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
 
-    // Backwards compatibility
-      if (is_bool($currency_code) === true) {
-        trigger_error(__METHOD__.'() does no longer support a boolean value for third argument', E_USER_DEPRECATED);
-        @list($value, $auto_decimals, , $currency_code, $currency_value) = func_get_args();
-      }
-
       if ($currency_code === null) $currency_code = self::$selected['code'];
 
       if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
