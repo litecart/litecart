@@ -113,8 +113,8 @@
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
-      if (!is_dir(FS_DIR_APP . 'cache/' . substr($options['destination'], 0, 3))) {
-        if (!mkdir(FS_DIR_APP . 'cache/' . substr($options['destination'], 0, 3))) {
+      if (!is_dir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 3))) {
+        if (!mkdir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 3), 0777)) {
           trigger_error('Could not create cache subfolder', E_USER_WARNING);
           return false;
         }
