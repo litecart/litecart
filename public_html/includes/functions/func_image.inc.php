@@ -42,29 +42,37 @@
         $options['destination'] = rtrim($options['destination'], '/') . '/';
 
         switch (strtoupper($options['clipping'])) {
+
           case 'CROP':
             $clipping_filename_flag = '_c';
             break;
+
           case 'CROP_ONLY_BIGGER':
             $clipping_filename_flag = '_cob';
             break;
+
           case 'STRETCH':
             $clipping_filename_flag = '_s';
             break;
+
           case 'FIT':
             $clipping_filename_flag = '_f';
             break;
+
           case 'FIT_USE_WHITESPACING':
             $clipping_filename_flag = '_fwb';
             break;
+
           case 'FIT_ONLY_BIGGER':
             $clipping_filename_flag = '_fob';
             break;
+
           case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
             $clipping_filename_flag = '_fobws';
             break;
+
           default:
-            trigger_error('Unknown resample method ('.$options['clipping'].') for image', E_USER_WARNING);
+            trigger_error("Unknown image clipping method ($clipping)", E_USER_WARNING);
             return;
         }
 
