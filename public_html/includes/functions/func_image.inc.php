@@ -34,7 +34,6 @@
         'interlaced' => !empty($options['interlaced']) ? true : false,
         'overwrite' => !empty($options['overwrite']) ? $options['overwrite'] : false,
         'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
-        'extension' => !empty($options['extension']) ? $options['extension'] : null,
       );
 
     // If destination is a directory
@@ -92,10 +91,6 @@
 
       if (!$image = new ent_image($source)) return;
 
-      if (empty($options['extension'])) {
-        $options['extension'] = $image->type();
-      }
-
       if (!empty($options['trim'])) {
         $image->trim();
       }
@@ -109,21 +104,7 @@
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
-      switch($options['extension']) {
-        case 'jpg':
-          $options['extension'] = 'jpg';
-          break;
-        case 'gif':
-        case 'png':
-        case 'bmp':
-          $options['extension'] = 'png';
-          break;
-        default:
-          $options['extension'] = 'png';
-          break;
-      }
-
-      if (!$image->write($options['destination'], $options['extension'], $options['quality'], !empty($options['interlaced']))) return;
+      if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
 
       return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
 

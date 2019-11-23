@@ -650,7 +650,7 @@
       }
     }
 
-    public function write($destination, $type=null, $quality=90, $interlaced=false) {
+    public function write($destination, $quality=90, $interlaced=false) {
 
       if (is_file($destination)) {
         throw new Exception('Destination already exists ('. $destination .')');
@@ -664,10 +664,10 @@
         throw new Exception('Destination is not writable ('. $destination .')');
       }
 
-      if (empty($type)) $type = pathinfo($destination, PATHINFO_EXTENSION);
+      $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!in_array(strtolower($type), array('gif', 'jpg', 'png'))) {
-        throw new Exception('Unknown output format');
+      if (!in_array($type, array('gif', 'jpg', 'png', 'webp'))) {
+        throw new Exception('Unknown image format');
       }
 
       switch($this->_library) {
