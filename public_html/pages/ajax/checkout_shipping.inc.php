@@ -1,18 +1,13 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    header('Content-type: text/html; charset='. language::$selected['charset']);
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
+
+  header('X-Robots-Tag: noindex');
 
   if (empty(cart::$items)) return;
 
   if (empty(customer::$data['country_code'])) return;
 
-  session::$data['shipping'] = new mod_shipping();
-  $shipping = &session::$data['shipping'];
-
-  $options = $shipping->options(cart::$items, cart::$total['value'], cart::$total['tax'], currency::$selected['code'], customer::$data);
+  $shipping = new mod_shipping();
+  $options = $shipping->options(cart::$items, currency::$selected['code'], customer::$data);
 
   if (file_get_contents('php://input') != '' && !empty($_POST['shipping'])) {
     list($module_id, $option_id) = explode(':', $_POST['shipping']['option_id']);
@@ -21,6 +16,10 @@
       notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
       $shipping->select($module_id, $option_id, $_POST);
+      if (route::$route['page'] != 'order_process') {
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
+      }
     }
   }
 
@@ -37,8 +36,7 @@
 
   if (empty($shipping->data['selected'])) {
     if ($cheapest_shipping = $shipping->cheapest()) {
-      $cheapest_shipping = explode(':', $cheapest_shipping);
-      $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
+      $shipping->select($cheapest_shipping['module_id'], $cheapest_shipping['option_id']);
     }
   }
 

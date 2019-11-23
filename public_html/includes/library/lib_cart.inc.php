@@ -28,7 +28,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_APP);
+          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
         }
       }
 
@@ -42,18 +42,26 @@
 
       if (!empty($_POST['add_cart_product'])) {
         self::add_product($_POST['product_id'], isset($_POST['quantity']) ? $_POST['quantity'] : 1);
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
 
       if (!empty($_POST['remove_cart_item'])) {
         self::remove($_POST['remove_cart_item']);
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
 
       if (!empty($_POST['update_cart_item'])) {
         self::update($_POST['update_cart_item'], isset($_POST['item'][$_POST['update_cart_item']]['quantity']) ? $_POST['item'][$_POST['update_cart_item']]['quantity'] : 1);
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
 
       if (!empty($_POST['clear_cart_items'])) {
         self::clear();
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
     }
 

@@ -489,11 +489,6 @@
                       <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
                       <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
                     </div>
-
-                    <div class="form-group col-md-6">
-                      <label><?php echo language::translate('title_date_paid', 'Date Paid'); ?></label>
-                      <?php echo functions::form_draw_date_field('date_paid', true); ?>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -597,8 +592,8 @@
                 <th style="width: 175px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
                 <th style="width: 420px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                 <th style="width: 115px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-                <th style="width: 200px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-                <th style="width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+                <th style="min-width: 200px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+                <th style="min-width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
                 <th style="width: 30px;">&nbsp;</th>
               </tr>
             </thead>
@@ -860,7 +855,7 @@
       </div>
     </div>
 
-    <div class="panel-action btn-group">
+    <div class="btn-group">
       <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
       <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
     </div>
@@ -941,6 +936,11 @@
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
         <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', ''); ?>
       </div>
+    </div>
+
+    <div class="btn-group">
+      <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
+      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
     </div>
   </div>
 </div>

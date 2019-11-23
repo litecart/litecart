@@ -8,9 +8,11 @@
 
     function __construct($page_id, $language_code=null) {
 
+      if (empty($language_code)) $language_code = language::$selected['code'];
+
       $this->_id = (int)$page_id;
       $this->_language_codes = array_unique(array(
-        !empty($language_code) ? $language_code : language::$selected['code'],
+        $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
@@ -82,9 +84,7 @@
               limit 1;"
             );
 
-            $page = database::fetch($page_query);
-
-            if ($page) {
+            if ($page = database::fetch($page_query)) {
               $this->_data['path'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
             }
 

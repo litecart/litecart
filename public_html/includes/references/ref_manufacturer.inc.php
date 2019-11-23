@@ -9,10 +9,12 @@
 
     function __construct($manufacturer_id, $language_code=null) {
 
+      if (empty($language_code)) $language_code = language::$selected['code'];
+
       $this->_id = (int)$manufacturer_id;
       $this->_cache_token = cache::token('manufacturer_'.(int)$manufacturer_id, array($language_code), 'file');
       $this->_language_codes = array_unique(array(
-        !empty($language_code) ? $language_code : language::$selected['code'],
+        $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));

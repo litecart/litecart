@@ -82,16 +82,6 @@ CREATE TABLE `lc_categories_filters` (
 	INDEX `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_categories_images` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`category_id` INT(11) NOT NULL,
-	`filename` VARCHAR(256) NOT NULL,
-	`checksum` CHAR(32) NOT NULL,
-	`priority` TINYINT(2) NOT NULL,
-	PRIMARY KEY (`id`),
-	INDEX `category_id` (`category_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `category_id` INT(11) NOT NULL,
@@ -305,6 +295,7 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   `settings` TEXT NOT NULL,
   `last_log` TEXT NOT NULL,
   `date_pushed` DATETIME NOT NULL,
+  `date_processed` DATETIME NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),

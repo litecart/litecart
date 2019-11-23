@@ -164,13 +164,11 @@
     });
   });
 
-  var new_zone_i = 0;
+  var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
   $('form[name="form_geo_zone"]').on('click', 'button[name="add"]', function(e) {
     e.preventDefault();
 
     if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
-
-    while ($('input[name^="zones['+ new_zone_i +']"]').length) new_zone_i++;
 
     var row = $(this).closest('tr');
 
@@ -192,7 +190,7 @@
                + '      <td style="text-align: right;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '    </tr>';
 
-    output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
+    output = output.replace(/new_zone_i/g, 'new_' + new_zone_i++);
     $(this).closest('table').find('tbody').append(output);
 
     $('form[name="form_geo_zone"] tbody tr:last input[name$="[country_code]"]').val($('select[name="new_zone[country_code]"]').val());

@@ -1,18 +1,13 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    header('Content-type: text/html; charset='. language::$selected['charset']);
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
+
+  header('X-Robots-Tag: noindex');
 
   if (empty(cart::$items)) return;
 
   if (empty(customer::$data['country_code'])) customer::$data['country_code'] = settings::get('default_country_code');
 
-  session::$data['payment'] = new mod_payment();
-  $payment = &session::$data['payment'];
-
-  $options = $payment->options(cart::$items, cart::$total['value'], cart::$total['tax'], currency::$selected['code'], customer::$data);
+  $payment = new mod_payment();
+  $options = $payment->options(cart::$items, currency::$selected['code'], customer::$data);
 
   if (file_get_contents('php://input') != '' && !empty($_POST['payment'])) {
     list($module_id, $option_id) = explode(':', $_POST['payment']['option_id']);
@@ -21,6 +16,10 @@
       notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
       $payment->select($module_id, $option_id, $_POST);
+      if (route::$route['page'] != 'order_process') {
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
+      }
     }
   }
 
@@ -36,9 +35,8 @@
   if (empty($options)) return;
 
   if (empty($payment->data['selected'])) {
-    if ($cheapest_payment = $payment->cheapest()) {
-      $cheapest_payment = explode(':', $cheapest_payment);
-      $payment->select($cheapest_payment[0], $cheapest_payment[1]);
+    if ($cheapest_payment = $payment->cheapest(cart::$items, currency::$selected['code'], customer::$data)) {
+      $payment->select($cheapest_payment['module_id'], $cheapest_payment['option_id']);
     }
   }
 

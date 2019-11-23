@@ -119,6 +119,20 @@
   functions::draw_lightbox();
 ?>
 <style>
+#categories {
+  max-height: 310px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all 200ms linear;
+}
+#categories:hover {
+  width: 150%;
+  z-index: 999;
+}
+#categories label {
+  white-space: nowrap;
+}
+
 #images .thumbnail {
   margin: 0;
 }
@@ -167,7 +181,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <div class="form-control" style="overflow-y: auto; max-height: 200px;">
+                <div id="categories" class="form-control">
 <?php
   function custom_catalog_tree($category_id=0, $depth=1, $count=0) {
 
@@ -441,6 +455,16 @@
             <h2><?php echo language::translate('title_prices', 'Prices'); ?></h2>
 
             <div class="row">
+              <div class="form-group col-md-6">
+                <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
+                <div class="input-group">
+                  <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 0, null); ?>
+                  <span class="input-group-addon">
+                    <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
+                  </span>
+                </div>
+              </div>
+
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
                 <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>

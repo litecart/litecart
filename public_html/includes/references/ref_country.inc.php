@@ -8,7 +8,9 @@
 
     function __construct($country_code) {
 
-      if (!preg_match('#[A-Z]{2}#', $country_code)) trigger_error('Invalid country code ('. $country_code .')', E_USER_ERROR);
+      if (!preg_match('#[A-Z]{2}#', $country_code)) {
+        trigger_error('Invalid country code ('. $country_code .')', E_USER_WARNING);
+      }
 
       $this->_country_code = $country_code;
     }
@@ -95,5 +97,20 @@
       while (preg_match('#(\R\R)#', $output)) $output = preg_replace('#(\R\R)#', "\r\n", $output);
 
       return trim($output);
+    }
+
+    public function in_geo_zone($zone_code, $geo_zones) {
+
+      if (!is_array($geo_zones)) $geo_zones = array($geo_zones);
+
+      $zones_to_geo_zones_query = database::query(
+        "select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+        where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
+        and (country_code = '' or country_code = '". database::input($this->_country_code) ."')
+        ". (!empty($zone_code) ? "and (zone_code = '' or zone_code = '". database::input($zone_code) ."')" : "") ."
+        limit 1;"
+      );
+
+      if (database::num_rows($zones_to_geo_zones_query)) return true;
     }
   }

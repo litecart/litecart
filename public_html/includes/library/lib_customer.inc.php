@@ -22,12 +22,12 @@
         );
 
         if ($customer = database::fetch($customer_query)) {
-          $checksum = sha1($customer['email'] . $customer['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+          $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
 
           if ($checksum == $key) {
             self::load($customer['id']);
           } else {
-            setcookie('customer_remember_me', null, -1, WS_DIR_APP);
+            header('Set-Cookie: customer_remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
           }
         }
       }
@@ -57,7 +57,7 @@
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
             if (!empty($_COOKIE['cookies_accepted'])) {
-              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_APP);
+              header('Set-Cookie: skip_regional_settings_screen=1; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
             }
           }
         }
@@ -156,18 +156,18 @@
       }
 
     // Unset zone if not in country
-      if (!empty(self::$data['zone_code']) && !isset(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
+      if (!empty(self::$data['zone_code']) && empty(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
         self::$data['zone_code'] = '';
+      }
+
+    // Set first zone in country
+      if (empty(self::$data['zone_code']) && !empty(reference::country(self::$data['country_code'])->zones)) {
+        self::$data['zone_code'] = array_keys(reference::country(self::$data['country_code'])->zones)[0];
       }
 
     // Set shipping country if empty
       if (empty(self::$data['shipping_address']['country_code'])) {
         self::$data['shipping_address']['country_code'] = self::$data['country_code'];
-        self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
-      }
-
-    // Set shipping zone if empty
-      if (empty(self::$data['shipping_address']['zone_code'])) {
         self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
       }
 

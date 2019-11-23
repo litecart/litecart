@@ -9,7 +9,7 @@
     public $website = 'http://www.litecart.net';
     public $priority = 0;
 
-    public function process($force, $last_pushed) {
+    public function process($force, $last_run) {
 
       if (empty($this->settings['status'])) return;
 
@@ -22,30 +22,24 @@
         }
 
         switch ($this->settings['report_frequency']) {
-          case 'Immediately':
-            break;
           case 'Hourly':
-            if (strtotime($last_pushed) > strtotime('-1 hour')) return;
+            if (date('Ymdh', strtotime($last_run)) == date('Ymdh')) return;
             break;
           case 'Daily':
-            if (strtotime($last_pushed) > strtotime('-1 day')) return;
+            if (date('Ymd', strtotime($last_run)) == date('Ymd')) return;
             break;
           case 'Weekly':
-            if (strtotime($last_pushed) > strtotime('-1 week')) return;
+            if (date('W', strtotime($last_run)) == date('W')) return;
             break;
           case 'Monthly':
-            if (strtotime($last_pushed) > strtotime('-1 month')) return;
+            if (date('Ym', strtotime($last_run)) == date('Ym')) return;
             break;
         }
       }
 
       $error_log_file = ini_get('error_log');
-      $contents = file_get_contents($error_log_file);
 
-      if (empty($contents)) {
-        echo 'Nothing to report';
-        return;
-      }
+      if (!$contents = file_get_contents($error_log_file)) return;
 
       echo 'Sending report to '. $this->settings['email_recipient'];
 
@@ -54,7 +48,10 @@
             ->set_subject('[Error Report] '. settings::get('store_name'))
             ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $contents);
 
-      if ($email->send() !== true) return;
+      if ($email->send() !== true) {
+        echo ' [Failed]';
+        return;
+      }
 
       file_put_contents($error_log_file, '');
     }
@@ -70,18 +67,18 @@
           'function' => 'toggle("e/d")',
         ),
         array(
-          'key' => 'report_frequency',
-          'default_value' => 'Weekly',
-          'title' => language::translate(__CLASS__.':title_report_frequency', 'Report Frequency'),
-          'description' => language::translate(__CLASS__.':description_report_frequency', 'How often the reports should be sent.'),
-          'function' => 'radio("Immediately","Hourly","Daily","Weekly","Monthly")',
-        ),
-        array(
           'key' => 'working_hours',
           'default_value' => '07:00-21:00',
           'title' => language::translate(__CLASS__.':title_working_hours', 'Working Hours'),
           'description' => language::translate(__CLASS__.':description_working_hours', 'During what hours of the day the job would operate e.g. 07:00-21:00.'),
           'function' => 'text()',
+        ),
+        array(
+          'key' => 'report_frequency',
+          'default_value' => 'Weekly',
+          'title' => language::translate(__CLASS__.':title_report_frequency', 'Report Frequency'),
+          'description' => language::translate(__CLASS__.':description_report_frequency', 'How often the reports should be sent.'),
+          'function' => 'radio("Immediately","Hourly","Daily","Weekly","Monthly")',
         ),
         array(
           'key' => 'email_recipient',

@@ -98,7 +98,19 @@
 
       if (empty(user::$data['permissions']) || (!empty(user::$data['permissions'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['permissions'][$_GET['app']]['docs']))) {
 
+        if (!is_file(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php')) {
+          http_response_code(404);
+          die('App not found');
+        }
+
+        if (empty($_GET['doc'])) $_GET['doc'] = $app_config['default'];
+
         require vmod::check(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
+
+        if (empty($app_config['docs'][$_GET['doc']])) {
+          http_response_code(404);
+          die('Doc not found');
+        }
 
         if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
 
@@ -107,7 +119,7 @@
         $_page = new ent_view();
         $_page->snippets = array(
           'app' => $_GET['app'],
-          'doc' => !empty($_GET['doc']) ? $_GET['doc'] : $app_config['default'],
+          'doc' => $_GET['doc'],
           'theme' => array(
             'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
             'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',

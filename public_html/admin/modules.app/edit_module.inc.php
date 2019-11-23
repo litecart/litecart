@@ -109,7 +109,11 @@
               <?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
             </td>
             <td style="width: 50%">
+              <?php if (!empty($setting['multiple'])) { ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+              <?php } else { ?>
               <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+              <?php } ?>
             </td>
           </tr>
           <?php } ?>
@@ -124,10 +128,12 @@
         </tbody>
       </table>
 
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
-        <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+      <div class="panel-action">
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+          <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
+          <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+        </div>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

@@ -8,10 +8,6 @@
     $_POST['username'] = !empty($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
   }
 
-  if (empty($_POST['redirect_url'])) {
-    $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
-  }
-
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
@@ -21,7 +17,7 @@
 
     try {
 
-      setcookie('remember_me', null, -1, WS_DIR_APP);
+      header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
 
@@ -117,18 +113,18 @@
       user::load($user['id']);
 
       if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($user['username'] . $user['password_hash'] . PASSWORD_SALT . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
+        $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+        header('Set-Cookie: remember_me='. $user['username'] .':'. $checksum .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
       } else {
-        setcookie('remember_me', null, -1, WS_DIR_APP);
+        header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
       }
 
-      if (empty($_REQUEST['redirect_url']) || basename(parse_url($_REQUEST['redirect_url'], PHP_URL_PATH)) != basename(__FILE__)) {
+      if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN . basename(__FILE__), '#') . '#', $_POST['redirect_url'])) {
         $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
       }
 
       notices::add('success', str_replace(array('%username'), array(user::$data['username']), language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
-      header('Location: '. $_REQUEST['redirect_url']);
+      header('Location: '. $_POST['redirect_url']);
       exit;
 
     } catch (Exception $e) {

@@ -13,9 +13,11 @@
     private $_components;
     private $_serialized;
 
-    public function __construct(string $link='') {
+    public function __construct($link='') {
 
       $this->reset();
+
+      if (is_string($link)) $link = preg_replace('#/+#', '/', $link);
 
       $components = is_array($link) ? $link : parse_url($link);
 

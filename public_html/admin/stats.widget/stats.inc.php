@@ -85,16 +85,16 @@
           <table class="table table-striped table-hover data-table">
             <tbody>
               <tr>
-                <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
+                <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
+                <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
                 <td style="text-align: right;"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
-                <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
+                <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
+                <td style="text-align: right;"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>

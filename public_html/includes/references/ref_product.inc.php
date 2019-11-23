@@ -10,14 +10,18 @@
 
     function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
 
+      if (empty($language_code)) $language_code = language::$selected['code'];
+      if (empty($currency_code)) $currency_code = currency::$selected['code'];
+      if (empty($customer_id)) $customer_id = customer::$data['id'];
+
       $this->_id = (int)$product_id;
       $this->_language_codes = array_unique(array(
-        !empty($language_code) ? $language_code : language::$selected['code'],
+        $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
-      $this->_currency_code = !empty($currency_code) ? $currency_code : currency::$selected['code'];
-      $this->_customer_id = !empty($customer_id) ? $customer_id : customer::$data['id'];
+      $this->_currency_code = $currency_code;
+      $this->_customer_id = $customer_id;
     }
 
     public function &__get($name) {
@@ -121,9 +125,8 @@
             order by end_date asc
             limit 1;"
           );
-          $products_campaign = database::fetch($products_campaigns_query);
 
-          if (!empty($products_campaign)) {
+          if ($products_campaign = database::fetch($products_campaigns_query)) {
             $this->_data['campaign'] = $products_campaign;
             if ($products_campaign[$this->_currency_code] > 0) {
               $this->_data['campaign']['price'] = (float)currency::convert($products_campaign[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
@@ -382,10 +385,6 @@
 
           foreach ($row as $key => $value) {
             switch($key) {
-              case 'product_groups':
-                $this->_data['product_group_ids'] = explode(',', $row['product_groups']);
-                break;
-
               case 'keywords':
                 $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : array();
                 break;

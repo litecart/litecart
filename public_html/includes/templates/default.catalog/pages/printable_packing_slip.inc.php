@@ -145,14 +145,6 @@ h1 {
       </div>
 
       <div class="col-xs-3">
-        <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-        <div class="value"><?php echo settings::get('store_email'); ?></div>
-
-        <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo document::ilink(''); ?></div>
-      </div>
-
-      <div class="col-xs-3">
         <?php if (settings::get('store_phone')) { ?>
         <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
         <div class="value"><?php echo settings::get('store_phone'); ?></div>
@@ -162,6 +154,14 @@ h1 {
         <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
         <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
         <?php } ?>
+      </div>
+
+      <div class="col-xs-3">
+        <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+        <div class="value"><?php echo settings::get('store_email'); ?></div>
+
+        <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
+        <div class="value"><?php echo document::ilink(''); ?></div>
       </div>
 
       <div class="col-xs-3">

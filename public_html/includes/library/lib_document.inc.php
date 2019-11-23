@@ -6,6 +6,7 @@
     public static $layout = 'default';
     public static $snippets = array();
     public static $settings = array();
+    public static $jsenv = array();
 
     public static function init() {
       event::register('before_capture', array(__CLASS__, 'before_capture'));
@@ -27,6 +28,11 @@
       define('FS_DIR_TEMPLATE', FS_DIR_APP .'includes/templates/'. self::$template .'/');
       define('WS_DIR_TEMPLATE', WS_DIR_APP .'includes/templates/'. self::$template .'/');
 
+    // Set AJAX layout on AJAX request
+      if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        self::$layout = 'ajax';
+      }
+
     // Set some snippets
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['text_direction'] = in_array(language::$selected['code'], array('ar', 'he')) ? 'rtl' : 'ltr';
@@ -44,7 +50,7 @@
       //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>';
 
     // Local content
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/css/font-awesome.min.css" />';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/font-awesome.min.css" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.4.1.min.js"></script>';
 
     // Hreflang
@@ -60,32 +66,43 @@
       }
 
     // Get template settings
-      $template_config = include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php');
-      if (!is_array($template_config)) include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
-      self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
-      foreach (array_keys($template_config) as $i) {
-        if (!isset(self::$settings[$template_config[$i]['key']])) self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
-      }
+      $template_config = include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php');
+      if (!is_array($template_config)) include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
 
-    // JavaScript Environment
-      $config = array(
-        'platform' => array(
-          'url' => document::ilink(''),
-        ),
-        'session' => array(
-          'language_code' => language::$selected['code'],
-          'country_code' => customer::$data['country_code'],
-          'currency_code' => currency::$selected['code'],
-        ),
-        'template' => array(
-          'url' => document::link(WS_DIR_TEMPLATE),
-          'settings' => self::$settings,
-        ),
-      );
-      self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, JSON_UNESCAPED_SLASHES) .";</script>";
+      self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
+
+      foreach (array_keys($template_config) as $i) {
+        if (!isset(self::$settings[$template_config[$i]['key']])) {
+          self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
+        }
+      }
     }
 
     public static function prepare_output() {
+
+    // JavaScript Environment
+      self::$jsenv['platform'] = array(
+        'url' => document::ilink(''),
+      );
+
+      self::$jsenv['session'] = array(
+        'language_code' => language::$selected['code'],
+        'country_code' => customer::$data['country_code'],
+        'currency_code' => currency::$selected['code'],
+      );
+
+      self::$jsenv['template'] = array(
+        'url' => document::link(WS_DIR_TEMPLATE),
+        'settings' => self::$settings,
+      );
+
+      self::$jsenv['customer'] = array(
+        'id' => !empty(customer::$data['id']) ? customer::$data['id'] : null,
+        'name' => !empty(customer::$data['firstname']) ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
+        'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
+      );
+
+      self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .", config = _env;</script>";
 
     // Prepare title
       if (!empty(self::$snippets['title'])) {

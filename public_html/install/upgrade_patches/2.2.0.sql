@@ -119,6 +119,7 @@ ADD COLUMN `domain` VARCHAR(64) NOT NULL AFTER `user_agent`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_modules`
 ADD COLUMN `date_pushed` DATETIME NOT NULL AFTER `last_log`,
+ADD COLUMN `date_processed` DATETIME NOT NULL AFTER `date_pushed`,
 CHANGE COLUMN `date_updated` `date_updated` DATETIME NOT NULL,
 CHANGE COLUMN `date_created` `date_created` DATETIME NOT NULL;
 -- --------------------------------------------------------

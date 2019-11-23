@@ -1,8 +1,4 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
 
   if (empty($_GET['product_id'])) {
     http_response_code(400);
@@ -175,9 +171,9 @@
 
 // Watermark Images
   if (settings::get('product_image_watermark')) {
-    $_page->snippets['image']['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['image']['original'], array('watermark' => true));
+    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['image']['original'], array('watermark' => true));
     foreach (array_keys($_page->snippets['extra_images']) as $key) {
-      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(DOCUMENT_ROOT . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
+      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
     }
   }
 
@@ -222,35 +218,30 @@
 
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
+
     $shipping = new mod_shipping();
-    $cheapest_shipping = $shipping->cheapest(
+
+    $shipping_items = array(
       array(
-        $product->id => array(
-          'quantity' => 1,
-          'product_id' => $product->id,
-          'price' => !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price,
-          'tax_class_id' => $product->tax_class_id,
-          'weight' => $product->weight,
-          'weight_class' => $product->weight_class,
-          'dim_x' => $product->dim_x,
-          'dim_x' => $product->dim_x,
-          'dim_y' => $product->dim_y,
-          'dim_z' => $product->dim_z,
-          'dim_class' => $product->dim_class,
-        ),
+        'quantity' => 1,
+        'product_id' => $product->id,
+        'price' => !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price,
+        'tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
+        'tax_class_id' => $product->tax_class_id,
+        'weight' => $product->weight,
+        'weight_class' => $product->weight_class,
+        'dim_x' => $product->dim_x,
+        'dim_x' => $product->dim_x,
+        'dim_y' => $product->dim_y,
+        'dim_z' => $product->dim_z,
+        'dim_class' => $product->dim_class,
       ),
-      !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price,
-      tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
-      currency::$selected['code'],
-      customer::$data
     );
+
+    $cheapest_shipping = $shipping->cheapest($shipping_items, currency::$selected['code'], customer::$data);
+
     if (!empty($cheapest_shipping)) {
-      list($module_id, $option_id) = explode(':', $cheapest_shipping);
-      if (empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
-        $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
-        $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-        $_page->snippets['cheapest_shipping_fee'] = tax::get_price($shipping_cost, $shipping_tax_class_id);
-      }
+      $_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['cost'], $cheapest_shipping['tax_class_id']);
     }
   }
 

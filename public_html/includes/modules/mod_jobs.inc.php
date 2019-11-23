@@ -33,7 +33,7 @@
 
         $timestamp = microtime(true);
 
-        $this->modules[$module_id]->process($force, $this->modules[$module_id]->date_pushed);
+        $this->modules[$module_id]->process($force, $this->modules[$module_id]->date_processed);
 
         $log = ob_get_clean();
 
@@ -57,8 +57,9 @@
           $output .= $log . PHP_EOL;
 
           database::query(
-            "update ". DB_TABLE_MODULES ."
-            set last_log = '". database::input($log) ."'
+            "update ". DB_TABLE_MODULES ." set
+            last_log = '". database::input($log) ."',
+            date_processed = '". date('Y-m-d H:i:s') ."'
             where module_id = '". database::input($module_id) ."'
             limit 1;"
           );
