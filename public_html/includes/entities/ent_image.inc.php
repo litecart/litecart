@@ -95,6 +95,11 @@
               $this->_image = ImageCreateFromPNG($this->_src);
               break;
 
+            case 'webp':
+              $this->_type = 'png';
+              $this->_image = ImageCreateFromWebP($this->_src);
+              break;
+
             default:
               $this->load_from_string(file_get_contents($this->_src));
               break;
@@ -684,6 +689,11 @@
             case 'jpg':
                $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
                break;
+
+            case 'webp':
+               $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
+               break;
+
             default:
                $this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
                break;
@@ -736,64 +746,9 @@
               ImageDestroy($this->_image);
               return $result;
 
-            default:
-              ImageDestroy($this->_image);
-              throw new Exception('Unknown output format');
-          }
-      }
-    }
-
-    public function output($type='jpg', $quality=90) {
-
-      switch($this->_library) {
-        case 'imagick':
-
-          if (empty($this->_image)) $this->load();
-
-          if (empty($this->_image)) {
-            throw new Exception('Not a valid image object');
-          }
-
-          $this->_image->setImageFormat($type);
-          $this->_image->setImageCompressionQuality($quality);
-          return $this->_image->getImageBlob();
-
-        case 'gd':
-
-          if (!is_resource($this->_image)) $this->load();
-
-          if (!is_resource($this->_image)) {
-            throw new Exception('Not a valid image resource');
-          }
-
-          switch(strtolower($type)) {
-            case 'gif':
-              $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
-              ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocate($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2]));
-              ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
-              ImageAlphaBlending($_background, false);
-              imagetruecolortopalette($_background, false, 255);
-              $result = ImageGIF($_background, false);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
-              return $result;
-
-            case 'jpeg':
-            case 'jpg':
-              $_background = ImageCreateTrueColor(imagesx($this->_image), imagesy($this->_image));
-              ImageAlphaBlending($_background, true);
-              ImageFill($_background, 0, 0, ImageColorAllocateAlpha($_background, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
-              ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
-              ImageAlphaBlending($_background, false);
-              $result = ImageJPEG($_background, false, $quality);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
-              return $result;
-
-            case 'png':
+            case 'webp':
               ImageSaveAlpha($this->_image, true);
-              $result = ImagePNG($this->_image, false);
+              $result = ImageWebP($this->_image, $destination, $quality);
               ImageDestroy($this->_image);
               return $result;
 
@@ -871,13 +826,20 @@
           $params = getimagesize($this->_src);
           $image_type = $params[2];
         }
+
         switch($image_type) {
           case 1:
             $this->_type = 'gif';
             break;
+
           case 2:
             $this->_type = 'jpg';
             break;
+
+          case 18:
+            $this->_type = 'webp';
+            break;
+
           case 3:
           default:
             $this->_type = 'png';
