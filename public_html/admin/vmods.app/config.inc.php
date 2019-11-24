@@ -10,6 +10,7 @@
     ),
     'menu' => array(),
     'docs' => array(
+      'edit_vmod' => 'edit_vmod.inc.php',
       'download' => 'download.inc.php',
       'test' => 'test.inc.php',
       'view' => 'view.inc.php',

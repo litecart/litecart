@@ -102,6 +102,12 @@
     <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>
   </div>
 
+  <div class="panel-action">
+    <ul class="list-inline">
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_vmod'), true), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
+    </ul>
+  </div>
+
   <div class="panel-body">
     <?php echo functions::form_draw_form_begin('vmods_form', 'post'); ?>
 
@@ -115,6 +121,7 @@
             <th><?php echo language::translate('title_version', 'Version'); ?></th>
             <th><?php echo language::translate('title_author', 'Author'); ?></th>
             <th></th>
+            <th>&nbsp;</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
           </tr>
@@ -132,13 +139,14 @@
             <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vmod' => $vmod['filename']), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
             <td><a href="<?php echo document::href_link(null, array('doc' => 'view', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
             <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_vmod', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
 
         <tfoot>
           <tr>
-            <td colspan="9"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
+            <td colspan="10"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
           </tr>
         </tfoot>
       </table>
