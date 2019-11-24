@@ -169,11 +169,11 @@
 
             if (!$found) {
               switch ($operation['onerror']) {
-                case 'abort':
+                case 'warning':
                   trigger_error("Vmod \"{$vmod['title']}\" failed during operation #$i in \"{$short_file}\": Search not found" . PHP_EOL . $operation['find']['pattern'], E_USER_WARNING);
                   $modifications = $recovery;
                   continue 3;
-                case 'skip':
+                case 'ignore':
                 default:
                   continue 2;
               }
@@ -244,7 +244,7 @@
         $dom->preserveWhiteSpace = false;
 
         if (!$dom->loadXml($xml)) {
-          throw new Exception(libxml_get_errors());
+          throw new \Exception(libxml_get_errors());
         }
 
         switch ($dom->documentElement->tagName) {
@@ -287,7 +287,7 @@
         }
 
       } catch (\Exception $e) {
-        trigger_error("Could not parse file ($file): " . $e->getMessage(), E_USER_ERROR);
+        trigger_error("Could not parse file ($file): " . $e->getMessage(), E_USER_WARNING);
       }
     }
 
@@ -324,26 +324,13 @@
           'operations' => array(),
         );
 
-        foreach ($file_node->getElementsByTagName('operation') as $operation) {
+        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
 
-        // Ignoreif
-          if ($ignoreif_node = $operation->getElementsByTagName('ignoreif')->item(0)) {
-
-            if ($ignoreif_node->getAttribute('regex') == 'true') {
-              $ignoreif = $ignoreif_node->textContent;
-
-            } else {
-
-              if ($ignoreif_node->getAttribute('trim') != 'false') {
-                $ignoreif = trim($ignoreif);
-              }
-
-              $ignoreif = '#'. preg_quote($ignoreif_node->textContent, '#') .'#';
-            }
-          }
+        // On Error
+          $onerror = $operation_node->getAttribute('onerror');
 
         // Find
-          $find_node = $operation->getElementsByTagName('find')->item(0);
+          $find_node = $operation_node->getElementsByTagName('find')->item(0);
           $find = strtr($find_node->textContent, $aliases);
 
           if ($find_node->getAttribute('regex') == 'true') {
@@ -353,16 +340,13 @@
 
           // Trim
             if ($find_node->getAttribute('trim') != 'false') {
-              $find = ltrim(rtrim($find, " "), "\r\n");
-
-              if ($find_node->getAttribute('position') == 'replace') {
-                $find = rtrim($find, "\r\n");
-              }
+              $find_node->textContent = preg_replace('#^\r?\n?#s', '', $find_node->textContent); // Trim beginning of CDATA
+              $find_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $find_node->textContent); // Trim end of CDATA
             }
 
           // Offset
             $offset_before = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-before'));
-           $offset_after  = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-after')+2);
+            $offset_after  = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-after')+2);
 
           // Whitespace
             $find = preg_split('#(\r\n|\r|\n)#', $find);
@@ -384,28 +368,35 @@
           }
 
         // Ignoreif
-          $ignoreif = '';
-          if ($ignoreif_node = $operation->getElementsByTagName('ignoreif')->item(0)) {
+          if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
+            $ignoreif = strtr($ignoreif_node->textContent, $aliases);
 
             if ($ignoreif_node->getAttribute('regex') == 'true') {
-              $ignoreif = $ignoreif_node->textContent;
+              $ignoreif = trim($ignoreif);
+
             } else {
-              $ignoreif = '#'. preg_quote($ignoreif_node->textContent, '#') .'#';
+
+              if ($ignoreif_node->getAttribute('trim') != 'false') {
+                $ignoreif = preg_replace('#^\r?\n?#s', '', $ignoreif); // Trim beginning of CDATA
+                $ignoreif = preg_replace('#\r?\n[\t ]*$#s', '', $ignoreif); // Trim end of CDATA
+              }
+
+              $ignoreif = '#'. preg_quote($ignoreif, '#') .'#';
             }
           }
 
         // Insert
-          $insert_node = $operation->getElementsByTagName('insert')->item(0);
+          $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
           $insert = strtr($insert_node->textContent, $aliases);
 
-          if ($insert_node->getAttribute('regex') != 'true') {
+          if ($insert_node->getAttribute('regex') == 'true') {
+            $insert = trim($insert);
+
+          } else {
 
             if ($insert_node->getAttribute('trim') != 'false') {
-              $insert = ltrim(rtrim($insert, " "), "\r\n");
-
-              if ($insert_node->getAttribute('position') == 'replace') {
-                $insert = rtrim($insert, "\r\n");
-              }
+              $insert = preg_replace('#^\r?\n?#s', '', $insert); // Trim beginning of CDATA
+              $insert = preg_replace('#\r?\n[\t ]*$#s', '', $insert); // Trim end of CDATA
             }
 
             switch($position = $insert_node->getAttribute('position')) {
@@ -450,13 +441,12 @@
 
         // Gather
           $vmod_file['operations'][] = array(
-            'onerror' => $operation->getAttribute('onerror'),
+            'onerror' => $onerror,
             'find' => array(
               'pattern' => $find,
               'indexes' => $indexes,
-              'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
             ),
-            'ignoreif' => $ignoreif,
+            'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
             'insert' => $insert,
           );
         }
@@ -488,16 +478,32 @@
 
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
+        // On Error
+          switch ($file_node->getAttribute('error')) {
+            case 'error':
+              $onerror = 'warning';
+              break;
+
+            case 'skip':
+              $onerror = 'ignore';
+              break;
+
+            case 'abort':
+            default:
+              $onerror = 'cancel';
+              break;
+          }
+
         $mod_file = array(
           'path' => $file_node->getAttribute('path'),
           'name' => $file_node->getAttribute('name'),
           'operations' => array()
         );
 
-        foreach ($file_node->getElementsByTagName('operation') as $operation) {
+        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
 
         // Search
-          $search_node = $operation->getElementsByTagName('search')->item(0);
+          $search_node = $operation_node->getElementsByTagName('search')->item(0);
           $search = $search_node->textContent;
 
         // Regex
@@ -508,11 +514,8 @@
 
           // Trim
             if ($search_node->getAttribute('trim') != 'false') {
-              $search = ltrim(rtrim($search, " "), "\r\n");
-
-              if ($search_node->getAttribute('position') == 'replace') {
-                $search = rtrim($search, "\r\n");
-              }
+              $search = preg_replace('#^\r?\n?#s', '', $search); // Trim beginning of CDATA
+              $search = preg_replace('#\r?\n[\t ]*$#s', '', $search); // Trim end of CDATA
             }
 
           // Whitespace
@@ -555,34 +558,35 @@
           }
 
         // Ignoreif
-          $ignoreif = '';
-          if ($ignoreif_node = $operation->getElementsByTagName('ignoreif')->item(0)) {
+          if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
+            $ignoreif = $ignoreif_node->textContent;
 
             if ($ignoreif_node->getAttribute('regex') == 'true') {
-              $ignoreif = $ignoreif_node->textContent;
+              $ignoreif = trim($ignoreif);
 
             } else {
 
               if ($ignoreif_node->getAttribute('trim') != 'false') {
-                $ignoreif = trim($ignoreif);
+                $ignoreif = preg_replace('#^\r?\n?#s', '', $ignoreif); // Trim beginning of CDATA
+                $ignoreif = preg_replace('#\r?\n[\t ]*$#s', '', $ignoreif); // Trim end of CDATA
               }
 
-              $ignoreif = '#'. preg_quote($ignoreif_node->textContent, '#') .'#';
+              $ignoreif = '#'. preg_quote($ignoreif, '#') .'#';
             }
           }
 
         // Add
-          $add_node = $operation->getElementsByTagName('add')->item(0);
+          $add_node = $operation_node->getElementsByTagName('add')->item(0);
           $add = $add_node->textContent;
 
-          if ($add_node->getAttribute('regex') != 'true') {
+          if ($add_node->getAttribute('regex') == 'true') {
+            $add = trim($add);
 
-            $multiline = preg_match('#^([ \t]+)?\R#', $add) ? PHP_EOL : '';
+          } else {
 
             if ($add_node->getAttribute('trim') != 'false') {
-              $add = preg_replace('#^(\s+)?\R#', '', $add); // Trim leading whitespace
-              $add = preg_replace('#\R(\s+)?$#', '', $add); // Trim trailing whitespace
-              $add = trim($add, "\r\n");
+              $add = preg_replace('#^\r?\n?#s', '', $add); // Trim beginning of CDATA
+              $add = preg_replace('#\r?\n[\t ]*$#s', '', $add); // Trim end of CDATA
             }
 
             switch($search_node->getAttribute('position')) {
@@ -625,12 +629,12 @@
 
         // Gather
           $mod_file['operations'][] = array(
-            'onerror' => $operation->getAttribute('onerror'),
+            'onerror' => $onerror,
             'find' => array(
               'pattern' => $search,
               'indexes' => $indexes,
             ),
-            'ignoreif' => $ignoreif,
+            'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
             'insert' => $add,
           );
         }
