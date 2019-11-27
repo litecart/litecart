@@ -140,7 +140,7 @@
           'parent_id' => $category->parent_id,
           'code' => $category->code,
           'name' => $category->name,
-          'keywords' => implode(',', $product->keywords),
+          'keywords' => implode(',', $category->keywords),
           'short_description' => $category->short_description,
           'description' => $category->description,
           'meta_description' => $category->meta_description,
