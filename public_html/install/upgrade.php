@@ -35,9 +35,8 @@
     where `key` = 'platform_database_version'
     limit 1;"
   );
-  $platform_database_version = database::fetch($platform_database_version_query);
 
-  if (!empty($platform_database_version)) {
+  if ($platform_database_version = database::fetch($platform_database_version_query)) {
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
     if (empty($_REQUEST['from_version'])) $_REQUEST['from_version'] = PLATFORM_DATABASE_VERSION;
   }
