@@ -14,17 +14,23 @@
 
     <?php echo functions::form_draw_form_begin('customer_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
+      <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
       <div class="row">
-        <div class="form-group col-md-6">
+        <?php if (settings::get('customer_field_company')) { ?>
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
           <?php echo functions::form_draw_text_field('company', true); ?>
         </div>
+        <?php } ?>
 
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+        <?php if (settings::get('customer_field_tax_id')) { ?>
+        <div class="form-group col-xs-6">
+          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
           <?php echo functions::form_draw_text_field('tax_id', true); ?>
         </div>
+        <?php } ?>
       </div>
+      <?php } ?>
 
       <div class="row">
         <div class="form-group col-md-6">
