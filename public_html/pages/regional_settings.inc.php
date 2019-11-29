@@ -9,36 +9,42 @@
   if (isset($_POST['save'])) {
 
     try {
-      $_POST['language_code'] = !empty($_POST['language_code']) ? $_POST['language_code'] : '';
-      $_POST['currency_code'] = !empty($_POST['currency_code']) ? $_POST['currency_code'] : '';
-      $_POST['country_code'] = !empty($_POST['country_code']) ? $_POST['country_code'] : '';
-      $_POST['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
-      $_POST['display_prices_including_tax'] = isset($_POST['display_prices_including_tax']) ? (int)$_POST['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax');
 
-      language::set($_POST['language_code']);
+      if (!empty($_POST['language_code'])) {
+        language::set($_POST['language_code']);
+      }
 
-      currency::set($_POST['currency_code']);
+      if (!empty($_POST['currency_code'])) {
+        currency::set($_POST['currency_code']);
+      }
 
-      customer::$data['country_code'] = $_POST['country_code'];
-      customer::$data['zone_code'] = $_POST['zone_code'];
+      if (!empty($_POST['country_code'])) {
+        customer::$data['country_code'] = $_POST['country_code'];
+        customer::$data['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
+        customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
+        customer::$data['shipping_address']['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
+        if (!empty($_COOKIE['cookies_accepted'])) {
+          header('Set-Cookie: country_code='. $_POST['country_code'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+          header('Set-Cookie: zone_code='. $_POST['zone_code'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+        }
+      }
 
-      customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
-      customer::$data['shipping_address']['zone_code'] = $_POST['zone_code'];
-
-      customer::$data['display_prices_including_tax'] = $_POST['display_prices_including_tax'];
-
-      if (!empty($_COOKIE['cookies_accepted'])) {
-        header('Set-Cookie: country_code='. $_POST['country_code'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
-        header('Set-Cookie: zone_code='. $_POST['zone_code'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
-        header('Set-Cookie: display_prices_including_tax='. $_POST['display_prices_including_tax'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+      if (isset($_POST['display_prices_including_tax'])) {
+        customer::$data['display_prices_including_tax'] = (bool)$_POST['display_prices_including_tax'];
+        if (!empty($_COOKIE['cookies_accepted'])) {
+          header('Set-Cookie: display_prices_including_tax='. (int)$_POST['display_prices_including_tax'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+        }
       }
 
       if (empty($_GET['redirect_url'])) {
-        $_GET['redirect_url'] = document::ilink('', array(), null, array(), $_POST['language_code']);
+        $_GET['redirect_url'] = document::ilink('', array(), null, array(), !empty($_POST['language_code']) ? $_POST['language_code'] : '');
       }
 
-      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. $_GET['redirect_url']);
+      if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+        header('Location: '. $_GET['redirect_url']);
+      }
+
       exit;
 
     } catch (Exception $e) {
