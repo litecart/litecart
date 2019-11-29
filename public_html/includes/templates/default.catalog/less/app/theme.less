@@ -167,6 +167,10 @@ html {
 
 #content {
   grid-area: content;
+  grid-gap: @default-gutter-size/2;
+  @media (min-width: (@media-breakpoint-sm)) {
+    grid-gap: @default-gutter-size;
+  }
 }
 
 #footer {
