@@ -69,7 +69,7 @@
           $sql = explode('-- --------------------------------------------------------', $sql);
 
           foreach ($sql as $query) {
-            $query = preg_replace('#--.*\s#', '', $query);
+            $query = preg_replace('#^-- .*?\R+#m', '', $query);
             if (!empty($query)) {
               database::query($query);
             }
