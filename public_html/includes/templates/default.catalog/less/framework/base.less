@@ -3,9 +3,12 @@
 }
 
 html {
-  font: @default-text-size @default-text-font;
+  font: calc(@default-text-size - 2px) @default-text-font;
   line-height: @default-line-height;
   color: @default-text-color;
+  @media (min-width: @media-breakpoint-sm) {
+    font: @default-text-size @default-text-font;
+  }
 }
 
 html, body {
@@ -16,9 +19,13 @@ html, body {
 
 h1, h2, h3, h4 {
   color: @default-title-color;
-  margin: @default-gutter-size 0;
+  margin: @default-gutter-size/2 0;
   border-bottom: 1px solid @default-border-color;
-  padding-bottom: @default-gutter-size/2;
+  padding-bottom: @default-gutter-size/4;
+  @media (min-width: @media-breakpoint-sm) {
+    padding-bottom: @default-gutter-size/2;
+    margin: @default-gutter-size 0;
+  }
 }
 
 p {

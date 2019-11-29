@@ -199,9 +199,14 @@ h3 {
   box-sizing: border-box;
 }
 html {
-  font: 15px Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font: calc(15px - 2px) Arial, 'Helvetica Neue', Helvetica, sans-serif;
   line-height: 1.333333;
   color: #333;
+}
+@media (min-width: 768px) {
+  html {
+    font: 15px Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  }
 }
 html,
 body {
@@ -214,9 +219,18 @@ h2,
 h3,
 h4 {
   color: #333;
-  margin: 20px 0;
+  margin: 10px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+}
+@media (min-width: 768px) {
+  h1,
+  h2,
+  h3,
+  h4 {
+    padding-bottom: 10px;
+    margin: 20px 0;
+  }
 }
 p {
   margin: 20px 0;
@@ -834,8 +848,8 @@ tr.semi-transparent td {
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: 20px;
-  margin-bottom: 20px;
+  grid-gap: 10px;
+  margin-bottom: 10px;
 }
 .row.column {
   flex-direction: column;
@@ -849,6 +863,12 @@ tr.semi-transparent td {
 }
 .row [class*="col-"] {
   grid-column: span 12;
+}
+@media (min-width: 768px) {
+  .row {
+    grid-gap: 20px;
+    margin-bottom: 20px;
+  }
 }
 .col-xs-1 {
   grid-column: span 1 !important;
@@ -1035,9 +1055,7 @@ textarea {
   line-height: inherit;
   outline: 0;
 }
-input[data-type="currency"],
-input[data-type="number"],
-input[data-type="decimal"] {
+input[type="number"] {
   text-align: right;
 }
 .form-group.required label::after {
@@ -1465,7 +1483,7 @@ ul.list-inline li {
   }
   .navbar .open .dropdown-menu > li > a,
   .navbar .open .dropdown-menu .dropdown-header {
-    padding: 5px 15px 5px 25px;
+    padding: 5px 15px 5px 15px;
   }
   .navbar .open .dropdown-menu > li > a {
     line-height: 20px;
@@ -1514,7 +1532,7 @@ ul.list-inline li {
 .navbar-header .navbar-toggle {
   position: relative;
   flex: 0 1 auto;
-  padding: 5px 10px;
+  padding: 7px;
   margin: 10px 10px 10px 0;
   background-color: rgba(0, 0, 0, 0.05);
   background-image: none;
@@ -1544,7 +1562,6 @@ ul.list-inline li {
   display: block;
   width: 22px;
   height: 2px;
-  border-radius: 1px;
   transition: all 250ms ease-in-out;
 }
 .navbar-toggle .icon-bar + .icon-bar {

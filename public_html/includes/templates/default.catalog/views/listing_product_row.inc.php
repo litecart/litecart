@@ -8,7 +8,7 @@
 
     <div class="info">
       <div class="name"><?php echo $name; ?></div>
-      <div class="manufacturer-name"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
+      <div class="manufacturer-name hidden-xs"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
       <div class="description"><?php echo $short_description; ?></div>
     </div>
 
