@@ -51,6 +51,21 @@
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
 
+  ### PHP > Check Disabled Functions ############################
+
+  echo '<p>Checking PHP disabled functions... ';
+
+  $critical_functions = array('error_log', 'ini_set');
+  $important_functions = array('allow_url_fopen', 'exec', 'apache_get_modules');
+
+  if ($disabled_functions = array_intersect($critical_functions, preg_split('#, ?#', ini_get('disable_functions')))) {
+    die('<span class="error">[Error] Critical functions disabled ('. implode(', ', $disabled_functions) .'). You need to unblock them in php.ini</span></p>');
+  if ($disabled_functions = array_intersect($important_functions, preg_split('#, ?#', ini_get('disable_functions')))) {
+    echo '<span class="warning">[Warning] Some common functions are disabled ('. implode(', ', $disabled_functions) .'). It is recommended that you unblock them in php.ini.</span></p>';
+  } else {
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+
   ### PHP > Check display_errors ################################
 
   echo '<p>Checking PHP display_errors... ';
