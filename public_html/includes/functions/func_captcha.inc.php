@@ -16,6 +16,7 @@
     switch ($set) {
       case 'alphabet':
         $possible = 'abcdefghijklmnopqrstuvwxyz';
+        break;
       case 'numbers':
         $possible = '1234567890';
         break;
