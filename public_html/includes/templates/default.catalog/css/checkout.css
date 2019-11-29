@@ -53,6 +53,7 @@
 }
 #box-checkout-customer fieldset {
   border: none;
+  padding: 0;
 }
 #box-checkout-customer button[type=submit]:not([disabled]) {
   font-weight: bold;
