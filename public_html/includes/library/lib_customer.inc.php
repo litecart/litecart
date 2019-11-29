@@ -116,7 +116,7 @@
             limit 1;"
           );
           $country = database::fetch($countries_query);
-          if (!empty($country['iso_code_2']) && in_array($country['iso_code_2'], $countries)) self::$data['country_code'] = $country['iso_code_2'];
+          if (!empty($country['iso_code_2'])) self::$data['country_code'] = $country['iso_code_2'];
         }
       }
 
