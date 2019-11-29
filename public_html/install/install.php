@@ -411,6 +411,16 @@
     }
   }
 
+  ### Files > Delete Some Files #########################################
+
+  echo '<p>Delete some files...';
+
+  if (file_delete('vqmod/xml/multiple_category_images.xml')) {
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  } else {
+    echo ' <span class="error">[Skipped]</span></p>' . PHP_EOL;
+  }
+
   ### Files > Development Type ##################################
 
   echo '<p>Preparing CSS files...' . PHP_EOL;
