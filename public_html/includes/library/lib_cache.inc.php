@@ -157,6 +157,10 @@
             $hash_string .= $_SERVER['REQUEST_URI'];
             break;
 
+          case 'user':
+            $hash_string .= user::$data['id'];
+            break;
+
           default:
             $hash_string .= is_array($dependency) ? implode('', $dependency) : $dependency;
             break;
