@@ -1326,8 +1326,8 @@
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
                + '    <td>'
-               + '      <a class="edit" href="#" title="<?php echo functions::general_escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-pencil fa-fw')); ?></a></td>'
-               + '      <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-fw', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <a class="edit" href="#" title="<?php echo functions::general_escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-pencil fa-fw')); ?></a>'
+               + '      <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-fw', 'style="color: #cc3333;"')); ?></a>'
                + '    </td>'
                + '  </tr>';
 
