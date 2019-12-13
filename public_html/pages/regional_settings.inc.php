@@ -40,11 +40,8 @@
         $_GET['redirect_url'] = document::ilink('', array(), null, array(), !empty($_POST['language_code']) ? $_POST['language_code'] : '');
       }
 
-      if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-        notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-        header('Location: '. $_GET['redirect_url']);
-      }
-
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. $_GET['redirect_url']);
       exit;
 
     } catch (Exception $e) {
