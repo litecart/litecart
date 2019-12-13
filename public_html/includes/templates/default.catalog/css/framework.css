@@ -762,6 +762,7 @@ ul.breadcrumb li a {
 @media (min-width: 768px) {
   .dropdown-menu .navbar-form {
     min-width: 320px;
+    margin: 20px;
   }
 }
 .dropdown .dropdown .dropdown-menu {
@@ -1553,8 +1554,7 @@ ul.list-inline li {
   }
 }
 .navbar-form {
-  border-top: 1px solid transparent;
-  margin: 6px 12px;
+  margin: 6px;
 }
 .navbar-toggle .icon-bar {
   position: relative;
