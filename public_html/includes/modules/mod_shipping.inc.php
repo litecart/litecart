@@ -43,9 +43,9 @@
         $subtotal['tax'] += $item['tax'] * $item['quantity'];
       }
 
-      $this->data['options'] = array();
-
       if (empty($this->modules)) return;
+
+      $this->data['options'] = array();
 
       foreach ($this->modules as $module) {
 

@@ -36,9 +36,9 @@
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
 
-      $this->data['options'] = array();
-
       if (empty($this->modules)) return;
+
+      $this->data['options'] = array();
 
       $subtotal = array('amount' => 0, 'tax' => 0);
       foreach ($items as $item) {
