@@ -1533,8 +1533,8 @@ ul.list-inline li {
 .navbar-header .navbar-toggle {
   position: relative;
   flex: 0 1 auto;
-  padding: 7px;
-  margin: 10px 10px 10px 0;
+  padding: 5px;
+  margin: 5px 5px 5px 0;
   background-color: rgba(0, 0, 0, 0.05);
   background-image: none;
   border: none;
@@ -1554,7 +1554,12 @@ ul.list-inline li {
   }
 }
 .navbar-form {
-  margin: 6px;
+  margin: 5px;
+}
+@media (min-width: 768px) {
+  .navbar-form {
+    margin: calc((20px/4) + 1px);
+  }
 }
 .navbar-toggle .icon-bar {
   position: relative;

@@ -10,19 +10,16 @@ html {
 }
 
 #header {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  padding: @default-gutter-size/2;
 
-  > .twelve-eighty {
-    display: grid;
-    grid-template-columns: auto auto;
-    align-items: center;
-    padding: @default-gutter-size/2;
-
-    @media (min-width: (@media-breakpoint-sm)) {
-      padding: @default-gutter-size;
-    }
-    @media (min-width: @media-breakpoint-md) {
-      grid-template-columns: @default-sidebar-width auto @default-sidebar-width;
-    }
+  @media (min-width: (@media-breakpoint-sm)) {
+    padding: @default-gutter-size;
+  }
+  @media (min-width: @media-breakpoint-md) {
+    grid-template-columns: @default-sidebar-width auto @default-sidebar-width;
   }
 
   .logotype img {

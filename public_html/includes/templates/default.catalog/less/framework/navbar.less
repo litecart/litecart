@@ -147,8 +147,8 @@
   .navbar-toggle {
     position: relative;
     flex: 0 1 auto;
-    padding: 7px;
-    margin: @default-gutter-size/2 @default-gutter-size/2 @default-gutter-size/2 0;
+    padding: @default-gutter-size/4;
+    margin: @default-gutter-size/4 @default-gutter-size/4 @default-gutter-size/4 0;
     background-color: rgba(0, 0, 0, 0.05);
     background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
     border: none;
@@ -169,7 +169,10 @@
 }
 
 .navbar-form {
-  margin: 6px;
+  margin: @default-gutter-size/4;
+  @media (min-width: @media-breakpoint-sm) {
+    margin: ~"calc((@{default-gutter-size}/4) + 1px)";
+  }
 }
 
 .navbar-toggle {
