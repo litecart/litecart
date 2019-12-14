@@ -12,7 +12,7 @@
   function form_reinsert_value($name, $array_value=null) {
     if (empty($name)) return;
 
-    foreach (array($_POST, $_GET) as $superglobal) {
+    foreach (array($_POST, $_REQUEST, $_GET) as $superglobal) {
       if (empty($superglobal)) continue;
 
       foreach (explode('&', http_build_query($superglobal)) as $pair) {
