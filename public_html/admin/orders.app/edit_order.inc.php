@@ -1159,7 +1159,7 @@
   $('#box-comments .add').click(function(e) {
 
     e.preventDefault();
-    while ($('input[name="comments['+new_comment_index+'][id]"]').length) new_comment_index++;
+    while ($('input[name="comments[new_'+new_comment_index+'][id]"]').length) new_comment_index++;
     var output = '  <div class="bubble local me">'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][id]', ''); ?>'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff'); ?>'
