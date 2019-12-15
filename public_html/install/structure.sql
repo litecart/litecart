@@ -173,7 +173,7 @@ CREATE TABLE `lc_customers` (
   `last_ip` VARCHAR(39) NOT NULL,
   `last_host` VARCHAR(128) NOT NULL,
   `last_agent` VARCHAR(256) NOT NULL,
-  `date_login` DATETIME NOT NULL,
+  `date_login` DATETIME NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
