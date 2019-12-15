@@ -197,7 +197,7 @@
       '%address1, %address2\n' +
       '%postcode %city\n' +
       '%zone_code, %zone_name\n' +
-      '%country_code_2, %country_code_3, %country_name\n'
+      '%country_number, %country_code, %country_code_3, %country_name, %country_domestic_name\n'
     );
   });
 
