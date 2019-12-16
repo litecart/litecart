@@ -10,3 +10,6 @@ UPDATE `lc_settings` SET
   `priority` = 10
 WHERE `key` = 'regional_settings_screen_enabled'
 LIMIT 1;
+-- --------------------------------------------------------
+INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('advanced', 'local', 'Control Panel Link', 'The URL to your control panel, e.g. cPanel.', 'control_panel_link', '?app=settings&doc=advanced&action=edit&key=control_panel_link', 'text()', 18, NOW(), NOW());

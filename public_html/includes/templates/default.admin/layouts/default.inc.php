@@ -73,17 +73,25 @@
 -->
 
 
-      <?php if (settings::get('webmail_link', '')) { ?>
+      <?php if ($webmail_link = settings::get('webmail_link', '')) { ?>
       <li>
-        <a href="<?php echo settings::get('webmail_link'); ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
+        <a href="<?php echo webmail_link; ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
           <?php echo functions::draw_fonticon('fa-envelope'); ?>
         </a>
       </li>
       <?php } ?>
 
-      <?php if (settings::get('database_admin_link')) { ?>
+      <?php if ($control_panel_link = settings::get('control_panel_link', '')) { ?>
       <li>
-        <a href="<?php echo settings::get('database_admin_link'); ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
+        <a href="<?php echo $control_panel_link; ?>" target="_blank" title="<?php echo language::translate('title_control_panel', 'Control Panel'); ?>">
+          <?php echo functions::draw_fonticon('fa-cogs'); ?>
+        </a>
+      </li>
+      <?php } ?>
+
+      <?php if ($database_admin_link = settings::get('database_admin_link')) { ?>
+      <li>
+        <a href="<?php echo $database_admin_link; ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
           <?php echo functions::draw_fonticon('fa-database'); ?>
         </a>
       </li>
