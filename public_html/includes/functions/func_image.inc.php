@@ -113,8 +113,8 @@
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
-      if (!is_dir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 3))) {
-        if (!mkdir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 3), 0777)) {
+      if (!is_dir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 2))) {
+        if (!mkdir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 2), 0777)) {
           trigger_error('Could not create cache subfolder', E_USER_WARNING);
           return false;
         }
@@ -195,15 +195,15 @@
       '.webp',
     ));
 
-    if (!is_dir(FS_DIR_APP . 'cache/' . substr($filename, 0, 3))) {
-      if (!mkdir(FS_DIR_APP . 'cache/' . substr($filename, 0, 3))) {
+    if (!is_dir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
+      if (!mkdir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
         trigger_error('Could not create cache subfolder', E_USER_WARNING);
         return false;
       }
     }
 
     return image_process($source, array(
-      'destination' => FS_DIR_APP . 'cache/' . substr($filename, 0, 3) . '/' . $filename,
+      'destination' => FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename,
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,

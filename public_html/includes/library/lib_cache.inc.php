@@ -189,7 +189,7 @@
 
         case 'file':
 
-          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 3) .'/'. $token['id'] .'.cache';
+          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
@@ -226,7 +226,7 @@
 
         case 'file':
 
-          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 3) .'/'. $token['id'] .'.cache';
+          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
           if (!is_dir(dirname($cache_file))) {
             if (!mkdir(dirname($cache_file))) {
