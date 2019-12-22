@@ -24,6 +24,11 @@
         document::$snippets['head_tags']['ionicons'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css" />';
         return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
+    // Material Design Icons
+      case (substr($class, 0, 4) == 'mdi-'):
+        document::$snippets['head_tags']['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css" />';
+        return '<i class="mdi '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+    }
 
     switch($class) {
       case 'add':
