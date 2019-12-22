@@ -51,6 +51,21 @@
     return !empty($result) ? true : false;
   }
 
+// Function to modify file using regex
+  function file_modify_regex($files, $pattern, $replace) {
+
+    foreach (glob($files) as $file) {
+      echo 'Modify '. $file . '<br />' . PHP_EOL;
+
+      $contents = file_get_contents($file);
+      $contents = preg_replace('#\R#u', PHP_EOL, $contents);
+      $contents = preg_replace($pattern, $replace, $contents);
+      $result = file_put_contents($file, $contents);
+    }
+
+    return !empty($result) ? true : false;
+  }
+
 // Function to rename file or folder
   function file_rename($source, $target) {
 
