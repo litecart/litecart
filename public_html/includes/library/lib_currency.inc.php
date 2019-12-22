@@ -29,6 +29,7 @@
         where status
         order by priority;"
       );
+
       while ($row = database::fetch($currencies_query)) {
         self::$currencies[$row['code']] = $row;
       }

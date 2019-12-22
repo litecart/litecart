@@ -10,6 +10,7 @@
         "select * from ". DB_TABLE_SETTINGS ."
         where `type` = 'global';"
       );
+
       while ($row = database::fetch($configuration_query)) {
         self::$_cache[$row['key']] = $row['value'];
       }

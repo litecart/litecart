@@ -54,7 +54,7 @@
       self::set('page_parse_time', $page_parse_time);
 
     // Output stats
-      if (!empty(user::$data['id'])) {
+      //if (!empty(user::$data['id'])) {
 
         $stats = '<!--' . PHP_EOL
                . '  System Statistics:' . PHP_EOL
@@ -71,7 +71,7 @@
                . '-->';
 
         $GLOBALS['output'] = preg_replace('#</html>$#', '</html>' . PHP_EOL . $stats, $GLOBALS['output']);
-      }
+      //}
     }
 
     public static function set($key, $value) {
