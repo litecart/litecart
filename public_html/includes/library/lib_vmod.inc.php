@@ -7,6 +7,7 @@
     private static $_checked = array();                 // Array of files that have already passed check() and
     private static $_checksums = array();               // Array of checksums for time comparison
     private static $_aliases = array();                 // Array of path aliases
+    private static $_installed = array();               // Array of path aliases
     public static $time_elapsed = 0;                    // Array of path aliases
 
     public static function init() {
@@ -45,6 +46,14 @@
         //where TABLE_SCHEMA = '". DB_DATABASE ."'
         //and table_name = '". DB_TABLE_PREFIX ."modifications'
         //limit 1;"
+      }
+
+    // Load installed
+      $installed_file = FS_DIR_APP . 'vmods/.installed';
+      if (is_file($installed_file)) {
+        foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $vmod_id) {
+          self::$_installed[] = $vmod_id;
+        }
       }
 
     // Get modifications from cache
@@ -286,6 +295,20 @@
           }
         }
 
+    // Run install for previously not installed modifications
+        if (!in_array($vmod['id'], self::$_installed)) {
+
+        // Exceute install in an isolated scope
+          if (!empty($vmod['install'])) {
+            (function(){
+              eval(func_get_args()[0]);
+            })($vmod['install']);
+          }
+
+          file_put_contents(FS_DIR_APP . 'vmods/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+          self::$_installed[] = $vmod['id'];
+        }
+
       } catch (\Exception $e) {
         trigger_error("Could not parse file ($file): " . $e->getMessage(), E_USER_WARNING);
       }
@@ -305,12 +328,20 @@
         //'id' => '',
         'title' => $dom->getElementsByTagName('title')->item(0)->textContent,
         'files' => array(),
+        'install' => null,
       );
 
-      $aliases = array();
-      foreach ($dom->getElementsByTagName('alias') as $alias_node) {
-        $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+      if ($dom->getElementsByTagName('install')->length > 0) {
+        $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
       }
+
+
+      //if ($dom->getElementsByTagName('alias')->length > 0) {
+        $aliases = array();
+        foreach ($dom->getElementsByTagName('alias') as $alias_node) {
+          $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+        }
+      //}
 
       if (empty($dom->getElementsByTagName('file'))) {
         throw new \Exception('File has no defined files to modify');
