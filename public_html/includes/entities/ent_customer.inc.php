@@ -202,7 +202,7 @@
 
       database::query(
         "delete from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
-        where email = '". database::input($this->data['newsletter']) ."'
+        where email = '". database::input($this->data['email']) ."'
         limit 1;"
       );
 
