@@ -18,6 +18,7 @@
     var now = new Date();
     var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
     document.cookie = 'cookies_accepted=1;expires=' + expires.toUTCString();
+    if (typeof window.cookiesAccepted === 'function') window.cookiesAccepted();
   });
 
   $('button[name="decline_cookies"]').click(function(){
@@ -26,4 +27,12 @@
     var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
     document.cookie = 'cookies_accepted=0;expires=0';
   });
+
+  window.cookiesAccepted = function(){
+    // Run code here for when cookies are accepted
+  }
+
+  if (document.cookie.match(/cookies_accepted=1/)) {
+    window.cookiesAccepted();
+  }
 </script>
