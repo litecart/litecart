@@ -1,7 +1,7 @@
 <?php
 
   $categories_images_query = database::query(
-    "select id from `". DB_TABLE_PREFIX ."categories_images`
+    "select id from `". DB_PREFIX ."categories_images`
     group by category_id
     having count(*) >= 2;"
   );

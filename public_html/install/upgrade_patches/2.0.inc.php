@@ -93,15 +93,15 @@
     ),
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');",
-      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_MODULES',                           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'modules`');",
+      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'manufacturers_info`');",
+      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'manufacturers_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_MODULES',                           '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'modules`');",
     ),
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');",
-      'replace' => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');" . PHP_EOL
-                 . "  define('DB_TABLE_SLIDES_INFO',                       '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides_info`');",
+      'search'  => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'slides`');",
+      'replace' => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'slides`');" . PHP_EOL
+                 . "  define('DB_TABLE_SLIDES_INFO',                       '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'slides_info`');",
     ),
     array(
       'file'    => FS_DIR_APP . '.htaccess',
@@ -183,7 +183,7 @@
       mb_convert_variables('UTF-8', null, $module['settings']);
 
       database::query(
-        "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "modules`
+        "insert into `". DB_DATABASE ."`.`". DB_PREFIX . "modules`
         (module_id, type, status, settings, priority, date_updated, date_created)
         values ('". database::input($module['key']) ."', '". database::input($type) ."', ". (int)$status .", '". database::input(json_encode($module['settings'])) ."', ". (int)$priority .", '". $module['date_updated'] ."', '". $module['date_created'] ."');"
       );
@@ -223,7 +223,7 @@
 
     foreach ($languages as $language_code) {
       database::query(
-        "insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "slides_info`
+        "insert into `". DB_DATABASE ."`.`". DB_PREFIX . "slides_info`
         (slide_id, language_code, caption, link)
         values (". (int)$slide['id'] .", '". database::input($language_code) ."', '". database::input($slide['caption']) ."', '". database::input($slide['link']) ."');"
       );

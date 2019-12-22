@@ -18,7 +18,7 @@
         );
       }
       database::query(
-        "insert into `". DB_TABLE_PREFIX ."products_to_categories`
+        "insert into `". DB_PREFIX ."products_to_categories`
         (product_id, category_id)
         values ('". (int)$product['id'] ."', '". (int)$category_id ."');"
       );
@@ -97,16 +97,16 @@
   $modified_files = array(
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'seo_links_cache`');" . PHP_EOL,
+      'search'  => "define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'seo_links_cache`');" . PHP_EOL,
       'replace' => "",
     ),
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_prices`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_prices`');" . PHP_EOL
-                 . "  define('DB_TABLE_PRODUCTS_TO_CATEGORIES',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_to_categories`');" . PHP_EOL
-                 . "  define('DB_TABLE_QUANTITY_UNITS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'quantity_units`');" . PHP_EOL
-                 . "  define('DB_TABLE_QUANTITY_UNITS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'quantity_units_info`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'products_prices`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_PRODUCTS_PRICES',                   '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'products_prices`');" . PHP_EOL
+                 . "  define('DB_TABLE_PRODUCTS_TO_CATEGORIES',            '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'products_to_categories`');" . PHP_EOL
+                 . "  define('DB_TABLE_QUANTITY_UNITS',                    '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'quantity_units`');" . PHP_EOL
+                 . "  define('DB_TABLE_QUANTITY_UNITS_INFO',               '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'quantity_units_info`');" . PHP_EOL,
     ),
   );
 

@@ -80,7 +80,7 @@
   define('DB_USERNAME', $_REQUEST['db_username']);
   define('DB_PASSWORD', $_REQUEST['db_password']);
   define('DB_DATABASE', $_REQUEST['db_database']);
-  define('DB_TABLE_PREFIX', $_REQUEST['db_table_prefix']);
+  define('DB_PREFIX', $_REQUEST['db_table_prefix']);
   define('DB_DATABASE_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
 
@@ -147,7 +147,7 @@
     '{DB_USERNAME}' => $_REQUEST['db_username'],
     '{DB_PASSWORD}' => $_REQUEST['db_password'],
     '{DB_DATABASE}' => $_REQUEST['db_database'],
-    '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
+    '{DB_PREFIX}' => $_REQUEST['db_table_prefix'],
     '{DB_DATABASE_CHARSET}' => 'utf8',
     '{DB_PERSISTENT_CONNECTIONS}' => 'false',
     '{CLIENT_IP}' => $_REQUEST['client_ip'],
@@ -171,7 +171,7 @@
   echo '<p>Cleaning database... ';
 
   $sql = file_get_contents('clean.sql');
-  $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+  $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
     $query = preg_replace('#--.*\s#', '', $query);
@@ -187,7 +187,7 @@
   $sql = file_get_contents('structure.sql');
 
   $map = array(
-    '`lc_' => '`'.DB_TABLE_PREFIX,
+    '`lc_' => '`'.DB_PREFIX,
     '{DATABASE_COLLATION}' => $_REQUEST['db_collation'],
   );
 
@@ -207,7 +207,7 @@
   echo '<p>Writing database table data... ';
 
   $sql = file_get_contents('data.sql');
-  $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+  $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
   $map = array(
     '{STORE_NAME}' => $_REQUEST['store_name'],
@@ -317,7 +317,7 @@
   require('../includes/functions/func_password.inc.php');
 
   database::query(
-    "insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_users`') ."
+    "insert into ". str_replace('`lc_', '`'.DB_PREFIX, '`lc_users`') ."
     (`id`, `status`, `username`, `password_hash`, `date_updated`, `date_created`)
     values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
@@ -329,7 +329,7 @@
   if (defined('PLATFORM_VERSION')) {
 
     database::query(
-      "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+      "update ". str_replace('`lc_', '`'.DB_PREFIX, '`lc_settings`') ."
       set `value` = '". database::input(PLATFORM_VERSION) ."'
       where `key` = 'platform_database_version'
       limit 1;"
@@ -361,7 +361,7 @@
 
           if (empty($sql)) continue;
 
-          $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+          $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
           foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
             $query = preg_replace('#--.*\s#', '', $query);
@@ -386,7 +386,7 @@
     $sql = file_get_contents('data/demo/data.sql');
 
     if (!empty($sql)) {
-      $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+      $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
       $sql = explode('-- --------------------------------------------------------', $sql);
 
@@ -468,7 +468,7 @@
   echo '<p>Set cache breakpoint...';
 
   database::query(
-    "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+    "update ". str_replace('`lc_', '`'.DB_PREFIX, '`lc_settings`') ."
     set value = '". date('Y-m-d H:i:s') ."'
     where `key` = 'cache_system_breakpoint'
     limit 1;"

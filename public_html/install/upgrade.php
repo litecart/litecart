@@ -65,7 +65,7 @@
         if (file_exists('upgrade_patches/'. $version .'.sql')) {
           echo '<p>Upgrading database to '. $version .'... ' . PHP_EOL;
           $sql = file_get_contents('upgrade_patches/'. $version .'.sql');
-          $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+          $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
           $sql = explode('-- --------------------------------------------------------', $sql);
 
@@ -91,7 +91,7 @@
     if (defined('PLATFORM_VERSION')) {
 
       database::query(
-        "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+        "update ". str_replace('`lc_', '`'.DB_PREFIX, '`lc_settings`') ."
         set `value` = '". database::input(PLATFORM_VERSION) ."'
         where `key` = 'platform_database_version'
         limit 1;"

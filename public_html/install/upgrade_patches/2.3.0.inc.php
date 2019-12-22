@@ -15,9 +15,14 @@
   $modified_files = array(
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
+      'search'  => "DB_TABLE_PREFIX",
+      'replace' => "DB_PREFIX",
+    ),
+    array(
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'manufacturers_info`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'manufacturers_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
     ),
   );
 
