@@ -151,14 +151,11 @@
     '{DB_DATABASE_CHARSET}' => 'utf8',
     '{DB_PERSISTENT_CONNECTIONS}' => 'false',
     '{CLIENT_IP}' => $_REQUEST['client_ip'],
-    '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
   );
 
   foreach ($map as $search => $replace) {
     $config = str_replace($search, $replace, $config);
   }
-
-  define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
 
   if (file_put_contents('../includes/config.inc.php', $config)) {
     echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
