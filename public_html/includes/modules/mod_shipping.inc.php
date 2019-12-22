@@ -65,7 +65,7 @@
             'title' => !empty($option['title']) ? $option['title'] : $this->data['options'][$module->id]['title'],
             'name' => $option['name'],
             'description' => $option['description'],
-            'fields' => $option['fields'],
+            'fields' => !empty($option['fields']) ? $option['fields'] : '',
             'cost' => (float)$option['cost'],
             'tax_class_id' => (int)$option['tax_class_id'],
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
