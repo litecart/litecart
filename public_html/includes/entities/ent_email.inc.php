@@ -2,6 +2,7 @@
 
   class ent_email {
     public $data;
+    public $previous;
 
     public function __construct($email_id=null, $charset=null) {
 

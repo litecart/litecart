@@ -59,6 +59,14 @@
         throw new Exception('You cannot disable the default currency.');
       }
 
+      if (!empty($this->previous['code'])) {
+        if ($this->data['code'] != $this->previous['code']) {
+          if ($this->previous['code'] == settings::get('store_currency_code')) {
+            throw new Exception('Cannot rename the store currency.');
+          }
+        }
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_CURRENCIES ."

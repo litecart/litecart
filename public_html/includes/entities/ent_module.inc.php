@@ -74,6 +74,8 @@
 
     public function load($module_id, $type) {
 
+      if (!preg_match('#^[a-z0-9_]+$#', $module_id)) throw new Exception('Invalid module (ID: '. $module_id .')');
+
       $this->reset();
 
       $modules_query = database::query(
