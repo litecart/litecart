@@ -434,7 +434,7 @@
                 break;
 
               default:
-                throw new \Exception("Unknown value \"$position\" for attribute position (replace|before|after|ireplace|iafter|ibefore)");
+                throw new \Exception("Unknown value \"$position\" for attribute position (replace|before|after|all)");
                 continue 2;
             }
           }
@@ -592,10 +592,12 @@
             switch($search_node->getAttribute('position')) {
 
               case 'before':
+              case 'ibefore':
                 $add = addcslashes($add, '\\$').'$0';
                 break;
 
               case 'after':
+              case 'iafter':
                 $add = '$0'. addcslashes($add, '\\$');
                 break;
 
@@ -612,6 +614,7 @@
                 break;
 
               case 'replace':
+              case 'ireplace':
                 $add = addcslashes($add, '\\$');
                 break;
 
@@ -622,7 +625,7 @@
                 break;
 
               default:
-                throw new \Exception('Unknown value for attribute position ('. $search_node->getAttribute('position') .')');
+                throw new \Exception('Unknown value ('. $search_node->getAttribute('position') .') for attribute position (replace|before|after|ireplace|ibefore|iafter)');
                 continue 2;
             }
           }
