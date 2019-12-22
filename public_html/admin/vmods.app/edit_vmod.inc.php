@@ -197,9 +197,9 @@ textarea {
             <div class="operation">
 
               <div class="pull-right">
-                <a class="move-up" href="#"><?php echo functions::draw_fonticon('fa-arrow-circle-up', 'style="color: #00c;"'); ?></a>
-                <a class="move-down" href="#"><?php echo functions::draw_fonticon('fa-arrow-circle-down', 'style="color: #00c;"'); ?></a>
-                <a class="remove" href="#"><?php echo functions::draw_fonticon('fa-times-circle', 'style="color: #c00;"'); ?></a>
+                <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
               </div>
 
               <div class="row">
@@ -342,9 +342,9 @@ textarea {
   <div class="operation">
 
     <div class="pull-right">
-      <a class="move-up" href="#"><?php echo functions::draw_fonticon('fa-arrow-circle-up', 'style="color: #00c;"'); ?></a>
-      <a class="move-down" href="#"><?php echo functions::draw_fonticon('fa-arrow-circle-down', 'style="color: #00c;"'); ?></a>
-      <a class="remove" href="#"><?php echo functions::draw_fonticon('fa-times-circle', 'style="color: #c00;"'); ?></a>
+      <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
+      <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
+      <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
     </div>
 
     <div class="row">

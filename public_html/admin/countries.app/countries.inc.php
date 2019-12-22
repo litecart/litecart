@@ -60,7 +60,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_code', 'Code'); ?></th>
@@ -72,14 +72,14 @@
 
         <tbody>
           <?php foreach ($countries as $country) { ?>
-          <tr class="<?php echo empty($country['status']) ? 'semi-transparent' : null; ?>">
+          <tr class="<?php echo empty($country['status']) ? 'semi-transparent' : ''; ?>">
             <td><?php echo functions::form_draw_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($country['status']) ? '#88cc44' : '#ff6644') .'";'); ?></td>
+            <td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $country['id']; ?></td>
             <td><?php echo $country['iso_code_2']; ?></td>
             <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><?php echo $country['name']; ?></a></td>
             <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES ." where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

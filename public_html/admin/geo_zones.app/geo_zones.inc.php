@@ -69,7 +69,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
@@ -84,7 +84,7 @@
             <td><?php echo $geo_zone['id']; ?></td>
             <td><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>"><?php echo $geo_zone['name']; ?></a></td>
             <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ." where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

@@ -168,13 +168,13 @@
             <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][code]', true); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][name]', true); ?></td>
-            <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+            <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?></a></td>
+            <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?></a></td>
           </tr>
         </tfoot>
       </table>
@@ -210,7 +210,7 @@
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][code]', '')); ?></td>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][name]', '')); ?></td>'
-               + '      <td style="text-align: right;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <td style="text-align: right;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + '    </tr>';
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
     output = output.replace(/new_zone_code/g, $('input[name="zone[code]"]').val());

@@ -44,7 +44,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_tax_class', 'Tax Class'); ?></th>
             <th><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></th>
@@ -67,7 +67,7 @@
             <td><?php echo $tax_rate['description']; ?></td>
             <td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
             <td><?php echo $tax_rate['type']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

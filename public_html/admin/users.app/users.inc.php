@@ -62,7 +62,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
             <th class="main"><?php echo language::translate('title_username', 'Username'); ?></th>
             <th>&nbsp;</th>
@@ -71,11 +71,11 @@
 
         <tbody>
           <?php foreach ($users as $user) { ?>
-          <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : null; ?>">
+          <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : ''; ?>">
             <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+            <td><?php echo functions::draw_fonticon($user['status'] ? 'on' : 'off'); ?></td>
             <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php }?>
         </tbody>

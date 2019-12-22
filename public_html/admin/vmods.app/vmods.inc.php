@@ -114,7 +114,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
             <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -131,7 +131,7 @@
           <?php foreach ($vmods as $vmod) { ?>
           <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
             <td><?php echo functions::form_draw_checkbox('vmods['. $vmod['filename'] .']', $vmod['filename']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($vmod['enabled'] ? '#88cc44' : '#ff6644') .';"'); ?></td>
+            <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
             <td><a href="<?php echo document::link(null,  array('doc' => 'view', 'vmod' => $vmod['filename']), true); ?>"><?php echo $vmod['filename']; ?></a></td>
             <td><?php echo $vmod['title']; ?></td>
             <td><?php echo $vmod['version']; ?></td>
@@ -139,7 +139,7 @@
             <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vmod' => $vmod['filename']), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
             <td><a href="<?php echo document::href_link(null, array('doc' => 'view', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
             <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_vmod', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_vmod', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

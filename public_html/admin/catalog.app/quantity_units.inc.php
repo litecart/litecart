@@ -43,7 +43,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_name', 'Name'); ?></th>
             <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
@@ -58,7 +58,7 @@
             <td><?php echo $quantity_unit['id']; ?></td>
             <td><a href="<?php echo document::href_link('', array('doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']), true); ?>"><?php echo $quantity_unit['name']; ?></a></td>
             <td><?php echo $quantity_unit['description']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

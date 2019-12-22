@@ -44,7 +44,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
             <th class="text-center"><?php echo language::translate('title_code', 'Code'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -61,7 +61,7 @@
             <td><?php echo $attribute_group['code']; ?></td>
             <td><a href="<?php echo document::href_link('', array('doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']), array('app')); ?>"><?php echo $attribute_group['name']; ?></a></td>
             <td style="text-align: center;"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ATTRIBUTE_VALUES ." where group_id = ". (int)$attribute_group['id'] .";")); ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

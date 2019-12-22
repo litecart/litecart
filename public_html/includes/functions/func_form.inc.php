@@ -36,39 +36,7 @@
     return '';
   }
 
-  function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
-
-    if (!empty($icon)) {
-      switch($icon) {
-        case 'add':
-          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
-          break;
-        case 'cancel':
-          $icon = functions::draw_fonticon('fa-times');
-          break;
-        case 'remove':
-        case 'delete':
-          $icon = functions::draw_fonticon('fa-trash-o');
-          break;
-        case 'ok':
-          $icon = functions::draw_fonticon('fa-check');
-          break;
-        case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-          break;
-        case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-          break;
-        case 'save':
-          $icon = functions::draw_fonticon('fa-floppy-o');
-          break;
-        case 'send':
-          $icon = functions::draw_fonticon('fa-paper-plane');
-          break;
-        default:
-          $icon = functions::draw_fonticon($icon);
-      }
-    }
+  function form_draw_button($name, $value, $type='submit', $parameters='', $fonticon='') {
 
     if (is_array($value)) {
       list($value, $title) = $value;
@@ -76,7 +44,7 @@
       $title = $value;
     }
 
-    return '<button '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $title .'</button>';
+    return '<button '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($fonticon)) ? functions::draw_fonticon($fonticon) . ' ' : '') . $title .'</button>';
   }
 
   function form_draw_captcha_field($name, $id, $parameters='') {
@@ -213,38 +181,13 @@
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_link_button($url, $title, $parameters='', $icon='') {
+  function form_draw_link_button($url, $title, $parameters='', $fonticon='') {
 
     if (empty($url)) {
       $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
 
-    if (!empty($icon)) {
-      switch($icon) {
-        case 'add':
-          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
-          break;
-        case 'cancel':
-          $icon = functions::draw_fonticon('fa-times');
-          break;
-        case 'delete':
-          $icon = functions::draw_fonticon('fa-trash-o');
-          break;
-        case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-          break;
-        case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-          break;
-        case 'save':
-          $icon = functions::draw_fonticon('fa-floppy-o');
-          break;
-        default:
-          $icon = functions::draw_fonticon($icon);
-      }
-    }
-
-    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. (!empty($icon) ? $icon . ' ' : false) . $title .'</a>';
+    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. (!empty($fonticon) ? functions::draw_fonticon($fonticon) . ' ' : false) . $title .'</a>';
   }
 
   function form_draw_month_field($name, $value=true, $parameters='') {

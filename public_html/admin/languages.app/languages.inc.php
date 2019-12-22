@@ -42,12 +42,6 @@
 
   $page_items = 0;
   while ($language = database::fetch($languages_query)) {
-    switch ($language['status']) {
-      case '1': $language['status_color'] = '#88cc44'; break;
-      case '-1': $language['status_color'] = '#ded90f'; break;
-      case '0': $language['status_color'] = '#ff6644'; break;
-    }
-
     $languages[] = $language;
     if (++$page_items == settings::get('data_table_rows_per_page')) break;
   }
@@ -75,7 +69,7 @@
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_code', 'Code'); ?></th>
@@ -89,16 +83,16 @@
 
         <tbody>
         <?php foreach ($languages as $language) { ?>
-          <tr class="<?php echo empty($language['status']) ? 'semi-transparent' : null; ?>">
+          <tr class="<?php echo empty($language['status']) ? 'semi-transparent' : ''; ?>">
             <td><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $language['status_color'] .';"'); ?></td>
+            <td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
             <td><?php echo $language['id']; ?></td>
             <td><?php echo $language['code']; ?></td>
             <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo $language['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
