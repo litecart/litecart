@@ -31,12 +31,12 @@
 
     public function options($items=null, $currency_code=null, $customer=null) {
 
-      if (empty($items)) return;
+      if (empty($items)) return array();
 
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
 
-      if (empty($this->modules)) return;
+      if (empty($this->modules)) return array();
 
       $this->data['options'] = array();
 
