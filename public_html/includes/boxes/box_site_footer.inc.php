@@ -1,5 +1,5 @@
 <?php
-  $box_site_footer_cache_token = cache::token('box_site_footer', array('language', 'login', 'region'), 'file');
+  $box_site_footer_cache_token = cache::token('box_site_footer', array('language', 'login', 'region'));
   if (cache::capture($box_site_footer_cache_token)) {
 
     $box_site_footer = new ent_view();

@@ -1,6 +1,6 @@
 <?php
 
-  $box_slides_cache_token = cache::token('box_slides', array('language'), 'file');
+  $box_slides_cache_token = cache::token('box_slides', array('language'));
   if (cache::capture($box_slides_cache_token)) {
 
     $slides_query = database::query(

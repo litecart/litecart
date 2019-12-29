@@ -1,5 +1,5 @@
 <?php
-  $box_categories_cache_token = cache::token('box_categories', array('language'), 'file');
+  $box_categories_cache_token = cache::token('box_categories', array('language'));
   if (cache::capture($box_categories_cache_token)) {
 
     $categories_query = functions::catalog_categories_query();

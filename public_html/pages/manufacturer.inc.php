@@ -31,8 +31,8 @@
 
   $_page = new ent_view();
 
-  $manufacturer_cache_token = cache::token('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
-  if (!$_page->snippets = cache::get($manufacturer_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+  $manufacturer_cache_token = cache::token('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
+  if (!$_page->snippets = cache::get($manufacturer_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
     $_page->snippets = array(
       'id' => $manufacturer->id,

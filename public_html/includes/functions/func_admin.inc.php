@@ -2,7 +2,7 @@
 
   function admin_get_apps() {
 
-    $apps_cache_token = cache::token('admin_apps', array('language'), 'file');
+    $apps_cache_token = cache::token('admin_apps', array('language'));
     if (!$apps = cache::get($apps_cache_token)) {
       $apps = array();
 
@@ -26,7 +26,7 @@
 
   function admin_get_widgets() {
 
-    $widgets_cache_token = cache::token('admin_widgets', array('language'), 'file');
+    $widgets_cache_token = cache::token('admin_widgets', array('language'));
     if (!$widgets = cache::get($widgets_cache_token)) {
       $widgets = array();
 

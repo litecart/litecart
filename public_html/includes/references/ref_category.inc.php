@@ -12,7 +12,7 @@
       if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_id = (int)$category_id;
-      $this->_cache_token = cache::token('category_'.(int)$category_id, array($language_code), 'file');
+      $this->_cache_token = cache::token('category_'.(int)$category_id, array($language_code));
       $this->_language_codes = array_unique(array(
         $language_code,
         settings::get('default_language_code'),

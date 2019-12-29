@@ -1,5 +1,5 @@
 <?php
-  $box_manufacturer_links_cache_token = cache::token('box_manufacturer_links', array('language', isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : ''), 'file');
+  $box_manufacturer_links_cache_token = cache::token('box_manufacturer_links', array('language', isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : ''));
   if (cache::capture($box_manufacturer_links_cache_token)) {
 
     $manufacturers_query = database::query(

@@ -14,7 +14,7 @@
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
     // Load cached links (url rewrites)
-      self::$_links_cache_token = cache::token('links', array('site', 'language'), 'file');
+      self::$_links_cache_token = cache::token('links', array('site', 'language'));
       self::$_links_cache = cache::get(self::$_links_cache_token);
 
       event::register('after_capture', array(__CLASS__, 'after_capture'));

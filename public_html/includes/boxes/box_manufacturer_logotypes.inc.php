@@ -1,6 +1,6 @@
 <?php
 
-  $box_manufacturer_logotypes_cache_token = cache::token('box_manufacturer_logotypes', array(), 'file');
+  $box_manufacturer_logotypes_cache_token = cache::token('box_manufacturer_logotypes', array());
   if (cache::capture($box_manufacturer_logotypes_cache_token)) {
 
     $manufacturers_query = database::query(
