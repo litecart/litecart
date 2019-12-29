@@ -75,7 +75,7 @@
 
       <?php if ($webmail_link = settings::get('webmail_link', '')) { ?>
       <li>
-        <a href="<?php echo webmail_link; ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
+        <a href="<?php echo $webmail_link; ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
           <?php echo functions::draw_fonticon('fa-envelope'); ?>
         </a>
       </li>
