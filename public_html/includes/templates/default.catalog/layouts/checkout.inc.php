@@ -13,18 +13,16 @@
 </head>
 <body>
 
-<header id="header">
-  <div class="twelve-eighty">
-    <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-      <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
-    </a>
+<header id="header" class="twelve-eighty">
+  <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
+    <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+  </a>
 
-    <div class="middle"></div>
+  <div class="middle hidden-xs hidden-sm"></div>
 
-    <div class="customer-service hidden-xs">
-      <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>
-      <div class="phone"><?php echo settings::get('store_phone'); ?></div>
-    </div>
+  <div class="customer-service hidden-xs">
+    <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>
+    <div class="phone"><?php echo settings::get('store_phone'); ?></div>
   </div>
 </header>
 
