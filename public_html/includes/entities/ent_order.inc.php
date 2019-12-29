@@ -574,7 +574,7 @@
       }
     }
 
-    public function validate() {
+    public function validate(&$shipping, &$payment) {
 
     // Validate items
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
@@ -662,35 +662,31 @@
       }
 
     // Validate shipping option
-      if (!empty($GLOBALS['shipping'])) {
-        if (!empty($GLOBALS['shipping']->modules) && count($GLOBALS['shipping']->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
-          if (empty($this->data['shipping_option']['id'])) {
-            return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
-          } else {
-            list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
-            if (empty($GLOBALS['shipping']->data['options'][$module_id]['options'][$option_id])) {
-              return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
-            }
-            if (!empty($GLOBALS['shipping']->data['options'][$module_id]['options'][$option_id]['error'])) {
-              return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains an error');
-            }
+      if (!empty($shipping->modules) && count($shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+        if (empty($this->data['shipping_option']['id'])) {
+          return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
+        } else {
+          list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+          if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
+            return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
+          }
+          if (!empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
+            return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains an error');
           }
         }
       }
 
     // Validate payment option
-      if (!empty($GLOBALS['payment'])) {
-        if (!empty($GLOBALS['payment']->modules) && count($GLOBALS['payment']->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
-          if (empty($this->data['payment_option']['id'])) {
-            return language::translate('error_no_payment_method_selected', 'No payment method selected');
-          } else {
-            list($module_id, $option_id) = explode(':', $this->data['payment_option']['id']);
-            if (empty($GLOBALS['payment']->data['options'][$module_id]['options'][$option_id])) {
-              return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
-            }
-            if (!empty($GLOBALS['payment']->data['options'][$module_id]['options'][$option_id]['error'])) {
-              return language::translate('error_payment_method_contains_error', 'The selected payment method contains an error');
-            }
+      if (!empty($payment->modules) && count($payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+        if (empty($this->data['payment_option']['id'])) {
+          return language::translate('error_no_payment_method_selected', 'No payment method selected');
+        } else {
+          list($module_id, $option_id) = explode(':', $this->data['payment_option']['id']);
+          if (empty($payment->data['options'][$module_id]['options'][$option_id])) {
+            return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+          }
+          if (!empty($payment->data['options'][$module_id]['options'][$option_id]['error'])) {
+            return language::translate('error_payment_method_contains_error', 'The selected payment method contains an error');
           }
         }
       }
