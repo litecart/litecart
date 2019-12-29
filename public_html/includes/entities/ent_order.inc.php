@@ -663,7 +663,7 @@
 
     // Validate shipping option
       if (!empty($GLOBALS['shipping'])) {
-        if (!empty($GLOBALS['shipping']->modules) && count($GLOBALS['shipping']->options()) > 0) {
+        if (!empty($GLOBALS['shipping']->modules) && count($GLOBALS['shipping']->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
           if (empty($this->data['shipping_option']['id'])) {
             return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
           } else {
@@ -671,19 +671,25 @@
             if (empty($GLOBALS['shipping']->data['options'][$module_id]['options'][$option_id])) {
               return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
             }
+            if (!empty($GLOBALS['shipping']->data['options'][$module_id]['options'][$option_id]['error'])) {
+              return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains an error');
+            }
           }
         }
       }
 
     // Validate payment option
       if (!empty($GLOBALS['payment'])) {
-        if (!empty($GLOBALS['payment']->modules) && count($GLOBALS['payment']->options()) > 0) {
+        if (!empty($GLOBALS['payment']->modules) && count($GLOBALS['payment']->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
           if (empty($this->data['payment_option']['id'])) {
             return language::translate('error_no_payment_method_selected', 'No payment method selected');
           } else {
             list($module_id, $option_id) = explode(':', $this->data['payment_option']['id']);
             if (empty($GLOBALS['payment']->data['options'][$module_id]['options'][$option_id])) {
               return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+            }
+            if (!empty($GLOBALS['payment']->data['options'][$module_id]['options'][$option_id]['error'])) {
+              return language::translate('error_payment_method_contains_error', 'The selected payment method contains an error');
             }
           }
         }
