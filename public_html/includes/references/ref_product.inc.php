@@ -239,10 +239,9 @@
                 limit 1;"
               );
 
-              if ($option_group = database::fetch($option_group_query)) {
-                foreach (array('id', 'function', 'required') as $key) {
-                  $this->_data['options'][$product_option['group_id']][$key] = $option_group[$key];
-                }
+              if (!$option_group = database::fetch($option_group_query)) continue;
+              foreach (array('id', 'function', 'required') as $key) {
+                $this->_data['options'][$product_option['group_id']][$key] = $option_group[$key];
               }
             }
 
@@ -269,10 +268,9 @@
                 limit 1;"
               );
 
-              if ($option_value = database::fetch($option_value_query)) {
-                foreach (array('id', 'value') as $key) {
-                  $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $option_value[$key];
-                }
+              if (!$option_value = database::fetch($option_value_query)) continue;
+              foreach (array('id', 'value') as $key) {
+                $this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']][$key] = $option_value[$key];
               }
             }
 
@@ -283,6 +281,7 @@
                 and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
+
               while ($option_value_info = database::fetch($option_values_info_query)) {
                 foreach ($option_value_info as $key => $value) {
                   if (in_array($key, array('id', 'value_id', 'language_code'))) continue;
@@ -297,6 +296,7 @@
             if ((isset($product_option[$this->_currency_code]) && $product_option[$this->_currency_code] != 0) || (isset($product_option[settings::get('store_currency_code')]) && $product_option[settings::get('store_currency_code')] != 0)) {
 
               switch ($product_option['price_operator']) {
+
                 case '+':
                   if ($product_option[$this->_currency_code] != 0) {
                     $product_option['price_adjust'] = currency::convert($product_option[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
@@ -304,6 +304,7 @@
                     $product_option['price_adjust'] = $product_option[settings::get('store_currency_code')];
                   }
                   break;
+
                 case '%':
                   if ($product_option[$this->_currency_code] != 0) {
                     $product_option['price_adjust'] = $this->price * ((float)$product_option[$this->_currency_code] / 100);
@@ -311,6 +312,7 @@
                     $product_option['price_adjust'] = $this->price * $product_option[settings::get('store_currency_code')] / 100;
                   }
                   break;
+
                 case '*':
                   if ($product_option[$this->_currency_code] != 0) {
                     $product_option['price_adjust'] = $this->price * $product_option[$this->_currency_code];
@@ -318,6 +320,7 @@
                     $product_option['price_adjust'] = $this->price * $product_option[settings::get('store_currency_code')];
                   }
                   break;
+
                 default:
                   trigger_error('Unknown price operator for option', E_USER_WARNING);
                   break;

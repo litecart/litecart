@@ -235,11 +235,13 @@
 
           self::$_loaded_translations[] = $code;
           return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
-        }
 
-      // Return english translation
-        self::$_loaded_translations[] = $code;
-        return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
+        // Return english translation
+          if (!empty($translation['text_en'])) {
+            self::$_loaded_translations[] = $code;
+            return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
+          }
+        }
       }
 
     // Return default translation
