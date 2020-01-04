@@ -80,26 +80,18 @@
           echo '<p>Upgrading system to '. $version .'... ' . PHP_EOL;
           include('upgrade_patches/'. $version .'.inc.php');
         }
+
+        echo '<p>Set platform database version...';
+
+        database::query(
+          "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+          set `value` = '". database::input($version) ."'
+          where `key` = 'platform_database_version'
+          limit 1;"
+        );
+
+        echo ' <strong>'. $version .'</strong></p>' . PHP_EOL;
       }
-    }
-
-    #############################################
-
-    echo '<p>Set platform database version...';
-
-    if (defined('PLATFORM_VERSION')) {
-
-      database::query(
-        "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
-        set `value` = '". database::input(PLATFORM_VERSION) ."'
-        where `key` = 'platform_database_version'
-        limit 1;"
-      );
-
-      echo ' <strong>'. PLATFORM_VERSION .'</strong></p>' . PHP_EOL;
-
-    } else {
-      echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
     }
 
     #############################################
