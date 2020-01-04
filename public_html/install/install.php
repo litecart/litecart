@@ -461,9 +461,11 @@
   } else {
 
     $files_to_delete = array(
-      '../includes/templates/default.catalog/less/',
       '../includes/templates/default.catalog/css/*.min.css',
       '../includes/templates/default.catalog/css/*.min.css.map',
+      '../includes/templates/default.catalog/js/*.min.js',
+      '../includes/templates/default.catalog/js/*.min.js.map',
+      '../includes/templates/default.catalog/less/',
     );
 
     foreach ($files_to_delete as $file) {
@@ -483,6 +485,7 @@
         'checkout.min.css'  => 'checkout.css',
         'framework.min.css' => 'framework.css',
         'printable.min.css' => 'printable.css',
+        'app.min.js' => 'app.js',
       );
       file_put_contents($file, strtr($contents, $search_replace));
     }
