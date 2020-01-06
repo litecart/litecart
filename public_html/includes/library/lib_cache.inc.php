@@ -174,16 +174,15 @@
       );
     }
 
-    public static function get($token, $max_age=900, $no_hard_refresh=false) {
+    public static function get($token, $max_age=900, $force_cache=false) {
 
       if (is_string($token)) {
         trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
         return;
       }
 
-      if (empty(self::$enabled)) return;
-
-      if (empty($no_hard_refresh)) {
+      if (empty($force_cache)) {
+        if (empty(self::$enabled)) return;
 
       // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
         if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return;
@@ -268,7 +267,7 @@
     }
 
     // Output recorder (This option is not affected by $enabled as fresh data is always recorded)
-    public static function capture($token, $max_age=900, $force=false) {
+    public static function capture($token, $max_age=900, $force_cache=false) {
 
       if (is_string($token)) {
         trigger_error('Cache id has been deprecated and replaced by a token', E_USER_DEPRECATED);
@@ -277,7 +276,7 @@
 
       if (isset(self::$_recorders[$token['id']])) trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
 
-      $_data = self::get($token, $max_age, $force);
+      $_data = self::get($token, $max_age, $force_cache);
 
       if (!empty($_data)) {
         echo $_data;
