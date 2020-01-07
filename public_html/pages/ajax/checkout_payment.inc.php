@@ -16,6 +16,10 @@
       notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
       $payment->select($module_id, $option_id, $_POST);
+      if (route::$route['page'] != 'order_process') {
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
+      }
     }
   }
 

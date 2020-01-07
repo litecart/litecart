@@ -149,7 +149,7 @@
       limit 1;"
     );
 
-    $order = database::fetch($query);
-
-    return $order['public_key'];
+    if ($order = database::fetch($query)) {
+      return $order['public_key'];
+    }
   }

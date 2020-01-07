@@ -11,16 +11,23 @@
 
   <div class="address billing-address">
 
+    <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
     <div class="row">
+      <?php if (settings::get('customer_field_company')) { ?>
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
         <?php echo functions::form_draw_text_field('company', true); ?>
       </div>
+      <?php } ?>
+
+      <?php if (settings::get('customer_field_tax_id')) { ?>
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
         <?php echo functions::form_draw_text_field('tax_id', true); ?>
       </div>
+      <?php } ?>
     </div>
+    <?php } ?>
 
     <div class="row">
       <div class="form-group col-xs-6">
@@ -89,12 +96,14 @@
 
     <fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
 
+      <?php if (settings::get('customer_field_company')) { ?>
       <div class="row">
-        <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
+        <div class="form-group col-xs-6">
+        <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
           <?php echo functions::form_draw_text_field('shipping_address[company]', true); ?>
         </div>
       </div>
+      <?php } ?>
 
       <div class="row">
         <div class="form-group col-sm-6">

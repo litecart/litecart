@@ -53,10 +53,8 @@
           continue;
         }
 
-        $page = database::fetch($page_query);
-
       // No page, let's create it
-        if (empty($page)) {
+        if (!$page = database::fetch($page_query)) {
           if (empty($_POST['insert'])) {
             echo "[Skipped] New page on line $line was not inserted to database.\r\n";
             continue;

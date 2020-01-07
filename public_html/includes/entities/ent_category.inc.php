@@ -39,7 +39,6 @@
       }
 
       $this->data['filters'] = array();
-      $this->data['images'] = array();
 
       $this->previous = $this->data;
     }
@@ -72,16 +71,6 @@
           if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
           $this->data[$key][$category_info['language_code']] = $value;
         }
-      }
-
-    // Images
-      $category_images_query = database::query(
-        "select * from ". DB_TABLE_CATEGORIES_IMAGES."
-        where category_id = ". (int)$this->data['id'] ."
-        order by priority asc, id asc;"
-      );
-      while ($image = database::fetch($category_images_query)) {
-        $this->data['images'][$image['id']] = $image;
       }
 
     // Filters
@@ -171,70 +160,6 @@
         );
       }
 
-    // Delete images
-      $category_images_query = database::query(
-        "select * from ". DB_TABLE_CATEGORIES_IMAGES ."
-        where category_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
-      );
-      while ($category_image = database::fetch($category_images_query)) {
-        if (is_file(FS_DIR_APP . 'images/' . $category_image['filename'])) unlink(FS_DIR_APP . 'images/' . $category_image['filename']);
-        functions::image_delete_cache(FS_DIR_APP . 'images/' . $category_image['filename']);
-        database::query(
-          "delete from ". DB_TABLE_CATEGORIES_IMAGES ."
-          where category_id = ". (int)$this->data['id'] ."
-          and id = ". (int)$category_image['id'] ."
-          limit 1;"
-        );
-      }
-
-    // Update images
-      if (!empty($this->data['images'])) {
-        $image_priority = 1;
-        foreach (array_keys($this->data['images']) as $key) {
-          if (empty($this->data['images'][$key]['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_CATEGORIES_IMAGES ."
-              (category_id)
-              values (". (int)$this->data['id'] .");"
-            );
-            $this->data['images'][$key]['id'] = database::insert_id();
-          }
-
-          if (!empty($this->data['images'][$key]['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename'])) {
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename']);
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
-            rename(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
-            $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
-          }
-
-          database::query(
-            "update ". DB_TABLE_CATEGORIES_IMAGES ." set
-              filename = '". database::input($this->data['images'][$key]['filename']) ."',
-              priority = '". $image_priority++ ."'
-            where category_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['images'][$key]['id'] ."
-            limit 1;"
-          );
-        }
-      }
-
-    // Update category image
-      if (!empty($this->data['images'])) {
-        $images = array_values($this->data['images']);
-        $image = array_shift($images);
-        $this->data['image'] = $image['filename'];
-      } else {
-        $this->data['image'];
-      }
-
-      database::query(
-        "update ". DB_TABLE_CATEGORIES ." set
-        image = '". database::input($this->data['image']) ."'
-        where id=". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
     // Delete filters
       database::query(
         "delete from ". DB_TABLE_CATEGORIES_FILTERS ."
@@ -273,12 +198,9 @@
       cache::clear_cache('categories');
     }
 
-    public function add_image($file, $filename='') {
+    public function save_image($file, $filename='') {
 
       if (empty($file)) return;
-
-      $checksum = md5_file($file);
-      if (in_array($checksum, array_column($this->data['images'], 'checksum'))) return false;
 
       if (!empty($filename)) $filename = 'categories/' . $filename;
 
@@ -291,12 +213,11 @@
       if (!$image = new ent_image($file)) return false;
 
     // 456-Fancy-category-title-N.jpg
-      $i=1;
-      while (empty($filename) || is_file(FS_DIR_APP . 'images/' . $filename)) {
-        $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type();
+      if (!empty($filename)) {
+        $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
       }
 
-      $priority = count($this->data['images'])+1;
+      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
 
       if (settings::get('image_downsample_size')) {
         list($width, $height) = explode(',', settings::get('image_downsample_size'));
@@ -308,20 +229,12 @@
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 
       database::query(
-        "insert into ". DB_TABLE_CATEGORIES_IMAGES ."
-        (category_id, filename, checksum, priority)
-        values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
-      );
-      $image_id = database::insert_id();
-
-      $this->data['images'][$image_id] = array(
-        'id' => $image_id,
-        'filename' => $filename,
-        'checksum' => $checksum,
-        'priority' => $priority,
+        "update ". DB_TABLE_CATEGORIES ."
+        set image = '". database::input($filename) ."'
+        where id = ". (int)$this->data['id'] .";"
       );
 
-      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
+      $this->previous['image'] = $this->data['image'] = $filename;
     }
 
     public function delete() {
@@ -353,7 +266,7 @@
       }
 
       $this->data['filters'] = array();
-      $this->data['images'] = array();
+
       $this->save();
 
       database::query(

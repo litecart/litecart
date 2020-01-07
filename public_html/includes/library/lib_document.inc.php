@@ -6,6 +6,7 @@
     public static $layout = 'default';
     public static $snippets = array();
     public static $settings = array();
+    public static $jsenv = array();
 
     public static function init() {
       event::register('before_capture', array(__CLASS__, 'before_capture'));
@@ -80,22 +81,28 @@
     public static function prepare_output() {
 
     // JavaScript Environment
-      $config = array(
-        'platform' => array(
-          'url' => document::ilink(''),
-        ),
-        'session' => array(
-          'language_code' => language::$selected['code'],
-          'country_code' => customer::$data['country_code'],
-          'currency_code' => currency::$selected['code'],
-        ),
-        'template' => array(
-          'url' => document::link(WS_DIR_TEMPLATE),
-          'settings' => self::$settings,
-        ),
+      self::$jsenv['platform'] = array(
+        'url' => document::ilink(''),
       );
 
-      self::$snippets['head_tags'][] = "<script>var config = ". json_encode($config, JSON_UNESCAPED_SLASHES) .";</script>";
+      self::$jsenv['session'] = array(
+        'language_code' => language::$selected['code'],
+        'country_code' => customer::$data['country_code'],
+        'currency_code' => currency::$selected['code'],
+      );
+
+      self::$jsenv['template'] = array(
+        'url' => document::link(WS_DIR_TEMPLATE),
+        'settings' => self::$settings,
+      );
+
+      self::$jsenv['customer'] = array(
+        'id' => !empty(customer::$data['id']) ? customer::$data['id'] : null,
+        'name' => !empty(customer::$data['firstname']) ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
+        'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
+      );
+
+      self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .", config = _env;</script>";
 
     // Prepare title
       if (!empty(self::$snippets['title'])) {

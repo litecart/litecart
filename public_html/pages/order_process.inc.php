@@ -15,7 +15,7 @@
 
   $order = &session::$data['order'];
 
-  if ($error_message = $order->validate()) {
+  if ($error_message = $order->validate($shipping, $payment)) {
     notices::add('errors', $error_message);
     header('Location: '. document::ilink('checkout'));
     exit;

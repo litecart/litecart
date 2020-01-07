@@ -4,7 +4,6 @@
   <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
 
   <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
-
 </div>
 
 <div id="content">
@@ -13,8 +12,18 @@
 
   <article id="box-category" class="box">
 
-    <?php if ($products) { ?>
-    <div class="btn-group pull-right hidden-xs">
+    <div class="row">
+      <?php if ($_GET['page'] == 1 && $image) { ?>
+      <div class="col-md-4">
+        <div class="thumbnail">
+          <img src="<?php echo document::href_link(WS_DIR_APP . $image); ?>" />
+        </div>
+      </div>
+      <?php } ?>
+
+      <div class="<?php echo $image ? 'col-md-8' : 'col-md-12'; ?>">
+        <?php if ($products) { ?>
+        <div class="btn-group pull-right hidden-xs">
 <?php
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {
@@ -24,45 +33,16 @@
     }
   }
 ?>
-    </div>
-    <?php } ?>
-
-    <h1 class="title"><?php echo $h1_title; ?></h1>
-
-    <?php if ($_GET['page'] == 1 && count($images) > 1) { ?>
-    <section id="category-carousel" class="box carousel slide" data-ride="carousel">
-      <div class="carousel-inner thumbnail">
-        <?php foreach ($images as $key => $image) { ?>
-        <div class="item<?php echo (($key == 0) ? ' active' : ''); ?>">
-          <img src="<?php echo document::href_link(WS_DIR_APP . $image); ?>" alt="" style="width: 100%;" /></a>
         </div>
         <?php } ?>
-      </div>
 
-      <ol class="carousel-indicators">
-        <?php foreach ($images as $key => $image) { ?>
-        <li data-target="#category-carousel" data-slide-to="<?php echo $key; ?>"<?php echo (($key == 0) ? ' class="active"' : ''); ?>></li>
+        <h1 class="title"><?php echo $h1_title; ?></h1>
+
+        <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
+        <p class="description"><?php echo $description; ?></p>
         <?php } ?>
-      </ol>
-
-      <a class="left carousel-control" href="#category-carousel" data-slide="prev">
-        <span class="icon-prev"><?php echo functions::draw_fonticon('fa-chevron-left'); ?></span>
-      </a>
-      <a class="right carousel-control" href="#category-carousel" data-slide="next">
-        <span class="icon-next"><?php echo functions::draw_fonticon('fa-chevron-right'); ?></span>
-      </a>
-    </section>
-    <?php } ?>
-
-    <?php if ($_GET['page'] == 1 && count($images) == 1) { ?>
-    <div class="thumbnail">
-      <img src="<?php echo document::href_link(WS_DIR_APP . $image); ?>" />
+      </div>
     </div>
-    <?php } ?>
-
-    <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
-      <p class="description"><?php echo $description; ?></p>
-    <?php } ?>
 
     <?php if ($_GET['page'] == 1) { ?>
     <section class="listing categories" style="margin-bottom: 15px;">

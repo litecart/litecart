@@ -53,16 +53,18 @@
 
       <li style="flex-grow: 1;"></li>
 
-      <?php foreach (language::$languages as $language) { ?>
-      <?php if (empty($language['status'])) continue; ?>
-      <li>
-        <a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>">
-          <img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" title="<?php echo htmlspecialchars($language['name']); ?>" style="max-height: 1em;" />
-        </a>
+      <li class="language dropdown">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. language::$selected['code'] .'.png'); ?>" alt="<?php echo language::$selected['code']; ?>" title="<?php echo htmlspecialchars(language::$selected['name']); ?>" style="max-height: 1em;" /> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <?php foreach (language::$languages as $language) { ?>
+          <li>
+            <a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>">
+              <img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" style="max-height: 1em;" /> <?php echo $language['name']; ?>
+            </a>
+          </li>
+          <?php } ?>
+        </ul>
       </li>
-      <?php } ?>
-
-      <li />
 
 <!--
       <li>
@@ -73,25 +75,33 @@
 -->
 
 
-      <?php if (settings::get('webmail_link', '')) { ?>
+      <?php if ($webmail_link = settings::get('webmail_link', '')) { ?>
       <li>
-        <a href="<?php echo settings::get('webmail_link'); ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
+        <a href="<?php echo $webmail_link; ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
           <?php echo functions::draw_fonticon('fa-envelope'); ?>
         </a>
       </li>
       <?php } ?>
 
-      <?php if (settings::get('database_admin_link')) { ?>
+      <?php if ($control_panel_link = settings::get('control_panel_link', '')) { ?>
       <li>
-        <a href="<?php echo settings::get('database_admin_link'); ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
+        <a href="<?php echo $control_panel_link; ?>" target="_blank" title="<?php echo language::translate('title_control_panel', 'Control Panel'); ?>">
+          <?php echo functions::draw_fonticon('fa-cogs'); ?>
+        </a>
+      </li>
+      <?php } ?>
+
+      <?php if ($database_admin_link = settings::get('database_admin_link')) { ?>
+      <li>
+        <a href="<?php echo $database_admin_link; ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
           <?php echo functions::draw_fonticon('fa-database'); ?>
         </a>
       </li>
       <?php } ?>
 
       <li>
-        <a href="<?php echo document::href_ilink(''); ?>" title="<?php echo language::translate('title_catalog', 'Catalog'); ?>">
-          <?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
+        <a href="<?php echo document::href_ilink(''); ?>" title="<?php echo language::translate('title_frontend', 'Frontend'); ?>">
+          <?php echo functions::draw_fonticon('fa-desktop'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?>
         </a>
       </li>
 

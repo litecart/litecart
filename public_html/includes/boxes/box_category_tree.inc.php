@@ -43,7 +43,7 @@
 
         if (in_array($category['id'], $category_path)) {
           $sub_categories_query = functions::catalog_categories_query($category['id']);
-          if (database::num_rows($sub_categories_query) > 0) {
+          if (database::num_rows($sub_categories_query)) {
             $tree[$category['id']]['subcategories'] = $iterator($category['id'], $level+1, $category_path, $iterator);
           }
         }

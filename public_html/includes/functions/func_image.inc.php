@@ -71,13 +71,13 @@
 
         $source_webpath = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
         $options['destination'] .= implode('', array(
-            sha1($source_webpath),
-            !empty($options['trim']) ? '_t' : null,
-            '_'.(int)$options['width'] .'x'. (int)$options['height'],
-            $clipping_filename_flag,
-            !empty($options['watermark']) ? '_wm' : null,
-            !empty($options['interlaced']) ? '_i' : null,
-            '.' . pathinfo($source, PATHINFO_EXTENSION),
+          sha1($source_webpath),
+          !empty($options['trim']) ? '_t' : null,
+          '_'.(int)$options['width'] .'x'. (int)$options['height'],
+          $clipping_filename_flag,
+          !empty($options['watermark']) ? '_wm' : null,
+          !empty($options['interlaced']) ? '_i' : null,
+          '.' . pathinfo($source, PATHINFO_EXTENSION),
         ));
       }
 
@@ -116,8 +116,6 @@
         case 'gif':
         case 'png':
         case 'bmp':
-          $options['extension'] = 'png';
-          break;
         default:
           $options['extension'] = 'png';
           break;

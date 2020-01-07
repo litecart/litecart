@@ -9,10 +9,12 @@
 
     function __construct($category_id, $language_code=null) {
 
+      if (empty($language_code)) $language_code = language::$selected['code'];
+
       $this->_id = (int)$category_id;
       $this->_cache_token = cache::token('category_'.(int)$category_id, array($language_code), 'file');
       $this->_language_codes = array_unique(array(
-        !empty($language_code) ? $language_code : language::$selected['code'],
+        $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ));
@@ -67,21 +69,6 @@
               if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
-          }
-
-          break;
-
-        case 'images':
-
-          $this->_data['images'] = array();
-
-          $query = database::query(
-            "select * from ". DB_TABLE_CATEGORIES_IMAGES."
-            where category_id = ". (int)$this->_id ."
-            order by priority asc, id asc;"
-          );
-          while ($row = database::fetch($query)) {
-            $this->_data['images'][$row['id']] = $row['filename'];
           }
 
           break;

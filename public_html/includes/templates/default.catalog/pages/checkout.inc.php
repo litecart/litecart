@@ -6,7 +6,7 @@
   <section id="box-checkout" class="box">
     <div class="cart wrapper"></div>
 
-    <div class="row">
+    <div class="row" style="grid-gap: 2rem;">
       <div class="col-md-6">
         <div class="customer wrapper"></div>
       </div>

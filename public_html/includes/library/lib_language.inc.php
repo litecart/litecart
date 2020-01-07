@@ -92,7 +92,7 @@
       session::$data['language'] = self::$languages[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        setcookie('language_code', $code, strtotime('+3 months'), WS_DIR_APP);
+        header('Set-Cookie: language_code='. $code .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
       }
 
     // Set system locale
@@ -214,34 +214,37 @@
       }
 
     // Find same english translation by different key
-      $translation_query = database::query(
-        "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_TRANSLATIONS ."
-        where text_en = '". database::input($translation['text_en']) ."'
-        and text_en != ''
-        and text_". self::$selected['code'] ." != ''
-        limit 1;"
-      );
+      if (!empty($translation['text_en'])) {
 
-      if ($translation = database::fetch($translation_query)) {
-        database::query(
-          "update ". DB_TABLE_TRANSLATIONS ."
-          set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
+        $translation_query = database::query(
+          "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_TRANSLATIONS ."
           where text_en = '". database::input($translation['text_en']) ."'
-          and text_". self::$selected['code'] ." = '';"
+          and text_en != ''
+          and text_". self::$selected['code'] ." != ''
+          limit 1;"
         );
 
-        self::$_loaded_translations[] = $code;
-        return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
+        if ($translation = database::fetch($translation_query)) {
+          database::query(
+            "update ". DB_TABLE_TRANSLATIONS ."
+            set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
+            date_updated = '". date('Y-m-d H:i:s') ."'
+            where text_en = '". database::input($translation['text_en']) ."'
+            and text_". self::$selected['code'] ." = '';"
+          );
+
+          self::$_loaded_translations[] = $code;
+          return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
+
+        // Return english translation
+          if (!empty($translation['text_en'])) {
+            self::$_loaded_translations[] = $code;
+            return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
+          }
+        }
       }
 
-    // Return english translation
-      if (!empty($translation['text_en'])) {
-        self::$_loaded_translations[] = $code;
-        return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
-      }
-
-    // Return translation
+    // Return default translation
       self::$_loaded_translations[] = $code;
       return self::$_cache['translations'][$language_code][$code] = $default;
     }

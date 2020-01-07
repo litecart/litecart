@@ -28,17 +28,20 @@
       date_format(o.date_created, '%Y-%m') as `year_month`
     from ". DB_TABLE_ORDERS ." o
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value
+      from ". DB_TABLE_ORDERS_TOTALS ."
       where module_id = 'ot_subtotal'
       group by order_id
     ) otst on (o.id = otst.order_id)
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value
+      from ". DB_TABLE_ORDERS_TOTALS ."
       where module_id = 'ot_shipping_fee'
       group by order_id
     ) otsf on (o.id = otsf.order_id)
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value
+      from ". DB_TABLE_ORDERS_TOTALS ."
       where module_id = 'ot_payment_fee'
       group by order_id
     ) otpf on (o.id = otpf.order_id)
@@ -104,16 +107,16 @@ form[name="filter_form"] li {
       </thead>
 
       <tbody>
-          <?php foreach ($rows as $row) { ?>
-          <tr>
-            <td><?php echo ucfirst(language::strftime('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
-            <td class="border-left text-right"><?php echo currency::format($row['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
-            <td class="border-left text-right"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
-            <td class="border-left text-right"><?php echo currency::format($row['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
-            <td class="border-left text-right"><strong><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
-            <td class="text-right"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
-          </tr>
-          <?php } ?>
+        <?php foreach ($rows as $row) { ?>
+        <tr>
+          <td><?php echo ucfirst(language::strftime('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
+          <td class="border-left text-right"><?php echo currency::format($row['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
+          <td class="border-left text-right"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
+          <td class="border-left text-right"><?php echo currency::format($row['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
+          <td class="border-left text-right"><strong><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
+          <td class="text-right"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
+        </tr>
+        <?php } ?>
       </tbody>
 
       <?php if (!empty($total)) { ?>

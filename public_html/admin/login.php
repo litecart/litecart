@@ -17,7 +17,7 @@
 
     try {
 
-      setcookie('remember_me', null, -1, WS_DIR_APP);
+      header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
 
@@ -114,12 +114,12 @@
 
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        setcookie('remember_me', $user['username'] .':'. $checksum, strtotime('+3 months'), WS_DIR_APP);
+        header('Set-Cookie: remember_me='. $user['username'] .':'. $checksum .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
       } else {
-        setcookie('remember_me', null, -1, WS_DIR_APP);
+        header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
       }
 
-      if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN . basename(__FILE__), '#') . '#', $_POST['redirect_url'])) {
+      if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
         $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
       }
 

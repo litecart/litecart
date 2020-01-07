@@ -16,8 +16,8 @@
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: @default-gutter-size;
-  margin-bottom: @default-gutter-size;
+  grid-gap: @default-gutter-size/2;
+  margin-bottom: @default-gutter-size/2;
   &.column {
     flex-direction: column;
   }
@@ -30,6 +30,10 @@
   }
   [class*="col-"] {
     grid-column: span 12;
+  }
+  @media (min-width: @media-breakpoint-sm) {
+    grid-gap: @default-gutter-size;
+    margin-bottom: @default-gutter-size;
   }
 }
 

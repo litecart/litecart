@@ -107,7 +107,7 @@
     }
     .open .dropdown-menu > li > a,
     .open .dropdown-menu .dropdown-header {
-      padding: 5px 15px 5px 25px;
+      padding: 5px 15px 5px 15px;
     }
     .open .dropdown-menu > li > a {
       line-height: 20px;
@@ -147,8 +147,8 @@
   .navbar-toggle {
     position: relative;
     flex: 0 1 auto;
-    padding: @default-gutter-size/4 @default-gutter-size/2;
-    margin: @default-gutter-size/2 @default-gutter-size/2 @default-gutter-size/2 0;
+    padding: @default-gutter-size/4;
+    margin: @default-gutter-size/4 @default-gutter-size/4 @default-gutter-size/4 0;
     background-color: rgba(0, 0, 0, 0.05);
     background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
     border: none;
@@ -169,8 +169,10 @@
 }
 
 .navbar-form {
-  border-top: 1px solid transparent;
-  margin: 6px 12px;
+  margin: @default-gutter-size/4;
+  @media (min-width: @media-breakpoint-sm) {
+    margin: ~"calc((@{default-gutter-size}/4) + 1px)";
+  }
 }
 
 .navbar-toggle {
@@ -180,7 +182,6 @@
     display: block;
     width: 22px;
     height: 2px;
-    border-radius: 1px;
     transition: all 250ms ease-in-out;
     + .icon-bar {
       margin-top: 4px;

@@ -28,7 +28,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          setcookie('cart[uid]', self::$data['uid'], strtotime('+3 months'), WS_DIR_APP);
+          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
         }
       }
 
@@ -50,18 +50,26 @@
         }
 
         self::add_product($_POST['product_id'], $options, (isset($_POST['quantity']) ? $_POST['quantity'] : 1));
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
 
       if (!empty($_POST['remove_cart_item'])) {
         self::remove($_POST['remove_cart_item']);
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
 
       if (!empty($_POST['update_cart_item'])) {
         self::update($_POST['update_cart_item'], isset($_POST['item'][$_POST['update_cart_item']]['quantity']) ? $_POST['item'][$_POST['update_cart_item']]['quantity'] : 1);
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
 
       if (!empty($_POST['clear_cart_items'])) {
         self::clear();
+        header('Location: '. $_SERVER['REQUEST_URI']);
+        exit;
       }
     }
 
@@ -149,11 +157,11 @@
         'extras' => 0,
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
-        'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
+        'quantity' => !empty($product->quantity_unit['decimals']) ? round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP) : $quantity,
         'quantity_unit' => array(
-          'name' => $product->quantity_unit['name'],
-          'decimals' => $product->quantity_unit['decimals'],
-          'separate' => $product->quantity_unit['separate'],
+          'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
+          'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',
+          'separate' => !empty($product->quantity_unit['separate']) ? $product->quantity_unit['separate'] : '',
         ),
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,

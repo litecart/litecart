@@ -5,7 +5,10 @@
     if (!isset(session::$data['captcha'][$id]['expires']) || session::$data['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) return false;
     if (empty(session::$data['captcha'][$id]['value'])) return false;
 
-    return session::$data['captcha'][$id]['value'];
+    $value = session::$data['captcha'][$id]['value'];
+    unset(session::$data['captcha'][$id]['value']);
+
+    return $value;
   }
 
   function captcha_generate($width, $height, $length=6, $id='default', $set='numbers', $parameters='') {
@@ -16,6 +19,7 @@
     switch ($set) {
       case 'alphabet':
         $possible = 'abcdefghijklmnopqrstuvwxyz';
+        break;
       case 'numbers':
         $possible = '1234567890';
         break;

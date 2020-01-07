@@ -10,14 +10,15 @@ html {
 }
 
 #header {
-  padding: @default-gutter-size @default-gutter-size/2;
-
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
+  padding: @default-gutter-size/2;
 
-  @media (min-width: @media-breakpoint-md) {
+  @media (min-width: (@media-breakpoint-sm)) {
     padding: @default-gutter-size;
+  }
+  @media (min-width: @media-breakpoint-md) {
     grid-template-columns: @default-sidebar-width auto @default-sidebar-width;
   }
 
@@ -74,7 +75,7 @@ html {
     position: relative;
     display: flex;
     align-items: center;
-    padding: @default-gutter-size/4;
+    padding: 4px;
     border: 1px transparent solid;
     border-radius: @default-border-radius;
     color: inherit;
@@ -85,8 +86,8 @@ html {
     }
   }
   img {
-    max-width: 52px;
-    max-height: 52px;
+    max-width: 50px;
+    max-height: 50px;
   }
   .badge {
     background: red;
@@ -163,6 +164,10 @@ html {
 
 #content {
   grid-area: content;
+  grid-gap: @default-gutter-size/2;
+  @media (min-width: (@media-breakpoint-sm)) {
+    grid-gap: @default-gutter-size;
+  }
 }
 
 #footer {

@@ -32,7 +32,7 @@
 
     public function options($items=null, $currency_code=null, $customer=null) {
 
-      if (empty($items)) return;
+      if (empty($items)) return array();
 
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
@@ -43,9 +43,9 @@
         $subtotal['tax'] += $item['tax'] * $item['quantity'];
       }
 
-      $this->data['options'] = array();
+      if (empty($this->modules)) return array();
 
-      if (empty($this->modules)) return;
+      $this->data['options'] = array();
 
       foreach ($this->modules as $module) {
 
@@ -65,7 +65,7 @@
             'title' => !empty($option['title']) ? $option['title'] : $this->data['options'][$module->id]['title'],
             'name' => $option['name'],
             'description' => $option['description'],
-            'fields' => $option['fields'],
+            'fields' => !empty($option['fields']) ? $option['fields'] : '',
             'cost' => (float)$option['cost'],
             'tax_class_id' => (int)$option['tax_class_id'],
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
@@ -82,12 +82,12 @@
       $this->data['selected'] = array();
 
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
-        notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
+        //notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
         return;
       }
 
       if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
-        notices::add('errors', language::translate('error_cannot_select_shipping_option_with_error', 'Cannot set a shipping option that contains errors.'));
+        //notices::add('errors', language::translate('error_cannot_select_shipping_option_with_error', 'Cannot set a shipping option that contains errors.'));
         return;
       }
 

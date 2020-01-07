@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Multiple Category Images</id>
+	<version>1.0</version>
+	<vqmver required="true">2.4.0</vqmver>
+	<author>litecart.net</author>
+
+	<file name="includes/entities/ent_category.inc.php">
+		<operation error="log">
+			<search position="before" index="1,3"><![CDATA[
+      $this->data['filters'] = array();
+      ]]></search>
+			<add><![CDATA[
+      $this->data['images'] = array();
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before" offset="1"><![CDATA[
+      $category_filters_query = database::query(
+      ]]></search>
+			<add><![CDATA[
+    // Images
+      $category_images_query = database::query(
+        "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+        where category_id = ". (int)$this->data['id'] ."
+        order by priority asc, id asc;"
+      );
+      while ($image = database::fetch($category_images_query)) {
+        $this->data['images'][$image['id']] = $image;
+      }
+
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+    // Delete filters
+      ]]></search>
+			<add><![CDATA[
+    // Delete images
+      $category_images_query = database::query(
+        "select * from ". DB_TABLE_CATEGORIES_IMAGES ."
+        where category_id = ". (int)$this->data['id'] ."
+        and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
+      );
+      while ($category_image = database::fetch($category_images_query)) {
+        if (is_file(FS_DIR_APP . 'images/' . $category_image['filename'])) unlink(FS_DIR_APP . 'images/' . $category_image['filename']);
+        functions::image_delete_cache(FS_DIR_APP . 'images/' . $category_image['filename']);
+        database::query(
+          "delete from ". DB_TABLE_CATEGORIES_IMAGES ."
+          where category_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$category_image['id'] ."
+          limit 1;"
+        );
+      }
+
+    // Update images
+      if (!empty($this->data['images'])) {
+        $image_priority = 1;
+        foreach (array_keys($this->data['images']) as $key) {
+          if (empty($this->data['images'][$key]['id'])) {
+            database::query(
+              "insert into ". DB_TABLE_CATEGORIES_IMAGES ."
+              (category_id)
+              values (". (int)$this->data['id'] .");"
+            );
+            $this->data['images'][$key]['id'] = database::insert_id();
+          }
+
+          if (!empty($this->data['images'][$key]['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename'])) {
+            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename']);
+            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
+            rename(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
+            $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
+          }
+
+          database::query(
+            "update ". DB_TABLE_CATEGORIES_IMAGES ." set
+              filename = '". database::input($this->data['images'][$key]['filename']) ."',
+              priority = '". $image_priority++ ."'
+            where category_id = ". (int)$this->data['id'] ."
+            and id = ". (int)$this->data['images'][$key]['id'] ."
+            limit 1;"
+          );
+        }
+      }
+
+    // Update category image
+      if (!empty($this->data['images'])) {
+        $images = array_values($this->data['images']);
+        $image = array_shift($images);
+        $this->data['image'] = $image['filename'];
+      } else {
+        $this->data['image'];
+      }
+
+      database::query(
+        "update ". DB_TABLE_CATEGORIES ." set
+        image = '". database::input($this->data['image']) ."'
+        where id=". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+      if (empty($file)) return;
+      ]]></search>
+			<add><![CDATA[
+      $checksum = md5_file($file);
+      if (in_array($checksum, array_column($this->data['images'], 'checksum'))) return false;
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="3"><![CDATA[
+    // 456-Fancy-category-title-N.jpg
+      ]]></search>
+			<add><![CDATA[
+    // 456-Fancy-category-title-N.jpg
+      $i=1;
+      while (empty($filename) || is_file(FS_DIR_APP . 'images/' . $filename)) {
+        $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type();
+      }
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace"><![CDATA[
+      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      ]]></search>
+			<add><![CDATA[
+      $priority = count($this->data['images'])+1;
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="8"><![CDATA[
+      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+      ]]></search>
+			<add><![CDATA[
+      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+
+      database::query(
+        "insert into ". DB_TABLE_CATEGORIES_IMAGES ."
+        (category_id, filename, checksum, priority)
+        values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
+      );
+      $image_id = database::insert_id();
+
+      $this->data['images'][$image_id] = array(
+        'id' => $image_id,
+        'filename' => $filename,
+        'checksum' => $checksum,
+        'priority' => $priority,
+      );
+
+      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
+      ]]></add>
+		</operation>
+	</file>
+
+	<file name="admin/catalog.app/edit_category.inc.php">
+		<operation error="log">
+			<search position="before"><![CDATA[
+      if (empty($_POST['filters'])) $_POST['filters'] = array();
+      ]]></search>
+			<add><![CDATA[
+      if (empty($_POST['images'])) $_POST['images'] = array();
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace"><![CDATA[
+        'image',
+      ]]></search>
+			<add><![CDATA[
+        'images',
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="2"><![CDATA[
+      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+      ]]></search>
+			<add><![CDATA[
+      if (!empty($_FILES['new_images']['tmp_name'])) {
+        foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
+          $category->save_image($_FILES['new_images']['tmp_name'][$key]);
+        }
+      }
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+<div class="panel panel-app">
+      ]]></search>
+			<add><![CDATA[
+<style>
+#images .thumbnail {
+  margin: 0;
+}
+#images .image {
+  overflow: hidden;
+}
+#images .thumbnail {
+  margin-right: 15px;
+}
+#images img {
+  max-width: 50px;
+  max-height: 50px;
+}
+#images .actions {
+  text-align: right;
+  padding: 0.25em 0;
+}
+</style>
+
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="15"><![CDATA[
+              <div id="image">
+      ]]></search>
+			<add><![CDATA[
+              <div class="form-group">
+                <label><?php echo language::translate('title_images', 'Images'); ?></label>
+                <div class="thumbnail">
+<?php
+  if (isset($category->data['id']) && !empty($category->data['images'])) {
+    $image = current($category->data['images']);
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $image['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
+    reset($category->data['images']);
+  } else {
+    echo '<img class="main-image" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))) .'" alt="" />';
+  }
+?>
+                </div>
+              </div>
+
+              <div id="images">
+
+                <div class="images">
+                  <?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
+                  <div class="image form-group">
+                    <?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?>
+                    <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
+
+                    <div class="thumbnail pull-left">
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->data['images'][$key]['filename'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                    </div>
+
+                    <div class="input-group">
+                      <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
+                      <div class="input-group-addon">
+                        <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+                        <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                      </div>
+                    </div>
+                  </div>
+                  <?php } ?>
+                </div>
+
+                <div class="new-images">
+                  <div class="image form-group">
+                    <div class="thumbnail pull-left">
+                      <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                    </div>
+
+                    <div class="input-group">
+                      <?php echo functions::form_draw_file_field('new_images[]'); ?>
+                      <div class="input-group-addon">
+                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a>
+                </div>
+              </div>
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="12"><![CDATA[
+// Image
+      ]]></search>
+			<add><![CDATA[
+// Images
+
+  $('#images').on('click', '.move-up, .move-down', function(e) {
+    e.preventDefault();
+    var row = $(this).closest('.form-group');
+
+    if ($(this).is('.move-up') && $(row).prevAll().length > 0) {
+      $(row).insertBefore(row.prev());
+    } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
+      $(row).insertAfter($(row).next());
+    }
+    refreshMainImage();
+  });
+
+  $('#images').on('click', '.remove', function(e) {
+    e.preventDefault();
+    $(this).closest('.form-group').remove();
+    refreshMainImage();
+  });
+
+  $('#images .add').click(function(e) {
+    e.preventDefault();
+    var output = '<div class="image form-group">'
+               + '  <div class="thumbnail pull-left">'
+               + '    <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />'
+               + '  </div>'
+               + '  '
+               + '  <div class="input-group">'
+               + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
+               + '    <div class="input-group-addon">'
+               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '    </div>'
+               + '  </div>'
+               + '</div>';
+    $('#images .new-images').append(output);
+    refreshMainImage();
+  });
+
+  $('#images').on('change', 'input[type="file"]', function(e) {
+    var img = $(this).closest('.form-group').find('img');
+
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(this.files[0]);
+    oFReader.onload = function(e){
+      $(img).attr('src', e.target.result);
+    };
+    oFReader.onloadend = function(e) {
+      refreshMainImage();
+    };
+  });
+
+  function refreshMainImage() {
+    if ($('#images img:first').length) {
+      $('#tab-general .main-image').attr('src', $('#images img:first').attr('src'));
+      return;
+    }
+
+    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/no_image.png', $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
+  }
+      ]]></add>
+		</operation>
+  </file>
+
+	<file name="includes/references/ref_category.inc.php">
+		<operation error="log">
+			<search position="before"><![CDATA[
+          case 'parent':
+      ]]></search>
+			<add><![CDATA[
+          case 'images':
+
+          $this->_data['images'] = array();
+
+          $query = database::query(
+            "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+            where category_id = ". (int)$this->_id ."
+            order by priority asc, id asc;"
+          );
+          while ($row = database::fetch($query)) {
+            $this->_data['images'][$row['id']] = $row['filename'];
+          }
+
+          break;
+      ]]></add>
+		</operation>
+  </file>
+
+	<file name="pages/category.inc.php">
+		<operation error="log">
+			<search position="after"><![CDATA[
+      'image' => $category->image ? 'images/' . $category->image : '',
+      ]]></search>
+			<add><![CDATA[
+      'images' => array(),
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="before"><![CDATA[
+  // Subcategories
+      ]]></search>
+			<add><![CDATA[
+  // Images
+    list($width, $height) = functions::image_scale_by_width(980, '1:1');
+    foreach ($category->images as $image) {
+      $_page->snippets['images'][] = functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('category_image_clipping'));
+    }
+      ]]></add>
+		</operation>
+  </file>
+
+	<file name="includes/templates/default.catalog/pages/category.inc.php">
+		<operation error="log">
+			<search position="replace"><![CDATA[
+      <?php if ($_GET['page'] == 1 && $image) { ?>
+      ]]></search>
+			<add><![CDATA[
+      <?php if ($_GET['page'] == 1 && count($images) > 1) { ?>
+      <div class="col-md-4">
+        <div class="thumbnail">
+          <section id="category-carousel" class="carousel slide" data-ride="carousel">
+
+            <div class="carousel-inner">
+              <?php foreach ($images as $key => $image) { ?>
+              <div class="item<?php echo (($key == 0) ? ' active' : ''); ?>">
+                <img src="<?php echo document::href_link(WS_DIR_APP . $image); ?>" alt="" style="width: 100%;" /></a>
+              </div>
+              <?php } ?>
+            </div>
+
+            <ol class="carousel-indicators">
+              <?php foreach ($images as $key => $image) { ?>
+              <li data-target="#category-carousel" data-slide-to="<?php echo $key; ?>"<?php echo (($key == 0) ? ' class="active"' : ''); ?>></li>
+              <?php } ?>
+            </ol>
+
+            <a class="left carousel-control" href="#category-carousel" data-slide="prev">
+              <span class="icon-prev"><?php echo functions::draw_fonticon('fa-chevron-left'); ?></span>
+            </a>
+            <a class="right carousel-control" href="#category-carousel" data-slide="next">
+              <span class="icon-next"><?php echo functions::draw_fonticon('fa-chevron-right'); ?></span>
+            </a>
+          </section>
+        </div>
+      </div>
+      <?php } ?>
+
+      <?php if ($_GET['page'] == 1 && count($images) == 1) { ?>
+      ]]></add>
+		</operation>
+
+    <operation error="log">
+      <search position="replace"><![CDATA[
+      <div class="<?php echo $image ? 'col-md-8' : 'col-md-12'; ?>">
+      ]]></search>
+			<add><![CDATA[
+      <div class="<?php echo $images ? 'col-md-8' : 'col-md-12'; ?>">
+      ]]></add>
+		</operation>
+  </file>
+
+</modification>

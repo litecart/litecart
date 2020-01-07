@@ -18,7 +18,7 @@
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
 // Table Rows
-  $order_items = array();
+  $rows = array();
 
   $order_items_query = database::query(
     "select
@@ -45,7 +45,7 @@
 
   $page_items = 0;
   while ($order_item = database::fetch($order_items_query)) {
-    $order_items[] = $order_item;
+    $rows[] = $order_item;
     if (++$page_items == settings::get('data_table_rows_per_page')) break;
   }
 
@@ -96,18 +96,14 @@ form[name="filter_form"] li {
         </tr>
       </thead>
       <tbody>
-    <?php
-
-    ?>
+        <?php foreach ($rows as $row) { ?>
         <tr>
-          <td><?php echo $order_item['name']; ?></td>
-          <td style="text-align: center;" class="border-left"><?php echo (float)$order_item['total_quantity']; ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_sales'], false, settings::get('store_currency_code')); ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_tax'], false, settings::get('store_currency_code')); ?></td>
+          <td><?php echo $row['name']; ?></td>
+          <td style="text-align: center;" class="border-left"><?php echo (float)$row['total_quantity']; ?></td>
+          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
+          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
         </tr>
-    <?php
-
-    ?>
+        <?php } ?>
       </tbody>
     </table>
   </div>

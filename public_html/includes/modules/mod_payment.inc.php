@@ -31,14 +31,14 @@
 
     public function options($items=null, $currency_code=null, $customer=null) {
 
-      if (empty($items)) return;
+      if (empty($items)) return array();
 
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
 
-      $this->data['options'] = array();
+      if (empty($this->modules)) return array();
 
-      if (empty($this->modules)) return;
+      $this->data['options'] = array();
 
       $subtotal = array('amount' => 0, 'tax' => 0);
       foreach ($items as $item) {
@@ -64,7 +64,7 @@
             'title' => !empty($option['title']) ? $option['title'] : $this->data['options'][$module->id]['title'],
             'name' => $option['name'],
             'description' => $option['description'],
-            'fields' => $option['fields'],
+            'fields' => !empty($option['fields']) ? $option['fields'] : '',
             'cost' => (float)$option['cost'],
             'tax_class_id' => (int)$option['tax_class_id'],
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
@@ -81,12 +81,12 @@
 
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
         $this->data['selected'] = array();
-        notices::add('errors', language::translate('error_invalid_payment_option', 'Cannot set an invalid payment option.'));
+        //notices::add('errors', language::translate('error_invalid_payment_option', 'Cannot set an invalid payment option.'));
         return;
       }
 
       if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
-        notices::add('errors', language::translate('error_cannot_select_payment_option_with_error', 'Cannot set a payment option that contains errors.'));
+        //notices::add('errors', language::translate('error_cannot_select_payment_option_with_error', 'Cannot set a payment option that contains errors.'));
         return;
       }
 

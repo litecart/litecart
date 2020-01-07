@@ -27,7 +27,7 @@
           if ($checksum == $key) {
             self::load($customer['id']);
           } else {
-            setcookie('customer_remember_me', null, -1, WS_DIR_APP);
+            header('Set-Cookie: customer_remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
           }
         }
       }
@@ -42,7 +42,7 @@
 
     // Load regional settings screen
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
-        if (settings::get('regional_settings_screen_enabled')) {
+        if (settings::get('regional_settings_screen')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             functions::draw_lightbox(document::ilink('regional_settings'));
           }
@@ -53,11 +53,11 @@
     public static function before_output() {
 
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
-        if (settings::get('regional_settings_screen_enabled')) {
+        if (settings::get('regional_settings_screen')) {
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
             if (!empty($_COOKIE['cookies_accepted'])) {
-              setcookie('skip_regional_settings_screen', true, strtotime('+3 months'), WS_DIR_APP);
+              header('Set-Cookie: skip_regional_settings_screen=1; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
             }
           }
         }
@@ -105,6 +105,10 @@
     // Get country from TLD
       if (empty(self::$data['country_code'])) {
         if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+          $matches[1] = strtr(strtoupper($matches[1]), array(
+            'UK' => 'GB', // ccTLD .uk is not a country
+            'SU' => 'RU', // ccTLD .su is not a country
+          ));
           $countries_query = database::query(
             "select * from ". DB_TABLE_COUNTRIES ."
             where status
@@ -112,7 +116,7 @@
             limit 1;"
           );
           $country = database::fetch($countries_query);
-          if (!empty($country['iso_code_2']) && in_array($country['iso_code_2'], $countries)) self::$data['country_code'] = $country['iso_code_2'];
+          if (!empty($country['iso_code_2'])) self::$data['country_code'] = $country['iso_code_2'];
         }
       }
 

@@ -61,7 +61,7 @@
     'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : null,
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => $order->data['payment_due'],
-    'error' => $order->validate(),
+    'error' => $order->validate($shipping, $payment),
     'selected_shipping' => null,
     'selected_payment' => null,
     'consent' => null,

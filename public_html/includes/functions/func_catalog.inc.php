@@ -15,7 +15,8 @@
       where c.id = ". (int)$category_id ."
       limit 1;"
     );
-    $category = database::fetch($categories_query);
+
+    if (!$category = database::fetch($categories_query)) array();
 
     if (!empty($category['parent_id'])) {
       $trail = functions::catalog_category_trail($category['parent_id']);
