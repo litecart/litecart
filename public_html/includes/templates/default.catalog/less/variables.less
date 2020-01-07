@@ -1,42 +1,101 @@
-@default-color: #fcfcfc;
-@primary-color: #2e9cd4;
-@info-color: #5bc0de;
-@success-color: #98cc34;
-@warning-color: #f0ad4e;
-@danger-color: #d9534f;
+/* LESS Variables */
 
-@site-background: #f0f0f0;
-@page-background: #fff;
-@menu-background-gradient-from: #f0f0f0;
-@menu-background-gradient-to: #f0f0f0;
-@menu-text-color: @default-text-color;
+@import "framework/variables.less";
 
-@default-border-color: rgba(0,0,0,0.1);
-@default-border-radius: 4px;
-@default-gutter-size: 20px;
-@default-line-height: 1.333333;
-@default-link-color: #2e9cd4;
-@default-shadow-color: rgba(0, 0, 0, 0.3);
-@default-sidebar-width: 250px;
-@default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-@default-text-color: #333;
-@default-text-size: 15px;
+/* CSS Variables */
 
-@default-title-border-color: #e5e5e5;
-@default-title-color: @default-text-color;
+:root {
+  --site-background-color: @site-background-color;
+  --page-background-color: @page-background-color;
+  --sidebar-width: @sidebar-width;
 
-@breadcrumbs-background-color: #f3f3f3;
+  --navigation-background-color: @navigation-background-color;
+  --navigation-text-color: @navigation-text-color;
 
-@form-input-background: #fff;
-@form-input-padding: .5em;
+  --navigation-background-color: @navigation-background-color;
+  --navigation-text-color: @navigation-text-color;
 
-@image-whitespace-color: #fff;
+  --footer-background-color: @footer-background-color;
+  --footer-title-color: @footer-title-color;
+  --footer-text-color: @footer-text-color;
 
-@table-striped-row-background-odd: #f9f9f9;
-@table-striped-row-background-even: #fff;
-@table-row-hover-background: #ececec;
+  --footer-background-color: @footer-background-color;
+  --footer-text-color: @footer-text-color;
 
-@media-breakpoint-xs: 480px;
-@media-breakpoint-sm: 768px;
-@media-breakpoint-md: 992px;
-@media-breakpoint-lg: 1200px;
+  --copyright-background-color: @copyright-background-color;
+  --copyright-text-color: @copyright-text-color;
+
+  --default-background-color: @default-background-color;
+  --default-background-color-active: @default-background-color;
+  --default-background-color-hover: @default-background-color;
+  --default-border-color: @default-border-color;
+  --default-line-height: @default-line-height;
+  --default-text-font: @default-text-font;
+  --default-text-color: @default-text-color;
+  --default-text-size: @default-text-size - 2;
+  --default-title-color: @default-text-color;
+  --default-title-border-color: @default-title-border-color;
+  --default-notice-background-color: @default-notice-background-color;
+  --default-notice-text-color: @default-notice-text-color;
+
+  --primary-background-color: @primary-background-color;
+  --primary-background-color-hover: @primary-background-color-hover;
+  --primary-background-color-active: @primary-background-color-active;
+  --primary-text-color: @primary-text-color;
+  --primary-notice-background-color: @primary-notice-background-color;
+  --primary-notice-text-color: @primary-notice-text-color;
+
+  --success-background-color: @success-background-color;
+  --success-background-color-hover: @success-background-color-hover;
+  --success-background-color-active: @success-background-color-active;
+  --success-border-color: @success-border-color;
+  --success-text-color: @success-text-color;
+  --success-notice-background-color: @success-notice-background-color;
+  --success-notice-text-color: @success-notice-text-color;
+
+  --warning-background-color: @warning-background-color;
+  --warning-background-color-hover: @warning-background-color-hover;
+  --warning-background-color-active: @warning-background-color-active;
+  --warning-border-color: @warning-border-color;
+  --warning-text-color: @warning-text-color;
+  --warning-notice-background-color: @warning-notice-background-color;
+  --warning-notice-text-color: @warning-notice-text-color;
+
+  --danger-background-color: @danger-background-color;
+  --danger-background-color-hover: @danger-background-color-hover;
+  --danger-background-color-active: @danger-background-color-active;
+  --danger-border-color: @danger-border-color;
+  --danger-text-color: @danger-text-color;
+  --danger-notice-background-color: @danger-notice-background-color;
+  --danger-notice-text-color: @danger-notice-text-color;
+
+  --breadcrumbs-background-color: @breadcrumbs-background-color;
+  --breadcrumbs-text-color: @breadcrumbs-text-color;
+  --breadcrumbs-border-color: @breadcrumbs-border-color;
+
+  --table-striped-row-background-odd: @table-striped-row-background-odd;
+  --table-striped-row-background-even: @table-striped-row-background-even;
+  --table-row-hover-background: @table-row-hover-background;
+
+  --border-radius: @border-radius;
+  --input-background-color: @input-background-color;
+  --input-text-color: @input-text-color;
+  --link-text-color: @link-text-color;
+  --shadow-color: @shadow-color;
+  --whitespace-color: @whitespace-color;
+}
+
+@media (min-width: @media-breakpoint-sm) {
+  :root {
+    --default-text-size: @default-text-size - 1;
+  }
+}
+@media (min-width: @media-breakpoint-md) {
+  :root {
+    --default-text-size: @default-text-size;
+  }
+}
+@media (min-width: @media-breakpoint-lg) {
+  :root {
+  }
+}

@@ -32,8 +32,8 @@
   list-style: none;
   text-align: left;
   background-color: #fff;
-  border: 1px solid @default-border-color;
-  border-radius: @default-border-radius;
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
   &.pull-right {
@@ -48,7 +48,7 @@
   }
   > li > a {
     display: block;
-    padding: @default-gutter-size/4 @default-gutter-size;
+    padding: .25rem 1rem;
     clear: both;
     font-weight: normal;
     line-height: 1.42857143;
@@ -85,6 +85,7 @@
   @media (min-width: @media-breakpoint-sm) {
     .navbar-form {
       min-width: 320px;
+      margin: 1rem;
     }
   }
 }

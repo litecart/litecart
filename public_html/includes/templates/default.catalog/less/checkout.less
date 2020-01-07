@@ -1,10 +1,10 @@
 // Variables
-@import "variables.less";
+@import "framework/variables.less";
 
 #content {
-  padding: @default-gutter-size/2 @default-gutter-size;
+  padding: .5rem 1rem;
   @media(min-width: @media-breakpoint-sm) {
-  padding: @default-gutter-size;
+  padding: 1rem;
   }
 }
 
@@ -21,7 +21,7 @@
 
 #header {
   margin: 0 auto;
-  padding: @default-gutter-size;
+  padding: 1rem;
   overflow: hidden;
   display: grid;
   grid-template-columns: 250px auto;
@@ -107,8 +107,8 @@
     .price {
       position: absolute;
       display: inline-block;
-      top: @default-gutter-size/2;
-      right: @default-gutter-size/2;
+      top: .5rem;
+      right: .5rem;
     }
   }
 }

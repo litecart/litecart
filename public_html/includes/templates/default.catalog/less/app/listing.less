@@ -7,21 +7,29 @@
 
   &.products {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: 10px;
+    grid-gap: .5em;
 
-    @media (min-width: (@media-breakpoint-xs)) {
+    @media (min-width: (@media-breakpoint-sm)) {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      grid-gap: 20px;
+      grid-gap: .75em;
+    }
+
+    @media (min-width: (@media-breakpoint-md)) {
+      grid-gap: 1em;
     }
   }
 
   &.categories {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 10px;
+    grid-gap: .5em;
 
     @media (min-width: (@media-breakpoint-sm)) {
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      grid-gap: 20px;
+      grid-gap: .75em;
+    }
+
+    @media (min-width: (@media-breakpoint-md)) {
+      grid-gap: 1em;
     }
   }
 
@@ -39,9 +47,9 @@
     position: relative;
     overflow: hidden;
 
-    background: @image-whitespace-color;
-    border: 1px solid @default-border-color;
-    border-radius: @default-border-radius;
+    background: var(--whitespace-color);
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--border-radius);
     transform: scale(1);
     transition: all 100ms linear;
 
@@ -49,7 +57,7 @@
     text-decoration: none;
 
     &:hover {
-      box-shadow: 0 @default-gutter-size/4 @default-gutter-size/2 0 rgba(0, 0, 0, 0.15);
+      box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.15);
       transform: scale(1.01);
     }
   }
@@ -57,8 +65,8 @@
   .category {
     .caption {
       background: #f2f2f2;
-      padding: @default-gutter-size/2 @default-gutter-size;
-      color: @default-text-color;
+      padding: 1em;
+      color: var(--default-text-color);
       text-align: center;
       * {
         color: inherit;
@@ -71,14 +79,14 @@
     img {
       width: 100%;
       height: auto;
-      padding: @default-gutter-size/2;
+      padding: .5rem;
     }
 
     .caption {
       margin: 0;
-      padding: @default-gutter-size / 2;
+      padding: .5em;
       background: #f2f2f2;
-      color: @default-text-color;
+      color: var(--default-text-color);
       text-align: center;
     }
   }
@@ -91,14 +99,14 @@
     }
 
     .image-wrapper {
-      background: @image-whitespace-color;
+      background: var(--whitespace-color);
 
       .sticker {
         position: absolute;
         top: 20px;
         left: -32px;
         width: 125px;
-        padding: @default-gutter-size/4 @default-gutter-size/2;
+        padding: .25em .5em;
         color: #fff;
         font-size: 12px;
         font-weight: bold;
@@ -123,7 +131,7 @@
     }
 
     .manufacturer-name {
-      color: lighten(@default-text-color, 25%);
+      color: #666;
       font-size: 0.9em;
       overflow: hidden;
       white-space: nowrap;
@@ -132,8 +140,8 @@
     }
 
     .description {
-      padding: 0 @default-gutter-size/4;
-      margin-top: @default-gutter-size;
+      padding: 0 .25rem;
+      margin-top: 1rem;
     }
 
     .price-wrapper {
@@ -144,7 +152,7 @@
         white-space: nowrap;
       }
       .regular-price {
-        color: @default-text-color;
+        color: var(--default-text-color);
         font-size: 0.75em;
         font-weight: normal;
         white-space: nowrap;
@@ -181,7 +189,7 @@
     }
 
     .info {
-      padding: @default-gutter-size/2;
+      padding: .5rem;
       text-align: center;
     }
 
@@ -195,8 +203,8 @@
     .info {
       position: absolute;
       top: 0;
-      left: 160px + @default-gutter-size;
-      padding: @default-gutter-size/2;
+      left: 160px + 1rem;
+      padding: .5rem;
     }
     .image {
       max-width: 160px;
@@ -207,8 +215,8 @@
       right: 0;
       font-size: 1.25em;
       background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 100%);
-      padding: @default-gutter-size/2;
-      padding-left: @default-gutter-size * 2;
+      padding: .5rem;
+      padding-left: 2rem;
     }
   }
 }

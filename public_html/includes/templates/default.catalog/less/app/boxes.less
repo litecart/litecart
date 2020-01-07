@@ -1,19 +1,19 @@
 /* Boxes */
 
 .box {
-  margin: @default-gutter-size 0;
+  margin: 1rem 0;
 
   &.white {
-    margin: @default-gutter-size;
-    padding: @default-gutter-size;
-    border-radius: @default-border-radius;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: var(--border-radius);
     background: #fff;
   }
   &.border {
-    margin: @default-gutter-size;
-    padding: @default-gutter-size;
-    border: 1px solid @default-border-color;
-    border-radius: @default-border-radius;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--border-radius);
   }
 
   > .title {
@@ -23,7 +23,7 @@
 
 #box-campaign-products, #box-latest-products, #box-popular-products, #box-similar-products, #box-also-purchased-products {
   .title {
-    margin: 0 0 @default-gutter-size 0;
+    margin: 0 0 1rem 0;
   }
 }
 
@@ -40,10 +40,10 @@
       color: inherit;
       line-height: 175%;
       &.active {
-        color: @default-link-color;
+        color: var(--link-text-color);
       }
       &:hover {
-        color: @default-link-color;
+        color: var(--link-text-color);
       }
     }
   }

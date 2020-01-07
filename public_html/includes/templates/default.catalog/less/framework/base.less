@@ -3,41 +3,41 @@
 }
 
 html {
-  font: @default-text-size @default-text-font;
-  line-height: @default-line-height;
-  color: @default-text-color;
+  font-size: var(--default-text-size);
+  font-family: var(--default-text-font);
+  line-height: var(--default-line-height);
+  color: var(--default-text-color);
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   min-height: 100vh;
 }
 
 h1, h2, h3, h4 {
-  color: @default-title-color;
-  margin: @default-gutter-size 0;
-  border-bottom: 1px solid @default-border-color;
-  padding-bottom: @default-gutter-size/2;
-}
-
-p {
-  margin: @default-gutter-size 0;
+  font-weight: normal;
+  color: var(--default-title-color);
+  border-bottom: 1px solid var(--default-border-color);
+  padding-bottom: .5rem;
 }
 
 a {
   &:link, &:visited {
-    color: @default-link-color;
+    color: var(--link-text-color);
     text-decoration: none;
   }
   &:hover, &:active {
-    color: @default-link-color;
+    color: var(--link-text-color);
     text-decoration: underline;
   }
 }
 
+fieldset {
+  border: 1px solid @default-border-color;
+  border-radius: @border-radius;
+}
+
 hr {
-  margin: @default-gutter-size 0;
+  margin: 1rem 0;
   border: 0;
-  border-top: 1px solid @default-border-color;
+  border-top: 1px solid var(--default-border-color);
 }
