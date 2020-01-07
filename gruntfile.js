@@ -54,6 +54,7 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/css/checkout.css'  : 'public_html/includes/templates/default.catalog/less/checkout.less',
           'public_html/includes/templates/default.catalog/css/framework.css' : 'public_html/includes/templates/default.catalog/less/framework.less',
           'public_html/includes/templates/default.catalog/css/printable.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
+          'public_html/includes/templates/default.catalog/css/variables.css' : 'public_html/includes/templates/default.catalog/less/variables.less',
         }
       },
       litecart_catalog_template_minified: {
