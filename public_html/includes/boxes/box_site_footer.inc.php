@@ -5,65 +5,10 @@
     $box_site_footer = new ent_view();
 
     $box_site_footer->snippets = array(
-      'categories' => array(),
-      'manufacturers' => array(),
       'pages' => array(),
+      'modules' => array(),
+      'social' => array(),
     );
-
-  // Categories
-    $categories_query = database::query(
-      "select c.id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-      where c.status
-      and c.parent_id = 0
-      order by c.priority asc, ci.name asc;"
-    );
-
-    $i = 0;
-    while ($category = database::fetch($categories_query)) {
-      if (++$i < 10) {
-        $box_site_footer->snippets['categories'][$category['id']] = array(
-          'id' => $category['id'],
-          'name' => $category['name'],
-          'link' => document::href_ilink('category', array('category_id' => $category['id'])),
-        );
-      } else {
-        $box_site_footer->snippets['categories'][] = array(
-          'id' => 0,
-          'name' => language::translate('title_more', 'More') . '…',
-          'link' => document::href_ilink('categories'),
-        );
-        break;
-      }
-    }
-
-  // Manufacturers
-    $manufacturers_query = database::query(
-      "select m.id, m.name
-      from ". DB_TABLE_MANUFACTURERS ." m
-      where status
-      and featured
-      order by m.name asc;"
-    );
-
-    $i = 0;
-    while ($manufacturer = database::fetch($manufacturers_query)) {
-      if (++$i < 10) {
-        $box_site_footer->snippets['manufacturers'][$manufacturer['id']] = array(
-          'id' => $manufacturer['id'],
-          'name' => $manufacturer['name'],
-          'link' => document::href_ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
-        );
-      } else {
-        $box_site_footer->snippets['manufacturers'][] = array(
-          'id' => 0,
-          'name' => language::translate('title_more', 'More') . '…',
-          'link' => document::href_ilink('manufacturers'),
-        );
-        break;
-      }
-    }
 
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p
@@ -72,6 +17,7 @@
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
     );
+
     while ($page = database::fetch($pages_query)) {
       $box_site_footer->snippets['pages'][$page['id']] = array(
         'id' => $page['id'],
@@ -87,6 +33,7 @@
       and find_in_set('customer_service', dock)
       order by p.priority, pi.title;"
     );
+
     while ($page = database::fetch($pages_query)) {
       $box_site_footer->snippets['customer_service_pages'][$page['id']] = array(
         'id' => $page['id'],
@@ -94,6 +41,47 @@
         'link' => document::href_ilink('customer_service', array('page_id' => $page['id'])),
       );
     }
+
+    $modules_query = database::query(
+      "select id, settings  from ". DB_TABLE_MODULES ."
+      where type in ('shipping', 'payment')
+      and status
+      order by type, id;"
+    );
+
+    while ($module = database::fetch($modules_query)) {
+      $module['settings'] = json_decode($module['settings'], true);
+
+      if (empty($module['settings']['icon'])) continue;
+      if (!is_file(FS_DIR_APP . $module['settings']['icon'])) continue;
+
+      $box_site_footer->snippets['modules'][$module['settings']['icon']] = array(
+        'id' => $module['id'],
+        //'title' => $module['name'],
+        'icon' => functions::image_thumbnail(FS_DIR_APP . $module['settings']['icon'], 72, 32, 'FIT_USE_WHITESPACING'),
+      );
+    }
+
+    $box_site_footer->snippets['social']['facebook'] = array(
+      'type' => 'facebook',
+      'title' => 'Facebook',
+      'icon' => 'fa-facebook',
+      'link' => 'https://www.facebook.com/',
+    );
+
+    $box_site_footer->snippets['social']['twitter'] = array(
+      'type' => 'twitter',
+      'title' => 'Twitter',
+      'icon' => 'fa-twitter',
+      'link' => 'https://www.twitter.com/',
+    );
+
+    $box_site_footer->snippets['social']['linkedin'] = array(
+      'type' => 'linkedin',
+      'title' => 'LinkedIn',
+      'icon' => 'fa-linkedin',
+      'link' => 'https://www.linkedin.com/',
+    );
 
     echo $box_site_footer->stitch('views/box_site_footer');
 
