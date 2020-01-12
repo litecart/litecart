@@ -15,11 +15,4 @@
       'description' => language::translate('template:description_compact_category_tree', 'Hide the other categories while browsing a category branch.'),
       'function' => 'toggle("e/d")',
     ),
-    array(
-      'key' => 'cookie_acceptance',
-      'default_value' => '1',
-      'title' => language::translate('template:title_cookie_acceptance', 'Cookie Acceptance'),
-      'description' => language::translate('template:description_cookie_acceptance', 'Enables or disables the cookie acceptance notice.'),
-      'function' => 'toggle("e/d")',
-    ),
   );
