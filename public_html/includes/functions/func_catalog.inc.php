@@ -120,12 +120,14 @@
         break;
     }
 
-    $sql_where_categories = array();
-    if (!empty($filter['categories']) && is_array($filter['categories'])) {
-      foreach ($filter['categories'] as $category) {
-        $sql_where_categories[] = "find_in_set('". database::input($category) ."', ptc.categories)";
-      }
-      $sql_where_categories = "and (". implode(" and ", $sql_where_categories) .")";
+    $sql_where_categories = '';
+    if (!empty($filter['categories'])) {
+      $sql_where_categories = (
+        "and p.id in (
+          select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+          where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
+        )"
+      );
     }
 
     $sql_where_attributes = array();
@@ -153,15 +155,9 @@
       "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
 
       from (
-        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, ptc.categories, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
 
         from ". DB_TABLE_PRODUCTS ." p
-
-        left join (
-          select product_id, group_concat(category_id separator ',') as categories
-          from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-          group by product_id
-        ) ptc on (p.id = ptc.product_id)
 
         left join (
           select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
