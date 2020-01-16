@@ -801,7 +801,7 @@
       foreach ($this->data['items'] as $item) {
 
         if (!empty($item['product_id'])) {
-          $product = reference::product($item['product_id'], $language_code);
+          $product = reference::product($item['product_id'], $this->data['language_code']);
 
           $options = array();
           if (!empty($item['options'])) {
