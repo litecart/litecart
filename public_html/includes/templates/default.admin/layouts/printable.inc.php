@@ -3,9 +3,9 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-{snippet:head_tags}
 <link rel="stylesheet"  href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/printable.min.css" />
+{snippet:head_tags}
 {snippet:style}
 </head>
 <body>

@@ -32,7 +32,7 @@
 
     public function options($items=null, $currency_code=null, $customer=null) {
 
-      if (empty($items)) return array();
+      if (empty($items) || empty($this->modules)) return array();
 
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
@@ -42,8 +42,6 @@
         $subtotal['amount'] += $item['price'] * $item['quantity'];
         $subtotal['tax'] += $item['tax'] * $item['quantity'];
       }
-
-      if (empty($this->modules)) return array();
 
       $this->data['options'] = array();
 
@@ -110,6 +108,8 @@
       if (empty($this->data['options'])) {
         $this->options($items, $currency_code, $customer);
       }
+
+      if (empty($this->data['options'])) return false;
 
       foreach ($this->data['options'] as $module) {
         foreach ($module['options'] as $option) {
