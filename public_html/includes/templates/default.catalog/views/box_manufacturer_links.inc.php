@@ -1,4 +1,4 @@
-<section id="box-manufacturers-links" class="box">
+<section id="box-manufacturer-links" class="box">
 
   <h2 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h2>
 
