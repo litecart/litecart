@@ -52,6 +52,8 @@
               'tax_class_id' => $order->data['shipping_option']['tax_class_id'],
               'calculate' => true,
             );
+
+            break;
           }
         }
       }
