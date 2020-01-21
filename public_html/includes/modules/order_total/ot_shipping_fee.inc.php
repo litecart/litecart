@@ -75,7 +75,7 @@
           'default_value' => 'country_code,zone_code,min_subtotal',
           'title' => language::translate(__CLASS__.':title_free_shipping_table', 'Free Shipping Table'),
           'description' => language::translate(__CLASS__.':description_free_shipping_table', 'Free shipping table in standard CSV format with column headers.'),
-          'function' => 'bigtext()',
+          'function' => 'csv()',
         ),
         array(
           'key' => 'priority',

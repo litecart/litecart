@@ -579,6 +579,9 @@
       case 'currencies':
         return form_draw_currencies_list($name, $input, true);
 
+      case 'csv':
+        return form_draw_textarea($name, $input, true, 'data-type="csv"');
+
       case 'delivery_status':
         return form_draw_delivery_statuses_list($name, $input);
 
