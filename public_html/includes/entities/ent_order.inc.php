@@ -155,6 +155,9 @@
 
       while ($item = database::fetch($order_items_query)) {
         $item['options'] = unserialize($item['options']);
+        $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
+        $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
+        $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
         $this->data['items'][$item['id']] = $item;
       }
 
@@ -165,6 +168,8 @@
       );
 
       while ($row = database::fetch($order_totals_query)) {
+        $row['value'] = (float)$row['value']; // Turns "1.0000" to 1
+        $row['tax'] = (float)$row['tax']; // Turns "1.0000" to 1
         $this->data['order_total'][$row['id']] = $row;
       }
 
