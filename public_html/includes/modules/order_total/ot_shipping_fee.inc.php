@@ -41,6 +41,7 @@
 
           foreach ($free_shipping_table as $row) {
             if (empty($row['country_code']) || $row['country_code'] != $order->data['customer']['shipping_address']['country_code']) continue;
+            if (!empty($row['zone_code']) && $row['zone_code'] != $order->data['customer']['shipping_address']['zone_code']) continue;
             if (!isset($row['min_subtotal']) || $row['min_subtotal'] < 0) continue;
             if ($subtotal < $row['min_subtotal']) continue;
 
@@ -69,7 +70,7 @@
         ),
         array(
           'key' => 'free_shipping_table',
-          'default_value' => 'country_code,min_subtotal',
+          'default_value' => 'country_code,zone_code,min_subtotal',
           'title' => language::translate(__CLASS__.':title_free_shipping_table', 'Free Shipping Table'),
           'description' => language::translate(__CLASS__.':description_free_shipping_table', 'Free shipping table in standard CSV format with column headers.'),
           'function' => 'bigtext()',
