@@ -24,7 +24,9 @@
       if (empty($parts['port'])) $parts['port'] = ($parts['scheme'] == 'ssl') ? 443 : 80;
       if (empty($parts['path'])) $parts['path'] = '/';
 
-      $data = (!empty($data) && is_array($data)) ? http_build_query($data) : $data;
+      if (!empty($data)) {
+        $data = is_array($data) ? http_build_query($data) : $data;
+      }
 
       if (!empty($parts['user']) && empty($headers['Authorization'])) {
         $headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. (!empty($parts['pass']) ? $parts['pass'] : ''));
