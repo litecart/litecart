@@ -89,6 +89,7 @@
       }
 
       notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
+        '%email' => customer::$data['email'],
         '%firstname' => customer::$data['firstname'],
         '%lastname' => customer::$data['lastname'],
       )));
