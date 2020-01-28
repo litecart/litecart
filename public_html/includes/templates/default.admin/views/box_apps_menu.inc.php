@@ -3,7 +3,7 @@
   <?php foreach ($apps as $app) { ?>
   <li class="app<?php echo $app['active'] ? ' selected' : ''; ?>" data-code="<?php echo $app['code']; ?>">
     <a href="<?php echo htmlspecialchars($app['link']); ?>">
-      <span class="fa-stack fa-lg icon-wrapper">
+      <span class="fa-stack fa-lg icon-wrapper" title="<?php echo htmlspecialchars($app['name']); ?>">
         <?php echo functions::draw_fonticon('fa-circle fa-stack-2x icon-background', 'style="color: '. $app['theme']['color'] .';"'); ?>
         <?php echo functions::draw_fonticon($app['theme']['icon'] .' fa-stack-1x icon', 'style="color: #fff;"'); ?>
       </span>
