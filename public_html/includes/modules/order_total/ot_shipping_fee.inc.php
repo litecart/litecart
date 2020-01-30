@@ -17,16 +17,16 @@
 
       if (empty($this->settings['status'])) return;
 
+      if (!isset($order->data['shipping_option']['cost']) || $order->data['shipping_option']['cost'] == 0) return;
+
       $output = array();
 
-      if (isset($order->data['shipping_option']['cost']) && $order->data['shipping_option']['cost'] != 0) {
-        $output[] = array(
-          'title' => $order->data['shipping_option']['title'] .' ('. $order->data['shipping_option']['name'] .')',
-          'value' => $order->data['shipping_option']['cost'],
-          'tax' => tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
-          'calculate' => true,
-        );
-      }
+      $output[] = array(
+        'title' => $order->data['shipping_option']['title'] .' ('. $order->data['shipping_option']['name'] .')',
+        'value' => $order->data['shipping_option']['cost'],
+        'tax' => tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
+        'calculate' => true,
+      );
 
       if (!empty($this->settings['free_shipping_table'])) {
 
