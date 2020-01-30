@@ -110,9 +110,9 @@
             </td>
             <td style="width: 50%">
               <?php if (!empty($setting['multiple'])) { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['placeholder']) ? ' placeholder="'. htmlspecialchars($setting['placeholder']) .'"' : ''); ?>
               <?php } else { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['placeholder']) ? ' placeholder="'. htmlspecialchars($setting['placeholder']) .'"' : ''); ?>
               <?php } ?>
             </td>
           </tr>
