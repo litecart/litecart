@@ -123,7 +123,7 @@
       {snippet:notices}
       {snippet:content}
     </div>
-  </div>
+  </main>
 </div>
 
 {snippet:foot_tags}
