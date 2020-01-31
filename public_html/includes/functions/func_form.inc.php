@@ -622,7 +622,7 @@
         return form_draw_quantity_units_list($name, $input, true, $parameters);
 
       case 'order_status':
-        return form_draw_order_status_list($name, $input, true, $parameters);
+        return form_draw_order_status_list($name, $input, false, $parameters);
 
       case 'order_statuses':
         return form_draw_order_status_list($name, $input, true, $parameters);
