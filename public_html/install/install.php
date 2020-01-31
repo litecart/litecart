@@ -43,10 +43,10 @@
   echo '<p>Checking PHP version... ';
 
   if (version_compare(PHP_VERSION, '5.4', '<')) {
-    die('<span class="error">[Error] PHP 5.4+ required - Detected '. PHP_VERSION .'</span></p>');
-  } else if (version_compare(PHP_VERSION, '7.1', '<')) {
+    die('<span class="error">[Error] PHP 5.4+ minimum requirement - Detected '. PHP_VERSION .'</span></p>');
+  } else if (version_compare(PHP_VERSION, '7.1', '<=')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">[Warning] PHP 7.3+ recommended - Detected '. PHP_VERSION .' that has reached end of life</span></span></p>';
+       . '<span class="warning">[Warning] PHP 7.3+ recommended - Detected '. PHP_VERSION .' that has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a></span></span></p>';
   } else {
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
   }
