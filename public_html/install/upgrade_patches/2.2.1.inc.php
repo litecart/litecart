@@ -1,5 +1,16 @@
 <?php
 
+// Delete old files
+  $deleted_files = array(
+    FS_DIR_ADMIN . 'orders.app/edit_order_item.php',
+  );
+
+  foreach ($deleted_files as $pattern) {
+    if (!file_delete($pattern)) {
+      echo '<span class="error">[Skip]</span></p>';
+    }
+  }
+
   $modified_files = array(
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
