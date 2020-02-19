@@ -148,7 +148,7 @@
     public function http_decode_chunked_data($data) {
       for ($result = ''; !empty($data); $data = trim($data)) {
         $position = strpos($data, "\r\n");
-        $length = hexdec(substr($data, 0, $position));
+        $length = (int)hexdec(substr($data, 0, $position));
         $result .= substr($data, $position + 2, $length);
         $data = substr($data, $position + 2 + $length);
       }
