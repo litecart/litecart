@@ -840,7 +840,7 @@
       if (empty($this->data['id'])) return;
 
       $order_modules = new mod_order();
-      $order_modules->delete($this->data);
+      $order_modules->delete($this->previous);
 
     // Empty order first..
       $this->data['items'] = array();

@@ -126,7 +126,7 @@
 
       $customer_modules = new mod_customer();
 
-      if (!empty($this->previous)) {
+      if (!empty($this->previous['id'])) {
         $customer_modules->update($this->data, $this->previous);
       } else {
         $customer_modules->update($this->data);
@@ -168,7 +168,7 @@
       );
 
       $customer_modules = new mod_customer();
-      $customer_modules->delete($this->data);
+      $customer_modules->delete($this->previous);
 
       $this->reset();
 
