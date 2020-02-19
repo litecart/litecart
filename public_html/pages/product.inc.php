@@ -95,10 +95,10 @@
     'productID' => $product->id,
     'sku' => $product->sku,
     'gtin14' => $product->gtin,
+    'mpn' => $product->mpn,
     'name' => $product->name,
     'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
     'description' => !empty($product->description) ? strip_tags($product->description) : '',
-    'brand' => array(),
     'offers' => array(
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
@@ -106,6 +106,7 @@
       'priceValidUntil' => (!empty($product->campaign) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       //'itemCondition' => 'http://schema.org/UsedCondition',
       //'availability' => 'http://schema.org/InStock',
+      'url' => document::link(),
     ),
   );
 
@@ -188,6 +189,7 @@
 // Manufacturer
   if (!empty($product->manufacturer)) {
     $schema_json['brand']['name'] = $product->manufacturer->name;
+
     $_page->snippets['manufacturer'] = array(
       'id' => $product->manufacturer->id,
       'name' => $product->manufacturer->name,
@@ -353,10 +355,10 @@
     }
   }
 
-  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
-
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     echo $_page->stitch('pages/product.ajax');
   } else {
     echo $_page->stitch('pages/product');
   }
+
+  document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
