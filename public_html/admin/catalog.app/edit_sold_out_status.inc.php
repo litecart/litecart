@@ -20,6 +20,7 @@
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
+      if (empty($_POST['hidden'])) $_POST['hidden'] = 0;
       if (empty($_POST['orderable'])) $_POST['orderable'] = 0;
 
       $fields = array(
