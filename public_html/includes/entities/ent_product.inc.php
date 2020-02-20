@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_PRODUCTS .";"
@@ -30,22 +30,22 @@
       );
 
       while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], array('id', 'product_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'product_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
       }
 
-      $this->data['categories'] = array();
-      $this->data['attributes'] = array();
-      $this->data['keywords'] = array();
-      $this->data['images'] = array();
-      $this->data['prices'] = array();
-      $this->data['campaigns'] = array();
-      $this->data['options'] = array();
-      $this->data['options_stock'] = array();
+      $this->data['categories'] = [];
+      $this->data['attributes'] = [];
+      $this->data['keywords'] = [];
+      $this->data['images'] = [];
+      $this->data['prices'] = [];
+      $this->data['campaigns'] = [];
+      $this->data['options'] = [];
+      $this->data['options_stock'] = [];
 
       $this->previous = $this->data;
     }
@@ -73,7 +73,7 @@
         $this->data[$key] = $value;
       }
 
-      $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : array();
+      $this->data['keywords'] = !empty($this->data['keywords']) ? explode(',', $this->data['keywords']) : [];
 
     // Categories
       $categories_query = database::query(
@@ -93,7 +93,7 @@
 
       while ($product_info = database::fetch($products_info_query)) {
         foreach ($product_info as $key => $value) {
-          if (in_array($key, array('id', 'product_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
           $this->data[$key][$product_info['language_code']] = $value;
         }
       }
@@ -144,7 +144,7 @@
       while ($option_stock = database::fetch($products_options_stock_query)) {
 
         $this->data['options_stock'][$option_stock['id']] = $option_stock;
-        $this->data['options_stock'][$option_stock['id']]['name'] = array();
+        $this->data['options_stock'][$option_stock['id']]['name'] = [];
 
         foreach (explode(',', $option_stock['combination']) as $combination) {
           list($group_id, $value_id) = explode('-', $combination);
@@ -559,12 +559,12 @@
       );
       $image_id = database::insert_id();
 
-      $this->data['images'][$image_id] = array(
+      $this->data['images'][$image_id] = [
         'id' => $image_id,
         'filename' => $filename,
         'checksum' => $checksum,
         'priority' => $priority,
-      );
+      ];
 
       $this->previous['images'][$image_id] = $this->data['images'][$image_id];
     }
@@ -573,10 +573,10 @@
 
       if (empty($this->data['id'])) return;
 
-      $this->data['images'] = array();
-      $this->data['campaigns'] = array();
-      $this->data['options'] = array();
-      $this->data['options_stock'] = array();
+      $this->data['images'] = [];
+      $this->data['campaigns'] = [];
+      $this->data['options'] = [];
+      $this->data['options_stock'] = [];
       $this->save();
 
       database::query(

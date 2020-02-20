@@ -35,7 +35,7 @@
 
     // Return company
       if (!empty($address['company'])) {
-        return $data + array(
+        return $data + [
           'tax_id' => $address['tax_id'],
           'company' => $address['company'],
           'address1' => $address['address1'],
@@ -44,37 +44,37 @@
           'city' => $address['city'],
           'country_code' => $address['country_code'],
           'zone_code' => $address['zone_code'],
-        );
+        ];
 
     // Return individual
       } else {
-        return $data + array(
+        return $data + [
           'tax_id' => $address['tax_id'],
           'company' => $address['company'],
           'city' => $address['city'],
           'country_code' => $address['country_code'],
           'zone_code' => $address['zone_code'],
-        );
+        ];
       }
     }
 
     function settings() {
-      return array(
-        array(
+      return [
+        [
           'key' => 'status',
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
-        ),
-        array(
+        ],
+        [
           'key' => 'priority',
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'number()',
-        ),
-      );
+        ],
+      ];
     }
 
     public function install() {}

@@ -33,7 +33,7 @@
       } while (!empty($string));
 
     } else {
-      $parts = array($string);
+      $parts = [$string];
     }
 
     $string = implode('([ -\./]+)?', $parts);

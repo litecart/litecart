@@ -68,10 +68,10 @@
     }
 
   // Set captcha value to session
-    session::$data['captcha'][$id] = array(
+    session::$data['captcha'][$id] = [
       'value' => $code,
       'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes'))
-    );
+    ];
 
   // Output key and image
     return '<input type="hidden" name="captcha_id" value="'. $id .'"><img src="data:image/gif;base64,'. $base64_image .'" alt="" style="width: '. $width .'px; height: '. $height .'px"'. (($parameters) ? ' ' . $parameters : '') .' />';

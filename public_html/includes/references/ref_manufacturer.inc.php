@@ -5,19 +5,19 @@
     private $_id;
     private $_cache_token;
     private $_language_codes;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($manufacturer_id, $language_code=null) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_id = (int)$manufacturer_id;
-      $this->_cache_token = cache::token('manufacturer_'.(int)$manufacturer_id, array($language_code));
-      $this->_language_codes = array_unique(array(
+      $this->_cache_token = cache::token('manufacturer_'.(int)$manufacturer_id, [$language_code]);
+      $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
-      ));
+      ]);
 
       if ($cache = cache::get($this->_cache_token)) {
         $this->_data = $cache;
@@ -55,7 +55,7 @@
         case 'h1_title':
         case 'link':
 
-          $this->_data['info'] = array();
+          $this->_data['info'] = [];
 
           $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
@@ -66,7 +66,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'manufacturer_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'manufacturer_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
           }

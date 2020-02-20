@@ -2,7 +2,7 @@
 
   class tax {
 
-    private static $_cache = array();
+    private static $_cache = [];
 
     ######################################################################
 
@@ -44,15 +44,15 @@
 
       if ($value == 0) return 0;
 
-      $tax_rates = array();
+      $tax_rates = [];
 
       foreach (self::get_rates($tax_class_id, $customer) as $tax_rate) {
         if (!isset($tax_rates[$tax_rate['id']])) {
-          $tax_rates[$tax_rate['id']] = array(
+          $tax_rates[$tax_rate['id']] = [
             'id' => $tax_rate['id'],
             'name' => $tax_rate['name'],
             'tax' => 0,
-          );
+          ];
         }
         switch($tax_rate['type']) {
           case 'fixed':
@@ -69,9 +69,9 @@
 
     public static function get_rates($tax_class_id, $customer='customer') {
 
-      if (empty($tax_class_id)) return array();
+      if (empty($tax_class_id)) return [];
 
-      $tax_rates = array();
+      $tax_rates = [];
 
       if ($customer === null) $customer = 'customer';
 
@@ -80,38 +80,38 @@
         switch(strtolower($customer)) {
 
           case 'store':
-            $customer = array(
+            $customer = [
               'tax_id' => false,
               'company' => false,
               'country_code' => settings::get('store_country_code'),
               'zone_code' => settings::get('store_zone_code'),
-              'shipping_address' => array(
+              'shipping_address' => [
                 'company' => false,
                 'country_code' => settings::get('store_country_code'),
                 'zone_code' => settings::get('store_zone_code'),
-              ),
-            );
+              ],
+            ];
             break;
 
           case 'customer':
-            $customer = array(
+            $customer = [
               'tax_id' => !empty(customer::$data['tax_id']) ? true : false,
               'company' => !empty(customer::$data['company']) ? true : false,
               'country_code' => customer::$data['country_code'],
               'zone_code' => customer::$data['zone_code'],
-              'shipping_address' => array(
+              'shipping_address' => [
                 'company' => customer::$data['shipping_address']['company'],
                 'country_code' => customer::$data['shipping_address']['country_code'],
                 'zone_code' => customer::$data['shipping_address']['zone_code'],
-              ),
-            );
+              ],
+            ];
 
             if (empty(customer::$data['different_shipping_address'])) {
-              $customer['shipping_address'] = array(
+              $customer['shipping_address'] = [
                 'company' => customer::$data['company'],
                 'country_code' => customer::$data['country_code'],
                 'zone_code' => customer::$data['zone_code'],
-              );
+              ];
             }
             break;
 

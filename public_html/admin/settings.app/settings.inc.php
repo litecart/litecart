@@ -16,14 +16,14 @@
           throw new Exception(language::translate('error_setting_key_does_not_exist', 'The settings key does not exist'));
         }
 
-        $values_required_for_keys = array(
+        $values_required_for_keys = [
           'store_language_code',
           'store_currency_code',
           'store_weight_class',
           'store_length_class',
           'default_language_code',
           'default_currency_code',
-        );
+        ];
 
         if (in_array($key, $values_required_for_keys) && empty($_POST['settings'][$key])) {
           throw new Exception(language::translate('error_cannot_set_empty_value_for_setting', 'You cannot set an empty value for this setting'));
@@ -46,7 +46,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array(), true, array('action')));
+      header('Location: '. document::link(WS_DIR_ADMIN, [], true, ['action']));
       exit;
 
     } catch (Exception $e) {
@@ -65,7 +65,7 @@
   }
 
 // Table Rows
-  $settings = array();
+  $settings = [];
 
   $settings_query = database::query(
     "select * from ". DB_TABLE_SETTINGS ."
@@ -104,9 +104,9 @@
           break;
 
         case (substr($setting['function'], 0, 6) == 'toggle'):
-          if (in_array(($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+          if (in_array(($setting['value']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
            $setting['value'] = language::translate('title_true', 'True');
-          } else if (in_array(($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
+          } else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
            $setting['value'] = language::translate('title_false', 'False');
           }
           break;
@@ -164,7 +164,7 @@
                 <?php echo $setting['value']; ?>
               </div>
             </td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
           <?php } ?>

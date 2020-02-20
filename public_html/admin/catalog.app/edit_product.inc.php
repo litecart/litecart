@@ -28,16 +28,16 @@
       if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
       if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 
-      if (empty($_POST['categories'])) $_POST['categories'] = array();
-      if (empty($_POST['images'])) $_POST['images'] = array();
-      if (empty($_POST['attributes'])) $_POST['attributes'] = array();
-      if (empty($_POST['campaigns'])) $_POST['campaigns'] = array();
-      if (empty($_POST['options'])) $_POST['options'] = array();
-      if (empty($_POST['options_stock'])) $_POST['options_stock'] = array();
+      if (empty($_POST['categories'])) $_POST['categories'] = [];
+      if (empty($_POST['images'])) $_POST['images'] = [];
+      if (empty($_POST['attributes'])) $_POST['attributes'] = [];
+      if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
+      if (empty($_POST['options'])) $_POST['options'] = [];
+      if (empty($_POST['options_stock'])) $_POST['options_stock'] = [];
 
       $_POST['keywords'] = explode(',', $_POST['keywords']);
 
-      $fields = array(
+      $fields = [
         'status',
         'manufacturer_id',
         'supplier_id',
@@ -75,7 +75,7 @@
         'meta_description',
         'images',
         'options_stock',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $product->data[$field] = $_POST[$field];
@@ -90,7 +90,7 @@
       $product->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0])));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0]]));
       exit;
 
     } catch (Exception $e) {
@@ -106,7 +106,7 @@
       $product->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0])));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0]]));
       exit;
 
     } catch (Exception $e) {
@@ -222,7 +222,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_default_category', 'Default Category'); ?></label>
-                <?php echo functions::form_draw_select_field('default_category_id', array(), true); ?>
+                <?php echo functions::form_draw_select_field('default_category_id', [], true); ?>
               </div>
 
               <div class="form-group">
@@ -440,8 +440,8 @@
             </tbody>
             <tfoot>
               <tr>
-                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute[group_id]', array(), ''); ?></td>
-                <td><?php echo functions::form_draw_select_field('new_attribute[value_id]', array(), ''); ?></td>
+                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute[group_id]', [], ''); ?></td>
+                <td><?php echo functions::form_draw_select_field('new_attribute[value_id]', [], ''); ?></td>
                 <td><?php echo functions::form_draw_text_field('new_attribute[custom_value]', ''); ?></td>
                 <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
               </tr>
@@ -652,7 +652,7 @@
               <tbody>
                 <tr>
                   <td><?php echo functions::form_draw_option_groups_list('new_option[new_1][group_id]', ''); ?></td>
-                  <td><?php echo functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', 'disabled="disabled"'); ?></td>
+                  <td><?php echo functions::form_draw_select_field('new_option[new_1][value_id]', [['','']], '', 'disabled="disabled"'); ?></td>
                   <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
                 </tr>
               </tbody>
@@ -799,7 +799,7 @@
   $('select[name="new_attribute[group_id]"]').change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_ADMIN, array('doc' => 'attribute_values.json'), array('app')); ?>&group_id=' + $(this).val(),
+      url: '<?php echo document::link(WS_DIR_ADMIN, ['doc' => 'attribute_values.json'], ['app']); ?>&group_id=' + $(this).val(),
       type: 'get',
       cache: true,
       async: true,
@@ -980,7 +980,7 @@
 
   $('#price-incl-tax-tooltip').click(function(e) {
     e.preventDefault;
-    alert('<?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the store region tax. All prices input to database are always excluding tax.')); ?>');
+    alert('<?php echo str_replace(["\r", "\n", "'"], ["", "", "\\'"], language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the store region tax. All prices input to database are always excluding tax.')); ?>');
   });
 
 // Campaigns
@@ -1114,7 +1114,7 @@
     e.preventDefault();
     var output = '<tr>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', 'disabled="disabled"')); ?></td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('new_option[option_index][value_id]', [['','']], '', 'disabled="disabled"')); ?></td>'
                + '  <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + '</tr>';
     output = output.replace(/option_index/g, 'new_' + option_index);

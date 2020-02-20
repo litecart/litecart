@@ -1,11 +1,11 @@
 <?php
 
   class route {
-    private static $_classes = array();
-    private static $_links_cache = array();
+    private static $_classes = [];
+    private static $_links_cache = [];
     private static $_links_cache_token;
-    private static $_routes = array();
-    public static $route = array();
+    private static $_routes = [];
+    public static $route = [];
     public static $request = '';
 
     public static function init() {
@@ -14,10 +14,10 @@
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
     // Load cached links (url rewrites)
-      self::$_links_cache_token = cache::token('links', array('site', 'language'));
+      self::$_links_cache_token = cache::token('links', ['site', 'language']);
       self::$_links_cache = cache::get(self::$_links_cache_token);
 
-      event::register('after_capture', array(__CLASS__, 'after_capture'));
+      event::register('after_capture', [__CLASS__, 'after_capture']);
     }
 
     public static function after_capture() {
@@ -43,13 +43,13 @@
       }
     }
 
-    public static function add($pattern, $page, $params='', $options=array()) {
-      self::$_routes[] = array(
+    public static function add($pattern, $page, $params='', $options=[]) {
+      self::$_routes[] = [
         'pattern' => $pattern,
         'page' => $page,
         'params' => $params,
         'options' => $options,
-      );
+      ];
     }
 
     public static function identify() {
@@ -125,7 +125,7 @@
 
         $not_found_file = FS_DIR_APP . 'logs/not_found.log';
 
-        $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : array();
+        $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
         $lines[] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $lines = array_unique($lines);
 
@@ -160,7 +160,7 @@
       return $path;
     }
 
-    public static function create_link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null, $rewrite=false) {
+    public static function create_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null, $rewrite=false) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
@@ -183,7 +183,7 @@
       }
 
     // Unset params that are to be skipped from the link
-      if (is_string($skip_params)) $skip_params = array($skip_params);
+      if (is_string($skip_params)) $skip_params = [$skip_params];
       foreach ($skip_params as $key) {
         if (isset($link->query[$key])) $link->unset_query($key);
       }
@@ -248,7 +248,7 @@
 
     // Detect URL rewrite support
       $use_rewrite = false;
-      if (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && in_array(strtolower($_SERVER['REDIRECT_HTTP_MOD_REWRITE']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+      if (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && in_array(strtolower($_SERVER['REDIRECT_HTTP_MOD_REWRITE']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
         $use_rewrite = true;
 
       } else if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {

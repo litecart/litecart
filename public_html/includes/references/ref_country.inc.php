@@ -4,7 +4,7 @@
 
     private $_country_code;
     private $_language_codes;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($country_code) {
 
@@ -41,7 +41,7 @@
 
         case 'zones':
 
-          $this->_data['zones'] = array();
+          $this->_data['zones'] = [];
 
           $query = database::query(
             "select * from ". DB_TABLE_ZONES ."
@@ -76,7 +76,7 @@
 
     public function format_address($address) {
 
-      $address = array(
+      $address = [
         '%code' => !empty($address['code']) ? $address['code'] : '',
         '%tax_id' => !empty($address['tax_id']) ? $address['tax_id'] : '',
         '%company' => !empty($address['company']) ? $address['company'] : '',
@@ -90,7 +90,7 @@
         '%country_name' => $this->name,
         '%zone_code' => !empty($address['zone_code']) ? $address['zone_code'] : '',
         '%zone_name' => (!empty($address['zone_code']) && !empty($this->zones[$address['zone_code']])) ? $this->zones[$address['zone_code']]['name'] : '',
-      );
+      ];
 
       $output = strtr($this->address_format ? $this->address_format : settings::get('default_address_format'), $address);
 
@@ -101,7 +101,7 @@
 
     public function in_geo_zone($zone_code, $geo_zones) {
 
-      if (!is_array($geo_zones)) $geo_zones = array($geo_zones);
+      if (!is_array($geo_zones)) $geo_zones = [$geo_zones];
 
       $zones_to_geo_zones_query = database::query(
         "select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ."

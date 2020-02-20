@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_USERS .";"
@@ -25,7 +25,7 @@
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['permissions'] = array();
+      $this->data['permissions'] = [];
 
       $this->previous = $this->data;
     }

@@ -23,7 +23,7 @@
       if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
-      $fields = array(
+      $fields = [
         'icon',
         'color',
         'keywords',
@@ -35,7 +35,7 @@
         'description',
         'email_subject',
         'email_message',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $order_status->data[$field] = $_POST[$field];
@@ -44,7 +44,7 @@
       $order_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'order_statuses'), true, array('order_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], true, ['order_status_id']));
       exit;
 
     } catch (Exception $e) {
@@ -60,7 +60,7 @@
       $order_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'order_statuses'), true, array('order_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], true, ['order_status_id']));
       exit;
 
     } catch (Exception $e) {

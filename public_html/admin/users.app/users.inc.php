@@ -23,7 +23,7 @@
   }
 
 // Table Rows
-  $users = array();
+  $users = [];
 
   $users_query = database::query(
     "select * from ". DB_TABLE_USERS ."
@@ -52,7 +52,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_user'), true), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_user'], true), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -74,8 +74,8 @@
           <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : ''; ?>">
             <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
             <td><?php echo functions::draw_fonticon($user['status'] ? 'on' : 'off'); ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php }?>
         </tbody>

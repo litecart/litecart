@@ -44,9 +44,9 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['items'])) $_POST['items'] = array();
-      if (empty($_POST['order_total'])) $_POST['order_total'] = array();
-      if (empty($_POST['comments'])) $_POST['comments'] = array();
+      if (empty($_POST['items'])) $_POST['items'] = [];
+      if (empty($_POST['order_total'])) $_POST['order_total'] = [];
+      if (empty($_POST['comments'])) $_POST['comments'] = [];
 
       if (!empty($_POST['items'])) {
         foreach (array_keys($_POST['items']) as $key) {
@@ -61,7 +61,7 @@
         }
       }
 
-      $fields = array(
+      $fields = [
         'unread',
         'language_code',
         'currency_code',
@@ -77,13 +77,13 @@
         'display_prices_including_tax',
         'reference',
         'comments',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $order->data[$field] = $_POST[$field];
       }
 
-      $fields = array(
+      $fields = [
         'id',
         'email',
         'tax_id',
@@ -97,13 +97,13 @@
         'phone',
         'country_code',
         'zone_code',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST['customer'][$field])) $order->data['customer'][$field] = $_POST['customer'][$field];
       }
 
-      $fields = array(
+      $fields = [
         'company',
         'firstname',
         'lastname',
@@ -114,7 +114,7 @@
         'country_code',
         'zone_code',
         'phone',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST['customer']['shipping_address'][$field])) $order->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
@@ -124,7 +124,7 @@
 
       if (!empty($_POST['email_order_copy'])) {
 
-        $bccs = array();
+        $bccs = [];
         foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
           if (empty($email)) continue;
           $bccs[] = $email;
@@ -136,7 +136,7 @@
       if (!empty($_GET['redirect_url'])) {
         $redirect_url = $_GET['redirect_url'];
       } else {
-        $redirect_url = document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'orders'));
+        $redirect_url = document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'orders']);
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -156,7 +156,7 @@
       $order->delete();
 
       if (empty($_GET['redirect_url'])) {
-        $_GET['redirect_url'] = document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'orders'));
+        $_GET['redirect_url'] = document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'orders']);
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -312,7 +312,7 @@
 
                   <div class="form-group">
                     <div class="input-group">
-                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customer_picker')); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                       <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                       <span class="input-group-btn">
                         <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
@@ -601,7 +601,7 @@
               <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
               <tr class="item">
                 <td>
-                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('product', array('product_id' => $_POST['items'][$key]['product_id'])) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
+                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][option_stock_combination]', true); ?>
@@ -636,7 +636,7 @@
           <tfoot>
             <tr>
               <td colspan="8">
-                <a class="btn btn-default add-product" href="<?php echo document::href_link('', array('doc' => 'product_picker'), array('app'), array()); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', array('doc' => 'product_picker'), array('app'), array()); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                <a class="btn btn-default add-product" href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                 <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
               </td>
             </tr>
@@ -665,14 +665,14 @@
             <tbody>
 <?php
   if (empty($_POST['order_total'])) {
-    $_POST['order_total'][] = array(
+    $_POST['order_total'][] = [
       'id' => '',
       'module_id' => 'ot_subtotal',
       'title' => language::translate('title_subtotal', 'Subtotal'),
       'value' => '0',
       'tax' => '0',
       'calculate' => '0',
-    );
+    ];
   }
   foreach (array_keys($_POST['order_total']) as $key) {
     switch($_POST['order_total'][$key]['module_id']) {
@@ -958,7 +958,7 @@
 
   $('#customer-details button[name="get_address"]').click(function() {
     $.ajax({
-      url: '<?php echo document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'get_address.json')); ?>',
+      url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'get_address.json']); ?>',
       type: 'post',
       data: 'customer_id=' + $('*[name="customer[id]"]').val() + '&token=<?php echo form::session_post_token(); ?>',
       cache: true,

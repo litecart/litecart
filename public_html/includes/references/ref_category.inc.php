@@ -5,19 +5,19 @@
     private $_id;
     private $_cache_token;
     private $_language_codes;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($category_id, $language_code=null) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_id = (int)$category_id;
-      $this->_cache_token = cache::token('category_'.(int)$category_id, array($language_code));
-      $this->_language_codes = array_unique(array(
+      $this->_cache_token = cache::token('category_'.(int)$category_id, [$language_code]);
+      $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
-      ));
+      ]);
 
       if ($cache = cache::get($this->_cache_token)) {
         $this->_data = $cache;
@@ -55,7 +55,7 @@
         case 'meta_description':
         case 'h1_title':
 
-          $this->_data['info'] = array();
+          $this->_data['info'] = [];
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES_INFO ."
@@ -66,7 +66,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
           }
@@ -75,7 +75,7 @@
 
         case 'images':
 
-          $this->_data['images'] = array();
+          $this->_data['images'] = [];
 
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES_IMAGES."
@@ -100,7 +100,7 @@
 
         case 'path':
 
-          $this->_data['path'] = array($this->_id => $this);
+          $this->_data['path'] = [$this->_id => $this];
 
           $current = $this;
 
@@ -117,7 +117,7 @@
 
         case 'products':
 
-          $this->_data['products'] = array();
+          $this->_data['products'] = [];
 
           $query = database::query(
             "select id from ". DB_TABLE_PRODUCTS ."
@@ -133,7 +133,7 @@
 
         case 'siblings':
 
-          $this->_data['siblings'] = array();
+          $this->_data['siblings'] = [];
 
           if (empty($this->parent_id)) return;
 
@@ -152,7 +152,7 @@
 
         case 'descendants':
 
-          $this->_data['descendants'] = array();
+          $this->_data['descendants'] = [];
 
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
@@ -171,7 +171,7 @@
         case 'subcategories': // To be deprecated
         case 'children':
 
-          $this->_data['subcategories'] = array();
+          $this->_data['subcategories'] = [];
 
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."

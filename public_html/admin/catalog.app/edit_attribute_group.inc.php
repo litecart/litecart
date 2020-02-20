@@ -17,13 +17,13 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['values'])) $_POST['values'] = array();
+      if (empty($_POST['values'])) $_POST['values'] = [];
 
-      $fields = array(
+      $fields = [
         'code',
         'name',
         'values',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $attribute_group->data[$field] = $_POST[$field];
@@ -32,7 +32,7 @@
       $attribute_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
-      header('Location: '. document::link('', array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link('', ['doc' => 'attribute_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -48,7 +48,7 @@
       $attribute_group->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
-      header('Location: '. document::link('', array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link('', ['doc' => 'attribute_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {

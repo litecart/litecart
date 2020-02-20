@@ -7,23 +7,23 @@
 
   functions::draw_lightbox();
 
-  $box_similar_products_cache_token = cache::token('box_similar_products', array('get', 'language', 'currency', 'prices'));
+  $box_similar_products_cache_token = cache::token('box_similar_products', ['get', 'language', 'currency', 'prices']);
   if (cache::capture($box_similar_products_cache_token)) {
 
-    $products_query = functions::catalog_products_search_query(array(
+    $products_query = functions::catalog_products_search_query([
       'product_name' => $product->name,
-      'categories' => isset($_GET['category_id']) ? array($_GET['category_id']) : array_keys($product->categories),
-      'manufacturers' => array($product->manufacturer_id),
-      'exclude_products' => array($product->id),
+      'categories' => isset($_GET['category_id']) ? [$_GET['category_id']] : array_keys($product->categories),
+      'manufacturers' => [$product->manufacturer_id],
+      'exclude_products' => [$product->id],
       'keywords' => $product->keywords,
       'limit' => settings::get('box_similar_products_num_items'),
-    ));
+    ]);
 
     if (database::num_rows($products_query) > 0) {
 
       $box_similar_products = new ent_view();
 
-      $box_similar_products->snippets['products'] = array();
+      $box_similar_products->snippets['products'] = [];
       while ($listing_product = database::fetch($products_query)) {
         if (empty($listing_product['occurrences'])) break;
         $box_similar_products->snippets['products'][] = $listing_product;

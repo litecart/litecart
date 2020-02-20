@@ -3,16 +3,16 @@
   class url_customer_service {
 
     function routes() {
-      return array(
-        array(
+      return [
+        [
           'pattern' => '#^.*-s-([0-9]+)/?$#',
           'page' => 'customer_service',
           'params' => 'page_id=$1',
-          'options' => array(
+          'options' => [
             'redirect' => true,
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
     }
 
     function rewrite(ent_link $link, $language_code) {

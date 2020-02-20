@@ -2,10 +2,10 @@
 
   $box_filter = new ent_view();
 
-  $box_filter->snippets = array(
-    'manufacturers' => array(),
-    'attributes' => array(),
-  );
+  $box_filter->snippets = [
+    'manufacturers' => [],
+    'attributes' => [],
+  ];
 
 // Manufacturers
   if (empty($_GET['manufacturer_id'])) {
@@ -21,11 +21,11 @@
 
     if (database::num_rows($manufacturers_query) > 1) {
       while ($manufacturer = database::fetch($manufacturers_query)) {
-        $box_filter->snippets['manufacturers'][] = array(
+        $box_filter->snippets['manufacturers'][] = [
           'id' => $manufacturer['id'],
           'name' => $manufacturer['name'],
-          'href' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
-        );
+          'href' => document::ilink('manufacturer', ['manufacturer_id' => $manufacturer['id']]),
+        ];
       }
     }
   }
@@ -50,7 +50,7 @@
       order by `value`;"
     );
 
-    $group['values'] = array();
+    $group['values'] = [];
     while ($value = database::fetch($attribute_values_query)) {
       $group['values'][] = $value;
     }

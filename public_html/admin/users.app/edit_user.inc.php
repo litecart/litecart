@@ -18,14 +18,14 @@
 
     try {
       if (empty($_POST['status'])) $_POST['status'] = 0;
-      if (empty($_POST['permissions'])) $_POST['permissions'] = array();
+      if (empty($_POST['permissions'])) $_POST['permissions'] = [];
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
       if (empty($user->data['id']) && empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
       if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
       if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 
-      $fields = array(
+      $fields = [
         'status',
         'username',
         'email',
@@ -33,7 +33,7 @@
         'permissions',
         'date_valid_from',
         'date_valid_to',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $user->data[$field] = $_POST[$field];
@@ -44,7 +44,7 @@
       $user->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'users'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'users'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -60,7 +60,7 @@
       $user->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'users'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'users'], ['app']));
       exit;
 
     } catch (Exception $e) {

@@ -12,23 +12,23 @@
     }
   }
 
-  breadcrumbs::add(language::translate('title_option_groups', 'Option Groups'), document::link(WS_DIR_ADMIN, array('doc' => 'option_groups'), array('app')));
+  breadcrumbs::add(language::translate('title_option_groups', 'Option Groups'), document::link(WS_DIR_ADMIN, ['doc' => 'option_groups'], ['app']));
   breadcrumbs::add(!empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'));
 
   if (isset($_POST['save'])) {
 
     try {
       if (empty($_POST['required'])) $_POST['required'] = 0;
-      if (empty($_POST['values'])) $_POST['values'] = array();
+      if (empty($_POST['values'])) $_POST['values'] = [];
 
-      $fields = array(
+      $fields = [
         'name',
         'description',
         'function',
         'required',
         'sort',
         'values',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $option_group->data[$field] = $_POST[$field];
@@ -37,7 +37,7 @@
       $option_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'option_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'option_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -53,7 +53,7 @@
       $option_group->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'option_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'option_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -110,7 +110,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_function', 'Function'); ?></label>
-          <?php echo functions::form_draw_select_field('function', array(array('input'), array('checkbox'), array('radio'), array('select'), array('textarea')), true); ?>
+          <?php echo functions::form_draw_select_field('function', [['input'], ['checkbox'], ['radio'], ['select'], ['textarea']], true); ?>
         </div>
       </div>
 

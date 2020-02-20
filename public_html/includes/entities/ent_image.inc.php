@@ -285,7 +285,7 @@
                 $destination_width = round($destination_height * $source_ratio);
               }
 
-              if (in_array(strtoupper($clipping), array('FIT_ONLY_BIGGER', 'FIT_ONLY_BIGGER_USE_WHITESPACING'))) {
+              if (in_array(strtoupper($clipping), ['FIT_ONLY_BIGGER', 'FIT_ONLY_BIGGER_USE_WHITESPACING'])) {
                 if ($destination_width > $destination_height) {
                   if ($destination_width > $this->width()) {
                     $destination_width = $this->width();
@@ -299,7 +299,7 @@
                 }
               }
 
-              if (in_array(strtoupper($clipping), array('FIT_USE_WHITESPACING', 'FIT_ONLY_BIGGER_USE_WHITESPACING'))) {
+              if (in_array(strtoupper($clipping), ['FIT_USE_WHITESPACING', 'FIT_ONLY_BIGGER_USE_WHITESPACING'])) {
 
               // Create output image container
                 $_resized = ImageCreateTrueColor($width, $height);
@@ -424,7 +424,7 @@
               return true;
 
             case 'sharpen':
-              $matrix = array(array(-1,-1,-1), array(-1,16,-1), array(-1,-1,-1));
+              $matrix = [[-1,-1,-1], [-1,16,-1], [-1,-1,-1]];
               $divisor = array_sum(array_map('array_sum', $matrix));
               $offset = 0;
               ImageConvolution($this->_image, $matrix, $divisor, $offset);
@@ -671,7 +671,7 @@
 
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!in_array($type, array('gif', 'jpg', 'png', 'webp'))) {
+      if (!in_array($type, ['gif', 'jpg', 'png', 'webp'])) {
         throw new Exception('Unknown image format');
       }
 

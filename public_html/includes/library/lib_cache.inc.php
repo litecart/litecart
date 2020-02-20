@@ -2,7 +2,7 @@
 
   class cache {
 
-    private static $_recorders = array();
+    private static $_recorders = [];
     private static $_data;
     public static $enabled = true;
 
@@ -10,7 +10,7 @@
 
       self::$enabled = settings::get('cache_enabled') ? true : false;
 
-      if (!isset(session::$data['cache'])) session::$data['cache'] = array();
+      if (!isset(session::$data['cache'])) session::$data['cache'] = [];
       self::$_data = &session::$data['cache'];
 
       if (settings::get('cache_clear')) {
@@ -46,13 +46,13 @@
 
     ######################################################################
 
-    public static function token($keyword, $dependencies=array(), $storage='memory', $ttl=900) {
+    public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
 
-      $storage_types = array(
+      $storage_types = [
         'memory',
         'file',
         'session',
-      );
+      ];
 
       if (!in_array($storage, $storage_types)) {
         trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
@@ -62,7 +62,7 @@
       $hash_string = $keyword;
 
       if (!is_array($dependencies)) {
-        $dependencies = array($dependencies);
+        $dependencies = [$dependencies];
       }
 
       $dependencies[] = 'site';
@@ -153,11 +153,11 @@
         }
       }
 
-      return array(
+      return [
         'id' => md5($hash_string) .'_'. $keyword,
         'storage' => $storage,
         'ttl' => $ttl,
-      );
+      ];
     }
 
     public static function get($token, $max_age=900, $no_hard_refresh=false) {
@@ -244,10 +244,10 @@
           return @file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
 
         case 'session':
-          self::$_data[$token['id']] = array(
+          self::$_data[$token['id']] = [
             'mtime' => time(),
             'data' => $data,
-          );
+          ];
           return true;
 
         case 'memory':
@@ -282,10 +282,10 @@
         return false;
       }
 
-      self::$_recorders[$token['id']] = array(
+      self::$_recorders[$token['id']] = [
         'id' => $token['id'],
         'storage' => $token['storage'],
-      );
+      ];
 
       ob_start();
 

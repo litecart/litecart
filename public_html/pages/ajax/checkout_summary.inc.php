@@ -55,9 +55,9 @@
 // Output
   $box_checkout_summary = new ent_view();
 
-  $box_checkout_summary->snippets = array(
-    'items' => array(),
-    'order_total' => array(),
+  $box_checkout_summary->snippets = [
+    'items' => [],
+    'order_total' => [],
     'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : null,
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => $order->data['payment_due'],
@@ -66,40 +66,40 @@
     'selected_payment' => null,
     'consent' => null,
     'confirm' => !empty($payment->data['selected']['confirm']) ? $payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
-  );
+  ];
 
   foreach ($order->data['items'] as $item) {
-    $box_checkout_summary->snippets['items'][] = array(
-      'link' => document::ilink('product', array('product_id' => $item['product_id'])),
+    $box_checkout_summary->snippets['items'][] = [
+      'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'name' => $item['name'],
       'sku' => $item['sku'],
       'price' => $item['price'],
       'tax' => $item['tax'],
       'sum' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(($item['price'] + $item['tax']) * $item['quantity'], false) : currency::format($item['price'] * $item['quantity'], false),
       'quantity' => (float)$item['quantity'],
-    );
+    ];
   }
 
   if (!empty($shipping->data['selected'])) {
-    $box_checkout_summary->snippets['selected_shipping'] = array(
+    $box_checkout_summary->snippets['selected_shipping'] = [
       'icon' => is_file(FS_DIR_APP . $shipping->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_APP . $shipping->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $shipping->data['selected']['title'],
-    );
+    ];
   }
 
   if (!empty($payment->data['selected'])) {
-    $box_checkout_summary->snippets['selected_payment'] = array(
+    $box_checkout_summary->snippets['selected_payment'] = [
       'icon' => is_file(FS_DIR_APP . $payment->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_APP . $payment->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $payment->data['selected']['title'],
-    );
+    ];
   }
 
   foreach ($order->data['order_total'] as $row) {
-    $box_checkout_summary->snippets['order_total'][] = array(
+    $box_checkout_summary->snippets['order_total'][] = [
       'title' => $row['title'],
       'value' => $row['value'],
       'tax' => $row['tax'],
-    );
+    ];
   }
 
   $terms_of_purchase_id = settings::get('privacy_policy');
@@ -117,10 +117,10 @@
       break;
   }
 
-  $aliases = array(
-    '%privacy_policy_link' => document::href_ilink('information', array('page_id' => $privacy_policy_id)),
-    '%terms_of_purchase_link' => document::href_ilink('information', array('page_id' => $terms_of_purchase_id)),
-  );
+  $aliases = [
+    '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+    '%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
+  ];
 
   $box_checkout_summary->snippets['consent'] = strtr($box_checkout_summary->snippets['consent'], $aliases);
 

@@ -8,7 +8,7 @@
 
     if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
 
-    $directives = array();
+    $directives = [];
 
     $xml = simplexml_load_file($file);
 
@@ -17,9 +17,9 @@
     }
 
     foreach ($xml->file as $file) {
-      $directive = array(
-        'files' => array(),
-      );
+      $directive = [
+        'files' => [],
+      ];
     }
 
   } catch (Exception $e) {

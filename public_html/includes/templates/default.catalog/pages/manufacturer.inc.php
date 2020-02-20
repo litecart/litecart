@@ -15,7 +15,7 @@
     if ($_GET['sort'] == $key) {
       echo '<span class="btn btn-default active">'. $value .'</span>';
     } else {
-      echo '<a class="btn btn-default" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a>';
+      echo '<a class="btn btn-default" href="'. document::href_ilink(null, ['sort' => $key], true) .'">'. $value .'</a>';
     }
   }
 ?>
@@ -30,7 +30,7 @@
 
     <?php if ($products) { ?>
     <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', array('manufacturer_id')); ?>
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', ['manufacturer_id']); ?>
     </section>
     <?php } ?>
 

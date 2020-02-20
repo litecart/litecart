@@ -18,14 +18,14 @@
 
     try {
 
-      if (empty($_POST['zones'])) $_POST['zones'] = array();
+      if (empty($_POST['zones'])) $_POST['zones'] = [];
 
-      $fields = array(
+      $fields = [
         'code',
         'name',
         'description',
         'zones',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $geo_zone->data[$field] = $_POST[$field];
@@ -34,7 +34,7 @@
       $geo_zone->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'geo_zones'), true, array('geo_zone_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'geo_zones'], true, ['geo_zone_id']));
       exit;
 
     } catch (Exception $e) {
@@ -50,7 +50,7 @@
       $geo_zone->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'geo_zones'), true, array('geo_zone_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'geo_zones'], true, ['geo_zone_id']));
       exit;
 
     } catch (Exception $e) {

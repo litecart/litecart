@@ -2,8 +2,8 @@
 
   class event {
 
-    public static $_callbacks = array();
-    public static $_fired_events = array();
+    public static $_callbacks = [];
+    public static $_fired_events = [];
 
     public static function register($event, $callback) {
 

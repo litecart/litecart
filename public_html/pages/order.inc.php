@@ -24,10 +24,10 @@
   language::set($order->data['language_code']);
 
   $_page = new ent_view();
-  $_page->snippets = array(
+  $_page->snippets = [
     'order' => $order->data,
-    'comments' => array(),
-  );
+    'comments' => [],
+  ];
 
   foreach ($order->data['comments'] as $comment) {
     if (!empty($comment['hidden'])) continue;

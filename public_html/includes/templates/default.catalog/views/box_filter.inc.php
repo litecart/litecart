@@ -27,9 +27,9 @@
         </div>
         <?php } else { ?>
 <?php
-  $options = array(array('-- '. language::translate('title_select', 'Select') . ' --', ''));
+  $options = [['-- '. language::translate('title_select', 'Select') . ' --', '']];
   foreach ($group['values'] as $value) {
-    $options[] = array($value['value'], $value['id']);
+    $options[] = [$value['value'], $value['id']];
   }
   echo functions::form_draw_select_field('attributes['. $group['id'] .'][]', $options, true);
 ?>

@@ -1,5 +1,5 @@
 <?php
-  $order_statuses = array();
+  $order_statuses = [];
   $orders_status_query = database::query(
     "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
   );
@@ -7,7 +7,7 @@
     $order_statuses[] = (int)$order_status['id'];
   }
 
-  $stats = array();
+  $stats = [];
 
 // Total Sales
   $orders_query = database::query(

@@ -1,16 +1,16 @@
 <?php
 
   class language {
-    public static $selected = array();
-    public static $languages = array();
-    private static $_cache = array();
+    public static $selected = [];
+    public static $languages = [];
+    private static $_cache = [];
     private static $_cache_token;
-    private static $_loaded_translations = array();
+    private static $_loaded_translations = [];
 
     public static function init() {
 
     // Bind selected language to session
-      if (!isset(session::$data['language'])) session::$data['language'] = array();
+      if (!isset(session::$data['language'])) session::$data['language'] = [];
       self::$selected = &session::$data['language'];
 
     // Get languages from database
@@ -25,7 +25,7 @@
         self::set(self::$selected['code']);
       }
 
-      self::$_cache_token = cache::token('translations', array('endpoint', 'language'));
+      self::$_cache_token = cache::token('translations', ['endpoint', 'language']);
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         $translations_query = database::query(
@@ -39,9 +39,9 @@
         }
       }
 
-      event::register('before_capture', array(__CLASS__, 'before_capture'));
-      event::register('before_output', array(__CLASS__, 'before_output'));
-      event::register('shutdown', array(__CLASS__, 'shutdown'));
+      event::register('before_capture', [__CLASS__, 'before_capture']);
+      event::register('before_output', [__CLASS__, 'before_output']);
+      event::register('shutdown', [__CLASS__, 'shutdown']);
     }
 
     public static function before_capture() {
@@ -67,7 +67,7 @@
 
     public static function load() {
 
-      self::$languages = array();
+      self::$languages = [];
 
       $languages_query = database::query(
         "select * from ". DB_TABLE_LANGUAGES ."
@@ -117,7 +117,7 @@
 
       $all_languages = array_keys(self::$languages);
 
-      $enabled_languages = array();
+      $enabled_languages = [];
       foreach (self::$languages as $language) {
         if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
       }
@@ -143,7 +143,7 @@
       } elseif (isset($_SERVER['LC_CTYPE'])) {
         $browser_locales = explode(',', $_SERVER['LC_CTYPE']);
       } else {
-        $browser_locales = array();
+        $browser_locales = [];
       }
       foreach ($browser_locales as $browser_locale) {
         if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
@@ -254,7 +254,7 @@
 
       if ($timestamp === null) $timestamp = time();
 
-      if (in_array(strtoupper(substr(PHP_OS, 0, 3)), array('WIN', 'MAC'))) {
+      if (in_array(strtoupper(substr(PHP_OS, 0, 3)), ['WIN', 'MAC'])) {
         $format = preg_replace('#(?<!%)((?:%%)*)%P#', '\1%p', $format);
       }
 

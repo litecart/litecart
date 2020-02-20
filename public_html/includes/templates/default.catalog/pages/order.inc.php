@@ -29,7 +29,7 @@ body {
 </style>
 
 
-<iframe id="order-copy" src="<?php echo document::ilink('printable_order_copy', array(), array('order_id', 'public_key')); ?>" style="border: 0;"></iframe>
+<iframe id="order-copy" src="<?php echo document::ilink('printable_order_copy', [], ['order_id', 'public_key']); ?>" style="border: 0;"></iframe>
 
 <div id="sidebar" class="hidden-print shadow">
 

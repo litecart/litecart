@@ -3,7 +3,7 @@
   class ref_customer {
 
     private $_id;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($customer_id) {
       $this->_id = (int)$customer_id;
@@ -43,7 +43,7 @@
 
           if (!$row = database::fetch($query)) return;
 
-          $map = array(
+          $map = [
             'id',
             'email',
             'password_hash',
@@ -60,13 +60,13 @@
             'phone',
             'different_shipping_address',
             'newsletter',
-          );
+          ];
 
           foreach ($map as $key) {
             $this->_data[$key] = $row[$key];
           }
 
-          $key_map = array(
+          $key_map = [
             'shipping_company' => 'company',
             'shipping_firstname' => 'firstname',
             'shipping_lastname' => 'lastname',
@@ -77,7 +77,7 @@
             'shipping_country_code' => 'country_code',
             'shipping_zone_code' => 'zone_code',
             'shipping_phone' => 'phone',
-          );
+          ];
 
           foreach ($key_map as $skey => $tkey) {
             $this->_data['shipping_address'][$tkey] = $row[$skey];

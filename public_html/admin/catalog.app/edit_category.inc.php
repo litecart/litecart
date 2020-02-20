@@ -26,9 +26,9 @@
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       }
 
-      if (empty($_POST['filters'])) $_POST['filters'] = array();
+      if (empty($_POST['filters'])) $_POST['filters'] = [];
 
-      $fields = array(
+      $fields = [
         'status',
         'parent_id',
         'code',
@@ -44,7 +44,7 @@
         'meta_description',
         'filters',
         'priority',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $category->data[$field] = $_POST[$field];
@@ -59,7 +59,7 @@
       $category->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -75,7 +75,7 @@
       $category->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -151,10 +151,10 @@
               <div class="form-group">
                 <label><?php echo language::translate('title_list_style', 'List Style'); ?></label>
 <?php
-  $options = array(
-    array(language::translate('title_columns', 'Columns'), 'columns'),
-    array(language::translate('title_rows', 'Rows'), 'rows'),
-  );
+  $options = [
+    [language::translate('title_columns', 'Columns'), 'columns'],
+    [language::translate('title_rows', 'Rows'), 'rows'],
+  ];
   echo functions::form_draw_select_field('list_style', $options, true);
 ?>
               </div>

@@ -2,16 +2,16 @@
 
   class cart {
 
-    public static $data = array();
-    public static $items = array();
-    public static $total = array();
+    public static $data = [];
+    public static $items = [];
+    public static $total = [];
 
     public static function init() {
 
       if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
-        session::$data['cart'] = array(
+        session::$data['cart'] = [
           'uid' => null,
-        );
+        ];
       }
 
       self::$data = &session::$data['cart'];
@@ -69,7 +69,7 @@
 
     public static function reset() {
 
-      self::$items = array();
+      self::$items = [];
 
       self::_calculate_total();
     }
@@ -129,11 +129,11 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(serialize(array($product->id)));
+          $item_key = md5(serialize([$product->id]));
         }
       }
 
-      $item = array(
+      $item = [
         'id' => null,
         'product_id' => (int)$product->id,
         'option_stock_combination' => '',
@@ -149,11 +149,11 @@
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
         'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
-        'quantity_unit' => array(
+        'quantity_unit' => [
           'name' => $product->quantity_unit['name'],
           'decimals' => $product->quantity_unit['decimals'],
           'separate' => $product->quantity_unit['separate'],
-        ),
+        ],
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,
         'dim_x' => $product->dim_x,
@@ -161,7 +161,7 @@
         'dim_z' => $product->dim_z,
         'dim_class' => $product->dim_class,
         'error' => '',
-      );
+      ];
 
       try {
         if (!$product->id) {
@@ -173,11 +173,11 @@
         }
 
         if ($product->date_valid_from > date('Y-m-d H:i:s')) {
-          throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from)))));
+          throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))]));
         }
 
         if ($product->date_valid_to > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
-          throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to)))));
+          throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to))]));
         }
 
         if ($quantity <= 0) {
@@ -186,7 +186,7 @@
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, $product->quantity_unit['decimals']))));
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, $product->quantity_unit['decimals'])]));
         }
 
       // Options stock
@@ -325,11 +325,11 @@
 
     private static function _calculate_total() {
 
-      self::$total = array(
+      self::$total = [
         'items' => 0,
         'value' => 0,
         'tax' => 0,
-      );
+      ];
 
       foreach (self::$items as $item) {
         $num_items = $item['quantity'];

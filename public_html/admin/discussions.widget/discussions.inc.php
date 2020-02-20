@@ -1,5 +1,5 @@
 <?php
-  $widget_discussions_cache_token = cache::token('widget_discussions', array(), 'memory', 43200);
+  $widget_discussions_cache_token = cache::token('widget_discussions', [], 'memory', 43200);
   if (cache::capture($widget_discussions_cache_token, 43200, true)) {
 
     try {
@@ -16,7 +16,7 @@
 
       if (!empty($rss->channel->item)) {
 
-        $discussions = array();
+        $discussions = [];
         foreach ($rss->channel->item as $item) {
           $discussions[] = $item;
           if (count($discussions) == 16) break;

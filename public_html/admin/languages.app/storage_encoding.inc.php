@@ -1,7 +1,7 @@
 <?php
   breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));
 
-  $defined_tables = array();
+  $defined_tables = [];
   foreach (get_defined_constants() as $constant) {
     if (preg_match('#^`'. preg_quote(DB_DATABASE, '#') .'`\.`(.*)`$#', $constant, $matches)) {
       $defined_tables[] = $matches[1];
@@ -17,7 +17,7 @@
       if (empty($_POST['collation']) && empty($_POST['engine'])) throw new Exception(language::translate('error_must_select_action_to_perform', 'You must select an action to perform'));
 
       foreach ($_POST['tables'] as $table) {
-        if (!in_array($table, $defined_tables)) throw new Exception(strtr(language::translate('error_unknown_defined_table_x', 'Unknown defined table (%table)')), array('%table' => $table));
+        if (!in_array($table, $defined_tables)) throw new Exception(strtr(language::translate('error_unknown_defined_table_x', 'Unknown defined table (%table)')), ['%table' => $table]);
       }
 
       $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
@@ -59,7 +59,7 @@
   }
 
 // Table Rows
-  $tables = array();
+  $tables = [];
 
   $tables_query = database::query(
     "select * from `information_schema`.`TABLES`

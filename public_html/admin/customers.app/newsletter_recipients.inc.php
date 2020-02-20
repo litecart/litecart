@@ -19,7 +19,7 @@
         if (database::affected_rows()) $added++;
       }
 
-      notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), array('%n' => $added)));
+      notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
       header('Location: '. document::link());
       exit;
 
@@ -68,7 +68,7 @@
   }
 
 // Table Rows
-  $recipients = array();
+  $recipients = [];
 
   $recipients_query = database::query(
     "select * from ". DB_TABLE_NEWSLETTER_RECIPIENTS ."
@@ -101,7 +101,7 @@
   <div class="panel-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_button('add_recipient', language::translate('title_add_new_recipient', 'Add New Recipient'), 'button', '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::link(null, array('action' => 'export')), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
     </ul>
   </div>
 
@@ -135,7 +135,7 @@
             <td><?php echo $recipient['id']; ?></td>
             <td><?php echo $recipient['email']; ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_recipient', 'recipient_id' => $recipient['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_recipient', 'recipient_id' => $recipient['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

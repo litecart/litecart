@@ -14,17 +14,17 @@
 
     if (!database::num_rows($option_values_query)) throw new Exception('Option group has no values');
 
-    $json = array();
+    $json = [];
     while ($value = database::fetch($option_values_query)) {
-      $json[] = array(
+      $json[] = [
         'id' => $value['id'],
         'name' => $value['name'],
-      );
+      ];
     }
 
   } catch(Exception $e) {
     http_response_code(400);
-    $json = array('error' => $e->getMessage());
+    $json = ['error' => $e->getMessage()];
   }
 
   language::convert_characters($json, language::$selected['charset'], 'UTF-8');

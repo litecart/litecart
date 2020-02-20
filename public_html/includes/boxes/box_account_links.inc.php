@@ -3,10 +3,10 @@
 
     $box_account = new ent_view();
 
-    $box_account->snippets = array(
+    $box_account->snippets = [
       'name' => customer::$data['firstname'] .' '. customer::$data['lastname'],
       'email' => customer::$data['email'],
-    );
+    ];
 
     echo $box_account->stitch('views/box_account_links');
 

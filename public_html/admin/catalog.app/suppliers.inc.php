@@ -4,7 +4,7 @@
   breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'));
 
 // Table Rows
-  $suppliers = array();
+  $suppliers = [];
 
   $suppliers_query = database::query(
     "select id, name from ". DB_TABLE_SUPPLIERS ."
@@ -32,7 +32,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'edit_supplier')), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'edit_supplier']), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -52,8 +52,8 @@
           <?php foreach ($suppliers as $supplier) { ?>
           <tr>
             <td><?php echo functions::form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']); ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_supplier', 'supplier_id' => $supplier['id']), array('app')); ?>"><?php echo $supplier['name']; ?></a></td>
-            <td><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier', 'supplier_id' => $supplier['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_supplier', 'supplier_id' => $supplier['id']], ['app']); ?>"><?php echo $supplier['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_supplier', 'supplier_id' => $supplier['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

@@ -25,13 +25,13 @@
     return;
   }
 
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $category->id), false) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id], false) .'" />';
   document::$snippets['title'][] = $category->head_title ? $category->head_title : $category->name;
   document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
+    breadcrumbs::add($category_name, document::ilink('category', ['category_id' => $category_id]));
   }
   breadcrumbs::add($category->name);
 
@@ -39,10 +39,10 @@
 
   $_page = new ent_view();
 
-  $box_category_cache_token = cache::token('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
+  $box_category_cache_token = cache::token('box_category', ['basename', 'get', 'language', 'currency', 'account', 'prices']);
   if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
-    $_page->snippets = array(
+    $_page->snippets = [
       'id' => $category->id,
       'name' => $category->name,
       'short_description' => $category->short_description,
@@ -51,15 +51,15 @@
       'head_title' => $category->head_title ? $category->head_title : $category->name,
       'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
       'image' => $category->image ? 'images/' . $category->image : '',
-      'subcategories' => array(),
-      'products' => array(),
-      'sort_alternatives' => array(
+      'subcategories' => [],
+      'products' => [],
+      'sort_alternatives' => [
         'name' => language::translate('title_name', 'Name'),
         'price' => language::translate('title_price', 'Price'),
         'popularity' => language::translate('title_popularity', 'Popularity'),
         'date' => language::translate('title_date', 'Date'),
-      ),
-    );
+      ],
+    ];
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
@@ -80,14 +80,14 @@
         break;
     }
 
-    $products_query = functions::catalog_products_query(array(
-      'categories' => array($category->id),
+    $products_query = functions::catalog_products_query([
+      'categories' => [$category->id],
       'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
       'attributes' => !empty($_GET['attributes']) ? $_GET['attributes'] : null,
       'product_name' => !empty($_GET['product_name']) ? $_GET['product_name'] : null,
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
-    ));
+    ]);
 
     if (database::num_rows($products_query)) {
       if ($_GET['page'] > 1) database::seek($products_query, $items_per_page * ($_GET['page'] - 1));

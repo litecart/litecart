@@ -50,10 +50,10 @@
 
       if (empty($_REQUEST['reset_token'])) {
 
-        $reset_token = array(
+        $reset_token = [
           'token' => functions::password_generate(8),
           'expires' => date('Y-m-d H:i:s', strtotime('+30 minutes')),
-        );
+        ];
 
         database::query(
           "update ". DB_TABLE_CUSTOMERS ."
@@ -62,12 +62,12 @@
           limit 1;"
         );
 
-        $aliases = array(
+        $aliases = [
           '%email' => $customer['email'],
           '%store_name' => settings::get('store_name'),
           '%token' => $reset_token['token'],
-          '%link' => document::ilink('reset_password', array('email' => $customer['email'], 'reset_token' => $reset_token['token'])),
-        );
+          '%link' => document::ilink('reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
+        ];
 
         $subject = language::translate('title_reset_password', 'Reset Password');
         $message = strtr(language::translate('email_body_reset_password', "You recently requested to reset your password for %store_name. If you did not request a password reset, please ignore this email. Visit the link below to reset your password:\r\n\r\n%link\r\n\r\nReset Token: %token"), $aliases);
@@ -79,7 +79,7 @@
               ->send();
 
         notices::add('success', language::translate('success_reset_password_email_sent', 'An email with instructions has been sent to your email address.'));
-        header('Location: '. document::ilink('reset_password', array('email' => $_REQUEST['email'], 'reset_token' => '')));
+        header('Location: '. document::ilink('reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']));
         exit;
 
       } else {
@@ -95,7 +95,7 @@
         $customer->set_password($_POST['new_password']);
 
         notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
-        header('Location: '. document::ilink('login', array('email' => $customer->data['email'])));
+        header('Location: '. document::ilink('login', ['email' => $customer->data['email']]));
         exit;
 
       }

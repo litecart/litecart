@@ -2,13 +2,13 @@
 
   class breadcrumbs {
 
-    public static $data = array();
+    public static $data = [];
 
     public static function init() {
 
       self::add(language::translate('title_home', 'Home'), WS_DIR_APP);
 
-      event::register('prepare_output', array(__CLASS__, 'prepare_output'));
+      event::register('prepare_output', [__CLASS__, 'prepare_output']);
     }
 
     public static function prepare_output() {
@@ -16,12 +16,12 @@
       if (count(self::$data) > 1) {
         $breadcrumbs = new ent_view();
 
-        $breadcrumbs->snippets['breadcrumbs'] = array();
+        $breadcrumbs->snippets['breadcrumbs'] = [];
         foreach (self::$data as $breadcrumb) {
-          $breadcrumbs->snippets['breadcrumbs'][] = array(
+          $breadcrumbs->snippets['breadcrumbs'][] = [
             'title' => $breadcrumb['title'],
             'link' => $breadcrumb['link'],
-          );
+          ];
         }
 
         document::$snippets['breadcrumbs'] = $breadcrumbs->stitch('views/breadcrumbs');
@@ -31,13 +31,13 @@
     ######################################################################
 
     public static function reset() {
-      self::$data = array();
+      self::$data = [];
     }
 
     public static function add($title, $link=null) {
-      self::$data[] = array(
+      self::$data[] = [
         'title' => $title,
         'link' => $link,
-      );
+      ];
     }
   }

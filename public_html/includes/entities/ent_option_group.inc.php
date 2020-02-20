@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_OPTION_GROUPS .";"
@@ -30,16 +30,16 @@
       );
 
       while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], array('id', 'option_group_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'option_group_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
       }
 
       $this->data['sort'] = 'alphabetical';
-      $this->data['values'] = array();
+      $this->data['values'] = [];
 
       $this->previous = $this->data;
     }
@@ -69,7 +69,7 @@
 
       while ($option_group_info = database::fetch($option_groups_info_query)) {
         foreach (array_keys($option_group_info) as $key) {
-          if (in_array($key, array('id', 'group_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'group_id', 'language_code'])) continue;
           $this->data[$key][$option_group_info['language_code']] = $option_group_info[$key];
         }
       }
@@ -90,7 +90,7 @@
 
         while ($option_value_info = database::fetch($option_values_info_query)) {
           foreach (array_keys($option_value_info) as $key) {
-            if (in_array($key, array('id', 'group_id', 'language_code'))) continue;
+            if (in_array($key, ['id', 'group_id', 'language_code'])) continue;
             $this->data['values'][$option_value['id']][$key][$option_value_info['language_code']] = $option_value_info[$key];
           }
         }

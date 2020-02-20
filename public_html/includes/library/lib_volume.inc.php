@@ -2,104 +2,104 @@
 
   class volume {
 
-    public static $classes = array(
-      'L' => array(
+    public static $classes = [
+      'L' => [
         'name' => 'Litres',
         'unit' => 'L',
         'value' => 1,
         'decimals' => 2,
-      ),
-      'cL' => array(
+      ],
+      'cL' => [
         'name' => 'Centilitres',
         'unit' => 'cL',
         'value' => 0.01,
         'decimals' => 0,
-      ),
-      'dL' => array(
+      ],
+      'dL' => [
         'name' => 'Decilitres',
         'unit' => 'dL',
         'value' => 0.1,
         'decimals' => 1,
-      ),
-      'dm3' => array(
+      ],
+      'dm3' => [
         'name' => 'Cubic Decimetres',
         'unit' => 'dm3',
         'value' => 1,
         'decimals' => 2,
-      ),
-      'cm3' => array(
+      ],
+      'cm3' => [
         'name' => 'Cubic Centimetres',
         'unit' => 'cm3',
         'value' => 1000,
         'decimals' => 3,
-      ),
-      'ft3' => array(
+      ],
+      'ft3' => [
         'name' => 'Cubic Feet',
         'unit' => 'ft3',
         'value' => 0.035314666721,
         'decimals' => 0,
-      ),
-      'gal' => array(
+      ],
+      'gal' => [
         'name' => 'Gallons (US, liquid)',
         'unit' => 'gal',
         'value' =>  0.26417205236,
         'decimals' => 2,
-      ),
-      'in3' => array(
+      ],
+      'in3' => [
         'name' => 'Cubic Inches',
         'unit' => 'in3',
         'value' => 61.023744095,
         'decimals' => 0,
-      ),
-      'm3' => array(
+      ],
+      'm3' => [
         'name' => 'Cubic Metres',
         'unit' => 'm3',
         'value' => 0.001,
         'decimals' => 3,
-      ),
-      'mL' => array(
+      ],
+      'mL' => [
         'name' => 'Millilitres',
         'unit' => 'mL',
         'value' => 0.001,
         'decimals' => 0,
-      ),
-      'oz' => array(
+      ],
+      'oz' => [
         'name' => 'Ounces (US, liquid)',
         'unit' => 'oz',
         'value' => 33.814022701,
         'decimals' => 0,
-      ),
-      'pt' => array(
+      ],
+      'pt' => [
         'name' => 'Pints (UK, liquid)',
         'unit' => 'pt',
         'value' => 1.7597539864,
         'decimals' => 2,
-      ),
-      'qt' => array(
+      ],
+      'qt' => [
         'name' => 'Quarts (US, liquid)',
         'unit' => 'qt',
         'value' => 1.0566882094,
         'decimals' => 2,
-      ),
-      'tbs' => array(
+      ],
+      'tbs' => [
         'name' => 'Tablespoons',
         'unit' => 'tbs',
         'value' => 66.666666667,
         'decimals' => 0,
-      ),
-      'tsp' => array(
+      ],
+      'tsp' => [
         'name' => 'Teaspoons',
         'unit' => 'tsp',
         'value' => 200,
         'decimals' => 0,
-      ),
-      'yd3' => array(
+      ],
+      'yd3' => [
         'name' => 'Cubic Yards',
         'unit' => 'yd3',
         'value' => 0.0013079506193,
         'decimals' => 3,
-      ),
-    );
+      ],
+    ];
 
     public static function convert($value, $from, $to) {
 

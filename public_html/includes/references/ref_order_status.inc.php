@@ -4,18 +4,18 @@
 
     private $_id;
     private $_language_codes;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($order_status_id, $language_code=null) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_id = (int)$order_status_id;
-      $this->_language_codes = array_unique(array(
+      $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
-      ));
+      ]);
     }
 
     public function &__get($name) {
@@ -56,7 +56,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'order_status_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'order_status_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
           }

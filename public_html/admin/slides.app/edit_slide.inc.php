@@ -20,9 +20,9 @@
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
-      if (empty($_POST['languages'])) $_POST['languages'] = array();
+      if (empty($_POST['languages'])) $_POST['languages'] = [];
 
-      $fields = array(
+      $fields = [
         'status',
         'languages',
         'name',
@@ -31,7 +31,7 @@
         'priority',
         'date_valid_from',
         'date_valid_to',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $slide->data[$field] = $_POST[$field];
@@ -42,7 +42,7 @@
       $slide->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'slides'), true, array('action', 'slide_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'slides'], true, ['action', 'slide_id']));
       exit;
 
     } catch (Exception $e) {
@@ -58,7 +58,7 @@
       $slide->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'slides'), true, array('action', 'slide_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'slides'], true, ['action', 'slide_id']));
       exit;
 
     } catch (Exception $e) {

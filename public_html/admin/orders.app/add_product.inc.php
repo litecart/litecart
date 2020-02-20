@@ -10,7 +10,7 @@
 
   if (empty($_POST)) {
 
-    $fields = array(
+    $fields = [
       'name',
       'sku',
       'gtin',
@@ -23,7 +23,7 @@
       'dim_class',
       'price',
       'tax',
-    );
+    ];
 
     foreach ($fields as $field) {
       if (isset($product->$field)) $_POST[$field] = $product->$field;

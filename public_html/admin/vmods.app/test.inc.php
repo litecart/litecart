@@ -6,12 +6,12 @@
 
   try {
     if (!empty($_GET['vmod'])) {
-      $vmods = array(FS_DIR_APP . 'vmods/'. basename($_GET['vmod']));
+      $vmods = [FS_DIR_APP . 'vmods/'. basename($_GET['vmod'])];
     } else {
       $vmods = glob(FS_DIR_APP . 'vmods/*.xml');
     }
 
-    $files_to_modify = array();
+    $files_to_modify = [];
 
     foreach ($vmods as $vmod) {
 
@@ -30,7 +30,7 @@
           $filename = FS_DIR_APP . $filename;
 
           foreach (glob($filename) as $file) {
-            if (in_array($file, array('.', '..'))) continue;
+            if (in_array($file, ['.', '..'])) continue;
             $files_to_modify[] = $file;
           }
         }

@@ -1,27 +1,27 @@
 <?php
 
-  $box_information_links_cache_token = cache::token('box_information_links', array('language', isset($_GET['page_id']) ? $_GET['page_id'] : ''));
+  $box_information_links_cache_token = cache::token('box_information_links', ['language', isset($_GET['page_id']) ? $_GET['page_id'] : '']);
   if (cache::capture($box_information_links_cache_token)) {
 
     if (!empty($_GET['page_id'])) {
       $current_page_path = array_keys(reference::page($_GET['page_id'])->path);
     } else {
-      $current_page_path = array();
+      $current_page_path = [];
     }
 
     $box_information_links = new ent_view();
 
-    $box_information_links->snippets['pages'] = array();
+    $box_information_links->snippets['pages'] = [];
 
-    $box_information_links->snippets = array(
+    $box_information_links->snippets = [
       'title' =>  language::translate('title_information', 'Information'),
-      'pages' => array(),
+      'pages' => [],
       'page_path' => $current_page_path,
-    );
+    ];
 
     $iterator = function($parent_id, $level, $current_page_path, &$iterator) {
 
-      $output = array();
+      $output = [];
 
       $pages_query = database::query(
         "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PAGES ." p
@@ -32,15 +32,15 @@
       );
 
       while ($page = database::fetch($pages_query)) {
-        $output[$page['id']] = array(
+        $output[$page['id']] = [
           'id' => $page['id'],
           'parent_id' => $page['parent_id'],
           'title' => $page['title'],
-          'link' => document::ilink('information', array('page_id' => $page['id']), false),
+          'link' => document::ilink('information', ['page_id' => $page['id']], false),
           'active' => (!empty($_GET['page_id']) && $page['id'] == $_GET['page_id']) ? true : false,
           'opened' => (!empty($current_page_path) && in_array($page['id'], $current_page_path)) ? true : false,
-          'subpages' => array(),
-        );
+          'subpages' => [],
+        ];
 
         if (in_array($page['id'], $current_page_path)) {
           $sub_pages_query = database::query(

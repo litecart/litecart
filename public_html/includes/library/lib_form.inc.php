@@ -15,7 +15,7 @@
 
         if ($unicoded_content) {
           function utf8_decode_recursive($input) {
-            $return = array();
+            $return = [];
             foreach ($input as $key => $val) {
               if (is_array($val)) $return[$key] = utf8_decode_recursive($val);
               else $return[$key] = utf8_decode($val);

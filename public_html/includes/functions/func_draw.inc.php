@@ -82,26 +82,26 @@
 
     list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
-    $listing_category->snippets = array(
+    $listing_category->snippets = [
       'category_id' => $category['id'],
       'name' => $category['name'],
-      'link' => document::ilink('category', array('category_id' => $category['id'])),
-      'image' => array(
+      'link' => document::ilink('category', ['category_id' => $category['id']]),
+      'image' => [
         'original' => 'images/' . $category['image'],
         'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], $width, $height, settings::get('category_image_clipping')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], $width*2, $height*2, settings::get('category_image_clipping')),
-        'viewport' => array(
+        'viewport' => [
           'width' => $width,
           'height' => $height,
-        ),
-      ),
+        ],
+      ],
       'short_description' => $category['short_description'],
-    );
+    ];
 
     return $listing_category->stitch('views/listing_category');
   }
 
-  function draw_listing_product($product, $listing_type='column', $inherit_params=array()) {
+  function draw_listing_product($product, $listing_type='column', $inherit_params=[]) {
 
     $listing_product = new ent_view();
 
@@ -114,47 +114,47 @@
 
     list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
-    $listing_product->snippets = array(
+    $listing_product->snippets = [
       'product_id' => $product['id'],
       'code' => $product['code'],
       'sku' => $product['sku'],
       'mpn' => $product['mpn'],
       'gtin' => $product['gtin'],
       'name' => $product['name'],
-      'link' => document::ilink('product', array('product_id' => $product['id']), $inherit_params),
-      'image' => array(
+      'link' => document::ilink('product', ['product_id' => $product['id']], $inherit_params),
+      'image' => [
         'original' => ltrim($product['image'] ? 'images/' . $product['image'] : '', '/'),
         'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-        'viewport' => array(
+        'viewport' => [
           'width' => $width,
           'height' => $height,
-        ),
-      ),
+        ],
+      ],
       'sticker' => $sticker,
-      'manufacturer' => array(),
+      'manufacturer' => [],
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
       'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
-    );
+    ];
 
     if (!empty($product['manufacturer_id'])) {
-      $listing_product->snippets['manufacturer'] = array(
+      $listing_product->snippets['manufacturer'] = [
         'id' => $product['manufacturer_id'],
         'name' => $product['manufacturer_name'],
-      );
+      ];
     }
 
   // Watermark Original Image
     if (settings::get('product_image_watermark')) {
-      $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], array('watermark' => true));
+      $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
     }
 
     return $listing_product->stitch('views/listing_product_'.$listing_type);
   }
 
-  function draw_lightbox($selector='', $params=array()) {
+  function draw_lightbox($selector='', $params=[]) {
 
     $selector = str_replace("'", '"', $selector);
 
@@ -210,30 +210,30 @@
 
     if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
 
-    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link(null, array('page' => $_GET['page']-1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, array('page' => $_GET['page']+1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, array('page' => $_GET['page']+1), true) .'" />';
+    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link(null, ['page' => $_GET['page']-1], true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
 
     $pagination = new ent_view();
 
-    $pagination->snippets['items'][] = array(
+    $pagination->snippets['items'][] = [
       'title' => language::translate('title_previous', 'Previous'),
-      'link' => document::link(null, array('page' => $_GET['page']-1), true),
+      'link' => document::link(null, ['page' => $_GET['page']-1], true),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
       'active' => false,
-    );
+    ];
 
     for ($i=1; $i<=$pages; $i++) {
 
       if ($i < $pages-5) {
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
           $rewind = round(($_GET['page']-1)/2);
-          $pagination->snippets['items'][] = array(
+          $pagination->snippets['items'][] = [
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
-            'link' => document::link(null, array('page' => $rewind), true),
+            'link' => document::link(null, ['page' => $rewind], true),
             'disabled' => false,
             'active' => false,
-          );
+          ];
           $i = $_GET['page'] - 1;
           if ($i > $pages-4) $i = $pages-4;
         }
@@ -242,30 +242,30 @@
       if ($i > 5) {
         if ($i > $_GET['page'] + 1 && $i < $pages) {
           $forward = round(($_GET['page']+1+$pages)/2);
-          $pagination->snippets['items'][] = array(
+          $pagination->snippets['items'][] = [
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
-            'link' => document::link(null, array('page' => $forward), true),
+            'link' => document::link(null, ['page' => $forward], true),
             'disabled' => false,
             'active' => false,
-          );
+          ];
           $i = $pages;
         }
       }
 
-      $pagination->snippets['items'][] = array(
+      $pagination->snippets['items'][] = [
         'title' => $i,
-        'link' => document::link(null, array('page' => $i), true),
+        'link' => document::link(null, ['page' => $i], true),
         'disabled' => false,
         'active' => ($i == $_GET['page']) ? true : false,
-      );
+      ];
     }
 
-    $pagination->snippets['items'][] = array(
+    $pagination->snippets['items'][] = [
       'title' => language::translate('title_next', 'Next'),
-      'link' => document::link(null, array('page' => $_GET['page']+1), true),
+      'link' => document::link(null, ['page' => $_GET['page']+1], true),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,
       'active' => false,
-    );
+    ];
 
     $html = $pagination->stitch('views/pagination');
 

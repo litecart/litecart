@@ -8,7 +8,7 @@
 
     public function process($order) {
 
-      $output = array();
+      $output = [];
 
       if (empty($this->modules)) return $output;
 
@@ -22,13 +22,13 @@
               $row['tax'] = currency::round($row['tax'], $order->data['currency_code']);
             }
 
-            $output[] = array(
+            $output[] = [
               'id' => $module_id,
               'title' => $row['title'],
               'value' => $row['value'],
               'tax' => $row['tax'],
               'calculate' => !empty($row['calculate']) ? 1 : 0,
-            );
+            ];
           }
         }
       }
@@ -38,7 +38,7 @@
 
     public function run($method_name, $module_id) {
       if (method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
+        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
       }
     }
   }

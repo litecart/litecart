@@ -35,14 +35,14 @@
         }
       }
 
-      $fields = array(
+      $fields = [
         'filename',
         'status',
         'title',
         'description',
         'version',
         'files',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $vmod->data[$field] = $_POST[$field];
@@ -51,7 +51,7 @@
       $vmod->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'vmods'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -67,7 +67,7 @@
       $vmod->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'vmods'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -75,19 +75,19 @@
     }
   }
 
-  $on_error_options = array(
-    array(language::translate('title_warning', 'Warning'), 'warning'),
-    array(language::translate('title_ignore', 'Ignore'), 'ignore'),
-    array(language::translate('title_cancel', 'Cancel'), 'cancel'),
-  );
+  $on_error_options = [
+    [language::translate('title_warning', 'Warning'), 'warning'],
+    [language::translate('title_ignore', 'Ignore'), 'ignore'],
+    [language::translate('title_cancel', 'Cancel'), 'cancel'],
+  ];
 
-  $position_options = array(
-    array(language::translate('title_replace', 'Replace'), 'replace'),
-    array(language::translate('title_before', 'Before'), 'before'),
-    array(language::translate('title_after', 'After'), 'after'),
-    array(language::translate('title_top', 'Top'), 'top'),
-    array(language::translate('title_bottom', 'Bottom'), 'Bottom'),
-  );
+  $position_options = [
+    [language::translate('title_replace', 'Replace'), 'replace'],
+    [language::translate('title_before', 'Before'), 'before'],
+    [language::translate('title_after', 'After'), 'after'],
+    [language::translate('title_top', 'Top'), 'top'],
+    [language::translate('title_bottom', 'Bottom'), 'Bottom'],
+  ];
 
 ?>
 

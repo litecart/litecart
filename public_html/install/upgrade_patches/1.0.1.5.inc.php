@@ -1,7 +1,7 @@
 <?php
-  $deleted_files = array(
+  $deleted_files = [
     FS_DIR_APP . 'includes/modules/jobs/job_currency_updater.inc.php',
-  );
+  ];
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {

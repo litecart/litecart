@@ -75,7 +75,7 @@
         throw new Exception(language::translate('error_cannot_set_disabled_store_currency', 'You cannot set a disabled currency as store currency.'));
       }
 
-      $fields = array(
+      $fields = [
         'status',
         'code',
         'number',
@@ -85,7 +85,7 @@
         'suffix',
         'decimals',
         'priority',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $currency->data[$field] = $_POST[$field];
@@ -102,7 +102,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'currencies'), true, array('action', 'currency_code')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'currencies'], true, ['action', 'currency_code']));
       exit;
 
     } catch (Exception $e) {
@@ -126,7 +126,7 @@
       $currency->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'currencies'), true, array('action', 'currency_code')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'currencies'], true, ['action', 'currency_code']));
       exit;
 
     } catch (Exception $e) {

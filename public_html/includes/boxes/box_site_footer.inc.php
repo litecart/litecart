@@ -1,14 +1,14 @@
 <?php
-  $box_site_footer_cache_token = cache::token('box_site_footer', array('language', 'login', 'region'));
+  $box_site_footer_cache_token = cache::token('box_site_footer', ['language', 'login', 'region']);
   if (cache::capture($box_site_footer_cache_token)) {
 
     $box_site_footer = new ent_view();
 
-    $box_site_footer->snippets = array(
-      'pages' => array(),
-      'modules' => array(),
-      'social' => array(),
-    );
+    $box_site_footer->snippets = [
+      'pages' => [],
+      'modules' => [],
+      'social' => [],
+    ];
 
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p
@@ -19,11 +19,11 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $box_site_footer->snippets['pages'][$page['id']] = array(
+      $box_site_footer->snippets['pages'][$page['id']] = [
         'id' => $page['id'],
         'title' => $page['title'],
-        'link' => document::href_ilink('information', array('page_id' => $page['id'])),
-      );
+        'link' => document::href_ilink('information', ['page_id' => $page['id']]),
+      ];
     }
 
     $pages_query = database::query(
@@ -35,11 +35,11 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $box_site_footer->snippets['customer_service_pages'][$page['id']] = array(
+      $box_site_footer->snippets['customer_service_pages'][$page['id']] = [
         'id' => $page['id'],
         'title' => $page['title'],
-        'link' => document::href_ilink('customer_service', array('page_id' => $page['id'])),
-      );
+        'link' => document::href_ilink('customer_service', ['page_id' => $page['id']]),
+      ];
     }
 
     $modules_query = database::query(
@@ -55,33 +55,33 @@
       if (empty($module['settings']['icon'])) continue;
       if (!is_file(FS_DIR_APP . $module['settings']['icon'])) continue;
 
-      $box_site_footer->snippets['modules'][$module['settings']['icon']] = array(
+      $box_site_footer->snippets['modules'][$module['settings']['icon']] = [
         'id' => $module['id'],
         //'title' => $module['name'],
         'icon' => functions::image_thumbnail(FS_DIR_APP . $module['settings']['icon'], 72, 32, 'FIT_USE_WHITESPACING'),
-      );
+      ];
     }
 
-    $box_site_footer->snippets['social']['facebook'] = array(
+    $box_site_footer->snippets['social']['facebook'] = [
       'type' => 'facebook',
       'title' => 'Facebook',
       'icon' => 'fa-facebook',
       'link' => 'https://www.facebook.com/',
-    );
+    ];
 
-    $box_site_footer->snippets['social']['twitter'] = array(
+    $box_site_footer->snippets['social']['twitter'] = [
       'type' => 'twitter',
       'title' => 'Twitter',
       'icon' => 'fa-twitter',
       'link' => 'https://www.twitter.com/',
-    );
+    ];
 
-    $box_site_footer->snippets['social']['linkedin'] = array(
+    $box_site_footer->snippets['social']['linkedin'] = [
       'type' => 'linkedin',
       'title' => 'LinkedIn',
       'icon' => 'fa-linkedin',
       'link' => 'https://www.linkedin.com/',
-    );
+    ];
 
     echo $box_site_footer->stitch('views/box_site_footer');
 

@@ -4,7 +4,7 @@
   breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'));
 
 // Table Rows
-  $tax_rates = array();
+  $tax_rates = [];
 
   $tax_rates_query = database::query(
     "select tr.*, gz.name as geo_zone, tc.name as tax_class from ". DB_TABLE_TAX_RATES ." tr
@@ -34,7 +34,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_tax_rate'), true), language::translate('title_add_new_tax_rate', 'Add New Tax Rate'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_rate'], true), language::translate('title_add_new_tax_rate', 'Add New Tax Rate'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -63,11 +63,11 @@
             <td><?php echo $tax_rate['id']; ?></td>
             <td><?php echo $tax_rate['tax_class']; ?></td>
             <td><?php echo $tax_rate['geo_zone']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>"><?php echo $tax_rate['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
             <td><?php echo $tax_rate['description']; ?></td>
             <td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
             <td><?php echo $tax_rate['type']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

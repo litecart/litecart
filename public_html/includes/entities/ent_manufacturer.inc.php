@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $manufacturer_query = database::query(
         "show fields from ". DB_TABLE_MANUFACTURERS .";"
@@ -29,9 +29,9 @@
         "show fields from ". DB_TABLE_MANUFACTURERS_INFO .";"
       );
       while ($field = database::fetch($manufacturer_info_query)) {
-        if (in_array($field['Field'], array('id', 'manufacturer_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'manufacturer_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -65,7 +65,7 @@
 
       while ($manufacturer_info = database::fetch($manufacturers_info_query)) {
         foreach ($manufacturer_info as $key => $value) {
-          if (in_array($key, array('id', 'manufacturer_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'manufacturer_id', 'language_code'])) continue;
           $this->data[$key][$manufacturer_info['language_code']] = $value;
         }
       }

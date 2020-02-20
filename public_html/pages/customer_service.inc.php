@@ -36,10 +36,10 @@
 
     breadcrumbs::add($page->title);
 
-    $_page->snippets += array(
+    $_page->snippets += [
       'title' => $page->title,
       'content' => $page->content,
-    );
+    ];
 
   } else {
 

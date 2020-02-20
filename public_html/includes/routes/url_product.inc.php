@@ -3,16 +3,16 @@
   class url_product {
 
     function routes() {
-      return array(
-        array(
+      return [
+        [
           'pattern' => '#^(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$#',
           'page' => 'product',
           'params' => 'category_id=$1&product_id=$2',
-          'options' => array(
+          'options' => [
             'redirect' => true,
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
     }
 
     function rewrite(ent_link $link, $language_code) {

@@ -4,7 +4,7 @@
 
     if (empty($language_code)) $language_code = language::$selected['code'];
 
-    $trail = array();
+    $trail = [];
 
     if (empty($category_id)) $category_id = 0;
 
@@ -16,14 +16,14 @@
       limit 1;"
     );
 
-    if (!$category = database::fetch($categories_query)) array();
+    if (!$category = database::fetch($categories_query)) [];
 
     if (!empty($category['parent_id'])) {
       $trail = functions::catalog_category_trail($category['parent_id']);
       $trail[$category['id']] = $category['name'];
 
     } else if (isset($category['id'])) {
-      $trail = array($category['id'] => $category['name']);
+      $trail = [$category['id'] => $category['name']];
     }
 
     return $trail;
@@ -33,7 +33,7 @@
 
     if (empty($language_code)) $language_code = language::$selected['code'];
 
-    $subcategories = array();
+    $subcategories = [];
 
     if (empty($category_id)) $category_id = 0;
 
@@ -66,7 +66,7 @@
   }
 
 // Filter function using AND syntax
-  function catalog_products_query($filter=array()) {
+  function catalog_products_query($filter=[]) {
 
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
 
@@ -78,8 +78,8 @@
 
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
 
-    $sql_inner_sort = array();
-    $sql_outer_sort = array();
+    $sql_inner_sort = [];
+    $sql_outer_sort = [];
 
     if (!empty($filter['campaigns_first'])) {
       $sql_outer_sort[] = "if(pc.campaign_price, 0, 1)";
@@ -120,14 +120,14 @@
         break;
     }
 
-    $sql_where_categories = array();
+    $sql_where_categories = [];
     if (!empty($filter['categories']) && is_array($filter['categories'])) {
       foreach ($filter['categories'] as $category) {
         $sql_where_categories[] = "find_in_set('". database::input($category) ."', ptc.categories)";
       }
       $sql_where_categories = "and (". implode(" and ", $sql_where_categories) .")";
     }
-    $sql_where_attributes = array();
+    $sql_where_attributes = [];
     if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
       foreach ($filter['attributes'] as $group => $values) {
         if (empty($values) || !is_array($values)) continue;
@@ -139,7 +139,7 @@
       $sql_where_attributes = "and (". implode(" and ", $sql_where_attributes) .")";
     }
 
-    $sql_where_prices = array();
+    $sql_where_prices = [];
     if (!empty($filter['price_ranges']) && is_array($filter['price_ranges'])) {
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
@@ -220,7 +220,7 @@
   }
 
 // Search function using OR syntax
-  function catalog_products_search_query($filter=array()) {
+  function catalog_products_search_query($filter=[]) {
 
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
 

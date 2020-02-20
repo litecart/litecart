@@ -12,7 +12,7 @@
       }
 
       if (isset(self::$_cache[$resource]) && count(self::$_cache[$resource]) >= 100) {
-        self::$_cache[$resource] = array();
+        self::$_cache[$resource] = [];
       }
 
       $checksum = md5(json_encode($arguments, JSON_UNESCAPED_SLASHES));
@@ -40,7 +40,7 @@
             isset($arguments[2]) ? $arguments[2] : null
           );
 
-          call_user_func_array(array(self::$_cache[$resource][$checksum], '__construct'), $arguments);
+          call_user_func_array([self::$_cache[$resource][$checksum], '__construct'], $arguments);
 
           return self::$_cache[$resource][$checksum];
 

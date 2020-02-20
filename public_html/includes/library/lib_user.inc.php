@@ -90,7 +90,7 @@
 
     public static function reset() {
 
-      session::$data['user'] = array();
+      session::$data['user'] = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_USERS .";"
@@ -99,7 +99,7 @@
         session::$data['user'][$field['Field']] = null;
       }
 
-      session::$data['user']['permissions'] = array();
+      session::$data['user']['permissions'] = [];
     }
 
     public static function load($user_id) {
@@ -120,7 +120,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         //notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', array('redirect_url' => $_SERVER['REQUEST_URI'])));
+        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', ['redirect_url' => $_SERVER['REQUEST_URI']]));
         exit;
       }
     }

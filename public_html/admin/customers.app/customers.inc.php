@@ -22,16 +22,16 @@
   }
 
 // Table Rows
-  $customers = array();
+  $customers = [];
 
   if (!empty($_GET['query'])) {
-    $sql_find = array(
+    $sql_find = [
       "c.id = '". database::input($_GET['query']) ."'",
       "c.email like '%". database::input($_GET['query']) ."%'",
       "c.tax_id like '%". database::input($_GET['query']) ."%'",
       "c.company like '%". database::input($_GET['query']) ."%'",
       "concat(c.firstname, ' ', c.lastname) like '%". database::input($_GET['query']) ."%'",
-    );
+    ];
   }
 
   $customers_query = database::query(
@@ -62,7 +62,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_customer'), true), language::translate('title_add_new_customer', 'Add New Customer'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_customer'], true), language::translate('title_add_new_customer', 'Add New Customer'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -98,11 +98,11 @@
             <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
             <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $customer['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['email']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>"><?php echo $customer['email']; ?></a></td>
             <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
             <td><?php echo $customer['company']; ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

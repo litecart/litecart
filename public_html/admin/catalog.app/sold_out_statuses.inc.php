@@ -4,7 +4,7 @@
   breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'));
 
 // Table Rows
-  $sold_out_statuses = array();
+  $sold_out_statuses = [];
 
   $sold_out_status_query = database::query(
     "select sos.id, sos.orderable, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
@@ -33,7 +33,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_sold_out_status'), true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_sold_out_status'], true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -57,10 +57,10 @@
           <tr>
             <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $sold_out_status['id'] .']', $sold_out_status['id']); ?></td>
             <td><?php echo $sold_out_status['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
             <td class="text-center"><?php echo !empty($sold_out_status['hidden']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo !empty($sold_out_status['orderable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td style="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td style="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

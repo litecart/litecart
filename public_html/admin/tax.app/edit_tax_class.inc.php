@@ -12,7 +12,7 @@
     }
   }
 
-  breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'), document::link(WS_DIR_ADMIN, array('doc' => 'tax_classes'), array('app')));
+  breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'), document::link(WS_DIR_ADMIN, ['doc' => 'tax_classes'], ['app']));
   breadcrumbs::add(!empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'));
 
   if (isset($_POST['save'])) {
@@ -20,11 +20,11 @@
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-      $fields = array(
+      $fields = [
         'code',
         'name',
         'description',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $tax_class->data[$field] = $_POST[$field];
@@ -33,7 +33,7 @@
       $tax_class->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_classes'), true, array('tax_class_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'tax_classes'], true, ['tax_class_id']));
       exit;
 
     } catch (Exception $e) {
@@ -49,7 +49,7 @@
       $tax_class->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_classes'), true, array('tax_class_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'tax_classes'], true, ['tax_class_id']));
       exit;
 
     } catch (Exception $e) {

@@ -1,33 +1,33 @@
 <?php
 
-  return $app_config = array(
+  return $app_config = [
     'name' => language::translate('title_translations', 'Translations'),
     'default' => 'search',
     'priority' => 0,
-    'theme' => array(
+    'theme' => [
       'color' => '#cc7d7d',
       'icon' => 'fa-book',
-    ),
-    'menu' => array(
-      array(
+    ],
+    'menu' => [
+      [
         'title' => language::translate('title_search_translations', 'Search Translations'),
         'doc' => 'search',
-        'params' => array(),
-      ),
-      array(
+        'params' => [],
+      ],
+      [
         'title' => language::translate('title_scan_files', 'Scan Files'),
         'doc' => 'scan',
-        'params' => array(),
-      ),
-      array(
+        'params' => [],
+      ],
+      [
         'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
         'doc' => 'csv',
-        'params' => array(),
-      ),
-    ),
-    'docs' => array(
+        'params' => [],
+      ],
+    ],
+    'docs' => [
       'search' => 'search.inc.php',
       'scan' => 'scan.inc.php',
       'csv' => 'csv.inc.php',
-    ),
-  );
+    ],
+  ];

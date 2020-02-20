@@ -50,10 +50,10 @@
       }
 
       if (!empty($_POST['comments'])) {
-        $order->data['comments']['session'] = array(
+        $order->data['comments']['session'] = [
           'author' => 'customer',
           'text' => $_POST['comments'],
-        );
+        ];
       }
 
       if ($gateway = $payment->transfer($order)) {
@@ -107,11 +107,11 @@
   // If payment error
     if (!empty($result['error'])) {
       if (!empty($order->data['id'])) {
-        $order->data['comments'][] = array(
+        $order->data['comments'][] = [
           'author' => 'system',
           'text' => 'Payment Error: '. $result['error'],
           'hidden' => true,
-        );
+        ];
         $order->save();
       }
       notices::add('errors', $result['error']);
@@ -134,7 +134,7 @@
   cart::clear();
 
 // Send order confirmation email
-  $bccs = array();
+  $bccs = [];
 
   if (settings::get('email_order_copy')) {
     foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {

@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_PAGES .";"
@@ -25,16 +25,16 @@
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['dock'] = array();
+      $this->data['dock'] = [];
 
       $info_fields_query = database::query(
         "show fields from ". DB_TABLE_PAGES_INFO .";"
       );
 
       while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], array('id', 'page_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'page_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -70,7 +70,7 @@
 
       while ($page_info = database::fetch($page_info_query)) {
         foreach ($page_info as $key => $value) {
-          if (in_array($key, array('id', 'page_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
           $this->data[$key][$page_info['language_code']] = $value;
         }
       }

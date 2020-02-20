@@ -55,7 +55,7 @@
 
   echo '<p>Checking PHP display_errors... ';
 
-  if (in_array(strtolower(ini_get('display_errors')), array('1', 'true', 'on', 'yes'))) {
+  if (in_array(strtolower(ini_get('display_errors')), ['1', 'true', 'on', 'yes'])) {
     echo ini_get('display_errors') . ' <span class="ok">[OK]</span></p>';
   } else {
     echo ini_get('display_errors') . ' <span class="warning">[Warning] Missing permissions to display errors?</span></p>';
@@ -140,7 +140,7 @@
 
   $config = file_get_contents('config');
 
-  $map = array(
+  $map = [
     '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
     '{DB_TYPE}' => $_REQUEST['db_type'],
     '{DB_SERVER}' => $_REQUEST['db_server'],
@@ -151,7 +151,7 @@
     '{DB_DATABASE_CHARSET}' => 'utf8',
     '{DB_PERSISTENT_CONNECTIONS}' => 'false',
     '{CLIENT_IP}' => $_REQUEST['client_ip'],
-  );
+  ];
 
   foreach ($map as $search => $replace) {
     $config = str_replace($search, $replace, $config);
@@ -183,10 +183,10 @@
 
   $sql = file_get_contents('structure.sql');
 
-  $map = array(
+  $map = [
     '`lc_' => '`'.DB_PREFIX,
     '{DATABASE_COLLATION}' => $_REQUEST['db_collation'],
-  );
+  ];
 
   foreach ($map as $search => $replace) {
     $sql = str_replace($search, $replace, $sql);
@@ -206,12 +206,12 @@
   $sql = file_get_contents('data.sql');
   $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
-  $map = array(
+  $map = [
     '{STORE_NAME}' => $_REQUEST['store_name'],
     '{STORE_EMAIL}' => $_REQUEST['store_email'],
     '{STORE_TIME_ZONE}' => $_REQUEST['store_time_zone'],
     '{STORE_COUNTRY_CODE}' => $_REQUEST['country_code'],
-  );
+  ];
 
   foreach ($map as $search => $replace) {
     $sql = str_replace($search, database::input($replace), $sql);
@@ -243,10 +243,10 @@
 
   $base_dir = str_replace(file_absolute_path($_SERVER['DOCUMENT_ROOT']), '', $installation_path);
 
-  $htaccess = strtr($htaccess, array(
+  $htaccess = strtr($htaccess, [
     '{BASE_DIR}' => $base_dir,
     '{ADMIN_DIR_FULL}' => $installation_path . $_REQUEST['admin_folder'],
-  ));
+  ]);
 
   if (file_put_contents('../.htaccess', $htaccess)) {
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -414,12 +414,12 @@
 
   if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-    $files_to_delete = array(
+    $files_to_delete = [
       '../includes/templates/default.catalog/css/app.css',
       '../includes/templates/default.catalog/css/checkout.css',
       '../includes/templates/default.catalog/css/framework.css',
       '../includes/templates/default.catalog/css/printable.css',
-    );
+    ];
 
     foreach ($files_to_delete as $file) {
       echo 'Delete '. $file;
@@ -432,11 +432,11 @@
 
   } else {
 
-    $files_to_delete = array(
+    $files_to_delete = [
       '../includes/templates/default.catalog/less/',
       '../includes/templates/default.catalog/css/*.min.css',
       '../includes/templates/default.catalog/css/*.min.css.map',
-    );
+    ];
 
     foreach ($files_to_delete as $file) {
       echo 'Delete '. $file;
@@ -450,12 +450,12 @@
     foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
       echo 'Modify '. $file . PHP_EOL;
       $contents = file_get_contents($file);
-      $search_replace = array(
+      $search_replace = [
         'app.min.css' => 'app.css',
         'checkout.min.css'  => 'checkout.css',
         'framework.min.css' => 'framework.css',
         'printable.min.css' => 'printable.css',
-      );
+      ];
       file_put_contents($file, strtr($contents, $search_replace));
     }
   }

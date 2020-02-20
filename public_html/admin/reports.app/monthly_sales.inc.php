@@ -4,7 +4,7 @@
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
+  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
   $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
   $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
@@ -15,7 +15,7 @@
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
 // Table Rows
-  $rows = array();
+  $rows = [];
 
   $orders_query = database::query(
     "select
@@ -53,7 +53,7 @@
   );
 
   while ($orders = database::fetch($orders_query)) {
-    if (!isset($total)) $total = array();
+    if (!isset($total)) $total = [];
     foreach (array_keys($orders) as $key) {
       if (!isset($total[$key])) $total[$key] = (float)$orders[$key];
       else $total[$key] += (float)$orders[$key];

@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_GEO_ZONES .";"
@@ -25,7 +25,7 @@
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['zones'] = array();
+      $this->data['zones'] = [];
 
       $this->previous = $this->data;
     }
@@ -56,7 +56,7 @@
         order by c.name, z.name;"
       );
 
-      $this->data['zones'] = array();
+      $this->data['zones'] = [];
       while ($zone = database::fetch($zones_to_geo_zones_query)) {
         $this->data['zones'][$zone['id']] = $zone;
         if (empty($zone['zone_code'])) $this->data['zones'][$zone['id']]['zone_name'] = '-- '. language::translate('title_all_zones', 'All Zones') .' --';

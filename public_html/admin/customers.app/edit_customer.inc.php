@@ -20,7 +20,7 @@
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
       if (empty($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
 
-      $fields = array(
+      $fields = [
         'code',
         'status',
         'email',
@@ -39,13 +39,13 @@
         'newsletter',
         'notes',
         'different_shipping_address',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
 
-      $fields = array(
+      $fields = [
         'company',
         'firstname',
         'lastname',
@@ -56,7 +56,7 @@
         'country_code',
         'zone_code',
         'phone',
-      );
+      ];
 
       foreach ($fields as $field) {
         $customer->data['shipping_address'][$field] = !empty($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
@@ -67,7 +67,7 @@
       if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'customers')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'customers']));
       exit;
 
     } catch (Exception $e) {
@@ -83,7 +83,7 @@
       $customer->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'customers')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'customers']));
       exit;
 
     } catch (Exception $e) {

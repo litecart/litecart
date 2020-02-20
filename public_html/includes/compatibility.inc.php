@@ -9,7 +9,7 @@
 
   // (Un)register Globals
     if (ini_get('register_globals')) {
-      foreach (array('_ENV', '_FILES', '_REQUEST', '_SERVER') as $superglobal) { // Note: $_SESSION is not populated before start_session()
+      foreach (['_ENV', '_FILES', '_REQUEST', '_SERVER'] as $superglobal) { // Note: $_SESSION is not populated before start_session()
         foreach (array_keys($$superglobal) as $key) {
           unset($GLOBALS[$key]);
         }
@@ -98,7 +98,7 @@
   // Emulate array_column() as of PHP 5.5
     if (!function_exists('array_column')) {
       function array_column(array $array, $column_key, $index_key=null) {
-        $result = array();
+        $result = [];
         foreach ($array as $arr) {
           if(!is_array($arr)) continue;
           if (is_null($column_key)) {
@@ -125,7 +125,7 @@
     }
 
     if (!function_exists('password_hash')) {
-      function password_hash($password, $algo, array $options = array()) {
+      function password_hash($password, $algo, array $options = []) {
         if (!function_exists('crypt')) {
           trigger_error("Crypt must be loaded for password_hash to function", E_USER_WARNING);
           return null;
@@ -249,11 +249,11 @@
 
     if (!function_exists('password_get_info')) {
       function password_get_info($hash) {
-        $return = array(
+        $return = [
           'algo' => 0,
           'algoName' => 'unknown',
-          'options' => array(),
-        );
+          'options' => [],
+        ];
         if (mb_substr($hash, 0, 4, '8bit') == '$2y$' && mb_strlen($hash, '8bit') == 60) {
           $return['algo'] = PASSWORD_BCRYPT;
           $return['algoName'] = 'bcrypt';
@@ -265,7 +265,7 @@
     }
 
     if (!function_exists('password_needs_rehash')) {
-      function password_needs_rehash($hash, $algo, array $options = array()) {
+      function password_needs_rehash($hash, $algo, array $options = []) {
         $info = password_get_info($hash);
         if ($info['algo'] !== (int) $algo) {
           return true;
@@ -310,7 +310,7 @@
 // Emulate getallheaders() on non-Apache machines
   if (!function_exists('getallheaders')) {
     function getallheaders() {
-      $headers = array();
+      $headers = [];
       foreach ($_SERVER as $name => $value) {
         if (substr($name, 0, 5) == 'HTTP_') {
           $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;

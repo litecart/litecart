@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_LANGUAGES .";"
@@ -100,7 +100,7 @@
               change `text_". database::input($this->previous['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
             );
 
-            $info_tables = array(
+            $info_tables = [
               DB_TABLE_ATTRIBUTE_GROUPS_INFO,
               DB_TABLE_ATTRIBUTE_VALUES_INFO,
               DB_TABLE_CATEGORIES_INFO,
@@ -114,7 +114,7 @@
               DB_TABLE_QUANTITY_UNITS_INFO,
               DB_TABLE_SLIDES_INFO,
               DB_TABLE_SOLD_OUT_STATUSES_INFO,
-            );
+            ];
 
             foreach ($info_tables as $table) {
               database::query(
@@ -174,7 +174,7 @@
         );
       }
 
-      $info_tables = array(
+      $info_tables = [
         DB_TABLE_ATTRIBUTE_GROUPS_INFO,
         DB_TABLE_ATTRIBUTE_VALUES_INFO,
         DB_TABLE_CATEGORIES_INFO,
@@ -188,7 +188,7 @@
         DB_TABLE_QUANTITY_UNITS_INFO,
         DB_TABLE_SLIDES_INFO,
         DB_TABLE_SOLD_OUT_STATUSES_INFO,
-      );
+      ];
 
       foreach ($info_tables as $table) {
         database::query(

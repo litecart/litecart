@@ -1,5 +1,5 @@
 <?php
-  $box_categories_cache_token = cache::token('box_categories', array('language'));
+  $box_categories_cache_token = cache::token('box_categories', ['language']);
   if (cache::capture($box_categories_cache_token)) {
 
     $categories_query = functions::catalog_categories_query();
@@ -7,9 +7,9 @@
 
       $box_categories = new ent_view();
 
-      $box_categories->snippets = array(
-        'categories' => array(),
-      );
+      $box_categories->snippets = [
+        'categories' => [],
+      ];
 
       while ($category = database::fetch($categories_query)) {
         $box_categories->snippets['categories'][] = $category;

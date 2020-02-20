@@ -43,7 +43,7 @@
   }
 
 // List supported upgrades
-  $supported_versions = array('1.0' => '1.0');
+  $supported_versions = ['1.0' => '1.0'];
   foreach (glob('upgrade_patches/*') as $file) {
     preg_match('#\/(.*).(inc.php|sql)$#', $file, $matches);
     $supported_versions[$matches[1]] = $matches[1];
@@ -109,12 +109,12 @@
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-      $files_to_delete = array(
+      $files_to_delete = [
         '../includes/templates/default.catalog/css/app.css',
         '../includes/templates/default.catalog/css/checkout.css',
         '../includes/templates/default.catalog/css/framework.css',
         '../includes/templates/default.catalog/css/printable.css',
-      );
+      ];
 
       foreach ($files_to_delete as $file) {
         echo 'Delete '. $file;
@@ -127,11 +127,11 @@
 
     } else {
 
-      $files_to_delete = array(
+      $files_to_delete = [
         '../includes/templates/default.catalog/less/',
         '../includes/templates/default.catalog/css/*.min.css',
         '../includes/templates/default.catalog/css/*.min.css.map',
-      );
+      ];
 
       foreach ($files_to_delete as $file) {
         echo 'Delete '. $file;
@@ -145,12 +145,12 @@
       foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
         echo 'Modify '. $file . PHP_EOL;
         $contents = file_get_contents($file);
-        $search_replace = array(
+        $search_replace = [
           'app.min.css'  => 'app.css',
           'checkout.min.css'  => 'checkout.css',
           'framework.min.css' => 'framework.css',
           'printable.min.css' => 'printable.css',
-        );
+        ];
         file_put_contents($file, strtr($contents, $search_replace));
       }
     }

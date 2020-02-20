@@ -29,7 +29,7 @@
   }
 
 // Table Rows
-  $countries = array();
+  $countries = [];
 
   $countries_query = database::query(
     "select * from ". DB_TABLE_COUNTRIES ."
@@ -50,7 +50,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_country'), true), language::translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_country'], true), language::translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -77,9 +77,9 @@
             <td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $country['id']; ?></td>
             <td><?php echo $country['iso_code_2']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>"><?php echo $country['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>"><?php echo $country['name']; ?></a></td>
             <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES ." where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_country', 'country_code' => $country['iso_code_2']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

@@ -6,7 +6,7 @@
     private $_currency_code;
     private $_language_codes;
     private $_customer_id;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($product_id, $language_code=null, $currency_code=null, $customer_id=null) {
 
@@ -15,11 +15,11 @@
       if (empty($customer_id)) $customer_id = customer::$data['id'];
 
       $this->_id = (int)$product_id;
-      $this->_language_codes = array_unique(array(
+      $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
-      ));
+      ]);
       $this->_currency_code = $currency_code;
       $this->_customer_id = $customer_id;
     }
@@ -50,7 +50,7 @@
 
         case 'also_purchased_products':
 
-          $this->_data['also_purchased_products'] = array();
+          $this->_data['also_purchased_products'] = [];
 
             $query = database::query(
               "select oi.product_id, sum(oi.quantity) as total_quantity from ". DB_TABLE_ORDERS_ITEMS ." oi
@@ -73,7 +73,7 @@
 
         case 'attributes':
 
-          $this->_data['attributes'] = array();
+          $this->_data['attributes'] = [];
 
           $product_attributes_query = database::query(
             "select pa.*, ag.code, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
@@ -106,7 +106,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'product_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
           }
@@ -115,7 +115,7 @@
 
         case 'campaign':
 
-          $this->_data['campaign'] = array();
+          $this->_data['campaign'] = [];
 
           $products_campaigns_query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
@@ -139,7 +139,7 @@
 
         case 'categories':
 
-          $this->_data['categories'] = array();
+          $this->_data['categories'] = [];
 
           $products_to_categories_query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
@@ -156,7 +156,7 @@
 
             while ($row = database::fetch($categories_info_query)) {
               foreach ($row as $key => $value) {
-                if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
+                if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
                 if (empty($this->_data['categories'][$product_to_category['category_id']])) $this->_data['categories'][$product_to_category['category_id']] = $value;
               }
             }
@@ -176,7 +176,7 @@
 
         case 'delivery_status':
 
-          $this->_data['delivery_status'] = array();
+          $this->_data['delivery_status'] = [];
 
           $query = database::query(
             "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
@@ -187,7 +187,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'delivery_status_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'delivery_status_id', 'language_code'])) continue;
               if (empty($this->_data['delivery_status'][$key])) $this->_data['delivery_status'][$key] = $value;
             }
           }
@@ -196,7 +196,7 @@
 
         case 'images':
 
-          $this->_data['images'] = array();
+          $this->_data['images'] = [];
 
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_IMAGES."
@@ -211,7 +211,7 @@
 
         case 'manufacturer':
 
-          $this->_data['manufacturer'] = array();
+          $this->_data['manufacturer'] = [];
 
           if (empty($this->_data['manufacturer_id'])) return;
 
@@ -221,7 +221,7 @@
 
         case 'options_stock':
 
-          $this->_data['options_stock'] = array();
+          $this->_data['options_stock'] = [];
 
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
@@ -252,7 +252,7 @@
               $row['dim_class'] = $this->dim_class;
             }
 
-            $row['name'] = array();
+            $row['name'] = [];
 
             foreach (explode(',', $row['combination']) as $combination) {
               list($group_id, $value_id) = explode('-', $combination);
@@ -266,7 +266,7 @@
 
               while ($option_value_info = database::fetch($options_values_query)) {
                 foreach ($option_value_info as $key => $value) {
-                  if (in_array($key, array('id', 'value_id', 'language_code'))) continue;
+                  if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
                   if (empty($row[$key][$option_value_info['value_id']])) $row[$key][$option_value_info['value_id']] = $value;
                 }
               }
@@ -281,7 +281,7 @@
 
         case 'parents':
 
-          $this->_data['parents'] = array();
+          $this->_data['parents'] = [];
 
           $query = database::query(
             "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
@@ -315,12 +315,12 @@
 
         case 'quantity_unit':
 
-          $this->_data['quantity_unit'] = array(
+          $this->_data['quantity_unit'] = [
             'id' => null,
             'decimals' => 0,
             'separate' => false,
             'name' => '',
-          );
+          ];
 
           $quantity_unit_query = database::query(
             "select id, decimals, separate from ". DB_TABLE_QUANTITY_UNITS ."
@@ -338,7 +338,7 @@
           );
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'quantity_unit_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
               if (empty($this->_data['quantity_unit'][$key])) $this->_data['quantity_unit'][$key] = $value;
             }
           }
@@ -347,7 +347,7 @@
 
         case 'sold_out_status':
 
-          $this->_data['sold_out_status'] = array();
+          $this->_data['sold_out_status'] = [];
 
           $query = database::query(
             "select id, orderable from ". DB_TABLE_SOLD_OUT_STATUSES ."
@@ -366,7 +366,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'sold_out_status_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
               if (empty($this->_data['sold_out_status'][$key])) $this->_data['sold_out_status'][$key] = $value;
             }
           }
@@ -386,7 +386,7 @@
           foreach ($row as $key => $value) {
             switch($key) {
               case 'keywords':
-                $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : array();
+                $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : [];
                 break;
 
               default:

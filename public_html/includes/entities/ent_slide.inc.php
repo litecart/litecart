@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_SLIDES .";"
@@ -29,12 +29,12 @@
         "show fields from ". DB_TABLE_SLIDES_INFO .";"
       );
 
-      $this->data['languages'] = array();
+      $this->data['languages'] = [];
 
       while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], array('id', 'slide_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'slide_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -70,7 +70,7 @@
 
       while ($slide_info = database::fetch($slide_info_query)) {
         foreach ($slide_info as $key => $value) {
-          if (in_array($key, array('id', 'slide_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'slide_id', 'language_code'])) continue;
           $this->data[$key][$slide_info['language_code']] = $value;
         }
       }

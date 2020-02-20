@@ -56,7 +56,7 @@
       <?php foreach (language::$languages as $language) { ?>
       <?php if (empty($language['status'])) continue; ?>
       <li>
-        <a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>">
+        <a href="<?php echo document::href_link(null, ['language' => $language['code']], true); ?>">
           <img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" title="<?php echo htmlspecialchars($language['name']); ?>" style="max-height: 1em;" />
         </a>
       </li>

@@ -12,7 +12,7 @@
   function form_reinsert_value($name, $array_value=null) {
     if (empty($name)) return;
 
-    foreach (array($_POST, $_GET) as $superglobal) {
+    foreach ([$_POST, $_GET] as $superglobal) {
       if (empty($superglobal)) continue;
 
       foreach (explode('&', http_build_query($superglobal)) as $pair) {
@@ -101,7 +101,7 @@
 
     return '<div class="form-control"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
          . '  ' . form_draw_hidden_field($name, true) . PHP_EOL
-         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, array('app' => 'categories', 'doc' => 'category_picker')) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'categories', 'doc' => 'category_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
          . '</div>';
   }
 
@@ -127,14 +127,14 @@
 
     return '<div class="form-control"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
          . '  ' . form_draw_hidden_field($name, true) . PHP_EOL
-         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customer_picker')) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
          . '</div>';
   }
 
   function form_draw_date_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
+    if (!in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
       $value = date('Y-m-d', strtotime($value));
     } else {
       $value = '';
@@ -146,7 +146,7 @@
   function form_draw_datetime_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
+    if (!in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
       $value = date('Y-m-d\TH:i', strtotime($value));
     } else {
       $value = '';
@@ -218,7 +218,7 @@
   function form_draw_month_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!in_array(substr($value, 0, 7), array('', '0000-00', '1970-00', '1970-01'))) {
+    if (!in_array(substr($value, 0, 7), ['', '0000-00', '1970-00', '1970-01'])) {
       $value = date('Y-m', strtotime($value));
     } else {
       $value = '';
@@ -295,8 +295,8 @@
          . '</div>';
   }
 
-  function form_draw_select_optgroup_field($name, $groups=array(), $input=true, $multiple=false, $parameters='') {
-    if (!is_array($groups)) $groups = array($groups);
+  function form_draw_select_optgroup_field($name, $groups=[], $input=true, $multiple=false, $parameters='') {
+    if (!is_array($groups)) $groups = [$groups];
 
     $html = '<div class="select-wrapper'. ($multiple ? ' multiple' : '') .'">' . PHP_EOL
           . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
@@ -320,7 +320,7 @@
     return $html;
   }
 
-  function form_draw_select_field($name, $options=array(), $input=true, $parameters='') {
+  function form_draw_select_field($name, $options=[], $input=true, $parameters='') {
 
     if (is_bool($parameters)) {
       $args = func_get_args();
@@ -333,7 +333,7 @@
       }
     }
 
-    if (!is_array($options)) $options = array($options);
+    if (!is_array($options)) $options = [$options];
 
     $html = '<div class="select-wrapper">' . PHP_EOL
           . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
@@ -346,7 +346,7 @@
         $option_input = $input;
       }
 
-      if (!is_array($option)) $option = array($option, $option);
+      if (!is_array($option)) $option = [$option, $option];
 
       $html .= '    <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
@@ -357,9 +357,9 @@
     return $html;
   }
 
-  function form_draw_select_multiple_field($name, $options=array(), $input=true, $parameters='') {
+  function form_draw_select_multiple_field($name, $options=[], $input=true, $parameters='') {
 
-    if (!is_array($options)) $options = array($options);
+    if (!is_array($options)) $options = [$options];
 
     $html = '<div class="form-control" style="overflow-y: auto; max-height: 200px;">' . PHP_EOL;
 
@@ -371,7 +371,7 @@
         $option_input = $input;
       }
 
-      if (!is_array($option)) $option = array($option, $option);
+      if (!is_array($option)) $option = [$option, $option];
 
       $html .= '  <div class="checkbox">'. PHP_EOL
              . '    <label>'. form_draw_checkbox($name, isset($option[1]) ? $option[1] : $option[0], $option_input, isset($option[2]) ? $option[2] : null) .' '.  $option[0] .'</label>' . PHP_EOL
@@ -404,7 +404,7 @@
   function form_draw_toggle($name, $input=true, $type='e/d', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    $input = in_array(strtolower($input), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? '1' : '0';
+    $input = in_array(strtolower($input), ['1', 'active', 'enabled', 'on', 'true', 'yes']) ? '1' : '0';
 
     switch ($type) {
       case 'a/i':
@@ -490,7 +490,7 @@
 
     if (!isset($matches[1])) trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
 
-    $options = array();
+    $options = [];
     if (isset($matches[2])) {
       $options = explode(',', $matches[2]);
       for ($i=0; $i<count($options); $i++) {
@@ -635,11 +635,11 @@
         return $output;
 
       case 'select':
-        for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
+        for ($i=0; $i<count($options); $i++) $options[$i] = [$options[$i]];
         return form_draw_select_field($name, $options, $input);
 
       case 'select_multiple':
-        for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
+        for ($i=0; $i<count($options); $i++) $options[$i] = [$options[$i]];
         return form_draw_select_multiple_field($name, $options, $input);
 
       case 'timezone':
@@ -712,12 +712,12 @@
       order by name;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = [$row['name'], $row['id']];
     }
 
     if ($multiple) {
@@ -736,12 +736,12 @@
       order by name;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = [$row['name'], $row['id']];
     }
 
     if ($multiple) {
@@ -755,9 +755,9 @@
 
     $iterator = function($parent_id=0, $depth=1, $index=0, &$iterator) {
 
-      $options = array();
+      $options = [];
 
-      if ($parent_id == 0) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
+      if ($parent_id == 0) $options[] = [functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0'];
 
       $categories_query = database::query(
         "select c.id, ci.name
@@ -770,7 +770,7 @@
       while ($category = database::fetch($categories_query)) {
         $index++;
 
-        $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $depth) . functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' '. $category['name'], $category['id'], 'data-index="'. $index .'" data-name="'. htmlspecialchars($category['name']) .'"');
+        $options[] = [str_repeat('&nbsp;&nbsp;&nbsp;', $depth) . functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' '. $category['name'], $category['id'], 'data-index="'. $index .'" data-name="'. htmlspecialchars($category['name']) .'"'];
 
         $sub_categories_query = database::query(
           "select id
@@ -787,9 +787,9 @@
       return $options;
     };
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $options = array_merge($options, $iterator(0, 1, 0, $iterator));
 
@@ -813,12 +813,12 @@
       order by name asc;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($country = database::fetch($countries_query)) {
-      $options[] = array($country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"');
+      $options[] = [$country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"'];
     }
 
     if ($multiple) {
@@ -830,12 +830,12 @@
 
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     foreach (currency::$currencies as $currency) {
-      $options[] = array($currency['name'], $currency['code'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. htmlspecialchars($currency['prefix']) .'" data-suffix="'. htmlspecialchars($currency['suffix']) .'"');
+      $options[] = [$currency['name'], $currency['code'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. htmlspecialchars($currency['prefix']) .'" data-suffix="'. htmlspecialchars($currency['suffix']) .'"'];
     }
 
     if ($multiple) {
@@ -849,9 +849,9 @@
 
     if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_draw_customers_list()', E_USER_ERROR);
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $customers_query = database::query(
       "select id, email, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
@@ -859,7 +859,7 @@
     );
 
     while ($customer = database::fetch($customers_query)) {
-      $options[] = array($customer['email'], $customer['id']);
+      $options[] = [$customer['email'], $customer['id']];
     }
 
     if ($multiple) {
@@ -882,12 +882,12 @@
       order by dsi.name asc;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"');
+      $options[] = [$row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"'];
     }
 
     if ($multiple) {
@@ -899,11 +899,11 @@
 
   function form_draw_encodings_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
-    $encodings = array(
+    $encodings = [
       'BIG-5',
       'CP50220',
       'CP50221',
@@ -938,10 +938,10 @@
       'Windows-1251',
       'Windows-1252',
       'Windows-1254',
-    );
+    ];
 
     foreach ($encodings as $encoding) {
-      $options[] = array($encoding);
+      $options[] = [$encoding];
     }
 
     if ($multiple) {
@@ -958,16 +958,16 @@
       order by name asc;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     if (!database::num_rows($geo_zones_query)) {
       return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {
-      $options[] = array($geo_zone['name'], $geo_zone['id']);
+      $options[] = [$geo_zone['name'], $geo_zone['id']];
     }
 
     if ($multiple) {
@@ -979,12 +979,12 @@
 
   function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     foreach (language::$languages as $language) {
-      $options[] = array($language['name'], $language['code']);
+      $options[] = [$language['name'], $language['code']];
     }
 
     if ($multiple) {
@@ -1001,12 +1001,12 @@
       if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_class');
     }
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('--', '');
+    if (empty($multiple)) $options[] = ['--', ''];
 
     foreach (length::$classes as $class) {
-      $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');
+      $options[] = [$class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
     }
 
     if ($multiple) {
@@ -1023,12 +1023,12 @@
       order by name asc;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($manufacturer = database::fetch($manufacturers_query)) {
-      $options[] = array($manufacturer['name'], $manufacturer['id']);
+      $options[] = [$manufacturer['name'], $manufacturer['id']];
     }
 
     if ($multiple) {
@@ -1045,12 +1045,12 @@
       order by COLLATION_NAME;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($row = database::fetch($collations_query)) {
-      $options[] = array($row['COLLATION_NAME'], $row['COLLATION_NAME']);
+      $options[] = [$row['COLLATION_NAME'], $row['COLLATION_NAME']];
     }
 
     if ($multiple) {
@@ -1066,14 +1066,14 @@
       "SHOW ENGINES;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($row = database::fetch($collations_query)) {
-      if (!in_array(strtoupper($row['Support']), array('YES', 'DEFAULT'))) continue;
-      if (!in_array($row['Engine'], array('CSV', 'InnoDB', 'MyISAM', 'Aria'))) continue;
-      $options[] = array($row['Engine'] . ' -- '. $row['Comment'], $row['Engine']);
+      if (!in_array(strtoupper($row['Support']), ['YES', 'DEFAULT'])) continue;
+      if (!in_array($row['Engine'], ['CSV', 'InnoDB', 'MyISAM', 'Aria'])) continue;
+      $options[] = [$row['Engine'] . ' -- '. $row['Comment'], $row['Engine']];
     }
 
     if ($multiple) {
@@ -1091,12 +1091,12 @@
       order by priority, name;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = [$row['name'], $row['id']];
     }
 
     if ($multiple) {
@@ -1110,9 +1110,9 @@
 
     $iterator = function($parent_id=0, $level=1, &$iterator) {
 
-      $options = array();
+      $options = [];
 
-      if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
+      if ($parent_id == 0) $options[] = ['['.language::translate('title_root', 'Root').']', '0'];
 
       $pages_query = database::query(
         "select p.id, pi.title from ". DB_TABLE_PAGES ." p
@@ -1123,7 +1123,7 @@
 
       while ($page = database::fetch($pages_query)) {
 
-        $options[] = array(str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title'], $page['id']);
+        $options[] = [str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title'], $page['id']];
 
         $sub_pages_query = database::query(
           "select id from ". DB_TABLE_PAGES ."
@@ -1139,9 +1139,9 @@
       return $options;
     };
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $options = array_merge($options, $iterator(0, 1, $iterator));
 
@@ -1160,13 +1160,13 @@
       and status;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($module = database::fetch($modules_query)) {
       $module = new $module();
-      $options[] = array($module->name, $module->id);
+      $options[] = [$module->name, $module->id];
     }
 
     if ($multiple) {
@@ -1178,9 +1178,9 @@
 
   function form_draw_products_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $products_query = database::query(
       "select p.*, pi.name from ". DB_TABLE_PRODUCTS ." p
@@ -1189,7 +1189,7 @@
     );
 
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']);
+      $options[] = [$product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']];
     }
 
     if ($multiple) {
@@ -1212,12 +1212,12 @@
       order by qu.priority, qui.name asc;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($quantity_unit = database::fetch($quantity_units_query)) {
-      $options[] = array($quantity_unit['name'], $quantity_unit['id'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. htmlspecialchars($quantity_unit['description']) .'"');
+      $options[] = [$quantity_unit['name'], $quantity_unit['id'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. htmlspecialchars($quantity_unit['description']) .'"'];
     }
 
     if ($multiple) {
@@ -1235,13 +1235,13 @@
       and status;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($module = database::fetch($modules_query)) {
       $module = new $module();
-      $options[] = array($module->name, $module->id);
+      $options[] = [$module->name, $module->id];
     }
 
     if ($multiple) {
@@ -1264,12 +1264,12 @@
       order by sosi.name asc;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"');
+      $options[] = [$row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"'];
     }
 
     if ($multiple) {
@@ -1286,12 +1286,12 @@
       order by name;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($supplier = database::fetch($suppliers_query)) {
-      $options[] = array($supplier['name'], $supplier['id'], 'title="'. htmlspecialchars($supplier['description']) .'"');
+      $options[] = [$supplier['name'], $supplier['id'], 'title="'. htmlspecialchars($supplier['description']) .'"'];
     }
 
     if ($multiple) {
@@ -1313,12 +1313,12 @@
       order by name asc;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($tax_class = database::fetch($tax_classes_query)) {
-      $options[] = array($tax_class['name'], $tax_class['id'], 'title="'. htmlspecialchars($tax_class['description']) .'"');
+      $options[] = [$tax_class['name'], $tax_class['id'], 'title="'. htmlspecialchars($tax_class['description']) .'"'];
     }
 
     if ($multiple) {
@@ -1332,12 +1332,12 @@
 
     $folders = glob(FS_DIR_APP . 'includes/templates/*.'. $type);
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     foreach ($folders as $folder) {
-      $options[] = array(basename($folder));
+      $options[] = [basename($folder)];
     }
 
     if ($multiple) {
@@ -1349,18 +1349,18 @@
 
   function form_draw_timezones_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $zones = timezone_identifiers_list();
 
     foreach ($zones as $zone) {
       $zone = explode('/', $zone); // 0 => Continent, 1 => City
 
-      if (in_array($zone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) {
+      if (in_array($zone[0], ['Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'])) {
         if (!empty($zone[1])) {
-          $options[] = array(implode('/', $zone));
+          $options[] = [implode('/', $zone)];
         }
       }
     }
@@ -1379,12 +1379,12 @@
       order by username;"
     );
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     while ($user = database::fetch($users_query)) {
-      $options[] = array($user['username'], $user['id']);
+      $options[] = [$user['username'], $user['id']];
     }
 
     if ($multiple) {
@@ -1401,12 +1401,12 @@
       if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_class');
     }
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('--', '');
+    if (empty($multiple)) $options[] = ['--', ''];
 
     foreach (weight::$classes as $class) {
-      $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');
+      $options[] = [$class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
     }
 
     if ($multiple) {
@@ -1430,14 +1430,14 @@
       order by name asc;"
     );
 
-    $options = array();
+    $options = [];
 
     switch($preamble) {
       case 'all':
-        $options[] = array('-- '. language::translate('title_all_zones', 'All Zones') . ' --', '');
+        $options[] = ['-- '. language::translate('title_all_zones', 'All Zones') . ' --', ''];
         break;
       case 'select':
-        $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+        $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
         break;
       case 'none':
         break;
@@ -1448,7 +1448,7 @@
     }
 
     while ($zone = database::fetch($zones_query)) {
-      $options[] = array($zone['name'], $zone['code']);
+      $options[] = [$zone['name'], $zone['code']];
     }
 
     if ($multiple) {

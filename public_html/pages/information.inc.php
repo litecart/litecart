@@ -21,10 +21,10 @@
 
     $_page = new ent_view();
 
-    $_page->snippets = array(
+    $_page->snippets = [
       'title' => $page->title,
       'content' => $page->content,
-    );
+    ];
 
     echo $_page->stitch('pages/information');
 

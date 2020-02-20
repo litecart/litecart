@@ -1,7 +1,7 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) $_GET['parent_id'] = 0;
-  if (empty($_GET['expanded'])) $_GET['expanded'] = array();
+  if (empty($_GET['expanded'])) $_GET['expanded'] = [];
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
@@ -39,7 +39,7 @@
         notices::add('success', sprintf(language::translate('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
       }
 
-      header('Location: '. document::link(WS_DIR_ADMIN, array('page_id' => $_POST['page_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['page_id' => $_POST['page_id']], true));
       exit;
 
     } catch (Exception $e) {
@@ -66,12 +66,12 @@
     }
   }
 
-  $dock_options = array(
-    array('-- '. language::translate('title_all', 'All') .' --', ''),
-    array(language::translate('title_site_menu', 'Site Menu'), 'menu'),
-    array(language::translate('title_customer_service', 'Customer Service'), 'customer_service'),
-    array(language::translate('title_site_menu', 'information'), 'information'),
-  );
+  $dock_options = [
+    ['-- '. language::translate('title_all', 'All') .' --', ''],
+    [language::translate('title_site_menu', 'Site Menu'), 'menu'],
+    [language::translate('title_customer_service', 'Customer Service'), 'customer_service'],
+    [language::translate('title_site_menu', 'information'), 'information'],
+  ];
 ?>
 
 <div class="panel panel-app">
@@ -81,7 +81,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_page'), true), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_page'], true), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -114,11 +114,11 @@
         <tbody>
 <?php
   if (!empty($_GET['query'])) {
-    $sql_where_query = array(
+    $sql_where_query = [
       "p.id = '". database::input($_GET['query']) ."'",
       "pi.title like '%". database::input($_GET['query']) ."%'",
       "pi.content like '%". database::input($_GET['query']) ."%'",
-    );
+    ];
 
     $pages_query = database::query(
       "select p.*, pi.title from ". DB_TABLE_PAGES ." p
@@ -151,11 +151,11 @@
             <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $page['id']; ?></td>
-            <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>"><?php echo $page['title']; ?></a></td>
+            <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
             <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -193,12 +193,12 @@
 
         if (database::num_rows($subpages_query) > 0) {
           if (!in_array($page['id'], $_GET['expanded'])) {
-            $expanded = array_merge($_GET['expanded'], array($page['id']));
-            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, array('expanded' => $expanded), array('app', 'doc', 'page')) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
+            $expanded = array_merge($_GET['expanded'], [$page['id']]);
+            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
 
           } else {
-            $expanded = array_diff($_GET['expanded'], array($page['id']));
-            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, array('expanded' => $expanded), array('app', 'doc', 'page')) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
+            $expanded = array_diff($_GET['expanded'], [$page['id']]);
+            $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
           }
 
         } else {
@@ -209,11 +209,11 @@
             <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $page['id']; ?></td>
-            <td style="padding-left: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>"><?php echo $page['title']; ?></a></td>
+            <td style="padding-left: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
             <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
 <?php
         if (in_array($page['id'], $_GET['expanded'])) {

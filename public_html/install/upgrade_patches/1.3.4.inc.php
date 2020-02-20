@@ -1,6 +1,6 @@
 <?php
 
-  $deleted_files = array(
+  $deleted_files = [
     FS_DIR_APP . 'ext/jqplot/plugins/jqplot.BezierCurveRenderer.min.js',
     FS_DIR_APP . 'ext/jqplot/plugins/jqplot.blockRenderer.min.js',
     FS_DIR_APP . 'ext/jqplot/plugins/jqplot.bubbleRenderer.min.js',
@@ -36,7 +36,7 @@
     FS_DIR_APP . 'ext/jqplot/jquery.min.js',
     FS_DIR_APP . 'ext/jqplot/optionsTutorial.txt',
     FS_DIR_APP . 'ext/jqplot/usage.txt',
-  );
+  ];
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {

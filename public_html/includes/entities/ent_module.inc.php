@@ -59,7 +59,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_MODULES .";"
@@ -69,7 +69,7 @@
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['settings'] = array();
+      $this->data['settings'] = [];
     }
 
     public function load($module_id, $type) {
@@ -133,7 +133,7 @@
         }
       }
 
-      if (isset($this->data['settings']['status']) && in_array(strtolower($this->data['settings']['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+      if (isset($this->data['settings']['status']) && in_array(strtolower($this->data['settings']['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
         $this->data['status'] = 1;
       } else {
         $this->data['status'] = 0;

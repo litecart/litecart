@@ -4,7 +4,7 @@
   breadcrumbs::add(language::translate('title_option_groups', 'Option Groups'));
 
 // Table Rows
-  $option_groups = array();
+  $option_groups = [];
 
   $option_groups_query = database::query(
     "select pcg.id, pcg.function, pcgi.name from ". DB_TABLE_OPTION_GROUPS ." pcg
@@ -29,7 +29,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc'=> 'edit_option_group'), array('app')), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc'=> 'edit_option_group'], ['app']), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -52,9 +52,9 @@
           <tr>
             <td><?php echo functions::form_draw_checkbox('configuration_groups['. $option_group['id'] .']', $option_group['id']); ?></td>
             <td style="text-align: center;"><?php echo $option_group['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), array('app')); ?>"><?php echo $option_group['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_option_group', 'option_group_id' => $option_group['id']], ['app']); ?>"><?php echo $option_group['name']; ?></a></td>
             <td><?php echo $option_group['function']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_option_group', 'option_group_id' => $option_group['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_option_group', 'option_group_id' => $option_group['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

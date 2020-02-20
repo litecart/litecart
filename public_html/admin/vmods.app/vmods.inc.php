@@ -80,17 +80,17 @@
   }
 
 // Table Rows
-  $vmods = array();
+  $vmods = [];
 
   foreach (glob(FS_DIR_APP . 'vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
     $xml = simplexml_load_file($file);
-    $vmods[] = array(
+    $vmods[] = [
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'enabled' => preg_match('#\.xml$#', $file) ? true : false,
       'title' => $xml->title,
       'version' => $xml->version,
       'author' => $xml->author,
-    );
+    ];
   }
 
 // Number of Rows
@@ -104,7 +104,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_vmod'), true), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod'], true), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -132,14 +132,14 @@
           <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
             <td><?php echo functions::form_draw_checkbox('vmods['. $vmod['filename'] .']', $vmod['filename']); ?></td>
             <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
-            <td><a href="<?php echo document::link(null,  array('doc' => 'view', 'vmod' => $vmod['filename']), true); ?>"><?php echo $vmod['filename']; ?></a></td>
+            <td><a href="<?php echo document::link(null,  ['doc' => 'view', 'vmod' => $vmod['filename']], true); ?>"><?php echo $vmod['filename']; ?></a></td>
             <td><?php echo $vmod['title']; ?></td>
             <td><?php echo $vmod['version']; ?></td>
             <td><?php echo $vmod['author']; ?></td>
-            <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vmod' => $vmod['filename']), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-            <td><a href="<?php echo document::href_link(null, array('doc' => 'view', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
-            <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_vmod', 'vmod' => $vmod['filename']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_link(null, ['doc' => 'test', 'vmod' => $vmod['filename']], true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+            <td><a href="<?php echo document::href_link(null, ['doc' => 'view', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
+            <td><a href="<?php echo document::href_link(null, ['doc' => 'download', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

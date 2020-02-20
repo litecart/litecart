@@ -26,7 +26,7 @@
   if (!empty($shipping->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $shipping->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
-      $shipping->data['selected'] = array(); // Clear because option is no longer present
+      $shipping->data['selected'] = []; // Clear because option is no longer present
     } else {
       $shipping->select($module_id, $option_id); // Reinstate a present option
     }
@@ -51,9 +51,9 @@
 
   $box_checkout_shipping = new ent_view();
 
-  $box_checkout_shipping->snippets = array(
-    'selected' => !empty($shipping->data['selected']) ? $shipping->data['selected'] : array(),
+  $box_checkout_shipping->snippets = [
+    'selected' => !empty($shipping->data['selected']) ? $shipping->data['selected'] : [],
     'options' => $options,
-  );
+  ];
 
   echo $box_checkout_shipping->stitch('views/box_checkout_shipping');

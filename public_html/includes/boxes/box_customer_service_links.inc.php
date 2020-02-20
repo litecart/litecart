@@ -1,35 +1,35 @@
 <?php
-  $box_customer_service_links_cache_token = cache::token('box_customer_service_links', array('language', isset($_GET['page_id']) ? $_GET['page_id'] : ''));
+  $box_customer_service_links_cache_token = cache::token('box_customer_service_links', ['language', isset($_GET['page_id']) ? $_GET['page_id'] : '']);
   if (cache::capture($box_customer_service_links_cache_token)) {
 
     if (!empty($_GET['page_id'])) {
       $current_page_path = array_keys(reference::page($_GET['page_id'])->path);
     } else {
-      $current_page_path = array();
+      $current_page_path = [];
     }
 
     $box_customer_service_links = new ent_view();
 
-    $box_customer_service_links->snippets['pages'] = array();
+    $box_customer_service_links->snippets['pages'] = [];
 
-    $box_customer_service_links->snippets = array(
+    $box_customer_service_links->snippets = [
       'title' =>  language::translate('title_customer_service', 'Customer Service'),
-      'pages' => array(),
+      'pages' => [],
       'page_path' => $current_page_path,
-    );
+    ];
 
-    $box_customer_service_links->snippets['pages'][] = array(
+    $box_customer_service_links->snippets['pages'][] = [
       'id' => 0,
       'title' => language::translate('title_contact_us', 'Contact Us'),
       'link' => document::href_ilink('customer_service'),
       'opened' => false,
       'active' => (route::$route['page'] == 'customer_service' && empty($_GET['page_id'])) ? true : false,
-      'subpages' => array(),
-    );
+      'subpages' => [],
+    ];
 
     $iterator = function($parent_id, $level, $current_page_path, &$iterator) {
 
-      $output = array();
+      $output = [];
 
       $pages_query = database::query(
         "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PAGES ." p
@@ -40,15 +40,15 @@
       );
 
       while ($page = database::fetch($pages_query)) {
-        $output[$page['id']] = array(
+        $output[$page['id']] = [
           'id' => $page['id'],
           'parent_id' => $page['parent_id'],
           'title' => $page['title'],
-          'link' => document::ilink('customer_service', array('page_id' => $page['id']), false),
+          'link' => document::ilink('customer_service', ['page_id' => $page['id']], false),
           'active' => (!empty($_GET['page_id']) && $page['id'] == $_GET['page_id']) ? true : false,
           'opened' => (!empty($current_page_path) && in_array($page['id'], $current_page_path)) ? true : false,
-          'subpages' => array(),
-        );
+          'subpages' => [],
+        ];
 
         if (in_array($page['id'], $current_page_path)) {
           $sub_pages_query = database::query(

@@ -14,7 +14,7 @@
       @ini_set('session.cookie_lifetime', 0);
       @ini_set('session.cookie_path', WS_DIR_APP);
 
-      register_shutdown_function(array('session', 'close'));
+      register_shutdown_function(['session', 'close']);
 
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
 
@@ -39,7 +39,7 @@
     }
 
     public static function clear() {
-      $_SESSION = array();
+      $_SESSION = [];
       return true;
     }
 

@@ -8,18 +8,18 @@
 
   $app_themes = array_column(functions::admin_get_apps(), 'theme', 'code');
 
-  $search_results = array();
+  $search_results = [];
 
   try {
 
     if (empty($_GET['query'])) throw new Exception('Nothing to search for');
 
   // Products
-    $search_results['products'] = array(
+    $search_results['products'] = [
       'name' => language::translate('title_products', 'Products'),
       'theme' => $app_themes['catalog'],
-      'results' => array(),
-    );
+      'results' => [],
+    ];
 
     $code_regex = functions::format_regex_code($_GET['query']);
 
@@ -53,20 +53,20 @@
     );
 
     while ($product = database::fetch($products_query)) {
-      $search_results['products']['results'][] = array(
+      $search_results['products']['results'][] = [
         'id' => $product['id'],
         'title' => $product['name'],
         'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
-        'url' => document::link(WS_DIR_ADMIN, array('app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $product['id'])),
-      );
+        'url' => document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $product['id']]),
+      ];
     }
 
   // Customers
-    $search_results['customers'] = array(
+    $search_results['customers'] = [
       'name' => language::translate('title_customers', 'Customers'),
       'theme' => $app_themes['customers'],
-      'results' => array(),
-    );
+      'results' => [],
+    ];
 
     $customers_query = database::query(
       "select id, concat(firstname, ' ', lastname) as name, email,
@@ -82,20 +82,20 @@
     );
 
     while ($customer = database::fetch($customers_query)) {
-      $search_results['customers']['results'][] = array(
+      $search_results['customers']['results'][] = [
         'id' => $customer['id'],
         'title' => $customer['name'],
         'description' => $customer['email'],
-        'url' => document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])),
-      );
+        'url' => document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]),
+      ];
     }
 
   // Orders
-    $search_results['orders'] = array(
+    $search_results['orders'] = [
       'name' => language::translate('title_orders', 'Orders'),
       'theme' => $app_themes['orders'],
-      'results' => array(),
-    );
+      'results' => [],
+    ];
 
     $orders_query = database::query(
       "select id, concat(customer_firstname, ' ', customer_lastname) as customer_name,
@@ -115,12 +115,12 @@
     );
 
     while ($order = database::fetch($orders_query)) {
-      $search_results['orders']['results'][] = array(
+      $search_results['orders']['results'][] = [
         'id' => $order['id'],
         'title' => language::translate('title_order', 'Order') .' '. $order['id'],
         'description' => $order['customer_name'],
-        'url' => document::link(WS_DIR_ADMIN, array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'])),
-      );
+        'url' => document::link(WS_DIR_ADMIN, ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']]),
+      ];
     }
 
   } catch(Exception $e) {

@@ -15,19 +15,19 @@
 
     public function reset() {
 
-      $this->data = array(
+      $this->data = [
         'filename' => null,
         'id' => null,
         'title' => null,
         'description' => null,
         'version' => null,
         'author' => null,
-        'settings' => array(),
-        'aliases' => array(),
-        'files' => array(),
+        'settings' => [],
+        'aliases' => [],
+        'files' => [],
         'date_updated' => null,
         'date_created' => null,
-      );
+      ];
 
       $this->previous = $this->data;
     }
@@ -84,20 +84,20 @@
       $f = 0;
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
-        $this->data['files'][$f] = array(
+        $this->data['files'][$f] = [
           'path' => $file_node->getAttribute('path'),
           'name' => $file_node->getAttribute('name'),
-          'operations' => array(),
-        );
+          'operations' => [],
+        ];
 
         $o = 0;
         foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
 
-          $this->data['files'][$f]['operations'][$o] = array(
-            'find' => array(),
-            'insert' => array(),
+          $this->data['files'][$f]['operations'][$o] = [
+            'find' => [],
+            'insert' => [],
             'ignoreif' => $operation_node->getAttribute('onerror'),
-          );
+          ];
 
           if ($find_node = $operation_node->getElementsByTagName('find')->item(0)) {
 
@@ -106,14 +106,14 @@
               $find_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $find_node->textContent); // Trim end of CDATA
             }
 
-            $this->data['files'][$f]['operations'][$o]['find'] = array(
+            $this->data['files'][$f]['operations'][$o]['find'] = [
               'content' => $find_node->textContent,
               'regex' => $find_node->getAttribute('regex'),
               'offset-before' => $find_node->getAttribute('offset-before'),
               'offset-after' => $find_node->getAttribute('offset-after'),
               'index' => $find_node->getAttribute('index'),
               'trim' => $find_node->getAttribute('trim'),
-            );
+            ];
           }
 
           if ($insert_node = $operation_node->getElementsByTagName('insert')->item(0)) {
@@ -123,12 +123,12 @@
               $insert_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $insert_node->textContent); // Trim end of CDATA
             }
 
-            $this->data['files'][$f]['operations'][$o]['insert'] = array(
+            $this->data['files'][$f]['operations'][$o]['insert'] = [
               'position' => $insert_node->getAttribute('position'),
               'content' => $insert_node->textContent,
               'regex' => $insert_node->getAttribute('regex'),
               'trim' => $insert_node->getAttribute('trim'),
-            );
+            ];
           }
 
           if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
@@ -138,11 +138,11 @@
               $ignoreif_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $ignoreif_node->textContent); // Trim end of CDATA
             }
 
-            $this->data['files'][$f]['operations'][$o]['ignoreif'] = array(
+            $this->data['files'][$f]['operations'][$o]['ignoreif'] = [
               'content' => $ignoreif_node->textContent,
               'trim' => $ignoreif_node->getAttribute('trim'),
               'regex' => $ignoreif_node->getAttribute('regex'),
-            );
+            ];
           }
 
           $o++;
@@ -161,21 +161,21 @@
       $f = 0;
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
-        $this->data['files'][$f] = array(
+        $this->data['files'][$f] = [
           'path' => $file_node->getAttribute('path'),
           'name' => $file_node->getAttribute('name'),
-          'operations' => array(),
-        );
+          'operations' => [],
+        ];
 
         $o = 0;
         foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
 
-          $this->data['files'][$f]['operations'][$o] = array(
-            'find' => array(),
-            'insert' => array(),
-            'ignoreif' => array(),
+          $this->data['files'][$f]['operations'][$o] = [
+            'find' => [],
+            'insert' => [],
+            'ignoreif' => [],
             'onerror' => '',
-          );
+          ];
 
           switch ($file_node->getAttribute('name')) {
             case 'error':
@@ -199,23 +199,23 @@
               $search_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $search_node->textContent); // Trim end of CDATA
             }
 
-            $this->data['files'][$f]['operations'][$o]['find'] = array(
+            $this->data['files'][$f]['operations'][$o]['find'] = [
               'content' => $search_node->textContent,
               'regex' => $search_node->getAttribute('regex'),
               'index' => $search_node->getAttribute('index'),
               'trim' => $search_node->getAttribute('trim'),
-            );
+            ];
 
             if ($search_node->getAttribute('position') == 'before') {
-              $this->data['files'][$f]['operations'][$o]['find'] = array(
+              $this->data['files'][$f]['operations'][$o]['find'] = [
                 'offset-before' => $search_node->getAttribute('offset'),
                 'offset-after' => '',
-              );
+              ];
             } else {
-              $this->data['files'][$f]['operations'][$o]['find'] = array(
+              $this->data['files'][$f]['operations'][$o]['find'] = [
                 'offset-before' => '',
                 'offset-after' => $search_node->getAttribute('offset'),
-              );
+              ];
             }
           }
 
@@ -226,12 +226,12 @@
               $add_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $add_node->textContent); // Trim end of CDATA
             }
 
-            $this->data['files'][$f]['operations'][$o]['insert'] = array(
+            $this->data['files'][$f]['operations'][$o]['insert'] = [
               'position' => $add_node->getAttribute('position'),
               'content' => $add_node->textContent,
               'regex' => $add_node->getAttribute('regex'),
               'trim' => $add_node->getAttribute('trim'),
-            );
+            ];
           }
 
           if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
@@ -241,11 +241,11 @@
               $ignoreif_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $ignoreif_node->textContent); // Trim end of CDATA
             }
 
-            $this->data['files'][$f]['operations'][$o]['ignoreif'] = array(
+            $this->data['files'][$f]['operations'][$o]['ignoreif'] = [
               'content' => $ignoreif_node->textContent,
               'trim' => $ignoreif_node->getAttribute('trim'),
               'regex' => $ignoreif_node->getAttribute('regex'),
-            );
+            ];
           }
 
           $o++;
@@ -271,7 +271,7 @@
       foreach ($this->data['files'] as $file) {
         $file_node = $dom->createElement('file');
 
-        foreach (array('path', 'name') as $attribute_name) {
+        foreach (['path', 'name'] as $attribute_name) {
           if (!empty($file[$attribute_name])) {
             $attribute = $dom->createAttribute($attribute_name);
             $attribute->value = $file[$attribute_name];
@@ -282,7 +282,7 @@
         foreach ($file['operations'] as $operation) {
           $operation_node = $dom->createElement('operation');
 
-          foreach (array('onerror') as $attribute_name) {
+          foreach (['onerror'] as $attribute_name) {
             if (!empty($operation[$attribute_name])) {
               $attribute = $dom->createAttribute($attribute_name);
               $attribute->value = $operation[$attribute_name];
@@ -293,7 +293,7 @@
         // Find
           $find_node = $dom->createElement('find');
 
-          foreach (array('regex', 'trim', 'offset-before', 'offset-after', 'index') as $attribute_name) {
+          foreach (['regex', 'trim', 'offset-before', 'offset-after', 'index'] as $attribute_name) {
             if (!empty($operation['find'][$attribute_name])) {
               $attribute = $dom->createAttribute($attribute_name);
               $attribute->value = $operation['find'][$attribute_name];
@@ -312,7 +312,7 @@
         // Insert
           $insert_node = $dom->createElement('insert');
 
-          foreach (array('regex', 'trim', 'position') as $attribute_name) {
+          foreach (['regex', 'trim', 'position'] as $attribute_name) {
             if (!empty($operation['insert'][$attribute_name])) {
               $attribute = $dom->createAttribute($attribute_name);
               $attribute->value = $operation['insert'][$attribute_name];
@@ -333,7 +333,7 @@
 
             $ignoreif_node = $dom->createElement('ignoreif');
 
-            foreach (array('regex', 'trim') as $attribute_name) {
+            foreach (['regex', 'trim'] as $attribute_name) {
               if (!empty($operation['ignoreif'][$attribute_name])) {
                 $attribute = $dom->createAttribute($attribute_name);
                 $attribute->value = $operation['ignoreif'][$attribute_name];

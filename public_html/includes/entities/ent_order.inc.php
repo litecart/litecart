@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_ORDERS .";"
@@ -69,18 +69,18 @@
         }
       }
 
-      $this->data = array_merge($this->data, array(
+      $this->data = array_merge($this->data, [
         'uid' => uniqid(),
         'weight_class' => settings::get('store_weight_class'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
-        'items' => array(),
-        'order_total' => array(),
-        'comments' => array(),
-        'subtotal' => array('amount' => 0, 'tax' => 0),
+        'items' => [],
+        'order_total' => [],
+        'comments' => [],
+        'subtotal' => ['amount' => 0, 'tax' => 0],
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
-      ));
+      ]);
 
       $this->previous = $this->data;
     }
@@ -210,11 +210,11 @@
 
     // Log order status change as comment
       if (!empty($this->previous) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
-        $this->data['comments'][] = array(
+        $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => $current_order_status['name'])),
+          'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), ['%new_status' => $current_order_status['name']]),
           'hidden' => 1,
-        );
+        ];
       }
 
     // Link guests to customer profile
@@ -422,7 +422,7 @@
     // Insert/update comments
       if (!empty($this->data['comments'])) {
 
-        $notify_comments = array();
+        $notify_comments = [];
 
         foreach (array_keys($this->data['comments']) as $key) {
 
@@ -485,7 +485,7 @@
     }
 
     public function refresh_total() {
-      $this->data['subtotal'] = array('amount' => 0, 'tax' => 0);
+      $this->data['subtotal'] = ['amount' => 0, 'tax' => 0];
       $this->data['payment_due'] = 0;
       $this->data['tax_total'] = 0;
       $this->data['weight_total'] = 0;
@@ -515,7 +515,7 @@
 
     public function add_item($item) {
 
-      $fields = array(
+      $fields = [
         'product_id',
         'options',
         'option_stock_combination',
@@ -533,7 +533,7 @@
         'dim_z',
         'dim_class',
         'error',
-      );
+      ];
 
       $i = 1;
       while (isset($this->data['items']['new_'.$i])) $i++;
@@ -554,14 +554,14 @@
 
     public function add_ot_row($row) {
 
-      $row = array(
+      $row = [
         'id' => 0,
         'module_id' => $row['id'],
         'title' =>  $row['title'],
         'value' => $row['value'],
         'tax' => $row['tax'],
         'calculate' => !empty($row['calculate']) ? 1 : 0,
-      );
+      ];
 
       $i = 1;
       while (isset($this->data['order_total']['new_'.$i])) $i++;
@@ -699,7 +699,7 @@
       return false;
     }
 
-    public function email_order_copy($recipient, $bccs=array(), $language_code='') {
+    public function email_order_copy($recipient, $bccs=[], $language_code='') {
 
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
@@ -707,7 +707,7 @@
 
       $order_status = reference::order_status($this->data['order_status_id'], $language_code);
 
-      $aliases = array(
+      $aliases = [
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
@@ -718,18 +718,18 @@
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
         '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
-        '%order_copy_url' => document::ilink('order', array('order_id' => $this->data['id'], 'public_key' => $this->data['public_key']), false, array(), $language_code),
+        '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
         '%store_name' => settings::get('store_name'),
-        '%store_url' => document::ilink('', array(), false, array(), $language_code),
-      );
+        '%store_url' => document::ilink('', [], false, [], $language_code),
+      ];
 
       foreach ($this->data['items'] as $item) {
 
         if (!empty($item['product_id'])) {
           $product = reference::product($item['product_id'], $language_code);
 
-          $options = array();
+          $options = [];
           if (!empty($item['options'])) {
             foreach ($item['options'] as $k => $v) {
               $options[] = $k .': '. $v;
@@ -778,7 +778,7 @@
 
       $order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
 
-      $aliases = array(
+      $aliases = [
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
@@ -789,18 +789,18 @@
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
         '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
-        '%order_copy_url' => document::ilink('order', array('order_id' => $this->data['id'], 'public_key' => $this->data['public_key']), false, array(), $this->data['language_code']),
+        '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
         '%order_status' => $order_status->name,
         '%store_name' => settings::get('store_name'),
-        '%store_url' => document::ilink('', array(), false, array(), $this->data['language_code']),
-      );
+        '%store_url' => document::ilink('', [], false, [], $this->data['language_code']),
+      ];
 
       foreach ($this->data['items'] as $item) {
 
         if (!empty($item['product_id'])) {
           $product = reference::product($item['product_id'], $language_code);
 
-          $options = array();
+          $options = [];
           if (!empty($item['options'])) {
             foreach ($item['options'] as $k => $v) {
               $options[] = $k .': '. $v;
@@ -818,7 +818,7 @@
       $message = strtr($order_status->email_message, $aliases);
 
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
-      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), array('%new_status' => $order_status->name));
+      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), ['%new_status' => $order_status->name]);
 
       $email = new ent_email();
       $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
@@ -835,8 +835,8 @@
       $order_modules->delete($this->data);
 
     // Empty order first..
-      $this->data['items'] = array();
-      $this->data['order_total'] = array();
+      $this->data['items'] = [];
+      $this->data['order_total'] = [];
       $this->refresh_total();
       $this->save();
 

@@ -33,7 +33,7 @@
 
     notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
-    header('Location: '. document::link(WS_DIR_ADMIN, array(), true));
+    header('Location: '. document::link(WS_DIR_ADMIN, [], true));
     exit;
   }
 
@@ -47,7 +47,7 @@
 
     cache::clear_cache('translations');
 
-    echo json_encode(array('status' => 'ok'));
+    echo json_encode(['status' => 'ok']);
     exit;
   }
 
@@ -58,13 +58,13 @@
     order by priority;"
   );
 
-  $languages = array();
+  $languages = [];
   while ($language = database::fetch($languages_query)) {
     $languages[$language['code']] = $language;
   }
 
 // Table Rows
-  $translations = array();
+  $translations = [];
 
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
@@ -73,7 +73,7 @@
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : null) ."
     ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or `text_". implode("` like '%". database::input($_GET['query']) ."%' or `text_", database::input($_GET['languages'])) ."` like '%". database::input($_GET['query']) ."%')" : null) ."
     ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '' or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
-    ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", array('cm', 'job', 'oa', 'ot', 'os', 'pm', 'sm')) ."_%:%')" : null) ."
+    ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", ['cm', 'job', 'oa', 'ot', 'os', 'pm', 'sm']) ."_%:%')" : null) ."
     order by date_updated desc;"
   );
 
@@ -119,7 +119,7 @@ th:not(:last-child) {
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <div><?php echo functions::form_draw_select_field('endpoint', array(array('-- '. language::translate('title_all', 'All') .' --', ''), array(language::translate('title_frontend', 'Frontend'), 'frontend'), array(language::translate('title_backend', 'Backend'), 'backend'))); ?></div>
+      <div><?php echo functions::form_draw_select_field('endpoint', [['-- '. language::translate('title_all', 'All') .' --', ''], [language::translate('title_frontend', 'Frontend'), 'frontend'], [language::translate('title_backend', 'Backend'), 'backend']]); ?></div>
       <div>
         <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br />
         <label><?php echo functions::form_draw_checkbox('untranslated', 'true'); ?> <?php echo language::translate('text_only_untranslated', 'Only untranslated'); ?></label>
@@ -188,9 +188,9 @@ th:not(:last-child) {
       <div class="form-group">
         <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
 <?php
-  $options = array(array('-- '. language::translate('title_select', 'Select') .' --'));
+  $options = [['-- '. language::translate('title_select', 'Select') .' --']];
   foreach ($_GET['languages'] as $language_code) {
-    $options[] = array(language::$languages[$language_code]['name'], $language_code);
+    $options[] = [language::$languages[$language_code]['name'], $language_code];
   }
 ?>
         <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>

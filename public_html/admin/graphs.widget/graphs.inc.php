@@ -3,11 +3,11 @@
   document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/chartist/chartist.min.css" />';
   document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_APP .'ext/chartist/chartist.min.js"></script>';
 
-  $widget_graphs_cache_token = cache::token('widget_graphs', array('site'), 'memory', 300);
+  $widget_graphs_cache_token = cache::token('widget_graphs', ['site'], 'memory', 300);
   if (cache::capture($widget_graphs_cache_token)) {
 
   // Order Statuses flagged as Sale
-    $order_statuses = array();
+    $order_statuses = [];
     $orders_status_query = database::query(
       "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
     );
@@ -25,7 +25,7 @@
       order by month asc;"
     );
 
-    $monthly_sales = array();
+    $monthly_sales = [];
     while ($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales'] = (int)$orders['total_sales'];
     }
@@ -55,7 +55,7 @@
 
   // Daily Sales
 
-    $daily_sales = array();
+    $daily_sales = [];
 
     $orders_query = database::query(
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday from ". DB_TABLE_ORDERS ."
@@ -128,7 +128,7 @@
 
   var data = {
     labels: <?php echo json_encode(array_column($monthly_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
-    series: <?php echo json_encode(array(array_column($monthly_sales, 'total_sales_last_year'), array_column($monthly_sales, 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
+    series: <?php echo json_encode([array_column($monthly_sales, 'total_sales_last_year'), array_column($monthly_sales, 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {
@@ -154,7 +154,7 @@
 
   var data = {
     labels: <?php echo json_encode(array_column($daily_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
-    series: <?php echo json_encode(array(array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
+    series: <?php echo json_encode([array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {

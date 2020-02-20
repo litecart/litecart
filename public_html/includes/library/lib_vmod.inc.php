@@ -2,12 +2,12 @@
 
   class vmod {
     public static $enabled = true;                      // Bool whether or not to enable this feature
-    private static $_modifications = array();           // Array of modifications to apply
-    private static $_files_to_modifications = array();  // Array of modifications to apply
-    private static $_checked = array();                 // Array of files that have already passed check() and
-    private static $_checksums = array();               // Array of checksums for time comparison
-    private static $_aliases = array();                 // Array of path aliases
-    private static $_installed = array();               // Array of path aliases
+    private static $_modifications = [];           // Array of modifications to apply
+    private static $_files_to_modifications = [];  // Array of modifications to apply
+    private static $_checked = [];                 // Array of files that have already passed check() and
+    private static $_checksums = [];               // Array of checksums for time comparison
+    private static $_aliases = [];                 // Array of path aliases
+    private static $_installed = [];               // Array of path aliases
     public static $time_elapsed = 0;                    // Array of path aliases
 
     public static function init() {
@@ -85,11 +85,11 @@
         }
 
       // Store modifications to cache
-        $serialized = json_encode(array(
+        $serialized = json_encode([
           'modifications' => self::$_modifications,
           'index' => self::$_files_to_modifications,
         //), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        ), JSON_UNESCAPED_SLASHES);
+        ], JSON_UNESCAPED_SLASHES);
 
         file_put_contents($cache_file, $serialized);
       }
@@ -125,8 +125,8 @@
       }
 
     // Add modifications to queue and calculate checksum
-      $queue = array();
-      $digest = array(filemtime($file));
+      $queue = [];
+      $digest = [filemtime($file)];
 
       foreach (self::$_files_to_modifications as $pattern => $modifications) {
         if (!fnmatch($pattern, $short_file)) continue;
@@ -287,11 +287,11 @@
               $path_and_file = preg_replace(array_keys(self::$_aliases), array_values(self::$_aliases), $path_and_file);
             }
 
-            self::$_files_to_modifications[$path_and_file][] = array(
+            self::$_files_to_modifications[$path_and_file][] = [
               'id' => $vmod['id'],
               //'index' => $vmod['files'][$key]['path'].$vmod['files'][$key]['name'],
               'date_modified' => $vmod['date_modified'],
-            );
+            ];
           }
         }
 
@@ -324,12 +324,12 @@
         throw new \Exception('File is missing the title element');
       }
 
-      $vmod = array(
+      $vmod = [
         //'id' => '',
         'title' => $dom->getElementsByTagName('title')->item(0)->textContent,
-        'files' => array(),
+        'files' => [],
         'install' => null,
-      );
+      ];
 
       if ($dom->getElementsByTagName('install')->length > 0) {
         $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
@@ -337,7 +337,7 @@
 
 
       //if ($dom->getElementsByTagName('alias')->length > 0) {
-        $aliases = array();
+        $aliases = [];
         foreach ($dom->getElementsByTagName('alias') as $alias_node) {
           $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
         }
@@ -349,11 +349,11 @@
 
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
-        $vmod_file = array(
+        $vmod_file = [
           'path' => $file_node->getAttribute('path'),
           'name' => $file_node->getAttribute('name'),
-          'operations' => array(),
-        );
+          'operations' => [],
+        ];
 
         foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
 
@@ -471,15 +471,15 @@
           }
 
         // Gather
-          $vmod_file['operations'][] = array(
+          $vmod_file['operations'][] = [
             'onerror' => $onerror,
-            'find' => array(
+            'find' => [
               'pattern' => $find,
               'indexes' => $indexes,
-            ),
+            ],
             'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
             'insert' => $insert,
-          );
+          ];
         }
 
         $vmod['files'][$vmod_file['path'].$vmod_file['name']] = $vmod_file;
@@ -498,10 +498,10 @@
         throw new \Exception("File is missing the id element");
       }
 
-      $mod = array(
+      $mod = [
         'title' => $dom->getElementsByTagName('id')->item(0)->textContent,
-        'files' => array(),
-      );
+        'files' => [],
+      ];
 
       if (empty($dom->getElementsByTagName('file'))) {
         throw new \Exception("File has no defined files to modify");
@@ -525,11 +525,11 @@
               break;
           }
 
-        $mod_file = array(
+        $mod_file = [
           'path' => $file_node->getAttribute('path'),
           'name' => $file_node->getAttribute('name'),
-          'operations' => array()
-        );
+          'operations' => []
+        ];
 
         foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
 
@@ -561,7 +561,7 @@
             $search = implode(PHP_EOL . '', $search);
 
           // Offset
-            if ($search_node->getAttribute('offset') && in_array($search_node->getAttribute('position'), array('before', 'after', 'replace'))) {
+            if ($search_node->getAttribute('offset') && in_array($search_node->getAttribute('position'), ['before', 'after', 'replace'])) {
               switch ($search_node->getAttribute('position')) {
                 case 'before':
                   $offset_before = str_repeat('.*?(?:\r\n|\r|\n)', (int)$search_node->getAttribute('offset'));
@@ -662,15 +662,15 @@
           }
 
         // Gather
-          $mod_file['operations'][] = array(
+          $mod_file['operations'][] = [
             'onerror' => $onerror,
-            'find' => array(
+            'find' => [
               'pattern' => $search,
               'indexes' => $indexes,
-            ),
+            ],
             'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
             'insert' => $add,
-          );
+          ];
         }
 
         $mod['files'][$mod_file['path'].$mod_file['name']] = $mod_file;
