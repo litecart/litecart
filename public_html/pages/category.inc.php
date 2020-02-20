@@ -84,6 +84,7 @@
       'categories' => array($category->id),
       'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
       'attributes' => !empty($_GET['attributes']) ? $_GET['attributes'] : null,
+      'product_name' => !empty($_GET['product_name']) ? $_GET['product_name'] : null,
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ));

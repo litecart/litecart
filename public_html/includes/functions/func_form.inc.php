@@ -80,6 +80,31 @@
          . '</div>';
   }
 
+  function form_draw_category_field($name, $value=true, $parameters='') {
+
+    if ($value === true) $value = form_reinsert_value($name);
+
+    $account_name = language::translate('title_guest', 'Guest');
+
+    if (!empty($value)) {
+      $category_query = database::query(
+        "select c.id, c.code, ci.name, c.date_created from ". DB_TABLE_CATEGORIES ." c
+        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code)
+        where c.id = ". (int)$value ."
+        limit 1;"
+      );
+
+      if ($category = database::fetch($category_query)) {
+        $account_name = $category['company'] ? $category['company'] : $category['firstname'] .' '. $category['lastname'];
+      }
+    }
+
+    return '<div class="form-control"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
+         . '  ' . form_draw_hidden_field($name, true) . PHP_EOL
+         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, array('app' => 'categories', 'doc' => 'category_picker')) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '</div>';
+  }
+
   function form_draw_customer_field($name, $value=true, $parameters='') {
 
     if ($value === true) $value = form_reinsert_value($name);
@@ -321,6 +346,8 @@
         $option_input = $input;
       }
 
+      if (!is_array($option)) $option = array($option, $option);
+
       $html .= '    <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
 
@@ -343,6 +370,8 @@
       } else {
         $option_input = $input;
       }
+
+      if (!is_array($option)) $option = array($option, $option);
 
       $html .= '  <div class="checkbox">'. PHP_EOL
              . '    <label>'. form_draw_checkbox($name, isset($option[1]) ? $option[1] : $option[0], $option_input, isset($option[2]) ? $option[2] : null) .' '.  $option[0] .'</label>' . PHP_EOL
@@ -530,6 +559,9 @@
 
       case 'email':
         return functions::form_draw_email_field($name, $input);
+
+      case 'file':
+        return functions::form_draw_file_field($name);
 
       case 'geo_zone':
         return form_draw_geo_zones_list($name, $input);

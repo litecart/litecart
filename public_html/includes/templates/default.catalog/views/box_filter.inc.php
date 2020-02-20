@@ -39,13 +39,24 @@
     </div>
     <?php } ?>
 
+    <div class="box search">
+      <div class="form-group">
+        <label><?php echo language::translate('title_product_name', 'Product Name'); ?></label>
+        <?php echo functions::form_draw_search_field('product_name', true, 'placeholder="'. language::translate('title_search_product', 'Search Product') .'"'); ?>
+      </div>
+    </div>
+
   <?php echo functions::form_draw_form_end(); ?>
 </section>
 
 <script>
   $('form[name="filter_form"]').change(function(){
     var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize() + '&sort=<?php echo isset($_GET['sort']) ? $_GET['sort'] : ''; ?>');
-    //window.location = url.href;
+    $("#content").load(url.href + ' #content');
+  });
+
+  $('form[name="filter_form"]').on('input', 'input[name="product_name"]', function(){
+    var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize() + '&sort=<?php echo isset($_GET['sort']) ? $_GET['sort'] : ''; ?>');
     $("#content").load(url.href + ' #content');
   });
 </script>

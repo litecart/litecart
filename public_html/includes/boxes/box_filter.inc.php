@@ -18,8 +18,8 @@
       ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
       order by m.name asc;"
     );
-    if (database::num_rows($manufacturers_query)) {
 
+    if (database::num_rows($manufacturers_query) > 1) {
       while ($manufacturer = database::fetch($manufacturers_query)) {
         $box_filter->snippets['manufacturers'][] = array(
           'id' => $manufacturer['id'],
@@ -39,7 +39,6 @@
   );
 
   while ($group = database::fetch($category_filters_query)) {
-
     $attribute_values_query = database::query(
       "select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." cf
       left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = cf.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
@@ -60,7 +59,5 @@
 
     $box_filter->snippets['attributes'][] = $group;
   }
-
-  if (empty($box_filter->snippets['manufacturers']) && empty($box_filter->snippets['attributes'])) return;
 
   echo $box_filter->stitch('views/box_filter');
