@@ -186,6 +186,10 @@
 
     $path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
 
+    if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
+      return $path;
+    }
+
     $filename = implode('', [
       sha1($path),
       $trim ? '_t' : null,
