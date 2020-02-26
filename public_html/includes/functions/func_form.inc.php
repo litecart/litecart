@@ -365,12 +365,12 @@
       }
     }
 
-    if (!is_array($options)) $options = array($options);
-
     $html = '<div class="select-wrapper">' . PHP_EOL
           . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
+
+      if (!is_array($option)) $option = array($option, $option);
 
       if ($input === true) {
         $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
@@ -389,11 +389,11 @@
 
   function form_draw_select_multiple_field($name, $options=array(), $input=true, $parameters='') {
 
-    if (!is_array($options)) $options = array($options);
-
     $html = '<div class="form-control" style="overflow-y: auto; max-height: 200px;">' . PHP_EOL;
 
     foreach ($options as $option) {
+
+      if (!is_array($option)) $option = array($option, $option);
 
       if ($input === true) {
         $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
