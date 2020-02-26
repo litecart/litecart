@@ -488,6 +488,9 @@
       $this->previous = $this->data;
 
       cache::clear_cache('order');
+      cache::clear_cache('category');
+      cache::clear_cache('manufacturer');
+      cache::clear_cache('products');
     }
 
     public function refresh_total() {
@@ -858,5 +861,8 @@
       $this->reset();
 
       cache::clear_cache('order');
+      cache::clear_cache('category');
+      cache::clear_cache('manufacturer');
+      cache::clear_cache('products');
     }
   }
