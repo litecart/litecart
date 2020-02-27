@@ -78,6 +78,11 @@
       "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
       "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
       "o.reference like '%". database::input($_GET['query']) ."%'",
+      "o.id in (
+        select order_id from ". DB_TABLE_ORDERS_ITEMS ."
+        where name like '%". database::input($_GET['query']) ."%'
+        or sku like '%". database::input($_GET['query']) ."%'
+      )",
     );
   }
 
