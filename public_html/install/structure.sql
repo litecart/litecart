@@ -448,7 +448,9 @@ CREATE TABLE `lc_order_statuses` (
   `priority` TINYINT(2) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `is_sale` (`is_sale`),
+  KEY `is_archived` (`is_archived`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses_info` (

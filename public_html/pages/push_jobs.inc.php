@@ -4,6 +4,8 @@
 
   if (strtotime(settings::get('jobs_last_run')) > strtotime('-'. settings::get('jobs_interval') .' minutes')) die('Already did my duty!');
 
+  session::close();
+
   @ignore_user_abort(true);
   @set_time_limit(60*5);
 

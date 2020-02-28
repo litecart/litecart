@@ -213,10 +213,11 @@
         return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
       }
 
-    // Find same english translation by different key
+    // If we have an english translation
       if (!empty($translation['text_en'])) {
 
-        $translation_query = database::query(
+      // Find same english translation by different key
+        $secondary_translation_query = database::query(
           "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_TRANSLATIONS ."
           where text_en = '". database::input($translation['text_en']) ."'
           and text_en != ''
@@ -224,7 +225,7 @@
           limit 1;"
         );
 
-        if ($translation = database::fetch($translation_query)) {
+        if ($secondary_translation = database::fetch($secondary_translation_query)) {
           database::query(
             "update ". DB_TABLE_TRANSLATIONS ."
             set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
@@ -234,14 +235,12 @@
           );
 
           self::$_loaded_translations[] = $code;
-          return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
-
-        // Return english translation
-          if (!empty($translation['text_en'])) {
-            self::$_loaded_translations[] = $code;
-            return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
-          }
+          return self::$_cache['translations'][$language_code][$code] = $secondary_translation['text_'.$language_code];
         }
+
+      // Return english translation
+        self::$_loaded_translations[] = $code;
+        return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
       }
 
     // Return default translation

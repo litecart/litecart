@@ -9,7 +9,7 @@
 
     <ul class="items list-unstyled">
       <?php foreach ($order['items'] as $item) { ?>
-      <li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo htmlspecialchars($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price'], $order['currency_code'], $order['currency_value']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
+      <li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo htmlspecialchars($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price'], $order['currency_code'], $order['currency_value']); ?>" data-quantity="<?php echo (float)$item['quantity']; ?>">
         <?php echo (float)$item['quantity']; ?> x <?php echo $item['name']; ?>
       </li>
       <?php } ?>

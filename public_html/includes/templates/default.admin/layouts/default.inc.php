@@ -106,7 +106,7 @@
       </li>
 
       <li>
-        <a class="help" href="{snippet:help_link}" target="_blank" title="<?php echo language::translate('title_help', 'Help'); ?>">
+        <a class="help" href="https://wiki.litecart.net/" target="_blank" title="<?php echo language::translate('title_help', 'Help'); ?>">
           <?php echo functions::draw_fonticon('fa-question-circle'); ?> <?php echo language::translate('title_help', 'Help'); ?>
         </a>
       </li>
@@ -123,7 +123,7 @@
       {snippet:notices}
       {snippet:content}
     </div>
-  </div>
+  </main>
 </div>
 
 {snippet:foot_tags}

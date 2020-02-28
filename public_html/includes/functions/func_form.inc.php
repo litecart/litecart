@@ -365,12 +365,12 @@
       }
     }
 
-    if (!is_array($options)) $options = array($options);
-
     $html = '<div class="select-wrapper">' . PHP_EOL
           . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
+
+      if (!is_array($option)) $option = array($option, $option);
 
       if ($input === true) {
         $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
@@ -389,11 +389,11 @@
 
   function form_draw_select_multiple_field($name, $options=array(), $input=true, $parameters='') {
 
-    if (!is_array($options)) $options = array($options);
-
     $html = '<div class="form-control" style="overflow-y: auto; max-height: 200px;">' . PHP_EOL;
 
     foreach ($options as $option) {
+
+      if (!is_array($option)) $option = array($option, $option);
 
       if ($input === true) {
         $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
@@ -512,7 +512,7 @@
 
   ######################################################################
 
-  function form_draw_function($function, $name, $input=true) {
+  function form_draw_function($function, $name, $input=true, $parameters='') {
 
     preg_match('#(\w*)(?:\()(.*?)(?:\))#i', $function, $matches);
 
@@ -530,201 +530,204 @@
 
       case 'decimal':
       case 'float':
-        return form_draw_decimal_field($name, $input, 2);
+        return form_draw_decimal_field($name, $input, 2, $parameters);
 
       case 'number':
       case 'int':
-        return form_draw_number_field($name, $input);
+        return form_draw_number_field($name, $input, $parameters);
 
       case 'color':
-        return form_draw_color_field($name, $input);
+        return form_draw_color_field($name, $input, $parameters);
 
       case 'smallinput': // Deprecated
       case 'smalltext': // Deprecated
       case 'input': // Deprecated
       case 'text':
-        return form_draw_text_field($name, $input);
+        return form_draw_text_field($name, $input, $parameters);
 
       case 'password':
-        return form_draw_password_field($name, $input);
+        return form_draw_password_field($name, $input, $parameters);
 
       case 'mediumtext':
       case 'textarea':
-        return form_draw_textarea($name, $input, 'rows="5"');
+        return form_draw_textarea($name, $input, $parameters . ' rows="5"');
 
       case 'bigtext':
-        return form_draw_textarea($name, $input, 'rows="10"');
+        return form_draw_textarea($name, $input, $parameters . ' rows="10"');
 
       case 'category':
-        return form_draw_categories_list($name, $input);
+        return form_draw_categories_list($name, $input, $parameters);
 
       case 'categories':
-        return form_draw_categories_list($name, $input, true);
+        return form_draw_categories_list($name, $input, true, $parameters);
 
       case 'customer':
-        return form_draw_customers_list($name, $input);
+        return form_draw_customers_list($name, $input, false, $parameters);
 
       case 'customers':
-        return form_draw_customers_list($name, $input, true);
+        return form_draw_customers_list($name, $input, true, $parameters);
 
       case 'country':
-        return form_draw_countries_list($name, $input);
+        return form_draw_countries_list($name, $input, false, $parameters);
 
       case 'countries':
-        return form_draw_countries_list($name, $input, true);
+        return form_draw_countries_list($name, $input, true, $parameters);
 
       case 'currency':
-        return form_draw_currencies_list($name, $input);
+        return form_draw_currencies_list($name, $input, false, $parameters);
 
       case 'currencies':
-        return form_draw_currencies_list($name, $input, true);
+        return form_draw_currencies_list($name, $input, true, $parameters);
+
+      case 'csv':
+        return form_draw_textarea($name, $input, true, $parameters . ' data-type="csv"');
 
       case 'delivery_status':
-        return form_draw_delivery_statuses_list($name, $input);
+        return form_draw_delivery_statuses_list($name, $input, false, $parameters);
 
       case 'delivery_statuses':
-        return form_draw_delivery_statuses_list($name, $input, true);
+        return form_draw_delivery_statuses_list($name, $input, true, $parameters);
 
       case 'email':
-        return functions::form_draw_email_field($name, $input);
+        return functions::form_draw_email_field($name, $input, $parameters);
 
       case 'geo_zone':
-        return form_draw_geo_zones_list($name, $input);
+        return form_draw_geo_zones_list($name, $input, false, $parameters);
 
       case 'geo_zones':
-        return form_draw_geo_zones_list($name, $input, true);
+        return form_draw_geo_zones_list($name, $input, true, $parameters);
 
       case 'language':
-        return form_draw_languages_list($name, $input);
+        return form_draw_languages_list($name, $input, false, $parameters);
 
       case 'languages':
-        return form_draw_languages_list($name, $input, true);
+        return form_draw_languages_list($name, $input, true, $parameters);
 
       case 'length_class':
-        return form_draw_length_classes_list($name, $input);
+        return form_draw_length_classes_list($name, $input, false, $parameters);
 
       case 'length_classes':
-        return form_draw_length_classes_list($name, $input, true);
+        return form_draw_length_classes_list($name, $input, true, $parameters);
 
       case 'product':
-        return form_draw_products_list($name, $input);
+        return form_draw_products_list($name, $input, false, $parameters);
 
       case 'products':
-        return form_draw_products_list($name, $input, true);
+        return form_draw_products_list($name, $input, true, $parameters);
 
       case 'quantity_unit':
-        return form_draw_quantity_units_list($name, $input);
+        return form_draw_quantity_units_list($name, $input, false, $parameters);
 
       case 'quantity_units':
-        return form_draw_quantity_units_list($name, $input, true);
+        return form_draw_quantity_units_list($name, $input, true, $parameters);
 
       case 'order_status':
-        return form_draw_order_status_list($name, $input);
+        return form_draw_order_status_list($name, $input, false, $parameters);
 
       case 'order_statuses':
-        return form_draw_order_status_list($name, $input, true);
+        return form_draw_order_status_list($name, $input, true, $parameters);
 
       case 'regional_input': //Deprecated
       case 'regional_text':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $output .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input);
+          $output .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input, $parameters);
         }
         return $output;
 
       case 'regional_textarea':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $output .= form_draw_regional_textarea($language_code, $name.'['. $language_code.']', $input);
+          $output .= form_draw_regional_textarea($language_code, $name.'['. $language_code.']', $input, $parameters);
         }
         return $output;
 
       case 'regional_wysiwyg':
         $output = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $output .= form_draw_regional_wysiwyg_field($language_code, $name.'['. $language_code.']', $input);
+          $output .= form_draw_regional_wysiwyg_field($language_code, $name.'['. $language_code.']', $input, $parameters);
         }
         return $output;
 
       case 'page':
-        return form_draw_pages_list($name, $input);
+        return form_draw_pages_list($name, $input, false, $parameters);
 
       case 'pages':
-        return form_draw_pages_list($name, $input, true);
+        return form_draw_pages_list($name, $input, true, $parameters);
 
       case 'radio':
         $output = '';
         for ($i=0; $i<count($options); $i++) {
-          $output .= '<div class="radio"><label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label></div>';
+          $output .= '<div class="radio"><label>'. form_draw_radio_button($name, $options[$i], $input, $parameters) .' '. $options[$i] .'</label></div>';
         }
         return $output;
 
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
-        return form_draw_select_field($name, $options, $input);
+        return form_draw_select_field($name, $options, $input, $parameters);
 
       case 'select_multiple':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
-        return form_draw_select_multiple_field($name, $options, $input);
+        return form_draw_select_multiple_field($name, $options, $input, $parameters);
 
       case 'timezone':
-        return form_draw_timezones_list($name, $input);
+        return form_draw_timezones_list($name, $input, false, $parameters);
 
       case 'timezones':
-        return form_draw_timezones_list($name, $input, true);
+        return form_draw_timezones_list($name, $input, true, $parameters);
 
       case 'template':
-        return form_draw_templates_list($name, $input);
+        return form_draw_templates_list($name, $input, false, $parameters);
 
       case 'templates':
-        return form_draw_templates_list($name, $input, true);
+        return form_draw_templates_list($name, $input, true, $parameters);
 
       case 'time':
-        return form_draw_time_field($name, $input);
+        return form_draw_time_field($name, $input, $parameters);
 
       case 'toggle':
         return form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
 
       case 'sold_out_status':
-        return form_draw_sold_out_statuses_list($name, $input);
+        return form_draw_sold_out_statuses_list($name, $input, false, $parameters);
 
       case 'sold_out_statuses':
-        return form_draw_sold_out_statuses_list($name, $input, true);
+        return form_draw_sold_out_statuses_list($name, $input, true, $parameters);
 
       case 'tax_class':
-        return form_draw_tax_classes_list($name, $input);
+        return form_draw_tax_classes_list($name, $input, false, $parameters);
 
       case 'tax_classes':
-        return form_draw_tax_classes_list($name, $input, true);
+        return form_draw_tax_classes_list($name, $input, true, $parameters);
 
       case 'user':
-        return form_draw_users_list($name, $input);
+        return form_draw_users_list($name, $input, false, $parameters);
 
       case 'users':
-        return form_draw_users_list($name, $input, true);
+        return form_draw_users_list($name, $input, true, $parameters);
 
       case 'weight_class':
-        return form_draw_weight_classes_list($name, $input);
+        return form_draw_weight_classes_list($name, $input, false, $parameters);
 
       case 'weight_classes':
-        return form_draw_weight_classes_list($name, $input, true);
+        return form_draw_weight_classes_list($name, $input, true, $parameters);
 
       case 'wysiwyg':
-        return form_draw_regional_wysiwyg_field($name, $input);
+        return form_draw_regional_wysiwyg_field($name, $input, $parameters);
 
       case 'zone':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
-        return form_draw_zones_list($option, $name, $input);
+        return form_draw_zones_list($option, $name, $input, false, $parameters);
 
       case 'zones':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
-        return form_draw_zones_list($option, $name, $input, true);
+        return form_draw_zones_list($option, $name, $input, true, $parameters);
 
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_WARNING);
-        return form_draw_hidden_field($name, $input);
+        return form_draw_hidden_field($name, $input, $parameters);
         break;
     }
   }

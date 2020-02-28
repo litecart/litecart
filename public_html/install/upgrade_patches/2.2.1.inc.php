@@ -1,5 +1,16 @@
 <?php
 
+// Delete old files
+  $deleted_files = array(
+    FS_DIR_ADMIN . 'orders.app/edit_order_item.php',
+  );
+
+  foreach ($deleted_files as $pattern) {
+    if (!file_delete($pattern)) {
+      echo '<span class="error">[Skip]</span></p>';
+    }
+  }
+
   $modified_files = array(
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
@@ -23,7 +34,7 @@
                  . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
     );
 
-    copy(FS_DIR_APP . 'install/other/multiple_category_images.xml', FS_DIR_APP . 'vqmod/xml/multiple_category_images.xml');
+    copy(FS_DIR_APP . 'install/data/other/multiple_category_images.xml', FS_DIR_APP . 'vqmod/xml/multiple_category_images.xml');
   }
 
 // Modify some files

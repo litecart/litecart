@@ -567,7 +567,8 @@
 
       $this->previous = $this->data;
 
-      cache::clear_cache('product_'.$this->data['id']);
+      cache::clear_cache('category');
+      cache::clear_cache('manufacturer');
       cache::clear_cache('products');
     }
 
@@ -658,6 +659,8 @@
 
       $this->reset();
 
+      cache::clear_cache('category');
+      cache::clear_cache('manufacturer');
       cache::clear_cache('products');
     }
   }

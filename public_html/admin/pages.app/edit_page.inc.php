@@ -1,7 +1,7 @@
 <?php
 
-  if (!empty($_GET['pages_id'])) {
-    $page = new ent_page($_GET['pages_id']);
+  if (!empty($_GET['page_id'])) {
+    $page = new ent_page($_GET['page_id']);
   } else {
     $page = new ent_page();
   }
@@ -40,7 +40,7 @@
       $page->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'pages'), true, array('pages_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'pages'), true, array('page_id')));
       exit;
 
     } catch (Exception $e) {

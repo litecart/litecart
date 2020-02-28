@@ -134,16 +134,18 @@
   cart::clear();
 
 // Send order confirmation email
-  $bccs = array();
+  if (settings::get('send_order_confirmation')) {
+    $bccs = array();
 
-  if (settings::get('email_order_copy')) {
-    foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
-      if (empty($email)) continue;
-      $bccs[] = $email;
+    if (settings::get('email_order_copy')) {
+      foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
+        if (empty($email)) continue;
+        $bccs[] = $email;
+      }
     }
-  }
 
-  $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+    $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+  }
 
 // Run after process operations
   $shipping->after_process($order);

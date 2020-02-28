@@ -173,7 +173,10 @@
 
     // Set params that are inherited from the current page
       if ($inherit_params === true) {
-        $link->query = $_GET;
+        foreach ($_GET as $key => $value) {
+          if (in_array($key, array('currency', 'language'))) continue;
+          $link->set_query($key, $value);
+        }
       } else if (is_array($inherit_params)) {
         foreach ($_GET as $key => $value) {
           if (in_array($key, $inherit_params)) {

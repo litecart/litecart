@@ -217,7 +217,7 @@
         $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
       }
 
-      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      if (is_file(FS_DIR_APP . 'images/' . $filename)) unlink(FS_DIR_APP . 'images/' . $filename);
 
       if (settings::get('image_downsample_size')) {
         list($width, $height) = explode(',', settings::get('image_downsample_size'));
@@ -235,6 +235,24 @@
       );
 
       $this->previous['image'] = $this->data['image'] = $filename;
+    }
+
+    public function delete_image() {
+
+      if (empty($this->data['image'])) return;
+
+      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+
+      functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['image']);
+
+      database::query(
+        "update ". DB_TABLE_CATEGORIES ."
+        set image = ''
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+     $this->previous['image'] = $this->data['image'] = '';
     }
 
     public function delete() {

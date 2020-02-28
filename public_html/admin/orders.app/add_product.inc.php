@@ -370,7 +370,7 @@
     }
 
     selected_option_combinations.sort();
-    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->stock_options, JSON_UNESCAPED_SLASHES) : '[]'; ?>;
+    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->options_stock, JSON_UNESCAPED_SLASHES) : '[]'; ?>;
 
     $.each(available_stock_options, function(i, stock_option) {
       var matched = false;

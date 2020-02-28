@@ -20,6 +20,13 @@
   if (isset($_POST['save'])) {
 
     try {
+      if (empty($_POST['categories'])) $_POST['categories'] = array();
+      if (empty($_POST['images'])) $_POST['images'] = array();
+      if (empty($_POST['attributes'])) $_POST['attributes'] = array();
+      if (empty($_POST['campaigns'])) $_POST['campaigns'] = array();
+      if (empty($_POST['options'])) $_POST['options'] = array();
+      if (empty($_POST['options_stock'])) $_POST['options_stock'] = array();
+
       if (empty($_POST['name'][language::$selected['code']])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       if (empty($_POST['categories'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
@@ -28,12 +35,11 @@
       if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
       if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 
-      if (empty($_POST['categories'])) $_POST['categories'] = array();
-      if (empty($_POST['images'])) $_POST['images'] = array();
-      if (empty($_POST['attributes'])) $_POST['attributes'] = array();
-      if (empty($_POST['campaigns'])) $_POST['campaigns'] = array();
-      if (empty($_POST['options'])) $_POST['options'] = array();
-      if (empty($_POST['options_stock'])) $_POST['options_stock'] = array();
+      foreach ($_POST['options'] as $option) {
+        if (empty($option['group_id']) || empty($option['value_id'])) {
+          throw new Exception(language::translate('error_an_invalid_option', 'A provided option is invalid'));
+        }
+      }
 
       $_POST['keywords'] = explode(',', $_POST['keywords']);
 

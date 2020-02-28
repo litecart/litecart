@@ -155,6 +155,9 @@
 
       while ($item = database::fetch($order_items_query)) {
         $item['options'] = unserialize($item['options']);
+        $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
+        $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
+        $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
         $this->data['items'][$item['id']] = $item;
       }
 
@@ -165,6 +168,8 @@
       );
 
       while ($row = database::fetch($order_totals_query)) {
+        $row['value'] = (float)$row['value']; // Turns "1.0000" to 1
+        $row['tax'] = (float)$row['tax']; // Turns "1.0000" to 1
         $this->data['order_total'][$row['id']] = $row;
       }
 
@@ -483,6 +488,9 @@
       $this->previous = $this->data;
 
       cache::clear_cache('order');
+      cache::clear_cache('category');
+      cache::clear_cache('manufacturer');
+      cache::clear_cache('products');
     }
 
     public function refresh_total() {
@@ -574,7 +582,7 @@
       }
     }
 
-    public function validate(&$shipping, &$payment) {
+    public function validate(&$shipping = null, &$payment = null) {
 
     // Validate items
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
@@ -714,9 +722,9 @@
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
-        '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
+        '%billing_address' => functions::format_address($this->data['customer']),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
-        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
+        '%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
@@ -785,9 +793,9 @@
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
-        '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
+        '%billing_address' => functions::format_address($this->data['customer']),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
-        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
+        '%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
@@ -835,7 +843,7 @@
       if (empty($this->data['id'])) return;
 
       $order_modules = new mod_order();
-      $order_modules->delete($this->data);
+      $order_modules->delete($this->previous);
 
     // Empty order first..
       $this->data['items'] = array();
@@ -853,5 +861,8 @@
       $this->reset();
 
       cache::clear_cache('order');
+      cache::clear_cache('category');
+      cache::clear_cache('manufacturer');
+      cache::clear_cache('products');
     }
   }

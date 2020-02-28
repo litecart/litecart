@@ -368,7 +368,7 @@
             'description',
             'technical_data',
             'head_title',
-            'meta_description'
+            'meta_description',
           );
 
           foreach ($fields as $field) {

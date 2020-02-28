@@ -17,16 +17,16 @@
 
       if (empty($this->settings['status'])) return;
 
+      if (!isset($order->data['shipping_option']['cost']) || $order->data['shipping_option']['cost'] == 0) return;
+
       $output = array();
 
-      if (isset($order->data['shipping_option']['cost']) && $order->data['shipping_option']['cost'] != 0) {
-        $output[] = array(
-          'title' => $order->data['shipping_option']['title'] .' ('. $order->data['shipping_option']['name'] .')',
-          'value' => $order->data['shipping_option']['cost'],
-          'tax' => tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
-          'calculate' => true,
-        );
-      }
+      $output[] = array(
+        'title' => $order->data['shipping_option']['title'] .' ('. $order->data['shipping_option']['name'] .')',
+        'value' => $order->data['shipping_option']['cost'],
+        'tax' => tax::get_tax($order->data['shipping_option']['cost'], $order->data['shipping_option']['tax_class_id'], $order->data['customer']),
+        'calculate' => true,
+      );
 
       if (!empty($this->settings['free_shipping_table'])) {
 
@@ -41,6 +41,7 @@
 
           foreach ($free_shipping_table as $row) {
             if (empty($row['country_code']) || $row['country_code'] != $order->data['customer']['shipping_address']['country_code']) continue;
+            if (!empty($row['zone_code']) && $row['zone_code'] != $order->data['customer']['shipping_address']['zone_code']) continue;
             if (!isset($row['min_subtotal']) || $row['min_subtotal'] < 0) continue;
             if ($subtotal < $row['min_subtotal']) continue;
 
@@ -51,6 +52,8 @@
               'tax_class_id' => $order->data['shipping_option']['tax_class_id'],
               'calculate' => true,
             );
+
+            break;
           }
         }
       }
@@ -69,10 +72,10 @@
         ),
         array(
           'key' => 'free_shipping_table',
-          'default_value' => 'country_code,min_subtotal',
+          'default_value' => 'country_code,zone_code,min_subtotal',
           'title' => language::translate(__CLASS__.':title_free_shipping_table', 'Free Shipping Table'),
           'description' => language::translate(__CLASS__.':description_free_shipping_table', 'Free shipping table in standard CSV format with column headers.'),
-          'function' => 'bigtext()',
+          'function' => 'csv()',
         ),
         array(
           'key' => 'priority',
