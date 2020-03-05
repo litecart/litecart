@@ -72,7 +72,8 @@
 
       $values_query = database::query(
         "select * from ". DB_TABLE_ATTRIBUTE_VALUES ."
-        where group_id = ". (int)$group_id .";"
+        where group_id = ". (int)$group_id ."
+        order by priority;"
       );
 
       while ($value = database::fetch($values_query)) {
@@ -185,8 +186,9 @@
         }
 
         database::query(
-          "update ". DB_TABLE_ATTRIBUTE_VALUES ."
-          set date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+          "update ". DB_TABLE_ATTRIBUTE_VALUES ." set
+            priority = ". (int)$i++ .",
+            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
           where id = ". (int)$value['id'] ."
           limit 1;"
         );

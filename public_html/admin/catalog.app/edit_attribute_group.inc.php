@@ -80,7 +80,7 @@
       <div id="product-values">
         <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
 
-        <table class="table table-striped table-hover data-table">
+        <table class="table table-striped table-hover table-dragable data-table">
           <thead>
             <tr>
               <th><?php echo language::translate('title_id', 'ID'); ?></th>
@@ -100,7 +100,7 @@
       $num_products = database::num_rows($products_query);
 ?>
             <tr>
-              <td><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
+              <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
               <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, ''); ?></td>
               <td class="text-center"><?php echo $num_products; ?></td>
               <td class="text-right"><?php echo empty($num_products) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"') .'</a>' : false; ?></td>
