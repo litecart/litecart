@@ -17,4 +17,4 @@
 
   <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_latest_products.inc.php'); ?>
 
-</main>
+</div>
