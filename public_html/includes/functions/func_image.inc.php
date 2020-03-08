@@ -196,7 +196,7 @@
       '_'.(int)$width .'x'. (int)$height,
       $clipping_filename_flag,
       settings::get('image_thumbnail_interlaced') ? '_i' : null,
-      '.webp',
+      '.'.$extension,
     ]);
 
     if (!is_dir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
