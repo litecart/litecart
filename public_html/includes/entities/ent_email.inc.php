@@ -248,6 +248,7 @@
 
     // Prepare headers
       $headers = array(
+        'Date' => date('r'),
         'From' => $this->format_contact($this->data['sender']),
         'Reply-To' => $this->format_contact($this->data['sender']),
         'Return-Path' => $this->format_contact($this->data['sender']),
