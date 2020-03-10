@@ -611,19 +611,33 @@ CREATE TABLE `lc_products_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_options` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) NOT NULL,
-  `group_id` INT(11) NOT NULL,
-  `value_id` INT(11) NOT NULL,
-  `price_operator` VARCHAR(1) NOT NULL,
-  `USD` DECIMAL(11,4) NOT NULL,
-  `EUR` DECIMAL(11,4) NOT NULL,
-  `priority` TINYINT(2) NOT NULL,
-  `date_updated` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `product_option` (`product_id`, `group_id`, `value_id`),
-  KEY `product_id` (`product_id`)
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) NOT NULL,
+	`group_id` INT(11) NOT NULL,
+	`function` VARCHAR(32) NOT NULL,
+	`required` TINYINT(1) NOT NULL,
+	`sort` VARCHAR(16) NOT NULL,
+	`priority` TINYINT(2) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `product_option` (`product_id`, `group_id`),
+	INDEX `product_id` (`product_id`),
+	INDEX `priority` (`priority`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_products_options_values` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`product_id` INT(11) NOT NULL,
+	`group_id` INT(11) NOT NULL,
+	`value_id` INT(11) NOT NULL,
+	`custom_value` VARCHAR(64) NOT NULL,
+	`price_operator` VARCHAR(1) NOT NULL,
+	`USD` DECIMAL(11,4) NOT NULL,
+	`EUR` DECIMAL(11,4) NOT NULL,
+	`priority` TINYINT(2) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`),
+	INDEX `product_id` (`product_id`),
+	INDEX `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_options_stock` (

@@ -136,12 +136,29 @@
 
     // Options
       $products_options_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS ."
+        "select po.*, agi.name from ". DB_TABLE_PRODUCTS_OPTIONS ." po
+        left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.id = po.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
         where product_id = ". (int)$this->data['id'] ."
         order by priority asc;"
       );
 
       while ($option = database::fetch($products_options_query)) {
+
+        $option['values'] = array();
+
+      // Option Values
+        $products_options_values_query = database::query(
+          "select pov.*, if(pov.value_id = 0, custom_value, avi.name) as name from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ." pov
+          left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.id = pov.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+          where product_id = ". (int)$this->data['id'] ."
+          and group_id = ". (int)$option['group_id'] ."
+          order by priority asc;"
+        );
+
+        while ($value = database::fetch($products_options_values_query)) {
+          $option['values'][$value['id']] = $value;
+        }
+
         $this->data['options'][$option['id']] = $option;
       }
 
@@ -161,8 +178,8 @@
           list($group_id, $value_id) = explode('-', $combination);
 
           $options_values_query = database::query(
-            "select ovi.value_id, ovi.name, ovi.language_code from ". DB_TABLE_OPTION_VALUES_INFO ." ovi
-            where ovi.value_id = ". (int)$value_id .";"
+            "select avi.value_id, avi.name, avi.language_code from ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi
+            where avi.value_id = ". (int)$value_id .";"
           );
 
           while ($option_value = database::fetch($options_values_query)) {
@@ -406,38 +423,83 @@
         and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
       );
 
+      database::query(
+        "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
+        where product_id = ". (int)$this->data['id'] ."
+        and id not in ('". @implode("', '", array_column($this->data['options']['values'], 'id')) ."');"
+      );
+
     // Update options
       if (!empty($this->data['options'])) {
-        $i = 0;
+
+        $priority = 0;
         foreach (array_keys($this->data['options']) as $key) {
-          $i++;
 
           if (empty($this->data['options'][$key]['id'])) {
             database::query(
               "insert into ". DB_TABLE_PRODUCTS_OPTIONS ."
-              (product_id, date_created)
-              values (". (int)$this->data['id'] .", '". ($this->data['options'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
+              (product_id)
+              values (". (int)$this->data['id'] .");"
             );
             $this->data['options'][$key]['id'] = database::insert_id();
           }
 
-          $sql_currency_options = "";
-          foreach (array_keys(currency::$currencies) as $currency_code) {
-            $sql_currency_options .= $currency_code ." = '". (isset($this->data['options'][$key][$currency_code]) ? (float)$this->data['options'][$key][$currency_code] : 0) ."', ";
-          }
-
           database::query(
-            "update ". DB_TABLE_PRODUCTS_OPTIONS ."
-            set group_id = ". (int)$this->data['options'][$key]['group_id'] .",
-                value_id = ". (int)$this->data['options'][$key]['value_id'] .",
-                price_operator = '". database::input($this->data['options'][$key]['price_operator']) ."',
-                $sql_currency_options
-                priority = ". (int)$i .",
-                date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+            "update ". DB_TABLE_PRODUCTS_OPTIONS ." set
+              group_id = ". (int)$this->data['options'][$key]['group_id'] .",
+              function = '". database::input($this->data['options'][$key]['function']) ."',
+              required = ". (int)$this->data['options'][$key]['required'] .",
+              sort = '". @database::input($this->data['options'][$key]['sort']) ."',
+              priority = ". (int)$priority++ ."
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['options'][$key]['id'] ."
             limit 1;"
           );
+
+        // Delete option values
+          database::query(
+            "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
+            where product_id = ". (int)$this->data['id'] ."
+            and id not in ('". @implode("', '", @array_column($this->data['options'][$key]['values'], 'id')) ."');"
+          );
+
+        // Update option values
+          if (!empty($this->data['options'][$key]['values'])) {
+            $i = 0;
+
+            foreach ($this->data['options'][$key]['values'] as $k => $value) {
+              $i++;
+
+              if (empty($this->data['options'][$key]['values'][$k])) {
+                database::query(
+                  "insert into ". DB_TABLE_PRODUCTS_OPTIONS ."
+                  (product_id)
+                  values (". (int)$this->data['id'] .");"
+                );
+                $this->data['options'][$key]['values'][$k]['id'] = database::insert_id();
+              }
+
+              $sql_currencies = "";
+              foreach (array_keys(currency::$currencies) as $currency_code) {
+                $sql_currencies .= $currency_code ." = '". (isset($this->data['options'][$key]['values'][$k][$currency_code]) ? (float)$this->data['options'][$key]['values'][$k][$currency_code] : 0) ."', ";
+              }
+
+              database::query(
+                "update ". DB_TABLE_PRODUCTS_OPTIONS ." set
+                  group_id = ". (int)$this->data['options'][$key]['values'][$k]['group_id'] .",
+                  value_id = ". (int)$this->data['options'][$key]['values'][$k]['value_id'] .",
+                  custom_value = '". database::input($this->data['options'][$key]['values'][$k]['custom_value']) ."',
+                  price_operator = '". database::input($this->data['options'][$key]['values'][$k]['price_operator']) ."',
+                  $sql_currencies
+                  priority = ". (int)$i .",
+                  date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+                where product_id = ". (int)$this->data['id'] ."
+                and group_id = ". (int)$this->data['options'][$key]['id'] ."
+                and id = ". (int)$this->data['options'][$key]['values'][$k]['id'] ."
+                limit 1;"
+              );
+            }
+          }
         }
       }
 

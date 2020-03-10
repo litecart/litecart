@@ -203,7 +203,7 @@
         foreach ($product->options as $option) {
 
         // Check group
-          $possible_groups = array_filter(array_unique(reference::option_group($option['id'])->name));
+          $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
           $matched_group = @reset(array_intersect(array_keys($options), array_values($possible_groups)));
 
           if (empty($matched_group)) {
@@ -221,7 +221,7 @@
 
               $matched_values = array();
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
+                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
                 $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
                 if (!empty($matched_value)) {
                   $matched_values[] = $matched_value;
@@ -245,7 +245,7 @@
             case 'select':
 
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
+                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
                 $matched_value = @reset(array_intersect(array($options[$matched_group]), array_values($possible_values)));
                 if (!empty($matched_value)) {
                   $item['extras'] += $value['price_adjust'];

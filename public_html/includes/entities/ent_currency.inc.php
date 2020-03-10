@@ -103,7 +103,7 @@
           );
 
           database::query(
-            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
+            "alter table ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
             change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
         }
@@ -135,13 +135,13 @@
         }
 
         $products_options_query = database::query(
-          "show fields from ". DB_TABLE_PRODUCTS_OPTIONS ."
+          "show fields from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
           where `Field` = '". database::input($this->data['code']) ."';"
         );
 
         if (!database::num_rows($products_options_query)) {
           database::query(
-            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
+            "alter table ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
             add `". database::input($this->data['code']) ."` decimal(11, 4) not null after `price_operator`;"
           );
         }
@@ -177,7 +177,7 @@
       );
 
       database::query(
-        "alter table ". DB_TABLE_PRODUCTS_OPTIONS ." drop `". database::input($this->data['code']) ."`;"
+        "alter table ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ." drop `". database::input($this->data['code']) ."`;"
       );
 
       $this->reset();

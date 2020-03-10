@@ -111,7 +111,6 @@
           <?php foreach ($options as $option) { ?>
           <div class="form-group">
             <label><?php echo $option['name']; ?></label>
-            <?php echo $option['description'] ? '<div>' . $option['description'] . '</div>' : ''; ?>
             <?php echo $option['values']; ?>
           </div>
           <?php } ?>
