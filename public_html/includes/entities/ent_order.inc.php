@@ -652,7 +652,7 @@
             }
           }
 
-          if (reference::country($this->data['customer']['country_code'])->zones) {
+          if (reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
             if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) return language::translate('error_missing_zone', 'You must select a zone.');
           }
         }
