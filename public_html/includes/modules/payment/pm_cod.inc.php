@@ -44,9 +44,6 @@
       return $method;
     }
 
-    public function pre_check($order) {
-    }
-
     public function transfer($order) {
       return array(
         'action' => '',
@@ -61,9 +58,6 @@
         'payment_transaction_id' => '',
         'errors' => '',
       );
-    }
-
-    public function after_process($order) {
     }
 
     function settings() {
