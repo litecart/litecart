@@ -69,9 +69,10 @@ INSERT INTO `lc_orders` (`id`, `uid`, `order_status_id`, `customer_id`, `custome
 (1, '585753da00024', 2, 1, 'ACME Corp.', 'John', 'Doe', 'user@email.com', '1-555-123-4567', '', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', '', 'sm_vendor:parcel', 'Domestic Parcel', '1112223334', 'pm_vendor:card', 'Card Payment', '123456789', 'en', '1.0000', 'kg', 'USD', 1, 7.2, 0, '0.0.0.0', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, `date_created`) VALUES
-(1, 1, 'customer', 'This is a message to the store crew.', 0, NOW()),
-(2, 1, 'staff', 'This is a message to the customer', 0, NOW()),
-(4, 1, 'system', 'Order status changed to Pending', 1, NOW());
+(1, 1, 'customer', 'This is a message from the customer.', 0, NOW()),
+(2, 1, 'staff', 'This is a message from the store crew.', 0, NOW()),
+(3, 1, 'staff', 'This is a hidden message by the store crew.', 1, NOW()),
+(4, 1, 'system', 'Order status changed to Dispatched', 1, NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `option_stock_combination`, `options`, `name`, `sku`, `quantity`, `price`, `tax`, `weight`, `weight_class`) VALUES
 (1, 1, 1, '1-1', 'a:1:{s:4:"Size";s:5:"Small";}', 'Yellow Duck', 'RD001-S', '1.0000', '8', '0', '1.0000', 'kg');
