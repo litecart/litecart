@@ -16,4 +16,4 @@
 
      If there are complications, try switching to the default template and disable any vQmods.
 
-  If you need help, turn to our forums at http://forums.litecart.net.
+  If you need help, turn to our forums at https://www.litecart.net/forums/.
