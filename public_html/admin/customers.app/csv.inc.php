@@ -14,42 +14,52 @@
         throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
       }
 
+      $updated = 0;
+      $inserted = 0;
+      $line = 0;
+
       foreach ($csv as $row) {
+        $line++;
 
-        $customer = null;
-
+      // Find customer
         if (!empty($row['id'])) {
-          $customers_query = database::query(
-            "select id from ". DB_TABLE_CUSTOMERS ."
-            where id = ". (int)$row['id'] ."
-            limit 1;"
-          );
-          $customer = database::fetch($customers_query);
+          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            $customer = new ent_customer($customer['id']);
+          } else {
+            database::query("insert into ". DB_TABLE_CUSTOMERS ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            $customer = new ent_customer($row['id']);
+          }
 
         } else if (!empty($row['code'])) {
-          $customers_query = database::query(
-            "select id from ". DB_TABLE_CUSTOMERS ."
-            where code = '". database::input($row['code']) ."'
-            limit 1;"
-          );
-          $customer = database::fetch($customers_query);
+          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            $customer = new ent_customer($customer['id']);
+          } else {
+            $customer = new ent_customer();
+          }
 
         } else if (!empty($row['email'])) {
-          $customers_query = database::query(
-            "select id from ". DB_TABLE_CUSTOMERS ."
-            where email like '". database::input($row['email']) ."'
-            limit 1;"
-          );
-          $customer = database::fetch($customers_query);
-        }
+          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($row['email']) ."' limit 1;"))) {
+            $customer = new ent_customer($customer['id']);
+          } else {
+            $customer = new ent_customer();
+          }
 
-        if (!empty($customer)) {
-          $customer = new ent_customer($customer['id']);
         } else {
-          $customer = new ent_customer();
+          echo "[Skipped] Could not identify customer on line $line.\r\n";
+          continue;
         }
 
-        $fields = [
+        if (!empty($customer->data['id'])) {
+          if (empty($_POST['update'])) continue;
+          echo 'Updating existing customer '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
+          $updated++;
+        } else {
+          if (empty($_POST['insert'])) continue;
+          echo 'Creating new customer: '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
+          $inserted++;
+        }
+
+        $fields = array(
           'code',
           'email',
           'tax_id',
@@ -65,7 +75,7 @@
           'phone',
           'newsletter',
           'notes',
-        ];
+        );
 
         foreach ($fields as $field) {
           if (isset($row[$field])) $customer->data[$field] = $row[$field];
@@ -76,8 +86,10 @@
         $customer->save();
       }
 
-      notices::add('success', language::translate('success_customers_imported', 'Customers successfully imported.'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => $_GET['doc']]));
+      notices::add($updated ? 'success' : 'notice', strtr(language::translate('success_updated_n_existing_entries', 'Updated %n existing entries'), array('%n' => $updated)));
+      notices::add($inserted ? 'success' : 'notice', strtr(language::translate('success_insert_n_new_entries', 'Inserted %n new entries'), array('%n' => $inserted)));
+
+      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
 
     } catch (Exception $e) {
@@ -93,10 +105,10 @@
         order by date_created asc;"
       );
 
-      $csv = [];
+      $csv = array();
 
       while ($customer = database::fetch($customers_query)) {
-        $csv[] = [
+        $csv[] = array(
           'id' => $customer['id'],
           'code' => $customer['code'],
           'email' => $customer['email'],
@@ -113,7 +125,7 @@
           'phone' => $customer['phone'],
           'newsletter' => $customer['newsletter'],
           'notes' => $customer['notes'],
-        ];
+        );
       }
 
       ob_clean();
@@ -163,34 +175,47 @@
       <div id="tab-import" class="tab-pane active">
         <?php echo functions::form_draw_form_begin('import_form', 'post', '', true); ?>
 
-          <div class="form-group">
-            <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
-            <?php echo functions::form_draw_file_field('file'); ?></td>
-          </div>
+          <fieldset>
+            <legend><?php echo language::translate('title_customers', 'Customers'); ?></legend>
 
-          <div class="row">
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', [[language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''], [','],  [';'], ['TAB', "\t"], ['|']], true); ?>
+            <div class="form-group">
+              <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
+              <?php echo functions::form_draw_file_field('file'); ?></td>
             </div>
 
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+              </div>
             </div>
 
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
+            <div class="form-group">
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_checkbox('update', 'true', true); ?> <?php echo language::translate('title_update_existing', 'Update Existing'); ?></label>
+              </div>
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_checkbox('insert', 'true', true); ?> <?php echo language::translate('title_insert_new', 'Insert New'); ?></label>
+              </div>
             </div>
 
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-            </div>
-          </div>
-
-          <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
+            <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
+          </fieldset>
 
         <?php echo functions::form_draw_form_end(); ?>
       </div>
@@ -198,39 +223,43 @@
       <div id="tab-export" class="tab-pane">
         <?php echo functions::form_draw_form_begin('export_form', 'post'); ?>
 
-          <div class="row">
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-              <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
+          <fieldset>
+            <legend><?php echo language::translate('title_customers', 'Customers'); ?></legend>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
+                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label><?php echo language::translate('title_output', 'Output'); ?></label>
+                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+              </div>
             </div>
 
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-              <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
-            </div>
-
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-              <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
-            </div>
-
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-              <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-            </div>
-
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-              <?php echo functions::form_draw_select_field('eol', [['Win'], ['Mac'], ['Linux']], true); ?>
-            </div>
-
-            <div class="form-group col-sm-6">
-              <label><?php echo language::translate('title_output', 'Output'); ?></label>
-              <?php echo functions::form_draw_select_field('output', [[language::translate('title_file', 'File'), 'file'], [language::translate('title_screen', 'Screen'), 'screen']], true); ?>
-            </div>
-          </div>
-
-          <?php echo functions::form_draw_button('export', language::translate('title_export', 'Export'), 'submit'); ?>
+            <?php echo functions::form_draw_button('export', language::translate('title_export', 'Export'), 'submit'); ?>
+          </fieldset>
 
         <?php echo functions::form_draw_form_end(); ?>
       </div>
