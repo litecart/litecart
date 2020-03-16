@@ -1,7 +1,7 @@
 <?php
 
   class vmod {
-    public static $enabled = true;                      // Bool whether or not to enable this feature
+    public static $enabled = true;                 // Bool whether or not to enable this feature
     private static $_modifications = [];           // Array of modifications to apply
     private static $_files_to_modifications = [];  // Array of modifications to apply
     private static $_checked = [];                 // Array of files that have already passed check() and
