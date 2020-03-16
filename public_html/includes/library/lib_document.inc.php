@@ -139,6 +139,9 @@
         return implode($replace, explode($search, $subject, 2));
       };
 
+    // Remove Comments
+      $GLOBALS['output'] = preg_replace('#<!--.*?-->#ms', '', $GLOBALS['output']);
+
     // Extract and group in content stylesheets
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
@@ -176,7 +179,8 @@
           if (!empty($styles)) {
             $styles = '<style>' . PHP_EOL
                    . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                   . implode(PHP_EOL . PHP_EOL, $styles) . PHP_EOL
+                   //. implode(PHP_EOL . PHP_EOL, $styles) . PHP_EOL
+                   . preg_replace('#/\*.*?\*/#ms', '', implode(PHP_EOL . PHP_EOL, $styles)) . PHP_EOL
                    . '/*]]>*/-->' . PHP_EOL
                    . '</style>' . PHP_EOL;
 
@@ -226,7 +230,8 @@
           if (!empty($javascript)) {
             $javascript = '<script>' . PHP_EOL
                         . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                        . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
+                        //. implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
+                        . preg_replace('#(?:(?:/\*(?:[^*]|(?:\*+[^*/]))*\*+/)|(?:(?<!\:|\\\|\')//.*))#', '', implode(PHP_EOL . PHP_EOL, $javascript)) . PHP_EOL
                         . '/*]]>*/-->' . PHP_EOL
                         . '</script>' . PHP_EOL;
 
