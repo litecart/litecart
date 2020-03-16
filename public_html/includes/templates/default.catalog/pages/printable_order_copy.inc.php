@@ -212,3 +212,7 @@ h1 {
   </footer>
   <?php } ?>
 </section>
+
+<script>
+  document.title = 'Order <?php echo $order['id']; ?>';
+</script>
