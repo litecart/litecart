@@ -237,6 +237,19 @@
         }
       }
 
+    // Minify Inline CSS
+      if (preg_match('#<style>(?:\R*<!--/\*--><!\[CDATA\[/\*><!--\*/\R)(.*?)(?:\R/\*\]\]>\*/-->\R*)</style>#is', $GLOBALS['output'], $matches)) {
+        $search_replace = array(
+          '#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove multiline comments
+          '#(?:[^\r\n,{}]+)(?:,(?=[^}]*{)|\s*{[\s]*}\s*)#' => '', // Remove empty selectors
+          '#\s+#' => ' ',
+          '#\s*([:;{}])\s*#' => '$1',
+          '#;}#' => '}',
+        );
+        $minified = preg_replace(array_keys($search_replace), array_values($search_replace), $matches[1]);
+        $GLOBALS['output'] = preg_replace('#(<style>(?:\R*<!--/\*--><!\[CDATA\[/\*><!--\*/\R)).*?((?:\R/\*\]\]>\*/-->\R*)</style>)#is', '$1'. $minified .'$2', $GLOBALS['output']);
+      }
+
       if (class_exists('stats', false)) {
         stats::set('output_optimization', microtime(true) - $microtime_start);
       }
