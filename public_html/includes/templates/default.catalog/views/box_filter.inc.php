@@ -17,7 +17,7 @@
     <div class="box attributes">
       <?php foreach ($attributes as $group) { ?>
       <div class="group">
-        <h2><?php echo $group['name']; ?></h2>
+        <h3><?php echo $group['name']; ?></h3>
         <?php if (!empty($group['select_multiple'])) { ?>
         <div class="form-control">
           <?php foreach ($group['values'] as $value) { ?>

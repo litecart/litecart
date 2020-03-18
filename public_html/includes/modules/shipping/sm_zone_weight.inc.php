@@ -83,6 +83,7 @@
 
         case '<':
         case '&lt;':
+        case 'ITEM_WEIGHT_LOWER_THAN_VALUE':
           foreach (array_reverse(preg_split('#[\|;]#', $rate_table)) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight < $rate_weight) {
@@ -93,6 +94,7 @@
 
         case '<=':
         case '&lt;=':
+        case 'ITEM_WEIGHT_LOWER_THAN_OR_EQUALS_VALUE':
           foreach (array_reverse(preg_split('#[\|;]#', $rate_table)) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight <= $rate_weight) {
@@ -103,7 +105,7 @@
 
         case '>':
         case '&gt;':
-
+        case 'ITEM_WEIGHT_HIGHER_THAN_VALUE':
           foreach (preg_split('#[\|;]#', $rate_table) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight > $rate_weight) {
@@ -114,6 +116,7 @@
 
         case '>=':
         case '&gt;=':
+        case 'ITEM_WEIGHT_HIGHER_THAN_OR_EQUALS_VALUE':
         default:
           foreach (preg_split('#[\|;]#', $rate_table) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
@@ -208,7 +211,7 @@
           'default_value' => '>=',
           'title' => language::translate(__CLASS__.':title_method', 'Method'),
           'description' => language::translate(__CLASS__.':description_method', 'The calculation method that should to be used for the rate tables where a condition is met for shipping weight. E.g. weight < table'),
-          'function' => 'select("&lt;","&lt;=","&gt;","&gt;=")',
+          'function' => 'select("ITEM_WEIGHT_LOWER_THAN_VALUE","ITEM_WEIGHT_LOWER_THAN_OR_EQUALS_VALUE","ITEM_WEIGHT_HIGHER_THAN_VALUE","ITEM_WEIGHT_HIGHER_THAN_OR_EQUALS_VALUE")',
         ],
         [
           'key' => 'handling_fee',

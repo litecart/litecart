@@ -76,7 +76,7 @@
             return;
         }
 
-        $path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
+        $path = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', realpath($source)));
 
         $options['destination'] .= implode('', [
           sha1($path),
@@ -94,7 +94,7 @@
         if (!empty($options['overwrite'])) {
           unlink($options['destination']);
         } else {
-          return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+          return preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
         }
       }
 
@@ -143,6 +143,20 @@
 
   function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=false) {
 
+    if (!is_file($source)) $source = FS_DIR_APP . 'images/no_image.png';
+
+    $path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
+
+    if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
+      return $path;
+    }
+
+    if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+      $extension = 'webp';
+    } else {
+      $extension = pathinfo($source, PATHINFO_EXTENSION);
+    }
+
     switch (strtoupper($clipping)) {
 
       case 'CROP':
@@ -178,18 +192,6 @@
         return;
     }
 
-    if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
-      $extension = 'webp';
-    } else {
-      $extension = pathinfo($source, PATHINFO_EXTENSION);
-    }
-
-    $path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
-
-    if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
-      return $path;
-    }
-
     $filename = implode('', [
       sha1($path),
       $trim ? '_t' : null,
@@ -198,6 +200,10 @@
       settings::get('image_thumbnail_interlaced') ? '_i' : null,
       '.'.$extension,
     ]);
+
+    if (is_file(FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename)) {
+      return 'cache/' . substr($filename, 0, 2) . '/' . $filename;
+    }
 
     if (!is_dir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
       if (!mkdir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
@@ -219,7 +225,7 @@
 
   function image_delete_cache($file) {
 
-    $webpath = str_replace(DOCUMENT_ROOT, '', $file);
+    $webpath = str_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
 
     $cachename = sha1($webpath);
 

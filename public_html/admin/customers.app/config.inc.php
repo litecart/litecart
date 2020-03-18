@@ -15,13 +15,13 @@
         'params' => [],
       ],
       [
-        'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
-        'doc' => 'csv',
+        'title' => language::translate('title_newsletter_recipients', 'Newsletter Recipients'),
+        'doc' => 'newsletter_recipients',
         'params' => [],
       ],
       [
-        'title' => language::translate('title_newsletter_recipients', 'Newsletter Recipients'),
-        'doc' => 'newsletter_recipients',
+        'title' => language::translate('title_csv_import_export', 'CSV Import/Export'),
+        'doc' => 'csv',
         'params' => [],
       ],
     ],
