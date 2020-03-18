@@ -8,31 +8,33 @@
     $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_APP);
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 
-    $found_files = 0;
-    $found_translations = 0;
+    $files = 0;
+    $found = 0;
     $new_translations = 0;
-    $updated_translations = 0;
+    $updated = 0;
     $translation_keys = [];
-    $deleted_translations = 0;
+    $orphan = [];
 
     foreach ($iterator as $file) {
       if (pathinfo($file, PATHINFO_EXTENSION) != 'php') continue;
       //if (strpos(pathinfo($file, PATHINFO_FILENAME), 'vq2') !== false) continue;
 
-      $found_files++;
+      $files++;
       $contents = file_get_contents($file);
 
       $regexp = [
-        '(?:language->|language::)translate\((?:(?!\$)',
+        '(?:language::)translate\((?:(?!\$)',
         '(?:(__CLASS__)?\.)?',
         '(?:[\'"])([^\'"]+)(?:[\'"])',
         '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?',
         '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?',
         ')\)',
       ];
-      $regexp = '/'. implode('', $regexp) .'/s';
+
+      $regexp = '#'. implode('', $regexp) .'#s';
 
       preg_match_all($regexp, $contents, $matches);
+
       $translations = [];
 
       if (!empty($matches)) {
@@ -49,7 +51,7 @@
 
       foreach ($translations as $code => $translation) {
 
-        $found_translations++;
+        $found++;
 
         $translations_query = database::query(
           "select text_en from ". DB_TABLE_TRANSLATIONS ."
@@ -71,7 +73,7 @@
 
         } else if (empty($row['text_en']) && !empty($translation) && !empty($_POST['update'])) {
 
-          $updated_translations++;
+          $updated++;
 
           database::query(
             "update ". DB_TABLE_TRANSLATIONS ."
@@ -86,56 +88,72 @@
       }
     }
 
-    if (!empty($_POST['clean'])) {
-      $settings_groups_query = database::query(
-        "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
-      );
+    $settings_groups_query = database::query(
+      "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
+    );
 
-      while ($group = database::fetch($settings_groups_query)) {
-        $translation_keys[] = 'settings_group:title_'.$group['key'];
-        $translation_keys[] = 'settings_group:title_'.$group['key'];
-      }
+    while ($group = database::fetch($settings_groups_query)) {
+      $translation_keys[] = 'settings_group:title_'.$group['key'];
+      $translation_keys[] = 'settings_group:title_'.$group['key'];
+    }
 
-      $settings_query = database::query(
-        "select `key` from ". DB_TABLE_SETTINGS ."
-        where setting_group_key != '';"
-      );
+    $settings_query = database::query(
+      "select `key` from ". DB_TABLE_SETTINGS ."
+      where setting_group_key != '';"
+    );
 
-      while ($setting = database::fetch($settings_query)) {
-        $translation_keys[] = 'settings_key:title_'.$setting['key'];
-        $translation_keys[] = 'settings_key:description_'.$setting['key'];
-      }
+    while ($setting = database::fetch($settings_query)) {
+      $translation_keys[] = 'settings_key:title_'.$setting['key'];
+      $translation_keys[] = 'settings_key:description_'.$setting['key'];
+    }
 
-      $translations_query = database::query(
-        "select code from ". DB_TABLE_TRANSLATIONS .";"
-      );
+    $translations_query = database::query(
+      "select * from ". DB_TABLE_TRANSLATIONS .";"
+    );
 
-      while ($translation = database::fetch($translations_query)) {
-        if (!in_array($translation['code'], $translation_keys)) {
-          database::query(
-            "delete from ". DB_TABLE_TRANSLATIONS ."
-            where code = '". database::input($translation['code']) ."'
-            limit 1;"
-          );
-          echo $translation['code'] . ' [DELETED]<br/>' . PHP_EOL;
-          $deleted_translations++;
-        }
+    while ($translation = database::fetch($translations_query)) {
+      if (!in_array($translation['code'], $translation_keys)) {
+        $orphan[] = $translation;
       }
     }
 
+    $log = ob_get_clean();
+
     cache::clear_cache('translations');
 
-    echo sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found_translations, $found_files) . PHP_EOL;
-    echo sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations) . PHP_EOL;
-    echo sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated_translations) . PHP_EOL;
-    echo sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), $deleted_translations) . PHP_EOL;
+    notices::add('notices', sprintf(language::translate('text_found_d_translations', 'Found %d translations in %d files'), $found, $files));
+    if ($new_translations) notices::add('notices', sprintf(language::translate('text_added_d_new_translations', 'Added %d new translations'), $new_translations));
+    if ($updated) notices::add('notices', sprintf(language::translate('text_updated_d_translations', 'Updated %d translations'), $updated));
 
-    $log = ob_get_clean();
+  }
+
+  if (!empty($_POST['delete'])) {
+
+    try {
+
+      if (empty($_POST['translations'])) throw new Exception(language::translate('error_must_select_translations', 'You must select translations'));
+
+      foreach ($_POST['translations'] as $code) {
+        database::query(
+          "delete from ". DB_TABLE_TRANSLATIONS ."
+          where code = '". database::input($code) ."'
+          limit 1;"
+        );
+      }
+
+      notices::add('success', sprintf(language::translate('text_deleted_d_translations', 'Deleted %d translations'), count($_POST['translations'])));
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
   }
 ?>
 <style>
 pre {
   white-space: pre-line;
+}
+table.data-table {
+  white-space: wrap;
 }
 </style>
 
@@ -146,25 +164,56 @@ pre {
 
   <div class="panel-body">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
 
           <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
 
           <p><label><?php echo functions::form_draw_checkbox('update', '1'); ?> <?php echo language::translate('text_update_empty_translations', 'Update empty translations if applicable'); ?></label></p>
 
-          <p><label><?php echo functions::form_draw_checkbox('clean', '1'); ?> <?php echo language::translate('text_delete_translations_not_present', 'Delete translations no longer present in files'); ?></label></p>
-
-          <p><?php echo functions::form_draw_button('scan', language::translate('title_scan', 'Scan'), 'submit', 'onclick="if(!confirm(\''. str_replace('\'', '\\\'', language::translate('warning_backup_translations', 'Warning: Always backup your translations before continuing.')) .'\')) return false;"'); ?></p>
+          <p><?php echo functions::form_draw_button('scan', language::translate('title_scan', 'Scan'), 'submit'); ?></p>
 
         <?php echo functions::form_draw_form_end(); ?>
+
+        <?php if (!empty($_POST['scan'])) { ?>
+        <pre id="log">
+        <?php echo $log; ?>
+        </pre>
+        <?php } ?>
       </div>
 
-      <?php if (!empty($_POST['scan'])) { ?>
-      <div class="col-md-6">
-        <pre>
-          <?php echo $log; ?>
-        </pre>
+      <?php if (!empty($_POST['scan']) && !empty($orphan)) { ?>
+      <div class="col-md-8">
+
+        <h2><?php echo language::translate('title_orphan_translations', 'Orphan Translations'); ?></h2>
+
+          <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
+
+          <table class="table table-striped data-table">
+            <thead>
+              <tr>
+                <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+                <th><?php echo language::translate('title_code', 'Code'); ?></th>
+                <th><?php echo language::translate('title_translation', 'Translation'); ?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($orphan as $row) { ?>
+              <tr>
+                <td><?php echo functions::form_draw_checkbox('translations[]', $row['code'], true); ?></td>
+                <td><?php echo $row['code']; ?></td>
+                <td><?php echo $row['text_'.language::$selected['code']]; ?></td>
+              </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+          </div>
+
+        <?php echo functions::form_draw_form_end(); ?>
+
       </div>
       <?php } ?>
     </div>
