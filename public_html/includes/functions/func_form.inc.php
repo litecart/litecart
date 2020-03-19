@@ -336,7 +336,7 @@
     if (!is_array($options)) $options = [$options];
 
     $html = '<div class="select-wrapper">' . PHP_EOL
-          . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+          . '  <select name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
 
