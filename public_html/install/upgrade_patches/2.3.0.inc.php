@@ -1,8 +1,15 @@
 <?php
 
+// Move some files
+  foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
+    if (is_file())
+    copy($file, FS_DIR_APP . 'vmods/');
+  }
+
 // Delete old files
   $deleted_files = [
     FS_DIR_ADMIN . 'customers.app/mailchimp.png',
+    FS_DIR_ADMIN . 'vqmod/',
   ];
 
   foreach ($deleted_files as $pattern) {
