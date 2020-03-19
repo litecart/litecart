@@ -5,40 +5,30 @@
   breadcrumbs::add(basename($_GET['vmod']));
 
   try {
-    if (!empty($_GET['vmod'])) {
-      $vmods = [FS_DIR_APP . 'vmods/'. basename($_GET['vmod'])];
-    } else {
-      $vmods = glob(FS_DIR_APP . 'vmods/*.xml');
+
+    if (empty($_GET['vmod'])) throw new Exception('No vmod provided');
+    if (!is_file(FS_DIR_APP . 'vmods/' . basename($_GET['vmod']))) throw new Exception('The vmod does not exist');
+
+    $dom = new \DOMDocument('1.0', 'UTF-8');
+    $dom->preserveWhiteSpace = false;
+
+    if (!$dom->loadXml(file_get_contents(FS_DIR_APP . 'vmods/' . basename($_GET['vmod'])))) {
+      throw new Exception(libxml_get_last_error());
     }
 
-    $files_to_modify = [];
+    switch ($dom->documentElement->tagName) {
 
-    foreach ($vmods as $vmod) {
+      case 'vmod': // LiteCart Modification
+        $vmod = vmod::parse_vmod($dom, $_GET['vmod']);
+        break;
 
-      $xml = simplexml_load_file($vmod);
+      case 'modification': // vQmod
+        $vmod = vmod::parse_vqmod($dom);
+        break;
 
-      foreach ($xml->file as $file) {
-        foreach (explode(',', $file['name']) as $filename) {
-          $filename = (isset($file['path']) ? $file['path'] : '') . $filename;
-
-          if (!empty(VQMod::$replaces)) {
-            foreach (VQMod::$replaces as $search => $replace) {
-              $filename = preg_replace($search, $replace, $filename);
-            }
-          }
-
-          $filename = FS_DIR_APP . $filename;
-
-          foreach (glob($filename) as $file) {
-            if (in_array($file, ['.', '..'])) continue;
-            $files_to_modify[] = $file;
-          }
-        }
-      }
+      default:
+        throw new Exception("File ($file) is not a valid vmod or vQmod");
     }
-
-    $files_to_modify = array_unique($files_to_modify);
-    sort($files_to_modify);
 
   } catch (Exception $e) {
     notices::add('errors', $e->getMessage());
@@ -47,7 +37,7 @@
 
 ?>
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_test_vmod', 'Test vMod'); ?></h1>
-<h2><?php echo $xml->id; ?> (<?php echo $_GET['vmod']; ?>)</h2>
+<h2><?php echo $_GET['vmod']; ?></h2>
 
 <table class="table table-striped table-hover data-table">
   <thead>
@@ -57,16 +47,89 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($files_to_modify as $file) { ?>
+<?php
+  foreach (array_keys($vmod['files']) as $key) {
+    $patterns = explode(',', $vmod['files'][$key]['name']);
+
+    foreach ($patterns as $pattern) {
+      $path_and_file = $vmod['files'][$key]['path'].$pattern;
+
+    // Apply path aliases
+      if (!empty(vmod::$aliases)) {
+        $path_and_file = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $path_and_file);
+      }
+?>
     <tr>
       <td>
-        <div><?php echo 'Testing ' . preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file) . PHP_EOL; ?></div>
-        <div><?php ob_start(); vmod::check($file); $buffer = ob_get_clean(); ?></div>
+        <h3><?php echo $path_and_file; ?></h3>
+<?php
+      $error = null;
+
+      try {
+
+        if (!is_file(FS_DIR_APP . $path_and_file)) throw new Exception('File does not exist');
+
+        echo "";
+
+        $buffer = file_get_contents(FS_DIR_APP . $path_and_file);
+
+        foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
+
+          echo "<div>Operation #$i ";
+
+          if (!empty($operation['ignoreif']) && preg_match($operation['ignoreif'], $buffer)) {
+            continue;
+          }
+          $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
+
+          if (!$found) {
+            switch ($operation['onerror']) {
+              case 'ignore':
+                continue 2;
+              case 'abort':
+              case 'warning':
+              default:
+                throw new Exception('Search not found', E_USER_WARNING);
+                continue 2;
+            }
+          }
+
+          if (!empty($operation['find']['indexes'])) {
+            rsort($operation['find']['indexes']);
+
+            foreach ($operation['find']['indexes'] as $index) {
+              $index = $index - 1; // [0] is the 1st in computer language
+
+              if ($found > $index) {
+                $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+              }
+            }
+
+          } else {
+            $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
+
+            if (!$count && $operation['onerror'] != 'skip') {
+              throw new Exception("Failed to perform insert");
+              continue;
+            }
+          }
+
+          echo functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') .'</div>';
+        }
+
+      } catch (Exception $e) {
+        echo functions::draw_fonticon('fa-times', 'style="color: #c00;"') .' Error: '. htmlspecialchars($e->getMessage()) .'</div>';
+        $error = true;
+      }
+?>
       </td>
-      <td class="text-center">
-        <?php echo empty($buffer) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"'); ?>
+      <td style="font-size: 3em;">
+        <?php echo empty($error) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"'); ?>
       </td>
     </tr>
-    <?php } ?>
+<?php
+    }
+  }
+?>
   </tbody>
 </table>
