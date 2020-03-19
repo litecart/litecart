@@ -334,7 +334,7 @@
       if (!empty($keyword) && function_exists('apcu_delete')) {
         $cached_keys = new APCUIterator('#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
         foreach ($cached_keys as $key) {
-          echo apcu_delete($key);
+          apcu_delete($key['key']);
         }
       } else if (function_exists('apcu_clear_cache')) {
         apcu_clear_cache();
@@ -343,7 +343,7 @@
       if (!empty($keyword) && function_exists('apc_delete')) {
         $cached_keys = new APCIterator('user', '#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
         foreach ($cached_keys as $key) {
-          echo apc_delete($key);
+          apc_delete($key['key']);
         }
       } else if (function_exists('apc_clear_cache')) {
         apc_clear_cache();
