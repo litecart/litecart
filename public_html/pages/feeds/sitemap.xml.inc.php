@@ -3,7 +3,7 @@
   language::set(settings::get('store_language_code'));
 
   $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
-          . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . PHP_EOL;
+          . '<urlset xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . PHP_EOL;
 
   $hreflangs = '';
   if (settings::get('seo_links_language_prefix')) {
@@ -32,9 +32,17 @@
         }
       }
 
+      $images = '';
+      if ($category['image']) {
+        $images = '    <image:image>' . PHP_EOL
+                . '      <image:loc>'. document::link(WS_DIR_APP . 'images/' . $category['image']) .'</image:loc>' . PHP_EOL
+                . '    </image:image>' . PHP_EOL;
+      }
+
       $output .= '  <url>' . PHP_EOL
                . '    <loc>'. document::ilink('category', ['category_id' => $category['id']]) .'</loc>' . PHP_EOL
                . $hreflangs
+               . $images
                . '    <lastmod>'. date('Y-m-d', strtotime($category['date_updated'])) .'</lastmod>' . PHP_EOL
                . '    <changefreq>weekly</changefreq>' . PHP_EOL
                . '    <priority>1.0</priority>' . PHP_EOL
@@ -47,7 +55,7 @@
   custom_output_categories(0, $output);
 
   $products_query = database::query(
-    "select id, date_updated from ". DB_TABLE_PRODUCTS ."
+    "select id, image, date_updated from ". DB_TABLE_PRODUCTS ."
     where status
     order by id;"
   );
@@ -60,9 +68,18 @@
       }
     }
 
+      $images = '';
+      if ($product['image']) {
+        $images = '    <image:image>' . PHP_EOL
+                . '      <image:loc>'. document::link(WS_DIR_APP . 'images/' . $product['image']) .'</image:loc>' . PHP_EOL
+                . '    </image:image>' . PHP_EOL;
+      }
+
+
     $output .= '  <url>' . PHP_EOL
              . '    <loc>'. document::ilink('product', ['product_id' => $product['id']]) .'</loc>' . PHP_EOL
              . $hreflangs
+             . $images
              . '    <lastmod>'. date('Y-m-d', strtotime($product['date_updated'])) .'</lastmod>' . PHP_EOL
              . '    <changefreq>weekly</changefreq>' . PHP_EOL
              . '    <priority>0.8</priority>' . PHP_EOL
