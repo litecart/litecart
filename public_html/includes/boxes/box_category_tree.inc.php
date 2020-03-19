@@ -5,14 +5,15 @@
 
     if (!empty($_GET['category_id'])) {
       $category_path = array_keys(reference::category($_GET['category_id'])->path);
+      $parent_id = $category_path[0];
     } else {
       $category_path = [];
+      $parent_id = 0;
     }
 
     $box_category_tree = new ent_view();
-
     $box_category_tree->snippets = [
-      'title' => language::translate('title_categories', 'Categories'),
+      'title' => $parent_id ? reference::category($parent_id)->name : language::translate('title_categories', 'Categories'),
       'categories' => [],
       'category_path' => $category_path,
     ];
@@ -54,9 +55,9 @@
       return $tree;
     };
 
-    if ($box_category_tree->snippets['categories'] = $iterator(0, 0, $category_path, $iterator)) {
-      echo $box_category_tree->stitch('views/box_category_tree');
-    }
+    $box_category_tree->snippets['categories'] = $iterator($parent_id, 0, $category_path, $iterator);
+
+    echo $box_category_tree->stitch('views/box_category_tree');
 
     cache::end_capture($box_category_tree_cache_token);
   }
