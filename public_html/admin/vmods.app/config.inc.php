@@ -10,6 +10,7 @@
     ],
     'menu' => [],
     'docs' => [
+      'configure' => 'configure.inc.php',
       'edit_vmod' => 'edit_vmod.inc.php',
       'download' => 'download.inc.php',
       'test' => 'test.inc.php',

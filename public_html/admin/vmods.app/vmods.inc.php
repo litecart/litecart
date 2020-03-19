@@ -124,6 +124,7 @@
             <th>&nbsp;</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
 
@@ -139,6 +140,7 @@
             <td><a href="<?php echo document::href_link(null, ['doc' => 'test', 'vmod' => $vmod['filename']], true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
             <td><a href="<?php echo document::href_link(null, ['doc' => 'view', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
             <td><a href="<?php echo document::href_link(null, ['doc' => 'download', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'configure', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
@@ -146,7 +148,7 @@
 
         <tfoot>
           <tr>
-            <td colspan="10"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
+            <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
           </tr>
         </tfoot>
       </table>

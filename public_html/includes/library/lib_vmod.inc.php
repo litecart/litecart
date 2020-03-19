@@ -9,6 +9,7 @@
     private static $_aliases = [];                 // Array of path aliases
     private static $_installed = [];               // Array of path aliases
     public static $time_elapsed = 0;                    // Array of path aliases
+    private static $_settings = array();           // Array of modification settings
 
     public static function init() {
 
@@ -92,6 +93,12 @@
         ], JSON_UNESCAPED_SLASHES);
 
         file_put_contents($cache_file, $serialized);
+      }
+
+    // Load settings
+      if (!is_file(FS_DIR_APP . 'vmods/.settings')) file_put_contents(FS_DIR_APP . 'vmods/.settings', '{}');
+      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_APP . 'vmods/.settings'), true)) {
+        self::$_settings = array();
       }
 
       self::$time_elapsed += microtime(true) - $timestamp;
@@ -259,7 +266,7 @@
         switch ($dom->documentElement->tagName) {
 
           case 'vmod': // LiteCart Modification
-            $vmod = self::_parse_vmod($dom);
+            $vmod = self::parse_vmod($dom, $file);
             break;
 
           case 'modification': // vQmod
@@ -314,7 +321,7 @@
       }
     }
 
-    private static function _parse_vmod($dom) {
+    private static function _parse_vmod($dom, $file) {
 
       if ($dom->documentElement->tagName != 'vmod') {
         throw new \Exception('File is not a valid vmod');
@@ -325,10 +332,11 @@
       }
 
       $vmod = [
-        //'id' => '',
+        'id' => pathinfo($file, PATHINFO_FILENAME),
         'title' => $dom->getElementsByTagName('title')->item(0)->textContent,
         'files' => [],
         'install' => null,
+        'settings' => [],
       ];
 
       if ($dom->getElementsByTagName('install')->length > 0) {
@@ -419,6 +427,12 @@
         // Insert
           $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
           $insert = strtr($insert_node->textContent, $aliases);
+
+          if (!empty(self::$_settings[$vmod['id']])) {
+            foreach (self::$_settings[$vmod['id']] as $key => $value) {
+              $insert = str_replace('{setting:'. $key .'}', $value, $insert);
+            }
+          }
 
           if ($insert_node->getAttribute('regex') == 'true') {
             $insert = trim($insert);
