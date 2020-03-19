@@ -2,14 +2,14 @@
 
   class vmod {
     public static $enabled = true;                 // Bool whether or not to enable this feature
+    private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
     private static $_modifications = [];           // Array of modifications to apply
     private static $_files_to_modifications = [];  // Array of modifications to apply
     private static $_checked = [];                 // Array of files that have already passed check() and
     private static $_checksums = [];               // Array of checksums for time comparison
-    private static $_aliases = [];                 // Array of path aliases
     private static $_installed = [];               // Array of path aliases
-    public static $time_elapsed = 0;                    // Array of path aliases
     private static $_settings = array();           // Array of modification settings
+    public static $time_elapsed = 0;               // Array of path aliases
 
     public static function init() {
 
@@ -17,8 +17,8 @@
 
       $timestamp = microtime(true);
 
-      self::$_aliases['#^admin/#'] = BACKEND_ALIAS . '/';
-      self::$_aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
+      self::$aliases['#^admin/#'] = BACKEND_ALIAS . '/';
+      self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
 
       $last_modified = null;
 
@@ -45,7 +45,7 @@
         //database::query(
         //"select update_time from information_schema.tables
         //where TABLE_SCHEMA = '". DB_DATABASE ."'
-        //and table_name = '". DB_TABLE_PREFIX ."modifications'
+        //and table_name = '". DB_PREFIX ."modifications'
         //limit 1;"
       }
 
@@ -123,7 +123,7 @@
       }
 
       $short_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_APP . 'cache/modifications/' . preg_replace('#[/\\\\]+#', '_', $short_file);
+      $modified_file = FS_DIR_APP . 'cache/modifications/' . preg_replace('#[/\\\\]+#', '—', $short_file);
 
     // Returned already checked file
       if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
@@ -171,11 +171,10 @@
         foreach ($modifications as $modification) {
 
           if (!$vmod = self::$_modifications[$modification['id']]) continue;
-          if (!$operations = self::$_modifications[$modification['id']]['files'][$short_file]['operations']) continue;
+          if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations']) continue;
 
-          $tmp = $buffer; $i=0;
-          foreach ($operations as $operation) {
-            $i++;
+          $tmp = $buffer;
+          foreach ($operations as $i => $operation) {
 
             if (!empty($operation['ignoreif']) && preg_match($operation['ignoreif'], $tmp)) {
               continue;
@@ -185,12 +184,14 @@
 
             if (!$found) {
               switch ($operation['onerror']) {
-                case 'warning':
-                  trigger_error("Vmod \"{$vmod['title']}\" failed during operation #$i in \"{$short_file}\": Search not found" . PHP_EOL . $operation['find']['pattern'], E_USER_WARNING);
-                  $modifications = $recovery;
+                case 'abort':
+                  trigger_error("Modification \"$vmod[title]\" failed during operation #$i in $short_file: Search not found [ABORTED]", E_USER_WARNING);
                   continue 3;
                 case 'ignore':
+                  continue 2;
+                case 'warning':
                 default:
+                  trigger_error("Modification \"$vmod[title]\" failed during operation #$i in $short_file: Search not found", E_USER_WARNING);
                   continue 2;
               }
             }
@@ -260,7 +261,7 @@
         $dom->preserveWhiteSpace = false;
 
         if (!$dom->loadXml($xml)) {
-          throw new \Exception(libxml_get_errors());
+          throw new \Exception(libxml_get_last_error());
         }
 
         switch ($dom->documentElement->tagName) {
@@ -270,7 +271,7 @@
             break;
 
           case 'modification': // vQmod
-            $vmod = self::_parse_vqmod($dom);
+            $vmod = self::parse_vqmod($dom);
             break;
 
           default:
@@ -290,13 +291,13 @@
             $path_and_file = $vmod['files'][$key]['path'].$pattern;
 
           // Apply path aliases
-            if (!empty(self::$_aliases)) {
-              $path_and_file = preg_replace(array_keys(self::$_aliases), array_values(self::$_aliases), $path_and_file);
+            if (!empty(self::$aliases)) {
+              $path_and_file = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $path_and_file);
             }
 
             self::$_files_to_modifications[$path_and_file][] = [
               'id' => $vmod['id'],
-              //'index' => $vmod['files'][$key]['path'].$vmod['files'][$key]['name'],
+              'key' => $key,
               'date_modified' => $vmod['date_modified'],
             ];
           }
@@ -321,7 +322,7 @@
       }
     }
 
-    private static function _parse_vmod($dom, $file) {
+    public static function parse_vmod($dom, $file) {
 
       if ($dom->documentElement->tagName != 'vmod') {
         throw new \Exception('File is not a valid vmod');
@@ -502,7 +503,7 @@
       return $vmod;
     }
 
-    private static function _parse_vqmod($dom) {
+    public static function parse_vqmod($dom) {
 
       if ($dom->documentElement->tagName != 'modification') {
         throw new \Exception("File is not a valid vQmod");
