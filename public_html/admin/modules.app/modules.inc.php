@@ -109,6 +109,12 @@
     <?php echo $app_icon; ?> <?php echo $title; ?>
   </div>
 
+  <div class="panel-action">
+    <ul class="list-inline">
+      <li><?php echo functions::form_draw_link_button('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'add'); ?></li>
+    </ul>
+  </div>
+
   <div class="panel-body">
     <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
       <table class="table table-striped table-hover data-table">
@@ -166,8 +172,6 @@
           </tr>
         </tfoot>
       </table>
-
-      <p><?php echo language::translate('title_external_link', 'External Link'); ?>: <strong><a href="http://www.litecart.net/addons" target="_blank">LiteCart Add-ons</a></strong></p>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
