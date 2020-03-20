@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
+  `priority` INT(11) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
