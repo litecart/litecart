@@ -36,6 +36,16 @@
       'search'  => "  define('DB_TABLE_CATEGORIES_INFO',                   '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'categories_info`');" . PHP_EOL,
       'replace' => "",
     ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######",
+      'replace' => "## Backward Compatible Directory Definitions (LiteCart <2.2)   #######",
+    ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "// Database tables",
+      'replace' => "// Database Tables - Backward Compatibility (LiteCart <2.3)",
+    ],
   ];
 
 // See if multiple category images is used

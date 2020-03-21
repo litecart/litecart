@@ -4,8 +4,8 @@
   if (cache::capture($box_slides_cache_token)) {
 
     $slides_query = database::query(
-      "select s.*, si.caption, si.link from ". DB_TABLE_SLIDES ." s
-      left join ". DB_TABLE_SLIDES_INFO ." si on (s.id = si.slide_id and si.language_code = '". database::input(language::$selected['code']) ."')
+      "select s.*, si.caption, si.link from ". DB_PREFIX ."slides s
+      left join ". DB_PREFIX ."slides_info si on (s.id = si.slide_id and si.language_code = '". database::input(language::$selected['code']) ."')
       where s.status
       and (s.languages = '' or find_in_set('". database::input(language::$selected['code']) ."', s.languages))
       and (s.date_valid_from <= '". date('Y-m-d H:i:s') ."')

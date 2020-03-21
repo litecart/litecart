@@ -55,7 +55,7 @@
   custom_output_categories(0, $output);
 
   $products_query = database::query(
-    "select id, image, date_updated from ". DB_TABLE_PRODUCTS ."
+    "select id, image, date_updated from ". DB_PREFIX ."products
     where status
     order by id;"
   );

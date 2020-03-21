@@ -25,7 +25,7 @@
 
     // Get currencies from database
       $currencies_query = database::query(
-        "select * from ". DB_TABLE_CURRENCIES ."
+        "select * from ". DB_PREFIX ."currencies
         where status
         order by priority;"
       );
@@ -87,7 +87,7 @@
         }
         if (!empty($country_code)) {
           $countries_query = database::query(
-            "select * from ". DB_TABLE_COUNTRIES ."
+            "select * from ". DB_PREFIX ."countries
             where iso_code_2 = '". database::input($country_code) ."'
             limit 1;"
           );
@@ -102,7 +102,7 @@
     // Get currency from country (via TLD)
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
         $countries_query = database::query(
-          "select * from ". DB_TABLE_COUNTRIES ."
+          "select * from ". DB_PREFIX ."countries
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
         );

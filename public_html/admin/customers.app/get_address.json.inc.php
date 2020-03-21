@@ -3,7 +3,7 @@
   header('Content-type: text/plain; charset='. language::$selected['charset']);
 
   $customer_query = database::query(
-    "select * from ". DB_TABLE_CUSTOMERS ."
+    "select * from ". DB_PREFIX ."customers
     where id = '". database::input($_REQUEST['customer_id']) ."'
     limit 1;"
   );

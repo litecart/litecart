@@ -14,7 +14,7 @@
 
       $customers_query = database::query(
         "select distinct tax_id, company, firstname, lastname, address1, address2, postcode, city, country_code, zone_code, phone
-        from ". DB_TABLE_CUSTOMERS ."
+        from ". DB_PREFIX ."customers
         where status
         ". (!empty($data['tax_id']) ? "and tax_id = '". database::input($data['tax_id']) ."'" : null) ."
         ". (!empty($data['company']) ? "and company = '". database::input($data['company']) ."'" : null) ."

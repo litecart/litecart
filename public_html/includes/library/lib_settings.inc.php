@@ -7,7 +7,7 @@
     public static function init() {
 
       $configuration_query = database::query(
-        "select * from ". DB_TABLE_SETTINGS ."
+        "select * from ". DB_PREFIX ."settings
         where `type` = 'global';"
       );
 
@@ -31,7 +31,7 @@
       if (isset(self::$_cache[$key])) return self::$_cache[$key];
 
       $settings_query = database::query(
-        "select * from ". DB_TABLE_SETTINGS ."
+        "select * from ". DB_PREFIX ."settings
         where `key` = '". database::input($key) ."'
         limit 1;"
       );

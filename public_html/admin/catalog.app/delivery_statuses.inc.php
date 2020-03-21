@@ -7,8 +7,8 @@
   $delivery_statuses = [];
 
   $delivery_statuses_query = database::query(
-    "select ds.id, dsi.name from ". DB_TABLE_DELIVERY_STATUSES ." ds
-    left join ". DB_TABLE_DELIVERY_STATUSES_INFO ." dsi on (ds.id = dsi.delivery_status_id and dsi.language_code = '". language::$selected['code'] ."')
+    "select ds.id, dsi.name from ". DB_PREFIX ."delivery_statuses ds
+    left join ". DB_PREFIX ."delivery_statuses_info dsi on (ds.id = dsi.delivery_status_id and dsi.language_code = '". language::$selected['code'] ."')
     order by dsi.name asc;"
   );
   if ($_GET['page'] > 1) database::seek($delivery_statuses_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));

@@ -30,22 +30,22 @@
 
       // Find category
         if (!empty($row['id'])) {
-          if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($category = database::fetch(database::query("select id from ". DB_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
             $category = new ent_category($category['id']);
           } else {
-            database::query("insert into ". DB_TABLE_CATEGORIES ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            database::query("insert into ". DB_PREFIX ."categories (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
             $category = new ent_category($row['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($category = database::fetch(database::query("select id from ". DB_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
           } else {
             $category = new ent_category();
           }
 
         } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+          if ($category = database::fetch(database::query("select category_id as id from ". DB_PREFIX ."categories_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
           } else {
             $category = new ent_category();
@@ -104,7 +104,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_TABLE_CATEGORIES ."
+            "update ". DB_PREFIX ."categories
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$category->data['id'] ."
             limit 1;"
@@ -148,22 +148,22 @@
 
       // Find manufacturer
         if (!empty($row['id'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
             $manufacturer = new ent_manufacturer($manufacturer['id']);
           } else {
-            database::query("insert into ". DB_TABLE_MANUFACTURERS ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            database::query("insert into ". DB_PREFIX ."manufacturers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
             $manufacturer = new ent_manufacturer($row['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
             $manufacturer = new ent_manufacturer($manufacturer['id']);
           } else {
             $manufacturer = new ent_manufacturer();
           }
 
         } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURER ." where name = '". database::input($row['name']) ."' limit 1;"))) {
+          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
             $manufacturer = new ent_manufacturer($manufacturer['id']);
           } else {
             $manufacturer = new ent_manufacturer();
@@ -221,7 +221,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_TABLE_MANUFACTURERS ."
+            "update ". DB_PREFIX ."manufacturers
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$manufacturer->data['id'] ."
             limit 1;"
@@ -265,15 +265,15 @@
 
       // Find supplier
         if (!empty($row['id'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
             $supplier = new ent_supplier($supplier['id']);
           } else {
-            database::query("insert into ". DB_TABLE_SUPPLIERS ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            database::query("insert into ". DB_PREFIX ."suppliers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
             $supplier = new ent_supplier($row['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
             $supplier = new ent_supplier($supplier['id']);
           } else {
             $supplier = new ent_supplier();
@@ -313,7 +313,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_TABLE_SUPPLIERS ."
+            "update ". DB_PREFIX ."suppliers
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$supplier->data['id'] ."
             limit 1;"
@@ -358,43 +358,43 @@
 
       // Find product
         if (!empty($row['id'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
-            database::query("insert into ". DB_TABLE_PRODUCTS ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            database::query("insert into ". DB_PREFIX ."products (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
             $product = new ent_product($row['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
         } else if (!empty($row['sku'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
         } else if (!empty($row['mpn'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
         } else if (!empty($row['gtin'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
         } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select product_id as id from ". DB_PREFIX ."products_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
@@ -417,7 +417,7 @@
 
         if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
           $manufacturers_query = database::query(
-            "select * from ". DB_TABLE_MANUFACTURERS ."
+            "select * from ". DB_PREFIX ."manufacturers
             where name = '". database::input($row['manufacturer_name']) ."'
             limit 1;"
           );
@@ -433,7 +433,7 @@
 
         if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
           $suppliers_query = database::query(
-            "select * from ". DB_TABLE_SUPPLIERS ."
+            "select * from ". DB_PREFIX ."suppliers
             where name = '". database::input($row['supplier_name']) ."'
             limit 1;"
           );
@@ -535,7 +535,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_TABLE_PRODUCTS ."
+            "update ". DB_PREFIX ."products
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$product->data['id'] ."
             limit 1;"
@@ -557,7 +557,7 @@
 
       $csv = [];
 
-      $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id, id;");
+      $categories_query = database::query("select id from ". DB_PREFIX ."categories order by parent_id, id;");
       while ($category = database::fetch($categories_query)) {
         $category = new ref_category($category['id'], $_POST['language_code']);
 
@@ -615,7 +615,7 @@
 
       $csv = [];
 
-      $manufacturers_query = database::query("select id from ". DB_TABLE_MANUFACTURERS ." order by id;");
+      $manufacturers_query = database::query("select id from ". DB_PREFIX ."manufacturers order by id;");
       while ($manufacturer = database::fetch($manufacturers_query)) {
         $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
 
@@ -670,7 +670,7 @@
     try {
       $csv = [];
 
-      $suppliers_query = database::query("select id from ". DB_TABLE_SUPPLIERS ." order by id;");
+      $suppliers_query = database::query("select id from ". DB_PREFIX ."suppliers order by id;");
       while ($supplier = database::fetch($suppliers_query)) {
         $supplier = new ref_supplier($supplier['id']);
 
@@ -725,8 +725,8 @@
       $csv = [];
 
       $products_query = database::query(
-        "select p.id from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
+        "select p.id from ". DB_PREFIX ."products p
+        left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
         order by pi.name;"
       );
 

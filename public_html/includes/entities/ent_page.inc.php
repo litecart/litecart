@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_PAGES .";"
+        "show fields from ". DB_PREFIX ."pages;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -28,7 +28,7 @@
       $this->data['dock'] = [];
 
       $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_PAGES_INFO .";"
+        "show fields from ". DB_PREFIX ."pages_info;"
       );
 
       while ($field = database::fetch($info_fields_query)) {
@@ -50,7 +50,7 @@
       $this->reset();
 
       $page_query = database::query(
-        "select * from ". DB_TABLE_PAGES ."
+        "select * from ". DB_PREFIX ."pages
         where id = ". (int)$page_id ."
         limit 1;"
       );
@@ -64,7 +64,7 @@
       $this->data['dock'] = explode(',', $this->data['dock']);
 
       $page_info_query = database::query(
-        "select * from ". DB_TABLE_PAGES_INFO ."
+        "select * from ". DB_PREFIX ."pages_info
         where page_id = ". (int)$this->data['id'] .";"
       );
 
@@ -90,7 +90,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_PAGES ."
+          "insert into ". DB_PREFIX ."pages
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -98,7 +98,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PAGES ."
+        "update ". DB_PREFIX ."pages
         set status = ". (int)$this->data['status'] .",
           parent_id = ". (int)$this->data['parent_id'] .",
           dock = '". (!empty($this->data['dock']) ? implode(',', database::input($this->data['dock'])) : '') ."',
@@ -111,7 +111,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $page_info_query = database::query(
-          "select * from ". DB_TABLE_PAGES_INFO ."
+          "select * from ". DB_PREFIX ."pages_info
           where page_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -119,7 +119,7 @@
 
         if (!$page_info = database::fetch($page_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_PAGES_INFO ."
+            "insert into ". DB_PREFIX ."pages_info
             (page_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
@@ -127,7 +127,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_PAGES_INFO ."
+          "update ". DB_PREFIX ."pages_info
           set
             title = '". database::input($this->data['title'][$language_code]) ."',
             content = '". database::input($this->data['content'][$language_code], true) ."',
@@ -148,17 +148,17 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_PAGES_INFO ."
+        "delete from ". DB_PREFIX ."pages_info
         where page_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_PAGES ."
+        "delete from ". DB_PREFIX ."pages
         where id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "update ". DB_TABLE_PAGES ."
+        "update ". DB_PREFIX ."pages
         set parent_id = ". (int)$this->data['parent_id'] ."
         where parent_id = ". (int)$this->data['id'] .";"
       );

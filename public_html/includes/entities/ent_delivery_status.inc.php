@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_DELIVERY_STATUSES .";"
+        "show fields from ". DB_PREFIX ."delivery_statuses;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -26,7 +26,7 @@
       }
 
       $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_DELIVERY_STATUSES_INFO .";"
+        "show fields from ". DB_PREFIX ."delivery_statuses_info;"
       );
 
       while ($field = database::fetch($info_fields_query)) {
@@ -48,7 +48,7 @@
       $this->reset();
 
       $delivery_status_query = database::query(
-        "select * from ". DB_TABLE_DELIVERY_STATUSES ."
+        "select * from ". DB_PREFIX ."delivery_statuses
         where id = ". (int)$delivery_status_id ."
         limit 1;"
       );
@@ -60,7 +60,7 @@
       }
 
       $delivery_status_info_query = database::query(
-        "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
+        "select * from ". DB_PREFIX ."delivery_statuses_info
         where delivery_status_id = ". (int)$this->data['id'] .";"
       );
 
@@ -78,7 +78,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_DELIVERY_STATUSES ."
+          "insert into ". DB_PREFIX ."delivery_statuses
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -86,7 +86,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_DELIVERY_STATUSES ."
+        "update ". DB_PREFIX ."delivery_statuses
         set date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -95,7 +95,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $delivery_status_info_query = database::query(
-          "select * from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
+          "select * from ". DB_PREFIX ."delivery_statuses_info
           where delivery_status_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -103,7 +103,7 @@
 
         if (!$delivery_status_info = database::fetch($delivery_status_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_DELIVERY_STATUSES_INFO ."
+            "insert into ". DB_PREFIX ."delivery_statuses_info
             (delivery_status_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
@@ -111,7 +111,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_DELIVERY_STATUSES_INFO ."
+          "update ". DB_PREFIX ."delivery_statuses_info
           set
             name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."'
@@ -129,17 +129,17 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where delivery_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
+      if (database::num_rows(database::query("select id from ". DB_PREFIX ."products where delivery_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
         throw new Exception('Cannot delete the delivery status because there are products using it');
       }
 
       database::query(
-        "delete from ". DB_TABLE_DELIVERY_STATUSES_INFO ."
+        "delete from ". DB_PREFIX ."delivery_statuses_info
         where delivery_status_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_DELIVERY_STATUSES ."
+        "delete from ". DB_PREFIX ."delivery_statuses
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

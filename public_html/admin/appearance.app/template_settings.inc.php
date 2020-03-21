@@ -60,7 +60,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_SETTINGS ."
+        "update ". DB_PREFIX ."settings
         set
           `value` = '". database::input(json_encode($new_settings, JSON_UNESCAPED_SLASHES)) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'

@@ -56,24 +56,24 @@
 
     from (
       select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, tax_class_id, quantity, views, purchases, date_updated, date_created
-      from ". DB_TABLE_PRODUCTS ."
+      from ". DB_PREFIX ."products
       where status
       and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
       and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
     ) p
 
-    left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+    left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
 
-    left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
+    left join ". DB_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
 
     left join (
       select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
-      from ". DB_TABLE_PRODUCTS_PRICES ."
+      from ". DB_PREFIX ."products_prices
     ) pp on (pp.product_id = p.id)
 
     left join (
       select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
-      from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+      from ". DB_PREFIX ."products_campaigns
       where (start_date <= '". date('Y-m-d H:i:s') ."')
       and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
       order by end_date asc

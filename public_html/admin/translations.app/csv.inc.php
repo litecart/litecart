@@ -26,7 +26,7 @@
         $line++;
 
         $translation_query = database::query(
-          "select * from ". DB_TABLE_TRANSLATIONS ."
+          "select * from ". DB_PREFIX ."translations
           where code = '". database::input($row['code']) ."'
           limit 1;"
         );
@@ -43,7 +43,7 @@
             if (!in_array($language_code, array_keys(language::$languages))) continue;
 
             database::query(
-              "update ". DB_TABLE_TRANSLATIONS ."
+              "update ". DB_PREFIX ."translations
               set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
               where code = '". database::input($row['code']) ."'
               limit 1;"
@@ -57,7 +57,7 @@
           if (empty($_POST['insert'])) continue;
 
           database::query(
-            "insert into ". DB_TABLE_TRANSLATIONS ."
+            "insert into ". DB_PREFIX ."translations
             (code) values ('". database::input($row['code']) ."');"
           );
 
@@ -68,7 +68,7 @@
             if (!in_array($language_code, array_keys(language::$languages))) continue;
 
             database::query(
-              "update ". DB_TABLE_TRANSLATIONS ."
+              "update ". DB_PREFIX ."translations
               set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
               where code = '". database::input($row['code']) ."'
               limit 1;"
@@ -102,7 +102,7 @@
       $_POST['language_codes'] = array_filter($_POST['language_codes']);
 
       $translations_query = database::query(
-        "select * from ". DB_TABLE_TRANSLATIONS ."
+        "select * from ". DB_PREFIX ."translations
         order by date_created asc;"
       );
 

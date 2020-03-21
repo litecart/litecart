@@ -34,7 +34,7 @@
   $geo_zones = [];
 
   $geo_zones_query = database::query(
-    "select * from ". DB_TABLE_GEO_ZONES ."
+    "select * from ". DB_PREFIX ."geo_zones
     order by name asc;"
   );
 
@@ -83,7 +83,7 @@
             <td><?php echo functions::form_draw_checkbox('geo_zones['. $geo_zone['id'] .']', $geo_zone['id']); ?></td>
             <td><?php echo $geo_zone['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>"><?php echo $geo_zone['name']; ?></a></td>
-            <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ." where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>
+            <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>
             <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>

@@ -13,7 +13,7 @@
   ];
 
   $settings_groups_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS_GROUPS ."
+    "select * from ". DB_PREFIX ."settings_groups
     order by priority, `key`;"
   );
 

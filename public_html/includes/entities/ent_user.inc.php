@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_USERS .";"
+        "show fields from ". DB_PREFIX ."users;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -37,7 +37,7 @@
       $this->reset();
 
       $user_query = database::query(
-        "select * from ". DB_TABLE_USERS ."
+        "select * from ". DB_PREFIX ."users
         where id = ". (int)$user_id ."
         limit 1;"
       );
@@ -57,7 +57,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_USERS ."
+          "insert into ". DB_PREFIX ."users
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -65,7 +65,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_USERS ." set
+        "update ". DB_PREFIX ."users set
         status = '". (empty($this->data['status']) ? 0 : 1) ."',
         username = '". database::input($this->data['username']) ."',
         email = '". database::input($this->data['email']) ."',
@@ -105,7 +105,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_USERS ."
+        "update ". DB_PREFIX ."users
         set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -131,7 +131,7 @@
       file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
 
       database::query(
-        "delete from ". DB_TABLE_USERS ."
+        "delete from ". DB_PREFIX ."users
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

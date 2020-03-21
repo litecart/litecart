@@ -25,7 +25,7 @@
 
       if (!empty($_POST['code']) && empty($currency->data['id'])) {
         $currencys_query = database::query(
-          "select id from ". DB_TABLE_CURRENCIES ."
+          "select id from ". DB_PREFIX ."currencies
           where code = '". database::input($_POST['code']) ."'
           limit 1;"
         );
@@ -37,7 +37,7 @@
 
       if (!empty($_POST['code']) && !empty($currency->data['id']) && $currency->data['code'] != $_POST['code']) {
         $currencys_query = database::query(
-          "select id from ". DB_TABLE_CURRENCIES ."
+          "select id from ". DB_PREFIX ."currencies
           where code = '". database::input($_POST['code']) ."'
           limit 1;"
         );
@@ -94,11 +94,11 @@
       $currency->save();
 
       if (!empty($_POST['set_default'])) {
-        database::query("update ". DB_TABLE_SETTINGS ." set `value` = '". database::input($_POST['code']) ."' where `key` = 'default_currency_code' limit 1;");
+        database::query("update ". DB_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'default_currency_code' limit 1;");
       }
 
       if (!empty($_POST['set_store'])) {
-        database::query("update ". DB_TABLE_SETTINGS ." set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_currency_code' limit 1;");
+        database::query("update ". DB_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_currency_code' limit 1;");
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

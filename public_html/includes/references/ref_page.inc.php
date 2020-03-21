@@ -48,7 +48,7 @@
         case 'meta_description':
 
           $query = database::query(
-            "select * from ". DB_TABLE_PAGES_INFO ."
+            "select * from ". DB_PREFIX ."pages_info
             where page_id = ". (int)$this->_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -79,7 +79,7 @@
           $failsafe = 0;
           while (true) {
             $page_query = database::query(
-              "select id, parent_id from ". DB_TABLE_PAGES ."
+              "select id, parent_id from ". DB_PREFIX ."pages
               where id = ". (int)$page_index_id ."
               limit 1;"
             );
@@ -108,7 +108,7 @@
           if (empty($this->parent_id)) return;
 
           $query = database::query(
-            "select id from ". DB_TABLE_PAGES ."
+            "select id from ". DB_PREFIX ."pages
             where status
             and parent_id = ". (int)$this->parent_id ."
             and id != ". (int)$this->_id .";"
@@ -129,7 +129,7 @@
             $descendants = [];
 
             $pages_query = database::query(
-              "select id from ". DB_TABLE_PAGES ."
+              "select id from ". DB_PREFIX ."pages
               where parent_id = ". (int)$parent_id .";"
             );
 
@@ -151,7 +151,7 @@
           $this->_data['subpages'] = [];
 
             $page_query = database::query(
-              "select id, parent_id from ". DB_TABLE_PAGES ."
+              "select id, parent_id from ". DB_PREFIX ."pages
               where parent_id = ". (int)$this->_id .";"
             );
 
@@ -164,7 +164,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_TABLE_PAGES ."
+            "select * from ". DB_PREFIX ."pages
             where id = ". (int)$this->_id ."
             limit 1;"
           );

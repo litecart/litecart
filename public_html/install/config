@@ -17,7 +17,7 @@
   define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');
 
 ######################################################################
-## Backwards Compatible Directory Definitions (LiteCart <2.2) ########
+## Backward Compatible Directory Definitions (LiteCart <2.2)  ########
 ######################################################################
 
 // File System
@@ -58,7 +58,7 @@
   define('DB_CONNECTION_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
 
-// Database tables
+// Database Tables - Backward Compatibility (LiteCart <2.3)
   define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'attribute_groups`');
   define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'attribute_groups_info`');
   define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'attribute_values`');

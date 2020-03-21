@@ -32,7 +32,7 @@
   $currencies = [];
 
   $currencies_query = database::query(
-    "select * from ". DB_TABLE_CURRENCIES ."
+    "select * from ". DB_PREFIX ."currencies
     order by field(status, 1, -1, 0), priority, name;"
   );
 

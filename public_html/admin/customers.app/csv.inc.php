@@ -23,22 +23,22 @@
 
       // Find customer
         if (!empty($row['id'])) {
-          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($customer = database::fetch(database::query("select id from ". DB_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;"))) {
             $customer = new ent_customer($customer['id']);
           } else {
-            database::query("insert into ". DB_TABLE_CUSTOMERS ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            database::query("insert into ". DB_PREFIX ."customers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
             $customer = new ent_customer($row['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($customer = database::fetch(database::query("select id from ". DB_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;"))) {
             $customer = new ent_customer($customer['id']);
           } else {
             $customer = new ent_customer();
           }
 
         } else if (!empty($row['email'])) {
-          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($row['email']) ."' limit 1;"))) {
+          if ($customer = database::fetch(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;"))) {
             $customer = new ent_customer($customer['id']);
           } else {
             $customer = new ent_customer();
@@ -101,7 +101,7 @@
 
     try {
       $customers_query = database::query(
-        "select * from ". DB_TABLE_CUSTOMERS ."
+        "select * from ". DB_PREFIX ."customers
         order by date_created asc;"
       );
 

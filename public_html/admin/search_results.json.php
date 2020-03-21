@@ -43,7 +43,7 @@
         ), 5, 0)
       ) as relevance
 
-      from ". DB_TABLE_PRODUCTS ." p
+      from ". DB_PREFIX ."products p
 
       left join ".  DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
@@ -75,7 +75,7 @@
         + if(concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%', 5, 0)
         + if(email like '%". database::input($_GET['query']) ."%', 5, 0)
       ) as relevance
-      from ". DB_TABLE_CUSTOMERS ."
+      from ". DB_PREFIX ."customers
       having relevance > 0
       order by relevance desc, id asc
       limit 5;"
@@ -108,7 +108,7 @@
         + if(shipping_tracking_id like '%". database::input($_GET['query']) ."%', 5, 0)
         + if(payment_transaction_id like '%". database::input($_GET['query']) ."%', 5, 0)
       ) as relevance
-      from ". DB_TABLE_ORDERS ."
+      from ". DB_PREFIX ."orders
       having relevance > 0
       order by relevance desc, id asc
       limit 5;"

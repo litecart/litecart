@@ -7,9 +7,9 @@
   $tax_rates = [];
 
   $tax_rates_query = database::query(
-    "select tr.*, gz.name as geo_zone, tc.name as tax_class from ". DB_TABLE_TAX_RATES ." tr
-    left join ". DB_TABLE_GEO_ZONES ." gz on (gz.id = tr.geo_zone_id)
-    left join ". DB_TABLE_TAX_CLASSES ." tc on (tc.id = tr.tax_class_id)
+    "select tr.*, gz.name as geo_zone, tc.name as tax_class from ". DB_PREFIX ."tax_rates tr
+    left join ". DB_PREFIX ."geo_zones gz on (gz.id = tr.geo_zone_id)
+    left join ". DB_PREFIX ."tax_classes tc on (tc.id = tr.tax_class_id)
     order by tc.name, gz.name, tr.name;"
   );
 

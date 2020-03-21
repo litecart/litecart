@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_ORDERS .";"
+        "show fields from ". DB_PREFIX ."orders;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -92,7 +92,7 @@
       $this->reset();
 
       $order_query = database::query(
-        "select * from ". DB_TABLE_ORDERS ."
+        "select * from ". DB_PREFIX ."orders
         where id = ". (int)$order_id ."
         limit 1;"
       );
@@ -148,7 +148,7 @@
       }
 
       $order_items_query = database::query(
-        "select * from ". DB_TABLE_ORDERS_ITEMS ."
+        "select * from ". DB_PREFIX ."orders_items
         where order_id = ". (int)$order_id ."
         order by id;"
       );
@@ -159,7 +159,7 @@
       }
 
       $order_totals_query = database::query(
-        "select * from ". DB_TABLE_ORDERS_TOTALS ."
+        "select * from ". DB_PREFIX ."orders_totals
         where order_id = ". (int)$order_id ."
         order by priority;"
       );
@@ -169,7 +169,7 @@
       }
 
       $order_comments_query = database::query(
-        "select * from ". DB_TABLE_ORDERS_COMMENTS ."
+        "select * from ". DB_PREFIX ."orders_comments
         where order_id = ". (int)$order_id ."
         order by id;"
       );
@@ -189,8 +189,8 @@
     // Previous order status
       if (!empty($this->previous)) {
         $previous_order_status_query = database::query(
-          "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
-          left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
+          "select os.*, osi.name, osi.email_message from ". DB_PREFIX ."order_statuses os
+          left join ". DB_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
           where os.id = ". (int)$this->previous['order_status_id'] ."
           limit 1;"
         );
@@ -200,8 +200,8 @@
 
     // Current order status
       $current_order_status_query = database::query(
-        "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
-        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
+        "select os.*, osi.name, osi.email_message from ". DB_PREFIX ."order_statuses os
+        left join ". DB_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
         where os.id = ". (int)$this->data['order_status_id'] ."
         limit 1;"
       );
@@ -220,7 +220,7 @@
     // Link guests to customer profile
       if (empty($this->data['customer']['id']) && !empty($this->data['customer']['email'])) {
         $customers_query = database::query(
-          "select id from ". DB_TABLE_CUSTOMERS ."
+          "select id from ". DB_PREFIX ."customers
           where email = '". database::input($this->data['customer']['email']) ."'
           limit 1;"
         );
@@ -237,7 +237,7 @@
     // Insert/update order
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_ORDERS ."
+          "insert into ". DB_PREFIX ."orders
           (uid, client_ip, user_agent, domain, date_created)
           values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -246,7 +246,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_ORDERS ." set
+        "update ". DB_PREFIX ."orders set
         starred = ". (int)$this->data['starred'] .",
         unread = ". (int)$this->data['unread'] .",
         order_status_id = ". (int)$this->data['order_status_id'] .",
@@ -297,14 +297,14 @@
 
     // Delete order items
       $previous_order_items_query = database::query(
-        "select * from ". DB_TABLE_ORDERS_ITEMS ."
+        "select * from ". DB_PREFIX ."orders_items
         where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
       while ($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
-          "delete from ". DB_TABLE_ORDERS_ITEMS ."
+          "delete from ". DB_PREFIX ."orders_items
           where order_id = ". (int)$this->data['id'] ."
           and id = ". (int)$previous_order_item['id'] ."
           limit 1;"
@@ -321,7 +321,7 @@
         foreach (array_keys($this->data['items']) as $key) {
           if (empty($this->data['items'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_ORDERS_ITEMS ."
+              "insert into ". DB_PREFIX ."orders_items
               (order_id)
               values (". (int)$this->data['id'] .");"
             );
@@ -330,7 +330,7 @@
           // Update purchase count
             if (!empty($this->data['items'][$key]['product_id'])) {
               database::query(
-                "update ". DB_TABLE_PRODUCTS ."
+                "update ". DB_PREFIX ."products
                 set purchases = purchases + ". (float)$this->data['items'][$key]['quantity'] ."
                 where id = ". (int)$this->data['items'][$key]['product_id'] ."
                 limit 1;"
@@ -340,7 +340,7 @@
 
         // Get previous quantity
           $previous_order_item_query = database::query(
-            "select * from ". DB_TABLE_ORDERS_ITEMS ."
+            "select * from ". DB_PREFIX ."orders_items
             where id = ". (int)$this->data['items'][$key]['id'] ."
             and order_id = ". (int)$this->data['id'] .";"
           );
@@ -355,7 +355,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_ORDERS_ITEMS ."
+            "update ". DB_PREFIX ."orders_items
             set product_id = ". (int)$this->data['items'][$key]['product_id'] .",
             option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
             name = '". database::input($this->data['items'][$key]['name']) ."',
@@ -380,7 +380,7 @@
 
     // Delete order total items
       database::query(
-        "delete from ". DB_TABLE_ORDERS_TOTALS ."
+        "delete from ". DB_PREFIX ."orders_totals
         where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['order_total'], 'id')) ."');"
       );
@@ -391,14 +391,14 @@
         foreach (array_keys($this->data['order_total']) as $key) {
           if (empty($this->data['order_total'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_ORDERS_TOTALS ."
+              "insert into ". DB_PREFIX ."orders_totals
               (order_id)
               values (". (int)$this->data['id'] .");"
             );
             $this->data['order_total'][$key]['id'] = database::insert_id();
           }
           database::query(
-            "update ". DB_TABLE_ORDERS_TOTALS ."
+            "update ". DB_PREFIX ."orders_totals
             set title = '". database::input($this->data['order_total'][$key]['title']) ."',
             module_id = '". database::input($this->data['order_total'][$key]['module_id']) ."',
             value = '". (float)$this->data['order_total'][$key]['value'] ."',
@@ -414,7 +414,7 @@
 
     // Delete comments
       database::query(
-        "delete from ". DB_TABLE_ORDERS_COMMENTS ."
+        "delete from ". DB_PREFIX ."orders_comments
         where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['comments'], 'id')) ."');"
       );
@@ -430,7 +430,7 @@
 
           if (empty($this->data['comments'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_ORDERS_COMMENTS ."
+              "insert into ". DB_PREFIX ."orders_comments
               (order_id, date_created)
               values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
@@ -442,7 +442,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_ORDERS_COMMENTS ."
+            "update ". DB_PREFIX ."orders_comments
             set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
               text = '". database::input($this->data['comments'][$key]['text']) ."',
               hidden = '". (!empty($this->data['comments'][$key]['hidden']) ? 1 : 0) ."'
@@ -610,7 +610,7 @@
 
         if (empty($this->data['customer']['id'])) {
           $customer_query = database::query(
-            "select id from ". DB_TABLE_CUSTOMERS ."
+            "select id from ". DB_PREFIX ."customers
             where email = '". database::input($this->data['customer']['email']) ."'
             and status = 0
             limit 1;"
@@ -842,7 +842,7 @@
 
     // ..then delete
       database::query(
-        "delete from ". DB_TABLE_ORDERS ."
+        "delete from ". DB_PREFIX ."orders
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

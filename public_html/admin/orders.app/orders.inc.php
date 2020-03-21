@@ -5,7 +5,7 @@
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
+  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_PREFIX ."orders limit 1;"));
   $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
   if (empty($date_first_order)) $date_first_order = date('Y-m-d');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
@@ -19,7 +19,7 @@
 
   if (isset($_POST['star']) || isset($_POST['unstar'])) {
     database::query(
-      "update ". DB_TABLE_ORDERS ."
+      "update ". DB_PREFIX ."orders
       set starred = ". (isset($_POST['star']) ? 1 : 0) ."
       where id = ". (int)$_POST['order_id'] ."
       limit 1;"
@@ -54,7 +54,7 @@
 
   $payment_options_query = database::query(
     "select distinct payment_option_name
-    from ". DB_TABLE_ORDERS ." o
+    from ". DB_PREFIX ."orders o
     where payment_option_name != ''
     order by payment_option_name asc"
   );
@@ -94,9 +94,9 @@
   }
 
   $orders_query = database::query(
-    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
-    left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
-    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
+    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_PREFIX ."orders o
+    left join ". DB_PREFIX ."order_statuses os on (os.id = o.order_status_id)
+    left join ". DB_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : "and (os.is_archived is null or os.is_archived = 0 or unread = 1)") ."

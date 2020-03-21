@@ -90,7 +90,7 @@
     if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) {
 
       $products_query = database::query(
-        "select distinct id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+        "select distinct id from ". DB_PREFIX ."products_attributes
         where group_id = ". (int)$attribute_group->data['id'] .";"
       );
       $num_products = database::num_rows($products_query);

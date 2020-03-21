@@ -7,7 +7,7 @@
   $suppliers = [];
 
   $suppliers_query = database::query(
-    "select id, name from ". DB_TABLE_SUPPLIERS ."
+    "select id, name from ". DB_PREFIX ."suppliers
     order by name asc;"
   );
 

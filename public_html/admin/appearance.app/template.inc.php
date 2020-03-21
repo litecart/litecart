@@ -10,7 +10,7 @@
 
       if ($_POST['template_catalog'] != settings::get('store_template_catalog')) {
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_PREFIX ."settings
           set
             `value` = '". database::input($_POST['template_catalog']) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -29,7 +29,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_PREFIX ."settings
           set
             `value` = '". database::input(json_encode($settings, JSON_UNESCAPED_SLASHES)) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -44,7 +44,7 @@
 
       if ($_POST['template_admin'] != settings::get('store_template_admin')) {
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_PREFIX ."settings
           set
             `value` = '". database::input($_POST['template_admin']) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'

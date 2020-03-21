@@ -62,7 +62,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_MODULES .";"
+        "show fields from ". DB_PREFIX ."modules;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -79,7 +79,7 @@
       $this->reset();
 
       $modules_query = database::query(
-        "select * from ". DB_TABLE_MODULES ."
+        "select * from ". DB_PREFIX ."modules
         where type = '". database::input($type) ."'
         and module_id = '". database::input($module_id) ."'
         limit 1;"
@@ -115,7 +115,7 @@
       if (empty($this->data['id'])) {
 
         database::query(
-          "insert into ". DB_TABLE_MODULES ."
+          "insert into ". DB_PREFIX ."modules
           (module_id, type, date_created)
           values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -142,7 +142,7 @@
       $this->data['priority'] = (int)$this->data['settings']['priority'];
 
       database::query(
-        "update ". DB_TABLE_MODULES ."
+        "update ". DB_PREFIX ."modules
         set
           module_id = '". database::input($this->data['module_id']) ."',
           type = '". database::input($this->data['type']) ."',
@@ -166,7 +166,7 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_MODULES ."
+        "delete from ". DB_PREFIX ."modules
         where module_id = '". database::input($this->data['module_id']) ."'
         limit 1;"
       );

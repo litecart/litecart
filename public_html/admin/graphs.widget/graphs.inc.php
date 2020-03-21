@@ -9,7 +9,7 @@
   // Order Statuses flagged as Sale
     $order_statuses = [];
     $orders_status_query = database::query(
-      "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
+      "select id from ". DB_PREFIX ."order_statuses where is_sale;"
     );
     while ($order_status = database::fetch($orders_status_query)) {
       $order_statuses[] = (int)$order_status['id'];
@@ -18,7 +18,7 @@
   // Monthly Sales
 
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '%m') as month from ". DB_TABLE_ORDERS ."
+      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '%m') as month from ". DB_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created > '". date('Y-m-01 00:00:00', strtotime('-11 months')) ."'
       group by month
@@ -31,7 +31,7 @@
     }
 
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '%m') as month from ". DB_TABLE_ORDERS ."
+      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '%m') as month from ". DB_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created > '". date('Y-m-01 00:00:00', strtotime('-23 months')) ."' and date_created < '". date('Y-m-t 23:59:59', strtotime('-12 months')) ."'
       group by month
@@ -58,7 +58,7 @@
     $daily_sales = [];
 
     $orders_query = database::query(
-      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday from ". DB_TABLE_ORDERS ."
+      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday from ". DB_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and (date_created >= '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
       group by weekday
@@ -70,7 +70,7 @@
     }
 
     $orders_query = database::query(
-      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(payment_due - tax_total) from ". DB_TABLE_ORDERS ."
+      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(payment_due - tax_total) from ". DB_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and (date_created > '". date('Y-m-d H:i:s', strtotime('-3 months', strtotime('Monday this week'))) ."' and date_created < '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
       group by weekday

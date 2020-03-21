@@ -23,7 +23,7 @@
       }
 
       $modules_query = database::query(
-        "select * from ". DB_TABLE_MODULES ."
+        "select * from ". DB_PREFIX ."modules
         where type = '". database::input($type) ."'
         ". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
       );
@@ -34,7 +34,7 @@
 
         // Uninstall orphan modules
           //database::query(
-          //  "delete from ". DB_TABLE_MODULES ."
+          //  "delete from ". DB_PREFIX ."modules
           //  where module_id = '". database::input($module['id']) ."'
           //  limit 1;"
           //);

@@ -54,7 +54,7 @@
         $found++;
 
         $translations_query = database::query(
-          "select text_en from ". DB_TABLE_TRANSLATIONS ."
+          "select text_en from ". DB_PREFIX ."translations
           where code = '". database::input($code) ."'
           limit 1;"
         );
@@ -64,7 +64,7 @@
           $new_translations++;
 
           database::query(
-            "insert into ". DB_TABLE_TRANSLATIONS ."
+            "insert into ". DB_PREFIX ."translations
             (code, text_en, html, date_created)
             values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
           );
@@ -76,7 +76,7 @@
           $updated++;
 
           database::query(
-            "update ". DB_TABLE_TRANSLATIONS ."
+            "update ". DB_PREFIX ."translations
             set text_en = '". database::input($translation, true) ."'
             where code = '". database::input($code) ."'
             and text_en = ''
@@ -89,7 +89,7 @@
     }
 
     $settings_groups_query = database::query(
-      "select `key` from ". DB_TABLE_SETTINGS_GROUPS .";"
+      "select `key` from ". DB_PREFIX ."settings_groups;"
     );
 
     while ($group = database::fetch($settings_groups_query)) {
@@ -98,7 +98,7 @@
     }
 
     $settings_query = database::query(
-      "select `key` from ". DB_TABLE_SETTINGS ."
+      "select `key` from ". DB_PREFIX ."settings
       where setting_group_key != '';"
     );
 
@@ -108,7 +108,7 @@
     }
 
     $translations_query = database::query(
-      "select * from ". DB_TABLE_TRANSLATIONS .";"
+      "select * from ". DB_PREFIX ."translations;"
     );
 
     while ($translation = database::fetch($translations_query)) {
@@ -135,7 +135,7 @@
 
       foreach ($_POST['translations'] as $code) {
         database::query(
-          "delete from ". DB_TABLE_TRANSLATIONS ."
+          "delete from ". DB_PREFIX ."translations
           where code = '". database::input($code) ."'
           limit 1;"
         );

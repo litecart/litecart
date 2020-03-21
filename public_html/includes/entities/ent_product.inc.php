@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_PRODUCTS .";"
+        "show fields from ". DB_PREFIX ."products;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -26,7 +26,7 @@
       }
 
       $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_PRODUCTS_INFO .";"
+        "show fields from ". DB_PREFIX ."products_info;"
       );
 
       while ($field = database::fetch($info_fields_query)) {
@@ -58,7 +58,7 @@
 
     // Product
       $products_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS ."
+        "select * from ". DB_PREFIX ."products
         where id = ". (int)$product_id ."
         limit 1;"
       );
@@ -77,7 +77,7 @@
 
     // Categories
       $categories_query = database::query(
-        "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+        "select category_id from ". DB_PREFIX ."products_to_categories
          where product_id = ". (int)$product_id .";"
       );
 
@@ -87,7 +87,7 @@
 
     // Info
       $products_info_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_INFO ."
+        "select * from ". DB_PREFIX ."products_info
          where product_id = ". (int)$product_id .";"
       );
 
@@ -100,9 +100,9 @@
 
     // Attributes
       $product_attributes_query = database::query(
-        "select pa.*, agi.name as group_name, avi.name as value_name from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
-        left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
-        left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+        "select pa.*, agi.name as group_name, avi.name as value_name from ". DB_PREFIX ."products_attributes pa
+        left join ". DB_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
+        left join ". DB_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
         where product_id = ". (int)$product_id ."
         order by group_name, value_name, custom_value;"
       );
@@ -113,7 +113,7 @@
 
     // Prices
       $products_prices_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_PRICES ."
+        "select * from ". DB_PREFIX ."products_prices
         where product_id = ". (int)$this->data['id'] .";"
       );
 
@@ -125,7 +125,7 @@
 
     // Campaigns
       $product_campaigns_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        "select * from ". DB_PREFIX ."products_campaigns
         where product_id = ". (int)$this->data['id'] ."
         order by start_date;"
       );
@@ -183,7 +183,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_PRODUCTS ."
+          "insert into ". DB_PREFIX ."products
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -212,7 +212,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PRODUCTS ." set
+        "update ". DB_PREFIX ."products set
         status = ". (int)$this->data['status'] .",
         manufacturer_id = ". (int)$this->data['manufacturer_id'] .",
         supplier_id = ". (int)$this->data['supplier_id'] .",
@@ -253,7 +253,7 @@
       foreach ($this->data['categories'] as $category_id) {
         if (in_array($category_id, $this->previous['categories'])) continue;
         database::query(
-          "insert into ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+          "insert into ". DB_PREFIX ."products_to_categories
           (product_id, category_id)
           values (". (int)$this->data['id'] .", ". (int)$category_id .");"
         );
@@ -262,7 +262,7 @@
     // Info
       foreach (array_keys(language::$languages) as $language_code) {
         $products_info_query = database::query(
-          "select * from ". DB_TABLE_PRODUCTS_INFO ."
+          "select * from ". DB_PREFIX ."products_info
           where product_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -270,14 +270,14 @@
 
         if (!$product_info = database::fetch($products_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_PRODUCTS_INFO ."
+            "insert into ". DB_PREFIX ."products_info
             (product_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
         database::query(
-          "update ". DB_TABLE_PRODUCTS_INFO ." set
+          "update ". DB_PREFIX ."products_info set
           name = '". database::input($this->data['name'][$language_code]) ."',
           short_description = '". database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
@@ -292,7 +292,7 @@
 
     // Attributes
       database::query(
-        "delete from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+        "delete from ". DB_PREFIX ."products_attributes
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['attributes'], 'id')) ."');"
       );
@@ -301,7 +301,7 @@
         foreach (array_keys($this->data['attributes']) as $key) {
           if (empty($this->data['attributes'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+              "insert into ". DB_PREFIX ."products_attributes
               (product_id, group_id, value_id, custom_value)
               values (". (int)$this->data['id'] .", ". (int)$this->data['attributes'][$key]['group_id'] .", ". (int)$this->data['attributes'][$key]['value_id'] .", '". database::input($this->data['attributes'][$key]['custom_value']) ."');"
             );
@@ -309,7 +309,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_PRODUCTS_ATTRIBUTES ." set
+            "update ". DB_PREFIX ."products_attributes set
               group_id = ". (int)$this->data['attributes'][$key]['group_id'] .",
               value_id = ". (int)$this->data['attributes'][$key]['value_id'] .",
               custom_value = '". database::input($this->data['attributes'][$key]['custom_value']) ."'
@@ -324,14 +324,14 @@
       foreach (array_keys(currency::$currencies) as $currency_code) {
 
         $products_prices_query = database::query(
-          "select * from ". DB_TABLE_PRODUCTS_PRICES ."
+          "select * from ". DB_PREFIX ."products_prices
           where product_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
 
         if (!$product_price = database::fetch($products_prices_query)) {
           database::query(
-            "insert into ". DB_TABLE_PRODUCTS_PRICES ."
+            "insert into ". DB_PREFIX ."products_prices
             (product_id)
             values (". (int)$this->data['id'] .");"
           );
@@ -344,7 +344,7 @@
         $sql_currency_prices = rtrim($sql_currency_prices, ', ');
 
         database::query(
-          "update ". DB_TABLE_PRODUCTS_PRICES ." set
+          "update ". DB_PREFIX ."products_prices set
           $sql_currency_prices
           where product_id = ". (int)$this->data['id'] ."
           limit 1;"
@@ -353,7 +353,7 @@
 
     // Delete campaigns
       database::query(
-        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        "delete from ". DB_PREFIX ."products_campaigns
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
       );
@@ -363,7 +363,7 @@
         foreach (array_keys($this->data['campaigns']) as $key) {
           if (empty($this->data['campaigns'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+              "insert into ". DB_PREFIX ."products_campaigns
               (product_id)
               values (". (int)$this->data['id'] .");"
             );
@@ -377,7 +377,7 @@
           $sql_currency_campaigns = rtrim($sql_currency_campaigns, ', ');
 
           database::query(
-            "update ". DB_TABLE_PRODUCTS_CAMPAIGNS ." set
+            "update ". DB_PREFIX ."products_campaigns set
             start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
             end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
             $sql_currency_campaigns
@@ -444,7 +444,7 @@
 
     // Delete images
       $products_images_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_IMAGES ."
+        "select * from ". DB_PREFIX ."products_images
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
@@ -457,7 +457,7 @@
         functions::image_delete_cache(FS_DIR_APP . 'images/' . $product_image['filename']);
 
         database::query(
-          "delete from ". DB_TABLE_PRODUCTS_IMAGES ."
+          "delete from ". DB_PREFIX ."products_images
           where product_id = ". (int)$this->data['id'] ."
           and id = ". (int)$product_image['id'] ."
           limit 1;"
@@ -471,7 +471,7 @@
         foreach (array_keys($this->data['images']) as $key) {
           if (empty($this->data['images'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_PRODUCTS_IMAGES ."
+              "insert into ". DB_PREFIX ."products_images
               (product_id)
               values (". (int)$this->data['id'] .");"
             );
@@ -486,7 +486,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_PRODUCTS_IMAGES ."
+            "update ". DB_PREFIX ."products_images
             set filename = '". database::input($this->data['images'][$key]['filename']) ."',
                 priority = '". $image_priority++ ."'
             where product_id = ". (int)$this->data['id'] ."
@@ -506,7 +506,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PRODUCTS ." set
+        "update ". DB_PREFIX ."products set
         image = '". database::input($this->data['image']) ."'
         where id=". (int)$this->data['id'] ."
         limit 1;"
@@ -553,7 +553,7 @@
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 
       database::query(
-        "insert into ". DB_TABLE_PRODUCTS_IMAGES ."
+        "insert into ". DB_PREFIX ."products_images
         (product_id, filename, checksum, priority)
         values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
       );
@@ -580,26 +580,26 @@
       $this->save();
 
       database::query(
-        "delete from ". DB_TABLE_PRODUCTS ."
+        "delete from ". DB_PREFIX ."products
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "delete from ". DB_TABLE_PRODUCTS_INFO ."
+        "delete from ". DB_PREFIX ."products_info
         where product_id = ". (int)$this->data['id'] .";"
       );
       database::query(
-        "delete from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+        "delete from ". DB_PREFIX ."products_to_categories
          where product_id = ". (int)$this->data['id'] .";"
       );
       database::query(
-        "delete from ". DB_TABLE_PRODUCTS_PRICES ."
+        "delete from ". DB_PREFIX ."products_prices
         where product_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        "delete from ". DB_PREFIX ."products_campaigns
         where product_id = ". (int)$this->data['id'] .";"
       );
 

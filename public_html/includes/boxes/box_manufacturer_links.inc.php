@@ -3,8 +3,8 @@
   if (cache::capture($box_manufacturer_links_cache_token)) {
 
     $manufacturers_query = database::query(
-      "select a.id, a.name, a.date_created from ". DB_TABLE_MANUFACTURERS ." a
-      left join ". DB_TABLE_MANUFACTURERS_INFO ." ai on (a.id = ai.manufacturer_id and ai.language_code = '". language::$selected['code'] ."')
+      "select a.id, a.name, a.date_created from ". DB_PREFIX ."manufacturers a
+      left join ". DB_PREFIX ."manufacturers_info ai on (a.id = ai.manufacturer_id and ai.language_code = '". language::$selected['code'] ."')
       where status
       order by a.name;"
     );

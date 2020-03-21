@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_LANGUAGES .";"
+        "show fields from ". DB_PREFIX ."languages;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -35,7 +35,7 @@
       $this->reset();
 
       $language_query = database::query(
-        "select * from ". DB_TABLE_LANGUAGES ."
+        "select * from ". DB_PREFIX ."languages
         where code='". database::input($language_code) ."'
         limit 1;"
       );
@@ -57,7 +57,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_LANGUAGES ."
+          "insert into ". DB_PREFIX ."languages
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -65,7 +65,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_LANGUAGES ."
+        "update ". DB_PREFIX ."languages
         set
           status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
@@ -96,7 +96,7 @@
 
           } else {
             database::query(
-              "alter table ". DB_TABLE_TRANSLATIONS ."
+              "alter table ". DB_PREFIX ."translations
               change `text_". database::input($this->previous['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
             );
 
@@ -129,13 +129,13 @@
       } else {
 
         $translations_query = database::query(
-          "show fields from ". DB_TABLE_TRANSLATIONS ."
+          "show fields from ". DB_PREFIX ."translations
           where `Field` = 'text_". database::input($this->data['code']) ."';"
         );
 
         if (!database::num_rows($translations_query)) {
           database::query(
-            "alter table ". DB_TABLE_TRANSLATIONS ."
+            "alter table ". DB_PREFIX ."translations
             add `text_". database::input($this->data['code']) ."` text not null after text_en;"
           );
         }
@@ -157,19 +157,19 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_LANGUAGES ."
+        "delete from ". DB_PREFIX ."languages
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       $translations_query = database::query(
-        "show fields from ". DB_TABLE_TRANSLATIONS ."
+        "show fields from ". DB_PREFIX ."translations
         where `Field` = 'text_". database::input($this->data['code']) ."';"
       );
 
       if (database::num_rows($translations_query) == 1) {
         database::query(
-          "alter table ". DB_TABLE_TRANSLATIONS ."
+          "alter table ". DB_PREFIX ."translations
           drop `text_". database::input($this->data['code']) ."`;"
         );
       }

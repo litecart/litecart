@@ -7,7 +7,7 @@
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
+  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_PREFIX ."orders limit 1;"));
   $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
   if (empty($date_first_order)) $date_first_order = date('Y-m-d');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
@@ -28,10 +28,10 @@
       sum(oi.quantity) as total_quantity,
       sum(oi.price * oi.quantity) as total_sales,
       sum(oi.tax * oi.quantity) as total_tax
-    from ". DB_TABLE_ORDERS_ITEMS ." oi
-    left join ". DB_TABLE_ORDERS ." o on (o.id = oi.order_id)
+    from ". DB_PREFIX ."orders_items oi
+    left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
     where o.order_status_id in (
-      select id from ". DB_TABLE_ORDER_STATUSES ."
+      select id from ". DB_PREFIX ."order_statuses
       where is_sale
     )
     and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'

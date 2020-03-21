@@ -6,7 +6,7 @@
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
+  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_PREFIX ."orders limit 1;"));
   $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
   if (empty($date_first_order)) $date_first_order = date('Y-m-d');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
@@ -26,24 +26,24 @@
       sum(otsf.value) as total_shipping_fees,
       sum(otpf.value) as total_payment_fees,
       date_format(o.date_created, '%Y-%m') as `year_month`
-    from ". DB_TABLE_ORDERS ." o
+    from ". DB_PREFIX ."orders o
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value from ". DB_PREFIX ."orders_totals
       where module_id = 'ot_subtotal'
       group by order_id
     ) otst on (o.id = otst.order_id)
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value from ". DB_PREFIX ."orders_totals
       where module_id = 'ot_shipping_fee'
       group by order_id
     ) otsf on (o.id = otsf.order_id)
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_ORDERS_TOTALS ."
+      select order_id, sum(value) as value from ". DB_PREFIX ."orders_totals
       where module_id = 'ot_payment_fee'
       group by order_id
     ) otpf on (o.id = otpf.order_id)
     where o.order_status_id in (
-      select id from ". DB_TABLE_ORDER_STATUSES ."
+      select id from ". DB_PREFIX ."order_statuses
       where is_sale
     )
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : "") ."

@@ -10,8 +10,8 @@
 
     $categories_query = database::query(
       "select c.id, c.parent_id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
+      from ". DB_PREFIX ."categories c
+      left join ". DB_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
       where c.id = ". (int)$category_id ."
       limit 1;"
     );
@@ -39,8 +39,8 @@
 
     $categories_query = database::query(
       "select c.id, c.parent_id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
+      from ". DB_PREFIX ."categories c
+      left join ". DB_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
       where c.parent_id = ". (int)$category_id .";"
     );
 
@@ -55,8 +55,8 @@
   function catalog_categories_query($parent_id=0) {
 
     $categories_query = database::query(
-      "select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+      "select c.id, c.parent_id, c.image, ci.name, ci.short_description, c.priority, c.date_updated from ". DB_PREFIX ."categories c
+      left join ". DB_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
       where c.status
       and c.parent_id = ". (int)$parent_id ."
       order by c.priority asc, ci.name asc;"
@@ -154,21 +154,21 @@
       from (
         select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, ptc.categories, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
 
-        from ". DB_TABLE_PRODUCTS ." p
+        from ". DB_PREFIX ."products p
 
         left join (
           select product_id, group_concat(category_id separator ',') as categories
-          from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+          from ". DB_PREFIX ."products_to_categories
           group by product_id
         ) ptc on (p.id = ptc.product_id)
 
         left join (
           select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
-          from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+          from ". DB_PREFIX ."products_attributes
           group by product_id
         ) pa on (p.id = pa.product_id)
 
-        left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
+        left join ". DB_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
         where p.status
         ". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
@@ -186,18 +186,18 @@
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
       ) p
 
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
 
-      left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
+      left join ". DB_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
-        from ". DB_TABLE_PRODUCTS_PRICES ."
+        from ". DB_PREFIX ."products_prices
       ) pp on (pp.product_id = p.id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
-        from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        from ". DB_PREFIX ."products_campaigns
         where (start_date <= '". date('Y-m-d H:i:s') ."')
         and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
         order by end_date asc
@@ -252,9 +252,9 @@
 
       from (
         select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
-        from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
-        left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
+        from ". DB_PREFIX ."products p
+        left join ". DB_PREFIX ."products_to_categories ptc on (p.id = ptc.product_id)
+        left join ". DB_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
         where p.status
           and (p.id
           ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
@@ -271,18 +271,18 @@
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
       ) p
 
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
 
-      left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
+      left join ". DB_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
-        from ". DB_TABLE_PRODUCTS_PRICES ."
+        from ". DB_PREFIX ."products_prices
       ) pp on (pp.product_id = p.id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
-        from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+        from ". DB_PREFIX ."products_campaigns
         where start_date <= '". date('Y-m-d H:i:s') ."'
         and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
         order by end_date asc
@@ -336,7 +336,7 @@
     }
 
     database::query(
-      "update ". DB_TABLE_PRODUCTS ."
+      "update ". DB_PREFIX ."products
       set quantity = quantity + ". (int)$quantity ."
       where id = ". (int)$product_id ."
       limit 1;"
@@ -346,7 +346,7 @@
   function catalog_purchase_count_adjust($product_id, $quantity) {
 
     database::query(
-      "update ". DB_TABLE_PRODUCTS ."
+      "update ". DB_PREFIX ."products
       set purchases = purchases + ". (int)$quantity ."
       where id = ". (int)$product_id ."
       limit 1;"

@@ -46,18 +46,18 @@
 
       // Find page
         if (!empty($row['id'])) {
-          if ($page = database::fetch(database::query("select id from ". DB_TABLE_PAGES ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($page = database::fetch(database::query("select id from ". DB_PREFIX ."pages where id = ". (int)$row['id'] ." limit 1;"))) {
             $page = new ent_page($page['id']);
           } else {
-            database::query("insert into ". DB_TABLE_PAGES ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            database::query("insert into ". DB_PREFIX ."pages (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
             $page = new ent_page($row['id']);
           }
 
         } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($page = database::fetch(database::query("select page_id as id from ". DB_TABLE_PAGES_INFO ." where name = '". database::input($_POST['name']) ."' and language_code = '". database::input($_POST['language_code']) ."' limit 1;"))) {
+          if ($page = database::fetch(database::query("select page_id as id from ". DB_PREFIX ."pages_info where name = '". database::input($_POST['name']) ."' and language_code = '". database::input($_POST['language_code']) ."' limit 1;"))) {
             $page = new ent_page($page['id']);
           } else {
-            database::query("insert into ". DB_TABLE_PAGES ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            database::query("insert into ". DB_PREFIX ."pages (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
             $page = new ent_page($row['id']);
           }
 
@@ -118,7 +118,7 @@
 
       $csv = [];
 
-      $pages_query = database::query("select id from ". DB_TABLE_PAGES ." order by id;");
+      $pages_query = database::query("select id from ". DB_PREFIX ."pages order by id;");
       while ($page = database::fetch($pages_query)) {
         $page = new ref_page($page['id'], $_POST['language_code']);
 

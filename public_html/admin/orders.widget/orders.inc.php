@@ -3,9 +3,9 @@
   $orders = [];
 
   $orders_query = database::query(
-    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
-    left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
-    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
+    "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_PREFIX ."orders o
+    left join ". DB_PREFIX ."order_statuses os on (os.id = o.order_status_id)
+    left join ". DB_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.order_status_id
     and os.is_archived = 0
     order by o.date_created desc, o.id desc
