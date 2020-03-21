@@ -12,4 +12,7 @@ SELECT email, date_created FROM `lc_customers`
 WHERE status AND newsletter;
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
-DROP COLUMN `newsletter`;
+DROP COLUMN `newsletter`,
+CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL AFTER `num_logins`,
+CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL AFTER `last_ip_address`,
+CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(256) NOT NULL AFTER `last_hostname`;

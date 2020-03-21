@@ -223,13 +223,13 @@
           <?php if (!empty($customer->data['id'])) { ?>
           <div class="row">
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
-              <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
+              <label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
+              <?php echo functions::form_draw_text_field('last_ip_address', true, 'readonly="readonly"'); ?>
             </div>
 
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
-              <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
+              <label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
+              <?php echo functions::form_draw_text_field('last_hostname', true, 'readonly="readonly"'); ?>
             </div>
           </div>
 

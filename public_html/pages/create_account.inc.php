@@ -77,9 +77,9 @@
 
       database::query(
         "update ". DB_TABLE_CUSTOMERS ."
-        set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-            last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-            last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
+        set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+            last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+            last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
         where id = ". (int)$customer->data['id'] ."
         limit 1;"
       );

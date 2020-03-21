@@ -78,15 +78,16 @@
         );
       }
 
-      if (!empty($user['last_host']) && $user['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
-        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), ['%hostname' => $user['last_host']]));
+      if (!empty($user['last_hostname']) && $user['last_hostname'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
+        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), ['%hostname' => $user['last_hostname']]));
       }
 
       database::query(
         "update ". DB_TABLE_USERS ."
         set
-          last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-          last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+          last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+          last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+          last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
           login_attempts = 0,
           total_logins = total_logins + 1,
           date_login = '". date('Y-m-d H:i:s') ."'

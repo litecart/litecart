@@ -51,9 +51,9 @@
       database::query(
         "update ". DB_TABLE_CUSTOMERS ." set
           num_logins = num_logins + 1,
-          last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-          last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-          last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+          last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+          last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+          last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
           date_login = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$customer['id'] ."
         limit 1;"
@@ -63,7 +63,7 @@
 
       session::regenerate_id();
 
-      if (!empty($customer['last_host']) && $customer['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
+      if (!empty($customer['last_hostname']) && $customer['last_hostname'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
         notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), ['%hostname' => $customer['last_host']]));
       }
 
