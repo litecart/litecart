@@ -9,18 +9,18 @@ h1 {
   border: none;
 }
 
-.addresses .row > *:nth-child(1), .addresses .row > *:nth-child(2) {
+.addresses .row > :not(.shipping-address) {
   margin-top: 4mm;
 }
 
-.shipping-address .rounded-rectangle {
+.rounded-rectangle {
   border: 1px solid #000;
   border-radius: 5mm;
   padding: 4mm;
   margin-left: -15px;
   margin-bottom: 3mm;
 }
-.shipping-address .value {
+.rounded-rectangle .value {
   margin: 0 !important;
 }
 
@@ -58,12 +58,15 @@ h1 {
   <div class="content">
     <div class="addresses">
       <div class="row">
-        <div class="col-xs-6 billing-address">
-          <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
-          <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer'])); ?></div>
+        <div class="col-xs-6">
+          <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
+          <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
 
-          <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></div>
+          <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
+          <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
+
+          <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
+          <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></div>
         </div>
 
         <div class="col-xs-6 shipping-address">
@@ -71,27 +74,13 @@ h1 {
             <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
             <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
           </div>
+
+          <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+          <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
+
+          <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+          <div class="value"><?php echo !empty($order['customer']['shipping_address']['phone']) ? $order['customer']['shipping_address']['phone'] : '-'; ?></div>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-6">
-        <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-        <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
-      </div>
-
-      <div class="col-xs-3">
-        <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
-        <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
-
-        <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-        <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
-      </div>
-
-      <div class="col-xs-3">
-        <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
-        <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></div>
       </div>
     </div>
 

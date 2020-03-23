@@ -582,7 +582,7 @@
       }
     }
 
-    public function validate(&$shipping = null, &$payment = null) {
+    public function validate($shipping = null, $payment = null) {
 
     // Validate items
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');

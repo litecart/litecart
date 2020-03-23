@@ -9,7 +9,7 @@ h1 {
   border: none;
 }
 
-.addresses .row > *:nth-child(1), .addresses .row > *:nth-child(2) {
+.addresses .row > :not(.billing-address) {
   margin-top: 4mm;
 }
 
