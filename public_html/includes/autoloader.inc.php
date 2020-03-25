@@ -32,7 +32,8 @@
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . $class . '.inc.php');
         break;
       default:
-        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
+        if( file_exists(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php' )
+            require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
         break;
     }
   }, false, true);
