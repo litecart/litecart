@@ -32,8 +32,17 @@
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ROUTES . $class . '.inc.php');
         break;
       default:
-        if( file_exists(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php' )
-            require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . $class . '.inc.php');
+        if (is_file(vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php')) && 
+            file_exists(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php') ) {
+          require_once vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php');
+          break;
+        }
+        
+        if( file_exists(FS_DIR_APP . 'includes/library/lib_' . $class . '.inc.php'))
+          require_once vmod::check(FS_DIR_APP . 'includes/library/lib_' . $class . '.inc.php');
+        if (method_exists($class, 'init')) {
+          call_user_func(array($class, 'init')); // As static classes do not have a __construct() (PHP #62860)
+        }
         break;
     }
   }, false, true);
