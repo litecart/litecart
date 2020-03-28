@@ -1110,55 +1110,6 @@
     }
   }
 
-  function form_draw_option_groups_list($name, $input=true, $multiple=false, $parameters='') {
-
-    $option_groups_query = database::query(
-      "select pcg.id, pcg.function, pcg.required, pcgi.name from ". DB_TABLE_OPTION_GROUPS ." pcg
-      left join ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi on (pcgi.group_id = pcg.id and pcgi.language_code = '". database::input(language::$selected['code']) ."')
-      order by pcgi.name asc;"
-    );
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    while ($option_group = database::fetch($option_groups_query)) {
-      $options[] = array($option_group['name'] .' ['. $option_group['function'] .']', $option_group['id']);
-    }
-
-    if ($multiple) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
-  function form_draw_option_values_list($group_id, $name, $input=true, $multiple=false, $parameters='') {
-
-    $option_values_query = database::query(
-      "select pcv.id, pcv.value, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
-      left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
-      where pcv.group_id = ". (int)$group_id ."
-      order by pcvi.name asc;"
-    );
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    while ($option_value = database::fetch($option_values_query)) {
-      if (empty($option_value['name'])) $option_value['name'] = $option_value['value'];
-      if (empty($option_value['name'])) $option_value['name'] = '('. language::translate('text_user_input', 'User input') .')';
-      $options[] = array($option_value['name'], $option_value['id']);
-    }
-
-    if ($multiple) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
   function form_draw_order_status_list($name, $input=true, $multiple=false, $parameters='') {
 
     $query = database::query(

@@ -153,13 +153,21 @@
 
       while ($value = database::fetch($values_query)) {
 
-        $products_query = database::query(
+        $products_attributes_query = database::query(
           "select id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
-          where group_id = ". (int)$this->data['id'] ."
-          or value_id = ". (int)$value['id'] .";"
+          where value_id = ". (int)$value['id'] ."
+          limit 1;"
         );
 
-        if (database::num_rows($products_query) > 0) throw new Exception('Cannot delete value linked to products.');
+        if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete value linked to product attributes');
+
+        $products_options_query = database::query(
+          "select id from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
+          where value_id = ". (int)$value['id'] ."
+          limit 1;"
+        );
+
+        if (database::num_rows($products_options_query)) throw new Exception('Cannot delete value linked to product options');
 
         database::query(
           "delete from ". DB_TABLE_ATTRIBUTE_VALUES ."
@@ -167,6 +175,7 @@
           and id = ". (int)$value['id'] ."
           limit 1;"
         );
+
         database::query(
           "delete from ". DB_TABLE_ATTRIBUTE_VALUES_INFO ."
           where value_id = ". (int)$value['id'] .";"
@@ -174,6 +183,7 @@
       }
 
     // Update/Insert values
+      $i = 0;
       foreach ($this->data['values'] as $value) {
 
         if (empty($value['id'])) {
@@ -237,7 +247,15 @@
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      if (database::num_rows($products_attributes_query) > 0) throw new Exception('Cannot delete group linked to products');
+      if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete group linked to products');
+
+    // Check products for options
+      $products_options_query = database::query(
+        "select id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+        where group_id = ". (int)$this->data['id'] .";"
+      );
+
+      if (database::num_rows($products_options_query)) throw new Exception('Cannot delete group linked to products');
 
       $this->data['values'] = array();
       $this->save();
