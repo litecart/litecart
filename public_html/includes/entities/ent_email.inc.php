@@ -216,7 +216,7 @@
       if (empty($contact['name'])) return '<'. $contact['email'] .'>';
 
       if (strtoupper(language::$selected['charset']) == 'UTF-8') {
-        return '=?utf-8?b?'. base64_encode($contact['name']) .'?= <'. $contact['email'] .'>';
+        return mb_encode_mimeheader($contact['name']) .' <'. $contact['email'] .'>';
       }
 
       if (strpos($contact['name'], '"') !== false || strpos($contact['name'], ',') !== false) {
@@ -275,11 +275,7 @@
       }
 
     // Prepare subject
-      if (strtoupper(language::$selected['charset']) == 'UTF-8') {
-        $headers['Subject'] = '=?utf-8?b?'. base64_encode($this->data['subject']) .'?=';
-      } else {
-        $headers['Subject'] = $this->data['subject'];
-      }
+      $headers['Subject'] = mb_encode_mimeheader($headers['Subject']);
 
       $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
       $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
@@ -363,11 +359,7 @@
         }
         $recipients = implode(', ', $recipients);
 
-        if (strtoupper(language::$selected['charset']) == 'UTF-8') {
-          $subject = '=?utf-8?b?'. base64_encode($this->data['subject']) .'?=';
-        } else {
-          $subject = $this->data['subject'];
-        }
+        $subject = mb_encode_mimeheader($this->data['subject']);
 
         if (!$result = mail($recipients, $subject, $body, $headers)) {
           trigger_error('Failed sending email "'. $this->data['subject'] .'"', E_USER_WARNING);
