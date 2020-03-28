@@ -170,23 +170,23 @@
     // Update filters
       if (!empty($this->data['filters'])) {
         $filter_priority = 1;
-        foreach (array_keys($this->data['filters']) as $key) {
-          if (empty($this->data['filters'][$key]['id'])) {
+        foreach ($this->data['filters'] as &$filter) {
+          if (empty($filter['id'])) {
             database::query(
               "insert into ". DB_PREFIX ."categories_filters
               (category_id, attribute_group_id)
-              values (". (int)$this->data['id'] .", ". (int)$this->data['filters'][$key]['attribute_group_id'] .");"
+              values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
             );
-            $this->data['filters'][$key]['id'] = database::insert_id();
+            $filter['id'] = database::insert_id();
           }
 
           database::query(
             "update ". DB_PREFIX ."categories_filters set
-              attribute_group_id = '". database::input($this->data['filters'][$key]['attribute_group_id']) ."',
-              select_multiple = ". (!empty($this->data['filters'][$key]['select_multiple']) ? 1 : 0) .",
+              attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
+              select_multiple = ". (!empty($filter['select_multiple']) ? 1 : 0) .",
               priority = ". $filter_priority++ ."
             where category_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['filters'][$key]['id'] ."
+            and id = ". (int)$filter['id'] ."
             limit 1;"
           );
         }

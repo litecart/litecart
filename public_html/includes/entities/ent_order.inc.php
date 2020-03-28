@@ -318,21 +318,21 @@
 
     // Insert/update order items
       if (!empty($this->data['items'])) {
-        foreach (array_keys($this->data['items']) as $key) {
-          if (empty($this->data['items'][$key]['id'])) {
+        foreach ($this->data['items'] as $item) {
+          if (empty($item['id'])) {
             database::query(
               "insert into ". DB_PREFIX ."orders_items
               (order_id)
               values (". (int)$this->data['id'] .");"
             );
-            $this->data['items'][$key]['id'] = database::insert_id();
+            $item['id'] = database::insert_id();
 
           // Update purchase count
-            if (!empty($this->data['items'][$key]['product_id'])) {
+            if (!empty($item['product_id'])) {
               database::query(
                 "update ". DB_PREFIX ."products
-                set purchases = purchases + ". (float)$this->data['items'][$key]['quantity'] ."
-                where id = ". (int)$this->data['items'][$key]['product_id'] ."
+                set purchases = purchases + ". (float)$item['quantity'] ."
+                where id = ". (int)$item['product_id'] ."
                 limit 1;"
               );
             }
@@ -388,25 +388,25 @@
     // Insert/update order total
       if (!empty($this->data['order_total'])) {
         $i = 0;
-        foreach (array_keys($this->data['order_total']) as $key) {
-          if (empty($this->data['order_total'][$key]['id'])) {
+        foreach ($this->data['order_total'] as &$row) {
+          if (empty($row['id'])) {
             database::query(
               "insert into ". DB_PREFIX ."orders_totals
               (order_id)
               values (". (int)$this->data['id'] .");"
             );
-            $this->data['order_total'][$key]['id'] = database::insert_id();
+            $row['id'] = database::insert_id();
           }
           database::query(
             "update ". DB_PREFIX ."orders_totals
-            set title = '". database::input($this->data['order_total'][$key]['title']) ."',
-            module_id = '". database::input($this->data['order_total'][$key]['module_id']) ."',
-            value = '". (float)$this->data['order_total'][$key]['value'] ."',
-            tax = '". (float)$this->data['order_total'][$key]['tax'] ."',
-            calculate = '". (empty($this->data['order_total'][$key]['calculate']) ? 0 : 1) ."',
+            set title = '". database::input($row['title']) ."',
+            module_id = '". database::input($row['module_id']) ."',
+            value = '". (float)$row['value'] ."',
+            tax = '". (float)$row['tax'] ."',
+            calculate = '". (empty($row['calculate']) ? 0 : 1) ."',
             priority = '". database::input(++$i) ."'
             where order_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['order_total'][$key]['id'] ."
+            and id = ". (int)$row['id'] ."
             limit 1;"
           );
         }
@@ -424,30 +424,31 @@
 
         $notify_comments = [];
 
-        foreach (array_keys($this->data['comments']) as $key) {
+        foreach ($this->data['comments'] as &$comment) {
 
-          if (empty($this->data['comments'][$key]['author'])) $this->data['comments'][$key]['author'] = 'system';
+          if (empty($comment['author'])) $comment['author'] = 'system';
 
-          if (empty($this->data['comments'][$key]['id'])) {
+          if (empty($comment['id'])) {
             database::query(
               "insert into ". DB_PREFIX ."orders_comments
               (order_id, date_created)
-              values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
+              values (". (int)$this->data['id'] .", '". ($comment['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
-            $this->data['comments'][$key]['id'] = database::insert_id();
 
-            if ($this->data['comments'][$key]['author'] == 'staff' && !empty($this->data['comments'][$key]['notify']) && empty($this->data['comments'][$key]['hidden'])) {
-              $notify_comments[] = $this->data['comments'][$key];
+            $comment['id'] = database::insert_id();
+
+            if ($comment['author'] == 'staff' && !empty($comment['notify']) && empty($comment['hidden'])) {
+              $notify_comments[] = $comment;
             }
           }
 
           database::query(
             "update ". DB_PREFIX ."orders_comments
-            set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
-              text = '". database::input($this->data['comments'][$key]['text']) ."',
-              hidden = '". (!empty($this->data['comments'][$key]['hidden']) ? 1 : 0) ."'
+            set author = '". (!empty($comment['author']) ? database::input($comment['author']) : 'system') ."',
+              text = '". database::input($comment['text']) ."',
+              hidden = '". (!empty($comment['hidden']) ? 1 : 0) ."'
             where order_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['comments'][$key]['id'] ."
+            and id = ". (int)$comment['id'] ."
             limit 1;"
           );
         }

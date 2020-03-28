@@ -298,23 +298,23 @@
       );
 
       if (!empty($this->data['attributes'])) {
-        foreach (array_keys($this->data['attributes']) as $key) {
-          if (empty($this->data['attributes'][$key]['id'])) {
+        foreach ($this->data['attributes'] as &$attribute) {
+          if (empty($attribute['id'])) {
             database::query(
               "insert into ". DB_PREFIX ."products_attributes
               (product_id, group_id, value_id, custom_value)
-              values (". (int)$this->data['id'] .", ". (int)$this->data['attributes'][$key]['group_id'] .", ". (int)$this->data['attributes'][$key]['value_id'] .", '". database::input($this->data['attributes'][$key]['custom_value']) ."');"
+              values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
             );
-            $this->data['attributes'][$key]['id'] = database::insert_id();
+            $attribute['id'] = database::insert_id();
           }
 
           database::query(
             "update ". DB_PREFIX ."products_attributes set
-              group_id = ". (int)$this->data['attributes'][$key]['group_id'] .",
-              value_id = ". (int)$this->data['attributes'][$key]['value_id'] .",
-              custom_value = '". database::input($this->data['attributes'][$key]['custom_value']) ."'
+              group_id = ". (int)$attribute['group_id'] .",
+              value_id = ". (int)$attribute['value_id'] .",
+              custom_value = '". database::input($attribute['custom_value']) ."'
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['attributes'][$key]['id'] ."
+            and id = ". (int)$attribute['id'] ."
             limit 1;"
           );
         }
@@ -360,29 +360,29 @@
 
     // Update campaigns
       if (!empty($this->data['campaigns'])) {
-        foreach (array_keys($this->data['campaigns']) as $key) {
-          if (empty($this->data['campaigns'][$key]['id'])) {
+        foreach ($this->data['campaigns'] as &$campaign) {
+          if (empty($campaign['id'])) {
             database::query(
               "insert into ". DB_PREFIX ."products_campaigns
               (product_id)
               values (". (int)$this->data['id'] .");"
             );
-            $this->data['campaigns'][$key]['id'] = database::insert_id();
+            $campaign['id'] = database::insert_id();
           }
 
           $sql_currency_campaigns = "";
           foreach (array_keys(currency::$currencies) as $currency_code) {
-            $sql_currency_campaigns .= $currency_code ." = '". (float)$this->data['campaigns'][$key][$currency_code] ."', ";
+            $sql_currency_campaigns .= $currency_code ." = '". (float)$campaign[$currency_code] ."', ";
           }
           $sql_currency_campaigns = rtrim($sql_currency_campaigns, ', ');
 
           database::query(
             "update ". DB_PREFIX ."products_campaigns set
-            start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
-            end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
+            start_date = ". (empty($campaign['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['start_date'])) ."'") .",
+            end_date = ". (empty($campaign['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['end_date'])) ."'") .",
             $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['campaigns'][$key]['id'] ."
+            and id = ". (int)$campaign['id'] ."
             limit 1;"
           );
         }
@@ -398,18 +398,18 @@
     // Update stock options
       if (!empty($this->data['options_stock'])) {
         $i = 0;
-        foreach (array_keys($this->data['options_stock']) as $key) {
-          if (empty($this->data['options_stock'][$key]['id'])) {
+        foreach ($this->data['options_stock'] as &$stock_option) {
+          if (empty($stock_option['id'])) {
             database::query(
               "insert into ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
               (product_id, date_created)
               values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
-            $this->data['options_stock'][$key]['id'] = database::insert_id();
+            $stock_option['id'] = database::insert_id();
           }
 
         // Ascending option combination
-          $combinations = explode(',', $this->data['options_stock'][$key]['combination']);
+          $combinations = explode(',', $stock_option['combination']);
 
           usort($combinations, function($a, $b) {
             $a = explode('-', $a);
@@ -424,19 +424,19 @@
 
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-            set combination = '". database::input($this->data['options_stock'][$key]['combination']) ."',
-            sku = '". database::input($this->data['options_stock'][$key]['sku']) ."',
-            weight = '". database::input($this->data['options_stock'][$key]['weight']) ."',
-            weight_class = '". database::input($this->data['options_stock'][$key]['weight_class']) ."',
-            dim_x = '". database::input($this->data['options_stock'][$key]['dim_x']) ."',
-            dim_y = '". database::input($this->data['options_stock'][$key]['dim_y']) ."',
-            dim_z = '". database::input($this->data['options_stock'][$key]['dim_z']) ."',
-            dim_class = '". database::input($this->data['options_stock'][$key]['dim_class']) ."',
-            quantity = '". database::input($this->data['options_stock'][$key]['quantity']) ."',
+            set combination = '". database::input($stock_option['combination']) ."',
+            sku = '". database::input($stock_option['sku']) ."',
+            weight = '". database::input($stock_option['weight']) ."',
+            weight_class = '". database::input($stock_option['weight_class']) ."',
+            dim_x = '". database::input($stock_option['dim_x']) ."',
+            dim_y = '". database::input($stock_option['dim_y']) ."',
+            dim_z = '". database::input($stock_option['dim_z']) ."',
+            dim_class = '". database::input($stock_option['dim_class']) ."',
+            quantity = '". database::input($stock_option['quantity']) ."',
             priority = '". $i++ ."',
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['options_stock'][$key]['id'] ."
+            and id = ". (int)$stock_option['id'] ."
             limit 1;"
           );
         }
@@ -468,29 +468,29 @@
       if (!empty($this->data['images'])) {
         $image_priority = 1;
 
-        foreach (array_keys($this->data['images']) as $key) {
-          if (empty($this->data['images'][$key]['id'])) {
+        foreach ($this->data['images'] as &$image) {
+          if (empty($image['id'])) {
             database::query(
               "insert into ". DB_PREFIX ."products_images
               (product_id)
               values (". (int)$this->data['id'] .");"
             );
-            $this->data['images'][$key]['id'] = database::insert_id();
+            $image['id'] = database::insert_id();
           }
 
-          if (!empty($this->data['images'][$key]['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename'])) {
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename']);
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
-            rename(FS_DIR_APP . 'images/' . $this->data['images'][$key]['filename'], FS_DIR_APP . 'images/' . $this->data['images'][$key]['new_filename']);
-            $this->data['images'][$key]['filename'] = $this->data['images'][$key]['new_filename'];
+          if (!empty($image['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $image['new_filename'])) {
+            functions::image_delete_cache(FS_DIR_APP . 'images/' . $image['filename']);
+            functions::image_delete_cache(FS_DIR_APP . 'images/' . $image['new_filename']);
+            rename(FS_DIR_APP . 'images/' . $image['filename'], FS_DIR_APP . 'images/' . $image['new_filename']);
+            $image['filename'] = $image['new_filename'];
           }
 
           database::query(
             "update ". DB_PREFIX ."products_images
-            set filename = '". database::input($this->data['images'][$key]['filename']) ."',
+            set filename = '". database::input($image['filename']) ."',
                 priority = '". $image_priority++ ."'
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['images'][$key]['id'] ."
+            and id = ". (int)$image['id'] ."
             limit 1;"
           );
         }
