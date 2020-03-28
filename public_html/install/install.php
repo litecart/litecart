@@ -80,10 +80,10 @@
 
   echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
-  if (preg_match('#^'. preg_quote(str_replace("\\", '/', $_SERVER['DOCUMENT_ROOT']), '#') .'#', str_replace("\\", '/', __FILE__))) {
+  if (rtrim(str_replace("\\", '/', $_SERVER['DOCUMENT_ROOT']) . '/') . preg_replace('#index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace("\\", '/', __DIR__)) {
     echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>';
   } else {
-    echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning] There is a problem with your PHP configuration causing $_SERVER["DOCUMENT_ROOT"] and __FILE__ to return conflicting values.</span></p>';
+    echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning] There is a problem with your web server configuration causing $_SERVER["DOCUMENT_ROOT"] and __FILE__ to return conflicting paths. Contact your web host and have them correcting this.</span></p>';
   }
 
   ### Database > Connection #####################################
