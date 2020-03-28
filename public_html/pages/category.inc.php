@@ -50,7 +50,7 @@
       'h1_title' => $category->h1_title ? $category->h1_title : $category->name,
       'head_title' => $category->head_title ? $category->head_title : $category->name,
       'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
-      'image' => $category->image ? 'images/' . $category->image : '',
+      'image' => array(),
       'subcategories' => array(),
       'products' => array(),
       'sort_alternatives' => array(
@@ -60,6 +60,15 @@
         'date' => language::translate('title_date', 'Date'),
       ),
     );
+
+    if ($category->image) {
+      list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
+      $_page->snippets['image'] = array(
+        'original' => $category->image ? 'images/' . $category->image : '',
+        'thumbnail_1x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
+      );
+    }
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
