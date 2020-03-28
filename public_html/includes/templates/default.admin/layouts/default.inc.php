@@ -33,7 +33,7 @@
     <div id="platform" class="text-center"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></div>
 
     <div id="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br />
-      <a href="http://www.litecart.net" target="_blank">www.litecart.net</a>
+      <a href="https://www.litecart.net" target="_blank">www.litecart.net</a>
     </div>
   </div>
 

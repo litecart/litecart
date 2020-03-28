@@ -167,7 +167,7 @@
         </tfoot>
       </table>
 
-      <p><?php echo language::translate('title_external_link', 'External Link'); ?>: <strong><a href="http://www.litecart.net/addons" target="_blank">LiteCart Add-ons</a></strong></p>
+      <p><?php echo language::translate('title_external_link', 'External Link'); ?>: <strong><a href="https://www.litecart.net/addons" target="_blank">LiteCart Add-ons</a></strong></p>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
