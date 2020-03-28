@@ -128,7 +128,6 @@
     var output = '<tr>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
                + '  <td><?php echo functions::general_escape_js($name_fields); ?></td>'
-               + '  <td>&nbsp;</td>'
                + '  <td class="text-right"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     output = output.replace(/new_value_index/g, 'new_' + new_value_index);
