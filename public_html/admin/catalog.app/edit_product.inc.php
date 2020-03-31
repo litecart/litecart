@@ -118,8 +118,8 @@
   list($product_image_width, $product_image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
   $option_sort_options = array(
+    array(language::translate('title_list_order', 'List Order'), 'priority'),
     array(language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'),
-    array(language::translate('title_priority', 'Priority'), 'priority'),
   );
 
   functions::draw_lightbox();
@@ -573,19 +573,19 @@
                   <?php echo functions::form_draw_select_field('options['.$group_id.'][function]', in_array($option['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['input', 'textarea'], true); ?>
                 </div>
 
-                <div class="form-group col-sm-4 col-md-2">
-                  <label><?php echo language::translate('title_required', 'Required'); ?></label>
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('options['.$group_id.'][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>
-                  </div>
-                </div>
-
                 <?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
                 <div class="form-group col-sm-4 col-md-2">
                   <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
                   <?php echo functions::form_draw_select_field('options['.$group_id.'][sort]', $option_sort_options, true); ?>
                 </div>
                 <?php } ?>
+
+                <div class="form-group col-sm-4 col-md-2">
+                  <label><?php echo language::translate('title_required', 'Required'); ?></label>
+                  <div class="checkbox">
+                    <label><?php echo functions::form_draw_checkbox('options['.$group_id.'][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>
+                  </div>
+                </div>
               </div>
 
               <?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
@@ -1330,14 +1330,14 @@
                  + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', array('select', 'radio', 'checkbox'), 'select')); ?>'
                  + '    </div>'
                  + '    <div class="form-group col-sm-4 col-md-2">'
+                 + '      <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][sort]', $option_sort_options, 'custom')); ?>'
+                 + '    </div>'
+                 + '    <div class="form-group col-sm-4 col-md-2">'
                  + '      <label><?php echo language::translate('title_required', 'Required'); ?></label>'
                  + '      <div class="checkbox">'
                  + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>'
                  + '      </div>'
-                 + '    </div>'
-                 + '    <div class="form-group col-sm-4 col-md-2">'
-                 + '      <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][sort]', $option_sort_options, 'custom')); ?>'
                  + '    </div>'
                  + '  </div>'
                  + '  <div class="table-responsive">'
@@ -1354,7 +1354,7 @@
                  + '      </tbody>'
                  + '    </table>'
                  + '  </div>'
-                 + '</li>'
+                 + '</li>';
 
       output = output.replace(/new_option_group_i/g, 'new_' + new_option_group_i);
       output = output.replace(/new_group_id/g, $(groupElement).val());
@@ -1366,7 +1366,7 @@
     var output = '<tr>'
                + '  <td class="grabable"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
                + '  <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', array('+','%','*'), true)); ?></td>'
-               + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
+               + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 175px;">'. functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
                + '  <td class="text-right"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                + '</tr>';
 
@@ -1413,7 +1413,7 @@
                + '      </div>'
                + '    </div>'
                + '  </div>'
-               + '</li>'
+               + '</li>';
 
     output = output.replace(/new_group_id/g, $(groupElement).val());
     output = output.replace(/new_group_name/g, $(groupElement).find('option:selected').text());

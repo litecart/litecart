@@ -347,6 +347,7 @@
       }
 
       $_page->snippets['options'][] = array(
+        'id' => $group['id'],
         'name' => $group['name'],
         'required' => !empty($group['required']) ? 1 : 0,
         'values' => $values,
