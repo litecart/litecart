@@ -181,7 +181,13 @@
         stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
       }
 
-      if ($column != '') return $array[$column];
+      if ($column) {
+        if (isset($array[$column])) {
+          return $array[$column];
+        } else {
+          return false;
+        }
+      }
 
       return $array;
     }
