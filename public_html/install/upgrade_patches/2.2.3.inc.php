@@ -31,6 +31,7 @@
 
   database::query(
     "ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+    ADD `custom_value` VARCHAR(64) NOT NULL AFTER `value_id`,
     ADD INDEX `priority` (`priority`),
     DROP COLUMN `date_updated`,
     DROP COLUMN `date_created`,
