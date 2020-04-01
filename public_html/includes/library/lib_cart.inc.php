@@ -237,7 +237,7 @@
               $matched_value = $options[$matched_group];
 
               if (!empty($matched_value)) {
-                $item['extras'] += $option['price_adjust'];
+                $item['extras'] += $value['price_adjust'];
               }
               break;
 
