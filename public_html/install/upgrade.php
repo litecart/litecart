@@ -38,6 +38,10 @@
 
   if ($platform_database_version = database::fetch($platform_database_version_query)) {
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
+  } else if (!empty($_GET['from_version'])) {
+    define('PLATFORM_DATABASE_VERSION', $_GET['from_version']);
+  } else {
+    die('Could not identify database version');
   }
 
 // List supported upgrades
