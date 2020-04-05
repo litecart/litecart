@@ -1,107 +1,155 @@
 # Formatting and Standards
 
+## Code Compliance
+
+ - PHP code must comply with PHP 5.4+ using E_STRICT.
+
+ - HTML code mustcomply with HTML 5.
+
+ - Style definitions must be compliant with CSS 3.
+
+ - Any use of javascript should dedicate the jQuery framework.
+
 
 ## Character Encoding
 
-  UTF-8 (without Byte Order Mark a.k.a. BOM)
+  UTF-8 without Byte Order Mark (BOM)
+
+
+## Line Breaks
+
+  We use Linux line feed (LF) \n for new lines in the source code.
+  Do not use more than one empty line for separating logic.
+
+  Incorrect:
+
+    \r\n
+    \r
+
+  Correct:
+
+    \n
+
+  Do not use more than one empty line for separating logic.
+
+
+## No Trailing Whitespace
+
+  Make sure you have no trailing whitespace after your code
+
+  Incorrect:
+
+    <?php
+    ··echo·$variable;\n·····
+    ··\n
+    \EOF
+
+  Correct:
+
+    <?php
+    ··echo·$variable;\n
+    \n
+    \EOF
+
+  Note: Most code editors offer a way to trim trailing whitespace upon save.
+
+
+## Outputting Line Breaks
+
+  Use the PHP_EOL constant for outputting line breaks in PHP.
+
+  Incorrect:
+
+    echo "<p>Hello World!<br />\r\nThis is a new row</p>";
+
+  Correct:
+
+    echo '<p>Hello World!</br />' . PHP_EOL
+       . 'This is a new row</p>';
+
+  For emails we use Windows style Carriage Return + Line Feed (CRLF) \r\n for new lines because the standard tells us to.
+
+    Content-Type: text/plain\r\n
+    Content-Length: 128\r\n
+    \r\n
+    Lorem ipsum dolor\r\n
+    \r\n
 
 
 ## Indentation
 
   Indentation of logic should be 2 whitespace characters.
 
-	Level 1
-	  Level 2
-	    Level 3
-	      Level 4
+    Level 1
+      Level 2
+        Level 3
+          Level 4
 
   TABs should not be used.
 
-	Level 1
-		Level 2
-			Level 3
-				Level 4
+		Level 1
+			Level 2
+				Level 3
+					Level 4
 
-  Indentation of comments is subtracted one level:
+  The indentation of comments is subtracted one level, sticking out just like the bookmarks in a book:
 
     // This is a comment
       echo 'Hello World!';
 
-  Indentation of code after opening a PHP tag:
+  Code is indented after opening a PHP tag:
 
     <?php
-      dosomething();
-      ..
+      ...
     ?>
 
-
-## Line Breaks
-
-  Do not use more than one empty line for separating logic.
+  Note: Your code editor should have the indentation format as a setting.
 
 
-## Naming of Variables and Elements
+## PHP Tags
 
-  Don't make up shortenings. Always use full words unless they are annoyingly long. Don't mix languages, use english only for code and comments. Don't mix lower and upper cases.
-
-  Correct:
-
-	  $customer_address
-	  $customer['address']
+  When starting PHP logic, the tag should be written as "<?php", and not in the short form of "<?".
 
   Incorrect:
 
-	  $custaddr // Weird shortenings
-	  $kund_adress // Foreign language
-	  $customerAddress // Mixed cases
-	  $customer['customer_address'] // Duplicate prefix
-
-  Naming of CSS classes and IDs
-
-    <div id="box-hello" class="box white">
-
-
-## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
-
-  Single quote characters should be used for PHP and javascript code unless parsing data or simply inconvenient.
-
-  Use double quotes for all HTML element parameters in accordance with SGML.
+    <?=$variable?>
+    <? echo $variable; ?>
 
   Correct:
 
-    echo '<a href="http://www.site.com">Hello World</a>';
+    <?php echo $variable; ?>
 
-    database::query("select * from Table where id = 'string'");
 
-    <img src="" />
+## PHP Closing Tags
 
-    $('.myclass').html();
-
-  When it can be compromised:
-
-    echo "Hello y'all";
-    echo "Hello $name\r\n";
-
-    $('input[name="field"]').val();
+  We do NOT use PHP closing tags at the end of a script. This is industry standard to prevent any whitespace accidentally being sent to the output buffer.
 
   Incorrect:
 
-    echo "Hello World!";
+    <?php\n
+    ··...\n
+    ··last_line_of_code();\n
+    ?>\n <-- See this
+    \EOF
 
-    <img src='' />
+  Correct:
+    <?php\n
+    ··...\n
+    ··last_line_of_code();\n
+    \EOF
 
 
-## Translating Variables
+## File Paths
 
-  When translating variables in strings we use strtr to avoid cryptic coding.
+  ALWAYS use Linux/Unix directory separator / as it also work on Windows - Windows \ does not work on Linux.
+
+  Incorrect:
+
+    C:\path\to\file.php
 
   Correct:
 
-    $string = strtr('Text with %b %a', array('%a' => $a, '%b' => $b));
-
-  Incorrect:
-
-    $string = sprintf('Text with %2$s %1$s', $b, $a);
+    /C/path/to/file
 
 
 ## File Naming
@@ -111,6 +159,14 @@
 
   Name files that are grouped with a prefix e.g:
 
+  Incorrect:
+
+    red_background_box.png
+    green_background_box.png
+    blue_background_box.png
+
+  Correct:
+
     box_background_red.png
     box_background_green.png
     box_background_blue.png
@@ -118,7 +174,7 @@
 
 ## File Extensions
 
-  Non-HTML PHP output scripts should be named by their output format extension like the following:
+  Scripts that outputs something else but HTML should be named by their output format extension like the following:
 
     .php
     .json.php
@@ -129,23 +185,42 @@
     .json.inc.php
 
 
-## Beginning & Ending PHP Logic
+## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
 
-  When starting PHP logic, the tag should be written as "<?php", not in the
-  short form of "<?".
+  Single quote characters should be used for PHP and javascript code. Exceptions can be made for best convenience.
 
-  Inline PHP code:
+  Use double quotes for all HTML element parameters in accordance with SGML.
 
-    <?php echo "Hello World!"; ?>
+  Incorrect:
 
-  PHP Code Block:
+    $foo = "bar";
 
-    <?php
-      echo "Hello World!";
-      ...
-    ?>
+    <img src='' />
 
-  Avoid ending ?> at the end of file
+    echo "<a href='http://www.site.com'>Hello World</a>";
+    echo "<a href=\"http://www.site.com\">Hello World</a>";
+
+    database::query('select * from Table where id = \'string\'');
+
+    $("input[name='value']").val();
+    $("input[name=\"value\"]").val();
+
+  Correct:
+
+    $foo = 'bar';
+
+    <img src="" />
+
+    echo '<a href="http://www.site.com">Hello World</a>';
+
+    database::query("select * from Table where id = 'string'");
+
+    $('input[name="value"]').val();
+
+  When it is being compromised for best convenience:
+
+    echo "Hello y'all";
+    echo "Hello $name\r\n";
 
 
 ## PHP Variable Scope
@@ -158,27 +233,73 @@
 	$_SESSION['variable']
 
 
-## No Variable Duplication
+## Naming of Variables and Elements
 
-  Unless there is a certain need to duplicate variables, no variable duplication should be used:
+  Don't make up shortenings. Always use full words unless they are annoyingly long. Don't mix languages, use english only for code and comments. Don't mix lower and upper cases.
 
   Incorrect:
 
-	  $name = $_POST['name'];
-	  $trimmed_name = trim($name);
+    $custaddr // Weird shortenings
+    $kund_adress // Foreign language
+    $customerAddress // Mixed cases
+    $customer['customer_address'] // Duplicate prefix
 
   Correct:
 
-  	$_POST['name'] = trim($_POST['name']);
+    $customer_address
+    $customer['address']
+
+
+## Naming of CSS IDs and Classes
+
+  Same rules as the naming of variables but we use dash - for separating words rather than underscore _.
+  We try to avoid repeatitive prefixes for subclasses.
+
+  Incorrect:
+
+    <div id="dummmyBox" class="box box-white">
+      <div class="box-title">...</div>
+      <div class="box-text">...</div>
+    </div>
+
+  Correct:
+
+    <div id="box-dummy" class="box white">
+      <div class="title">...</div>
+      <div class="text">...</div>
+    </div>
+
+  How to reference a subclass:
+
+    jQuery: $('#box-dummy .title')
+
+    CSS: #box-dummy .title {}
+
+  Note: Some predefined CSS classes are not following this guideline as they are Bootstrap compatible.
+
+
+## No Variable Duplication
+
+  Unless there is a certain need for duplicating variables, no variable duplication should be used:
+
+  Incorrect:
+
+    $name = $_POST['name'];
+    $trimmed_name = trim($name);
+    $trimmed_and_lowercase_name = lowercase($trimmed_name);
+
+  Correct:
+
+    $_POST['name'] = strtolower(trim($_POST['name']));
 
 
 ## PHP Arrays
 
-Inline arrays
+  Inline arrays
 
-    do_something(array('this', 'that'));
+    my_function(array('this', 'that'));
 
-Defining a variable with more than a handful of values
+  Defining a variable with more than a handful of values
 
     $variable = array(
       'this',
@@ -187,32 +308,121 @@ Defining a variable with more than a handful of values
       'last', // <-- Make note of the ending coma
     );
 
-## Outputting Line Breaks
 
-  Use the PHP_EOL constant for outputting line breaks in PHP.
+## PHP Conditions
+
+  Do not use yoda expressions.
+
+  Incorrect:
+
+    if (true === condition) {
 
   Correct:
 
-    echo 'Hello World!' . PHP_EOL
-       . 'This is a new row';
-
-  For emails use \r\n accoarding to RFC standrard
-
-    echo "Hello World!\r\nThis is a new row";
+    if (condition === true) {
 
 
 ## PHP Class Variables and Methods
 
-    class my_class {
+    class dummy {
       private $_data;
       public $data;
 
-      private function _my_private_method() {
+      private function _private_method() {
       }
 
-      public function my_public_method() {
+      public function public_method() {
       }
     }
+
+
+## PHP Function Results
+
+  General functions shall always return data, not output data to the buffer.
+
+  Incorrect:
+
+    function my_function($string) {
+      echo $string;
+    }
+
+  Correct:
+
+    function my_function($string) {
+      return $string;
+    }
+
+  Local functions that are just used in a single local script file should be anonymous functions:
+
+    $iterator = function() {
+      ...
+    };
+
+    $variable = $iterator();
+
+
+## Repetitive Statements in PHP
+
+  Try to avoid this at all costs:
+
+    for ($i=0, $n=count($array); $i<$n; $i++) {
+      $array[$i] = 'value';
+    }
+
+  Walking through an array:
+
+    foreach ($array as $key => $item) {
+      ....
+    }
+
+  Walking through an array and back reference the source variable:
+
+    foreach ($array as $key => &$item) {
+      $item = 'value';
+    }
+
+
+## Matryoshka Dolls
+
+  Avoid conditional conditions inside loops.
+
+  Incorrect:
+
+    foreach ($array => $node) {
+      if ($node['first'] == 'a') {
+        if ($node['second'] == 'b') {
+          if ($node['third'] == 'c') {
+            return true;
+          }
+        }
+      }
+    }
+
+  Correct:
+
+    foreach ($array => $node) {
+      if ($node['first'] != 'a') continue;
+      if ($node['second'] != 'b') continue;
+      if ($node['third'] != 'c') continue;
+      return true;
+    }
+
+
+## Translating String Content
+
+  When translating variables in strings we use strtr to avoid cryptic coding.
+
+  Incorrect:
+
+    $string = sprintf('Text with %2$s %1$s', $b, $a);
+    $string = str_replace(array('%a', %b), array($a, $b), 'Text with %a %b');
+
+  Correct:
+
+    $string = strtr('Text with %b %a', array(
+      '%a' => $a,
+      '%b' => $b,
+    ));
 
 
 ## Database Queries in PHP
@@ -229,115 +439,26 @@ Defining a variable with more than a handful of values
   Unlike displaying strings, double quote characters are wrapped around the sql query.
 
 
-## Incoming PHP Data
+## Handling User Input Data
 
-  To see if a variable exists, use the following structure:
-
-    if (isset($_POST['variable']))
-
-  Don't just assume it exists:
+  Don't just assume a variable exists with a value:
 
     if ($_POST['variable'])
+
+  See if it exists:
+
+    if (!empty($_POST['variable']))
+    if (isset($_POST['variable']) && $_POST['variable'] == 'value')
 
   Always assume incoming data is insecure by escaping the input:
 
     databas::query(
       "update mytable
-      set column = '". database::input($_POST['variable']) ."'
-      where foo = 'bar'
+      set number = ". (int)$_POST['number'] .",
+        string = '". database::input($_POST['string']) ."',
+        date = '". date('Y-m-d', strtotime($_POST['string'])) ."',
+      where this = 'that'
       limit 1;"
     );
 
     echo htmlspecialchars($_POST['variable']);
-
-
-## Function Results in PHP
-
-  General functions should always return data, not output data to buffer.
-
-  For example:
-
-    function my_function($string) {
-      return $string;
-    }
-
-  and not:
-
-    function my_function($string) {
-      echo $string;
-    }
-
-
-## Conditional Expressions
-
-  Do not use yoda expressions.
-
-  Incorrect:
-
-    if (true === condition) {
-
-  Correct:
-
-    if (condition === true) {
-
-
-## Repetitive Statements in PHP
-
-  While loops should be written as:
-
-    while (condition == true) {
-      ....
-    }
-
-  Walking through an array should be written as:
-
-    foreach ($array as $key => $value) {
-      ....
-    }
-
-  for-loops should be written as foreach:
-
-    foreach (array_keys($array) as $key) {
-      echo $array[$key];
-    }
-
-  ...rather than:
-
-    for ($i=0, $n=count($array); $i<$n; $i++) {
-      echo $array[$i];
-    }
-
-
-## Matryoshka Dolls
-
-  Avoid conditional conditions inside iterators:
-
-    foreach ($array => $node) {
-      if ($node['first'] == 'a') {
-        if ($node['second'] == 'b') {
-          if ($node['third'] == 'c') {
-            do_something();
-          }
-        }
-      }
-    }
-
-  Do instead:
-
-    foreach ($array => $node) {
-      if ($node['first'] != 'a') continue;
-      if ($node['second'] != 'b') continue;
-      if ($node['third'] != 'c') continue;
-      do_something();
-    }
-
-
-## Code Compliance
-
- - PHP code must comply with PHP 5.3+ using E_STRICT.
-
- - HTML code must be compliant with HTML 5.
-
- - Style definitions must be compliant with CSS 3.
-
- - Any use of javascript must dedicate the jQuery framework.
