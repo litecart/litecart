@@ -133,6 +133,7 @@
     \EOF
 
   Correct:
+
     <?php\n
     ··...\n
     ··last_line_of_code();\n
@@ -461,4 +462,19 @@
       limit 1;"
     );
 
-    echo htmlspecialchars($_POST['variable']);
+    echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>" />
+
+
+## No Sloppy Coding HTML
+
+  No sloppy coding for single HTML tags. We use the XHTML strict standard:
+
+  Incorrect:
+
+        <img src="" />
+        <br>
+
+  Correct:
+
+        <img src="" />
+        <br />
