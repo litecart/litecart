@@ -291,7 +291,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('defaults', 'Defaults', 'Store default settings', 20),
 ('email', 'Email', 'Email and SMTP', 30),
 ('listings', 'Listings', 'Settings for the catalog listing', 40),
-('customer_details', 'Listings', 'Settings for the catalog listing', 45),
+('customer_details', 'Customer Details', 'Settings for the catalog listing', 45),
 ('legal', 'Legal', 'Legal settings and information', 50),
 ('images', 'Images', 'Settings for graphical elements', 60),
 ('checkout', 'Checkout', 'Checkout settings', 70),
