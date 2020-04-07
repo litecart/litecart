@@ -17,12 +17,17 @@
   if (isset($_POST['save'])) {
 
     try {
+
       if (empty($_POST['iso_code_1'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
       if (empty($_POST['iso_code_2'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
       if (empty($_POST['iso_code_3'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
       if (empty($_POST['zones'])) $_POST['zones'] = array();
+
+      foreach ($_POST['zones'] as $zone) {
+        if (empty($zone['code']) || empty($zone['name'])) throw new Exception(language::translate('error_zone_must_have_name_and_code', 'A zone must have a name and code'));
+      }
 
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
       $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
