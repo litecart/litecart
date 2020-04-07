@@ -104,8 +104,8 @@
       'priceCurrency' => currency::$selected['code'],
       'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
       'priceValidUntil' => (!empty($product->campaign) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
-      //'itemCondition' => 'http://schema.org/UsedCondition',
-      //'availability' => 'http://schema.org/InStock',
+      'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
+      'availability' => ($produt->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       'url' => document::link(),
     ),
   );
@@ -147,7 +147,7 @@
     'tax_rates' => array(),
     'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
     'quantity_unit' => $product->quantity_unit,
-    'stock_status' => settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock'),
+    'stock_status' => null,
     'delivery_status' => !empty($product->delivery_status['name']) ? $product->delivery_status['name'] : '',
     'sold_out_status' => !empty($product->sold_out_status['name']) ? $product->sold_out_status['name'] : '',
     'orderable' => $product->sold_out_status['orderable'],
@@ -208,6 +208,13 @@
         ),
       );
     }
+  }
+
+// Stock Status
+  if ($product->quantity_unit) {
+    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
+  } else {
+    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, 0) : language::translate('title_in_stock', 'In Stock');
   }
 
 // Tax
