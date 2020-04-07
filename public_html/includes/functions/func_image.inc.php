@@ -157,7 +157,7 @@
 
   function image_delete_cache($file) {
 
-    $webpath = str_replace(DOCUMENT_ROOT, '', $file);
+    $webpath = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', $file));
 
     $cachename = sha1($webpath);
 
