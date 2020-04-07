@@ -137,6 +137,17 @@
     // Return language from cookie
       if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $all_languages)) return $_COOKIE['language_code'];
 
+    // Return language from country (TLD)
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+        $countries_query = database::query(
+          "select * from ". DB_TABLE_COUNTRIES ."
+          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
+          limit 1;"
+        );
+        $country = database::fetch($countries_query);
+        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
+      }
+
     // Return language from browser request headers
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $browser_locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -149,17 +160,6 @@
         if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
           if (!empty($reg[1]) && in_array($reg[1], $enabled_languages)) return $reg[1];
         }
-      }
-
-    // Return language from country (TLD)
-      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-        $countries_query = database::query(
-          "select * from ". DB_TABLE_COUNTRIES ."
-          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
-          limit 1;"
-        );
-        $country = database::fetch($countries_query);
-        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
       }
 
     // Return default language
