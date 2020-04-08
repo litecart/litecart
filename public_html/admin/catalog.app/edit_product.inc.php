@@ -691,8 +691,8 @@
               <thead>
                 <tr>
                   <th><?php echo language::translate('title_option', 'Option'); ?></th>
-                  <th class="text-center" style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-                  <th class="text-center" style="width: 185px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+                  <th style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+                  <th style="width: 185px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
                   <th style="width: 400px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                   <th class="text-center" style="width: 125px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
                   <th style="width: 85px;">&nbsp;</th>
