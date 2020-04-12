@@ -324,7 +324,7 @@
 
 <script>
   <?php if (!empty($category->data['id'])) { ?>
-  $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').attr('disabled', 'disabled');
+  $('select[name="parent_id"] option[value="<?php echo $category->data['id']; ?>"]').prop('disabled', true);
   <?php } ?>
 
 // Image

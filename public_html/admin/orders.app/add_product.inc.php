@@ -59,7 +59,7 @@
 
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_product_id', 'Product ID'); ?></label>
-          <?php echo functions::form_draw_number_field('product_id', true, 'readonly="readonly"'); ?>
+          <?php echo functions::form_draw_number_field('product_id', true, 'readonly'); ?>
         </div>
       </div>
 

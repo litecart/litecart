@@ -152,10 +152,10 @@
           $.each(data, function(i, zone) {
             $(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
-          $(zone_field).removeAttr('disabled');
+          $(zone_field).prop('disabled', false);
         } else {
           $(zone_field).append('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
-          $(zone_field).attr('disabled', 'disabled');
+          $(zone_field).prop('disabled', true);
         }
       },
       complete: function() {

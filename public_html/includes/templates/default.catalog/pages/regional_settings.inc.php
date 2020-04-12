@@ -76,13 +76,13 @@
       },
       success: function(data) {
         $('select[name="zone_code"]').html('');
-        if ($('select[name="zone_code"]').attr('disabled')) $('select[name="zone_code"]').removeAttr('disabled');
+        if ($('select[name="zone_code"]').is(':disabled')) $('select[name="zone_code"]').prop('disabled', false);
         if (data) {
           $.each(data, function(i, zone) {
             $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="zone_code"]').attr('disabled', 'disabled');
+          $('select[name="zone_code"]').prop('disabled', true);
         }
       },
       complete: function() {

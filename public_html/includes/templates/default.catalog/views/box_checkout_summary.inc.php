@@ -40,13 +40,13 @@
 
       <?php if (!$error && $consent) { ?>
       <div class="consent text-center" style="font-size: 1.25em; margin-top: 0.5em;">
-        <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required="required"') .' '. $consent .'</label>'; ?>
+        <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required') .' '. $consent .'</label>'; ?>
       </div>
       <?php } ?>
     </div>
 
     <div class="col-md-3">
-      <button class="btn btn-block btn-lg btn-success" type="submit" name="confirm_order" value="true"<?php echo !empty($error) ? ' disabled="disabled"' : ''; ?>><?php echo $confirm; ?></button>
+      <button class="btn btn-block btn-lg btn-success" type="submit" name="confirm_order" value="true"<?php echo !empty($error) ? ' disabled' : ''; ?>><?php echo $confirm; ?></button>
     </div>
   </div>
 </section>

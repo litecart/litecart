@@ -130,7 +130,7 @@ textarea {
 
           <div class="form-group">
             <label><?php echo language::translate('title_filename', 'Filename'); ?></label>
-            <?php echo functions::form_draw_text_field('filename', true, 'required="required" placeholder="example.xml"'); ?>
+            <?php echo functions::form_draw_text_field('filename', true, 'required placeholder="example.xml"'); ?>
           </div>
 
           <div class="row">

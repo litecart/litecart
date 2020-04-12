@@ -89,7 +89,7 @@
           <div class="row">
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_username', 'Username'); ?></label>
-              <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
+              <?php echo functions::form_draw_text_field('username', true, 'required'); ?>
             </div>
 
             <div class="form-group col-sm-6">
@@ -126,19 +126,19 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
-              <?php echo functions::form_draw_text_field('last_ip_address', true, 'readonly="readonly"'); ?>
+              <?php echo functions::form_draw_text_field('last_ip_address', true, 'readonly'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
-              <?php echo functions::form_draw_text_field('last_hostname', true, 'readonly="readonly"'); ?>
+              <?php echo functions::form_draw_text_field('last_hostname', true, 'readonly'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-              <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
+              <?php echo functions::form_draw_text_field('date_login', true, 'readonly'); ?>
             </div>
           </div>
           <?php } ?>
@@ -183,11 +183,11 @@
 <script>
   $('input[name="permissions_toggle"]').change(function(){
     if ($(this).is(':checked')) {
-      $('input[name^="permissions"][name$="[status]"]').removeAttr('disabled');
-      $('input[name^="permissions"][name$="[docs][]"]').removeAttr('disabled');
+      $('input[name^="permissions"][name$="[status]"]').prop('disabled', false);
+      $('input[name^="permissions"][name$="[docs][]"]').prop('disabled', false);
     } else {
-      $('input[name^="permissions"][name$="[status]"]').attr('disabled', 'disabled');
-      $('input[name^="permissions"][name$="[docs][]"]').attr('disabled', 'disabled');
+      $('input[name^="permissions"][name$="[status]"]').prop('disabled', true);
+      $('input[name^="permissions"][name$="[docs][]"]').prop('disabled', true);
     }
   }).trigger('change');
 

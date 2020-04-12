@@ -243,26 +243,26 @@
 <script>
   $('select[name="function"]').change(function() {
     $('div[id^="option-values"]').hide();
-    $('div[id^="option-values"] input, div[id^="option-values"] textarea').attr('disabled', 'disabled');
+    $('div[id^="option-values"] input, div[id^="option-values"] textarea').prop('disabled', true);
     switch ($(this).find('option:selected').val()) {
       case 'select':
       case 'checkbox':
       case 'radio':
         $('#option-values-multiset').show();
-        $('#option-values-multiset input').removeAttr('disabled');
+        $('#option-values-multiset input').prop('disabled', false);
         break;
       case 'range':
         $('#option-values-range').show();
-        $('#option-values-range input').removeAttr('disabled');
+        $('#option-values-range input').prop('disabled', false);
         break;
       case 'input':
         $('#option-values-input').show();
-        $('#option-values-input input').removeAttr('disabled');
+        $('#option-values-input input').prop('disabled', false);
         break;
       case 'textarea':
         $('#option-values-textarea').show();
-        $('#option-values-textarea input').removeAttr('disabled');
-        $('#option-values-textarea textarea').removeAttr('disabled');
+        $('#option-values-textarea input').prop('disabled', false);
+        $('#option-values-textarea textarea').prop('disabled', false);
         break;
     }
   });
