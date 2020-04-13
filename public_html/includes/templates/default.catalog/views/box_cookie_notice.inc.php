@@ -17,13 +17,13 @@
     $('#box-cookie-notice').fadeOut();
     var now = new Date();
     var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
-    document.cookie = 'cookies_accepted=1;expires=' + expires.toUTCString();
+    document.cookie = 'cookies_accepted=1; Expires=' + expires.toUTCString() +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Strict';
   });
 
   $('button[name="decline_cookies"]').click(function(){
     $('#box-cookie-notice').fadeOut();
     var now = new Date();
     var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
-    document.cookie = 'cookies_accepted=0;expires=0';
+    document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_APP; ?>; SameSite=Strict';
   });
 </script>
