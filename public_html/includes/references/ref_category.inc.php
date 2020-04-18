@@ -116,6 +116,28 @@
 
           break;
 
+        case 'num_products':
+
+          if (!empty($this->_data['products'])) {
+            $this->_data['num_products'] = count($this->_data['products']);
+            break;
+          }
+
+          $query = database::query(
+            "select count(id) as num_products from ". DB_TABLE_PRODUCTS ."
+            where status
+            and id in (
+              select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+              where category_id = ". (int)$this->_id ."
+            )
+            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+          );
+
+          $this->_data['num_products'] = (int)database::fetch($query, 'num_products');
+
+          break;
+
         case 'siblings':
 
           $this->_data['siblings'] = array();
