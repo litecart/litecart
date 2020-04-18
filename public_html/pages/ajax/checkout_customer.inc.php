@@ -121,7 +121,6 @@
               if (isset(customer::$data[$key])) $customer->data[$key] = customer::$data[$key];
             }
 
-            if (empty($_POST['password'])) $_POST['password'] = functions::password_generate(6);
             $customer->set_password($_POST['password']);
 
             $customer->save();

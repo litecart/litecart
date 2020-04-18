@@ -9,6 +9,7 @@
 // Delete old files
   $deleted_files = [
     FS_DIR_ADMIN . 'customers.app/mailchimp.png',
+    FS_DIR_ADMIN . 'includes/functions/func_password.inc.php',
     FS_DIR_ADMIN . 'vqmod/',
   ];
 
