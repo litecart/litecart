@@ -152,7 +152,7 @@
       "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
 
       from (
-        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, ptc.categories, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, ptc.categories, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
 
         from ". DB_PREFIX ."products p
 
