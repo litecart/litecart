@@ -69,9 +69,9 @@
         return;
       }
 
-      $num_decimals = self::$classes[$class]['decimals'];
-      if (round($value) == $value) $num_decimals = 0;
+      $decimals = self::$classes[$class]['decimals'];
+      if ($value == floor($value)) $decimals = 0;
 
-      return number_format($value, self::$classes[$class]['decimals'], language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
+      return number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
     }
   }
