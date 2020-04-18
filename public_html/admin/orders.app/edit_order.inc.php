@@ -188,10 +188,13 @@
 }
 
 #box-comments {
-    border: 1px solid #e5e5e5;
+    border: 1px solid var(--default-border-color);
     padding: 2em;
     background: #fcfcfc;
     border-radius: 0.5em;
+}
+body.dark-mode #box-comments {
+  background: #283144;
 }
 
 #box-comments .bubbles ..text {

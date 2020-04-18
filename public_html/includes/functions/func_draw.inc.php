@@ -135,8 +135,11 @@
       'manufacturer' => [],
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
+      'quantity_unit_id' => $product['quantity_unit_id'],
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
       'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
+      'delivery_status_id' => $product['delivery_status_id'],
+      'sold_out_status_id' => $product['sold_out_status_id'],
     ];
 
     if (!empty($product['manufacturer_id'])) {

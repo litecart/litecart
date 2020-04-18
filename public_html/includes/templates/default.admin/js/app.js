@@ -4,11 +4,6 @@
     $(this).closest('.alert').fadeOut('fast', function(){$(this).remove()});
   });
 
-// Set Head Title
-  if ($('h1').length) {
-    document.title = document.title +' – '+ $('h1:first').text();
-  }
-
 // Form required asterix
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
