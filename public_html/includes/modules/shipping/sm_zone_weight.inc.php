@@ -6,7 +6,7 @@
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
-    public $website = 'http://www.litecart.net';
+    public $website = 'https://www.litecart.net';
 
     public function __construct() {
       $this->name = language::translate(__CLASS__.':title', 'Zone Based Shipping');

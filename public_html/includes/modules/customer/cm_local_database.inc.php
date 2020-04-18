@@ -5,7 +5,7 @@
     public $name = 'Local Database - Get Address';
     public $description = '';
     public $author = 'LiteCart Dev Team';
-    public $website = 'http://www.litecart.net';
+    public $website = 'https://www.litecart.net';
     public $version = '1.0';
 
     public function get_address($data) {
