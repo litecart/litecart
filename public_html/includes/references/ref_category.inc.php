@@ -107,7 +107,12 @@
           $query = database::query(
             "select id from ". DB_TABLE_PRODUCTS ."
             where status
-            and find_in_set ('". database::input($this->_id) ."', categories);"
+            and id in (
+              select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+              where category_id = ". (int)$this->_id ."
+            )
+            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
 
           while ($row = database::fetch($query)) {
