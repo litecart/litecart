@@ -176,6 +176,7 @@
     $pagination = new ent_view();
 
     $pagination->snippets['items'][] = array(
+      'page' => $_GET['page']-1,
       'title' => language::translate('title_previous', 'Previous'),
       'link' => document::link(null, array('page' => $_GET['page']-1), true),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
@@ -188,6 +189,7 @@
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
           $rewind = round(($_GET['page']-1)/2);
           $pagination->snippets['items'][] = array(
+            'page' => $rewind,
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
             'link' => document::link(null, array('page' => $rewind), true),
             'disabled' => false,
@@ -202,6 +204,7 @@
         if ($i > $_GET['page'] + 1 && $i < $pages) {
           $forward = round(($_GET['page']+1+$pages)/2);
           $pagination->snippets['items'][] = array(
+            'page' => $forward,
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
             'link' => document::link(null, array('page' => $forward), true),
             'disabled' => false,
@@ -212,6 +215,7 @@
       }
 
       $pagination->snippets['items'][] = array(
+        'page' => $i,
         'title' => $i,
         'link' => document::link(null, array('page' => $i), true),
         'disabled' => false,
@@ -220,6 +224,7 @@
     }
 
     $pagination->snippets['items'][] = array(
+      'page' => $_GET['page']+1,
       'title' => language::translate('title_next', 'Next'),
       'link' => document::link(null, array('page' => $_GET['page']+1), true),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,
