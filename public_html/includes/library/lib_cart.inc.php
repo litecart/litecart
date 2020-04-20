@@ -195,7 +195,7 @@
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, $product->quantity_unit['decimals']))));
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, @$product->quantity_unit['decimals']))));
         }
 
       // Build options structure
@@ -284,7 +284,7 @@
           if ($option_match) {
             //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
             if (($option_stock['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], $product->quantity_unit['decimals']) .')');
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], @$product->quantity_unit['decimals']) .')');
             }
 
             $item['option_stock_combination'] = $option_stock['combination'];
