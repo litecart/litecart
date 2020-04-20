@@ -1,7 +1,7 @@
 <?php
   $draw_branch = function($category, &$category_path, &$draw_branch) {
     echo '<li class="category-'. $category['id'] . (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'">' . PHP_EOL
-       . '  <a href="'. htmlspecialchars($category['link']) .'">'. functions::draw_fonticon('fa-caret-'. (!empty($category['opened']) ? 'down' : 'right') .' fa-fw') .' '. $category['name'] .'</a>' . PHP_EOL;
+       . '  <a href="'. htmlspecialchars($category['link']) .'">'. functions::draw_fonticon('fa-caret-'. (!empty($category['opened']) ? 'down' : 'right') .' fa-fw') .' '. $category['name'] . (settings::get('category_tree_product_count') ? ' <small class="pull-right">('. reference::category($category['id'])->num_products .')</small>' : '') .'</a>' . PHP_EOL;
     if (!empty($category['subcategories'])) {
       echo '  <ul class="nav nav-stacked nav-pills">' . PHP_EOL;
       foreach ($category['subcategories'] as $subcategory) {
