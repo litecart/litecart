@@ -255,7 +255,7 @@
               break;
           }
 
-          if (empty($matched_value) && !empty($option['required'])) {
+          if (!empty($option['required']) && (!isset($matched_value) || $matched_value == '')) {
             throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
           }
 
