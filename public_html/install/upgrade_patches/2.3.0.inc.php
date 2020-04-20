@@ -11,6 +11,7 @@
     FS_DIR_ADMIN . 'customers.app/mailchimp.png',
     FS_DIR_ADMIN . 'includes/functions/func_password.inc.php',
     FS_DIR_ADMIN . 'vqmod/',
+    FS_DIR_APP . 'ext/jquery/jquery-3.4.1.min.js',
   ];
 
   foreach ($deleted_files as $pattern) {
