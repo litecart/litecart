@@ -9,9 +9,9 @@
 // Delete old files
   $deleted_files = [
     FS_DIR_ADMIN . 'customers.app/mailchimp.png',
-    FS_DIR_ADMIN . 'includes/functions/func_password.inc.php',
-    FS_DIR_ADMIN . 'vqmod/',
+    FS_DIR_APP . 'includes/functions/func_password.inc.php',
     FS_DIR_APP . 'ext/jquery/jquery-3.4.1.min.js',
+    FS_DIR_APP . 'vqmod/',
   ];
 
   foreach ($deleted_files as $pattern) {
