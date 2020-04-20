@@ -1,5 +1,16 @@
 <?php
 
+// Delete files
+  $deleted_files = array(
+    FS_DIR_APP . 'includes/templates/default.catalog/pages/page.inc.php',
+  );
+
+  foreach ($deleted_files as $pattern) {
+    if (!file_delete($pattern)) {
+      echo '<span class="error">[Skipped]</span></p>';
+    }
+  }
+
   $modified_files = array(
     array(
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
