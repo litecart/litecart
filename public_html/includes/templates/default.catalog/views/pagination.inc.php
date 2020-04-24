@@ -12,8 +12,16 @@
   $('body').on('click', '.pagination a', function(e){
     e.preventDefault();
     var container = '#'+$(this).closest('[id]').attr('id');
-    $(container).load($(this).attr('href') + ' ' + container, function(){
+    var page = $(this).closest('li').data('page');
+    var url = $(this).attr('href');
+    $(container).load(url + ' ' + container, function(){
+      history.pushState({page: page}, document.title, url);
       $(document).scrollTop(1);
     });
+  });
+
+  $(window).on('popstate', function(e){
+    var container = '#'+$('.pagination').closest('[id]').attr('id');
+    $(container).load(location.href + ' ' + container);
   });
 </script>
