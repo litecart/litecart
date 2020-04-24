@@ -1482,17 +1482,6 @@ ul.list-inline li {
     border: 0;
     box-shadow: none;
   }
-  .navbar .open .dropdown-menu > li > a,
-  .navbar .open .dropdown-menu .dropdown-header {
-    padding: 5px 15px 5px 15px;
-  }
-  .navbar .open .dropdown-menu > li > a {
-    line-height: 20px;
-  }
-  .navbar .open .dropdown-menu > li > a:hover,
-  .navbar .open .dropdown-menu > li > a:focus {
-    background-image: none;
-  }
 }
 .navbar li.open > a {
   background: rgba(0, 0, 0, 0.15) !important;

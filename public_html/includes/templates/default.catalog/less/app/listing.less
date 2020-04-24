@@ -166,8 +166,10 @@
       //opacity: 0.5;
     }
 
-    &:hover .preview {
-      display: inline-block;
+    @media (min-width: (@media-breakpoint-sm)) {
+      &:hover .preview {
+        display: inline-block;
+      }
     }
   }
 
