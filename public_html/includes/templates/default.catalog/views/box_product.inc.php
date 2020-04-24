@@ -178,17 +178,17 @@
     <div id="tab-technical-data" class="tab-pane technical-data">
       <table class="table table-striped table-hover">
 <?php
-  for ($i=0; $i<count($technical_data); $i++) {
-    if (strpos($technical_data[$i], ':') !== false) {
-      @list($key, $value) = explode(':', $technical_data[$i]);
+  foreach ($technical_data as $line) {
+    if (preg_match('#(:|\t)#', $line)) {
+      @list($key, $value) = preg_split('#(:|\t)#', $line);
       echo '  <tr>' . PHP_EOL
-         . '    <td>'. trim($key) .':</td>' . PHP_EOL
+         . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
          . '  </tr>' . PHP_EOL;
-    } else if (trim($technical_data[$i]) != '') {
+    } else if (trim($line) != '') {
       echo '  <thead>' . PHP_EOL
          . '    <tr>' . PHP_EOL
-         . '      <th colspan="2">'. $technical_data[$i] .'</th>' . PHP_EOL
+         . '      <th colspan="2">'. $line .'</th>' . PHP_EOL
          . '    </tr>' . PHP_EOL
          . '  </thead>' . PHP_EOL
          . '  <tbody>' . PHP_EOL;
