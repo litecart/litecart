@@ -591,7 +591,7 @@
                 <th style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
                 <th style="width: 175px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
                 <th style="width: 420px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
-                <th style="width: 115px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+                <th style="width: 175px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
                 <th style="min-width: 200px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
                 <th style="min-width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
                 <th style="width: 30px;">&nbsp;</th>

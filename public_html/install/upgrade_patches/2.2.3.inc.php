@@ -94,7 +94,6 @@
   );
 
   if ($option_group = database::fetch($option_groups_query)) {
-    echo 'Migrating '. $option_group['name'] . PHP_EOL;
 
     $attribute_groups_query = database::query(
       "select ag.*, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
@@ -104,11 +103,9 @@
     );
 
     if ($attribute_group = database::fetch($attribute_groups_query)) {
-      echo 'Found attribute group '. $attribute_group['name'] . PHP_EOL;
       $attribute_group_id = $attribute_group['id'];
 
     } else {
-      echo 'Creating new attribute group' . PHP_EOL;
       database::query(
         "insert into ". DB_TABLE_PREFIX ."attribute_groups
         (code, date_created) values ('option_". (int)$option_group['id'] ."', '". date('Y-m-d H:i:s') ."');"
@@ -177,7 +174,8 @@
         and value_id = ". (int)$option_value['id'] .";"
       );
 
-    // Update stock combination
+    // Update stock options
+      // ...
     }
   }
 
