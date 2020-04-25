@@ -66,7 +66,7 @@
         default:
 
           $query = database::query(
-            "select from ". DB_TABLE_ORDER_STATUSES ."
+            "select * from ". DB_TABLE_ORDER_STATUSES ."
             where id = ". (int)$this->_id ."
             limit 1;"
           );
