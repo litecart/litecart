@@ -68,13 +68,13 @@
 
   database::query(
     "INSERT INTO ". DB_TABLE_PREFIX ."products_options (product_id, group_id, `function`, required, sort)
-    SELECT product_id, group_id, ov.`function`, ov.required, ov.sort FROM `lc_products_options_values` pov
-    LEFT JOIN `lc_option_groups` ov ON (ov.id = pov.group_id)
+    SELECT product_id, group_id, ov.`function`, ov.required, ov.sort FROM `". DB_TABLE_PREFIX ."products_options_values` pov
+    LEFT JOIN `". DB_TABLE_PREFIX ."option_groups` ov ON (ov.id = pov.group_id)
     GROUP BY pov.product_id, pov.group_id;"
   );
 
   database::query(
-    "UPDATE `lc_products_options` SET sort = 'custom' WHERE sort = 'product';"
+    "UPDATE `". DB_TABLE_PREFIX ."products_options` SET sort = 'custom' WHERE sort = 'product';"
   );
 
 // Move option groups into attribute groups
@@ -115,8 +115,8 @@
 
       database::query(
         "insert into ". DB_TABLE_PREFIX ."attribute_groups_info (group_id, language_code, name)
-        select group_id, language_code, name from ". DB_TABLE_PREFIX ."attribute_groups_info
-        where group_id = ". (int)$attribute_group_id .";"
+        select '". $attribute_group_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_groups_info
+        where group_id = ". (int)$option_group['id'] .";"
       );
     }
 
@@ -175,7 +175,10 @@
       );
 
     // Update stock options
-      // ...
+      database::query(
+        "update ". DB_TABLE_PREFIX ."products_options_stock
+        set combination = regexp_replace(combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '". $attribute_group_id ."-". $attribute_value_id ."');"
+      );
     }
   }
 
