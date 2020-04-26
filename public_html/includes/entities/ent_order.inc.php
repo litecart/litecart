@@ -85,7 +85,7 @@
       $this->previous = $this->data;
     }
 
-    private function load($order_id) {
+    public function load($order_id) {
 
       if (!preg_match('#^[0-9]+$#', $order_id)) throw new Exception('Invalid order (ID: '. $order_id .')');
 
