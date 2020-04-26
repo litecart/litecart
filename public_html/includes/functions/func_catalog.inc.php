@@ -306,29 +306,16 @@
     if (empty($product_id)) return;
 
     if (!empty($option_stock_combination)) {
-      $products_options_stock_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+      database::query(
+        "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        set quantity = quantity + ". (float)$quantity ."
         where product_id = ". (int)$product_id ."
-        and combination = '". database::input($option_stock_combination) ."';"
+        and combination =  '". database::input($option_stock_combination) ."'
+        limit 1;"
       );
 
-      if (database::num_rows($products_options_stock_query) > 0) {
-
-        if (empty($option_stock_combination)) {
-          trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
-
-        } else {
-          database::query(
-            "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-            set quantity = quantity + ". (float)$quantity ."
-            where product_id = ". (int)$product_id ."
-            and combination =  '". database::input($option_stock_combination) ."'
-            limit 1;"
-          );
-        }
-
-      } else {
-        $option_id = 0;
+      if (!database::affected_rows()) {
+        trigger_error('Could not adjust stock for product (ID: '. $product_id .', Combination: '. $option_stock_combination .')', E_USER_WARNING);
       }
     }
 
@@ -338,6 +325,10 @@
       where id = ". (int)$product_id ."
       limit 1;"
     );
+
+    if (!database::affected_rows()) {
+      trigger_error('Could not adjust stock for product (ID: '. $product_id .')', E_USER_WARNING);
+    }
   }
 
   function catalog_purchase_count_adjust($product_id, $quantity) {
