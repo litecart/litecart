@@ -52,11 +52,11 @@
     public function save() {
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('store_currency_code')) {
-        throw new Exception('You cannot disable the store currency.');
+        throw new Exception(language::translate('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
       }
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_currency_code')) {
-        throw new Exception('You cannot disable the default currency.');
+        throw new Exception(language::translate('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
       }
 
       if (empty($this->data['id'])) {
@@ -155,11 +155,11 @@
     public function delete() {
 
       if ($this->data['code'] == settings::get('store_currency_code')) {
-        throw new Exception('Cannot delete the store currency');
+        throw new Exception(language::translate('error_cannot_delete_store_currency', 'You must change the store currency before it can be deleted.'));
       }
 
       if ($this->data['code'] == settings::get('default_currency_code')) {
-        throw new Exception('Cannot delete the default currency');
+        throw new Exception(language::translate('error_cannot_delete_default_currency', 'You must change the default currency before it can be deleted.'));
       }
 
       database::query(
