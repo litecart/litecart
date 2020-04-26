@@ -239,6 +239,8 @@
 
     public function send() {
 
+      if (!settings::get('email_status')) return;
+
       $this->save();
 
       if ($this->data['status'] == 'sent') {
