@@ -218,13 +218,9 @@
         $this->data['id'] = database::insert_id();
       }
 
-    // Calculate product quantity from options
+    // Calculate total product quantity from options
       if (!empty($this->data['options_stock'])) {
-        $this->data['quantity'] = 0;
-
-        foreach ($this->data['options_stock'] as $option) {
-          $this->data['quantity'] += @$option['quantity'];
-        }
+        $this->data['quantity'] = array_sum(array_column($this->data['options_stock'], 'quantity'));
       }
 
       $this->data['categories'] = array_map('trim', $this->data['categories']);
