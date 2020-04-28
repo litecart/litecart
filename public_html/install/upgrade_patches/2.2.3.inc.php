@@ -177,7 +177,13 @@
     // Update stock options
       database::query(
         "update ". DB_TABLE_PREFIX ."products_options_stock
-        set combination = regexp_replace(combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '". $attribute_group_id ."-". $attribute_value_id ."');"
+        set combination = regexp_replace(combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '$1". $attribute_group_id ."-". $attribute_value_id ."');"
+      );
+
+    // Update order items
+      database::query(
+        "update ". DB_TABLE_PREFIX ."orders_items
+        set combination = regexp_replace(combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '$1". $attribute_group_id ."-". $attribute_value_id ."');"
       );
     }
   }
