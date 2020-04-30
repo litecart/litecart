@@ -570,7 +570,7 @@
           }
         }
 
-        if (reference::country($this->data['customer']['country_code'])->zones) {
+        if (settings::get('customer_field_zone') && reference::country($this->data['customer']['country_code'])->zones) {
           if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
         }
 
@@ -609,7 +609,7 @@
             }
           }
 
-          if (reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
+          if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
             if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) return language::translate('error_missing_zone', 'You must select a zone.');
           }
         }
