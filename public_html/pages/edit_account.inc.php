@@ -7,6 +7,11 @@
 
   document::$snippets['title'][] = language::translate('title_edit_account', 'Edit Account');
 
+  if (!settings::get('accounts_enabled')) {
+    echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');
+    return;
+  }
+
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'));
 

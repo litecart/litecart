@@ -6,6 +6,11 @@
 
   breadcrumbs::add(language::translate('title_create_account', 'Create Account'));
 
+  if (!settings::get('accounts_enabled')) {
+    echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');
+    return;
+  }
+
   if (!$_POST) {
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;

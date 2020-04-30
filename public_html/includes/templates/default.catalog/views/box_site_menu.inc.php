@@ -58,6 +58,7 @@
         <a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
       </li>
 
+      <?php if (settings::get('accounts_enabled')) { ?>
       <li class="account dropdown">
         <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -99,6 +100,7 @@
           <?php } ?>
         </ul>
       </li>
+      <?php } ?>
     </ul>
   </div>
 </nav>

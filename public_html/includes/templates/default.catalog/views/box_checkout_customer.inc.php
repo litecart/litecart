@@ -1,7 +1,7 @@
 <section id="box-checkout-customer" class="box">
   <?php echo functions::form_draw_hidden_field('customer_details', 'true'); ?>
 
-  <?php if (empty(customer::$data['id'])) { ?>
+  <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div style="float:right">
     <a href="<?php echo document::ilink('login', array('redirect_url' => document::ilink('checkout'))) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
   </div>
@@ -163,7 +163,7 @@
     </fieldset>
   </div>
 
-  <?php if (empty(customer::$data['id'])) { ?>
+  <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div class="account">
 
     <?php if (!empty($account_exists)) { ?>

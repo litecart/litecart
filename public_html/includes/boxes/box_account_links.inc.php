@@ -1,4 +1,7 @@
 <?php
+
+  if (!settings::get('accounts_enabled')) return;
+
   if (!empty(customer::$data['id'])) {
 
     $box_account = new ent_view();

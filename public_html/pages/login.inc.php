@@ -6,6 +6,11 @@
 
   breadcrumbs::add(language::translate('title_sign_in', 'Sign In'));
 
+  if (!settings::get('accounts_enabled')) {
+    echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');
+    return;
+  }
+
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
   if (empty($_REQUEST['redirect_url'])) $_REQUEST['redirect_url'] = document::ilink('');
 
