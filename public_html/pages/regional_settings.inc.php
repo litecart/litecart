@@ -24,15 +24,15 @@
         customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
         customer::$data['shipping_address']['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
         if (!empty($_COOKIE['cookies_accepted'])) {
-          header('Set-Cookie: country_code='. $_POST['country_code'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
-          header('Set-Cookie: zone_code='. $_POST['zone_code'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+          header('Set-Cookie: country_code='. $_POST['country_code'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+          header('Set-Cookie: zone_code='. $_POST['zone_code'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
         }
       }
 
       if (isset($_POST['display_prices_including_tax'])) {
         customer::$data['display_prices_including_tax'] = (bool)$_POST['display_prices_including_tax'];
         if (!empty($_COOKIE['cookies_accepted'])) {
-          header('Set-Cookie: display_prices_including_tax='. (int)$_POST['display_prices_including_tax'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+          header('Set-Cookie: display_prices_including_tax='. (int)$_POST['display_prices_including_tax'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
         }
       }
 

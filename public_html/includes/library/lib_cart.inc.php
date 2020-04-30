@@ -28,7 +28,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
+          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
         }
       }
 
