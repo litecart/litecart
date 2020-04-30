@@ -680,6 +680,10 @@
             throw new Exception('Not a valid image object');
           }
 
+          if ($this->_image->getImageDepth() > 16) {
+            $this->_image->setImageDepth(16);
+          }
+
           switch(strtolower($type)) {
             case 'jpg':
                $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
