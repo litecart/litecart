@@ -126,39 +126,41 @@
     if (empty($selector)) return;
 
     if (preg_match('#^(https?:)?//#', $selector)) {
-      document::$snippets['javascript']['featherlight-'.$selector] = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
+      $js = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
     } else {
-      document::$snippets['javascript']['featherlight-'.$selector] = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
+      $js = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
     }
 
     foreach ($params as $key => $value) {
       switch (gettype($params[$key])) {
         case 'NULL':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': null,' . PHP_EOL;
+          $js .= '    '. $key .': null,' . PHP_EOL;
           break;
         case 'boolean':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
+          $js .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
           break;
         case 'integer':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
+          $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           break;
         case 'string':
           if (preg_match('#^function\s?\(#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
+            $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           } else if (preg_match('#^undefined$#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': undefined,' . PHP_EOL;
+            $js .= '    '. $key .': undefined,' . PHP_EOL;
           } else {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+            $js .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
           }
           break;
         case 'array':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          $js .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
           break;
       }
     }
 
-    document::$snippets['javascript']['featherlight-'.$selector] = rtrim(document::$snippets['javascript']['featherlight-'.$selector], ','.PHP_EOL) . PHP_EOL
-                                                                 . '  });';
+    $js = rtrim($js, ",\r\n") . PHP_EOL
+        . '  });';
+
+    document::$snippets['javascript']['featherlight-'.$selector] = $js;
   }
 
   function draw_pagination($pages) {
