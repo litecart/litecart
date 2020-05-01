@@ -47,8 +47,9 @@
 // List supported upgrades
   $supported_versions = array('1.0' => '1.0');
   foreach (glob('upgrade_patches/*') as $file) {
-    preg_match('#\/(.*).(inc.php|sql)$#', $file, $matches);
-    $supported_versions[$matches[1]] = $matches[1];
+    if (preg_match('#\/(.*).(inc.php|sql)$#', $file, $matches)) {
+      $supported_versions[$matches[1]] = $matches[1];
+    }
   }
   usort($supported_versions, function($a, $b) {
     return version_compare($a, $b, '>');
@@ -92,7 +93,7 @@
         }
 
         if (file_exists('upgrade_patches/'. $version .'.inc.php')) {
-          echo '<p>Upgrading system to '. $version .'... ' . PHP_EOL;
+          echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL;
           include('upgrade_patches/'. $version .'.inc.php');
         }
 
@@ -111,7 +112,7 @@
 
     #############################################
 
-    echo '<p>Preparing CSS files...' . PHP_EOL;
+    echo '<p>Preparing CSS files...</p>' . PHP_EOL;
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
@@ -123,12 +124,7 @@
       );
 
       foreach ($files_to_delete as $file) {
-        echo 'Delete '. $file;
-        if (file_delete($file)) {
-          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-        } else {
-          echo '<span class="error">[Error]</span></p>' . PHP_EOL;
-        }
+        file_delete($file);
       }
 
     } else {
@@ -142,12 +138,7 @@
       );
 
       foreach ($files_to_delete as $file) {
-        echo 'Delete '. $file;
-        if (file_delete($file)) {
-          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-        } else {
-          echo '<span class="error">[Error]</span></p>' . PHP_EOL;
-        }
+        file_delete($file);
       }
 
       foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
