@@ -68,7 +68,7 @@
 
   database::query(
     "INSERT INTO ". DB_TABLE_PREFIX ."products_options (product_id, group_id, `function`, required, sort)
-    SELECT product_id, group_id, ov.`function`, ov.required, ov.sort FROM `". DB_TABLE_PREFIX ."products_options_values` pov
+    SELECT pov.product_id, pov.group_id, ov.`function`, ov.required, ov.sort FROM `". DB_TABLE_PREFIX ."products_options_values` pov
     LEFT JOIN `". DB_TABLE_PREFIX ."option_groups` ov ON (ov.id = pov.group_id)
     GROUP BY pov.product_id, pov.group_id;"
   );
@@ -183,7 +183,7 @@
     // Update order items
       database::query(
         "update ". DB_TABLE_PREFIX ."orders_items
-        set combination = regexp_replace(combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '$1". $attribute_group_id ."-". $attribute_value_id ."');"
+        set option_stock_combination = regexp_replace(option_stock_combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '$1". $attribute_group_id ."-". $attribute_value_id ."');"
       );
     }
   }
