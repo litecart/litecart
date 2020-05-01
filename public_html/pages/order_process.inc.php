@@ -100,6 +100,11 @@
     }
   }
 
+// Refresh the order if it's in the database in case a callback might have tampered with it
+  if (!empty($order->data['id'])) {
+    $order->load($order->data['id']);
+  }
+
 // Verify transaction
   if (!empty($payment->modules) && count($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
     $result = $payment->verify($order);
