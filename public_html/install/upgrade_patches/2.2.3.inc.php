@@ -42,12 +42,13 @@
 
   database::query(
     "ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+    ADD COLUMN `attribute_group_id` INT NOT NULL DEFAULT 0 AFTER `group_id`,
+    ADD COLUMN `attribute_value_id` INT NOT NULL DEFAULT 0 AFTER `value_id`,
     ADD `custom_value` VARCHAR(64) NOT NULL AFTER `value_id`,
     ADD INDEX `priority` (`priority`),
     DROP COLUMN `date_updated`,
     DROP COLUMN `date_created`,
-    DROP INDEX `product_option`,
-    ADD UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`);"
+    DROP INDEX `product_option`;"
   );
 
   database::query(
@@ -120,7 +121,6 @@
       );
     }
 
-  // Update values in products_options and products_options_values
     database::query(
       "update ". DB_TABLE_PREFIX ."products_options
       set
@@ -130,6 +130,7 @@
       where group_id = ". (int)$option_group['id'] .";"
     );
 
+  // Update values in products_options and products_options_values
     $option_values_query = database::query(
       "select ov.*, ovi.name from ". DB_TABLE_PREFIX ."option_values ov
       left join ". DB_TABLE_PREFIX ."option_values_info ovi on (ovi.value_id = ov.id and ovi.language_code = '". database::input($store_language_code) ."')
@@ -139,10 +140,10 @@
     while ($option_value = database::fetch($option_values_query)) {
 
       $attribute_values_query = database::query(
-        "select ag.*, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
-        left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input($store_language_code) ."')
-        where agi.id = ". (int)$attribute_group_id ."
-        and agi.name = '". database::input($option_group['name']) ."'
+        "select agv.*, agvi.name from ". DB_TABLE_PREFIX ."attribute_values agv
+        left join ". DB_TABLE_PREFIX ."attribute_values_info agvi on (agvi.value_id = agv.id and agvi.language_code = '". database::input($store_language_code) ."')
+        where agv.group_id = ". (int)$attribute_group_id ."
+        and agvi.name = '". database::input($option_value['name']) ."'
         limit 1;"
       );
 
@@ -168,8 +169,8 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."products_options_values
-        set group_id = ". (int)$attribute_group_id .",
-          value_id = ". (int)$attribute_value_id ."
+        set attribute_group_id = ". (int)$attribute_group_id .",
+          attribute_value_id = ". (int)$attribute_value_id ."
         where group_id = ". (int)$option_group['id'] ."
         and value_id = ". (int)$option_value['id'] .";"
       );
@@ -187,6 +188,15 @@
       );
     }
   }
+
+  database::query(
+    "ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+    DROP COLUMN `group_id`,
+    DROP COLUMN `value_id`,
+    CHANGE COLUMN `attribute_group_id` `group_id` INT(11) NOT NULL AFTER `product_id`,
+    CHANGE COLUMN `attribute_value_id` `value_id` INT(11) NOT NULL AFTER `group_id`,
+    ADD UNIQUE INDEX `product_option_value` (`id`, `product_id`, `group_id`);"
+  );
 
 // Delete option groups
 
