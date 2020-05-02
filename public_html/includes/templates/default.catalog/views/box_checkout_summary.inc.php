@@ -22,7 +22,7 @@
     <tfoot>
       <tr>
         <td class="text-right" colspan="5"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
-        <td class="text-right" style="width: 25%;"><strong><?php echo currency::format($payment_due, false); ?></strong></td>
+        <td class="text-right" style="width: 25%;"><strong><?php echo currency::format_html($payment_due, false); ?></strong></td>
       </tr>
     </tfoot>
   </table>
