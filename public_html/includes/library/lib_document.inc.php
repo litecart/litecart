@@ -44,12 +44,6 @@
 
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_APP . 'favicon.ico">';
 
-    // CDN content
-      //self::$snippets['head_tags']['dns-prefetch-jsdelivr'] = '<link rel="dns-prefetch" href="//cdn.jsdelivr.net">';
-      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css" />';
-      //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>';
-
-    // Local content
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/font-awesome.min.css" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.5.0.min.js"></script>';
 

@@ -12,13 +12,13 @@
       if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_id = (int)$category_id;
-      $this->_cache_token = cache::token('category_'.(int)$category_id, [$language_code]);
       $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ]);
 
+      $this->_cache_token = cache::token('category_'.(int)$category_id, [$language_code]);
       if ($cache = cache::get($this->_cache_token)) {
         $this->_data = $cache;
       }

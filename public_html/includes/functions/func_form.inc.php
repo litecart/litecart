@@ -15,7 +15,7 @@
     foreach ([$_POST, $_GET] as $superglobal) {
       if (empty($superglobal)) continue;
 
-      foreach (explode('&', http_build_query($superglobal)) as $pair) {
+      foreach (explode('&', http_build_query($superglobal), '', '&') as $pair) {
 
         @list($key, $value) = explode('=', $pair);
         $key = urldecode($key);
@@ -23,17 +23,14 @@
 
         if ($key == $name) return $value;
 
-        if (preg_replace('#(.*)\[([^\]]+)?\]$#', "$1", $key) == preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $name)) {
-          if (preg_match('#\[([0-9]+)?\]$#', $key)) {
-            if ($value == $array_value) {
-              return $value;
-            }
+        if (preg_replace('#^(.*)\[[^\]]*\]$#', '$1', $key) == preg_replace('#^(.*)\[[^\]]*\]$#', '$1', $name)) {
+          if (preg_match('#\[[0-9]*\]$#', $key)) {
+            if ($value != $array_value) continue;
+            return $value;
           }
         }
       }
     }
-
-    return '';
   }
 
   function form_draw_button($name, $value, $type='submit', $parameters='', $fonticon='') {
@@ -295,31 +292,6 @@
          . '</div>';
   }
 
-  function form_draw_select_optgroup_field($name, $groups=[], $input=true, $multiple=false, $parameters='') {
-    if (!is_array($groups)) $groups = [$groups];
-
-    $html = '<div class="select-wrapper'. ($multiple ? ' multiple' : '') .'">' . PHP_EOL
-          . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
-
-    foreach ($groups as $group) {
-      $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
-      foreach ($group['options'] as $option) {
-        if ($input === true) {
-          $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-        } else {
-          $option_input = $input;
-        }
-        $html .= '      <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
-      }
-      $html .= '    </optgroup>' . PHP_EOL;
-    }
-
-    $html .= '  </select>' . PHP_EOL
-           . '</div>';
-
-    return $html;
-  }
-
   function form_draw_select_field($name, $options=[], $input=true, $parameters='') {
 
     if (is_bool($parameters)) {
@@ -383,6 +355,31 @@
     return $html;
   }
 
+  function form_draw_select_optgroup_field($name, $groups=[], $input=true, $multiple=false, $parameters='') {
+    if (!is_array($groups)) $groups = [$groups];
+
+    $html = '<div class="form-control">' . PHP_EOL
+          . '  <select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+
+    foreach ($groups as $group) {
+      $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
+      foreach ($group['options'] as $option) {
+        if ($input === true) {
+          $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+        } else {
+          $option_input = $input;
+        }
+        $html .= '      <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+      }
+      $html .= '    </optgroup>' . PHP_EOL;
+    }
+
+    $html .= '  </select>' . PHP_EOL
+           . '</div>';
+
+    return $html;
+  }
+
   function form_draw_textarea($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
@@ -431,8 +428,8 @@
     }
 
     return '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label>'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
+         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" '. (($input == '1') ? 'checked' : '') .' /> '. $true_text .'</label>'. PHP_EOL
+         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked' : '') .' /> '. $false_text .'</label>' . PHP_EOL
          . '</div>';
   }
 
@@ -963,7 +960,7 @@
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     if (!database::num_rows($geo_zones_query)) {
-      return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
+      return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {
@@ -1444,7 +1441,7 @@
     }
 
     if (!database::num_rows($zones_query)) {
-      $parameters .= ' disabled="disabled"';
+      $parameters .= ' disabled';
     }
 
     while ($zone = database::fetch($zones_query)) {
