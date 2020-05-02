@@ -114,6 +114,17 @@
 
       $attribute_group_id = database::insert_id();
 
+    // Make certain the attribute group id does not collide with a previous option group id
+      while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."option_groups where id = ". (int)$attribute_group_id ." limit 1;"))) {
+        database::query(
+          "update ". DB_TABLE_PREFIX ."attribute_groups
+          set id = ". ($attribute_group_id+1) ."
+          where id = ". (int)$attribute_group_id ."
+          limit 1;"
+        );
+        $attribute_group_id++;
+      }
+
       database::query(
         "insert into ". DB_TABLE_PREFIX ."attribute_groups_info (group_id, language_code, name)
         select '". $attribute_group_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_groups_info
@@ -159,6 +170,17 @@
         );
 
         $attribute_value_id = database::insert_id();
+
+      // Make certain the attribute value id does not collide with a previous option value id
+        while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."option_values where id = ". (int)$attribute_value_id ." limit 1;"))) {
+          database::query(
+            "update ". DB_TABLE_PREFIX ."attribute_values
+            set id = ". ($attribute_value_id+1) ."
+            where id = ". (int)$attribute_value_id ."
+            limit 1;"
+          );
+          $attribute_value_id++;
+        }
 
         database::query(
           "insert into ". DB_TABLE_PREFIX ."attribute_values_info (value_id, language_code, name)
