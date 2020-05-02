@@ -147,7 +147,6 @@
       }
 
       if ($currency_code === null) $currency_code = self::$selected['code'];
-
       if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
 
       $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
@@ -163,6 +162,30 @@
       }
 
       return $prefix . number_format($amount, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
+    }
+
+    public static function format_html($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
+
+      if (empty($currency_code)) $currency_code = self::$selected['code'];
+      if (empty($currency_value)) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
+
+      $amount = self::format_raw($value, $currency_code, $currency_value);
+      $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
+      $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
+
+      if ($auto_decimals === true && settings::get('auto_decimals')) {
+        if ($amount - floor($amount) == 0) {
+          $decimals = 0;
+        }
+      } else if ($auto_decimals === false) {
+        $decimals = self::$currencies[$currency_code]['decimals'] ? self::$currencies[$currency_code]['decimals'] : 0;
+      } else {
+        $decimals = $auto_decimals;
+      }
+
+      list($integers, $fractions) = explode('.', $amount);
+
+      return '<span class="currency-amount"><small class="currency">'. $currency_code . '</small> ' . $prefix . number_format($integers, 0, language::$selected['decimal_point'], language::$selected['thousands_sep']) . ($fractions ? '<span class="decimals">'. language::$selected['decimal_point'] . $fractions .'</span>' : '') . $suffix . '</span>';
     }
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
