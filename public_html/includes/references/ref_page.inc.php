@@ -66,7 +66,7 @@
         case 'parent':
 
           if (!empty($this->parent_id)) {
-            $this->_data['parent'] = reference::page($page['parent_id'], $this->_language_codes[0]);
+            $this->_data['parent'] = reference::page($this->parent_id, $this->_language_codes[0]);
           }
 
           break;
