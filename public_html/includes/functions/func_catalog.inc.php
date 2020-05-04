@@ -330,13 +330,4 @@
       trigger_error('Could not adjust stock for product (ID: '. $product_id .')', E_USER_WARNING);
     }
   }
-
-  function catalog_purchase_count_adjust($product_id, $quantity) {
-
-    database::query(
-      "update ". DB_TABLE_PRODUCTS ."
-      set purchases = purchases + ". (int)$quantity ."
-      where id = ". (int)$product_id ."
-      limit 1;"
-    );
   }
