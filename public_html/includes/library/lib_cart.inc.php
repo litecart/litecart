@@ -221,9 +221,13 @@
 
               $matched_values = array();
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
-                $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
-                if (!empty($matched_value)) {
+                $possible_values = array_unique(
+                  array_merge(
+                    array_filter(array_column($product->options[$option['group_id']]['values'], 'name'), 'strlen'),
+                    array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen')
+                  )
+                );
+                if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
                 }
@@ -245,9 +249,14 @@
             case 'select':
 
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
-                $matched_value = @reset(array_intersect(array($options[$matched_group]), array_values($possible_values)));
-                if (!empty($matched_value)) {
+                $possible_values = array_unique(
+                  array_merge(
+                    array_filter(array_column($product->options[$option['group_id']]['values'], 'name'), 'strlen'),
+                    array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen')
+                  )
+                );
+                if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
+                  $matched_value = $matched_value[0];
                   $item['extras'] += $value['price_adjust'];
                   break;
                 }
