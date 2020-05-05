@@ -51,11 +51,6 @@
 
       self::clear();
 
-      if (ini_get('session.use_cookies')) {
-        $params = session_get_cookie_params();
-        header('Set-Cookie: '. session_name() .'=; Path='. WS_DIR_APP .'; Max-Age=-1; SameSite=Strict');
-      }
-
       return session_destroy();
     }
 
