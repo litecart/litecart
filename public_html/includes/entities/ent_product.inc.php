@@ -137,7 +137,7 @@
     // Options
       $products_options_query = database::query(
         "select po.*, agi.name from ". DB_TABLE_PRODUCTS_OPTIONS ." po
-        left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.id = po.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
+        left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = po.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
         where product_id = ". (int)$this->data['id'] ."
         order by priority asc;"
       );
@@ -149,7 +149,7 @@
       // Option Values
         $products_options_values_query = database::query(
           "select pov.*, if(pov.value_id = 0, custom_value, avi.name) as name from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ." pov
-          left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.id = pov.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+          left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pov.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
           where product_id = ". (int)$this->data['id'] ."
           and group_id = ". (int)$option['group_id'] ."
           order by priority asc;"
