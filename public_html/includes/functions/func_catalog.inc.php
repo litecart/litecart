@@ -2,28 +2,14 @@
 
   function catalog_category_trail($category_id=0, $language_code='') {
 
+    trigger_error('catalog_category_trail() is deprecated. Use instead reference::category(id)->path', E_USER_DEPRECATED);
+
     if (empty($language_code)) $language_code = language::$selected['code'];
 
     $trail = array();
 
-    if (empty($category_id)) $category_id = 0;
-
-    $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.id = ". (int)$category_id ."
-      limit 1;"
-    );
-
-    if (!$category = database::fetch($categories_query)) array();
-
-    if (!empty($category['parent_id'])) {
-      $trail = functions::catalog_category_trail($category['parent_id']);
-      $trail[$category['id']] = $category['name'];
-
-    } else if (isset($category['id'])) {
-      $trail = array($category['id'] => $category['name']);
+    foreach (reference::category($category_id, $lanuage_code)->path as $category) {
+      $trail[$category->id] = $category->name;
     }
 
     return $trail;
@@ -31,25 +17,15 @@
 
   function catalog_category_descendants($category_id=0, $language_code='') {
 
-    if (empty($language_code)) $language_code = language::$selected['code'];
+    trigger_error('catalog_category_descendants() is deprecated. Use instead reference::category(id)->descendants', E_USER_DEPRECATED);
 
-    $subcategories = array();
+    $descendants = array();
 
-    if (empty($category_id)) $category_id = 0;
-
-    $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.parent_id = ". (int)$category_id .";"
-    );
-
-    while ($category = database::fetch($categories_query)) {
-      $subcategories[$category['id']] = $category['name'];
-      $subcategories = $subcategories + catalog_category_descendants($category['id'], $language_code);
+    foreach (reference::category($category_id, $lanuage_code)->path as $category) {
+      $descendants[$category->id] = $category->name;
     }
 
-    return $subcategories;
+    return $descendants;
   }
 
   function catalog_categories_query($parent_id=0) {
@@ -301,32 +277,9 @@
     return $products_query;
   }
 
-  function catalog_stock_adjust($product_id, $option_stock_combination, $quantity) {
+  function catalog_stock_adjust($product_id, $combination, $quantity) {
 
-    if (empty($product_id)) return;
+    trigger_error('catalog_category_trail() is deprecated. Use instead reference::category(id)->path', E_USER_DEPRECATED);
 
-    if (!empty($option_stock_combination)) {
-      database::query(
-        "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-        set quantity = quantity + ". (float)$quantity ."
-        where product_id = ". (int)$product_id ."
-        and combination =  '". database::input($option_stock_combination) ."'
-        limit 1;"
-      );
-
-      if (!database::affected_rows()) {
-        trigger_error('Could not adjust stock for product (ID: '. $product_id .', Combination: '. $option_stock_combination .')', E_USER_WARNING);
-      }
-    }
-
-    database::query(
-      "update ". DB_TABLE_PRODUCTS ."
-      set quantity = quantity + ". (int)$quantity ."
-      where id = ". (int)$product_id ."
-      limit 1;"
-    );
-
-    if (!database::affected_rows()) {
-      trigger_error('Could not adjust stock for product (ID: '. $product_id .')', E_USER_WARNING);
-    }
+    return reference::product($product_id)->stock_adjust($combination, $quantity);
   }

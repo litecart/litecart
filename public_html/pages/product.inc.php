@@ -42,14 +42,6 @@
     limit 1;"
   );
 
-  if (!empty($_GET['category_id'])) {
-    foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
-      document::$snippets['title'][] = $category_name;
-    }
-  } else if (!empty($product->manufacturer)) {
-    document::$snippets['title'][] = $product->manufacturer->name;
-  }
-
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
@@ -60,10 +52,12 @@
 
   if (!empty($_GET['category_id'])) {
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
-    foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
-      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => (int)$category_id)));
+    foreach (array_slice(reference::category($_GET['category_id'])->path, 0, -1) as $category_crumb) {
+      document::$snippets['title'][] = $category_crumb->name;
+      breadcrumbs::add($category_crumb->name, document::ilink('category', array('category_id' => $category_crumb->id)));
     }
   } else if (!empty($product->manufacturer)) {
+    document::$snippets['title'][] = $product->manufacturer->name;
     breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
     breadcrumbs::add($product->manufacturer->name, document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer->id)));
   }

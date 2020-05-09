@@ -118,7 +118,7 @@
 
       if (isset($_POST['category_id']) && isset($_POST['categories'])) {
         foreach ($_POST['categories'] as $category_id) {
-          if (in_array($_POST['category_id'], array_keys(functions::catalog_category_descendants($category_id)))) {
+          if (in_array($_POST['category_id'], array_keys(reference::category($category_id)->descendants))) {
             throw new Exception(language::translate('error_cant_move_category_to_descendant', 'You can\'t move a category to a descendant'));
             break;
           }
@@ -336,15 +336,10 @@
 
   } else {
 
-    $category_trail = functions::catalog_category_trail($_GET['category_id']);
-    if (!empty($category_trail)) {
-      $category_trail = array_keys($category_trail);
-    } else {
-      $category_trail = array();
-    }
+    $category_trail = array_keys(reference::category($_GET['category_id'])->path);
 
     $category_iterator = function($category_id=0, $depth=1, &$category_iterator) {
-      global $category_trail, $rowclass, $num_category_rows;
+      global $category_trail, $num_category_rows;
 
       $output = '';
 
@@ -374,11 +369,15 @@
         $output .= '<tr class="'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
-        if (@in_array($category['id'], $category_trail)) {
+
+        if ($category['id'] == $_GET['category_id']) {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+        } else if (in_array($category['id'], $category_trail)) {
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
+
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL

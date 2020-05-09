@@ -26,10 +26,10 @@
 
       if (!empty($link->query['category_id'])) {
 
-        $category_trail = functions::catalog_category_trail($link->query['category_id'], $language_code);
+        $category = reference::category($link->query['category_id'], $language_code);
 
-        if (!empty($category_trail)) {
-          foreach ($category_trail as $category_id => $category_name) $new_path .= functions::general_path_friendly($category_name, $language_code) .'-c-'. $category_id .'/';
+        foreach ($category->path as $category_crumb) {
+          $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
         }
 
         $link->path = $new_path;
@@ -48,11 +48,13 @@
 
       } else if (!empty($product->default_category_id)) {
 
-        $category_trail = functions::catalog_category_trail($product->default_category_id, $language_code);
+        $category = reference::category($product->default_category_id, $language_code);
 
-        if (!empty($category_trail)) {
-          foreach ($category_trail as $category_id => $category_name) $new_path .= functions::general_path_friendly($category_name, $language_code) .'-c-'. $category_id .'/';
+        foreach ($category->path as $category_crumb) {
+          $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
         }
+
+        $new_path .= functions::general_path_friendly($category->name, $language_code) .'-c-'. $product->default_category_id .'/';
       }
 
       $new_path .= functions::general_path_friendly($product->name, $language_code) .'-p-'. $product->id;

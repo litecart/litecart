@@ -30,8 +30,8 @@
   document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
-  foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
+  foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {
+    breadcrumbs::add($category_crumb->name, document::ilink('category', array('category_id' => $category_crumb->id)));
   }
   breadcrumbs::add($category->name);
 

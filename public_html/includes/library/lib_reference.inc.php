@@ -6,7 +6,7 @@
 
     public static function __callStatic($resource, $arguments) {
 
-      if (empty($arguments[0])) {
+      if (!isset($arguments[0])) {
         trigger_error('Passed argument cannot be empty', E_USER_WARNING);
         return;
       }
