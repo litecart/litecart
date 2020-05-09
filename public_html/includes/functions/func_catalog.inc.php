@@ -330,4 +330,3 @@
       trigger_error('Could not adjust stock for product (ID: '. $product_id .')', E_USER_WARNING);
     }
   }
-  }

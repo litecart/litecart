@@ -51,7 +51,7 @@
         }
       }
 
-      self::query("SET @@session.sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
+      self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
 
       self::query("set names '". database::input($charset) ."';", $link);
 

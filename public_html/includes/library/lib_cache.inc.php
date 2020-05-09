@@ -322,7 +322,7 @@
 
     // Clear files
       if (!empty($keyword)) {
-        $files = glob(FS_DIR_APP . 'cache/' .'_cache*_'. $keyword .'_*');
+        $files = glob(FS_DIR_APP . 'cache/' .'_cache_'. $keyword .'*');
       } else {
         $files = glob(FS_DIR_APP . 'cache/' .'_cache_*');
       }
