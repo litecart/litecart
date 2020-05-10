@@ -11,14 +11,14 @@
         return;
       }
 
-      if (isset(self::$_cache[$resource]) && count(self::$_cache[$resource]) >= 100) {
-        self::$_cache[$resource] = array();
-      }
-
       $checksum = md5(json_encode($arguments, JSON_UNESCAPED_SLASHES));
 
       if (isset(self::$_cache[$resource][$checksum])) {
         return self::$_cache[$resource][$checksum];
+      }
+
+      if (isset(self::$_cache[$resource]) && count(self::$_cache[$resource]) >= 100) {
+        array_shift(self::$_cache[$resource]);
       }
 
       $component = null;
