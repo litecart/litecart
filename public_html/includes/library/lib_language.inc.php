@@ -284,7 +284,7 @@
           case (preg_match('#\.1257$#', $locale)):
             return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-13');
 
-          case (preg_match('#\.(932|936|950)$#', $locale)):
+          case (preg_match('#\.(932|936|950)$#', $locale, $matches)):
             return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'CP'.$matches[1]);
 
           case (preg_match('#\.(949)$#', $locale)):
