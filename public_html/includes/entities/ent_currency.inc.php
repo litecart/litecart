@@ -59,6 +59,20 @@
         throw new Exception(language::translate('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
       }
 
+      $currency_query = database::query(
+        "select id from ". DB_TABLE_CURRENCIES ."
+        where (
+          code = '". database::input($this->data['code']) ."'
+          ". (!empty($this->data['number']) ? "or number = '". database::input($this->data['number']) ."'" : "") ."
+        )
+        ". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
+        limit 1;"
+      );
+
+      if (database::num_rows($currency_query)) {
+        throw new Exception(language::translate('error_currency_conflict', 'The currency conflicts another language in the database'));
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_CURRENCIES ."

@@ -23,20 +23,6 @@
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       if (empty($_POST['value'])) throw new Exception(language::translate('error_must_enter_value', 'You must enter a value'));
 
-      $currency_query = database::query(
-        "select id from ". DB_TABLE_CURRENCIES ."
-        where (
-          code = '". database::input($_POST['code']) ."'
-          ". (!empty($_POST['number']) ? "or number != '". database::input($_POST['number']) ."'" : "") ."
-        )
-        ". (!empty($currency->data['id']) ? "and id != ". $currency->data['id'] : "") ."
-        limit 1;"
-      );
-
-      if (database::num_rows($currency_query)) {
-        throw new Exception(language::translate('error_currency_conflict', 'The currency conflicts another language in the database'));
-      }
-
       if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('store_currency_code')) && (float)$_POST['value'] != 1) {
         throw new Exception(language::translate('error_store_currency_must_have_value_1', 'The store currency must always have the currency value 1.0.'));
       }

@@ -20,20 +20,6 @@
       if (empty($_POST['code'])) throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-      $language_query = database::query(
-        "select id from ". DB_TABLE_LANGUAGES ."
-        where (
-          code = '". database::input($_POST['code']) ."'
-          ". (!empty($_POST['code2']) ? "or code2 != '". database::input($_POST['code2']) ."'" : "") ."
-        )
-        ". (!empty($language->data['id']) ? "and id != ". $language->data['id'] : "") ."
-        limit 1;"
-      );
-
-      if (database::num_rows($language_query)) {
-        throw new Exception(language::translate('error_language_conflict', 'The language conflicts another language in the database'));
-      }
-
       if (empty($_POST['set_default']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code') && $language->data['code'] != $_POST['code']) {
         throw new Exception(language::translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
       }

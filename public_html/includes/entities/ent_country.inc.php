@@ -70,6 +70,22 @@
         throw new Exception(language::translate('error_cannot_disable_default_country', 'You must change the default country before disabling it.'));
       }
 
+      $country_query = database::query(
+        "select id from ". DB_TABLE_COUNTRIES ."
+        where (
+          code = '". database::input($_POST['code']) ."'
+          ". (!empty($this->data['iso_code_1']) ? "or iso_code_1 = '". database::input($this->data['iso_code_1']) ."'" : "") ."
+          ". (!empty($this->data['iso_code_2']) ? "or iso_code_2 = '". database::input($this->data['iso_code_2']) ."'" : "") ."
+          ". (!empty($this->data['iso_code_3']) ? "or iso_code_2 = '". database::input($this->data['iso_code_3']) ."'" : "") ."
+        )
+        ". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
+        limit 1;"
+      );
+
+      if (database::num_rows($country_query)) {
+        throw new Exception(language::translate('error_language_conflict', 'The language conflicts another language in the database'));
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_COUNTRIES ."
