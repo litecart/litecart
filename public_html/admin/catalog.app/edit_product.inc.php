@@ -1125,7 +1125,7 @@
     <?php } ?>
 
     <?php foreach (currency::$currencies as $currency) { ?>
-    var value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() * <?php echo $currency['value']; ?>;
+    var value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
     <?php } ?>
@@ -1139,7 +1139,7 @@
 
     <?php foreach (currency::$currencies as $currency) { ?>
     var value = 0;
-    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() * <?php echo $currency['value']; ?>;
+    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = Number(value).toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
     if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
