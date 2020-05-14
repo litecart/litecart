@@ -57,15 +57,9 @@
       return;
     }
 
-    public static function token($keyword, $dependencies=array(), $storage='file', $ttl=900) {
+    public static function token($keyword, $dependencies=array(), $storage='memory', $ttl=900) {
 
-      $storage_types = array(
-        'file',
-        'session',
-        //'memory',
-      );
-
-      if (!in_array($storage, $storage_types)) {
+      if (!in_array($storage, array('file', 'memory', 'session'))) {
         trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
         return;
       }
@@ -210,14 +204,27 @@
           }
           return;
 
+        case 'memory':
+
+          switch (true) {
+            case (function_exists('apcu_fetch')):
+              return apcu_fetch($token['id']);
+
+            case (function_exists('apc_fetch')):
+              return apc_fetch($token['id']);
+
+            default:
+              $token['storage'] = 'file';
+              return self::get($token, $max_age, $no_hard_refresh);
+          }
+
         case 'session':
+
           if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
             if (self::$_data[$token['id']]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return;
             return self::$_data[$token['id']]['data'];
           }
-          return;
 
-        case 'memory': // Reserved, but not implemented
           return;
 
         default:
@@ -254,15 +261,28 @@
 
           return @file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
 
+        case 'memory':
+
+          switch (true) {
+            case (function_exists('apcu_store')):
+              return apcu_store($token['id'], $data, $token['ttl']);
+
+            case (function_exists('apc_store')):
+              return apc_store($token['id'], $data, $token['ttl']);
+
+            default:
+              $token['storage'] = 'file';
+              return self::set($token, $data);
+          }
+
         case 'session':
+
           self::$_data[$token['id']] = array(
             'mtime' => time(),
             'data' => $data,
           );
-          return true;
 
-        case 'memory': // Reserved, but not implemented
-          return false;
+          return true;
 
         default:
           trigger_error('Invalid cache type ('. $storage .')', E_USER_WARNING);
@@ -340,6 +360,24 @@
         foreach (glob($dir.$search) as $file) unlink($file);
       }
 
+    // Clear memory
+      if (!empty($keyword) && function_exists('apcu_delete')) {
+        $cached_keys = new APCUIterator('#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
+        foreach ($cached_keys as $key) {
+          apcu_delete($key['key']);
+        }
+      } else if (function_exists('apcu_clear_cache')) {
+        apcu_clear_cache();
+      }
+
+      if (!empty($keyword) && function_exists('apc_delete')) {
+        $cached_keys = new APCIterator('user', '#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
+        foreach ($cached_keys as $key) {
+          apc_delete($key['key']);
+        }
+      } else if (function_exists('apc_clear_cache')) {
+        apc_clear_cache();
+      }
 
     // Set breakpoint (for all session cache)
       database::query(

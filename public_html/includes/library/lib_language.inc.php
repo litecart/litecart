@@ -25,7 +25,7 @@
         self::set(self::$selected['code']);
       }
 
-      self::$_cache_token = cache::token('translations', array('endpoint', 'language'), 'file');
+      self::$_cache_token = cache::token('translations', array('endpoint', 'language'), 'memory');
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         $translations_query = database::query(
