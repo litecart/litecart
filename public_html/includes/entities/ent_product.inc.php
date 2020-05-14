@@ -658,7 +658,7 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_APP . 'images/' . $filename, '', 90)) return false;
+      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 90)) return false;
 
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 

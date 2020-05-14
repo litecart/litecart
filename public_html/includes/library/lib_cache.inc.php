@@ -161,6 +161,12 @@
             $hash_string .= user::$data['id'];
             break;
 
+          case 'webp':
+            if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+              $hash_string .= 'webp';
+            }
+            break;
+
           default:
             $hash_string .= is_array($dependency) ? implode('', $dependency) : $dependency;
             break;

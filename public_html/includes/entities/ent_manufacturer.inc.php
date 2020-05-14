@@ -161,7 +161,7 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      $image->write(FS_DIR_APP . 'images/' . $filename, '', 90);
+      $image->write(FS_DIR_APP . 'images/' . $filename, 90);
 
       database::query(
         "update ". DB_TABLE_MANUFACTURERS ."
