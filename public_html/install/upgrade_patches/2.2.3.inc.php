@@ -96,6 +96,8 @@
 
   if ($option_group = database::fetch($option_groups_query)) {
 
+    if ($option_group['function'] == 'input') $option_group['function'] = 'text';
+
     $attribute_groups_query = database::query(
       "select ag.*, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
       left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input($store_language_code) ."')
