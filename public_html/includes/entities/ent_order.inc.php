@@ -671,7 +671,6 @@
 
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
-      if (empty($this->data['order_status_id'])) return;
 
       $order_status = reference::order_status($this->data['order_status_id'], $language_code);
 
