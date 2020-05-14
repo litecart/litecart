@@ -234,17 +234,6 @@
               }
               break;
 
-            case 'input':
-            case 'textarea':
-
-              $value = array_values($option['values'])[0];
-              $matched_value = $options[$matched_group];
-
-              if (!empty($matched_value)) {
-                $item['extras'] += $value['price_adjust'];
-              }
-              break;
-
             case 'radio':
             case 'select':
 
@@ -268,12 +257,12 @@
             throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
           }
 
-          if (empty($matched_group) && (empty($matched_values) && empty($matched_value))) continue;
+          if (empty($matched_group) || (empty($matched_values) && empty($matched_value))) continue;
 
           $sanitized_options[] = array(
             'group_id' => $option['id'],
-            'value_id' => $value['id'],
-            'combination' => $option['id'].'-'.$value['id'],
+            'value_id' => !empty($value['id']) ? $value['id'] : 0,
+            'combination' => $option['id'] .'-'. (!empty($value['id']) ? $value['id'] : 0),
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           );
