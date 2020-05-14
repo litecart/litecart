@@ -30,20 +30,22 @@
 
     public function load($currency_code) {
 
-      if (!preg_match('#^[A-Z]{3}$#', $currency_code)) throw new Exception('Invalid currency code ('. $currency_code .')');
+      if (!preg_match('#^([0-9]{1,3}|[A-Z]{3})$#', $currency_code)) throw new Exception('Invalid currency code ('. $currency_code .')');
 
       $this->reset();
 
       $currency_query = database::query(
         "select * from ". DB_TABLE_CURRENCIES ."
-        where code='". database::input($currency_code) ."'
+        ". (preg_match('#^[0-9]{1,2}$#', $currency_code) ? "where id = '". (int)$currency_code ."'" : "") ."
+        ". (preg_match('#^[0-9]{3}$#', $currency_code) ? "where number = '". database::input($currency_code) ."'" : "") ."
+        ". (preg_match('#^[A-Z]{3}$#', $currency_code) ? "where code = '". database::input($currency_code) ."'" : "") ."
         limit 1;"
       );
 
       if ($currency = database::fetch($currency_query)) {
         $this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
       } else {
-        throw new Exception('Could not find currency (Code: '. htmlspecialchars($currency_code) .') in database.');
+        throw new Exception('Could not find currency ('. htmlspecialchars($currency_code) .') in database.');
       }
 
       $this->previous = $this->data;
