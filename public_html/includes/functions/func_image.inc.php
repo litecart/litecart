@@ -158,7 +158,7 @@
     }
 
     return image_process($source, array(
-      'destination' => FS_DIR_APP . 'cache/',
+      'destination' => FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename,
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,
@@ -170,11 +170,11 @@
 
   function image_delete_cache($file) {
 
-    $webpath = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', $file));
+    $webpath = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', str_replace('\\', '/', $file));
 
     $cachename = sha1($webpath);
 
-    if ($files = glob(FS_DIR_APP . 'cache/' . $cachename .'*')) {
-      foreach ($files as $file) unlink($file);
+    foreach (glob(FS_DIR_APP . 'cache/'. substr($cachename, 0, 3) .'/' . $cachename .'*') as $file) {
+      unlink($file);
     }
   }

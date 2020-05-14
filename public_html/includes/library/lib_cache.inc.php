@@ -1,6 +1,7 @@
 <?php
 
   class cache {
+
     private static $_recorders = array();
     private static $_data;
     public static $enabled = true;
@@ -12,22 +13,15 @@
       if (!isset(session::$data['cache'])) session::$data['cache'] = array();
       self::$_data = &session::$data['cache'];
 
-      if (isset(self::$_data['cache_clear'])) unset(self::$_data['cache_clear']);
-      if (isset(self::$_data['cache_clear_thumbnails'])) unset(self::$_data['cache_clear_thumbnails']);
-
       if (settings::get('cache_clear')) {
         self::clear_cache();
 
         database::query(
           "update ". DB_TABLE_SETTINGS ."
-          set value = ''
+          set value = '0'
           where `key` = 'cache_clear'
           limit 1;"
         );
-
-        foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
-          if (is_file($file)) unlink($file);
-        }
 
         if (user::check_login()) {
           notices::add('success', 'Cache cleared');
@@ -35,18 +29,20 @@
       }
 
       if (settings::get('cache_clear_thumbnails')) {
-        $files = glob(FS_DIR_APP . 'cache/' . '*');
-
-        if (!empty($files)) foreach ($files as $file) {
-          if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
+        foreach (glob(FS_DIR_APP .'cache/*', GLOB_ONLYDIR) as $dir) {
+          foreach (glob($dir.'/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
+            unlink($file);
+          }
         }
 
         database::query(
           "update ". DB_TABLE_SETTINGS ."
-          set value = ''
+          set value = '0'
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
         );
+
+        self::clear_cache('settings');
 
         if (user::check_login()) {
           notices::add('success', 'Image thumbnails cache cleared');
@@ -174,7 +170,7 @@
       }
 
       return array(
-        'id' => $keyword .'_'. md5($hash_string),
+        'id' => md5($hash_string) .'_'. $keyword,
         'storage' => $storage,
         'ttl' => $ttl,
       );
@@ -202,7 +198,9 @@
           return;
 
         case 'file':
-          $cache_file = FS_DIR_APP . 'cache/' . '_cache_'.$token['id'];
+
+          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
+
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
 
@@ -227,7 +225,9 @@
           return;
 
         default:
+
           trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
+
           return;
       }
     }
@@ -245,7 +245,15 @@
           return false;
 
         case 'file':
-          $cache_file = FS_DIR_APP . 'cache/' . '_cache_' . $token['id'];
+
+          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
+
+          if (!is_dir(dirname($cache_file))) {
+            if (!mkdir(dirname($cache_file))) {
+              trigger_error('Could not create cache subfolder', E_USER_WARNING);
+              return false;
+            }
+          }
 
           if (strtolower(language::$selected['charset']) != 'utf-8') {
             $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
@@ -326,14 +334,19 @@
 
     public static function clear_cache($keyword=null) {
 
-    // Clear files
-      if (!empty($keyword)) {
-        $files = glob(FS_DIR_APP . 'cache/' .'_cache_'. $keyword .'*');
-      } else {
-        $files = glob(FS_DIR_APP . 'cache/' .'_cache_*');
+    // Clear vQmod
+      if (empty($keyword)) {
+        foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
+          if (is_file($file)) unlink($file);
+        }
       }
 
-      if ($files) foreach ($files as $file) unlink($file);
+    // Clear files
+      foreach (glob(FS_DIR_APP .'cache/*', GLOB_ONLYDIR) as $dir) {
+        $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
+        foreach (glob($dir.$search) as $file) unlink($file);
+      }
+
 
     // Set breakpoint (for all session cache)
       database::query(
