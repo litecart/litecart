@@ -239,3 +239,28 @@
   database::query(
     "drop table ". DB_TABLE_PREFIX ."option_values_info;"
   );
+
+// Move/rename cache files
+
+  foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
+
+    $new_file = $file;
+
+    if (preg_match('#^(.*/)_cache_(.*)_([0-9a-z]{32})$#', $file, $matches)) {
+      $new_file = $matches[1] . substr($matches[3], 0, 2) .'/'. $matches[3] . '_'. $matches[2] .'.cache';
+
+    } else if (preg_match('#^(.*/)([0-9a-z]{40}.*\.(jpe?g|gif|png|webp))$#', $file, $matches)) {
+      $new_file = $matches[1] . substr($matches[2], 0, 2) .'/'. $matches[2];
+    }
+
+    else continue;
+
+    if ($new_file != $file) {
+
+      if (!file_exists(dirname($new_file))) {
+        mkdir(dirname($new_file));
+      }
+
+      rename($file, $new_file);
+    }
+  }
