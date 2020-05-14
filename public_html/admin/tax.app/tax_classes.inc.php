@@ -11,7 +11,7 @@
     order by name asc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($tax_classses_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($tax_classses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($tax_class = database::fetch($tax_classses_query)) {

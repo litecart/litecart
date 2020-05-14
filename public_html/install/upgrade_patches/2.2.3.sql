@@ -16,3 +16,9 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `key`, `title`, `description`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('customer_details', 'global', 'accounts_enabled', 'Enable Customer Accounts', 'Allow customers to create an account and sign in.', '1', 'toggle("y/n")', 11, NOW(), NOW()),
 ('customer_details', 'local', 'customer_field_zone', 'Zone/State/Province Field', 'Display the field for the customer\'s zone/state.', '1', 'toggle("y/n")', 23, NOW(), NOW());
+-- --------------------------------------------------------
+ALTER TABLE `lc_countries` ADD UNIQUE INDEX `iso_code_1` (`iso_code_1`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_currencies` CHANGE COLUMN `id` `id` TINYINT(2) NOT NULL AUTO_INCREMENT FIRST;
+-- --------------------------------------------------------
+ALTER TABLE `lc_languages` CHANGE COLUMN `id` `id` TINYINT(2) NOT NULL AUTO_INCREMENT FIRST;

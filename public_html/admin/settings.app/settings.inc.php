@@ -73,7 +73,7 @@
     order by priority, `key` asc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($settings_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($settings_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($setting = database::fetch($settings_query)) {

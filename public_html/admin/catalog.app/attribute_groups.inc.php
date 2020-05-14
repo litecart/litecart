@@ -12,7 +12,7 @@
     order by agi.name asc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($attribute_groups_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($attribute_groups_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($attribute_group = database::fetch($attribute_groups_query)) {

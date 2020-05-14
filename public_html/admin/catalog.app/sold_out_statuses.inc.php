@@ -12,7 +12,7 @@
     order by sosi.name asc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($sold_out_status_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($sold_out_status_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($sold_out_status = database::fetch($sold_out_status_query)) {

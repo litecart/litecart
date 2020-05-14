@@ -191,7 +191,7 @@
 
       if ($i < $pages-5) {
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
-          $rewind = round(($_GET['page']-1)/2);
+          $rewind = round(($_GET['page'] - 1) / 2);
           $pagination->snippets['items'][] = array(
             'page' => $rewind,
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',

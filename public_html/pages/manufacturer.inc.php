@@ -62,7 +62,7 @@
     ));
 
     if (database::num_rows($products_query) > 0) {
-      if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page', 20) * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page', 20) * ($_GET['page'] - 1)));
 
       $page_items = 0;
       while ($listing_item = database::fetch($products_query)) {

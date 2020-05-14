@@ -31,7 +31,7 @@
     order by name asc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($manufacturers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($manufacturers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($manufacturer = database::fetch($manufacturers_query)) {

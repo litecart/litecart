@@ -22,7 +22,7 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 'png')) {
+      if (!$image->write(FS_DIR_APP . 'images/' . $filename)) {
         throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
       }
 

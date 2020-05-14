@@ -77,7 +77,7 @@
     order by date_updated desc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($translations_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($translation = database::fetch($translations_query)) {

@@ -117,13 +117,14 @@ CREATE TABLE `lc_countries` (
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `iso_code_1` (`iso_code_1`),
   UNIQUE KEY `iso_code_2` (`iso_code_2`),
   UNIQUE KEY `iso_code_3` (`iso_code_3`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_currencies` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
   `code` VARCHAR(3) NOT NULL,
   `number` VARCHAR(3) NOT NULL,
@@ -233,7 +234,7 @@ CREATE TABLE `lc_geo_zones` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_languages` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
   `code` VARCHAR(2) NOT NULL,
   `code2` VARCHAR(3) NOT NULL,
