@@ -60,7 +60,6 @@
     public static function token($keyword, $dependencies=array(), $storage='file', $ttl=900) {
 
       $storage_types = array(
-        //'database',
         'file',
         'session',
         //'memory',
@@ -194,9 +193,6 @@
 
       switch ($token['storage']) {
 
-        case 'database': // Reserved, but not implemented
-          return;
-
         case 'file':
 
           $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
@@ -240,9 +236,6 @@
       }
 
       switch ($token['storage']) {
-
-        case 'database': // Reserved, but not implemented
-          return false;
 
         case 'file':
 
