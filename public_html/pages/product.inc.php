@@ -144,7 +144,7 @@
     'stock_status' => null,
     'delivery_status' => !empty($product->delivery_status['name']) ? $product->delivery_status['name'] : '',
     'sold_out_status' => !empty($product->sold_out_status['name']) ? $product->sold_out_status['name'] : '',
-    'orderable' => $product->sold_out_status['orderable'],
+    'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
     'catalog_only_mode' => settings::get('catalog_only_mode'),
     'options' => array(),
