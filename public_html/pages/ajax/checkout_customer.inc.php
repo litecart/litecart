@@ -35,7 +35,7 @@
 
   // Validate
     if (!empty($_POST['save_customer_details'])) { // <-- Button is pressed
-      if (!empty($_POST['create_account'])) {
+      if (settings::get('accounts_enabled') && !empty($_POST['create_account'])) {
         try {
           if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address'));
 
@@ -110,8 +110,7 @@
     if (empty(notices::$data['errors'])) {
 
     // Create customer account
-      if (empty(customer::$data['id'])) {
-
+      if (settings::get('accounts_enabled') && empty(customer::$data['id']) && !empty(customer::$data['email'])) {
         if (settings::get('register_guests') || !empty($_POST['create_account'])) {
 
           if (!database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
@@ -171,8 +170,10 @@
   }
 
   $account_exists = false;
-  if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
-    $account_exists = true;
+  if (settings::get('accounts_enabled')) {
+    if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
+      $account_exists = true;
+    }
   }
 
   $box_checkout_customer = new ent_view();

@@ -43,12 +43,27 @@
   echo '<p>Checking PHP version... ';
 
   if (version_compare(PHP_VERSION, '5.4', '<')) {
-    die('<span class="error">[Error] PHP 5.4+ required - Detected '. PHP_VERSION .'</span></p>');
-  } else if (version_compare(PHP_VERSION, '7.1', '<')) {
+    die('<span class="error">[Error] PHP 5.4+ minimum requirement - Detected '. PHP_VERSION .'</span></p>');
+  } else if (version_compare(PHP_VERSION, '7.1', '<=')) {
     echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
-       . '<span class="warning">[Warning] PHP 7.3+ recommended - Detected '. PHP_VERSION .' that has reached end of life</span></span></p>';
+       . '<span class="warning">[Warning] PHP 7.3+ recommended - Detected '. PHP_VERSION .' that has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a></span></span></p>';
   } else {
     echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  }
+
+  ### PHP > Check Disabled Functions ############################
+
+  echo '<p>Checking for disabled PHP functions... ';
+
+  $critical_functions = ['error_log', 'ini_set'];
+  $important_functions = ['allow_url_fopen', 'exec', 'apache_get_modules'];
+
+  if ($disabled_functions = array_intersect($critical_functions, preg_split('#, ?#', ini_get('disable_functions')))) {
+    die('<span class="error">[Error] Critical functions disabled ('. implode(', ', $disabled_functions) .'). You need to unblock them in php.ini</span></p>');
+  } else if ($disabled_functions = array_intersect($important_functions, preg_split('#, ?#', ini_get('disable_functions')))) {
+    echo '<span class="warning">[Warning] Some common functions are disabled ('. implode(', ', $disabled_functions) .'). It is recommended that you unblock them in php.ini.</span></p>';
+  } else {
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
   }
 
   ### PHP > Check display_errors ################################
@@ -65,10 +80,10 @@
 
   echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
-  if (preg_match('#^'. preg_quote(str_replace("\\", '/', $_SERVER['DOCUMENT_ROOT']), '#') .'#', str_replace("\\", '/', __FILE__))) {
+  if (rtrim(str_replace("\\", '/', $_SERVER['DOCUMENT_ROOT']) . '/') . preg_replace('#index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace("\\", '/', __DIR__)) {
     echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>';
   } else {
-    echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning] There is a problem with your PHP configuration causing $_SERVER["DOCUMENT_ROOT"] and __FILE__ to return conflicting values.</span></p>';
+    echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning] There is a problem with your web server configuration causing $_SERVER["DOCUMENT_ROOT"] and __FILE__ to return conflicting paths. Contact your web host and have them correcting this.</span></p>';
   }
 
   ### Database > Connection #####################################
@@ -114,23 +129,23 @@
   echo '<p>Checking MySQL database default character set... ';
 
   $charset_query = database::query(
-    "select default_character_set_name, default_collation_name from information_schema.SCHEMATA
+    "select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from information_schema.SCHEMATA
     where schema_name = '". database::input(DB_DATABASE) ."'
     limit 1;"
   );
   $charset = database::fetch($charset_query);
 
-  if ($charset['default_character_set_name'] != 'utf8') {
-    echo($charset['default_character_set_name'] . ' <span class="warning">[Warning] The database default charset is not \'utf8\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</span></p>');
+  if (substr($charset['DEFAULT_CHARACTER_SET_NAME'], 0, 4) != 'utf8') {
+    echo($charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning] The database default charset is not \'utf8\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</span></p>');
   } else {
-    echo $charset['default_character_set_name'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+    echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
 
     echo '<p>Checking MySQL database default collation... ';
 
-    if ($charset['default_collation_name'] != $_REQUEST['db_collation']) {
-      echo($charset['default_collation_name'] . ' <span class="warning">[Warning] The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</span></p>');
+    if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
+      echo($charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning] The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</span></p>');
     } else {
-      echo $charset['default_collation_name'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+      echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL;
     }
   }
 
@@ -171,7 +186,7 @@
   $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-    $query = preg_replace('#--.*\s#', '', $query);
+    $query = preg_replace('#^-- .*?\R+#m', '', $query);
     database::query($query);
   }
 
@@ -193,7 +208,7 @@
   }
 
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-    $query = preg_replace('#--.*\s#', '', $query);
+    $query = preg_replace('#^-- .*?\R+#m', '', $query);
     database::query($query);
   }
 
@@ -220,7 +235,7 @@
   $sql = explode('-- --------------------------------------------------------', $sql);
 
   foreach ($sql as $query) {
-    $query = preg_replace('#--.*\s#', '', $query);
+    $query = preg_replace('#^-- .*?\R+#m', '', $query);
     database::query($query);
   }
 
@@ -361,7 +376,7 @@
           $sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
           foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
-            $query = preg_replace('#--.*\s#', '', $query);
+            $query = preg_replace('#^-- .*?\R+#m', '', $query);
             database::query($query);
           }
         }
@@ -388,7 +403,7 @@
       $sql = explode('-- --------------------------------------------------------', $sql);
 
       foreach ($sql as $query) {
-        $query = preg_replace('#--.*\s#', '', $query);
+        $query = preg_replace('#^-- .*?\R+#m', '', $query);
         database::query($query);
       }
     }
@@ -406,6 +421,16 @@
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL;
     }
+  }
+
+  ### Files > Delete Some Files #########################################
+
+  echo '<p>Delete some files...';
+
+  if (file_delete('vqmod/xml/multiple_category_images.xml')) {
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
+  } else {
+    echo ' <span class="error">[Skipped]</span></p>' . PHP_EOL;
   }
 
   ### Files > Development Type ##################################
@@ -436,6 +461,8 @@
       '../includes/templates/default.catalog/less/',
       '../includes/templates/default.catalog/css/*.min.css',
       '../includes/templates/default.catalog/css/*.min.css.map',
+      '../includes/templates/default.catalog/js/*.min.js',
+      '../includes/templates/default.catalog/js/*.min.js.map',
     ];
 
     foreach ($files_to_delete as $file) {
@@ -455,6 +482,7 @@
         'checkout.min.css'  => 'checkout.css',
         'framework.min.css' => 'framework.css',
         'printable.min.css' => 'printable.css',
+        'app.min.js' => 'app.js',
       ];
       file_put_contents($file, strtr($contents, $search_replace));
     }

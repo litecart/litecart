@@ -265,7 +265,7 @@
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
   <h2>Existing Installation Detected</h2>
   <p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
-  <p><a href="upgrade.php">Click here to upgrade instead.</a></p>
+  <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
 <script src="../ext/jquery/jquery-3.4.1.min.js"></script>
@@ -301,7 +301,7 @@ input[name="development_type"] + div .type {
 input[name="development_type"] + div .title {
   font-size: 1.25em;
   font-weight: bold;
-  line-height: 2em;
+  line-height: 1.5em;
 }
 input[name="development_type"]:checked + div {
   border-color: #333;
@@ -407,7 +407,7 @@ input[name="development_type"]:checked + div {
     <div class="form-group col-md-6">
     <label>Type</label>
       <select class="form-control" name="db_type" required>
-        <option value="mysql">MySQL</option>
+        <option value="mysql">MySQL / MariaDB</option>
       </select>
     </div>
 
@@ -513,13 +513,15 @@ input[name="development_type"]:checked + div {
   <h3>Development</h3>
 
   <div class="form-group" style="display: flex;">
-
     <label>
       <input name="development_type" value="standard" type="radio" checked />
       <div>
         <div class="type">Standard</div>
-        <div class="title">.css</div>
-        <div class="description">Uncompressed CSS files</div>
+        <div class="title">
+          .css<br />
+          .js
+        </div>
+        <small class="description">(Uncompressed files)</small>
       </div>
     </label>
 
@@ -527,11 +529,13 @@ input[name="development_type"]:checked + div {
       <input name="development_type" value="advanced" type="radio" />
       <div>
         <div class="type">Advanced</div>
-        <div class="title">.less + .min.css</div>
-        <div class="description">
-          Compressed CSS files<br />
-          (Requires a <a href="https://wiki.litecart.net/doku.php?id=how_to_change_the_look_of_your_store" target="_blank">LESS compiler</a>)
+        <div class="title">
+          .less + .min.css<br />
+          .js + .min.js
         </div>
+        <small class="description">
+          (Requires <a href="https://www.litecart.net/sv/addons/163/developer-kit" target="_blank">Developer Kit</a>)
+        </small>
       </div>
     </label>
   </div>
@@ -570,7 +574,7 @@ input[name="development_type"]:checked + div {
     <label><input name="accept_terms" value="1" type="checkbox" required /> I agree to the terms and conditions.</label>
   </div>
 
-  <input class="btn btn-default btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementByName('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
+  <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementByName('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
 </form>
 
 <?php require('includes/footer.inc.php'); ?>

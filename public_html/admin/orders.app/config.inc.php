@@ -23,7 +23,6 @@
     'docs' => [
       'orders' => 'orders.inc.php',
       'edit_order' => 'edit_order.inc.php',
-      'edit_order_item' => 'edit_order_item.inc.php',
       'order_statuses' => 'order_statuses.inc.php',
       'edit_order_status' => 'edit_order_status.inc.php',
       'add_product' => 'add_product.inc.php',

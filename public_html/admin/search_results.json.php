@@ -38,14 +38,14 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+          select product_id from ". DB_PREFIX ."products_options_stock
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
       ) as relevance
 
       from ". DB_PREFIX ."products p
 
-      left join ".  DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
       having relevance > 0
       order by relevance desc, id asc

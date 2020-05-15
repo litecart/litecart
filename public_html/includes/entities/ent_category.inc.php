@@ -198,12 +198,9 @@
       cache::clear_cache('categories');
     }
 
-    public function add_image($file, $filename='') {
+    public function save_image($file, $filename='') {
 
       if (empty($file)) return;
-
-      $checksum = md5_file($file);
-      if (in_array($checksum, array_column($this->data['images'], 'checksum'))) return false;
 
       if (!empty($filename)) $filename = 'categories/' . $filename;
 
@@ -216,12 +213,11 @@
       if (!$image = new ent_image($file)) return false;
 
     // 456-Fancy-category-title-N.jpg
-      $i=1;
-      while (empty($filename) || is_file(FS_DIR_APP . 'images/' . $filename)) {
-        $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type();
+      if (empty($filename)) {
+        $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
       }
 
-      $priority = count($this->data['images'])+1;
+      if (is_file(FS_DIR_APP . 'images/' . $filename)) unlink(FS_DIR_APP . 'images/' . $filename);
 
       if (settings::get('image_downsample_size')) {
         list($width, $height) = explode(',', settings::get('image_downsample_size'));
@@ -233,20 +229,30 @@
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 
       database::query(
-        "insert into ". DB_PREFIX ."categories_images
-        (category_id, filename, checksum, priority)
-        values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
+        "update ". DB_PREFIX ."categories
+        set image = '". database::input($filename) ."'
+        where id = ". (int)$this->data['id'] .";"
       );
-      $image_id = database::insert_id();
 
-      $this->data['images'][$image_id] = [
-        'id' => $image_id,
-        'filename' => $filename,
-        'checksum' => $checksum,
-        'priority' => $priority,
-      ];
+      $this->previous['image'] = $this->data['image'] = $filename;
+    }
 
-      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
+    public function delete_image() {
+
+      if (empty($this->data['image'])) return;
+
+      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+
+      functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['image']);
+
+      database::query(
+        "update ". DB_PREFIX ."categories
+        set image = ''
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+     $this->previous['image'] = $this->data['image'] = '';
     }
 
     public function delete() {

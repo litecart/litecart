@@ -38,10 +38,6 @@ DROP TABLE IF EXISTS `lc_modules`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_newsletter_recipients`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_option_groups`;
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_option_groups_info`;
--- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_option_values`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_option_values_info`;
@@ -75,6 +71,8 @@ DROP TABLE IF EXISTS `lc_products_images`;
 DROP TABLE IF EXISTS `lc_products_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_options`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_products_options_values`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_to_categories`;
 -- --------------------------------------------------------

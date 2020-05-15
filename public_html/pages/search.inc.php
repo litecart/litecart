@@ -49,13 +49,13 @@
       + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
       + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
       + if (p.id in (
-        select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        select product_id from ". DB_PREFIX ."products_options_stock
         where sku regexp '". database::input($code_regex) ."'
       ), 5, 0)
     ) as relevance
 
     from (
-      select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, tax_class_id, quantity, views, purchases, date_updated, date_created
+      select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, tax_class_id, quantity, sold_out_status_id, views, purchases, date_updated, date_created
       from ". DB_PREFIX ."products
       where status
       and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -78,6 +78,10 @@
       and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
       order by end_date asc
     ) pc on (pc.product_id = p.id)
+
+    left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
+
+    where (p.quantity > 0 or ss.hidden != 1)
 
     having relevance > 0
 

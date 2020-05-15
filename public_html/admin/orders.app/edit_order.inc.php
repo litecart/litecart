@@ -594,7 +594,7 @@ body.dark-mode #box-comments {
                 <th style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
                 <th style="width: 175px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
                 <th style="width: 420px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
-                <th style="width: 115px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+                <th style="width: 175px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
                 <th style="min-width: 200px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
                 <th style="min-width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
                 <th style="width: 30px;">&nbsp;</th>
@@ -963,7 +963,7 @@ body.dark-mode #box-comments {
     $.ajax({
       url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'get_address.json']); ?>',
       type: 'post',
-      data: 'customer_id=' + $('*[name="customer[id]"]').val() + '&token=<?php echo form::session_post_token(); ?>',
+      data: 'customer_id=' + $('*[name="customer[id]"]').val(),
       cache: true,
       async: false,
       dataType: 'json',
@@ -1141,7 +1141,7 @@ body.dark-mode #box-comments {
   $('#box-comments .add').click(function(e) {
 
     e.preventDefault();
-    while ($('input[name="comments['+new_comment_index+'][id]"]').length) new_comment_index++;
+    while ($('input[name="comments[new_'+new_comment_index+'][id]"]').length) new_comment_index++;
     var output = '  <div class="bubble local me">'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][id]', ''); ?>'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff'); ?>'
@@ -1308,8 +1308,8 @@ body.dark-mode #box-comments {
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
                + '    <td>'
-               + '      <a class="edit" href="#" title="<?php echo functions::general_escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('edit')); ?></a></td>'
-               + '      <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-fw', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <a class="edit" href="#" title="<?php echo functions::general_escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('edit')); ?></a>'
+               + '      <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-fw', 'style="color: #cc3333;"')); ?></a>'
                + '    </td>'
                + '  </tr>';
 

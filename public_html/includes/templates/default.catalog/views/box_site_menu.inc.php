@@ -40,17 +40,18 @@
       <a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
     </li>
 
-    <li class="account dropdown">
-      <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <?php if (!empty(customer::$data['id'])) { ?>
-          <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-          <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
-          <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
-        <?php } else { ?>
-          <li>
-            <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-              <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link()); ?>
+      <?php if (settings::get('accounts_enabled')) { ?>
+      <li class="account dropdown">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <?php if (!empty(customer::$data['id'])) { ?>
+            <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+            <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+            <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
+          <?php } else { ?>
+            <li>
+              <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
+                <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link()); ?>
 
               <div class="form-group">
                 <?php echo functions::form_draw_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
@@ -60,23 +61,28 @@
                 <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
               </div>
 
-              <div class="btn-group btn-block">
-                <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
-              </div>
-            <?php echo functions::form_draw_form_end(); ?>
-          </li>
-          <li class="text-center">
-            <a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
-          </li>
+                <div class="form-group">
+                  <div class="checkbox">
+                    <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
+                  </div>
+                </div>
 
-          <li class="text-center">
-            <a href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
-          </li>
-        <?php } ?>
-      </ul>
-    </li>
-    <li>
+                <div class="btn-group btn-block">
+                  <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
+                </div>
+              <?php echo functions::form_draw_form_end(); ?>
+            </li>
+            <li class="text-center">
+              <a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
+            </li>
 
-    </li>
-  </ul>
-</div>
+            <li class="text-center">
+              <a href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
+            </li>
+          <?php } ?>
+        </ul>
+      </li>
+      <?php } ?>
+    </ul>
+  </div>
+</nav>

@@ -37,14 +37,14 @@
             $category = new ent_category($row['id']);
           }
 
-        } else if (!empty($row['code'])) {
+        } elseif (!empty($row['code'])) {
           if ($category = database::fetch(database::query("select id from ". DB_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
           } else {
             $category = new ent_category();
           }
 
-        } else if (!empty($row['name']) && !empty($row['language_code'])) {
+        } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($category = database::fetch(database::query("select category_id as id from ". DB_PREFIX ."categories_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
           } else {
@@ -119,206 +119,56 @@
     }
   }
 
-  if (isset($_POST['import_manufacturers'])) {
+
+  if (isset($_POST['export_categories'])) {
 
     try {
-      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+
+      $csv = [];
+
+      $categories_query = database::query("select id from ". DB_PREFIX ."categories order by parent_id, id;");
+      while ($category = database::fetch($categories_query)) {
+        $category = new ref_category($category['id'], $_POST['language_code']);
+
+        $csv[] = [
+          'id' => $category->id,
+          'status' => $category->status,
+          'parent_id' => $category->parent_id,
+          'code' => $category->code,
+          'name' => $category->name,
+          'keywords' => implode(',', $category->keywords),
+          'short_description' => $category->short_description,
+          'description' => $category->description,
+          'meta_description' => $category->meta_description,
+          'head_title' => $category->head_title,
+          'h1_title' => $category->h1_title,
+          'image' => $category->image,
+          'priority' => $category->priority,
+          'language_code' => $_POST['language_code'],
+        ];
       }
 
       ob_clean();
 
-      header('Content-Type: text/plain; charset='. language::$selected['charset']);
-
-      echo "CSV Import\r\n"
-         . "----------\r\n";
-
-      $csv = file_get_contents($_FILES['file']['tmp_name']);
-
-      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
-        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+      if ($_POST['output'] == 'screen') {
+        header('Content-Type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-Type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
       }
 
-      $updated = 0;
-      $inserted = 0;
-      $line = 0;
-
-      foreach ($csv as $row) {
-        $line++;
-
-      // Find manufacturer
-        if (!empty($row['id'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."manufacturers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $manufacturer = new ent_manufacturer($row['id']);
-          }
-
-        } else if (!empty($row['code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
-          } else {
-            $manufacturer = new ent_manufacturer();
-          }
-
-        } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
-          } else {
-            $manufacturer = new ent_manufacturer();
-          }
-
-        } else {
-          echo "[Skipped] Could not identify manufacturer on line $line.\r\n";
-          continue;
-        }
-
-        if (!empty($manufacturer->data['id'])) {
-          if (empty($_POST['update'])) continue;
-          echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-          $updated++;
-        } else {
-          if (empty($_POST['insert'])) continue;
-          echo 'Creating new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-          $inserted++;
-        }
-
-      // Set new manufacturer data
-        $fields = [
-          'status',
-          'code',
-          'name',
-          'keywords',
-          'image',
-          'priority',
-        ];
-
-        foreach ($fields as $field) {
-          if (isset($row[$field])) $manufacturer->data[$field] = $row[$field];
-        }
-
-      // Set manufacturer info data
-        if (!empty($row['language_code'])) {
-          $fields = [
-            'short_description',
-            'description',
-            'head_title',
-            'h1_title',
-            'meta_description',
-          ];
-
-          foreach ($fields as $field) {
-            if (isset($row[$field])) $manufacturer->data[$field][$row['language_code']] = $row[$field];
-          }
-        }
-
-        if (isset($row['new_image'])) {
-          $manufacturer->save_image($row['new_image']);
-        }
-
-        $manufacturer->save();
-
-        if (!empty($row['date_created'])) {
-          database::query(
-            "update ". DB_PREFIX ."manufacturers
-            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-            where id = ". (int)$manufacturer->data['id'] ."
-            limit 1;"
-          );
-        }
-      }
-
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
-
-  if (isset($_POST['import_suppliers'])) {
-
-    try {
-      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
-      }
-
-      ob_clean();
-
-      header('Content-Type: text/plain; charset='. language::$selected['charset']);
-
-      echo "CSV Import\r\n"
-         . "----------\r\n";
-
-      $csv = file_get_contents($_FILES['file']['tmp_name']);
-
-      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
-        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
-      }
-
-      $updated = 0;
-      $inserted = 0;
-      $line = 0;
-
-      foreach ($csv as $row) {
-        $line++;
-
-      // Find supplier
-        if (!empty($row['id'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
-            $supplier = new ent_supplier($supplier['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."suppliers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $supplier = new ent_supplier($row['id']);
-          }
-
-        } else if (!empty($row['code'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $supplier = new ent_supplier($supplier['id']);
-          } else {
-            $supplier = new ent_supplier();
-          }
-
-        } else {
-          echo "[Skipped] Could not identify supplier on line $line.\r\n";
-          continue;
-        }
-
-        if (!empty($supplier->data['id'])) {
-          if (empty($_POST['update'])) continue;
-          echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-          $updated++;
-        } else {
-          if (empty($_POST['insert'])) continue;
-          echo 'Creating new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-          $inserted++;
-        }
-
-      // Set new supplier data
-        $fields = [
-          'status',
-          'code',
-          'name',
-          'description',
-          'email',
-          'phone',
-          'link',
-        ];
-
-        foreach ($fields as $field) {
-          if (isset($row[$field])) $supplier->data[$field] = $row[$field];
-        }
-
-        $supplier->save();
-
-        if (!empty($row['date_created'])) {
-          database::query(
-            "update ". DB_PREFIX ."suppliers
-            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-            where id = ". (int)$supplier->data['id'] ."
-            limit 1;"
-          );
-        }
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+          break;
+        case 'Mac':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+          break;
+        case 'Win':
+        default:
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+          break;
       }
 
       exit;
@@ -365,35 +215,35 @@
             $product = new ent_product($row['id']);
           }
 
-        } else if (!empty($row['code'])) {
+        } elseif (!empty($row['code'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
-        } else if (!empty($row['sku'])) {
+        } elseif (!empty($row['sku'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
-        } else if (!empty($row['mpn'])) {
+        } elseif (!empty($row['mpn'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
-        } else if (!empty($row['gtin'])) {
+        } elseif (!empty($row['gtin'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
             $product = new ent_product();
           }
 
-        } else if (!empty($row['name']) && !empty($row['language_code'])) {
+        } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($product = database::fetch(database::query("select product_id as id from ". DB_PREFIX ."products_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           } else {
@@ -550,172 +400,6 @@
     }
   }
 
-  if (isset($_POST['export_categories'])) {
-
-    try {
-      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
-
-      $csv = [];
-
-      $categories_query = database::query("select id from ". DB_PREFIX ."categories order by parent_id, id;");
-      while ($category = database::fetch($categories_query)) {
-        $category = new ref_category($category['id'], $_POST['language_code']);
-
-        $csv[] = [
-          'id' => $category->id,
-          'status' => $category->status,
-          'parent_id' => $category->parent_id,
-          'code' => $category->code,
-          'name' => $category->name,
-          'keywords' => implode(',', $category->keywords),
-          'short_description' => $category->short_description,
-          'description' => $category->description,
-          'meta_description' => $category->meta_description,
-          'head_title' => $category->head_title,
-          'h1_title' => $category->h1_title,
-          'image' => $category->image,
-          'priority' => $category->priority,
-          'language_code' => $_POST['language_code'],
-        ];
-      }
-
-      ob_clean();
-
-      if ($_POST['output'] == 'screen') {
-        header('Content-Type: text/plain; charset='. $_POST['charset']);
-      } else {
-        header('Content-Type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=categories-'. $_POST['language_code'] .'.csv');
-      }
-
-      switch($_POST['eol']) {
-        case 'Linux':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-          break;
-        case 'Mac':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-          break;
-        case 'Win':
-        default:
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-          break;
-      }
-
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
-
-  if (isset($_POST['export_manufacturers'])) {
-
-    try {
-      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
-
-      $csv = [];
-
-      $manufacturers_query = database::query("select id from ". DB_PREFIX ."manufacturers order by id;");
-      while ($manufacturer = database::fetch($manufacturers_query)) {
-        $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
-
-        $csv[] = [
-          'id' => $manufacturer->id,
-          'status' => $manufacturer->status,
-          'code' => $manufacturer->code,
-          'name' => $manufacturer->name,
-          'keywords' => implode(',', $manufacturer->keywords),
-          'short_description' => $manufacturer->short_description,
-          'description' => $manufacturer->description,
-          'meta_description' => $manufacturer->meta_description,
-          'head_title' => $manufacturer->head_title,
-          'h1_title' => $manufacturer->h1_title,
-          'image' => $manufacturer->image,
-          'priority' => $manufacturer->priority,
-          'language_code' => $_POST['language_code'],
-        ];
-      }
-
-      ob_clean();
-
-      if ($_POST['output'] == 'screen') {
-        header('Content-Type: text/plain; charset='. $_POST['charset']);
-      } else {
-        header('Content-Type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=manufacturers-'. $_POST['language_code'] .'.csv');
-      }
-
-      switch($_POST['eol']) {
-        case 'Linux':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-          break;
-        case 'Mac':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-          break;
-        case 'Win':
-        default:
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-          break;
-      }
-
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
-
-  if (isset($_POST['export_suppliers'])) {
-
-    try {
-      $csv = [];
-
-      $suppliers_query = database::query("select id from ". DB_PREFIX ."suppliers order by id;");
-      while ($supplier = database::fetch($suppliers_query)) {
-        $supplier = new ref_supplier($supplier['id']);
-
-        $csv[] = [
-          'id' => $supplier->id,
-          'status' => $supplier->status,
-          'code' => $supplier->code,
-          'name' => $supplier->name,
-          'keywords' => implode(',', $supplier->keywords),
-          'description' => $supplier->description,
-          'email' => $supplier->email,
-          'phone' => $supplier->phone,
-          'link' => $supplier->link,
-        ];
-      }
-
-      ob_clean();
-
-      if ($_POST['output'] == 'screen') {
-        header('Content-Type: text/plain; charset='. $_POST['charset']);
-      } else {
-        header('Content-Type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=suppliers.csv');
-      }
-
-      switch($_POST['eol']) {
-        case 'Linux':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-          break;
-        case 'Mac':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-          break;
-        case 'Win':
-        default:
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-          break;
-      }
-
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
-
   if (isset($_POST['export_products'])) {
 
     try {
@@ -801,6 +485,325 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
+  if (isset($_POST['import_manufacturers'])) {
+
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
+
+      ob_clean();
+
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+
+      echo "CSV Import\r\n"
+         . "----------\r\n";
+
+      $csv = file_get_contents($_FILES['file']['tmp_name']);
+
+      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+      }
+
+      $updated = 0;
+      $inserted = 0;
+      $line = 0;
+
+      foreach ($csv as $row) {
+        $line++;
+
+      // Find manufacturer
+        if (!empty($row['id'])) {
+          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
+            $manufacturer = new ent_manufacturer($manufacturer['id']);
+          } else {
+            database::query("insert into ". DB_PREFIX ."manufacturers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            $manufacturer = new ent_manufacturer($row['id']);
+          }
+
+        } else if (!empty($row['code'])) {
+          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
+            $manufacturer = new ent_manufacturer($manufacturer['id']);
+          } else {
+            $manufacturer = new ent_manufacturer();
+          }
+
+        } else if (!empty($row['name']) && !empty($row['language_code'])) {
+          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
+            $manufacturer = new ent_manufacturer($manufacturer['id']);
+          } else {
+            $manufacturer = new ent_manufacturer();
+          }
+
+        } else {
+          echo "[Skipped] Could not identify manufacturer on line $line.\r\n";
+          continue;
+        }
+
+        if (!empty($manufacturer->data['id'])) {
+          if (empty($_POST['update'])) continue;
+          echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          $updated++;
+        } else {
+          if (empty($_POST['insert'])) continue;
+          echo 'Creating new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          $inserted++;
+        }
+
+      // Set new manufacturer data
+        $fields = [
+          'status',
+          'code',
+          'name',
+          'keywords',
+          'image',
+          'priority',
+        ];
+
+        foreach ($fields as $field) {
+          if (isset($row[$field])) $manufacturer->data[$field] = $row[$field];
+        }
+
+      // Set manufacturer info data
+        if (!empty($row['language_code'])) {
+          $fields = [
+            'short_description',
+            'description',
+            'head_title',
+            'h1_title',
+            'meta_description',
+          ];
+
+          foreach ($fields as $field) {
+            if (isset($row[$field])) $manufacturer->data[$field][$row['language_code']] = $row[$field];
+          }
+        }
+
+        if (isset($row['new_image'])) {
+          $manufacturer->save_image($row['new_image']);
+        }
+
+        $manufacturer->save();
+
+        if (!empty($row['date_created'])) {
+          database::query(
+            "update ". DB_PREFIX ."manufacturers
+            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+            where id = ". (int)$manufacturer->data['id'] ."
+            limit 1;"
+          );
+        }
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+
+  if (isset($_POST['export_manufacturers'])) {
+
+    try {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+
+      $csv = [];
+
+      $manufacturers_query = database::query("select id from ". DB_PREFIX ."manufacturers order by id;");
+      while ($manufacturer = database::fetch($manufacturers_query)) {
+        $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
+
+        $csv[] = [
+          'id' => $manufacturer->id,
+          'status' => $manufacturer->status,
+          'code' => $manufacturer->code,
+          'name' => $manufacturer->name,
+          'keywords' => implode(',', $manufacturer->keywords),
+          'short_description' => $manufacturer->short_description,
+          'description' => $manufacturer->description,
+          'meta_description' => $manufacturer->meta_description,
+          'head_title' => $manufacturer->head_title,
+          'h1_title' => $manufacturer->h1_title,
+          'image' => $manufacturer->image,
+          'priority' => $manufacturer->priority,
+          'language_code' => $_POST['language_code'],
+        ];
+      }
+
+      ob_clean();
+
+      if ($_POST['output'] == 'screen') {
+        header('Content-Type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-Type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=manufacturers-'. $_POST['language_code'] .'.csv');
+      }
+
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+          break;
+        case 'Mac':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+          break;
+        case 'Win':
+        default:
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+          break;
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['import_suppliers'])) {
+
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
+
+      ob_clean();
+
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+
+      echo "CSV Import\r\n"
+         . "----------\r\n";
+
+      $csv = file_get_contents($_FILES['file']['tmp_name']);
+
+      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+      }
+
+      $updated = 0;
+      $inserted = 0;
+      $line = 0;
+
+      foreach ($csv as $row) {
+        $line++;
+
+      // Find supplier
+        if (!empty($row['id'])) {
+          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
+            $supplier = new ent_supplier($supplier['id']);
+          } else {
+            database::query("insert into ". DB_PREFIX ."suppliers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            $supplier = new ent_supplier($row['id']);
+          }
+
+        } else if (!empty($row['code'])) {
+          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
+            $supplier = new ent_supplier($supplier['id']);
+          } else {
+            $supplier = new ent_supplier();
+          }
+
+        } else {
+          echo "[Skipped] Could not identify supplier on line $line.\r\n";
+          continue;
+        }
+
+        if (!empty($supplier->data['id'])) {
+          if (empty($_POST['update'])) continue;
+          echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          $updated++;
+        } else {
+          if (empty($_POST['insert'])) continue;
+          echo 'Creating new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          $inserted++;
+        }
+
+      // Set new supplier data
+        $fields = [
+          'status',
+          'code',
+          'name',
+          'description',
+          'email',
+          'phone',
+          'link',
+        ];
+
+        foreach ($fields as $field) {
+          if (isset($row[$field])) $supplier->data[$field] = $row[$field];
+        }
+
+        $supplier->save();
+
+        if (!empty($row['date_created'])) {
+          database::query(
+            "update ". DB_PREFIX ."suppliers
+            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+            where id = ". (int)$supplier->data['id'] ."
+            limit 1;"
+          );
+        }
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['export_suppliers'])) {
+
+    try {
+      $csv = [];
+
+      $suppliers_query = database::query("select id from ". DB_PREFIX ."suppliers order by id;");
+      while ($supplier = database::fetch($suppliers_query)) {
+        $supplier = new ref_supplier($supplier['id']);
+
+        $csv[] = [
+          'id' => $supplier->id,
+          'status' => $supplier->status,
+          'code' => $supplier->code,
+          'name' => $supplier->name,
+          'keywords' => implode(',', $supplier->keywords),
+          'description' => $supplier->description,
+          'email' => $supplier->email,
+          'phone' => $supplier->phone,
+          'link' => $supplier->link,
+        ];
+      }
+
+      ob_clean();
+
+      if ($_POST['output'] == 'screen') {
+        header('Content-Type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-Type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=suppliers.csv');
+      }
+
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+          break;
+        case 'Mac':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+          break;
+        case 'Win':
+        default:
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+          break;
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
@@ -817,11 +820,10 @@
       <div id="tab-import" class="tab-pane active">
 
         <div class="row">
-          <div class="col-sm-6 col-md-3">
-            <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
+          <div class="col-md-6">
+            <h2><?php echo language::translate('title_categories', 'Categories'); ?></h2>
 
-              <fieldset>
-                <legend><?php echo language::translate('title_categories', 'Categories'); ?></legend>
+              <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
 
                 <div class="form-group">
                   <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
@@ -844,73 +846,20 @@
                     <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
                   </div>
 
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-                  </div>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                  <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
                 </div>
+              </div>
 
                 <div class="form-group">
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('update', 'true', true); ?> <?php echo language::translate('title_update_existing', 'Update Existing'); ?></label>
-                  </div>
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('insert', 'true', true); ?> <?php echo language::translate('title_insert_new', 'Insert New'); ?></label>
-                  </div>
+                  <label><?php echo functions::form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo language::translate('text_insert_new_categories', 'Insert new categories'); ?></label>
                 </div>
 
                 <?php echo functions::form_draw_button('import_categories', language::translate('title_import', 'Import'), 'submit'); ?>
-              </fieldset>
 
-            <?php echo functions::form_draw_form_end(); ?>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <?php echo functions::form_draw_form_begin('import_manufacturers_form', 'post', '', true); ?>
-
-            <fieldset>
-              <legend><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></legend>
-
-                <div class="form-group">
-                  <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
-                  <?php echo functions::form_draw_file_field('file'); ?>
-                </div>
-
-                <div class="row">
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                    <?php echo functions::form_draw_select_field('delimiter', [[language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''], [','],  [';'], ['TAB', "\t"], ['|']], true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                    <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                    <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('update', 'true', true); ?> <?php echo language::translate('title_update_existing', 'Update Existing'); ?></label>
-                  </div>
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('insert', 'true', true); ?> <?php echo language::translate('title_insert_new', 'Insert New'); ?></label>
-                  </div>
-                </div>
-
-                <?php echo functions::form_draw_button('import_manufacturers', language::translate('title_import', 'Import'), 'submit'); ?>
-              </fieldset>
-
-            <?php echo functions::form_draw_form_end(); ?>
+              <?php echo functions::form_draw_form_end(); ?>
+            </fieldset>
           </div>
 
           <div class="col-sm-6 col-md-3">

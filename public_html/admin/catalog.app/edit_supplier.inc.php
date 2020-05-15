@@ -99,11 +99,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_link', 'Link'); ?></label>
-          <?php echo functions::form_draw_text_field('link', true); ?>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_link', 'Link'); ?></label>
+        <?php echo functions::form_draw_text_field('link', true); ?>
       </div>
 
       <div class="panel-action btn-group">

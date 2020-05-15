@@ -52,7 +52,11 @@
     public function save() {
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_language_code')) {
-        throw new Exception('You cannot disable the default language.');
+        throw new Exception(language::translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
+      }
+
+      if (empty($this->data['status']) && $this->data['code'] == settings::get('store_language_code')) {
+        throw new Exception(language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
       }
 
       if (empty($this->data['id'])) {
@@ -101,19 +105,17 @@
             );
 
             $info_tables = [
-              DB_TABLE_ATTRIBUTE_GROUPS_INFO,
-              DB_TABLE_ATTRIBUTE_VALUES_INFO,
-              DB_TABLE_CATEGORIES_INFO,
-              DB_TABLE_DELIVERY_STATUSES_INFO,
-              DB_TABLE_MANUFACTURERS_INFO,
-              DB_TABLE_OPTION_GROUPS_INFO,
-              DB_TABLE_OPTION_VALUES_INFO,
-              DB_TABLE_ORDER_STATUSES_INFO,
-              DB_TABLE_PAGES_INFO,
-              DB_TABLE_PRODUCTS_INFO,
-              DB_TABLE_QUANTITY_UNITS_INFO,
-              DB_TABLE_SLIDES_INFO,
-              DB_TABLE_SOLD_OUT_STATUSES_INFO,
+              DB_PREFIX . "attribute_groups_info",
+              DB_PREFIX . "attribute_values_info",
+              DB_PREFIX . "categories_info",
+              DB_PREFIX . "delivery_statuses_info",
+              DB_PREFIX . "manufacturers_info",
+              DB_PREFIX . "order_statuses_info",
+              DB_PREFIX . "pages_info",
+              DB_PREFIX . "products_info",
+              DB_PREFIX . "quantity_units_info",
+              DB_PREFIX . "slides_info",
+              DB_PREFIX . "sold_out_statuses_info",
             ];
 
             foreach ($info_tables as $table) {
@@ -149,11 +151,15 @@
     public function delete() {
 
       if ($this->data['code'] == 'en') {
-        throw new Exception('English is the PHP framework language and must not be deleted, but it can be disabled.');
+        throw new Exception(language::translate('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
       }
 
       if ($this->data['code'] == settings::get('default_language_code')) {
-        throw new Exception('Cannot delete the default language');
+        throw new Exception(language::translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
+      }
+
+      if ($this->data['code'] == settings::get('store_language_code')) {
+        throw new Exception(language::translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
       }
 
       database::query(
@@ -175,19 +181,17 @@
       }
 
       $info_tables = [
-        DB_TABLE_ATTRIBUTE_GROUPS_INFO,
-        DB_TABLE_ATTRIBUTE_VALUES_INFO,
-        DB_TABLE_CATEGORIES_INFO,
-        DB_TABLE_DELIVERY_STATUSES_INFO,
-        DB_TABLE_MANUFACTURERS_INFO,
-        DB_TABLE_OPTION_GROUPS_INFO,
-        DB_TABLE_OPTION_VALUES_INFO,
-        DB_TABLE_ORDER_STATUSES_INFO,
-        DB_TABLE_PAGES_INFO,
-        DB_TABLE_PRODUCTS_INFO,
-        DB_TABLE_QUANTITY_UNITS_INFO,
-        DB_TABLE_SLIDES_INFO,
-        DB_TABLE_SOLD_OUT_STATUSES_INFO,
+        DB_PREFIX . "attribute_groups_info",
+        DB_PREFIX . "attribute_values_info",
+        DB_PREFIX . "categories_info",
+        DB_PREFIX . "delivery_statuses_info",
+        DB_PREFIX . "manufacturers_info",
+        DB_PREFIX . "order_statuses_info",
+        DB_PREFIX . "pages_info",
+        DB_PREFIX . "products_info",
+        DB_PREFIX . "quantity_units_info",
+        DB_PREFIX . "slides_info",
+        DB_PREFIX . "sold_out_statuses_info",
       ];
 
       foreach ($info_tables as $table) {

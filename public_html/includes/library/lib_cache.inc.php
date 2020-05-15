@@ -18,10 +18,14 @@
 
         database::query(
           "update ". DB_PREFIX ."settings
-          set value = ''
+          set value = '0'
           where `key` = 'cache_clear'
           limit 1;"
         );
+
+        if (user::check_login()) {
+          notices::add('success', 'Cache cleared');
+        }
       }
 
       if (settings::get('cache_clear_thumbnails')) {
@@ -33,10 +37,12 @@
 
         database::query(
           "update ". DB_PREFIX ."settings
-          set value = ''
+          set value = '0'
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
         );
+
+        self::clear_cache('settings');
 
         if (user::check_login()) {
           notices::add('success', 'Image thumbnails cache cleared');
@@ -54,7 +60,7 @@
         'session',
       ];
 
-      if (!in_array($storage, $storage_types)) {
+      if (!in_array($storage, ['file', 'memory', 'session'])) {
         trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
         return;
       }
@@ -141,6 +147,10 @@
             $hash_string .= $_SERVER['REQUEST_URI'];
             break;
 
+          case 'user':
+            $hash_string .= user::$data['id'];
+            break;
+
           case 'webp':
             if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
               $hash_string .= 'webp';
@@ -160,11 +170,10 @@
       ];
     }
 
-    public static function get($token, $max_age=900, $no_hard_refresh=false) {
+    public static function get($token, $max_age=900, $force_cache=false) {
 
-      if (empty(self::$enabled)) return;
-
-      if (empty($no_hard_refresh)) {
+      if (empty($force_cache)) {
+        if (empty(self::$enabled)) return;
 
       // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
         if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return;
@@ -194,14 +203,6 @@
           }
           return;
 
-        case 'session':
-
-          if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            if (self::$_data[$token['id']]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return;
-            return self::$_data[$token['id']]['data'];
-          }
-          return;
-
         case 'memory':
 
           switch (true) {
@@ -216,8 +217,19 @@
               return self::get($token, $max_age, $no_hard_refresh);
           }
 
+        case 'session':
+
+          if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
+            if (self::$_data[$token['id']]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return;
+            return self::$_data[$token['id']]['data'];
+          }
+
+          return;
+
         default:
+
           trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
+
           return;
       }
     }
@@ -243,13 +255,6 @@
 
           return @file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
 
-        case 'session':
-          self::$_data[$token['id']] = [
-            'mtime' => time(),
-            'data' => $data,
-          ];
-          return true;
-
         case 'memory':
 
           switch (true) {
@@ -264,6 +269,15 @@
               return self::set($token, $data);
           }
 
+        case 'session':
+
+          self::$_data[$token['id']] = [
+            'mtime' => time(),
+            'data' => $data,
+          ];
+
+          return true;
+
         default:
           trigger_error('Invalid cache type ('. $storage .')', E_USER_WARNING);
           return;
@@ -271,11 +285,11 @@
     }
 
     // Output recorder (This option is not affected by $enabled as fresh data is always recorded)
-    public static function capture($token, $max_age=900, $force=false) {
+    public static function capture($token, $max_age=900, $force_cache=false) {
 
       if (isset(self::$_recorders[$token['id']])) trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
 
-      $_data = self::get($token, $max_age, $force);
+      $_data = self::get($token, $max_age, $force_cache);
 
       if (!empty($_data)) {
         echo $_data;
@@ -317,9 +331,9 @@
 
     public static function clear_cache($keyword=null) {
 
-    // Clear vQmod
+    // Clear modifications
       if (empty($keyword)) {
-        foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
+        foreach (glob(FS_DIR_APP . 'cache/vmods/*.php') as $file) {
           if (is_file($file)) unlink($file);
         }
       }

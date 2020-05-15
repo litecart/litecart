@@ -43,7 +43,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="3"></th>
+          <td colspan="3"></td>
           <td colspan="3" class="subtotal">
             <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal + $subtotal_tax) : currency::format($subtotal); ?></strong>
           </td>

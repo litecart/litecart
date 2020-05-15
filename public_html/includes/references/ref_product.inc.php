@@ -199,7 +199,7 @@
           $this->_data['images'] = [];
 
           $query = database::query(
-            "select * from ". DB_TABLE_PRODUCTS_IMAGES."
+            "select * from ". DB_PREFIX ."products_images
             where product_id = ". (int)$this->_id ."
             order by priority asc, id asc;"
           );
@@ -219,12 +219,123 @@
 
           break;
 
+        case 'options':
+
+          $this->_data['options'] = [];
+
+          $products_options_query = database::query(
+            "select * from ". DB_PREFIX ."products_options
+            where product_id = ". (int)$this->_id ."
+            order by priority;"
+          );
+
+          while ($option = database::fetch($products_options_query)) {
+
+          // Group
+            $attribute_group_info_query = database::query(
+              "select * from ". DB_PREFIX ."attribute_groups_info
+              where group_id = ". (int)$option['group_id'] ."
+              and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+              order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+            );
+
+            while ($attribute_group_info = database::fetch($attribute_group_info_query)) {
+              foreach ($attribute_group_info as $k => $v) {
+                if (in_array($k, ['id', 'group_id', 'language_code'])) continue;
+                if (empty($option[$k])) $option[$k] = $v;
+              }
+            }
+
+          // Values
+            $option['values'] = [];
+
+            $option_values_query = database::query(
+              "select * from ". DB_PREFIX ."products_options_values
+              where product_id = ". (int)$this->_id ."
+              order by priority;"
+            );
+
+            while ($value = database::fetch($option_values_query)) {
+
+              if (!empty($value['value_id'])) {
+
+                $attribute_values_info_query = database::query(
+                  "select * from ". DB_PREFIX ."attribute_values_info
+                  where value_id = ". (int)$value['value_id'] ."
+                  and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+                  order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+                );
+
+                while ($attribute_value_info = database::fetch($attribute_values_info_query)) {
+                  foreach ($attribute_value_info as $k => $v) {
+                    if (in_array($k, ['id', 'value_id', 'language_code'])) continue;
+                    if (empty($value[$k])) $value[$k] = $v;
+                  }
+                }
+
+              } else {
+                $value['name'] = $value['custom_value'];
+              }
+
+            // Price Adjust
+              $value['price_adjust'] = 0;
+
+              if ((isset($value[$this->_currency_code]) && $value[$this->_currency_code] != 0) || (isset($value[settings::get('store_currency_code')]) && $value[settings::get('store_currency_code')] != 0)) {
+
+                switch ($value['price_operator']) {
+
+                  case '+':
+                    if ($value[$this->_currency_code] != 0) {
+                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+                    } else {
+                      $value['price_adjust'] = $value[settings::get('store_currency_code')];
+                    }
+                    break;
+
+                  case '%':
+                    if ($value[$this->_currency_code] != 0) {
+                      $value['price_adjust'] = $this->price * ((float)$value[$this->_currency_code] / 100);
+                    } else {
+                      $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')] / 100;
+                    }
+                    break;
+
+                  case '*':
+                    if ($value[$this->_currency_code] != 0) {
+                      $value['price_adjust'] = $this->price * $value[$this->_currency_code];
+                    } else {
+                      $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
+                    }
+                    break;
+
+                  default:
+                    trigger_error('Unknown price operator for option', E_USER_WARNING);
+                    break;
+                }
+              }
+
+              $option['values'][$value['value_id']] = $value;
+            }
+
+            if ($option['sort'] == 'alphabetically') {
+              uasort($option['values'], function($a, $b){
+                if ($a['name'] == $b['name']) return 0;
+                return ($a['name'] < $b['name']) ? -1 : 1;
+              });
+              break;
+            }
+
+            $this->_data['options'][$option['group_id']] = $option;
+          }
+
+          break;
+
         case 'options_stock':
 
           $this->_data['options_stock'] = [];
 
           $query = database::query(
-            "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+            "select * from ". DB_PREFIX ."products_options_stock
             where product_id = ". (int)$this->_id ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
@@ -258,10 +369,11 @@
               list($group_id, $value_id) = explode('-', $combination);
 
               $options_values_query = database::query(
-                "select * from ". DB_TABLE_OPTION_VALUES_INFO ."
-                where value_id = ". (int)$value_id ."
-                and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+                "select * from ". DB_PREFIX ."products_options_values pov
+                left join ". DB_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
+                where pov.value_id = ". (int)$value_id ."
+                and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+                order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
 
               while ($option_value_info = database::fetch($options_values_query)) {

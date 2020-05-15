@@ -2,7 +2,7 @@
   $modified_files = [
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'seo_links_cache`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_SEO_LINKS_CACHE',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'seo_links_cache`');" . PHP_EOL,
       'replace' => "",
     ],
   ];

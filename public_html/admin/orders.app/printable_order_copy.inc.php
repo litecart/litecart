@@ -1,5 +1,6 @@
 <?php
   document::$template = settings::get('store_template_catalog');
+  document::$snippets['template_path'] = WS_DIR_APP . 'includes/templates/'. settings::get('store_template_catalog') .'/';
   document::$layout = 'printable';
 
   if (empty($_GET['order_id'])) die('Missing order ID');

@@ -1,6 +1,8 @@
 <?php
   @set_time_limit(60*5);
-  ob_end_clean();
+  ob_clean();
+
+  session::close();
 
   $jobs = new mod_jobs();
 

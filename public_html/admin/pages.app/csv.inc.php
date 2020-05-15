@@ -53,18 +53,14 @@
             $page = new ent_page($row['id']);
           }
 
-        } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($page = database::fetch(database::query("select page_id as id from ". DB_PREFIX ."pages_info where name = '". database::input($_POST['name']) ."' and language_code = '". database::input($_POST['language_code']) ."' limit 1;"))) {
-            $page = new ent_page($page['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."pages (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $page = new ent_page($row['id']);
+      // No page, let's create it
+        if (!$page = database::fetch($page_query)) {
+          if (empty($_POST['insert'])) {
+            echo "[Skipped] New page on line $line was not inserted to database.\r\n";
+            continue;
           }
-
-        } else {
-          echo "[Skipped] Could not identify page on line $line.\r\n";
-          continue;
-        }
+          $page = new ent_page();
+          echo "Inserting new page '{$row['title']}'\r\n";
 
         if (!empty($page->data['id'])) {
           if (empty($_POST['update'])) continue;

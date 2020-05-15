@@ -2,15 +2,10 @@
 
   breadcrumbs::add(language::translate('title_most_sold_products', 'Most Sold Products'));
 
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
+  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
-
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_PREFIX ."orders limit 1;"));
-  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
-  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
 
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
@@ -18,7 +13,7 @@
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
 // Table Rows
-  $order_items = [];
+  $rows = [];
 
   $order_items_query = database::query(
     "select
@@ -45,7 +40,7 @@
 
   $page_items = 0;
   while ($order_item = database::fetch($order_items_query)) {
-    $order_items[] = $order_item;
+    $rows[] = $order_item;
     if (++$page_items == settings::get('data_table_rows_per_page')) break;
   }
 
@@ -96,18 +91,14 @@ form[name="filter_form"] li {
         </tr>
       </thead>
       <tbody>
-    <?php
-
-    ?>
+        <?php foreach ($rows as $row) { ?>
         <tr>
-          <td><?php echo $order_item['name']; ?></td>
-          <td style="text-align: center;" class="border-left"><?php echo (float)$order_item['total_quantity']; ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_sales'], false, settings::get('store_currency_code')); ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_tax'], false, settings::get('store_currency_code')); ?></td>
+          <td><?php echo $row['name']; ?></td>
+          <td style="text-align: center;" class="border-left"><?php echo (float)$row['total_quantity']; ?></td>
+          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
+          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
         </tr>
-    <?php
-
-    ?>
+        <?php } ?>
       </tbody>
     </table>
   </div>

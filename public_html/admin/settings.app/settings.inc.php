@@ -98,6 +98,14 @@
           $setting['value'] = '****************';
           break;
 
+        case (substr($setting['function'], 0, 12) == 'order_status'):
+          $setting['value'] = $setting['value'] ? reference::order_status($setting['value'])->name : '';
+          break;
+
+        case (substr($setting['function'], 0, 4) == 'page'):
+          $setting['value'] = $setting['value'] ? reference::page($setting['value'])->title : '';
+          break;
+
         case (substr($setting['function'], 0, 14) == 'regional_input'):
           $setting['value'] = @json_decode($setting['value'], true);
           $setting['value'] = @$setting['value'][language::$selected['code']];

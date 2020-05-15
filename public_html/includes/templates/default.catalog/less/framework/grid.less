@@ -31,6 +31,10 @@
   [class*="col-"] {
     grid-column: span 12;
   }
+  @media (min-width: @media-breakpoint-sm) {
+    grid-gap: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .make-grid-columns(@device) {

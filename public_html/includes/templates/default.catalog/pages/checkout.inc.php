@@ -6,7 +6,7 @@
   <section id="box-checkout" class="box">
     <div class="cart wrapper"></div>
 
-    <div class="row">
+    <div class="row" style="grid-gap: 2rem;">
       <div class="col-md-6">
         <div class="customer wrapper"></div>
       </div>
@@ -231,6 +231,7 @@
       $('input[name="phone"]').removeAttr('placeholder');
     }
 
+    <?php if (settings::get('customer_field_zone')) { ?>
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -253,6 +254,7 @@
         $('body').css('cursor', 'auto');
       }
     });
+    <?php } ?>
   });
 
   $('#box-checkout .customer.wrapper').on('input propertyChange', 'select[name="shipping_address[country_code]"]', function(e) {
@@ -269,7 +271,7 @@
       $('input[name="shipping_address[phone]"]').removeAttr('placeholder');
     }
 
-    console.log('Retrieving zones');
+    <?php if (settings::get('customer_field_zone')) { ?>
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -292,6 +294,7 @@
         $('body').css('cursor', 'auto');
       }
     });
+    <?php } ?>
   });
 
 // Customer Form: Checksum

@@ -1,11 +1,12 @@
 <?php
-  // Automatic upgrade: upgrade.php?from_version={version}&upgrade=true&redirect={url}
+  // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
   ob_start();
 
   require_once('../includes/config.inc.php');
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
+  if (!defined('DB_PREFIX')) define('DB_TABLE_PREFIX', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
 
   require_once('../includes/error_handler.inc.php');
   require_once('../includes/library/lib_database.inc.php');
@@ -31,37 +32,52 @@
 
 // Get current platform database version
   $platform_database_version_query = database::query(
-    "select `value` from ". DB_TABLE_SETTINGS ."
+    "select `value` from ". DB_PREFIX ."settings
     where `key` = 'platform_database_version'
     limit 1;"
   );
-  $platform_database_version = database::fetch($platform_database_version_query);
 
-  if (!empty($platform_database_version)) {
+  if ($platform_database_version = database::fetch($platform_database_version_query)) {
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
-    if (empty($_REQUEST['from_version'])) $_REQUEST['from_version'] = PLATFORM_DATABASE_VERSION;
+  } else if (!empty($_GET['from_version'])) {
+    define('PLATFORM_DATABASE_VERSION', $_GET['from_version']);
+  } else {
+    die('Could not identify database version');
   }
 
 // List supported upgrades
   $supported_versions = ['1.0' => '1.0'];
   foreach (glob('upgrade_patches/*') as $file) {
-    preg_match('#\/(.*).(inc.php|sql)$#', $file, $matches);
-    $supported_versions[$matches[1]] = $matches[1];
+    if (preg_match('#\/(.*).(inc.php|sql)$#', $file, $matches)) {
+      $supported_versions[$matches[1]] = $matches[1];
+    }
   }
   usort($supported_versions, function($a, $b) {
     return version_compare($a, $b, '>');
   });
 
-  echo '<h1>Upgrade</h1>' . PHP_EOL;
 
   if (!empty($_REQUEST['upgrade'])) {
 
-    if (empty($_REQUEST['from_version'])) die('You must select the version you are migrating from.');
+    echo '<h1>Upgrade</h1>' . PHP_EOL;
+
+    ### PHP > Check Version #######################################
+
+    echo '<p>Checking PHP version... ';
+
+    if (version_compare(PHP_VERSION, '5.4', '<')) {
+      die('<span class="error">[Error] PHP 5.4+ minimum requirement - Detected '. PHP_VERSION .'</span></p>');
+    } else if (version_compare(PHP_VERSION, '7.1', '<=')) {
+      echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
+         . '<span class="warning">[Warning] PHP 7.3+ recommended - Detected '. PHP_VERSION .' that has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a></span></span></p>';
+    } else {
+      echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL;
+    }
 
     #############################################
 
     foreach ($supported_versions as $version) {
-      if (version_compare($_REQUEST['from_version'], $version, '<')) {
+      if (version_compare(PLATFORM_DATABASE_VERSION, $version, '<')) {
         if (file_exists('upgrade_patches/'. $version .'.sql')) {
           echo '<p>Upgrading database to '. $version .'... ' . PHP_EOL;
           $sql = file_get_contents('upgrade_patches/'. $version .'.sql');
@@ -70,7 +86,7 @@
           $sql = explode('-- --------------------------------------------------------', $sql);
 
           foreach ($sql as $query) {
-            $query = preg_replace('#--.*\s#', '', $query);
+            $query = preg_replace('#^-- .*?\R+#m', '', $query);
             if (!empty($query)) {
               database::query($query);
             }
@@ -78,34 +94,26 @@
         }
 
         if (file_exists('upgrade_patches/'. $version .'.inc.php')) {
-          echo '<p>Upgrading system to '. $version .'... ' . PHP_EOL;
+          echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL;
           include('upgrade_patches/'. $version .'.inc.php');
         }
+
+        echo '<p>Set platform database version...';
+
+        database::query(
+          "update ". str_replace('`lc_', '`'.DB_PREFIX, '`lc_settings`') ."
+          set `value` = '". database::input($version) ."'
+          where `key` = 'platform_database_version'
+          limit 1;"
+        );
+
+        echo ' <strong>'. $version .'</strong></p>' . PHP_EOL;
       }
     }
 
     #############################################
 
-    echo '<p>Set platform database version...';
-
-    if (defined('PLATFORM_VERSION')) {
-
-      database::query(
-        "update ". str_replace('`lc_', '`'.DB_PREFIX, '`lc_settings`') ."
-        set `value` = '". database::input(PLATFORM_VERSION) ."'
-        where `key` = 'platform_database_version'
-        limit 1;"
-      );
-
-      echo ' <strong>'. PLATFORM_VERSION .'</strong></p>' . PHP_EOL;
-
-    } else {
-      echo ' <span class="error">[Error: Not defined]</span></p>' . PHP_EOL;
-    }
-
-    #############################################
-
-    echo '<p>Preparing CSS files...' . PHP_EOL;
+    echo '<p>Preparing CSS files...</p>' . PHP_EOL;
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
@@ -117,12 +125,7 @@
       ];
 
       foreach ($files_to_delete as $file) {
-        echo 'Delete '. $file;
-        if (file_delete($file)) {
-          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-        } else {
-          echo '<span class="error">[Error]</span></p>' . PHP_EOL;
-        }
+        file_delete($file);
       }
 
     } else {
@@ -131,15 +134,12 @@
         '../includes/templates/default.catalog/less/',
         '../includes/templates/default.catalog/css/*.min.css',
         '../includes/templates/default.catalog/css/*.min.css.map',
+        '../includes/templates/default.catalog/js/*.min.js',
+        '../includes/templates/default.catalog/js/*.min.js.map',
       ];
 
       foreach ($files_to_delete as $file) {
-        echo 'Delete '. $file;
-        if (file_delete($file)) {
-          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
-        } else {
-          echo '<span class="error">[Error]</span></p>' . PHP_EOL;
-        }
+        file_delete($file);
       }
 
       foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
@@ -150,6 +150,7 @@
           'checkout.min.css'  => 'checkout.css',
           'framework.min.css' => 'framework.css',
           'printable.min.css' => 'printable.css',
+          'app.min.js' => 'app.js',
         ];
         file_put_contents($file, strtr($contents, $search_replace));
       }
@@ -191,6 +192,17 @@
 
 ?>
 <style>
+html {
+  display: table;
+  width: 100%;
+}
+body {
+  display: table-cell;
+  vertical-align: middle;
+}
+.glass-edges {
+  max-width: 640px;
+}
 input[name="development_type"] {
   display: none;
 }
@@ -212,38 +224,37 @@ input[name="development_type"] + div .type {
 input[name="development_type"] + div .title {
   font-size: 1.25em;
   font-weight: bold;
-  line-height: 2em;
+  line-height: 1.5em;
 }
 input[name="development_type"]:checked + div {
   border-color: #333;
 }
 </style>
 
-<p>Upgrade to <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?> from any older version listed.</p>
-
-<p class="alert alert-danger"><strong>Backup your files and database before you continue!</strong> Selecting the wrong version will most likely damage your data.</p>
-
 <form name="upgrade_form" method="post">
-  <h3>Installed Version</h3>
+  <h1>Upgrade</h1>
 
   <div class="form-group">
-    <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
-    <select class="form-control" name="from_version">
-      <option value="">-- Select Version --</option>
-      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>LiteCart '. $version . ((defined('PLATFORM_DATABASE_VERSION') && PLATFORM_DATABASE_VERSION == $version) ? ' (Detected)' : '') .'</option>' . PHP_EOL; ?>
-    </select>
+    <label>Version</label>
+    <ul class="list-inline" style="font-size: 2em;">
+      <li><?php echo PLATFORM_DATABASE_VERSION; ?></li>
+      <li>→</li>
+      <li><?php echo PLATFORM_VERSION; ?></li>
+    </ul>
   </div>
 
   <h3>Development</h3>
 
   <div class="form-group" style="display: flex;">
-
     <label>
       <input name="development_type" value="standard" type="radio" checked />
       <div>
         <div class="type">Standard</div>
-        <div class="title">.css</div>
-        <div class="description">Uncompressed CSS files</div>
+        <div class="title">
+          .css<br />
+          .js
+        </div>
+        <small class="description">(Uncompressed files)</small>
       </div>
     </label>
 
@@ -251,16 +262,20 @@ input[name="development_type"]:checked + div {
       <input name="development_type" value="advanced" type="radio" />
       <div>
         <div class="type">Advanced</div>
-        <div class="title">.less + .min.css</div>
-        <div class="description">
-          Compressed CSS files<br />
-          (Requires a <a href="https://wiki.litecart.net/doku.php?id=how_to_change_the_look_of_your_store" target="_blank">LESS compiler</a>)
+        <div class="title">
+          .less + .min.css<br />
+          .js + .min.js
         </div>
+        <small class="description">
+          (Requires <a href="https://www.litecart.net/sv/addons/163/developer-kit" target="_blank">Developer Kit</a>)
+        </small>
       </div>
     </label>
   </div>
 
-  <button class="btn btn-default btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" />Upgrade To <?php echo PLATFORM_VERSION; ?></button>
+  <p class="alert alert-danger">Backup your files <strong><u>and</u></strong> database <strong><u>before</u></strong> you continue!</p>
+
+  <button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
 </form>
 <?php
   require('includes/footer.inc.php');

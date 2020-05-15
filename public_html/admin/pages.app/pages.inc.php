@@ -70,7 +70,7 @@
     ['-- '. language::translate('title_all', 'All') .' --', ''],
     [language::translate('title_site_menu', 'Site Menu'), 'menu'],
     [language::translate('title_customer_service', 'Customer Service'), 'customer_service'],
-    [language::translate('title_site_menu', 'information'), 'information'],
+    [language::translate('title_information', 'Information'), 'information'],
   ];
 ?>
 
@@ -151,11 +151,11 @@
             <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $page['id']; ?></td>
-            <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
+            <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
             <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -172,6 +172,7 @@
         "select p.*, pi.title from ". DB_PREFIX ."pages p
         left join ". DB_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
         where parent_id = ". (int)$parent_id ."
+        ". ((!empty($_GET['dock']) && $depth == 0) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
         order by p.priority, pi.title;"
       );
 
@@ -209,11 +210,11 @@
             <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $page['id']; ?></td>
-            <td style="padding-left: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
+            <td style="padding-left: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
             <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'pages_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
 <?php
         if (in_array($page['id'], $_GET['expanded'])) {

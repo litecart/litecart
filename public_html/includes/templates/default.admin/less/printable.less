@@ -1,4 +1,4 @@
-@import "variables.less";
+@page-margin: 15mm;
 
 * {
   line-height: 125%;
@@ -12,6 +12,9 @@
 
   .footer {
     position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     font-size: 10px;
   }
 }
@@ -23,20 +26,20 @@ hr {
 @media print {
   @page {
     size: A4;
-    margin: 15mm;
+    margin: @page-margin;
     zoom: 100%;
     padding: 0;
   }
 
   .page {
-    min-height: 100%;
     position: relative;
     page-break-after: always;
-    .footer {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
+
+    &[data-size="A4"] {
+      height: calc(29.7cm - @page-margin - @page-margin);
+    }
+    &[data-="A4"][data-orientation="portrait"] {
+      height: calc(21cm - @page-margin - @page-margin);
     }
   }
 
@@ -64,7 +67,7 @@ hr {
 
   .page {
     margin: 5mm auto;
-    padding: 15mm;
+    padding: @page-margin;
     background: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.15);
 
@@ -78,15 +81,15 @@ hr {
     }
 
     .footer {
-      left: 15mm;
-      right: 15mm;
-      bottom: 15mm;
+      left: @page-margin;
+      right: @page-margin;
+      bottom: @page-margin;
     }
   }
 
   .page-break {
     border-bottom: 1px #ccc dashed;
-    margin: 15mm -15mm;
+    margin: @page-margin -@page-margin;
     line-height: 0;
   }
 

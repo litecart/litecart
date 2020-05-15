@@ -78,6 +78,11 @@
       "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
       "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
       "o.reference like '%". database::input($_GET['query']) ."%'",
+      "o.id in (
+        select order_id from ". DB_PREFIX ."orders_items
+        where name like '%". database::input($_GET['query']) ."%'
+        or sku like '%". database::input($_GET['query']) ."%'
+      )",
     ];
   }
 
@@ -89,7 +94,7 @@
       $sql_sort = "o.customer_country_code";
       break;
     default:
-      $sql_sort = "o.starred desc, o.date_created desc, o.date_created desc, o.id desc";
+      $sql_sort = "o.starred desc, o.date_created desc, o.id desc";
       break;
   }
 
@@ -205,7 +210,7 @@ table .fa-star:hover {
             <th>&nbsp;</th>
             <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
             <th>&nbsp;</th>
-            <th  data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+            <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
             <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
             <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
             <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>

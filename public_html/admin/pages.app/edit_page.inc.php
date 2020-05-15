@@ -1,7 +1,7 @@
 <?php
 
-  if (!empty($_GET['pages_id'])) {
-    $page = new ent_page($_GET['pages_id']);
+  if (!empty($_GET['page_id'])) {
+    $page = new ent_page($_GET['page_id']);
   } else {
     $page = new ent_page();
   }

@@ -15,7 +15,7 @@
 
   $order = &session::$data['order'];
 
-  if ($error_message = $order->validate()) {
+  if ($error_message = $order->validate($shipping, $payment)) {
     notices::add('errors', $error_message);
     header('Location: '. document::ilink('checkout'));
     exit;
@@ -100,6 +100,11 @@
     }
   }
 
+// Refresh the order if it's in the database in case a callback might have tampered with it
+  if (!empty($order->data['id'])) {
+    $order->load($order->data['id']);
+  }
+
 // Verify transaction
   if (!empty($payment->modules) && count($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
     $result = $payment->verify($order);
@@ -134,16 +139,18 @@
   cart::clear();
 
 // Send order confirmation email
-  $bccs = [];
+  if (settings::get('send_order_confirmation')) {
+    $bccs = [];
 
-  if (settings::get('email_order_copy')) {
-    foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
-      if (empty($email)) continue;
-      $bccs[] = $email;
+    if (settings::get('email_order_copy')) {
+      foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
+        if (empty($email)) continue;
+        $bccs[] = $email;
+      }
     }
-  }
 
-  $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+    $order->email_order_copy($order->data['customer']['email'], $bccs, $order->data['language_code']);
+  }
 
 // Run after process operations
   $shipping->after_process($order);

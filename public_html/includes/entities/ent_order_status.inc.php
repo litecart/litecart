@@ -76,6 +76,16 @@
 
     public function save() {
 
+      if (!empty($this->data['id']) && $this->data['is_sale'] != $this->previous['is_sale']) {
+        $orders_query = database::query(
+          "select * from ". DB_TBALE_ORDERS ."
+          where order_status_id = ". (int)$this->data['id'] .";"
+        );
+        if (database::num_rows($orders_query)) {
+          throw new Exception('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" the order status is being used by orders');
+        }
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_PREFIX ."order_statuses
@@ -145,7 +155,7 @@
     public function delete() {
 
       if (database::num_rows(database::query("select id from ". DB_PREFIX ."orders where order_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
-        throw new Exception('Cannot delete the order status because there are orders using it');
+        throw new Exception(language::translate('error_cannot_delete_order_status_while_used', 'Cannot delete the order status because there are orders using it'));
       }
 
       database::query(

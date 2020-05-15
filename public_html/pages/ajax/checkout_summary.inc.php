@@ -7,24 +7,30 @@
   if (empty($shipping)) $shipping = new mod_shipping();
   if (empty($payment)) $payment = new mod_payment();
 
-// Resume incomplete order in session
   if (!empty(session::$data['order']->data['id'])) {
-    session::$data['order'] = new ent_order(session::$data['order']->data['id']);
-  } else {
-    session::$data['order'] = new ent_order();
+    $resume_id = session::$data['order']->data['id'];
+  }
+
+  session::$data['order'] = new ent_order();
+
+// Resume incomplete order in session
+  if (!empty($resume_id)) {
+    $order_query = database::query(
+      "select * from ". DB_TABLE_ORDERS ."
+      where id = ". (int)$resume_id ."
+      and order_status_id = 0
+      and date_created > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
+      limit 1;"
+    );
+
+    if (database::num_rows($order_query)) {
+      session::$data['order'] = new ent_order($resume_id);
+      session::$data['order']->reset();
+      session::$data['order']->data['id'] = $resume_id;
+    }
   }
 
   $order = &session::$data['order'];
-
-  if (!empty($order->data['id']) && empty($order->data['order_status_id']) && strtotime($order->data['date_created']) > strtotime('-15 minutes')) {
-    $resume_id = $order->data['id'];
-  }
-
-  $order->reset();
-
-  if (!empty($resume_id)) {
-    $order->data['id'] = $resume_id;
-  }
 
 // Build Order
   $order->data['weight_class'] = settings::get('store_weight_class');
@@ -61,7 +67,7 @@
     'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : null,
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => $order->data['payment_due'],
-    'error' => $order->validate(),
+    'error' => $order->validate($shipping, $payment),
     'selected_shipping' => null,
     'selected_payment' => null,
     'consent' => null,
@@ -102,8 +108,8 @@
     ];
   }
 
-  $terms_of_purchase_id = settings::get('privacy_policy');
-  $privacy_policy_id = settings::get('terms_of_purchase');
+  $privacy_policy_id = settings::get('privacy_policy');
+  $terms_of_purchase_id = settings::get('terms_of_purchase');
 
   switch(true) {
     case ($terms_of_purchase_id && $privacy_policy_id):

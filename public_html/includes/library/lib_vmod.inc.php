@@ -8,7 +8,7 @@
     private static $_checked = [];                 // Array of files that have already passed check() and
     private static $_checksums = [];               // Array of checksums for time comparison
     private static $_installed = [];               // Array of path aliases
-    private static $_settings = array();           // Array of modification settings
+    private static $_settings = [];                // Array of modification settings
     public static $time_elapsed = 0;               // Array of path aliases
 
     public static function init() {
@@ -98,7 +98,7 @@
     // Load settings
       if (!is_file(FS_DIR_APP . 'vmods/.settings')) file_put_contents(FS_DIR_APP . 'vmods/.settings', '{}');
       if (!self::$_settings = json_decode(file_get_contents(FS_DIR_APP . 'vmods/.settings'), true)) {
-        self::$_settings = array();
+        self::$_settings = [];
       }
 
       self::$time_elapsed += microtime(true) - $timestamp;
@@ -266,7 +266,7 @@
 
         switch ($dom->documentElement->tagName) {
 
-          case 'vmod': // LiteCart Modification
+          case 'vmod': // vMod
             $vmod = self::parse_vmod($dom, $file);
             break;
 

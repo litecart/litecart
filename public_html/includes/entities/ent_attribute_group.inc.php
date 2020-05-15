@@ -72,7 +72,8 @@
 
       $values_query = database::query(
         "select * from ". DB_PREFIX ."attribute_values
-        where group_id = ". (int)$group_id .";"
+        where group_id = ". (int)$group_id ."
+        order by priority;"
       );
 
       while ($value = database::fetch($values_query)) {
@@ -152,13 +153,21 @@
 
       while ($value = database::fetch($values_query)) {
 
-        $products_query = database::query(
+        $products_attributes_query = database::query(
           "select id from ". DB_PREFIX ."products_attributes
-          where group_id = ". (int)$this->data['id'] ."
-          or value_id = ". (int)$value['id'] .";"
+          where value_id = ". (int)$value['id'] ."
+          limit 1;"
         );
 
-        if (database::num_rows($products_query) > 0) throw new Exception('Cannot delete value linked to products.');
+        if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete value linked to product attributes');
+
+        $products_options_query = database::query(
+          "select id from ". DB_PREFIX ."products_options_values
+          where value_id = ". (int)$value['id'] ."
+          limit 1;"
+        );
+
+        if (database::num_rows($products_options_query)) throw new Exception('Cannot delete value linked to product options');
 
         database::query(
           "delete from ". DB_PREFIX ."attribute_values
@@ -166,6 +175,7 @@
           and id = ". (int)$value['id'] ."
           limit 1;"
         );
+
         database::query(
           "delete from ". DB_PREFIX ."attribute_values_info
           where value_id = ". (int)$value['id'] .";"
@@ -173,6 +183,7 @@
       }
 
     // Update/Insert values
+      $i = 0;
       foreach ($this->data['values'] as $value) {
 
         if (empty($value['id'])) {
@@ -186,7 +197,8 @@
 
         database::query(
           "update ". DB_PREFIX ."attribute_values
-          set date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+            priority = ". (int)$i++ .",
+            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
           where id = ". (int)$value['id'] ."
           limit 1;"
         );
@@ -235,7 +247,15 @@
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      if (database::num_rows($products_attributes_query) > 0) throw new Exception('Cannot delete group linked to products');
+      if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete group linked to products');
+
+    // Check products for options
+      $products_options_query = database::query(
+        "select id from ". DB_PREFIX ."products_attributes
+        where group_id = ". (int)$this->data['id'] .";"
+      );
+
+      if (database::num_rows($products_options_query)) throw new Exception('Cannot delete group linked to products');
 
       $this->data['values'] = [];
       $this->save();

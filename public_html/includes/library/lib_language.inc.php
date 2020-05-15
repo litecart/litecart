@@ -92,7 +92,7 @@
       session::$data['language'] = self::$languages[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        header('Set-Cookie: language_code='. $code .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+        header('Set-Cookie: language_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
       }
 
     // Set system locale
@@ -137,6 +137,17 @@
     // Return language from cookie
       if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $all_languages)) return $_COOKIE['language_code'];
 
+    // Return language from country (TLD)
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+        $countries_query = database::query(
+          "select * from ". DB_PREFIX ."countries
+          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
+          limit 1;"
+        );
+        $country = database::fetch($countries_query);
+        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
+      }
+
     // Return language from browser request headers
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $browser_locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -149,17 +160,6 @@
         if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
           if (!empty($reg[1]) && in_array($reg[1], $enabled_languages)) return $reg[1];
         }
-      }
-
-    // Return language from country (TLD)
-      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-        $countries_query = database::query(
-          "select * from ". DB_PREFIX ."countries
-          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
-          limit 1;"
-        );
-        $country = database::fetch($countries_query);
-        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
       }
 
     // Return default language
@@ -213,35 +213,37 @@
         return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
       }
 
-    // Find same english translation by different key
-      $translation_query = database::query(
-        "select id, text_en, `text_". $language_code ."` from ". DB_PREFIX ."translations
-        where text_en = '". database::input($translation['text_en']) ."'
-        and text_en != ''
-        and text_". self::$selected['code'] ." != ''
-        limit 1;"
-      );
+    // If we have an english translation
+      if (!empty($translation['text_en'])) {
 
-      if ($translation = database::fetch($translation_query)) {
-        database::query(
-          "update ". DB_PREFIX ."translations
-          set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
-          date_updated = '". date('Y-m-d H:i:s') ."'
+      // Find same english translation by different key
+        $secondary_translation_query = database::query(
+          "select id, text_en, `text_". $language_code ."` from ". DB_PREFIX ."translations
           where text_en = '". database::input($translation['text_en']) ."'
-          and text_". self::$selected['code'] ." = '';"
+          and text_en != ''
+          and text_". self::$selected['code'] ." != ''
+          limit 1;"
         );
 
-        self::$_loaded_translations[] = $code;
-        return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
-      }
+        if ($secondary_translation = database::fetch($secondary_translation_query)) {
+          database::query(
+            "update ". DB_PREFIX ."translations
+            set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
+            date_updated = '". date('Y-m-d H:i:s') ."'
+            where text_en = '". database::input($translation['text_en']) ."'
+            and text_". self::$selected['code'] ." = '';"
+          );
 
-    // Return english translation
-      if (!empty($translation['text_en'])) {
+          self::$_loaded_translations[] = $code;
+          return self::$_cache['translations'][$language_code][$code] = $secondary_translation['text_'.$language_code];
+        }
+
+      // Return english translation
         self::$_loaded_translations[] = $code;
         return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
       }
 
-    // Return translation
+    // Return default translation
       self::$_loaded_translations[] = $code;
       return self::$_cache['translations'][$language_code][$code] = $default;
     }

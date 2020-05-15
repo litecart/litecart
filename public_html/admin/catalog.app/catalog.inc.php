@@ -279,7 +279,7 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+          select product_id from ". DB_PREFIX ."products_options_stock
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
       ) as relevance

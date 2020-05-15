@@ -38,55 +38,7 @@
 
     // If destination is a directory
       if (is_dir($options['destination'])) {
-
-        $options['destination'] = rtrim($options['destination'], '/') . '/';
-
-        switch (strtoupper($options['clipping'])) {
-
-          case 'CROP':
-            $clipping_filename_flag = '_c';
-            break;
-
-          case 'CROP_ONLY_BIGGER':
-            $clipping_filename_flag = '_cob';
-            break;
-
-          case 'STRETCH':
-            $clipping_filename_flag = '_s';
-            break;
-
-          case 'FIT':
-            $clipping_filename_flag = '_f';
-            break;
-
-          case 'FIT_USE_WHITESPACING':
-            $clipping_filename_flag = '_fwb';
-            break;
-
-          case 'FIT_ONLY_BIGGER':
-            $clipping_filename_flag = '_fob';
-            break;
-
-          case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
-            $clipping_filename_flag = '_fobws';
-            break;
-
-          default:
-            trigger_error("Unknown image clipping method ($clipping)", E_USER_WARNING);
-            return;
-        }
-
-        $path = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', realpath($source)));
-
-        $options['destination'] .= implode('', [
-          sha1($path),
-          !empty($options['trim']) ? '_t' : null,
-          '_'.(int)$options['width'] .'x'. (int)$options['height'],
-          $clipping_filename_flag,
-          !empty($options['watermark']) ? '_wm' : null,
-          !empty($options['interlaced']) ? '_i' : null,
-          '.' . pathinfo($source, PATHINFO_EXTENSION),
-        ]);
+        $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
       }
 
     // Return an already existing file
@@ -94,7 +46,7 @@
         if (!empty($options['overwrite'])) {
           unlink($options['destination']);
         } else {
-          return preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+          return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
         }
       }
 
@@ -111,13 +63,6 @@
       if (!empty($options['watermark'])) {
         if ($options['watermark'] === true) $options['watermark'] = FS_DIR_APP . 'images/logotype.png';
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
-      }
-
-      if (!is_dir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 2))) {
-        if (!mkdir(FS_DIR_APP . 'cache/' . substr(basename($options['destination']), 0, 2), 0777)) {
-          trigger_error('Could not create cache subfolder', E_USER_WARNING);
-          return false;
-        }
       }
 
       if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
@@ -193,7 +138,7 @@
     }
 
     $filename = implode('', [
-      sha1($path),
+      md5_file($source),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,
       $clipping_filename_flag,
@@ -225,13 +170,11 @@
 
   function image_delete_cache($file) {
 
-    $webpath = str_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
+    $webpath = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', str_replace('\\', '/', $file));
 
     $cachename = sha1($webpath);
 
-    $files = glob(FS_DIR_APP . 'cache/'. substr($cachename, 0, 3) .'/' . $cachename .'*');
-
-    if ($files) foreach ($files as $file) {
+    foreach (glob(FS_DIR_APP . 'cache/'. substr($cachename, 0, 3) .'/' . $cachename .'*') as $file) {
       unlink($file);
     }
   }

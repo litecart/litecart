@@ -12,7 +12,7 @@
       "select av.id, avi.name from ". DB_PREFIX ."attribute_values av
       left join ". DB_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where av.group_id = ". (int)$_GET['group_id'] ."
-      order by avi.name;"
+      order by av.priority, avi.name;"
     );
 
     $json = [];

@@ -1,3 +1,5 @@
+@import "framework/variables.less";
+
 html {
   background: var(--site-background-color);
 }
@@ -9,11 +11,10 @@ html {
 }
 
 #header {
-  padding: 1rem .5rem;
-
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
+  padding: .5rem;
 
   @media (min-width: @media-breakpoint-sm) {
     padding: 1rem;
@@ -84,8 +85,8 @@ html {
     }
   }
   img {
-    max-width: 52px;
-    max-height: 52px;
+    max-width: 50px;
+    max-height: 50px;
   }
   .badge {
     background: red;
@@ -119,6 +120,12 @@ html {
       float: left;
       width: ~"calc(var(--sidebar-width) + 1em)";
     }
+  }
+  @media (max-width: (@media-breakpoint-sm - 1px)) {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    font-size: 1.25em;
   }
 }
 
@@ -157,7 +164,7 @@ html {
     > *:first-child {
       margin-top: 0;
     }
-    width: 250px;
+    width: var(--sidebar-width);
     + #content {
       margin-left: 1rem;
     }
@@ -166,6 +173,10 @@ html {
 
 #content {
   grid-area: content;
+  grid-gap: .5rem;
+  @media (min-width: (@media-breakpoint-sm)) {
+    grid-gap: 1rem;
+  }
 }
 
 #footer {

@@ -17,8 +17,6 @@
 
       $this->reset();
 
-      if (is_string($link)) $link = preg_replace('#/+#', '/', $link);
-
       $components = is_array($link) ? $link : parse_url($link);
 
       foreach ($components as $component => $value) {

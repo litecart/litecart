@@ -52,11 +52,11 @@
     public function save() {
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('store_currency_code')) {
-        throw new Exception('You cannot disable the store currency.');
+        throw new Exception(language::translate('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
       }
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_currency_code')) {
-        throw new Exception('You cannot disable the default currency.');
+        throw new Exception(language::translate('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
       }
 
       if (!empty($this->previous['code'])) {
@@ -111,7 +111,7 @@
           );
 
           database::query(
-            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
+            "alter table ". DB_PREFIX ."products_options_values
             change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
         }
@@ -143,13 +143,13 @@
         }
 
         $products_options_query = database::query(
-          "show fields from ". DB_TABLE_PRODUCTS_OPTIONS ."
+          "show fields from ". DB_PREFIX ."products_options_values
           where `Field` = '". database::input($this->data['code']) ."';"
         );
 
         if (!database::num_rows($products_options_query)) {
           database::query(
-            "alter table ". DB_TABLE_PRODUCTS_OPTIONS ."
+            "alter table ". DB_PREFIX ."products_options_values
             add `". database::input($this->data['code']) ."` decimal(11, 4) not null after `price_operator`;"
           );
         }
@@ -163,11 +163,11 @@
     public function delete() {
 
       if ($this->data['code'] == settings::get('store_currency_code')) {
-        throw new Exception('Cannot delete the store currency');
+        throw new Exception(language::translate('error_cannot_delete_store_currency', 'You must change the store currency before it can be deleted.'));
       }
 
       if ($this->data['code'] == settings::get('default_currency_code')) {
-        throw new Exception('Cannot delete the default currency');
+        throw new Exception(language::translate('error_cannot_delete_default_currency', 'You must change the default currency before it can be deleted.'));
       }
 
       database::query(
@@ -185,7 +185,7 @@
       );
 
       database::query(
-        "alter table ". DB_TABLE_PRODUCTS_OPTIONS ." drop `". database::input($this->data['code']) ."`;"
+        "alter table ". DB_PREFIX ."products_options_values drop `". database::input($this->data['code']) ."`;"
       );
 
       $this->reset();

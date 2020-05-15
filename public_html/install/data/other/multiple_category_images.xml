@@ -103,8 +103,65 @@
       );
 
       ]]></add>
-    </operation>
-  </file>
+		</operation>
+
+		<operation error="log">
+			<search position="after"><![CDATA[
+      if (empty($file)) return;
+      ]]></search>
+			<add><![CDATA[
+      $checksum = md5_file($file);
+      if (in_array($checksum, array_column($this->data['images'], 'checksum'))) return false;
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="3"><![CDATA[
+    // 456-Fancy-category-title-N.jpg
+      ]]></search>
+			<add><![CDATA[
+    // 456-Fancy-category-title-N.jpg
+      $i=1;
+      while (empty($filename) || is_file(FS_DIR_APP . 'images/' . $filename)) {
+        $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type();
+      }
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace"><![CDATA[
+      if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      ]]></search>
+			<add><![CDATA[
+      $priority = count($this->data['images'])+1;
+      ]]></add>
+		</operation>
+
+		<operation error="log">
+			<search position="replace" offset="8"><![CDATA[
+      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+      ]]></search>
+			<add><![CDATA[
+      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+
+      database::query(
+        "insert into ". DB_TABLE_CATEGORIES_IMAGES ."
+        (category_id, filename, checksum, priority)
+        values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
+      );
+      $image_id = database::insert_id();
+
+      $this->data['images'][$image_id] = array(
+        'id' => $image_id,
+        'filename' => $filename,
+        'checksum' => $checksum,
+        'priority' => $priority,
+      );
+
+      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
+      ]]></add>
+		</operation>
+	</file>
 
   <file name="admin/catalog.app/edit_category.inc.php">
     <operation error="log">
@@ -125,14 +182,14 @@
       ]]></add>
     </operation>
 
-    <operation error="log">
-      <search position="replace" offset="4"><![CDATA[
-      if (!empty($_POST['delete_image'])) $category->delete_image();
+		<operation error="log">
+			<search position="replace" offset="2"><![CDATA[
+      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
       ]]></search>
       <add><![CDATA[
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
-          $category->add_image($_FILES['new_images']['tmp_name'][$key]);
+          $category->save_image($_FILES['new_images']['tmp_name'][$key]);
         }
       }
       ]]></add>

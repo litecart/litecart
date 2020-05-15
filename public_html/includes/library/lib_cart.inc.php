@@ -28,7 +28,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
+          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
         }
       }
 
@@ -148,11 +148,11 @@
         'extras' => 0,
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
-        'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
+        'quantity' => !empty($product->quantity_unit['decimals']) ? round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP) : $quantity,
         'quantity_unit' => [
-          'name' => $product->quantity_unit['name'],
-          'decimals' => $product->quantity_unit['decimals'],
-          'separate' => $product->quantity_unit['separate'],
+          'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
+          'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',
+          'separate' => !empty($product->quantity_unit['separate']) ? $product->quantity_unit['separate'] : '',
         ],
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,
@@ -189,6 +189,78 @@
           throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, $product->quantity_unit['decimals'])]));
         }
 
+      // Build options structure
+        $sanitized_options = [];
+        foreach ($product->options as $option) {
+
+        // Check group
+          $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
+          $matched_group = @reset(array_intersect(array_keys($options), array_values($possible_groups)));
+
+          if (empty($matched_group)) {
+            if (!empty($option['required'])) {
+              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
+            } else {
+              continue;
+            }
+          }
+
+        // Check values
+          switch ($option['function']) {
+
+            case 'checkbox':
+
+              $matched_values = [];
+              foreach ($option['values'] as $value) {
+                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
+                $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
+                if (!empty($matched_value)) {
+                  $matched_values[] = $matched_value;
+                  $item['extras'] += $value['price_adjust'];
+                }
+              }
+              break;
+
+            case 'input':
+            case 'textarea':
+
+              $value = array_values($option['values'])[0];
+              $matched_value = $options[$matched_group];
+
+              if (!empty($matched_value)) {
+                $item['extras'] += $value['price_adjust'];
+              }
+              break;
+
+            case 'radio':
+            case 'select':
+
+              foreach ($option['values'] as $value) {
+                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
+                $matched_value = @reset(array_intersect([$options[$matched_group]], array_values($possible_values)));
+                if (!empty($matched_value)) {
+                  $item['extras'] += $value['price_adjust'];
+                  break;
+                }
+              }
+              break;
+          }
+
+          if (!empty($option['required']) && (!isset($matched_value) || $matched_value == '')) {
+            throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
+          }
+
+          if (empty($matched_group) && (empty($matched_values) && empty($matched_value))) continue;
+
+          $sanitized_options[] = [
+            'group_id' => $option['id'],
+            'value_id' => $value['id'],
+            'combination' => $option['id'].'-'.$value['id'],
+            'name' => $matched_group,
+            'value' => !empty($matched_values) ? $matched_values : $matched_value,
+          ];
+        }
+
       // Options stock
         foreach ($product->options_stock as $option_stock) {
 
@@ -203,7 +275,7 @@
           if ($option_match) {
             //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
             if (($option_stock['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], $product->quantity_unit['decimals']) .')');
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], @$product->quantity_unit['decimals']) .')');
             }
 
             $item['option_stock_combination'] = $option_stock['combination'];

@@ -1,7 +1,7 @@
 <section id="box-checkout-customer" class="box">
   <?php echo functions::form_draw_hidden_field('customer_details', 'true'); ?>
 
-  <?php if (empty(customer::$data['id'])) { ?>
+  <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div style="float:right">
     <a href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout')]) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
   </div>
@@ -11,16 +11,23 @@
 
   <div class="address billing-address">
 
+    <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
     <div class="row">
+      <?php if (settings::get('customer_field_company')) { ?>
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
         <?php echo functions::form_draw_text_field('company', true); ?>
       </div>
+      <?php } ?>
+
+      <?php if (settings::get('customer_field_tax_id')) { ?>
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
         <?php echo functions::form_draw_text_field('tax_id', true); ?>
       </div>
+      <?php } ?>
     </div>
+    <?php } ?>
 
     <div class="row">
       <div class="form-group col-xs-6">
@@ -59,15 +66,17 @@
     </div>
 
     <div class="row">
-      <div class="form-group col-xs-6">
+      <div class="form-group col-xs-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
         <label><?php echo language::translate('title_country', 'Country'); ?></label>
         <?php echo functions::form_draw_countries_list('country_code', true); ?>
       </div>
 
+      <?php if (settings::get('customer_field_zone')) { ?>
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
         <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?>
       </div>
+      <?php } ?>
     </div>
 
     <div class="row">
@@ -89,63 +98,67 @@
 
     <fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
 
+      <?php if (settings::get('customer_field_company')) { ?>
       <div class="row">
-        <div class="form-group col-sm-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
+        <div class="form-group col-xs-6">
+        <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
           <?php echo functions::form_draw_text_field('shipping_address[company]', true); ?>
         </div>
       </div>
+      <?php } ?>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[firstname]', true); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[lastname]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[address1]', true); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[address2]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[postcode]', true); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_city', 'City'); ?></label>
           <?php echo functions::form_draw_text_field('shipping_address[city]', true); ?>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
           <?php echo functions::form_draw_countries_list('shipping_address[country_code]', true); ?>
         </div>
 
-        <div class="form-group col-sm-6">
+        <?php if (settings::get('customer_field_zone')) { ?>
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
           <?php echo functions::form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
         </div>
+        <?php } ?>
       </div>
 
       <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
           <?php echo functions::form_draw_phone_field('shipping_address[phone]', true); ?>
         </div>
@@ -154,7 +167,7 @@
     </fieldset>
   </div>
 
-  <?php if (empty(customer::$data['id'])) { ?>
+  <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div class="account">
 
     <?php if (!empty($account_exists)) { ?>

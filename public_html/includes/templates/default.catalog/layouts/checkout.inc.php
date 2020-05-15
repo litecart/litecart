@@ -15,14 +15,19 @@
 <body>
 
 <header id="header" class="twelve-eighty">
-
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
     <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
   </a>
 
+  <div class="middle hidden-xs hidden-sm"></div>
+
   <div class="customer-service hidden-xs">
     <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>
-    <div class="phone"><?php echo settings::get('store_phone'); ?></div>
+    <?php if (settings::get('store_phone')) { ?>
+    <div class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></div>
+    <?php } else { ?>
+    <div class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></div>
+    <?php } ?>
   </div>
 </header>
 

@@ -29,7 +29,9 @@
       if (isset($product->$field)) $_POST[$field] = $product->$field;
     }
 
-    $_POST['price'] = currency::format_raw($_POST['price'], $_GET['currency_code'], $_GET['currency_value']);
+    $price = !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price;
+    $_POST['price'] = currency::format_raw($price, $_GET['currency_code'], $_GET['currency_value']);
+    $_POST['tax'] = tax::get_tax($price, $product->tax_class_id, $_GET['customer']);
   }
 ?>
 
@@ -186,7 +188,7 @@
       tax: parseFloat($(form).find(':input[name="tax"]').val())
     };
 
-    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->stock_options, JSON_UNESCAPED_SLASHES) : '[]'; ?>;
+    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->options_stock, JSON_UNESCAPED_SLASHES) : '[]'; ?>;
 
     $.each(available_stock_options, function(i, stock_option) {
       var matched = false;

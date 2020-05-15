@@ -1,15 +1,10 @@
 <?php
   breadcrumbs::add(language::translate('title_monthly_sales', 'Monthly Sales'));
 
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
+  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
-
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_PREFIX ."orders limit 1;"));
-  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
-  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
 
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
@@ -104,16 +99,16 @@ form[name="filter_form"] li {
       </thead>
 
       <tbody>
-          <?php foreach ($rows as $row) { ?>
-          <tr>
-            <td><?php echo ucfirst(language::strftime('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
-            <td class="border-left text-right"><?php echo currency::format($row['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
-            <td class="border-left text-right"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
-            <td class="border-left text-right"><?php echo currency::format($row['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
-            <td class="border-left text-right"><strong><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
-            <td class="text-right"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
-          </tr>
-          <?php } ?>
+        <?php foreach ($rows as $row) { ?>
+        <tr>
+          <td><?php echo ucfirst(language::strftime('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
+          <td class="border-left text-right"><?php echo currency::format($row['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
+          <td class="border-left text-right"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
+          <td class="border-left text-right"><?php echo currency::format($row['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
+          <td class="border-left text-right"><strong><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
+          <td class="text-right"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
+        </tr>
+        <?php } ?>
       </tbody>
 
       <?php if (!empty($total)) { ?>

@@ -30,7 +30,7 @@
 ########################################################################
 
   class ent_image {
-    private $_data = array();
+    private $_data = [];
     private $_file = null;
     private $_library = null;
     private $_resource = null;
@@ -822,13 +822,14 @@
           if (empty($this->_resource)) $this->load();
 
           try {
+
+            if ($this->_resource->getImageDepth() > 16) {
+              $this->_resource->setImageDepth(16);
+            }
+
             switch (strtolower($type)) {
               case 'jpg':
                  $this->_resource->setImageCompression(Imagick::COMPRESSION_JPEG);
-                 break;
-
-              case 'webp':
-                 $this->_resource->setImageCompression(Imagick::COMPRESSION_ZIP);
                  break;
 
               default:

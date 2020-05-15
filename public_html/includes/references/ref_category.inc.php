@@ -73,21 +73,6 @@
 
           break;
 
-        case 'images':
-
-          $this->_data['images'] = [];
-
-          $query = database::query(
-            "select * from ". DB_TABLE_CATEGORIES_IMAGES."
-            where category_id = ". (int)$this->_id ."
-            order by priority asc, id asc;"
-          );
-          while ($row = database::fetch($query)) {
-            $this->_data['images'][$row['id']] = $row['filename'];
-          }
-
-          break;
-
         case 'parent':
 
           $this->_data['parent'] = false;
@@ -122,12 +107,39 @@
           $query = database::query(
             "select id from ". DB_PREFIX ."products
             where status
-            and find_in_set ('". database::input($this->_id) ."', categories);"
+            and id in (
+              select product_id from ". DB_PREFIX ."products_to_categories
+              where category_id = ". (int)$this->_id ."
+            )
+            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
 
           while ($row = database::fetch($query)) {
             $this->_data['products'][$row['id']] = reference::product($row['id'], $this->_language_codes[0]);
           }
+
+          break;
+
+        case 'num_products':
+
+          if (!empty($this->_data['products'])) {
+            $this->_data['num_products'] = count($this->_data['products']);
+            break;
+          }
+
+          $query = database::query(
+            "select count(id) as num_products from ". DB_PREFIX ."products
+            where status
+            and id in (
+              select product_id from ". DB_PREFIX ."products_to_categories
+              where category_id = ". (int)$this->_id ."
+            )
+            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+          );
+
+          $this->_data['num_products'] = (int)database::fetch($query, 'num_products');
 
           break;
 

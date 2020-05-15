@@ -11,10 +11,10 @@
           </a>
         </div>
 
-        <?php foreach ($extra_images as $image) { ?>
+        <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-xs-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
           </a>
         </div>
         <?php } ?>
@@ -107,6 +107,15 @@
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
+        <?php if ($options) { ?>
+          <?php foreach ($options as $option) { ?>
+          <div class="form-group">
+            <label><?php echo $option['name']; ?></label>
+            <?php echo $option['values']; ?>
+          </div>
+          <?php } ?>
+        <?php } ?>
+
         <div class="price-wrapper">
           <?php if ($campaign_price) { ?>
           <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
@@ -146,10 +155,9 @@
 
       <div class="social-bookmarks">
         <a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>
-        <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', ['status' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
-        <a class="facebook" href="<?php echo document::href_link('http://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
-        <a class="googleplus" href="<?php echo document::href_link('https://plus.google.com/share', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Google+'); ?>"><?php echo functions::draw_fonticon('fa-google-plus-square fa-lg', 'style="color: #dd4b39;"'); ?></a>
-        <a class="pinterest" href="<?php echo document::href_link('http://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?></a>
+        <a class="twitter" href="<?php echo document::href_link('https://twitter.com/intent/tweet/', ['status' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
+        <a class="facebook" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
+        <a class="pinterest" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?></a>
       </div>
 
     </div>
@@ -170,17 +178,17 @@
     <div id="tab-technical-data" class="tab-pane technical-data">
       <table class="table table-striped table-hover">
 <?php
-  for ($i=0; $i<count($technical_data); $i++) {
-    if (strpos($technical_data[$i], ':') !== false) {
-      @list($key, $value) = explode(':', $technical_data[$i]);
+  foreach ($technical_data as $line) {
+    if (preg_match('#(:|\t)#', $line)) {
+      @list($key, $value) = preg_split('#(:|\t)#', $line);
       echo '  <tr>' . PHP_EOL
-         . '    <td>'. trim($key) .':</td>' . PHP_EOL
+         . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
          . '  </tr>' . PHP_EOL;
-    } else if (trim($technical_data[$i]) != '') {
+    } else if (trim($line) != '') {
       echo '  <thead>' . PHP_EOL
          . '    <tr>' . PHP_EOL
-         . '      <th colspan="2">'. $technical_data[$i] .'</th>' . PHP_EOL
+         . '      <th colspan="2">'. $line .'</th>' . PHP_EOL
          . '    </tr>' . PHP_EOL
          . '  </thead>' . PHP_EOL
          . '  <tbody>' . PHP_EOL;

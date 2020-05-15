@@ -24,10 +24,12 @@
       if (empty($parts['port'])) $parts['port'] = ($parts['scheme'] == 'ssl') ? 443 : 80;
       if (empty($parts['path'])) $parts['path'] = '/';
 
-      $data = (!empty($data) && is_array($data)) ? http_build_query($data) : $data;
+      if (!empty($data)) {
+        $data = is_array($data) ? http_build_query($data) : $data;
+      }
 
-      if (!empty($parts['user']) && !empty($parts['pass']) && empty($headers['Basic'])) {
-        $headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. $parts['pass']);
+      if (!empty($parts['user']) && empty($headers['Authorization'])) {
+        $headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. (!empty($parts['pass']) ? $parts['pass'] : ''));
       }
 
       if (empty($headers['User-Agent'])) {
@@ -146,7 +148,7 @@
     public function http_decode_chunked_data($data) {
       for ($result = ''; !empty($data); $data = trim($data)) {
         $position = strpos($data, "\r\n");
-        $length = hexdec(substr($data, 0, $position));
+        $length = (int)hexdec(substr($data, 0, $position));
         $result .= substr($data, $position + 2, $length);
         $data = substr($data, $position + 2 + $length);
       }

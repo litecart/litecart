@@ -9,7 +9,7 @@ h1 {
   border: none;
 }
 
-.addresses .row > *:nth-child(1), .addresses .row > *:nth-child(2) {
+.addresses .row > :not(.billing-address) {
   margin-top: 4mm;
 }
 
@@ -66,6 +66,9 @@ h1 {
         <div class="col-xs-3">
           <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
           <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></div>
+
+          <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
+          <div class="value"><?php echo $order['customer']['tax_id']; ?></div>
         </div>
 
         <div class="col-xs-6 billing-address">

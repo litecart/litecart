@@ -120,12 +120,14 @@
         break;
     }
 
-    $sql_where_categories = [];
-    if (!empty($filter['categories']) && is_array($filter['categories'])) {
-      foreach ($filter['categories'] as $category) {
-        $sql_where_categories[] = "find_in_set('". database::input($category) ."', ptc.categories)";
-      }
-      $sql_where_categories = "and (". implode(" and ", $sql_where_categories) .")";
+    $sql_where_categories = '';
+    if (!empty($filter['categories'])) {
+      $sql_where_categories = (
+        "and p.id in (
+          select product_id from ". DB_PREFIX ."products_to_categories
+          where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
+        )"
+      );
     }
     $sql_where_attributes = [];
     if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
@@ -152,15 +154,9 @@
       "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
 
       from (
-        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, ptc.categories, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
+        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
 
         from ". DB_PREFIX ."products p
-
-        left join (
-          select product_id, group_concat(category_id separator ',') as categories
-          from ". DB_PREFIX ."products_to_categories
-          group by product_id
-        ) ptc on (p.id = ptc.product_id)
 
         left join (
           select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
@@ -309,29 +305,16 @@
     if (empty($product_id)) return;
 
     if (!empty($option_stock_combination)) {
-      $products_options_stock_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+      database::query(
+        "update ". DB_PREFIX ."products_options_stock
+        set quantity = quantity + ". (float)$quantity ."
         where product_id = ". (int)$product_id ."
-        and combination = '". database::input($option_stock_combination) ."';"
+        and combination =  '". database::input($option_stock_combination) ."'
+        limit 1;"
       );
 
-      if (database::num_rows($products_options_stock_query) > 0) {
-
-        if (empty($option_stock_combination)) {
-          trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
-
-        } else {
-          database::query(
-            "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-            set quantity = quantity + ". (float)$quantity ."
-            where product_id = ". (int)$product_id ."
-            and combination =  '". database::input($option_stock_combination) ."'
-            limit 1;"
-          );
-        }
-
-      } else {
-        $option_id = 0;
+      if (!database::affected_rows()) {
+        trigger_error('Could not adjust stock for product (ID: '. $product_id .', Combination: '. $option_stock_combination .')', E_USER_WARNING);
       }
     }
 
@@ -341,6 +324,10 @@
       where id = ". (int)$product_id ."
       limit 1;"
     );
+
+    if (!database::affected_rows()) {
+      trigger_error('Could not adjust stock for product (ID: '. $product_id .')', E_USER_WARNING);
+    }
   }
 
   function catalog_purchase_count_adjust($product_id, $quantity) {

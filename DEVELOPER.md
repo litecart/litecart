@@ -9,6 +9,7 @@
 3. Execute "Run Node.cmd" and in the command prompt type:
 
     npm install
+    npm install grunt-cli
 
 Done! Node.js should now have installed all necessary libraries, you can now use any of the following commands:
 

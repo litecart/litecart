@@ -75,17 +75,6 @@
       border: 0;
       box-shadow: none;
     }
-    .open .dropdown-menu > li > a,
-    .open .dropdown-menu .dropdown-header {
-      padding: 5px 15px 5px 25px;
-    }
-    .open .dropdown-menu > li > a {
-      line-height: 20px;
-    }
-    .open .dropdown-menu > li > a:hover,
-    .open .dropdown-menu > li > a:focus {
-      background-image: none;
-    }
   }
 }
 
@@ -169,7 +158,10 @@
 }
 
 .navbar-form {
-  margin: ~"calc(.5em - 1px)" .5em;
+  margin: .25rem;
+  @media (min-width: @media-breakpoint-sm) {
+    margin: ~"calc(.25rem + 1px)";
+  }
 }
 
 .navbar-toggle {
@@ -179,7 +171,6 @@
     display: block;
     width: 22px;
     height: 2px;
-    border-radius: 1px;
     transition: all 250ms ease-in-out;
     + .icon-bar {
       margin-top: 4px;
