@@ -1,5 +1,6 @@
 <?php
   if (empty($_GET['product_id'])) return;
+  if (!settings::get('box_also_purchased_products_num_items')) return;
 
   functions::draw_lightbox();
 
