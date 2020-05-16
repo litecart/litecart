@@ -242,6 +242,8 @@
         return;
       }
 
+      if (empty($data)) return;
+
       switch ($token['storage']) {
 
         case 'file':
