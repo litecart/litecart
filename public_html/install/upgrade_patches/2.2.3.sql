@@ -22,3 +22,6 @@ ALTER TABLE `lc_countries` ADD UNIQUE INDEX `iso_code_1` (`iso_code_1`);
 ALTER TABLE `lc_currencies` CHANGE COLUMN `id` `id` TINYINT(2) NOT NULL AUTO_INCREMENT FIRST;
 -- --------------------------------------------------------
 ALTER TABLE `lc_languages` CHANGE COLUMN `id` `id` TINYINT(2) NOT NULL AUTO_INCREMENT FIRST;
+-- --------------------------------------------------------
+INSERT INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`, `date_updated`, `date_created`)
+VALUES ('job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', NOW(), NOW());
