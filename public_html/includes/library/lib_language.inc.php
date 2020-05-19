@@ -294,7 +294,7 @@
           //  return '???';
 
           default:
-            trigger_error("Unknown charset for system locale ($locale)", E_USER_NOTICE);
+            trigger_error("No predefined charset mapped for Windows locale $locale. Attempting automatic detection instead.", E_USER_NOTICE);
             return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'auto');
         }
       }
