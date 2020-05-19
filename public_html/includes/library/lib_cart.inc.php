@@ -137,7 +137,7 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(serialize(array($product->id, $options)));
+          $item_key = md5(json_encode(array($product->id, $options)));
         }
       }
 
