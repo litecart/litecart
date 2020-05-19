@@ -71,6 +71,7 @@
       }
 
       $dependencies[] = 'site';
+      $dependencies[] = 'webp';
 
       $dependencies = array_unique($dependencies);
       sort($dependencies);
@@ -104,7 +105,7 @@
             break;
 
           case 'get':
-            $hash_string .= serialize($_GET);
+            $hash_string .= json_encode($_GET);
             break;
 
           case 'language':
@@ -126,7 +127,7 @@
             break;
 
           case 'post':
-            $hash_string .= serialize($_POST);
+            $hash_string .= json_encode($_POST);
             break;
 
           case 'region':
@@ -215,7 +216,7 @@
 
             default:
               $token['storage'] = 'file';
-              return self::get($token, $max_age, $no_hard_refresh);
+              return self::get($token, $max_age, $force_cache);
           }
 
         case 'session':

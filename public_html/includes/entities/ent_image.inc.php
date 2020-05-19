@@ -819,9 +819,9 @@
               if (!function_exists('ImageWebP')) {
                 return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
               }
-              ImageSaveAlpha($this->_resource, true);
-              $result = ImageWebP($this->_resource, false, $quality);
-              ImageDestroy($this->_resource);
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageWebP($this->_image, false, $quality);
+              ImageDestroy($this->_image);
               return $result;
 
             default:
