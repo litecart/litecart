@@ -906,7 +906,7 @@
             $this->_type = 'jpg';
             break;
           case 18:
-            $this->_data['type'] = 'webp';
+            $this->_type = 'webp';
             break;
           case 3:
           default:
