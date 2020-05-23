@@ -1,9 +1,10 @@
 <?php
+
   require_once __DIR__ . '/includes/functions.inc.php';
 
   if (php_sapi_name() == 'cli') {
     $options = array(
-      'db_server::', 'db_user:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
+      'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
       'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
     );
     $_REQUEST = getopt(null, $options);
@@ -19,6 +20,11 @@
 
     ob_start();
 
+    register_shutdown_function(function(){
+      $buffer = ob_get_clean();
+      echo (php_sapi_name() == 'cli') ? strip_tags($buffer) : $buffer;
+    });
+
     echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
 
     ### Parameters > Check ########################################
@@ -29,16 +35,10 @@
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
       define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_absolute_path($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
-    } else if (!empty($_REQUEST['document_root'])) {
+    } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
       define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_absolute_path($_REQUEST['document_root']), '/'), '#') .'#', '', FS_DIR_APP));
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
-    }
-
-    if (php_sapi_name() == 'cli' && empty($_REQUEST['document_root'])) {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No document root provided</p>' . PHP_EOL  . PHP_EOL);
-    } else {
-      $_SERVER['DOCUMENT_ROOT'] = $_REQUEST['document_root'];
     }
 
     if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
@@ -61,12 +61,13 @@
     }
 
     if (empty($_REQUEST['db_server'])) {
-      $_REQUEST['db_server'] = 'localhost';
+      $_REQUEST['db_server'] = '127.0.0.1';
     }
 
-    if (empty($_REQUEST['db_user'])) {
+    if (empty($_REQUEST['db_username'])) {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL user provided</p>' . PHP_EOL  . PHP_EOL);
     }
+
     if (empty($_REQUEST['db_password'])) {
       $_REQUEST['db_password'] = '';
     }
@@ -168,7 +169,7 @@
 
     if (!extension_loaded('mysqli')) {
       throw new Exception(' <span class="error">[Error]</span> MySQLi is not installed or configured for PHP</p>' . PHP_EOL  . PHP_EOL);
-    } else if (!database::connect('default', $_REQUEST['db_server'], $_REQUEST['db_user'], $_REQUEST['db_password'], $_REQUEST['db_database'], 'UTF-8')) {
+    } else if (!database::connect('default', $_REQUEST['db_server'], $_REQUEST['db_username'], $_REQUEST['db_password'], $_REQUEST['db_database'], 'utf8')) {
       throw new Exception(' <span class="error">[Error]</span> Unable to connect</p>' . PHP_EOL  . PHP_EOL);
     } else {
       echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
