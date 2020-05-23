@@ -560,6 +560,14 @@
 
         if (!functions::validate_email($this->data['customer']['email'])) throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
 
+        if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
+          if (!empty($this->data['customer']['tax_id'])) {
+            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
+              throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
+            }
+          }
+        }
+
         if (reference::country($this->data['customer']['country_code'])->postcode_format) {
           if (!empty($this->data['customer']['postcode'])) {
             if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
