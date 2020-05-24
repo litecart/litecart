@@ -1,6 +1,8 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
+  document::$snippets['title'][] = language::translate('title_manufacturers', 'Manufacturers');
+
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {

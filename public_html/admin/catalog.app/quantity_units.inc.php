@@ -1,6 +1,8 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
+  document::$snippets['title'][] = language::translate('title_quantity_units', 'Quantity Units');
+
   breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'));
 
 // Table Rows

@@ -1,6 +1,8 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
+  document::$snippets['title'][] = language::translate('title_order_statuses', 'Order Statuses');
+
   breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'));
 
 // Table Rows

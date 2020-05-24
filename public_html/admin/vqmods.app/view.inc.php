@@ -1,5 +1,10 @@
 <?php
+
   $_GET['vqmod'] = basename($_GET['vqmod']);
+
+  document::$snippets['title'][] = language::translate('title_view_vqmod', 'View vQmod');
+
+  breadcrumbs::add(basename($_GET['vqmod']));
 
   try {
     if (empty($_GET['vqmod'])) throw new Exception(language::translate('error_must_provide_vqmod', 'You must provide a vQmod'));
@@ -25,8 +30,6 @@
   } catch (Exception $e) {
     notices::add('errors', $e->getMessage());
   }
-
-  breadcrumbs::add(basename($_GET['vqmod']));
 ?>
 <style>
 pre {

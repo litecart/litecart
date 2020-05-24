@@ -1,4 +1,7 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_storage_encoding', 'Storage Encoding');
+
   breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));
 
   $defined_tables = array();

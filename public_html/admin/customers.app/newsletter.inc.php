@@ -1,5 +1,7 @@
 <?php
 
+  document::$snippets['title'][] = language::translate('title_newsletter', 'Newsletter');
+
   breadcrumbs::add(language::translate('title_newsletter', 'Newsletter'));
 
   if (!isset($_GET['template'])) $_GET['template'] = 'raw';

@@ -1,4 +1,7 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_catalog', 'Catalog');
+
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
 
   if (empty($_GET['category_id'])) $_GET['category_id'] = 0;

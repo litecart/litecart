@@ -7,10 +7,12 @@
   }
 
   if (empty($_POST)) {
-      foreach ($customer->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
+    foreach ($customer->data as $key => $value) {
+      $_POST[$key] = $value;
     }
+  }
+
+  document::$snippets['title'][] = !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer');
 
   breadcrumbs::add(!empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer'));
 

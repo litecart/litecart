@@ -12,6 +12,8 @@
     }
   }
 
+  document::$snippets['title'][] = !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit');
+
   breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::link(WS_DIR_ADMIN, array('doc' => 'quantity_units'), array('app')));
   breadcrumbs::add(!empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit'));
 

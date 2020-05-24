@@ -1,5 +1,7 @@
 <?php
 
+  document::$snippets['title'][] = language::translate('title_most_sold_products', 'Most Sold Products');
+
   breadcrumbs::add(language::translate('title_most_sold_products', 'Most Sold Products'));
 
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');

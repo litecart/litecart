@@ -52,6 +52,8 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
+  document::$snippets['title'][] = $title;
+
   breadcrumbs::add($title);
 
 // Installed Modules
