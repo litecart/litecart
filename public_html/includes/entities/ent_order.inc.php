@@ -571,10 +571,10 @@
         if (reference::country($this->data['customer']['country_code'])->postcode_format) {
           if (!empty($this->data['customer']['postcode'])) {
             if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
-              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
             }
           } else {
-            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode'));
           }
         }
 
