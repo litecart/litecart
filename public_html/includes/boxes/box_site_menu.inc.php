@@ -21,7 +21,6 @@
         'id' => $category['id'],
         'title' => $category['name'],
         'link' => document::ilink('category', array('category_id' => $category['id'])),
-        'image' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category['image'], 24, 24, 'CROP'),
         'priority' => $category['priority'],
       );
     }
@@ -41,7 +40,6 @@
         'id' => $manufacturer['id'],
         'title' => $manufacturer['name'],
         'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
-        'image' => null,
         'priority' => 0,
       );
     }
@@ -62,7 +60,6 @@
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::ilink('information', array('page_id' => $page['id'])),
-        'image' => null,
         'priority' => $page['priority'],
       );
     }
