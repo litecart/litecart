@@ -222,7 +222,7 @@
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
 
-    $shipping = new mod_shipping();
+    $shipping = new mod_shipping('local');
 
     $shipping_items = array(
       array(
