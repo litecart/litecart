@@ -10,8 +10,13 @@
     public static function init() {
 
     // Bind selected language to session
-      if (!isset(session::$data['language'])) session::$data['language'] = array();
-      self::$selected = &session::$data['language'];
+      if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
+        if (!isset(session::$data['backend']['language'])) session::$data['backend']['language'] = array();
+        self::$selected = &session::$data['backend']['language'];
+      } else {
+        if (!isset(session::$data['language'])) session::$data['language'] = array();
+        self::$selected = &session::$data['language'];
+      }
 
     // Get languages from database
       self::load();
@@ -89,7 +94,11 @@
         $code = self::identify();
       }
 
-      session::$data['language'] = self::$languages[$code];
+      if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
+        session::$data['backend']['language'] = self::$languages[$code];
+      } else {
+        session::$data['language'] = self::$languages[$code];
+      }
 
       if (!empty($_COOKIE['cookies_accepted'])) {
         header('Set-Cookie: language_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
