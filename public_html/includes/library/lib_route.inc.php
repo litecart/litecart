@@ -221,8 +221,7 @@
       }
 
       if (!in_array($language_code, array_keys(language::$languages))) {
-        trigger_error('Invalid language code ('. $language_code .')', E_USER_WARNING);
-        return $link;
+        $language_code = language::identify();
       }
 
       if (isset(self::$_links_cache[$language_code][(string)$link])) return self::$_links_cache[$language_code][(string)$link];
