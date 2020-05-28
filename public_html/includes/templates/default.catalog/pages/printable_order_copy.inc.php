@@ -38,6 +38,10 @@ h1 {
 .page .footer .row {
   margin-bottom: 0;
 }
+
+table.items tbody tr:nth-child(11) {
+  page-break-before: always;
+}
 </style>
 
 <section class="page" data-size="A4">
