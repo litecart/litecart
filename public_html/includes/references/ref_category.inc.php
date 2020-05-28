@@ -144,7 +144,8 @@
             "select id from ". DB_TABLE_CATEGORIES ."
             where status
             and parent_id = ". (int)$this->parent_id ."
-            and id != ". (int)$this->_data['id'] .";"
+            and id != ". (int)$this->_data['id'] ."
+            order by priority;"
           );
 
           while ($row = database::fetch($query)) {
@@ -160,7 +161,8 @@
           $categories_query = database::query(
             "select @pv:=id as id, parent_id from ". DB_TABLE_CATEGORIES ."
             join (select @pv := ". (int)$this->_data['id'] .") tmp
-            where parent_id = @pv;"
+            where status
+            and parent_id = @pv;"
           );
 
           while ($row = database::fetch($categories_query)) {
@@ -176,7 +178,9 @@
 
           $query = database::query(
             "select id from ". DB_TABLE_CATEGORIES ."
-            where parent_id = ". (int)$this->_data['id'] .";"
+            where status
+            and parent_id = ". (int)$this->_data['id'] ."
+            order by priority;"
           );
 
           while ($row = database::fetch($query)) {
