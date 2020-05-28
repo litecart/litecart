@@ -71,7 +71,10 @@
       }
 
       $dependencies[] = 'site';
-      $dependencies[] = 'webp';
+
+      if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+        $dependencies[] = 'webp';
+      }
 
       $dependencies = array_unique($dependencies);
       sort($dependencies);

@@ -96,7 +96,7 @@
       return $path;
     }
 
-    if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+    if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
       $extension = 'webp';
     } else {
       $extension = pathinfo($source, PATHINFO_EXTENSION);
