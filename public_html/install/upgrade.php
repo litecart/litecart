@@ -7,6 +7,8 @@
     );
     $_REQUEST = getopt(null, $options);
     $_REQUEST['upgrade'] = true;
+  } else {
+    require_once(__DIR__ . '/includes/header.inc.php');
   }
 
   require_once(__DIR__ . '/../includes/config.inc.php');
@@ -48,10 +50,11 @@
 // List supported upgrades
   $supported_versions = array('1.0' => '1.0');
   foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
-    if (preg_match('#\/(.*).(inc.php|sql)$#', $file, $matches)) {
+    if (preg_match('#/([^/]+).(?:inc.php|sql)$#', $file, $matches)) {
       $supported_versions[$matches[1]] = $matches[1];
     }
   }
+
   usort($supported_versions, function($a, $b) {
     return version_compare($a, $b, '>');
   });
@@ -59,10 +62,6 @@
   if (!empty($_REQUEST['upgrade'])) {
 
     ob_start();
-
-    if (php_sapi_name() != 'cli') {
-      require_once(__DIR__ . '/includes/header.inc.php');
-    }
 
     try {
 
@@ -84,19 +83,23 @@
       echo '<p>Checking application database version... ';
 
       if (defined('PLATFORM_DATABASE_VERSION')) {
-        throw new Exception(PLATFORM_DATABASE_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL);
+        echo PLATFORM_DATABASE_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else if (!empty($_REQUEST['from_version'])) {
         define('PLATFORM_DATABASE_VERSION', $_REQUEST['from_version']);
         echo $_REQUEST['from_version'] . '(User Defined) <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
-        echo ' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL;
+        throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
       }
 
       #############################################
 
       foreach ($supported_versions as $version) {
 
-        if (version_compare(PLATFORM_DATABASE_VERSION, $version, '>=')) continue;
+        if (version_compare(PLATFORM_DATABASE_VERSION, $version, '>=')) {
+          if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) unlink(__DIR__ . '/upgrade_patches/'. $version .'.sql');
+          if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) unlink(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
+          continue;
+        }
 
         if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
           echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
@@ -201,13 +204,13 @@
 
       #############################################
 
+      echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
+         . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
+
       if (!empty($_REQUEST['redirect'])) {
         header('Location: '. $_REQUEST['redirect']);
         exit;
       }
-
-      echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
-         . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
 
     } catch (Exception $e) {
       echo $e->getMessage();
@@ -217,11 +220,12 @@
 
     if (php_sapi_name() == 'cli') {
       echo strip_tags($buffer);
-    } else {
-      echo $buffer;
-      require('includes/footer.inc.php');
+      exit;
     }
 
+    echo $buffer;
+
+    require('includes/footer.inc.php');
     exit;
   }
 

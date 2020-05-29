@@ -1,6 +1,5 @@
 <?php
 
-  require_once __DIR__ . '/includes/functions.inc.php';
 
   if (php_sapi_name() == 'cli') {
     $options = array(
@@ -9,6 +8,8 @@
     );
     $_REQUEST = getopt(null, $options);
     $_REQUEST['install'] = true;
+  } else {
+    require __DIR__ . '/includes/header.inc.php';
   }
 
   if (empty($_REQUEST['install'])) {
@@ -16,9 +17,11 @@
     exit;
   }
 
+  ob_start();
+
   try {
 
-    ob_start();
+    require_once __DIR__ . '/includes/functions.inc.php';
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
@@ -596,15 +599,13 @@
 
   if (php_sapi_name() == 'cli') {
     echo strip_tags($buffer);
-    return;
+    exit;
   }
 
   if (!empty($_REQUEST['redirect'])) {
     header('Location: '. $_REQUEST['redirect']);
     exit;
   }
-
-  require __DIR__ . '/includes/header.inc.php';
 
   echo $buffer;
 
