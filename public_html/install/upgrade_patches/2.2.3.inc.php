@@ -200,16 +200,32 @@
       );
 
     // Update stock options
-      database::query(
-        "update ". DB_TABLE_PREFIX ."products_options_stock
-        set combination = regexp_replace(combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '$1". $attribute_group_id ."-". $attribute_value_id ."');"
+      $stock_options_query = database::query(
+        "select * from ". DB_TABLE_PREFIX ."products_options_stock
+        where combination regexp '(^|:|,)". $option_group['id'] ."-". $option_value['id'] ."(:|,|$)';"
       );
 
+      while ($stock_option = database::fetch($stock_options_query)) {
+        database::query(
+          "update ". DB_TABLE_PREFIX ."products_options_stock
+          set combination = '". database::input(preg_replace('#(^|:|,)'. (int)$option_group['id'] .'-'. (int)$option_value['id'] .'(?=(?::|,|$))#', '$1'. (int)$attribute_group_id .'-'. (int)$attribute_value_id, $stock_option['combination'])) ."'
+          where id = ". (int)$stock_option['id'] .";"
+        );
+      }
+
     // Update order items
-      database::query(
-        "update ". DB_TABLE_PREFIX ."orders_items
-        set option_stock_combination = regexp_replace(option_stock_combination, '(:|,)". $option_group['id'] ."-". $option_value['id'] ."', '$1". $attribute_group_id ."-". $attribute_value_id ."');"
+      $order_items_query = database::query(
+        "select * from ". DB_TABLE_PREFIX ."orders_items
+        where option_stock_combination regexp '(^|:|,)". (int)$option_group['id'] ."-". (int)$option_value['id'] ."(:|,|$)';"
       );
+
+      while ($order_item = database::fetch($order_items_query)) {
+        database::query(
+          "update ". DB_TABLE_PREFIX ."orders_items
+          set option_stock_combination = '". database::input(preg_replace('#(^|,)'. (int)$option_group['id'] .'-'. (int)$option_value['id'] .'(?=(?::|,|$))#', '$1'. (int)$attribute_group_id .'-'. (int)$attribute_value_id, $stock_option['option_stock_combination'])) ."'
+          where id = ". (int)$stock_option['id'] .";"
+        );
+      }
     }
   }
 
