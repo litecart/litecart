@@ -245,7 +245,7 @@
 
           <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
 
-          <div id="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
+          <fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
 
             <div class="row">
               <div class="form-group col-sm-6">
@@ -309,7 +309,7 @@
               </div>
             </div>
 
-          </div>
+          </fieldset>
 
           <div class="panel-action btn-group">
             <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
@@ -372,6 +372,14 @@
   if ($('select[name="zone_code"] option').length == 0) $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
 
 // Init (Shipping address)
+
+  $('input[name="different_shipping_address"]').change(function(e){
+    if (this.checked == true) {
+      $('fieldset.shipping-address').removeAttr('disabled').slideDown('fast');
+    } else {
+      $('fieldset.shipping-address').attr('disabled', 'disabled').slideUp('fast');
+    }
+  }).trigger('change');
 
   if ($('select[name="shipping_address[country_code]"]').find('option:selected').data('tax-id-format') != '') {
     $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="tax_id"]').attr('pattern', $('select[name="shipping_address[country_code]"]').find('option:selected').data('tax-id-format'));
