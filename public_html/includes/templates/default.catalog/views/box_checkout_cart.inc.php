@@ -26,7 +26,7 @@
           <td class="text-center">
             <div style="display: inline-flex;">
               <?php if (!empty($item['quantity_unit']['name'])) { ?>
-              <div class="input-group" style="width: 125px;">
+              <div class="input-group" style="width: 150px;">
                 <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 0, null) : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 0, null); ?>
                 <span class="input-group-addon"><?php echo $item['quantity_unit']['name']; ?></span>
               </div>

@@ -44,7 +44,7 @@
       $errors = array();
       $occurrences = array();
 
-      if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\_] ([^\n]*)(((?!\n\[).)*)#s', $contents, $matches)) {
+      if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/_]+)\] ([^\n]*)((?:(?!\n\[|$).)*)#s', $contents, $matches)) {
         foreach (array_keys($matches[0]) as $i) {
           $checksum = md5($matches[2][$i]);
 
