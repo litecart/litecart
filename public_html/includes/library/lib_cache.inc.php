@@ -82,10 +82,6 @@
       foreach ($dependencies as $dependency) {
         switch ($dependency) {
 
-          case 'basename':
-            $hash_string .= $_SERVER['PHP_SELF'];
-            break;
-
           case 'country':
             $hash_string .= customer::$data['country_code'];
             break;
