@@ -128,7 +128,7 @@
       }
 
       database::query(
-        "insert into ". DB_TABLE_PREFIX ."attribute_groups_info (group_id, language_code, name)
+        "insert ignore into ". DB_TABLE_PREFIX ."attribute_groups_info (group_id, language_code, name)
         select '". $attribute_group_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_groups_info
         where group_id = ". (int)$option_group['id'] .";"
       );
@@ -167,7 +167,7 @@
       } else {
 
         database::query(
-          "insert into ". DB_TABLE_PREFIX ."attribute_values
+          "insert ignore into ". DB_TABLE_PREFIX ."attribute_values
           (group_id, date_created) values (". (int)$attribute_group_id .", '". date('Y-m-d H:i:s') ."');"
         );
 
@@ -185,7 +185,7 @@
         }
 
         database::query(
-          "insert into ". DB_TABLE_PREFIX ."attribute_values_info (value_id, language_code, name)
+          "insert ignore into ". DB_TABLE_PREFIX ."attribute_values_info (value_id, language_code, name)
           select '". (int)$attribute_value_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_values_info
           where value_id = ". (int)$option_value['id'] .";"
         );
@@ -223,7 +223,7 @@
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_items
           set option_stock_combination = '". database::input(preg_replace('#(^|,)'. (int)$option_group['id'] .'-'. (int)$option_value['id'] .'(?=(?::|,|$))#', '$1'. (int)$attribute_group_id .'-'. (int)$attribute_value_id, $stock_option['option_stock_combination'])) ."'
-          where id = ". (int)$stock_option['id'] .";"
+          where id = ". (int)$order_item['id'] .";"
         );
       }
     }
