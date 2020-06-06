@@ -39,7 +39,7 @@
       $this->reset();
 
       $xml = file_get_contents(FS_DIR_APP . 'vmods/'. $filename);
-      $xml = preg_replace('#(\r\n|\r|\n)#', PHP_EOL, $xml);
+      $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
       $dom = new \DOMDocument('1.0', 'UTF-8');
       $dom->preserveWhiteSpace = false;

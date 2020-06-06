@@ -812,7 +812,7 @@
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
       if (!in_array($type, ['gif', 'jpg', 'png', 'svg', 'webp'])) {
-        throw new Exception('Unknown image format');
+        throw new Exception("Unknown image format ($type)");
       }
 
       switch ($this->_library) {

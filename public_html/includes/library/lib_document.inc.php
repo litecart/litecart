@@ -134,7 +134,9 @@
       };
 
     // Remove Comments
-      $GLOBALS['output'] = preg_replace('#<!--.*?-->#ms', '', $GLOBALS['output']);
+      if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
+        $GLOBALS['output'] = preg_replace('#(<html(?:[^>]+)?>).*(</html>)#is', '$1'. preg_replace('#<!--.*?-->#ms', '', $matches[1]) .'$2', $GLOBALS['output']);
+      }
 
     // Extract and group in content stylesheets
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {

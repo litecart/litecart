@@ -37,7 +37,7 @@
   // Convert charset
     $output = language::convert_characters($output, language::$selected['charset'], $charset);
 
-    return preg_replace('#(\r\n|\r|\n)#', $eol, $output);
+    return preg_replace('#(\r\n?|\n)#', $eol, $output);
   }
 
   function csv_decode($string, $delimiter='', $enclosure='"', $escape='"', $charset='utf-8') {
