@@ -3,13 +3,13 @@
   class vmod {
     public static $enabled = true;                 // Bool whether or not to enable this feature
     private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
-    private static $_modifications = [];           // Array of modifications to apply
-    private static $_files_to_modifications = [];  // Array of modifications to apply
     private static $_checked = [];                 // Array of files that have already passed check() and
     private static $_checksums = [];               // Array of checksums for time comparison
-    private static $_installed = [];               // Array of path aliases
+    private static $_files_to_modifications = [];  // Array of references to modifications
+    private static $_modifications = [];           // Array of modifications to apply
+    private static $_installed = [];               // Array of installed modifications
     private static $_settings = [];                // Array of modification settings
-    public static $time_elapsed = 0;               // Array of path aliases
+    public static $time_elapsed = 0;               // Integer of time elapsed during operations
 
     public static function init() {
 
@@ -23,9 +23,8 @@
       $last_modified = null;
 
     // If no cache is requested by browser
-      if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) $last_modified = time();
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) $last_modified = time();
+      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && in_array(strtolower($_SERVER['HTTP_CACHE_CONTROL']), ['no-cache', 'max-age=0'])) {
+        $last_modified = time();
 
       } else {
 
@@ -34,19 +33,6 @@
         if ($folder_last_modified > $last_modified) {
           $last_modified = $folder_last_modified;
         }
-
-        foreach (glob(FS_DIR_APP .'vmods/*.xml') as $file) {
-          $file_last_modified = filemtime($file);
-          if ($file_last_modified > $last_modified) {
-            $last_modified = $file_last_modified;
-          }
-        }
-
-        //database::query(
-        //"select update_time from information_schema.tables
-        //where TABLE_SCHEMA = '". DB_DATABASE ."'
-        //and table_name = '". DB_PREFIX ."modifications'
-        //limit 1;"
       }
 
     // Load installed
@@ -92,7 +78,7 @@
         //), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         ], JSON_UNESCAPED_SLASHES);
 
-        file_put_contents($cache_file, $serialized);
+        file_put_contents($cache_file, $serialized, LOCK_EX);
       }
 
     // Load settings
@@ -162,7 +148,7 @@
 
     // Modify file
       if (is_file($file)) {
-        $original = $buffer = preg_replace('#(\r\n|\r|\n)#', PHP_EOL, file_get_contents($file));
+        $original = $buffer = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($file));
       } else {
         $original = $buffer = null;
       }
@@ -239,7 +225,7 @@
       }
 
     // Write modified file
-      file_put_contents($modified_file, $buffer);
+      file_put_contents($modified_file, $buffer, LOCK_EX);
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
@@ -255,7 +241,7 @@
       try {
 
         $xml = file_get_contents($file);
-        $xml = preg_replace('#(\r\n|\r|\n)#', PHP_EOL, $xml);
+        $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
@@ -380,25 +366,30 @@
 
           // Trim
             if ($find_node->getAttribute('trim') != 'false') {
-              $find_node->textContent = preg_replace('#^\r?\n?#s', '', $find_node->textContent); // Trim beginning of CDATA
-              $find_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $find_node->textContent); // Trim end of CDATA
+              $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
+              $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
+            }
+
+          // Whitespace
+            if (preg_match('#[\r\n]#', $find)) {
+              $find = preg_split('#(\r\n?|\n)#', $find);
+              for ($i=0; $i<count($find); $i++) {
+                if ($find[$i] = trim($find[$i])) {
+                  $find[$i] = '(?:[ \\t]+)?' . preg_quote($find[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                } else if ($i != count($find)-1) {
+                  $find[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                }
+              }
+              $find = implode('', $find);
+            } else {
+              $find = '(?:[ \\t]+)?' . preg_quote(trim($find), '#') . '(?:[ \\t]+)?';
             }
 
           // Offset
-            $offset_before = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-before'));
-            $offset_after  = str_repeat('.*?['. addcslashes(PHP_EOL, "\r\n") .']', (int)$find_node->getAttribute('offset-after')+2);
+            $offset_before = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}';
+            $offset_after = '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
 
-          // Whitespace
-            $find = preg_split('#(\r\n|\r|\n)#', $find);
-            for ($i=0; $i<count($find); $i++) {
-              if ($find[$i] = trim($find[$i])) {
-                $find[$i] = '(?:[ \\t]+)?' . preg_quote($find[$i], '#') . '(?:[ \\t]+)?';
-              } else {
-                $find[$i] = '(?:[ \\t]+)?';
-              }
-            }
-            $find = implode(PHP_EOL . '', $find);
-
+          // Glue
             $find = '#'. $offset_before . $find . $offset_after .'#';
           }
 
@@ -417,11 +408,23 @@
             } else {
 
               if ($ignoreif_node->getAttribute('trim') != 'false') {
-                $ignoreif = preg_replace('#^\r?\n?#s', '', $ignoreif); // Trim beginning of CDATA
-                $ignoreif = preg_replace('#\r?\n[\t ]*$#s', '', $ignoreif); // Trim end of CDATA
+                $ignoreif = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $ignoreif); // Trim beginning of CDATA
+                $ignoreif = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $ignoreif); // Trim end of CDATA
               }
 
-              $ignoreif = '#'. preg_quote($ignoreif, '#') .'#';
+              if (preg_match('#[\r\n]#', $ignoreif)) {
+                $ignoreif = preg_split('#(\r\n?|\n)#', $ignoreif);
+                for ($i=0; $i<count($ignoreif); $i++) {
+                  if ($ignoreif[$i] = trim($ignoreif[$i])) {
+                    $ignoreif[$i] = '(?:[ \\t]+)?' . preg_quote($ignoreif[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  } else if ($i != count($ignoreif)-1) {
+                    $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  }
+                }
+                $ignoreif = implode('', $ignoreif);
+              } else {
+                $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
+              }
             }
           }
 
@@ -441,8 +444,8 @@
           } else {
 
             if ($insert_node->getAttribute('trim') != 'false') {
-              $insert = preg_replace('#^\r?\n?#s', '', $insert); // Trim beginning of CDATA
-              $insert = preg_replace('#\r?\n[\t ]*$#s', '', $insert); // Trim end of CDATA
+              $insert = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $insert); // Trim beginning of CDATA
+              $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
             }
 
             switch($position = $insert_node->getAttribute('position')) {
@@ -524,8 +527,16 @@
 
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
+        $mod_file = [
+          'path' => $file_node->getAttribute('path'),
+          'name' => $file_node->getAttribute('name'),
+          'operations' => []
+        ];
+
+        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
+
         // On Error
-          switch ($file_node->getAttribute('error')) {
+          switch ($operation_node->getAttribute('error')) {
             case 'error':
               $onerror = 'warning';
               break;
@@ -540,14 +551,6 @@
               break;
           }
 
-        $mod_file = [
-          'path' => $file_node->getAttribute('path'),
-          'name' => $file_node->getAttribute('name'),
-          'operations' => []
-        ];
-
-        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
-
         // Search
           $search_node = $operation_node->getElementsByTagName('search')->item(0);
           $search = $search_node->textContent;
@@ -560,32 +563,36 @@
 
           // Trim
             if ($search_node->getAttribute('trim') != 'false') {
-              $search = preg_replace('#^\r?\n?#s', '', $search); // Trim beginning of CDATA
-              $search = preg_replace('#\r?\n[\t ]*$#s', '', $search); // Trim end of CDATA
+              $search = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $search); // Trim beginning of CDATA
+              $search = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $search); // Trim end of CDATA
             }
 
           // Whitespace
-            $search = preg_split('#(\r\n|\r|\n)#', $search);
-            for ($i=0; $i<count($search); $i++) {
-              if ($search[$i] = trim($search[$i])) {
-                $search[$i] = '(?:[ \\t]+)?' . preg_quote($search[$i], '#') . '(?:[ \\t]+)?';
-              } else {
-                $search[$i] = '(?:[ \\t]+)?';
+            if (!in_array($search_node->getAttribute('position'), ['ibefore', 'iafter'])) {
+              $search = preg_split('#(\r\n?|\n)#', $search);
+              for ($i=0; $i<count($search); $i++) {
+                if ($search[$i] = trim($search[$i])) {
+                  $search[$i] = '(?:[ \\t]+)?' . preg_quote($search[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                } else if ($i != count($search)-1) {
+                  $search[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                }
               }
+              $search = implode('', $search);
+            } else {
+              $search = '(?:[ \\t]+)?' . preg_quote(trim($search), '#') . '(?:[ \\t]+)?';
             }
-            $search = implode(PHP_EOL . '', $search);
 
           // Offset
             if ($search_node->getAttribute('offset') && in_array($search_node->getAttribute('position'), ['before', 'after', 'replace'])) {
               switch ($search_node->getAttribute('position')) {
                 case 'before':
-                  $offset_before = str_repeat('.*?(?:\r\n|\r|\n)', (int)$search_node->getAttribute('offset'));
+                  $offset_before = '(?:.*?(?:\r\n?|\n)){'. (int)$search_node->getAttribute('offset') .'}';
                   $offset_after  = '';
                   break;
                 case 'after':
                 case 'replace':
                   $offset_before = '';
-                  $offset_after = str_repeat('.*?(?:\r\n|\r|\n)', (int)$search_node->getAttribute('offset')+1);
+                  $offset_after = '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$search_node->getAttribute('offset') .'}';
                   break;
                 default:
                   $offset_before = '';
@@ -613,11 +620,23 @@
             } else {
 
               if ($ignoreif_node->getAttribute('trim') != 'false') {
-                $ignoreif = preg_replace('#^\r?\n?#s', '', $ignoreif); // Trim beginning of CDATA
-                $ignoreif = preg_replace('#\r?\n[\t ]*$#s', '', $ignoreif); // Trim end of CDATA
+                $ignoreif = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $ignoreif); // Trim beginning of CDATA
+                $ignoreif = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $ignoreif); // Trim end of CDATA
               }
 
-              $ignoreif = '#'. preg_quote($ignoreif, '#') .'#';
+              if (preg_match('#[\r\n]#', $ignoreif)) {
+                $ignoreif = preg_split('#(\r\n?|\n)#', $ignoreif);
+                for ($i=0; $i<count($ignoreif); $i++) {
+                  if ($ignoreif[$i] = trim($ignoreif[$i])) {
+                    $ignoreif[$i] = '(?:[ \\t]+)?' . preg_quote($ignoreif[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  } else if ($i != count($ignoreif)-1) {
+                    $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  }
+                }
+                $ignoreif = implode('', $ignoreif);
+              } else {
+                $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
+              }
             }
           }
 
@@ -631,8 +650,8 @@
           } else {
 
             if ($add_node->getAttribute('trim') != 'false') {
-              $add = preg_replace('#^\r?\n?#s', '', $add); // Trim beginning of CDATA
-              $add = preg_replace('#\r?\n[\t ]*$#s', '', $add); // Trim end of CDATA
+              $add = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $add); // Trim beginning of CDATA
+              $add = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $add); // Trim end of CDATA
             }
 
             switch($search_node->getAttribute('position')) {
