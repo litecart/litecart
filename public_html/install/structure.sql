@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `group_id` INT(11) NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
   KEY `group_id` (`group_id`),
@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `group_id` INT(11) NOT NULL,
   `priority` INT(11) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
@@ -29,10 +29,10 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value_id` int(11) NOT NULL,
-  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `value_id` INT(11) NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
   KEY `value_id` (`value_id`),
@@ -699,9 +699,9 @@ CREATE TABLE `lc_slides` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_slides_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `slide_id` int(11) NOT NULL,
-  `language_code` varchar(2) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `slide_id` INT(11) NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
   `caption` TEXT NOT NULL,
   `link` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`id`),

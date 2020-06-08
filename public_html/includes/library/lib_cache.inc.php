@@ -104,7 +104,7 @@
             break;
 
           case 'get':
-            $hash_string .= json_encode($_GET);
+            $hash_string .= json_encode($_GET, JSON_UNESCAPED_SLASHES);
             break;
 
           case 'language':
@@ -126,7 +126,7 @@
             break;
 
           case 'post':
-            $hash_string .= json_encode($_POST);
+            $hash_string .= json_encode($_POST, JSON_UNESCAPED_SLASHES);
             break;
 
           case 'region':
@@ -143,7 +143,7 @@
 
           case 'uri':
           case 'url':
-            $hash_string .= $_SERVER['REQUEST_URI'];
+            $hash_string .= document::link();
             break;
 
           case 'user':
@@ -154,6 +154,10 @@
             if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
               $hash_string .= 'webp';
             }
+            break;
+
+          case 'webpath':
+            $hash_string .= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             break;
 
           default:
