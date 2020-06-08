@@ -1,6 +1,7 @@
 <?php
 
   class cache {
+
     private static $_recorders = array();
     private static $_data;
     public static $enabled = true;
@@ -12,22 +13,15 @@
       if (!isset(session::$data['cache'])) session::$data['cache'] = array();
       self::$_data = &session::$data['cache'];
 
-      if (isset(self::$_data['cache_clear'])) unset(self::$_data['cache_clear']);
-      if (isset(self::$_data['cache_clear_thumbnails'])) unset(self::$_data['cache_clear_thumbnails']);
-
       if (settings::get('cache_clear')) {
         self::clear_cache();
 
         database::query(
           "update ". DB_TABLE_SETTINGS ."
-          set value = ''
+          set value = '0'
           where `key` = 'cache_clear'
           limit 1;"
         );
-
-        foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
-          if (is_file($file)) unlink($file);
-        }
 
         if (user::check_login()) {
           notices::add('success', 'Cache cleared');
@@ -35,18 +29,20 @@
       }
 
       if (settings::get('cache_clear_thumbnails')) {
-        $files = glob(FS_DIR_APP . 'cache/' . '*');
-
-        if (!empty($files)) foreach ($files as $file) {
-          if (in_array(pathinfo($file, PATHINFO_EXTENSION), array('jpg', 'jpeg', 'gif', 'png'))) unlink($file);
+        foreach (glob(FS_DIR_APP .'cache/*', GLOB_ONLYDIR) as $dir) {
+          foreach (glob($dir.'/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
+            unlink($file);
+          }
         }
 
         database::query(
           "update ". DB_TABLE_SETTINGS ."
-          set value = ''
+          set value = '0'
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
         );
+
+        self::clear_cache('settings');
 
         if (user::check_login()) {
           notices::add('success', 'Image thumbnails cache cleared');
@@ -61,16 +57,9 @@
       return;
     }
 
-    public static function token($keyword, $dependencies=array(), $storage='file', $ttl=900) {
+    public static function token($keyword, $dependencies=array(), $storage='memory', $ttl=900) {
 
-      $storage_types = array(
-        //'database',
-        'file',
-        'session',
-        //'memory',
-      );
-
-      if (!in_array($storage, $storage_types)) {
+      if (!in_array($storage, array('file', 'memory', 'session'))) {
         trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
         return;
       }
@@ -83,15 +72,15 @@
 
       $dependencies[] = 'site';
 
+      if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+        $dependencies[] = 'webp';
+      }
+
       $dependencies = array_unique($dependencies);
       sort($dependencies);
 
       foreach ($dependencies as $dependency) {
         switch ($dependency) {
-
-          case 'basename':
-            $hash_string .= $_SERVER['PHP_SELF'];
-            break;
 
           case 'country':
             $hash_string .= customer::$data['country_code'];
@@ -115,7 +104,7 @@
             break;
 
           case 'get':
-            $hash_string .= serialize($_GET);
+            $hash_string .= json_encode($_GET, JSON_UNESCAPED_SLASHES);
             break;
 
           case 'language':
@@ -137,7 +126,7 @@
             break;
 
           case 'post':
-            $hash_string .= serialize($_POST);
+            $hash_string .= json_encode($_POST, JSON_UNESCAPED_SLASHES);
             break;
 
           case 'region':
@@ -154,11 +143,21 @@
 
           case 'uri':
           case 'url':
-            $hash_string .= $_SERVER['REQUEST_URI'];
+            $hash_string .= document::link();
             break;
 
           case 'user':
             $hash_string .= user::$data['id'];
+            break;
+
+          case 'webp':
+            if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+              $hash_string .= 'webp';
+            }
+            break;
+
+          case 'webpath':
+            $hash_string .= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             break;
 
           default:
@@ -168,7 +167,7 @@
       }
 
       return array(
-        'id' => $keyword .'_'. md5($hash_string),
+        'id' => md5($hash_string) .'_'. $keyword,
         'storage' => $storage,
         'ttl' => $ttl,
       );
@@ -184,9 +183,6 @@
       if (empty($force_cache)) {
         if (empty(self::$enabled)) return;
 
-      // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
-        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return;
-
         if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
           if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return;
           if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return;
@@ -195,11 +191,10 @@
 
       switch ($token['storage']) {
 
-        case 'database': // Reserved, but not implemented
-          return;
-
         case 'file':
-          $cache_file = FS_DIR_APP . 'cache/' . '_cache_'.$token['id'];
+
+          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
+
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
 
@@ -213,18 +208,33 @@
           }
           return;
 
+        case 'memory':
+
+          switch (true) {
+            case (function_exists('apcu_fetch')):
+              return apcu_fetch($token['id']);
+
+            case (function_exists('apc_fetch')):
+              return apc_fetch($token['id']);
+
+            default:
+              $token['storage'] = 'file';
+              return self::get($token, $max_age, $force_cache);
+          }
+
         case 'session':
+
           if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
             if (self::$_data[$token['id']]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return;
             return self::$_data[$token['id']]['data'];
           }
-          return;
 
-        case 'memory': // Reserved, but not implemented
           return;
 
         default:
+
           trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
+
           return;
       }
     }
@@ -236,13 +246,20 @@
         return;
       }
 
+      if (empty($data)) return;
+
       switch ($token['storage']) {
 
-        case 'database': // Reserved, but not implemented
-          return false;
-
         case 'file':
-          $cache_file = FS_DIR_APP . 'cache/' . '_cache_' . $token['id'];
+
+          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
+
+          if (!is_dir(dirname($cache_file))) {
+            if (!mkdir(dirname($cache_file))) {
+              trigger_error('Could not create cache subfolder', E_USER_WARNING);
+              return false;
+            }
+          }
 
           if (strtolower(language::$selected['charset']) != 'utf-8') {
             $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
@@ -250,15 +267,28 @@
 
           return @file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
 
+        case 'memory':
+
+          switch (true) {
+            case (function_exists('apcu_store')):
+              return apcu_store($token['id'], $data, $token['ttl']);
+
+            case (function_exists('apc_store')):
+              return apc_store($token['id'], $data, $token['ttl']);
+
+            default:
+              $token['storage'] = 'file';
+              return self::set($token, $data);
+          }
+
         case 'session':
+
           self::$_data[$token['id']] = array(
             'mtime' => time(),
             'data' => $data,
           );
-          return true;
 
-        case 'memory': // Reserved, but not implemented
-          return false;
+          return true;
 
         default:
           trigger_error('Invalid cache type ('. $storage .')', E_USER_WARNING);
@@ -323,14 +353,37 @@
 
     public static function clear_cache($keyword=null) {
 
-    // Clear files
-      if (!empty($keyword)) {
-        $files = glob(FS_DIR_APP . 'cache/' .'_cache*_'. $keyword .'_*');
-      } else {
-        $files = glob(FS_DIR_APP . 'cache/' .'_cache_*');
+    // Clear vQmod
+      if (empty($keyword)) {
+        foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
+          if (is_file($file)) unlink($file);
+        }
       }
 
-      if ($files) foreach ($files as $file) unlink($file);
+    // Clear files
+      foreach (glob(FS_DIR_APP .'cache/*', GLOB_ONLYDIR) as $dir) {
+        $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
+        foreach (glob($dir.$search) as $file) unlink($file);
+      }
+
+    // Clear memory
+      if (!empty($keyword) && function_exists('apcu_delete')) {
+        $cached_keys = new APCUIterator('#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
+        foreach ($cached_keys as $key) {
+          apcu_delete($key['key']);
+        }
+      } else if (function_exists('apcu_clear_cache')) {
+        apcu_clear_cache();
+      }
+
+      if (!empty($keyword) && function_exists('apc_delete')) {
+        $cached_keys = new APCIterator('user', '#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
+        foreach ($cached_keys as $key) {
+          apc_delete($key['key']);
+        }
+      } else if (function_exists('apc_clear_cache')) {
+        apc_clear_cache();
+      }
 
     // Set breakpoint (for all session cache)
       database::query(

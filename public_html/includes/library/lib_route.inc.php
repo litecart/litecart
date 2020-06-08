@@ -14,7 +14,7 @@
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
     // Load cached links (url rewrites)
-      self::$_links_cache_token = cache::token('links', array('site', 'language'), 'file');
+      self::$_links_cache_token = cache::token('links', array('site', 'language'), 'memory');
       self::$_links_cache = cache::get(self::$_links_cache_token);
 
       event::register('after_capture', array(__CLASS__, 'after_capture'));
@@ -221,8 +221,7 @@
       }
 
       if (!in_array($language_code, array_keys(language::$languages))) {
-        trigger_error('Invalid language code ('. $language_code .')', E_USER_WARNING);
-        return $link;
+        $language_code = language::identify();
       }
 
       if (isset(self::$_links_cache[$language_code][(string)$link])) return self::$_links_cache[$language_code][(string)$link];

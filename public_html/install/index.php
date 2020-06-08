@@ -265,7 +265,7 @@
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
   <h2>Existing Installation Detected</h2>
   <p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
-  <p><a href="upgrade.php">Click here to upgrade instead.</a></p>
+  <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
 <script src="../ext/jquery/jquery-3.4.1.min.js"></script>
@@ -407,7 +407,7 @@ input[name="development_type"]:checked + div {
     <div class="form-group col-md-6">
     <label>Type</label>
       <select class="form-control" name="db_type" required="required">
-        <option value="mysql">MySQL</option>
+        <option value="mysql">MySQL / MariaDB</option>
       </select>
     </div>
 

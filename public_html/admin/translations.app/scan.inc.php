@@ -1,4 +1,7 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_scan_translations', 'Scan Translations');
+
   breadcrumbs::add(language::translate('title_scan_translations', 'Scan Translations'));
 
   if (!empty($_POST['scan'])) {
@@ -23,7 +26,7 @@
       $contents = file_get_contents($file);
 
       $regexp = array(
-        '(?:language->|language::)translate\((?:(?!\$)',
+        'language::translate\((?:(?!\$)',
         '(?:(__CLASS__)?\.)?',
         '(?:[\'"])([^\'"]+)(?:[\'"])',
         '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?',

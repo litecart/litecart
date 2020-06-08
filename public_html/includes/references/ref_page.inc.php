@@ -2,7 +2,6 @@
 
   class ref_page {
 
-    private $_id;
     private $_language_codes;
     private $_data = array();
 
@@ -10,7 +9,7 @@
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
-      $this->_id = (int)$page_id;
+      $this->_data['id'] = (int)$page_id;
       $this->_language_codes = array_unique(array(
         $language_code,
         settings::get('default_language_code'),
@@ -49,7 +48,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_PAGES_INFO ."
-            where page_id = ". (int)$this->_id ."
+            where page_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -66,7 +65,7 @@
         case 'parent':
 
           if (!empty($this->parent_id)) {
-            $this->_data['parent'] = reference::page($page['parent_id'], $this->_language_codes[0]);
+            $this->_data['parent'] = reference::page($this->parent_id, $this->_language_codes[0]);
           }
 
           break;
@@ -111,7 +110,7 @@
             "select id from ". DB_TABLE_PAGES ."
             where status
             and parent_id = ". (int)$this->parent_id ."
-            and id != ". (int)$this->_id .";"
+            and id != ". (int)$this->_data['id'] .";"
           );
 
           while ($row = database::fetch($query)) {
@@ -141,7 +140,7 @@
             return $descendants;
           };
 
-          $this->_data['descendants'] = $iterator($this->_id, $iterator);
+          $this->_data['descendants'] = $iterator($this->_data['id'], $iterator);
 
           break;
 
@@ -152,7 +151,7 @@
 
             $page_query = database::query(
               "select id, parent_id from ". DB_TABLE_PAGES ."
-              where parent_id = ". (int)$this->_id .";"
+              where parent_id = ". (int)$this->_data['id'] .";"
             );
 
             while ($page = database::fetch($page_query)) {
@@ -165,7 +164,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_PAGES ."
-            where id = ". (int)$this->_id ."
+            where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
 

@@ -1,8 +1,7 @@
 <?php
 
   function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
-    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. language::$selected['charset'] .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
-          . ((strtolower($method) == 'post') ? form_draw_hidden_field('token', form::session_post_token()) . PHP_EOL : '');
+    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. language::$selected['charset'] .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>';
   }
 
   function form_draw_form_end() {
@@ -147,7 +146,7 @@
       $value = '';
     }
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="YYYY-MM-DD"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" placeholder="YYYY-MM-DD"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_datetime_field($name, $value=true, $parameters='') {
@@ -159,7 +158,7 @@
       $value = '';
     }
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="datetime-local" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="16" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}(.[0-9]{2}:[0-9]{2})?" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="datetime-local" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='') {
@@ -171,7 +170,7 @@
                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
                                                                        . '  });';
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. $value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {
@@ -1102,55 +1101,6 @@
       if (!in_array(strtoupper($row['Support']), array('YES', 'DEFAULT'))) continue;
       if (!in_array($row['Engine'], array('CSV', 'InnoDB', 'MyISAM', 'Aria'))) continue;
       $options[] = array($row['Engine'] . ' -- '. $row['Comment'], $row['Engine']);
-    }
-
-    if ($multiple) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
-  function form_draw_option_groups_list($name, $input=true, $multiple=false, $parameters='') {
-
-    $option_groups_query = database::query(
-      "select pcg.id, pcg.function, pcg.required, pcgi.name from ". DB_TABLE_OPTION_GROUPS ." pcg
-      left join ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi on (pcgi.group_id = pcg.id and pcgi.language_code = '". database::input(language::$selected['code']) ."')
-      order by pcgi.name asc;"
-    );
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    while ($option_group = database::fetch($option_groups_query)) {
-      $options[] = array($option_group['name'] .' ['. $option_group['function'] .']', $option_group['id']);
-    }
-
-    if ($multiple) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
-  function form_draw_option_values_list($group_id, $name, $input=true, $multiple=false, $parameters='') {
-
-    $option_values_query = database::query(
-      "select pcv.id, pcv.value, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
-      left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
-      where pcv.group_id = ". (int)$group_id ."
-      order by pcvi.name asc;"
-    );
-
-    $options = array();
-
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-
-    while ($option_value = database::fetch($option_values_query)) {
-      if (empty($option_value['name'])) $option_value['name'] = $option_value['value'];
-      if (empty($option_value['name'])) $option_value['name'] = '('. language::translate('text_user_input', 'User input') .')';
-      $options[] = array($option_value['name'], $option_value['id']);
     }
 
     if ($multiple) {

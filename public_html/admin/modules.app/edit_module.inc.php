@@ -35,6 +35,10 @@
   $module = new ent_module($module_id);
   $object = new $module_id();
 
+  document::$snippets['title'][] = !empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module');
+
+  breadcrumbs::add(!empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
+
   if (!$_POST) {
     $_POST['settings'] = $module->data['settings'];
   }
@@ -71,8 +75,6 @@
       notices::add('errors', $e->getMessage());
     }
   }
-
-  breadcrumbs::add(!empty($module->data['id']) ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
 
   if (empty($_POST) && !empty($module->data['id'])) {
     notices::add('notices', language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation'));

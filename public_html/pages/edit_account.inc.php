@@ -7,6 +7,11 @@
 
   document::$snippets['title'][] = language::translate('title_edit_account', 'Edit Account');
 
+  if (!settings::get('accounts_enabled')) {
+    echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');
+    return;
+  }
+
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_edit_account', 'Edit Account'));
 
@@ -72,7 +77,7 @@
       if (empty($_POST['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
       if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format) throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
       if (empty($_POST['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
-      if (empty($_POST['zone_code']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+      if (empty($_POST['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
 
       if (!empty($_POST['different_shipping_address'])) {
         if (empty($_POST['shipping_address']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
@@ -81,7 +86,7 @@
         if (empty($_POST['shipping_address']['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
         if (empty($_POST['shipping_address']['postcode']) && !empty($_POST['shipping_address']['country_code']) && reference::country($_POST['shipping_address']['country_code'])->postcode_format) throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
         if (empty($_POST['shipping_address']['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
-        if (empty($_POST['shipping_address']['zone_code']) && !empty($_POST['shipping_address']['country_code']) && reference::country($_POST['shipping_address']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+        if (empty($_POST['shipping_address']['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['shipping_address']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
       }
 
       $fields = array(

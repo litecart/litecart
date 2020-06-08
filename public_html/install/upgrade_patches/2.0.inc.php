@@ -68,7 +68,6 @@
 
 // Copy new files
   $copy_files = array(
-    'data/default/public_html/data/bad_urls.txt' => FS_DIR_APP . 'data/bad_urls.txt',
     'data/default/public_html/images/no_image.png' => FS_DIR_APP . 'images/no_image.png',
   );
 

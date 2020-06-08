@@ -12,6 +12,8 @@
     }
   }
 
+  document::$snippets['title'][] = !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency');
+
   breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'));
 
   if (isset($_POST['save'])) {
@@ -23,40 +25,8 @@
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       if (empty($_POST['value'])) throw new Exception(language::translate('error_must_enter_value', 'You must enter a value'));
 
-      if (!empty($_POST['code']) && empty($currency->data['id'])) {
-        $currencys_query = database::query(
-          "select id from ". DB_TABLE_CURRENCIES ."
-          where code = '". database::input($_POST['code']) ."'
-          limit 1;"
-        );
-
-        if (database::num_rows($currencys_query)) {
-          throw new Exception(language::translate('error_currency_already_exists', 'The currency already exists in the database'));
-        }
-      }
-
-      if (!empty($_POST['code']) && !empty($currency->data['id']) && $currency->data['code'] != $_POST['code']) {
-        $currencys_query = database::query(
-          "select id from ". DB_TABLE_CURRENCIES ."
-          where code = '". database::input($_POST['code']) ."'
-          limit 1;"
-        );
-
-        if (database::num_rows($currencys_query)) {
-          throw new Exception(language::translate('error_currency_already_exists', 'The currency already exists in the database'));
-        }
-      }
-
       if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('store_currency_code')) && (float)$_POST['value'] != 1) {
         throw new Exception(language::translate('error_store_currency_must_have_value_1', 'The store currency must always have the currency value 1.0.'));
-      }
-
-      if (empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('default_currency_code')) {
-        throw new Exception(language::translate('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
-      }
-
-      if (empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('store_currency_code')) {
-        throw new Exception(language::translate('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
       }
 
       if (empty($_POST['set_default']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('default_currency_code') && $currency->data['code'] != $_POST['code']) {
@@ -114,14 +84,6 @@
 
     try {
       if (empty($currency->data['id'])) throw new Exception(language::translate('error_must_provide_currency', 'You must provide a currency'));
-
-      if ($currency->data['code'] == settings::get('default_currency_code')) {
-        throw new Exception(language::translate('error_cannot_delete_default_currency', 'You must change the default currency before it can be deleted.'));
-      }
-
-      if ($currency->data['code'] == settings::get('store_currency_code')) {
-        throw new Exception(language::translate('error_cannot_delete_store_currency', 'You must change the store currency before it can be deleted.'));
-      }
 
       $currency->delete();
 

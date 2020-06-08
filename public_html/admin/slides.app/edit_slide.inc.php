@@ -12,6 +12,8 @@
     }
   }
 
+  document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');
+
   breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
 
   if (isset($_POST['save'])) {

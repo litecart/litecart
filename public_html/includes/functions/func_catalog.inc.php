@@ -2,28 +2,14 @@
 
   function catalog_category_trail($category_id=0, $language_code='') {
 
+    trigger_error('catalog_category_trail() is deprecated. Use instead reference::category(id)->path', E_USER_DEPRECATED);
+
     if (empty($language_code)) $language_code = language::$selected['code'];
 
     $trail = array();
 
-    if (empty($category_id)) $category_id = 0;
-
-    $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.id = ". (int)$category_id ."
-      limit 1;"
-    );
-
-    if (!$category = database::fetch($categories_query)) array();
-
-    if (!empty($category['parent_id'])) {
-      $trail = functions::catalog_category_trail($category['parent_id']);
-      $trail[$category['id']] = $category['name'];
-
-    } else if (isset($category['id'])) {
-      $trail = array($category['id'] => $category['name']);
+    foreach (reference::category($category_id, $lanuage_code)->path as $category) {
+      $trail[$category->id] = $category->name;
     }
 
     return $trail;
@@ -31,25 +17,15 @@
 
   function catalog_category_descendants($category_id=0, $language_code='') {
 
-    if (empty($language_code)) $language_code = language::$selected['code'];
+    trigger_error('catalog_category_descendants() is deprecated. Use instead reference::category(id)->descendants', E_USER_DEPRECATED);
 
-    $subcategories = array();
+    $descendants = array();
 
-    if (empty($category_id)) $category_id = 0;
-
-    $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.parent_id = ". (int)$category_id .";"
-    );
-
-    while ($category = database::fetch($categories_query)) {
-      $subcategories[$category['id']] = $category['name'];
-      $subcategories = $subcategories + catalog_category_descendants($category['id'], $language_code);
+    foreach (reference::category($category_id, $lanuage_code)->path as $category) {
+      $descendants[$category->id] = $category->name;
     }
 
-    return $subcategories;
+    return $descendants;
   }
 
   function catalog_categories_query($parent_id=0) {
@@ -180,7 +156,7 @@
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
 
         ". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : null) ."
-        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
+        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
       ) p
 
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
@@ -208,7 +184,7 @@
       )
 
       ". (!empty($sql_outer_sort) ? "order by ". implode(",", $sql_outer_sort) : "") ."
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";"
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
     );
 
     $products_query = database::query($query);
@@ -265,7 +241,7 @@
         ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
         group by ptc.product_id
-        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
+        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
       ) p
 
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
@@ -293,7 +269,7 @@
       )
 
       order by occurrences desc
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";"
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
     );
 
     $products_query = database::query($query);
@@ -301,51 +277,9 @@
     return $products_query;
   }
 
-  function catalog_stock_adjust($product_id, $option_stock_combination, $quantity) {
+  function catalog_stock_adjust($product_id, $combination, $quantity) {
 
-    if (empty($product_id)) return;
+    trigger_error('catalog_stock_adjust() is deprecated. Use instead reference::product(id)->adjust_stock()', E_USER_DEPRECATED);
 
-    if (!empty($option_stock_combination)) {
-      $products_options_stock_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-        where product_id = ". (int)$product_id ."
-        and combination = '". database::input($option_stock_combination) ."';"
-      );
-
-      if (database::num_rows($products_options_stock_query) > 0) {
-
-        if (empty($option_stock_combination)) {
-          trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
-
-        } else {
-          database::query(
-            "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-            set quantity = quantity + ". (float)$quantity ."
-            where product_id = ". (int)$product_id ."
-            and combination =  '". database::input($option_stock_combination) ."'
-            limit 1;"
-          );
-        }
-
-      } else {
-        $option_id = 0;
-      }
-    }
-
-    database::query(
-      "update ". DB_TABLE_PRODUCTS ."
-      set quantity = quantity + ". (int)$quantity ."
-      where id = ". (int)$product_id ."
-      limit 1;"
-    );
-  }
-
-  function catalog_purchase_count_adjust($product_id, $quantity) {
-
-    database::query(
-      "update ". DB_TABLE_PRODUCTS ."
-      set purchases = purchases + ". (int)$quantity ."
-      where id = ". (int)$product_id ."
-      limit 1;"
-    );
+    return reference::product($product_id)->adjust_stock($combination, $quantity);
   }

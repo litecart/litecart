@@ -70,7 +70,7 @@
     array('-- '. language::translate('title_all', 'All') .' --', ''),
     array(language::translate('title_site_menu', 'Site Menu'), 'menu'),
     array(language::translate('title_customer_service', 'Customer Service'), 'customer_service'),
-    array(language::translate('title_site_menu', 'information'), 'information'),
+    array(language::translate('title_information', 'Information'), 'information'),
   );
 ?>
 
@@ -132,7 +132,7 @@
 
     if (database::num_rows($pages_query) > 0) {
 
-      if ($_GET['page'] > 1) database::seek($pages_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+      if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
       $page_items = 0;
       while ($page = database::fetch($pages_query)) {
@@ -172,11 +172,12 @@
         "select p.*, pi.title from ". DB_TABLE_PAGES ." p
         left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
         where parent_id = ". (int)$parent_id ."
+        ". ((!empty($_GET['dock']) && $depth == 0) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
         order by p.priority, pi.title;"
       );
 
       if ($parent_id == 0) {
-        if ($_GET['page'] > 1) database::seek($pages_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+        if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
         $num_pages = database::num_rows($pages_query);
       }
 

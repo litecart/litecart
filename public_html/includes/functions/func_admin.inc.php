@@ -7,7 +7,7 @@
       $apps = array();
 
       foreach (glob('*.app/') as $dir) {
-        $code = rtrim($dir, '.app/');
+        $code = preg_replace('#\.app/$#', '', $dir);
         $app_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
         if (!is_array($app_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
         $apps[$code] = array_merge(array('code' => $code, 'dir' => $dir), $app_config);
@@ -33,7 +33,7 @@
       $widgets = array();
 
       foreach (glob('*.widget/') as $dir) {
-        $code = rtrim($dir, '.widget/');
+        $code = preg_replace('#\.widget/$#', '', $dir);
         $widget_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
         if (!is_array($widget_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
         $widgets[$code] = array_merge(array('code' => $code, 'dir' => $dir), $widget_config);

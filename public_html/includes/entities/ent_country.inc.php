@@ -30,20 +30,22 @@
 
     public function load($country_code) {
 
-      if (!preg_match('#^[A-Z]{2}$#', $country_code)) throw new Exception('Invalid country code ('. $country_code .')');
+      if (!preg_match('#^([0-9]+|[A-Z]{2,3})$#', $country_code)) throw new Exception('Invalid country code ('. $country_code .')');
 
       $this->reset();
 
       $country_query = database::query(
         "select * from ". DB_TABLE_COUNTRIES ."
-        where iso_code_2 = '". database::input($country_code) ."'
+        ". (preg_match('#^[0-9]+$#', $country_code) ? "where id = '". (int)$country_code ."'" : "") ."
+        ". (preg_match('#^[A-Z]{2}$#', $country_code) ? "where iso_code_2 = '". database::input($country_code) ."'" : "") ."
+        ". (preg_match('#^[A-Z]{3}$#', $country_code) ? "where iso_code_3 = '". database::input($country_code) ."'" : "") ."
         limit 1;"
       );
 
       if ($country = database::fetch($country_query)) {
         $this->data = array_replace($this->data, array_intersect_key($country, $this->data));
       } else {
-        throw new Exception('Could not find country (Code: '. htmlspecialchars($country_code) .') in database.');
+        throw new Exception('Could not find country ('. htmlspecialchars($country_code) .') in database.');
       }
 
       $zones_query = database::query(
@@ -61,6 +63,30 @@
     }
 
     public function save() {
+
+      if (empty($this->data['status']) && $this->data['iso_code_2'] == settings::get('store_country_code')) {
+        throw new Exception(language::translate('error_cannot_disable_store_country', 'You must change the store country before disabling it.'));
+      }
+
+      if (empty($this->data['status']) && $this->data['iso_code_2'] == settings::get('default_country_code')) {
+        throw new Exception(language::translate('error_cannot_disable_default_country', 'You must change the default country before disabling it.'));
+      }
+
+      $country_query = database::query(
+        "select id from ". DB_TABLE_COUNTRIES ."
+        where (
+          code = '". database::input($_POST['code']) ."'
+          ". (!empty($this->data['iso_code_1']) ? "or iso_code_1 = '". database::input($this->data['iso_code_1']) ."'" : "") ."
+          ". (!empty($this->data['iso_code_2']) ? "or iso_code_2 = '". database::input($this->data['iso_code_2']) ."'" : "") ."
+          ". (!empty($this->data['iso_code_3']) ? "or iso_code_2 = '". database::input($this->data['iso_code_3']) ."'" : "") ."
+        )
+        ". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
+        limit 1;"
+      );
+
+      if (database::num_rows($country_query)) {
+        throw new Exception(language::translate('error_language_conflict', 'The language conflicts another language in the database'));
+      }
 
       if (empty($this->data['id'])) {
         database::query(
@@ -128,11 +154,11 @@
     public function delete() {
 
       if ($this->data['code'] == settings::get('store_country_code')) {
-        throw new Exception('Cannot delete the store country');
+        throw new Exception(language::translate('error_cannot_delete_store_country', 'You must change the store country before it can be deleted.'));
       }
 
       if ($this->data['code'] == settings::get('default_country_code')) {
-        throw new Exception('Cannot delete the default country');
+        throw new Exception(language::translate('error_cannot_delete_default_country', 'You must change the default country before it can be deleted.'));
       }
 
       database::query(

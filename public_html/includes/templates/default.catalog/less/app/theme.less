@@ -118,6 +118,12 @@ html {
   @media (min-width: (@media-breakpoint-sm)) {
     margin: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
   }
+  @media (max-width: (@media-breakpoint-sm - 1px)) {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    font-size: 1.25em;
+  }
 }
 
 #cookies-acceptance {
@@ -155,7 +161,7 @@ html {
     > *:first-child {
       margin-top: 0;
     }
-    width: 250px;
+    width: @default-sidebar-width;
     + #content {
       margin-left: @default-gutter-size;
     }

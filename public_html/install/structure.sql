@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `group_id` INT(11) NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
   KEY `group_id` (`group_id`),
@@ -19,8 +19,9 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `group_id` INT(11) NOT NULL,
+  `priority` INT(11) NOT NULL,
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
@@ -28,10 +29,10 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value_id` int(11) NOT NULL,
-  `language_code` varchar(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8_swedish_ci NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `value_id` INT(11) NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
   KEY `value_id` (`value_id`),
@@ -72,14 +73,14 @@ CREATE TABLE `lc_categories` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_filters` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`category_id` INT(11) NOT NULL,
-	`attribute_group_id` INT(11) NOT NULL,
-	`select_multiple` TINYINT(1) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `category_id` INT(11) NOT NULL,
+  `attribute_group_id` INT(11) NOT NULL,
+  `select_multiple` TINYINT(1) NOT NULL,
   `priority` INT(11) NOT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),
-	INDEX `category_id` (`category_id`)
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),
+  INDEX `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
@@ -116,13 +117,14 @@ CREATE TABLE `lc_countries` (
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `iso_code_1` (`iso_code_1`),
   UNIQUE KEY `iso_code_2` (`iso_code_2`),
   UNIQUE KEY `iso_code_3` (`iso_code_3`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_currencies` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
   `code` VARCHAR(3) NOT NULL,
   `number` VARCHAR(3) NOT NULL,
@@ -200,25 +202,25 @@ CREATE TABLE `lc_delivery_statuses_info` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_emails` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
-	`code` VARCHAR(256) NOT NULL,
-	`charset` VARCHAR(16) NOT NULL,
-	`sender` VARCHAR(256) NOT NULL,
-	`recipients` TEXT NOT NULL,
-	`ccs` TEXT NOT NULL,
-	`bccs` TEXT NOT NULL,
-	`subject` VARCHAR(256) NOT NULL,
-	`multiparts` MEDIUMTEXT NOT NULL,
-	`date_scheduled` DATETIME NOT NULL,
-	`date_sent` DATETIME NOT NULL,
-	`date_updated` DATETIME NOT NULL,
-	`date_created` DATETIME NOT NULL,
-	PRIMARY KEY (`id`),
-	KEY `date_scheduled` (`date_scheduled`),
-	KEY `code` (`code`),
-	KEY `date_created` (`date_created`),
-	KEY `sender_email` (`sender`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
+  `code` VARCHAR(256) NOT NULL,
+  `charset` VARCHAR(16) NOT NULL,
+  `sender` VARCHAR(256) NOT NULL,
+  `recipients` TEXT NOT NULL,
+  `ccs` TEXT NOT NULL,
+  `bccs` TEXT NOT NULL,
+  `subject` VARCHAR(256) NOT NULL,
+  `multiparts` MEDIUMTEXT NOT NULL,
+  `date_scheduled` DATETIME NOT NULL,
+  `date_sent` DATETIME NOT NULL,
+  `date_updated` DATETIME NOT NULL,
+  `date_created` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `date_scheduled` (`date_scheduled`),
+  KEY `code` (`code`),
+  KEY `date_created` (`date_created`),
+  KEY `sender_email` (`sender`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_geo_zones` (
@@ -232,7 +234,7 @@ CREATE TABLE `lc_geo_zones` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_languages` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
   `code` VARCHAR(2) NOT NULL,
   `code2` VARCHAR(3) NOT NULL,
@@ -302,48 +304,6 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   UNIQUE KEY `module_id` (`module_id`),
   KEY `type` (`type`),
   KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_option_groups` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `function` VARCHAR(32) NOT NULL,
-  `required` TINYINT(1) NOT NULL,
-  `sort` VARCHAR(32) NOT NULL,
-  `date_updated` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_option_groups_info` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `group_id` INT(11) NOT NULL,
-  `language_code` VARCHAR(2) NOT NULL,
-  `name` VARCHAR(128) NOT NULL,
-  `description` VARCHAR(512) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `option_group_info` (`group_id`, `language_code`),
-  KEY `group_id` (`group_id`),
-  KEY `language_code` (`language_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_option_values` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `group_id` INT(11) NOT NULL,
-  `value` VARCHAR(128) NOT NULL,
-  `priority` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `group_id` (`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_option_values_info` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `value_id` INT(11) NOT NULL,
-  `language_code` VARCHAR(2) NOT NULL,
-  `name` VARCHAR(64) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `option_value_info` (`value_id`, `language_code`),
-  KEY `value_id` (`value_id`),
-  KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders` (
@@ -558,16 +518,16 @@ CREATE TABLE `lc_products` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_attributes` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`product_id` INT(11) NOT NULL,
-	`group_id` INT(11) NOT NULL,
-	`value_id` INT(11) NOT NULL,
-	`custom_value` VARCHAR(256) NOT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
-	INDEX `product_id` (`product_id`),
-	INDEX `group_id` (`group_id`),
-	INDEX `value_id` (`value_id`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `product_id` INT(11) NOT NULL,
+  `group_id` INT(11) NOT NULL,
+  `value_id` INT(11) NOT NULL,
+  `custom_value` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
+  INDEX `product_id` (`product_id`),
+  INDEX `group_id` (`group_id`),
+  INDEX `value_id` (`value_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_campaigns` (
@@ -614,16 +574,30 @@ CREATE TABLE `lc_products_options` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) NOT NULL,
   `group_id` INT(11) NOT NULL,
+  `function` VARCHAR(32) NOT NULL,
+  `required` TINYINT(1) NOT NULL,
+  `sort` VARCHAR(16) NOT NULL,
+  `priority` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `product_option` (`product_id`, `group_id`),
+  INDEX `product_id` (`product_id`),
+  INDEX `priority` (`priority`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_products_options_values` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `product_id` INT(11) NOT NULL,
+  `group_id` INT(11) NOT NULL,
   `value_id` INT(11) NOT NULL,
+  `custom_value` VARCHAR(64) NOT NULL,
   `price_operator` VARCHAR(1) NOT NULL,
   `USD` DECIMAL(11,4) NOT NULL,
   `EUR` DECIMAL(11,4) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
-  `date_updated` DATETIME NOT NULL,
-  `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `product_option` (`product_id`, `group_id`, `value_id`),
-  KEY `product_id` (`product_id`)
+  UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`),
+  INDEX `product_id` (`product_id`),
+  INDEX `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_options_stock` (
@@ -725,9 +699,9 @@ CREATE TABLE `lc_slides` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_slides_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `slide_id` int(11) NOT NULL,
-  `language_code` varchar(2) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `slide_id` INT(11) NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
   `caption` TEXT NOT NULL,
   `link` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`id`),
@@ -743,8 +717,8 @@ CREATE TABLE `lc_sold_out_statuses` (
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-	KEY `hidden` (`hidden`),
-	KEY `orderable` (`orderable`)
+  KEY `hidden` (`hidden`),
+  KEY `orderable` (`orderable`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_sold_out_statuses_info` (

@@ -108,10 +108,10 @@
         text-transform: uppercase;
         transform: rotate(-45deg);
         &.new {
-          background: rgba(251, 184, 41, 0.85);
+          background: rgba(251, 184, 41, 0.9);
         }
         &.sale {
-          background: rgba(237, 60, 50, 0.85);
+          background: rgba(237, 60, 50, 0.9);
         }
       }
     }
@@ -166,8 +166,10 @@
       //opacity: 0.5;
     }
 
-    &:hover .preview {
-      display: inline-block;
+    @media (min-width: (@media-breakpoint-sm)) {
+      &:hover .preview {
+        display: inline-block;
+      }
     }
   }
 

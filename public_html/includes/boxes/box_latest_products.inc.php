@@ -3,7 +3,7 @@
 
   functions::draw_lightbox();
 
-  $box_latest_products_cache_token = cache::token('box_latest_products', array('language', 'currency', 'prices'), 'file');
+  $box_latest_products_cache_token = cache::token('box_latest_products', array('language', 'currency'), 'file');
   if (cache::capture($box_latest_products_cache_token)) {
 
     $products_query = functions::catalog_products_query(array(

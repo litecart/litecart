@@ -2,7 +2,6 @@
 
   class ref_order_status {
 
-    private $_id;
     private $_language_codes;
     private $_data = array();
 
@@ -10,7 +9,7 @@
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
-      $this->_id = (int)$order_status_id;
+      $this->_data['id'] = (int)$order_status_id;
       $this->_language_codes = array_unique(array(
         $language_code,
         settings::get('default_language_code'),
@@ -49,7 +48,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_ORDER_STATUSES_INFO ."
-            where order_status_id = ". (int)$this->_id ."
+            where order_status_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -66,8 +65,8 @@
         default:
 
           $query = database::query(
-            "select from ". DB_TABLE_ORDER_STATUSES ."
-            where id = ". (int)$this->_id ."
+            "select * from ". DB_TABLE_ORDER_STATUSES ."
+            where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
 

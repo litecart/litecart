@@ -30,20 +30,22 @@
 
     public function load($language_code) {
 
-      if (!preg_match('#^[a-z]{2}$#', $language_code)) throw new Exception('Invalid language code ('. $language_code .')');
+      if (!preg_match('#^([0-9]+|[a-z]{2,3})$#', $language_code)) throw new Exception('Invalid language code ('. $language_code .')');
 
       $this->reset();
 
       $language_query = database::query(
         "select * from ". DB_TABLE_LANGUAGES ."
-        where code='". database::input($language_code) ."'
+        ". (preg_match('#^[0-9]+$#', $language_code) ? "where id = '". (int)$language_code ."'" : "") ."
+        ". (preg_match('#^[a-z]{2}$#', $language_code) ? "where code = '". database::input($language_code) ."'" : "") ."
+        ". (preg_match('#^[a-z]{3}$#', $language_code) ? "where code2 = '". database::input($language_code) ."'" : "") ."
         limit 1;"
       );
 
       if ($language = database::fetch($language_query)) {
         $this->data = array_intersect_key(array_merge($this->data, $language), $this->data);
       } else {
-        throw new Exception('Could not find language (Code: '. htmlspecialchars($language_code) .') in database.');
+        throw new Exception('Could not find language ('. htmlspecialchars($language_code) .') in database.');
       }
 
       $this->previous = $this->data;
@@ -52,7 +54,25 @@
     public function save() {
 
       if (empty($this->data['status']) && $this->data['code'] == settings::get('default_language_code')) {
-        throw new Exception('You cannot disable the default language.');
+        throw new Exception(language::translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
+      }
+
+      if (empty($this->data['status']) && $this->data['code'] == settings::get('store_language_code')) {
+        throw new Exception(language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
+      }
+
+      $language_query = database::query(
+        "select id from ". DB_TABLE_LANGUAGES ."
+        where (
+          code = '". database::input($this->data['code']) ."'
+          ". (!empty($this->data['code2']) ? "or code2 = '". database::input($this->data['code2']) ."'" : "") ."
+        )
+        ". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
+        limit 1;"
+      );
+
+      if (database::num_rows($language_query)) {
+        throw new Exception(language::translate('error_language_conflict', 'The language conflicts another language in the database'));
       }
 
       if (empty($this->data['id'])) {
@@ -106,8 +126,6 @@
               DB_TABLE_CATEGORIES_INFO,
               DB_TABLE_DELIVERY_STATUSES_INFO,
               DB_TABLE_MANUFACTURERS_INFO,
-              DB_TABLE_OPTION_GROUPS_INFO,
-              DB_TABLE_OPTION_VALUES_INFO,
               DB_TABLE_ORDER_STATUSES_INFO,
               DB_TABLE_PAGES_INFO,
               DB_TABLE_PRODUCTS_INFO,
@@ -149,11 +167,15 @@
     public function delete() {
 
       if ($this->data['code'] == 'en') {
-        throw new Exception('English is the PHP framework language and must not be deleted, but it can be disabled.');
+        throw new Exception(language::translate('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
       }
 
       if ($this->data['code'] == settings::get('default_language_code')) {
-        throw new Exception('Cannot delete the default language');
+        throw new Exception(language::translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
+      }
+
+      if ($this->data['code'] == settings::get('store_language_code')) {
+        throw new Exception(language::translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
       }
 
       database::query(
@@ -180,8 +202,6 @@
         DB_TABLE_CATEGORIES_INFO,
         DB_TABLE_DELIVERY_STATUSES_INFO,
         DB_TABLE_MANUFACTURERS_INFO,
-        DB_TABLE_OPTION_GROUPS_INFO,
-        DB_TABLE_OPTION_VALUES_INFO,
         DB_TABLE_ORDER_STATUSES_INFO,
         DB_TABLE_PAGES_INFO,
         DB_TABLE_PRODUCTS_INFO,

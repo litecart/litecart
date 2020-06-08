@@ -26,10 +26,4 @@
         }
       }
     }
-
-    ######################################################################
-
-    public static function session_post_token() {
-      return sha1(PLATFORM_NAME . PLATFORM_VERSION . session::get_id());
-    }
   }

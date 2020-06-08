@@ -1,5 +1,6 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
@@ -34,14 +35,33 @@
     );
   }
 
+  switch($_GET['sort']) {
+    case 'id':
+      $sql_sort = "c.id desc";
+      break;
+    case 'email':
+      $sql_sort = "c.email";
+      break;
+    case 'name':
+      $sql_sort = "c.firstname, c.lastname";
+      break;
+    case 'company':
+      $sql_sort = "c.firstname, c.lastname";
+      break;
+    default:
+      $sql_sort = "c.date_created desc, c.id desc";
+      break;
+  }
+
   $customers_query = database::query(
     "select c.* from ". DB_TABLE_CUSTOMERS ." c
     where c.id
     ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
-    order by c.firstname, c.lastname;"
+    order by $sql_sort;"
+
   );
 
-  if ($_GET['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($customer = database::fetch($customers_query)) {
@@ -78,16 +98,16 @@
   <div class="panel-body">
     <?php echo functions::form_draw_form_begin('customers_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
+      <table class="table table-striped table-hover table-sortable data-table">
         <thead>
           <tr>
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_email', 'Email'); ?></th>
-            <th><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+            <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
+            <th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
+            <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
+            <th data-sort="company" class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
+            <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
             <th>&nbsp;</th>
           </tr>
         </thead>

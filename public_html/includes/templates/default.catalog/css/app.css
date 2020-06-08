@@ -117,6 +117,14 @@ html {
     margin: 0 20px 20px 20px;
   }
 }
+@media (max-width: 767px) {
+  #site-menu {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    font-size: 1.25em;
+  }
+}
 #cookies-acceptance {
   /*position: sticky;*/
   top: 0;
@@ -423,9 +431,11 @@ html {
   right: 7.5px;
   box-shadow: none;
 }
-.listing .product-column:hover .preview,
-.listing .product-row:hover .preview {
-  display: inline-block;
+@media (min-width: 768px) {
+  .listing .product-column:hover .preview,
+  .listing .product-row:hover .preview {
+    display: inline-block;
+  }
 }
 .listing .product-column .image {
   width: 100%;
@@ -497,8 +507,8 @@ html {
   color: #fff;
   font-size: 12px;
   font-weight: bold;
-  top: 17px;
-  left: -34px;
+  top: 15px;
+  left: -35px;
   padding: 5px 10px;
   position: absolute;
   text-align: center;

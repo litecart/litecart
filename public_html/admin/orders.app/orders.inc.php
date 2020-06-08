@@ -94,7 +94,7 @@
       $sql_sort = "o.customer_country_code";
       break;
     default:
-      $sql_sort = "o.starred desc, o.date_created desc, o.date_created desc, o.id desc";
+      $sql_sort = "o.starred desc, o.date_created desc, o.id desc";
       break;
   }
 
@@ -111,7 +111,7 @@
     order by $sql_sort;"
   );
 
-  if ($_GET['page'] > 1) database::seek($orders_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($orders_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($order = database::fetch($orders_query)) {
@@ -210,7 +210,7 @@ table .fa-star:hover {
             <th>&nbsp;</th>
             <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
             <th>&nbsp;</th>
-            <th  data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+            <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
             <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
             <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
             <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>

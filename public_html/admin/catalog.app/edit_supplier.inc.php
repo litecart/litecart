@@ -12,6 +12,8 @@
     }
   }
 
+  document::$snippets['title'][] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier');
+
   breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'), document::link(WS_DIR_ADMIN, array('doc' => 'suppliers'), array('app')));
   breadcrumbs::add(!empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'));
 
@@ -99,11 +101,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_link', 'Link'); ?></label>
-          <?php echo functions::form_draw_text_field('link', true); ?>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_link', 'Link'); ?></label>
+        <?php echo functions::form_draw_text_field('link', true); ?>
       </div>
 
       <div class="panel-action btn-group">

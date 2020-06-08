@@ -96,6 +96,8 @@
       'quantity' => $product['quantity'],
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
       'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
+      'tax' => tax::get_tax($product['price'], $product['tax_class_id']),
+      'tax_class_id' => $product['tax_class_id'],
     );
 
     if (!empty($product['manufacturer_id'])) {
@@ -126,39 +128,41 @@
     if (empty($selector)) return;
 
     if (preg_match('#^(https?:)?//#', $selector)) {
-      document::$snippets['javascript']['featherlight-'.$selector] = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
+      $js = '  $.featherlight(\''. $selector .'\', {' . PHP_EOL;
     } else {
-      document::$snippets['javascript']['featherlight-'.$selector] = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
+      $js = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
     }
 
     foreach ($params as $key => $value) {
       switch (gettype($params[$key])) {
         case 'NULL':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': null,' . PHP_EOL;
+          $js .= '    '. $key .': null,' . PHP_EOL;
           break;
         case 'boolean':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
+          $js .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
           break;
         case 'integer':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
+          $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           break;
         case 'string':
           if (preg_match('#^function\s?\(#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': '. $value .',' . PHP_EOL;
+            $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           } else if (preg_match('#^undefined$#', $value)) {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': undefined,' . PHP_EOL;
+            $js .= '    '. $key .': undefined,' . PHP_EOL;
           } else {
-            document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+            $js .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
           }
           break;
         case 'array':
-          document::$snippets['javascript']['featherlight-'.$selector] .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          $js .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
           break;
       }
     }
 
-    document::$snippets['javascript']['featherlight-'.$selector] = rtrim(document::$snippets['javascript']['featherlight-'.$selector], ','.PHP_EOL) . PHP_EOL
-                                                                 . '  });';
+    $js = rtrim($js, ",\r\n") . PHP_EOL
+        . '  });';
+
+    document::$snippets['javascript']['featherlight-'.$selector] = $js;
   }
 
   function draw_pagination($pages) {
@@ -176,6 +180,7 @@
     $pagination = new ent_view();
 
     $pagination->snippets['items'][] = array(
+      'page' => $_GET['page']-1,
       'title' => language::translate('title_previous', 'Previous'),
       'link' => document::link(null, array('page' => $_GET['page']-1), true),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
@@ -186,8 +191,9 @@
 
       if ($i < $pages-5) {
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
-          $rewind = round(($_GET['page']-1)/2);
+          $rewind = round(($_GET['page'] - 1) / 2);
           $pagination->snippets['items'][] = array(
+            'page' => $rewind,
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
             'link' => document::link(null, array('page' => $rewind), true),
             'disabled' => false,
@@ -202,6 +208,7 @@
         if ($i > $_GET['page'] + 1 && $i < $pages) {
           $forward = round(($_GET['page']+1+$pages)/2);
           $pagination->snippets['items'][] = array(
+            'page' => $forward,
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
             'link' => document::link(null, array('page' => $forward), true),
             'disabled' => false,
@@ -212,6 +219,7 @@
       }
 
       $pagination->snippets['items'][] = array(
+        'page' => $i,
         'title' => $i,
         'link' => document::link(null, array('page' => $i), true),
         'disabled' => false,
@@ -220,6 +228,7 @@
     }
 
     $pagination->snippets['items'][] = array(
+      'page' => $_GET['page']+1,
       'title' => language::translate('title_next', 'Next'),
       'link' => document::link(null, array('page' => $_GET['page']+1), true),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,

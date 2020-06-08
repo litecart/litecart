@@ -46,7 +46,7 @@
       session::$data['currency'] = self::$currencies[$code];
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        header('Set-Cookie: currency_code='. $code .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+        header('Set-Cookie: currency_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
       }
     }
 

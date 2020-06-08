@@ -11,8 +11,10 @@
       @ini_set('session.use_cookies', 1);
       @ini_set('session.use_only_cookies', 1);
       @ini_set('session.use_trans_sid', 0);
+      @ini_set('session.cookie_httponly', 0);
       @ini_set('session.cookie_lifetime', 0);
       @ini_set('session.cookie_path', WS_DIR_APP);
+      @ini_set('session.cookie_samesite', 'Lax');
 
       register_shutdown_function(array('session', 'close'));
 
@@ -21,9 +23,12 @@
       self::$data = &$_SESSION;
 
       if (!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = '';
-      if (empty(self::$data['last_ip'])) self::$data['last_ip'] = $_SERVER['REMOTE_ADDR'];
-      if (empty(self::$data['last_agent'])) self::$data['last_agent'] = $_SERVER['HTTP_USER_AGENT'];
-      if ($_SERVER['REMOTE_ADDR'] != self::$data['last_ip'] && $_SERVER['HTTP_USER_AGENT'] != self::$data['last_agent']) {
+      if (empty(self::$data['last_ip_address'])) self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
+      if (empty(self::$data['last_user_agent'])) self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+
+      if ($_SERVER['REMOTE_ADDR'] != self::$data['last_ip_address'] && $_SERVER['HTTP_USER_AGENT'] != self::$data['last_user_agent']) {
+        self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
+        self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         self::regenerate_id();
       }
     }
@@ -39,18 +44,12 @@
     }
 
     public static function clear() {
-      $_SESSION = array();
-      return true;
+      return session_unset();
     }
 
     public static function destroy() {
 
       self::clear();
-
-      if (ini_get('session.use_cookies')) {
-        $params = session_get_cookie_params();
-        header('Set-Cookie: '. session_name() .'=; path='. WS_DIR_APP .'; expires=-1; SameSite=Strict');
-      }
 
       return session_destroy();
     }

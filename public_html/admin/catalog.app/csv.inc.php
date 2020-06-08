@@ -1,4 +1,7 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_import_export_csv', 'Import/Export CSV');
+
   breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
   if (isset($_POST['import_categories'])) {
@@ -28,10 +31,14 @@
       // Find category
         if (!empty($row['id'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing category on $line\r\n";
+              continue;
+            }
             $category = new ent_category($category['id']);
-            echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "") ." matching id ". $row['id'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_categories'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New category on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -42,10 +49,14 @@
 
         } elseif (!empty($row['code'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing category on $line\r\n";
+              continue;
+            }
             $category = new ent_category($category['id']);
-            echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "") ." matching code ". $row['code'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_categories'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New category on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -55,10 +66,14 @@
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing category on $line\r\n";
+              continue;
+            }
             $category = new ent_category($category['id']);
-            echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing category ". (!empty($row['name']) ? $row['name'] : "") ." matching name ". $row['name'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_categories'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New category on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -207,10 +222,14 @@
       // Find product
         if (!empty($row['id'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing product on $line\r\n";
+              continue;
+            }
             $product = new ent_product($product['id']);
-            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "") ." matching id ". $row['id'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_products'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -221,10 +240,14 @@
 
         } elseif (!empty($row['code'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing product on $line\r\n";
+              continue;
+            }
             $product = new ent_product($product['id']);
-            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "") ." matching code ". $row['code'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_products'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -234,10 +257,14 @@
 
         } elseif (!empty($row['sku'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing product on $line\r\n";
+              continue;
+            }
             $product = new ent_product($product['id']);
-            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "") ." matching SKU ". $row['sku'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_products'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -247,10 +274,14 @@
 
         } elseif (!empty($row['mpn'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing product on $line\r\n";
+              continue;
+            }
             $product = new ent_product($product['id']);
-            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "") ." matching MPN ". $row['mpn'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_products'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -260,10 +291,14 @@
 
         } elseif (!empty($row['gtin'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing product on $line\r\n";
+              continue;
+            }
             $product = new ent_product($product['id']);
-            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "") ." matching GTIN ". $row['gtin'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_products'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -273,10 +308,14 @@
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing product on $line\r\n";
+              continue;
+            }
             $product = new ent_product($product['id']);
-            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "on line $line") ."\r\n";
+            echo "Updating existing product ". (!empty($row['name']) ? $row['name'] : "") ." matching name ". $row['name'] ." on line $line\r\n";
           } else {
-            if (empty($_POST['insert_products'])) {
+            if (empty($_POST['insert'])) {
               echo "[Skipped] New product on line $line was not inserted to database.\r\n";
               continue;
             }
@@ -527,43 +566,43 @@
           <div class="col-md-6">
             <h2><?php echo language::translate('title_categories', 'Categories'); ?></h2>
 
-              <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
+            <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
 
-                <div class="form-group">
-                  <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
-                  <?php echo functions::form_draw_file_field('file'); ?>
+              <div class="form-group">
+                <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
+                <?php echo functions::form_draw_file_field('file'); ?>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                  <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
                 </div>
 
-                <div class="row">
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                    <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                    <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                    <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-                  </div>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                  <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
                 </div>
 
-                <div class="form-group">
-                  <label><?php echo functions::form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo language::translate('text_insert_new_categories', 'Insert new categories'); ?></label>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                  <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
                 </div>
 
-                <?php echo functions::form_draw_button('import_categories', language::translate('title_import', 'Import'), 'submit'); ?>
+                <div class="form-group col-sm-6">
+                  <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                  <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
+                <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', true); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
+              </div>
+
+              <?php echo functions::form_draw_button('import_categories', language::translate('title_import', 'Import'), 'submit'); ?>
 
               <?php echo functions::form_draw_form_end(); ?>
-            </fieldset>
           </div>
 
           <div class="col-md-6">
@@ -599,7 +638,8 @@
               </div>
 
               <div class="form-group">
-                <label><?php echo functions::form_draw_checkbox('insert_products', 'true', true); ?> <?php echo language::translate('text_insert_new_products', 'Insert new products'); ?></label>
+                <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
+                <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', true); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
               </div>
 
               <?php echo functions::form_draw_button('import_products', language::translate('title_import', 'Import'), 'submit'); ?>

@@ -4,13 +4,15 @@
     public $data = array();
     public $items = array();
 
-    public function __construct() {
+    public function __construct($type='session') {
 
-      if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) {
-        session::$data['shipping'] = array();
+      if ($type == 'session') {
+        if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) {
+          session::$data['shipping'] = array();
+        }
+
+        $this->data = &session::$data['shipping'];
       }
-
-      $this->data = &session::$data['shipping'];
 
       if (empty($this->data['selected'])) {
         $this->data['selected'] = array();

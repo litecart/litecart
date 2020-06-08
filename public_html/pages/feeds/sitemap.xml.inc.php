@@ -20,8 +20,10 @@
            . '    <priority>1.0</priority>' . PHP_EOL
            . '  </url>' . PHP_EOL;
 
-  function custom_output_categories($parent_id=0, &$output) {
+  $category_iterator = function($parent_id=0, $category_iterator) {
     $categories_query = functions::catalog_categories_query($parent_id);
+
+    $output = '';
 
     while ($category = database::fetch($categories_query)) {
 
@@ -40,17 +42,20 @@
                . '    <priority>1.0</priority>' . PHP_EOL
                . '  </url>' . PHP_EOL;
 
-      custom_output_categories($category['id'], $output);
+      $category_iterator($category['id'], $category_iterator);
     }
-  }
 
-  custom_output_categories(0, $output);
+    return $output;
+  };
+
+  $output .= $category_iterator(0, $category_iterator);
 
   $products_query = database::query(
     "select id, date_updated from ". DB_TABLE_PRODUCTS ."
     where status
     order by id;"
   );
+
   while ($product = database::fetch($products_query)) {
 
     $hreflangs = '';

@@ -95,6 +95,11 @@
               $this->_image = ImageCreateFromPNG($this->_src);
               break;
 
+            case 'webp':
+              $this->_type = 'webp';
+              $this->_image = ImageCreateFromWebP($this->_src);
+              break;
+
             default:
               $this->load_from_string(file_get_contents($this->_src));
               break;
@@ -650,7 +655,7 @@
       }
     }
 
-    public function write($destination, $type=null, $quality=90, $interlaced=false) {
+    public function write($destination, $quality=90, $interlaced=false) {
 
       if (is_file($destination)) {
         throw new Exception('Destination already exists ('. $destination .')');
@@ -664,10 +669,10 @@
         throw new Exception('Destination is not writable ('. $destination .')');
       }
 
-      if (empty($type)) $type = pathinfo($destination, PATHINFO_EXTENSION);
+      $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!in_array(strtolower($type), array('gif', 'jpg', 'png'))) {
-        throw new Exception('Unknown output format');
+      if (!in_array(strtolower($type), array('gif', 'jpg', 'png', 'webp'))) {
+        throw new Exception("Unknown image output format ($type)");
       }
 
       switch($this->_library) {
@@ -678,6 +683,10 @@
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
+          }
+
+          if ($this->_image->getImageDepth() > 16) {
+            $this->_image->setImageDepth(16);
           }
 
           switch(strtolower($type)) {
@@ -736,9 +745,18 @@
               ImageDestroy($this->_image);
               return $result;
 
+            case 'webp':
+              if (!function_exists('ImageWebP')) {
+                return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
+              }
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageWebP($this->_image, $destination, $quality);
+              ImageDestroy($this->_image);
+              return $result;
+
             default:
               ImageDestroy($this->_image);
-              throw new Exception('Unknown output format');
+              throw new Exception("Unknown image output format ($type)");
           }
       }
     }
@@ -794,6 +812,15 @@
             case 'png':
               ImageSaveAlpha($this->_image, true);
               $result = ImagePNG($this->_image, false);
+              ImageDestroy($this->_image);
+              return $result;
+
+            case 'webp':
+              if (!function_exists('ImageWebP')) {
+                return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
+              }
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageWebP($this->_image, false, $quality);
               ImageDestroy($this->_image);
               return $result;
 
@@ -877,6 +904,9 @@
             break;
           case 2:
             $this->_type = 'jpg';
+            break;
+          case 18:
+            $this->_type = 'webp';
             break;
           case 3:
           default:

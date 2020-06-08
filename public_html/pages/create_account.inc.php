@@ -6,6 +6,11 @@
 
   breadcrumbs::add(language::translate('title_create_account', 'Create Account'));
 
+  if (!settings::get('accounts_enabled')) {
+    echo language::translate('error_accounts_are_disabled', 'Accounts are disabled');
+    return;
+  }
+
   if (!$_POST) {
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
@@ -41,7 +46,7 @@
       //if (empty($_POST['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
       //if (empty($_POST['postcode']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->postcode_format) throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
       if (empty($_POST['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
-      if (empty($_POST['zone_code']) && !empty($_POST['country_code']) && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+      if (empty($_POST['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
 
       $mod_customer = new mod_customer();
       $result = $mod_customer->validate($_POST);

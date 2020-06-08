@@ -6,8 +6,8 @@
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
-    public $support_link = 'http://www.litecart.net';
-    public $website = 'http://www.litecart.net';
+    public $support_link = 'https://www.litecart.net';
+    public $website = 'https://www.litecart.net';
     public $priority = 0;
 
     public function __construct() {
@@ -44,9 +44,6 @@
       return $method;
     }
 
-    public function pre_check($order) {
-    }
-
     public function transfer($order) {
       return array(
         'action' => '',
@@ -61,9 +58,6 @@
         'payment_transaction_id' => '',
         'errors' => '',
       );
-    }
-
-    public function after_process($order) {
     }
 
     function settings() {
@@ -104,11 +98,11 @@
           'function' => 'order_status()',
         ),
         array(
-          'key' => 'geo_zone_id',
+          'key' => 'geo_zones',
           'default_value' => '',
           'title' => language::translate('title_geo_zone_limitation', 'Geo Zone Limitation'),
           'description' => language::translate('modules:description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
-          'function' => 'geo_zone()',
+          'function' => 'geo_zones()',
         ),
         array(
           'key' => 'priority',

@@ -19,6 +19,7 @@
     </section>
     <?php } ?>
 
+    <?php if (settings::get('accounts_enabled')) { ?>
     <section class="account">
       <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
       <ul class="list-unstyled">
@@ -34,6 +35,7 @@
         <?php } ?>
       </ul>
     </section>
+    <?php } ?>
 
     <section class="information">
       <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>

@@ -1,4 +1,7 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_csv_import_export', 'CSV Import/Export');
+
   breadcrumbs::add(language::translate('title_csv_import_export', 'CSV Import/Export'));
 
   if (isset($_POST['import'])) {
@@ -16,31 +19,57 @@
 
       foreach ($csv as $row) {
 
-        $customer = null;
-
         if (!empty($row['id'])) {
-          $customers_query = database::query(
-            "select id from ". DB_TABLE_CUSTOMERS ."
-            where id = ". (int)$row['id'] ."
-            limit 1;"
-          );
-          $customer = database::fetch($customers_query);
+          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing customer on $line\r\n";
+              continue;
+            }
+            $customer = new ent_customer($customer['id']);
+            echo "Updating existing customer matching id ". $row['id'] ." on line $line\r\n";
+          } else {
+            if (empty($_POST['insert'])) {
+              echo "[Skipped] New customer on line $line was not inserted to database\r\n";
+              continue;
+            }
+            database::query("insert into ". DB_TABLE_CATEGORIES ." (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
+            $customer = new ent_customer($row['id']);
+            echo 'Creating new customer: '. $row['name'] . PHP_EOL;
+          }
 
-        } else if (!empty($row['code'])) {
-          $customers_query = database::query(
-            "select id from ". DB_TABLE_CUSTOMERS ."
-            where code = '". database::input($row['code']) ."'
-            limit 1;"
-          );
-          $customer = database::fetch($customers_query);
+        } elseif (!empty($row['code'])) {
+          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing customer on $line\r\n";
+              continue;
+            }
+            $customer = new ent_customer($customer['id']);
+            echo "Updating existing customer matching code ". $row['code'] ." on line $line\r\n";
+          } else {
+            if (empty($_POST['insert'])) {
+              echo "[Skipped] New customer on line $line was not inserted to database\r\n";
+              continue;
+            }
+            $customer = new ent_customer();
+            echo 'Creating new customer: '. $row['name'] . PHP_EOL;
+          }
 
-        } else if (!empty($row['email'])) {
-          $customers_query = database::query(
-            "select id from ". DB_TABLE_CUSTOMERS ."
-            where email like '". database::input($row['email']) ."'
-            limit 1;"
-          );
-          $customer = database::fetch($customers_query);
+        } elseif (!empty($row['code'])) {
+          if ($customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where lower(email) = lower('". database::input($row['email']) ."') limit 1;"))) {
+            if (empty($_POST['overwrite'])) {
+              echo "[Skipped] Skipping updating existing customer on $line\r\n";
+              continue;
+            }
+            $customer = new ent_customer($customer['id']);
+            echo "Updating existing customer matching email ". $row['email'] ." on line $line\r\n";
+          } else {
+            if (empty($_POST['insert'])) {
+              echo "[Skipped] New customer on line $line was not inserted to database\r\n";
+              continue;
+            }
+            $customer = new ent_customer();
+            echo 'Creating new customer: '. $row['name'] . PHP_EOL;
+          }
         }
 
         if (!empty($customer)) {
@@ -76,8 +105,6 @@
         $customer->save();
       }
 
-      notices::add('success', language::translate('success_customers_imported', 'Customers successfully imported.'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $_GET['doc'])));
       exit;
 
     } catch (Exception $e) {
@@ -188,6 +215,11 @@
               <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
               <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
             </div>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
+            <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', true); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
           </div>
 
           <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>

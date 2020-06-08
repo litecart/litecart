@@ -1,5 +1,7 @@
 <?php
 
+  document::$snippets['title'][] = language::translate('title_template_settings', 'Template Settings');
+
   breadcrumbs::add(language::translate('title_template', 'Template'), document::link(WS_DIR_ADMIN, array('doc' => 'template'), array('app')));
   breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
 

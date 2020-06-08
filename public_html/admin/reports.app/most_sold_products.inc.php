@@ -1,5 +1,7 @@
 <?php
 
+  document::$snippets['title'][] = language::translate('title_most_sold_products', 'Most Sold Products');
+
   breadcrumbs::add(language::translate('title_most_sold_products', 'Most Sold Products'));
 
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
@@ -36,7 +38,7 @@
     order by total_quantity desc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($order_items_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($order_items_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($order_item = database::fetch($order_items_query)) {

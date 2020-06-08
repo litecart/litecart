@@ -10,8 +10,13 @@
     public static function init() {
 
     // Bind selected language to session
-      if (!isset(session::$data['language'])) session::$data['language'] = array();
-      self::$selected = &session::$data['language'];
+      if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
+        if (!isset(session::$data['backend']['language'])) session::$data['backend']['language'] = array();
+        self::$selected = &session::$data['backend']['language'];
+      } else {
+        if (!isset(session::$data['language'])) session::$data['language'] = array();
+        self::$selected = &session::$data['language'];
+      }
 
     // Get languages from database
       self::load();
@@ -25,7 +30,7 @@
         self::set(self::$selected['code']);
       }
 
-      self::$_cache_token = cache::token('translations', array('endpoint', 'language'), 'file');
+      self::$_cache_token = cache::token('translations', array('endpoint', 'language'), 'memory');
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         $translations_query = database::query(
@@ -89,10 +94,14 @@
         $code = self::identify();
       }
 
-      session::$data['language'] = self::$languages[$code];
+      if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
+        session::$data['backend']['language'] = self::$languages[$code];
+      } else {
+        session::$data['language'] = self::$languages[$code];
+      }
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        header('Set-Cookie: language_code='. $code .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
+        header('Set-Cookie: language_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict');
       }
 
     // Set system locale
@@ -137,6 +146,17 @@
     // Return language from cookie
       if (isset($_COOKIE['language_code']) && in_array($_COOKIE['language_code'], $all_languages)) return $_COOKIE['language_code'];
 
+    // Return language from country (TLD)
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+        $countries_query = database::query(
+          "select * from ". DB_TABLE_COUNTRIES ."
+          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
+          limit 1;"
+        );
+        $country = database::fetch($countries_query);
+        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
+      }
+
     // Return language from browser request headers
       if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $browser_locales = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -149,17 +169,6 @@
         if (preg_match('#('. implode('|', array_keys(self::$languages)) .')-?.*#', $browser_locale, $reg)) {
           if (!empty($reg[1]) && in_array($reg[1], $enabled_languages)) return $reg[1];
         }
-      }
-
-    // Return language from country (TLD)
-      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-        $countries_query = database::query(
-          "select * from ". DB_TABLE_COUNTRIES ."
-          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
-          limit 1;"
-        );
-        $country = database::fetch($countries_query);
-        if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
       }
 
     // Return default language
@@ -284,7 +293,7 @@
           case (preg_match('#\.1257$#', $locale)):
             return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-13');
 
-          case (preg_match('#\.(932|936|950)$#', $locale)):
+          case (preg_match('#\.(932|936|950)$#', $locale, $matches)):
             return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'CP'.$matches[1]);
 
           case (preg_match('#\.(949)$#', $locale)):
@@ -294,7 +303,7 @@
           //  return '???';
 
           default:
-            trigger_error("Unknown charset for system locale ($locale)", E_USER_NOTICE);
+            trigger_error("No predefined charset mapped for Windows locale $locale. Attempting automatic detection instead.", E_USER_NOTICE);
             return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'auto');
         }
       }

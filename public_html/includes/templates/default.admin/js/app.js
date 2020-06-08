@@ -121,7 +121,7 @@
   });
 
 // Data-Table Dragable
-  $('.table-dragable tbody').on('mousedown', '.grabable', function(e) {
+  $('body').on('mousedown', '.table-dragable tbody .grabable', function(e){
     var tr = $(e.target).closest('tr'), sy = e.pageY, drag;
     if ($(e.target).is('tr')) tr = $(e.target);
     var index = tr.index();

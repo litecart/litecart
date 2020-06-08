@@ -30,8 +30,8 @@
   document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
-  foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
+  foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {
+    breadcrumbs::add($category_crumb->name, document::ilink('category', array('category_id' => $category_crumb->id)));
   }
   breadcrumbs::add($category->name);
 
@@ -39,7 +39,7 @@
 
   $_page = new ent_view();
 
-  $box_category_cache_token = cache::token('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'), 'file');
+  $box_category_cache_token = cache::token('box_category', array('get', 'language', 'currency'), 'file');
   if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
     $_page->snippets = array(
@@ -50,7 +50,7 @@
       'h1_title' => $category->h1_title ? $category->h1_title : $category->name,
       'head_title' => $category->head_title ? $category->head_title : $category->name,
       'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
-      'image' => $category->image ? 'images/' . $category->image : '',
+      'image' => array(),
       'subcategories' => array(),
       'products' => array(),
       'sort_alternatives' => array(
@@ -60,6 +60,15 @@
         'date' => language::translate('title_date', 'Date'),
       ),
     );
+
+    if ($category->image) {
+      list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
+      $_page->snippets['image'] = array(
+        'original' => $category->image ? 'images/' . $category->image : '',
+        'thumbnail_1x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
+      );
+    }
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);

@@ -1,9 +1,17 @@
-<FilesMatch "^_cache_">
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order Deny,Allow
+  Deny from all
+</IfModule>
+
+<FilesMatch "\.(jpe?g|gif|png|webp)$">
   <IfModule mod_authz_core.c>
-    Require all denied
+    Require all granted
   </IfModule>
   <IfModule !mod_authz_core.c>
-    Order Deny,Allow
-    Deny from all
+    Order Allow,Deny
+    Allow from all
   </IfModule>
 </FilesMatch>

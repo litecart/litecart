@@ -28,7 +28,7 @@
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
         if (!empty($_COOKIE['cookies_accepted'])) {
-          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; path='. WS_DIR_APP .'; expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
+          header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
         }
       }
 
@@ -137,7 +137,7 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(serialize(array($product->id, $options)));
+          $item_key = md5(json_encode(array($product->id, $options)));
         }
       }
 
@@ -195,7 +195,7 @@
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, $product->quantity_unit['decimals']))));
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, @$product->quantity_unit['decimals']))));
         }
 
       // Build options structure
@@ -203,7 +203,7 @@
         foreach ($product->options as $option) {
 
         // Check group
-          $possible_groups = array_filter(array_unique(reference::option_group($option['id'])->name));
+          $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
           $matched_group = @reset(array_intersect(array_keys($options), array_values($possible_groups)));
 
           if (empty($matched_group)) {
@@ -221,23 +221,16 @@
 
               $matched_values = array();
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
-                $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
-                if (!empty($matched_value)) {
+                $possible_values = array_unique(
+                  array_merge(
+                    !empty($product->options[$option['group_id']]['values']) ? array_filter(array_column($product->options[$option['group_id']]['values'], 'name'), 'strlen') : array(),
+                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : array()
+                  )
+                );
+                if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
                 }
-              }
-              break;
-
-            case 'input':
-            case 'textarea':
-
-              $value = array_values($option['values'])[0];
-              $matched_value = $options[$matched_group];
-
-              if (!empty($matched_value)) {
-                $item['extras'] += $option['price_adjust'];
               }
               break;
 
@@ -245,9 +238,14 @@
             case 'select':
 
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::option_group($option['id'])->values[$value['id']]['name']));
-                $matched_value = @reset(array_intersect(array($options[$matched_group]), array_values($possible_values)));
-                if (!empty($matched_value)) {
+                $possible_values = array_unique(
+                  array_merge(
+                    !empty($product->options[$option['group_id']]['values']) ? array_filter(array_column($product->options[$option['group_id']]['values'], 'name'), 'strlen') : array(),
+                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : array()
+                  )
+                );
+                if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
+                  $matched_value = $matched_value[0];
                   $item['extras'] += $value['price_adjust'];
                   break;
                 }
@@ -255,16 +253,16 @@
               break;
           }
 
-          if (empty($matched_value) && !empty($option['required'])) {
+          if (!empty($option['required']) && (!isset($matched_value) || $matched_value == '')) {
             throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
           }
 
-          if (empty($matched_group) && (empty($matched_values) && empty($matched_value))) continue;
+          if (empty($matched_group) || (empty($matched_values) && empty($matched_value))) continue;
 
           $sanitized_options[] = array(
             'group_id' => $option['id'],
-            'value_id' => $value['id'],
-            'combination' => $option['id'].'-'.$value['id'],
+            'value_id' => !empty($value['id']) ? $value['id'] : 0,
+            'combination' => $option['id'] .'-'. (!empty($value['id']) ? $value['id'] : 0),
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           );
@@ -284,7 +282,7 @@
           if ($option_match) {
             //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
             if (($option_stock['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], $product->quantity_unit['decimals']) .')');
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], @$product->quantity_unit['decimals']) .')');
             }
 
             $item['option_stock_combination'] = $option_stock['combination'];

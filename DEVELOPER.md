@@ -9,7 +9,6 @@
 3. Execute "Run Node.cmd" and in the command prompt type:
 
     npm install
-    npm install grunt-cli
 
 Done! Node.js should now have installed all necessary libraries, you can now use any of the following commands:
 
@@ -19,6 +18,8 @@ Done! Node.js should now have installed all necessary libraries, you can now use
     grunt replace (Update version number in scripts from package.js)
     grunt phplint (Check scripts for syntax errors)
     grunt watch   (Watch for changes in .less and .js and update minified versions on the fly)
+
+    npm update    (Update your node modules to newer versions)
 
 # Social Coding
 

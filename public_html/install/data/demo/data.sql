@@ -49,29 +49,14 @@ INSERT INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`,
 ('sm_zone_weight', 'shipping', 0, 0, '{"status":"1","icon":"","weight_class":"kg","geo_zone_id_1":"","weight_rate_table_1":"","geo_zone_id_2":"","weight_rate_table_2":"","geo_zone_id_3":"","weight_rate_table_3":"","weight_rate_table_x":"5:8.95;10:15.95","method":">=","handling_fee":"0.00","tax_class_id":"1","priority":"0"}', '', NOW(), NOW()),
 ('pm_cod', 'payment', 0, 0, '{"status":"1","icon":"","fee":"5.00","tax_class_id":"1","order_status_id":"2","geo_zone_id":"","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_option_groups` (`id`, `function`, `required`, `sort`, `date_updated`, `date_created`) VALUES
-(1, 'select', 1, 'priority', NOW(), NOW());
--- --------------------------------------------------------
-INSERT INTO `lc_option_groups_info` (`id`, `group_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Size', '');
--- --------------------------------------------------------
-INSERT INTO `lc_option_values` (`id`, `group_id`, `value`, `priority`) VALUES
-(1, 1, '', 1),
-(2, 1, '', 2),
-(3, 1, '', 3);
--- --------------------------------------------------------
-INSERT INTO `lc_option_values_info` (`id`, `value_id`, `language_code`, `name`) VALUES
-(1, 1, 'en', 'Small'),
-(2, 2, 'en', 'Medium'),
-(3, 3, 'en', 'Large');
--- --------------------------------------------------------
 INSERT INTO `lc_orders` (`id`, `uid`, `order_status_id`, `customer_id`, `customer_company`, `customer_firstname`, `customer_lastname`, `customer_email`, `customer_phone`, `customer_tax_id`, `customer_address1`, `customer_address2`, `customer_city`, `customer_postcode`, `customer_country_code`, `customer_zone_code`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `shipping_option_id`, `shipping_option_name`, `shipping_tracking_id`, `payment_option_id`, `payment_option_name`, `payment_transaction_id`, `language_code`, `weight_total`, `weight_class`, `currency_code`, `currency_value`, `payment_due`, `tax_total`, `client_ip`, `date_updated`, `date_created`) VALUES
 (1, '585753da00024', 2, 1, 'ACME Corp.', 'John', 'Doe', 'user@email.com', '1-555-123-4567', '', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', 'Newtown', '12345', 'US', 'CA', '', 'sm_vendor:parcel', 'Domestic Parcel', '1112223334', 'pm_vendor:card', 'Card Payment', '123456789', 'en', '1.0000', 'kg', 'USD', 1, 7.2, 0, '0.0.0.0', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, `date_created`) VALUES
-(1, 1, 'customer', 'This is a message to the store crew.', 0, NOW()),
-(2, 1, 'staff', 'This is a message to the customer', 0, NOW()),
-(4, 1, 'system', 'Order status changed to Pending', 1, NOW());
+(1, 1, 'customer', 'This is a message from the customer.', 0, NOW()),
+(2, 1, 'staff', 'This is a message from the store crew.', 0, NOW()),
+(3, 1, 'staff', 'This is a hidden message by the store crew.', 1, NOW()),
+(4, 1, 'system', 'Order status changed to Dispatched', 1, NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `option_stock_combination`, `options`, `name`, `sku`, `quantity`, `price`, `tax`, `weight`, `weight_class`) VALUES
 (1, 1, 1, '1-1', 'a:1:{s:4:"Size";s:5:"Small";}', 'Yellow Duck', 'RD001-S', '1.0000', '8', '0', '1.0000', 'kg');
@@ -134,10 +119,13 @@ INSERT INTO `lc_products_info` (`id`, `product_id`, `language_code`, `name`, `sh
 (4, 4, 'en', 'Blue Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Blue\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic'),
 (5, 5, 'en', 'Purple Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Purple\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic');
 -- --------------------------------------------------------
-INSERT INTO `lc_products_options` (`id`, `product_id`, `group_id`, `value_id`, `price_operator`, `USD`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 1, 1, 1, '+', 0.0000, 1, NOW(), NOW()),
-(2, 1, 1, 2, '+', 2.5000, 2, NOW(), NOW()),
-(3, 1, 1, 3, '+', 5.0000, 3, NOW(), NOW());
+INSERT INTO `lc_products_options` (`id`, `product_id`, `group_id`, `function`, `sort`) VALUES
+(1, 1, 1, 'select', 'priority');
+-- --------------------------------------------------------
+INSERT INTO `lc_products_options_values` (`id`, `product_id`, `group_id`, `value_id`, `price_operator`, `USD`, `priority`) VALUES
+(1, 1, 1, 1, '+', 0.0000, 1),
+(2, 1, 1, 2, '+', 2.5000, 2),
+(3, 1, 1, 3, '+', 5.0000, 3);
 -- --------------------------------------------------------
 INSERT INTO `lc_products_options_stock` (`id`, `product_id`, `combination`, `sku`, `weight`, `weight_class`, `dim_x`, `dim_y`, `dim_z`, `dim_class`, `quantity`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 1, '1-1', 'RD001-S', 1.0, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10, 0, NOW(), NOW()),

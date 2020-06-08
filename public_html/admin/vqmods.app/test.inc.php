@@ -2,6 +2,8 @@
   $_GET['debug'] = true;
   $_GET['vqmod'] = basename($_GET['vqmod']);
 
+  document::$snippets['title'][] = language::translate('title_test_vqmod', 'Test vQmod');
+
   breadcrumbs::add(basename($_GET['vqmod']));
 
   foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {

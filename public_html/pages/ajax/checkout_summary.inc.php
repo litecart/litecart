@@ -109,8 +109,8 @@
     );
   }
 
-  $terms_of_purchase_id = settings::get('privacy_policy');
-  $privacy_policy_id = settings::get('terms_of_purchase');
+  $privacy_policy_id = settings::get('privacy_policy');
+  $terms_of_purchase_id = settings::get('terms_of_purchase');
 
   switch(true) {
     case ($terms_of_purchase_id && $privacy_policy_id):

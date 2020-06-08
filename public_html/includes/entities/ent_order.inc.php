@@ -85,7 +85,7 @@
       $this->previous = $this->data;
     }
 
-    private function load($order_id) {
+    public function load($order_id) {
 
       if (!preg_match('#^[0-9]+$#', $order_id)) throw new Exception('Invalid order (ID: '. $order_id .')');
 
@@ -191,33 +191,11 @@
     // Re-calculate total if there are changes
       $this->refresh_total();
 
-    // Previous order status
-      if (!empty($this->previous)) {
-        $previous_order_status_query = database::query(
-          "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
-          left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
-          where os.id = ". (int)$this->previous['order_status_id'] ."
-          limit 1;"
-        );
-
-        $previous_order_status = database::fetch($previous_order_status_query);
-      }
-
-    // Current order status
-      $current_order_status_query = database::query(
-        "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
-        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
-        where os.id = ". (int)$this->data['order_status_id'] ."
-        limit 1;"
-      );
-
-      $current_order_status = database::fetch($current_order_status_query);
-
     // Log order status change as comment
-      if (!empty($this->previous) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
+      if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = array(
           'author' => 'system',
-          'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => $current_order_status['name'])),
+          'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), array('%new_status' => reference::order_status($this->data['order_status_id'])->name)),
           'hidden' => 1,
         );
       }
@@ -300,88 +278,69 @@
         limit 1;"
       );
 
+    // Restock previous items
+      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
+        foreach ($this->previous['items'] as $previous_order_item) {
+          if (empty($previous_order_item['product_id'])) continue;
+          reference::product($previous_order_item['product_id'])->adjust_stock($previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+        }
+      }
+
     // Delete order items
-      $previous_order_items_query = database::query(
-        "select * from ". DB_TABLE_ORDERS_ITEMS ."
+      database::query(
+        "delete from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
-      while ($previous_order_item = database::fetch($previous_order_items_query)) {
+    // Insert/update order items
+      foreach ($this->data['items'] as &$item) {
+        if (empty($item['id'])) {
+          database::query(
+            "insert into ". DB_TABLE_ORDERS_ITEMS ."
+            (order_id)
+            values (". (int)$this->data['id'] .");"
+          );
+          $item['id'] = database::insert_id();
+
+        // Update purchase count
+          if (!empty($item['product_id'])) {
+            database::query(
+              "update ". DB_TABLE_PRODUCTS ."
+              set purchases = purchases + ". (float)$item['quantity'] ."
+              where id = ". (int)$item['product_id'] ."
+              limit 1;"
+            );
+          }
+        }
+
+      // Withdraw stock
+        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
+          reference::product($item['product_id'])->adjust_stock($item['option_stock_combination'], -$item['quantity']);
+        }
+
         database::query(
-          "delete from ". DB_TABLE_ORDERS_ITEMS ."
+          "update ". DB_TABLE_ORDERS_ITEMS ."
+          set product_id = ". (int)$item['product_id'] .",
+          option_stock_combination = '". database::input($item['option_stock_combination']) ."',
+          options = '". (isset($item['options']) ? database::input(serialize($item['options'])) : '') ."',
+          name = '". database::input($item['name']) ."',
+          sku = '". database::input($item['sku']) ."',
+          gtin = '". database::input($item['gtin']) ."',
+          taric = '". database::input($item['taric']) ."',
+          quantity = ". (float)$item['quantity'] .",
+          price = ". (float)$item['price'] .",
+          tax = ". (float)$item['tax'] .",
+          weight = ". (float)$item['weight'] .",
+          weight_class = '". database::input($item['weight_class']) ."',
+          dim_x = ". (float)$item['dim_x'] .",
+          dim_y = ". (float)$item['dim_y'] .",
+          dim_z = ". (float)$item['dim_z'] .",
+          dim_class = '". database::input($item['dim_class']) ."'
           where order_id = ". (int)$this->data['id'] ."
-          and id = ". (int)$previous_order_item['id'] ."
+          and id = ". (int)$item['id'] ."
           limit 1;"
         );
-
-      // Restock
-        if (!empty($previous_order_status['is_sale'])) {
-          functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
-        }
-      }
-
-    // Insert/update order items
-      if (!empty($this->data['items'])) {
-        foreach (array_keys($this->data['items']) as $key) {
-          if (empty($this->data['items'][$key]['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_ORDERS_ITEMS ."
-              (order_id)
-              values (". (int)$this->data['id'] .");"
-            );
-            $this->data['items'][$key]['id'] = database::insert_id();
-
-          // Update purchase count
-            if (!empty($this->data['items'][$key]['product_id'])) {
-              database::query(
-                "update ". DB_TABLE_PRODUCTS ."
-                set purchases = purchases + ". (float)$this->data['items'][$key]['quantity'] ."
-                where id = ". (int)$this->data['items'][$key]['product_id'] ."
-                limit 1;"
-              );
-            }
-          }
-
-        // Get previous quantity
-          $previous_order_item_query = database::query(
-            "select * from ". DB_TABLE_ORDERS_ITEMS ."
-            where id = ". (int)$this->data['items'][$key]['id'] ."
-            and order_id = ". (int)$this->data['id'] .";"
-          );
-          $previous_order_item = database::fetch($previous_order_item_query);
-
-        // Adjust stock
-          if (!empty($previous_order_status['is_sale'])) {
-            functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
-          }
-          if (!empty($current_order_status['is_sale'])) {
-            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
-          }
-
-          database::query(
-            "update ". DB_TABLE_ORDERS_ITEMS ."
-            set product_id = ". (int)$this->data['items'][$key]['product_id'] .",
-            option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
-            options = '". (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
-            name = '". database::input($this->data['items'][$key]['name']) ."',
-            sku = '". database::input($this->data['items'][$key]['sku']) ."',
-            gtin = '". database::input($this->data['items'][$key]['gtin']) ."',
-            taric = '". database::input($this->data['items'][$key]['taric']) ."',
-            quantity = ". (float)$this->data['items'][$key]['quantity'] .",
-            price = ". (float)$this->data['items'][$key]['price'] .",
-            tax = ". (float)$this->data['items'][$key]['tax'] .",
-            weight = ". (float)$this->data['items'][$key]['weight'] .",
-            weight_class = '". database::input($this->data['items'][$key]['weight_class']) ."',
-            dim_x = ". (float)$this->data['items'][$key]['dim_x'] .",
-            dim_y = ". (float)$this->data['items'][$key]['dim_y'] .",
-            dim_z = ". (float)$this->data['items'][$key]['dim_z'] .",
-            dim_class = '". database::input($this->data['items'][$key]['dim_class']) ."'
-            where order_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['items'][$key]['id'] ."
-            limit 1;"
-          );
-        }
       }
 
     // Delete order total items
@@ -392,30 +351,28 @@
       );
 
     // Insert/update order total
-      if (!empty($this->data['order_total'])) {
-        $i = 0;
-        foreach (array_keys($this->data['order_total']) as $key) {
-          if (empty($this->data['order_total'][$key]['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_ORDERS_TOTALS ."
-              (order_id)
-              values (". (int)$this->data['id'] .");"
-            );
-            $this->data['order_total'][$key]['id'] = database::insert_id();
-          }
+      $i = 0;
+      foreach ($this->data['order_total'] as &$row) {
+        if (empty($row['id'])) {
           database::query(
-            "update ". DB_TABLE_ORDERS_TOTALS ."
-            set title = '". database::input($this->data['order_total'][$key]['title']) ."',
-            module_id = '". database::input($this->data['order_total'][$key]['module_id']) ."',
-            value = '". (float)$this->data['order_total'][$key]['value'] ."',
-            tax = '". (float)$this->data['order_total'][$key]['tax'] ."',
-            calculate = '". (empty($this->data['order_total'][$key]['calculate']) ? 0 : 1) ."',
-            priority = '". database::input(++$i) ."'
-            where order_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['order_total'][$key]['id'] ."
-            limit 1;"
+            "insert into ". DB_TABLE_ORDERS_TOTALS ."
+            (order_id)
+            values (". (int)$this->data['id'] .");"
           );
+          $row['id'] = database::insert_id();
         }
+        database::query(
+          "update ". DB_TABLE_ORDERS_TOTALS ."
+          set title = '". database::input($row['title']) ."',
+          module_id = '". database::input($row['module_id']) ."',
+          value = '". (float)$row['value'] ."',
+          tax = '". (float)$row['tax'] ."',
+          calculate = '". (empty($row['calculate']) ? 0 : 1) ."',
+          priority = ". ++$i ."
+          where order_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$row['id'] ."
+          limit 1;"
+        );
       }
 
     // Delete comments
@@ -430,30 +387,30 @@
 
         $notify_comments = array();
 
-        foreach (array_keys($this->data['comments']) as $key) {
+        foreach ($this->data['comments'] as &$comment) {
 
-          if (empty($this->data['comments'][$key]['author'])) $this->data['comments'][$key]['author'] = 'system';
+          if (empty($comment['author'])) $comment['author'] = 'system';
 
-          if (empty($this->data['comments'][$key]['id'])) {
+          if (empty($comment['id'])) {
             database::query(
               "insert into ". DB_TABLE_ORDERS_COMMENTS ."
               (order_id, date_created)
-              values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
+              values (". (int)$this->data['id'] .", '". ($comment['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
-            $this->data['comments'][$key]['id'] = database::insert_id();
+            $comment['id'] = database::insert_id();
 
-            if ($this->data['comments'][$key]['author'] == 'staff' && !empty($this->data['comments'][$key]['notify']) && empty($this->data['comments'][$key]['hidden'])) {
-              $notify_comments[] = $this->data['comments'][$key];
+            if ($comment['author'] == 'staff' && !empty($comment['notify']) && empty($comment['hidden'])) {
+              $notify_comments[] = $comment;
             }
           }
 
           database::query(
             "update ". DB_TABLE_ORDERS_COMMENTS ."
-            set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
-              text = '". database::input($this->data['comments'][$key]['text']) ."',
-              hidden = '". (!empty($this->data['comments'][$key]['hidden']) ? 1 : 0) ."'
+            set author = '". (!empty($comment['author']) ? database::input($comment['author']) : 'system') ."',
+              text = '". database::input($comment['text']) ."',
+              hidden = '". (!empty($comment['hidden']) ? 1 : 0) ."'
             where order_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['comments'][$key]['id'] ."
+            and id = ". (int)$comment['id'] ."
             limit 1;"
           );
         }
@@ -477,7 +434,7 @@
 
     // Send order status email notification
       if (!empty($this->previous) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
-        if (!empty($current_order_status['notify'])) {
+        if (!empty(reference::order_status($this->data['order_status_id'])->notify)) {
           $this->send_email_notification();
         }
       }
@@ -507,17 +464,14 @@
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
 
-      foreach ($this->data['order_total'] as $i => $row) {
+      foreach ($this->data['order_total'] as &$row) {
         if ($row['module_id'] == 'ot_subtotal') {
-          $this->data['order_total'][$i]['value'] = $this->data['subtotal']['amount'];
-          $this->data['order_total'][$i]['tax'] = $this->data['subtotal']['tax'];
-          break;
+          $row['value'] = $this->data['subtotal']['amount'];
+          $row['tax'] = $this->data['subtotal']['tax'];
         }
-      }
 
-      foreach ($this->data['order_total'] as $row) {
         if (empty($row['calculate'])) continue;
-        $this->data['payment_due'] += ($row['value'] + $row['tax']);
+        $this->data['payment_due'] += $row['value'] + $row['tax'];
         $this->data['tax_total'] += $row['tax'];
       }
     }
@@ -582,7 +536,11 @@
       }
     }
 
-    public function validate(&$shipping = null, &$payment = null) {
+    public function validate($shipping = null, $payment = null) {
+
+      if (empty($_COOKIE[session_name()])) {
+        return language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser have cookies enabled or try another browser.');
+      }
 
     // Validate items
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
@@ -603,17 +561,25 @@
 
         if (!functions::validate_email($this->data['customer']['email'])) throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
 
-        if (reference::country($this->data['customer']['country_code'])->postcode_format) {
-          if (!empty($this->data['customer']['postcode'])) {
-            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
-              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+        if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
+          if (!empty($this->data['customer']['tax_id'])) {
+            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
+              throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
             }
-          } else {
-            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
           }
         }
 
-        if (reference::country($this->data['customer']['country_code'])->zones) {
+        if (reference::country($this->data['customer']['country_code'])->postcode_format) {
+          if (!empty($this->data['customer']['postcode'])) {
+            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
+              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
+            }
+          } else {
+            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode'));
+          }
+        }
+
+        if (settings::get('customer_field_zone') && reference::country($this->data['customer']['country_code'])->zones) {
           if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
         }
 
@@ -652,7 +618,7 @@
             }
           }
 
-          if (reference::country($this->data['customer']['country_code'])->zones) {
+          if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
             if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) return language::translate('error_missing_zone', 'You must select a zone.');
           }
         }
@@ -714,7 +680,6 @@
 
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
-      if (empty($this->data['order_status_id'])) return;
 
       $order_status = reference::order_status($this->data['order_status_id'], $language_code);
 
