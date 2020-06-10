@@ -212,10 +212,10 @@
 
           switch (true) {
             case (function_exists('apcu_fetch')):
-              return apcu_fetch($token['id']);
+              return apcu_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
 
             case (function_exists('apc_fetch')):
-              return apc_fetch($token['id']);
+              return apc_fetch($_SERVER['HTTP_HOST'].':'.$token['id']);
 
             default:
               $token['storage'] = 'file';
@@ -271,14 +271,14 @@
 
           switch (true) {
             case (function_exists('apcu_store')):
-              return apcu_store($token['id'], $data, $token['ttl']);
+              return apcu_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
 
             case (function_exists('apc_store')):
-              return apc_store($token['id'], $data, $token['ttl']);
+              return apc_store($_SERVER['HTTP_HOST'].':'.$token['id'], $data, $token['ttl']);
 
             default:
               $token['storage'] = 'file';
-              return self::set($token, $data);
+              return self::set($_SERVER['HTTP_HOST'].':'.$token, $data);
           }
 
         case 'session':
@@ -367,22 +367,26 @@
       }
 
     // Clear memory
-      if (!empty($keyword) && function_exists('apcu_delete')) {
-        $cached_keys = new APCUIterator('#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
-        foreach ($cached_keys as $key) {
-          apcu_delete($key['key']);
+      if (function_exists('apcu_delete')) {
+        if (!empty($keyword)) {
+          $cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
+        } else {
+          $cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
         }
-      } else if (function_exists('apcu_clear_cache')) {
-        apcu_clear_cache();
+        foreach ($cached_keys as $key) {
+          apcu_delete($key);
+        }
       }
 
-      if (!empty($keyword) && function_exists('apc_delete')) {
-        $cached_keys = new APCIterator('user', '#'. preg_quote($keyword, '#') .'#', APC_ITER_KEY);
-        foreach ($cached_keys as $key) {
-          apc_delete($key['key']);
+      if (function_exists('apc_delete')) {
+        if (!empty($keyword)) {
+          $cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
+        } else {
+          $cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
         }
-      } else if (function_exists('apc_clear_cache')) {
-        apc_clear_cache();
+        foreach ($cached_keys as $key) {
+          apc_delete($key);
+        }
       }
 
     // Set breakpoint (for all session cache)
