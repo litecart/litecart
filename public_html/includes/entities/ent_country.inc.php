@@ -74,13 +74,12 @@
 
       $country_query = database::query(
         "select id from ". DB_TABLE_COUNTRIES ."
-        where (
-          code = '". database::input($_POST['code']) ."'
-          ". (!empty($this->data['iso_code_1']) ? "or iso_code_1 = '". database::input($this->data['iso_code_1']) ."'" : "") ."
-          ". (!empty($this->data['iso_code_2']) ? "or iso_code_2 = '". database::input($this->data['iso_code_2']) ."'" : "") ."
-          ". (!empty($this->data['iso_code_3']) ? "or iso_code_2 = '". database::input($this->data['iso_code_3']) ."'" : "") ."
+        where id != ". $this->data['id'] ."
+        and (
+          iso_code_1 = '". database::input($this->data['iso_code_1']) ."'
+          or iso_code_2 = '". database::input($this->data['iso_code_2']) ."'
+          or iso_code_2 = '". database::input($this->data['iso_code_3']) ."'
         )
-        ". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
         limit 1;"
       );
 

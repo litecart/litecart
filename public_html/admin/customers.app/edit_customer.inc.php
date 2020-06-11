@@ -118,7 +118,7 @@
   </div>
 
   <div class="panel-body">
-    <?php echo functions::form_draw_form_begin('customer_form', 'post', false, false); ?>
+    <?php echo functions::form_draw_form_begin('customer_form', 'post', '', false, 'autocomplete="off"'); ?>
 
       <div class="row" style="max-width: 960px;">
 
