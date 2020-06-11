@@ -456,6 +456,16 @@
 
           break;
 
+        case 'supplier':
+
+          $this->_data['supplier'] = null;
+
+          if (!empty($this->supplier_id)) {
+            $this->_data['supplier'] = reference::supplier($this->supplier_id);
+          }
+
+          break;
+
         case 'sold_out_status':
 
           $this->_data['sold_out_status'] = array();
