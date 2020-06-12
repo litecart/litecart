@@ -188,9 +188,9 @@
         );
 
         $attribute_group_id = database::insert_id();
-        $new_attribute_group_id = $new_attribute_group_id;
 
       // Make certain the attribute group id does not collide with a previous option group id
+        $new_attribute_group_id = $attribute_group_id;
         while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."option_groups where id = ". (int)$new_attribute_group_id ." limit 1;"))) {
           $new_attribute_group_id++;
           while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$new_attribute_group_id ." limit 1;"))) {
@@ -272,9 +272,9 @@
           );
 
           $attribute_value_id = database::insert_id();
-          $new_attribute_value_id = $attribute_value_id;
 
         // Make certain the attribute value id does not collide with a previous option value id
+          $new_attribute_value_id = $attribute_value_id;
           while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."option_values where id = ". (int)$new_attribute_value_id ." limit 1;"))) {
             $new_attribute_value_id++;
             while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$new_attribute_value_id ." limit 1;"))) {
