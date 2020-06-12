@@ -206,14 +206,14 @@
     $charset = database::fetch($charset_query);
 
     if (substr($charset['DEFAULT_CHARACTER_SET_NAME'], 0, 4) != 'utf8') {
-      echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \'utf8\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+      echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \'utf8\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
     } else {
       echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
       echo '<p>Checking MySQL database default collation... ';
 
       if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
-        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
       } else {
         echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
