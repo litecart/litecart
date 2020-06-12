@@ -223,10 +223,11 @@
               foreach ($option['values'] as $value) {
                 $possible_values = array_unique(
                   array_merge(
-                    !empty($product->options[$option['group_id']]['values']) ? array_filter(array_column($product->options[$option['group_id']]['values'], 'name'), 'strlen') : array(),
+                    array($value['name']),
                     !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : array()
                   )
                 );
+
                 if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
@@ -240,10 +241,11 @@
               foreach ($option['values'] as $value) {
                 $possible_values = array_unique(
                   array_merge(
-                    !empty($product->options[$option['group_id']]['values']) ? array_filter(array_column($product->options[$option['group_id']]['values'], 'name'), 'strlen') : array(),
+                    array($value['name']),
                     !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : array()
                   )
                 );
+
                 if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
                   $matched_value = $matched_value[0];
                   $item['extras'] += $value['price_adjust'];
