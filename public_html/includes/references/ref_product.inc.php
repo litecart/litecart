@@ -251,6 +251,7 @@
             $option_values_query = database::query(
               "select * from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
               where product_id = ". (int)$this->_data['id'] ."
+              and group_id = ". (int)$option['group_id'] ."
               order by priority;"
             );
 
