@@ -1,6 +1,9 @@
 <?php
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
+  @ignore_user_abort(true);
+  @set_time_limit(300);
+
   if (php_sapi_name() == 'cli') {
     $options = array(
       'from_version:',

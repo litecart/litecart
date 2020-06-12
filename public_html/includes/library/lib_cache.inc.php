@@ -278,7 +278,7 @@
 
             default:
               $token['storage'] = 'file';
-              return self::set($_SERVER['HTTP_HOST'].':'.$token, $data);
+              return self::set($token, $data);
           }
 
         case 'session':

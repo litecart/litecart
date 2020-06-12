@@ -251,6 +251,7 @@
             $option_values_query = database::query(
               "select * from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
               where product_id = ". (int)$this->_data['id'] ."
+              and group_id = ". (int)$option['group_id'] ."
               order by priority;"
             );
 
@@ -452,6 +453,16 @@
               if (in_array($key, array('id', 'quantity_unit_id', 'language_code'))) continue;
               if (empty($this->_data['quantity_unit'][$key])) $this->_data['quantity_unit'][$key] = $value;
             }
+          }
+
+          break;
+
+        case 'supplier':
+
+          $this->_data['supplier'] = null;
+
+          if (!empty($this->supplier_id)) {
+            $this->_data['supplier'] = reference::supplier($this->supplier_id);
           }
 
           break;
