@@ -285,10 +285,11 @@
                 switch ($value['price_operator']) {
 
                   case '+':
+
                     if ($value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+                      $value['price_adjust'] = (float)currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
-                      $value['price_adjust'] = $value[settings::get('store_currency_code')];
+                      $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
                     }
                     break;
 
