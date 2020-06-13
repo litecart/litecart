@@ -277,7 +277,7 @@
       }
 
     // Prepare subject
-      $headers['Subject'] = mb_encode_mimeheader($headers['Subject']);
+      $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
 
       $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
       $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
