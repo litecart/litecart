@@ -2,6 +2,7 @@
 
   class ent_email {
     public $data;
+    public $previous;
 
     public function __construct($email_id=null, $charset=null) {
 
@@ -106,13 +107,16 @@
 
     public function set_sender($email, $name=null) {
 
-      $email = trim($email);
+      if (empty($name)) $name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
+
+      $email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
+      $name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
       if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
       $this->data['sender'] = array(
-        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
-        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+        'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
+        'name' => $name,
       );
 
       return $this;
@@ -120,7 +124,7 @@
 
     public function set_subject($subject) {
 
-      $this->data['subject'] = trim(preg_replace('#\R#', '', $subject));
+      $this->data['subject'] = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $subject));
 
       return $this;
     }
@@ -171,13 +175,16 @@
 
     public function add_recipient($email, $name=null) {
 
-      $email = trim($email);
+      if (empty($name)) $name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
+
+      $email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
+      $name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
       if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
       $this->data['recipients'][] = array(
-        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
-        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+        'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
+        'name' => $name,
       );
 
       return $this;
@@ -185,13 +192,16 @@
 
     public function add_cc($email, $name=null) {
 
-      $email = trim($email);
+      if (empty($name)) $name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
+
+      $email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
+      $name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
       if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
       $this->data['ccs'][] = array(
-        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
-        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+        'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
+        'name' => $name,
       );
 
       return $this;
@@ -199,13 +209,16 @@
 
     public function add_bcc($email, $name=null) {
 
-      $email = trim($email);
+      if (empty($name)) $name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
+
+      $email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
+      $name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
       if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
       $this->data['bccs'][] = array(
-        'email' => filter_var(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email), FILTER_SANITIZE_EMAIL),
-        'name' => $name ? $name : trim(trim(preg_replace('#^(.*)\s?<[^>]+>$#', '$1', $email)), '"'),
+        'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
+        'name' => $name,
       );
 
       return $this;
