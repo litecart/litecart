@@ -213,13 +213,15 @@
 
     public function format_contact($contact) {
 
-      if (empty($contact['name'])) return '<'. $contact['email'] .'>';
+      if (empty($contact['name']) || $contact['name'] == $contact['email']) {
+        return $contact['email'];
+      }
 
       if (strtoupper(language::$selected['charset']) == 'UTF-8') {
         return mb_encode_mimeheader($contact['name']) .' <'. $contact['email'] .'>';
       }
 
-      if (strpos($contact['name'], '"') !== false || strpos($contact['name'], ',') !== false) {
+      if (preg_match('#[,;"]#', $contact['name'])) {
         return '"'. addcslashes($contact['name'], '"') .'" <'. $contact['email'] .'>';
       }
 
