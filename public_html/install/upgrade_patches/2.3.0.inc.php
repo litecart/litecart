@@ -23,6 +23,11 @@
 // Modify some files
   $modified_files = [
     [
+      'file'    => FS_DIR_APP . '.htaccess',
+      'search'  => "SetEnv HTTP_MOD_REWRITE On",
+      'replace' => "SetEnv MOD_REWRITE On",
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "DB_TABLE_PREFIX",
       'replace' => "DB_PREFIX",
