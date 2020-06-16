@@ -26,6 +26,10 @@
       'file'    => FS_DIR_APP . '.htaccess',
       'search'  => "SetEnv HTTP_MOD_REWRITE On",
       'replace' => "SetEnv MOD_REWRITE On",
+    ],    [
+      'file'    => FS_DIR_APP . '.htaccess',
+      'search'  => "RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
+      'replace' => "RewriteRule ^.*$ index.php [QSA,L]",
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
