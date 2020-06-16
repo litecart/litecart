@@ -6,10 +6,10 @@
     if (!$apps = cache::get($apps_cache_token)) {
       $apps = [];
 
-      foreach (glob('*.app/', GLOB_ONLYDIR) as $dir) {
-        $code = preg_replace('#\.app/$#', '', $dir);
-        $app_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
-        $apps[$code] = array_merge(['code' => $code, 'dir' => $dir], $app_config);
+      foreach (glob('*.app/', GLOB_ONLYDIR) as $directory) {
+        $code = preg_replace('#\.app/$#', '', $directory);
+        $app_config = require vmod::check(FS_DIR_ADMIN . $directory . 'config.inc.php');
+        $apps[$code] = array_merge(['code' => $code, 'directory' => $directory], $app_config);
       }
       usort($apps, function($a, $b) use ($apps) {
         if (@$a['priority'] == @$b['priority']) {
@@ -30,10 +30,10 @@
     if (!$widgets = cache::get($widgets_cache_token)) {
       $widgets = [];
 
-      foreach (glob('*.widget/', GLOB_ONLYDIR) as $dir) {
-        $code = preg_replace('#\.widget/$#', '', $dir);
-        $widget_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
-        $widgets[$code] = array_merge(['code' => $code, 'dir' => $dir], $widget_config);
+      foreach (glob('*.widget/', GLOB_ONLYDIR) as $directory) {
+        $code = preg_replace('#\.widget/$#', '', $directory);
+        $widget_config = require vmod::check(FS_DIR_ADMIN . $directory . 'config.inc.php');
+        $widgets[$code] = array_merge(['code' => $code, 'directory' => $directory], $widget_config);
       }
 
       usort($widgets, function($a, $b) use ($widgets) {

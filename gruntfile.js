@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     },
 
     less: {
-      litecart_admin_template_minified: {
+      backend_template_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.admin/css/printable.min.css' : 'public_html/includes/templates/default.admin/less/printable.less',
         }
       },
-      litecart_catalog_template: {
+      frontend_template: {
         options: {
           compress: false,
           sourceMap: false,
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/css/variables.css' : 'public_html/includes/templates/default.catalog/less/variables.less',
         }
       },
-      litecart_catalog_template_minified: {
+      frontend_template_minified: {
         options: {
           compress: true,
           sourceMap: true,

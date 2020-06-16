@@ -92,6 +92,12 @@
     ksort($daily_sales);
 ?>
 <style>
+#chart-sales-monthly, #chart-sales-daily {
+  padding: 1rem;
+  border 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
+}
+
 #chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {
   font-size: 12px;
   color: #999;

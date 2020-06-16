@@ -83,10 +83,10 @@
 
       foreach (functions::admin_get_widgets() as $widget) {
         ob_start();
-        include vmod::check(FS_DIR_ADMIN . $widget['dir'] . $widget['file']);
+        include vmod::check(FS_DIR_ADMIN . $widget['directory'] . $widget['file']);
 
         $box_widgets->snippets['widgets'][] = [
-          'code' => basename($widget['dir'], '.widget'),
+          'code' => basename($widget['directory'], '.widget'),
           'content' => ob_get_clean(),
         ];
       }
