@@ -23,7 +23,7 @@
       $last_modified = null;
 
     // If no cache is requested by browser
-      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && in_array(strtolower($_SERVER['HTTP_CACHE_CONTROL']), ['no-cache', 'max-age=0'])) {
+      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
         $last_modified = time();
 
       } else {

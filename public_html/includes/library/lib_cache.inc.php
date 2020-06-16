@@ -174,14 +174,7 @@
 
       if (empty($force_cache)) {
         if (empty(self::$enabled)) return;
-
-      // Don't return cache for Internet Explorer (It doesn't support HTTP_CACHE_CONTROL)
-        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) return;
-
-        if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) return;
-          if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) return;
-        }
+        if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) return;
       }
 
       switch ($token['storage']) {
