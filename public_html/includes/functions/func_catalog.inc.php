@@ -8,7 +8,7 @@
 
     $trail = array();
 
-    foreach (reference::category($category_id, $lanuage_code)->path as $category) {
+    foreach (reference::category($category_id, $language_code)->path as $category) {
       $trail[$category->id] = $category->name;
     }
 
@@ -21,7 +21,7 @@
 
     $descendants = array();
 
-    foreach (reference::category($category_id, $lanuage_code)->path as $category) {
+    foreach (reference::category($category_id, $language_code)->path as $category) {
       $descendants[$category->id] = $category->name;
     }
 
