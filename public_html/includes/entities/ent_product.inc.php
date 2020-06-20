@@ -148,8 +148,8 @@
 
       // Option Values
         $products_options_values_query = database::query(
-          "select pov.*, if(pov.value_id = 0, custom_value, avi.name) as name from ". DB_PREFIX ."products_options_values pov
-          left join ". DB_PREFIX ."attribute_values_info avi on (avi.id = pov.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+          "select pov.*, if(pov.value_id = 0, custom_value, avi.name) as name from ". DB_PREFIX ."products_options_values
+          left join ". DB_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
           where product_id = ". (int)$this->data['id'] ."
           and group_id = ". (int)$option['group_id'] ."
           order by priority asc;"
@@ -422,7 +422,7 @@
       database::query(
         "delete from ". DB_PREFIX ."products_options_values
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options']['values'], 'id')) ."');"
+        and group_id not in ('". @implode("', '", array_column($this->data['options'], 'group_id')) ."');"
       );
 
     // Update options
@@ -457,6 +457,7 @@
           database::query(
             "delete from ". DB_PREFIX ."products_options_values
             where product_id = ". (int)$this->data['id'] ."
+            and group_id = ". (int)$option['group_id'] ."
             and id not in ('". @implode("', '", @array_column($option['values'], 'id')) ."');"
           );
 
@@ -660,7 +661,7 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_APP . 'images/' . $filename, '', 90)) return false;
+      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 90)) return false;
 
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 

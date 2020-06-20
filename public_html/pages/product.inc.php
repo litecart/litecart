@@ -42,14 +42,6 @@
     limit 1;"
   );
 
-  if (!empty($_GET['category_id'])) {
-    foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
-      document::$snippets['title'][] = $category_name;
-    }
-  } else if (!empty($product->manufacturer)) {
-    document::$snippets['title'][] = $product->manufacturer->name;
-  }
-
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], false) .'" />';
@@ -60,10 +52,12 @@
 
   if (!empty($_GET['category_id'])) {
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
-    foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
-      breadcrumbs::add($category_name, document::ilink('category', ['category_id' => (int)$category_id]));
+    foreach (array_slice(reference::category($_GET['category_id'])->path, 0, -1) as $category_crumb) {
+      document::$snippets['title'][] = $category_crumb->name;
+      breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
     }
   } else if (!empty($product->manufacturer)) {
+    document::$snippets['title'][] = $product->manufacturer->name;
     breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
     breadcrumbs::add($product->manufacturer->name, document::ilink('manufacturer', ['manufacturer_id' => $product->manufacturer->id]));
   }
@@ -151,7 +145,7 @@
     'stock_status' => null,
     'delivery_status' => !empty($product->delivery_status['name']) ? $product->delivery_status['name'] : '',
     'sold_out_status' => !empty($product->sold_out_status['name']) ? $product->sold_out_status['name'] : '',
-    'orderable' => $product->sold_out_status['orderable'],
+    'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
     'catalog_only_mode' => settings::get('catalog_only_mode'),
     'options' => [],
@@ -228,7 +222,7 @@
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
 
-    $shipping = new mod_shipping();
+    $shipping = new mod_shipping('local');
 
     $shipping_items = [
       [
@@ -279,22 +273,6 @@
           }
           break;
 
-        case 'input':
-
-          $value = array_shift($group['values']);
-
-          $price_adjust_text = '';
-          $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
-
-          if ($value['price_adjust']) {
-            $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
-          }
-
-          $values .= functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) . $price_adjust_text . PHP_EOL;
-          break;
-
         case 'radio':
 
           foreach ($group['values'] as $value) {
@@ -334,22 +312,14 @@
           $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, !empty($group['required']) ? 'required="required"' : '');
           break;
 
+        case 'text':
+
+          $values .= functions::form_draw_text_field('options['.$group['name'].']', true, 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) . PHP_EOL;
+          break;
+
         case 'textarea':
 
-          $value = array_shift($group['values']);
-
-          $price_adjust_text = '';
-          $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
-
-          if ($value['price_adjust']) {
-            $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            if ($value['price_adjust'] > 0) {
-              $price_adjust_text = ' <br />+'. currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            }
-          }
-
-          $values .= functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], !empty($group['required']) ? 'required="required"' : '') . $price_adjust_text. PHP_EOL;
+          $values .= functions::form_draw_textarea('options['.$group['name'].']', true, !empty($group['required']) ? 'required="required"' : '') . PHP_EOL;
           break;
       }
 

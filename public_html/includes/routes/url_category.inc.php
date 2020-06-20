@@ -18,13 +18,11 @@
 
       if (empty($link->query['category_id'])) return;
 
-      $category_trail = functions::catalog_category_trail($link->query['category_id'], $language_code);
-
-      if (empty($category_trail)) return;
+      $category = reference::category($link->query['category_id'], $language_code);
 
       $new_path = '';
-      foreach ($category_trail as $category_id => $category_name) {
-        $new_path .= functions::general_path_friendly($category_name, $language_code) .'-c-'. $category_id .'/';
+      foreach ($category->path as $parent_id => $parent) {
+        $new_path .= functions::general_path_friendly($parent->name, $language_code) .'-c-'. $parent_id .'/';
       }
 
       $link->path = $new_path;

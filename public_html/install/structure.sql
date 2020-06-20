@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups_info` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `group_id` INT(11) NOT NULL,
-  `language_code` VARCHAR(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` VARCHAR(64) COLLATE utf8_swedish_ci NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_group` (`group_id`,`language_code`),
   KEY `group_id` (`group_id`),
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values` (
 CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `value_id` INT(11) NOT NULL,
-  `language_code` VARCHAR(2) COLLATE utf8_swedish_ci NOT NULL,
-  `name` VARCHAR(64) COLLATE utf8_swedish_ci NOT NULL,
+  `language_code` VARCHAR(2) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `attribute_value` (`value_id`,`language_code`),
   KEY `value_id` (`value_id`),
@@ -117,13 +117,14 @@ CREATE TABLE `lc_countries` (
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `iso_code_1` (`iso_code_1`),
   UNIQUE KEY `iso_code_2` (`iso_code_2`),
   UNIQUE KEY `iso_code_3` (`iso_code_3`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_currencies` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
   `code` VARCHAR(3) NOT NULL,
   `number` VARCHAR(3) NOT NULL,
@@ -233,7 +234,7 @@ CREATE TABLE `lc_geo_zones` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_languages` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL,
   `code` VARCHAR(2) NOT NULL,
   `code2` VARCHAR(3) NOT NULL,

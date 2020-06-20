@@ -281,7 +281,8 @@
     // Restock previous items
       if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
-          functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+          if (empty($previous_order_item['product_id'])) continue;
+          reference::product($previous_order_item['product_id'])->adjust_stock($previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
         }
       }
 
@@ -314,8 +315,8 @@
         }
 
       // Withdraw stock
-        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale)) {
-          functions::catalog_stock_adjust($item['product_id'], $item['option_stock_combination'], -$item['quantity']);
+        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
+          reference::product($item['product_id'])->adjust_stock($item['option_stock_combination'], -$item['quantity']);
         }
 
         database::query(
@@ -560,13 +561,21 @@
 
         if (!functions::validate_email($this->data['customer']['email'])) throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
 
+        if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
+          if (!empty($this->data['customer']['tax_id'])) {
+            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
+              throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
+            }
+          }
+        }
+
         if (reference::country($this->data['customer']['country_code'])->postcode_format) {
           if (!empty($this->data['customer']['postcode'])) {
             if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
-              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
             }
           } else {
-            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode'));
           }
         }
 
@@ -671,7 +680,6 @@
 
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
-      if (empty($this->data['order_status_id'])) return;
 
       $order_status = reference::order_status($this->data['order_status_id'], $language_code);
 

@@ -7,7 +7,7 @@
 
   functions::draw_lightbox();
 
-  $box_similar_products_cache_token = cache::token('box_similar_products', ['get', 'language', 'currency', 'prices']);
+  $box_similar_products_cache_token = cache::token('box_similar_products', [$_GET['product_id'], 'language', 'currency']);
   if (cache::capture($box_similar_products_cache_token)) {
 
     $products_query = functions::catalog_products_search_query([

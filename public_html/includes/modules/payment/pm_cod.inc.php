@@ -1,7 +1,6 @@
 <?php
 
   class pm_cod {
-    public $id = __CLASS__;
     public $name = 'Cash on Delivery';
     public $description = '';
     public $author = 'LiteCart Dev Team';

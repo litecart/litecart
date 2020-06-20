@@ -64,6 +64,8 @@
   // Start page
     if (empty($_GET['app'])) {
 
+    document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
+
     // Throw some warnings
       if (empty($_SERVER['REDIRECT_REMOTE_USER']) && empty($_SERVER['REMOTE_USER'])) {
         notices::add('warnings', language::translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
@@ -126,7 +128,6 @@
           ],
         ];
 
-        //document::$snippets['help_link'] = document::link('https://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : '')));
         document::$snippets['help_link'] = document::link('https://wiki.litecart.net/');
 
         $app_icon = '<span class="fa-stack icon-wrapper">' . PHP_EOL

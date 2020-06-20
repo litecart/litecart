@@ -14,6 +14,8 @@
     if (!empty($_GET['parent_id'])) $_POST['parent_id'] = $_GET['parent_id'];
   }
 
+  document::$snippets['title'][] = !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category');
+
   breadcrumbs::add(!empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category'));
 
   if (isset($_POST['save'])) {

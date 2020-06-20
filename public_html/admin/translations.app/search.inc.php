@@ -9,6 +9,8 @@
     }
   }
 
+  document::$snippets['title'][] = language::translate('title_search_translations', 'Search Translations');
+
   breadcrumbs::add(language::translate('title_search_translations', 'Search Translations'));
 
   if (isset($_POST['save']) && !empty($_POST['translations'])) {
@@ -77,7 +79,7 @@
     order by date_updated desc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($translations_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($translation = database::fetch($translations_query)) {

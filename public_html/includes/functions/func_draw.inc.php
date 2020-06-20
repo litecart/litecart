@@ -138,6 +138,8 @@
       'quantity_unit_id' => $product['quantity_unit_id'],
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
       'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
+      'tax' => tax::get_tax($product['price'], $product['tax_class_id']),
+      'tax_class_id' => $product['tax_class_id'],
       'delivery_status_id' => $product['delivery_status_id'],
       'sold_out_status_id' => $product['sold_out_status_id'],
     ];
@@ -233,7 +235,7 @@
 
       if ($i < $pages-5) {
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
-          $rewind = round(($_GET['page']-1)/2);
+          $rewind = round(($_GET['page'] - 1) / 2);
           $pagination->snippets['items'][] = [
             'page' => $rewind,
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',

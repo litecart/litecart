@@ -54,7 +54,7 @@
       );
 
       if ($delivery_status = database::fetch($delivery_status_query)) {
-        $this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));;
+        $this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));
       } else {
         throw new Exception('Could not find delivery status (ID: '. (int)$delivery_status_id .') in database.');
       }

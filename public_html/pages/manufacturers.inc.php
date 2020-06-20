@@ -4,7 +4,7 @@
 
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
 
-  $manufacturers_cache_token = cache::token('manufacturers', ['basename', 'get', 'language', 'currency', 'account', 'prices']);
+  $manufacturers_cache_token = cache::token('manufacturers', ['get', 'language'], 'file');
   if (cache::capture($manufacturers_cache_token)) {
 
     $_page = new ent_view();

@@ -76,6 +76,7 @@
 
     // JavaScript Environment
       self::$jsenv['platform'] = [
+        'path' => WS_DIR_APP,
         'url' => document::ilink(''),
       ];
 

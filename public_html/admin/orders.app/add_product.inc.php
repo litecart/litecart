@@ -109,7 +109,7 @@
       <div class="row">
           <div class="form-group col-md-4">
           <label><?php echo language::translate('title_quantity', 'quantity'); ?></label>
-          <?php echo functions::form_draw_decimal_field('quantity', true); ?>
+          <?php echo functions::form_draw_decimal_field('quantity', 1); ?>
         </div>
 
           <div class="form-group col-md-4">

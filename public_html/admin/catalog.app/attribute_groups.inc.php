@@ -1,6 +1,8 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
+  document::$snippets['title'][] = language::translate('title_attribute_groups', 'Attribute Groups');
+
   breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
 
 // Table Rows
@@ -12,7 +14,7 @@
     order by agi.name asc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($attribute_groups_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($attribute_groups_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($attribute_group = database::fetch($attribute_groups_query)) {

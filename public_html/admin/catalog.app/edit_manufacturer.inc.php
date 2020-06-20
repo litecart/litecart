@@ -12,6 +12,8 @@
     }
   }
 
+  document::$snippets['title'][] = !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer');
+
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
   breadcrumbs::add(!empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'));
 

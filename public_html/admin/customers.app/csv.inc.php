@@ -1,4 +1,7 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_csv_import_export', 'CSV Import/Export');
+
   breadcrumbs::add(language::translate('title_csv_import_export', 'CSV Import/Export'));
 
   if (isset($_POST['import'])) {
@@ -25,40 +28,41 @@
         if (!empty($row['id'])) {
           if ($customer = database::fetch(database::query("select id from ". DB_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;"))) {
             $customer = new ent_customer($customer['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."customers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $customer = new ent_customer($row['id']);
           }
 
         } else if (!empty($row['code'])) {
           if ($customer = database::fetch(database::query("select id from ". DB_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;"))) {
             $customer = new ent_customer($customer['id']);
-          } else {
-            $customer = new ent_customer();
           }
 
         } else if (!empty($row['email'])) {
           if ($customer = database::fetch(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;"))) {
             $customer = new ent_customer($customer['id']);
-          } else {
-            $customer = new ent_customer();
           }
-
-        } else {
-          echo "[Skipped] Could not identify customer on line $line.\r\n";
-          continue;
         }
 
         if (!empty($customer->data['id'])) {
           if (empty($_POST['update'])) continue;
           echo 'Updating existing customer '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
           $updated++;
+
         } else {
           if (empty($_POST['insert'])) continue;
           echo 'Creating new customer: '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
           $inserted++;
+
+          if (!empty($row['id'])) {
+            database::query(
+              "insert into ". DB_PREFIX ."customers (id, date_created)
+              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+            );
+            $customer = new ent_customer($row['id']);
+          } else {
+            $customer = new ent_customer();
+          }
         }
 
+      // Set customer data
         $fields = [
           'code',
           'email',

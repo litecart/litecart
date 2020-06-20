@@ -903,6 +903,15 @@
               ImageDestroy($this->_resource);
               return $result;
 
+            case 'webp':
+              if (!function_exists('ImageWebP')) {
+                return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
+              }
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageWebP($this->_image, false, $quality);
+              ImageDestroy($this->_image);
+              return $result;
+
             default:
               ImageDestroy($this->_resource);
               throw new Exception('Unknown output format');

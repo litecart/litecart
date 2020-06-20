@@ -15,4 +15,15 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `key`, `title`, `description`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('customer_details', 'global', 'accounts_enabled', 'Enable Customer Accounts', 'Allow customers to create an account and sign in.', '1', 'toggle("y/n")', 11, NOW(), NOW()),
-('customer_details', 'local', 'customer_field_zone', 'Zone/State/Province Field', 'Display the field for the customer\'s zone/state.', '1', 'toggle("y/n")', 23, NOW(), NOW());
+('customer_details', 'local', 'customer_field_zone', 'Zone/State/Province Field', 'Display the field for the customer\'s zone/state.', '1', 'toggle("y/n")', 23, NOW(), NOW()),
+('images', 'local', 'webp_enabled', 'WebP Enabled', 'Use WebP images if supported by the browser.', '0', 'toggle("e/d")', 44, NOW(), NOW());
+-- --------------------------------------------------------
+ALTER TABLE `lc_countries` ADD UNIQUE INDEX `iso_code_1` (`iso_code_1`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_currencies` CHANGE COLUMN `id` `id` TINYINT(2) NOT NULL AUTO_INCREMENT FIRST;
+-- --------------------------------------------------------
+ALTER TABLE `lc_languages` CHANGE COLUMN `id` `id` TINYINT(2) NOT NULL AUTO_INCREMENT FIRST;
+-- --------------------------------------------------------
+INSERT IGNORE INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`, `date_updated`, `date_created`) VALUES
+('job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', NOW(), NOW()),
+('job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', NOW(), NOW());

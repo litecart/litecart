@@ -1,7 +1,6 @@
 <?php
 
   class ot_subtotal {
-    public $id = __CLASS__;
     public $name = 'Subtotal';
     public $description = '';
     public $author = 'LiteCart Dev Team';

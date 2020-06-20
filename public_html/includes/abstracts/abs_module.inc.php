@@ -32,18 +32,19 @@
 
         if (!is_file(vmod::check($directory . $module['module_id'] .'.inc.php'))) {
 
-        // Uninstall orphan modules
-          //database::query(
-          //  "delete from ". DB_PREFIX ."modules
-          //  where module_id = '". database::input($module['id']) ."'
-          //  limit 1;"
-          //);
+        // Remove deleted modules
+          database::query(
+            "delete from ". DB_TABLE_MODULES ."
+            where module_id = '". database::input($module['id']) ."'
+            limit 1;"
+          );
 
           continue;
         }
 
       // Create object
         $object = new $module['module_id'];
+        $object->id = $module['module_id']; // Set ID
 
       // Decode settings
         $settings = json_decode($module['settings'], true);

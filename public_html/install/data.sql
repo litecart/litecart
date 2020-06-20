@@ -264,7 +264,9 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (1, 'ot_subtotal', 'order_total', 1, 1, '{"status":"1","priority":"1"}', '', NOW(), NOW()),
 (2, 'ot_shipping_fee', 'order_total', 1, 20, '{"status":"1","free_shipping_amount":"0","priority":"20"}', '', NOW(), NOW()),
 (3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW()),
-(4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","report_frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW());
+(4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","report_frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW()),
+(5, 'job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
+(6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
@@ -341,7 +343,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping cost on product page.', 'display_cheapest_shipping', '1', 'toggle()', 13, NOW(), NOW()),
 ('listings', 'local', 'Max Age for New Products', 'Display the "New" sticker for products less than the given age. E.g. 1 month or 14 days', 'new_products_max_age', '1 month', 'text()', 14, NOW(), NOW()),
 ('listings', 'local', 'Similar Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_similar_products_num_items', '8', 'number()', 15, NOW(), NOW()),
-('listings', 'local', 'Recently Viewed Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_recently_viewed_products_num_items', '4', 'number()', 16, NOW(), NOW()),
+('listings', 'local', 'Recently Viewed Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_recently_viewed_products_num_items', '6', 'number()', 16, NOW(), NOW()),
 ('listings', 'local', 'Latest Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_latest_products_num_items', '8', 'number()', 17, NOW(), NOW()),
 ('listings', 'local', 'Popular Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_popular_products_num_items', '8', 'number()', 18, NOW(), NOW()),
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_campaign_products_num_items', '4', 'number()', 19, NOW(), NOW()),
@@ -363,6 +365,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('images', 'local', 'Thumbnail Quality', 'The JPEG quality for thumbnail images (0-100). Default: 65', 'image_thumbnail_quality', '65', 'number()', '41', NOW(), NOW()),
 ('images', 'local', 'Interlaced Thumbnails', 'Generate interlaced thumbnail images for progressive loading. Increases the filesize by 10-20% but improves user experience.', 'image_thumbnail_interlaced', '0', 'toggle()', '42', NOW(), NOW()),
 ('images', 'local', 'Whitespace Color', 'Set the color of any generated whitespace to the given RGB value. Default: 255,255,255', 'image_whitespace_color', '255,255,255', 'text()', '43', NOW(), NOW()),
+('images', 'local', 'WebP Enabled', 'Use WebP images if supported by the browser.', 'webp_enabled', '0', 'toggle("e/d")', '44', NOW(), NOW()),
 ('checkout', 'local', 'Register Guests', 'Force guests to create an account.', 'register_guests', '0', 'toggle()', 10, NOW(), NOW()),
 ('checkout', 'local', 'Send Order Confirmation', 'The name of your store.', 'send_order_confirmation', '1', 'text()', 11, NOW(), NOW()),
 ('checkout', 'local', 'Order Copy Recipients', 'Send an email of the order copy to the given recipients. Separated by coma or semicolon.', 'email_order_copy', '{STORE_EMAIL}', 'text()', 12, NOW(), NOW()),

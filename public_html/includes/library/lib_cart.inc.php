@@ -129,7 +129,7 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(serialize([$product->id]));
+          $item_key = md5(json_encode([$product->id, $options]));
         }
       }
 
@@ -212,23 +212,17 @@
 
               $matched_values = [];
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
-                $matched_value = @reset(array_intersect(explode(', ', $options[$matched_group]), array_values($possible_values)));
-                if (!empty($matched_value)) {
+                $possible_values = array_unique(
+                  array_merge(
+                    [$value['name']],
+                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+                  )
+                );
+
+                if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
                 }
-              }
-              break;
-
-            case 'input':
-            case 'textarea':
-
-              $value = array_values($option['values'])[0];
-              $matched_value = $options[$matched_group];
-
-              if (!empty($matched_value)) {
-                $item['extras'] += $value['price_adjust'];
               }
               break;
 
@@ -236,9 +230,15 @@
             case 'select':
 
               foreach ($option['values'] as $value) {
-                $possible_values = array_filter(array_unique(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']));
-                $matched_value = @reset(array_intersect([$options[$matched_group]], array_values($possible_values)));
-                if (!empty($matched_value)) {
+                $possible_values = array_unique(
+                  array_merge(
+                    [$value['name']],
+                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
+                  )
+                );
+
+                if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
+                  $matched_value = $matched_value[0];
                   $item['extras'] += $value['price_adjust'];
                   break;
                 }
@@ -250,12 +250,12 @@
             throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
           }
 
-          if (empty($matched_group) && (empty($matched_values) && empty($matched_value))) continue;
+          if (empty($matched_group) || (empty($matched_values) && empty($matched_value))) continue;
 
           $sanitized_options[] = [
             'group_id' => $option['id'],
-            'value_id' => $value['id'],
-            'combination' => $option['id'].'-'.$value['id'],
+            'value_id' => !empty($value['id']) ? $value['id'] : 0,
+            'combination' => $option['id'] .'-'. (!empty($value['id']) ? $value['id'] : 0),
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           ];

@@ -53,29 +53,6 @@
     return $output;
   }
 
-  function form_draw_checkbox($name, $value, $input=true, $parameters='') {
-    if ($input === true) $input = form_reinsert_value($name, $value);
-
-    return '<input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
-  }
-
-  function form_draw_color_field($name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name);
-
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
-  }
-
-  function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name);
-
-    if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
-
-    return '<div class="input-group">' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? round($value, currency::$currencies[$currency_code]['decimals']+2) : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
-         . '  <strong class="input-group-addon" style="opacity: 0.75;">'. $currency_code .'</strong>' . PHP_EOL
-         . '</div>';
-  }
-
   function form_draw_category_field($name, $value=true, $parameters='') {
 
     if ($value === true) $value = form_reinsert_value($name);
@@ -98,6 +75,116 @@
     return '<div class="form-control"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
          . '  ' . form_draw_hidden_field($name, true) . PHP_EOL
          . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$value .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'categories', 'doc' => 'category_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '</div>';
+  }
+
+  function form_draw_checkbox($name, $value, $input=true, $parameters='') {
+    if ($input === true) $input = form_reinsert_value($name, $value);
+
+    return '<input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+  }
+
+  function form_draw_color_field($name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
+  }
+
+  function form_draw_csv_field($name, $value=true, $parameters='') {
+
+    if ($value === true) $value = form_reinsert_value($name);
+
+    if (!$csv = functions::csv_decode($value)) {
+      return form_draw_textarea($name, $value, $parameters);
+    }
+
+    $columns = array_keys($csv[0]);
+
+    $output = '<table class="table table-striped table-hover data-table" data-toggle="csv">' . PHP_EOL
+            . '  <thead>' . PHP_EOL
+            . '    <tr>' . PHP_EOL;
+
+    foreach ($columns as $column) {
+      $output .= '      <th>'. $column .'</th>' . PHP_EOL;
+    }
+
+    $output .= '      <th><a class="add-column" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></th>' . PHP_EOL
+             . '    </tr>' . PHP_EOL
+             . '  </thead>' . PHP_EOL
+             . '  <tbody>' . PHP_EOL;
+
+    foreach ($csv as $line => $row) {
+      $output .= '    <tr>' . PHP_EOL;
+      foreach ($columns as $column) {
+        $output .= '      <td contenteditable>'. $row[$column] .'</td>' . PHP_EOL;
+      }
+      $output .= '      <td><a class="remove" href="#">'. functions::draw_fonticon('fa-times-circle', 'style="color: #d33"') .'</a></td>' . PHP_EOL
+               . '    </tr>' . PHP_EOL;
+    }
+
+    $output .= '  </tbody>' . PHP_EOL
+             . '  <tfoot>' . PHP_EOL
+             . '    <tr>' . PHP_EOL
+             . '      <td colspan="'. (count($columns)+1) .'"><a class="add-row" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></td>' . PHP_EOL
+             . '    </tr>' . PHP_EOL
+             . '  </tfoot>' . PHP_EOL
+             . '</table>' . PHP_EOL
+             . PHP_EOL
+             . form_draw_textarea($name, $value, 'style="display: none;"');
+
+    document::$snippets['javascript']['table2csv'] = <<<END
+$('table[data-toggle="csv"]').on('click', '.remove', function(e) {
+  e.preventDefault();
+  var parent = $(this).closest('tbody');
+  $(this).closest('tr').remove();
+  $(parent).trigger('keyup');
+});
+
+$('table[data-toggle="csv"] .add-row').click(function(e) {
+  e.preventDefault();
+  var n = $(this).closest('table').find('thead th:not(:last-child)').length;
+  $(this).closest('table').find('tbody').append(
+    '<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times-circle" style="color: #d33;"></i></a></td>' +'</tr>'
+  ).trigger('keyup');
+});
+
+$('table[data-toggle="csv"] .add-column').click(function(e) {
+  e.preventDefault();
+  var table = $(this).closest('table');
+  var title = prompt("<?php echo language::translate('title_column_title', 'Column Title'); ?>");
+  if (!title) return;
+  $(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>');
+  $(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');
+  $(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);
+  $(this).trigger('keyup');
+});
+
+$('table[data-toggle="csv"]').keyup(function(e) {
+   var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
+      return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
+        var text = \$(col).text();
+        if (/("|,)/.test(text)) {
+          return '"'+ text.replace(/"/g, '""') +'"';
+        } else {
+          return text;
+        }
+      }).get().join(',');
+    }).get().join("\\r\\n");
+  $(this).next('textarea').val(csv);
+});
+END;
+
+    return $output;
+  }
+
+  function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
+    if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
+
+    return '<div class="input-group">' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? round($value, currency::$currencies[$currency_code]['decimals']+2) : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <strong class="input-group-addon" style="opacity: 0.75;">'. $currency_code .'</strong>' . PHP_EOL
          . '</div>';
   }
 

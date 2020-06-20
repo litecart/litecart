@@ -30,8 +30,8 @@
   document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
-  foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink('category', ['category_id' => $category_id]));
+  foreach (array_slice($category->path, 0, -1, true) as $category_crumb) {
+    breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
   }
   breadcrumbs::add($category->name);
 
@@ -39,7 +39,7 @@
 
   $_page = new ent_view();
 
-  $box_category_cache_token = cache::token('box_category', ['basename', 'get', 'language', 'currency', 'account', 'prices']);
+  $box_category_cache_token = cache::token('box_category', ['get', 'language', 'currency'], 'file');
   if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
     $_page->snippets = [
@@ -67,6 +67,10 @@
         'original' => $category->image ? 'images/' . $category->image : '',
         'thumbnail_1x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
+        'viewport' => [
+          'width' => $width,
+          'height' => $height,
+        ],
       ];
     }
 

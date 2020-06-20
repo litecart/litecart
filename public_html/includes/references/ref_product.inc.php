@@ -2,7 +2,6 @@
 
   class ref_product {
 
-    private $_id;
     private $_currency_code;
     private $_language_codes;
     private $_customer_id;
@@ -14,7 +13,7 @@
       if (empty($currency_code)) $currency_code = currency::$selected['code'];
       if (empty($customer_id)) $customer_id = customer::$data['id'];
 
-      $this->_id = (int)$product_id;
+      $this->_data['id'] = (int)$product_id;
       $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
@@ -56,10 +55,10 @@
               "select oi.product_id, sum(oi.quantity) as total_quantity from ". DB_PREFIX ."orders_items oi
               left join ". DB_PREFIX ."products p on (p.id = oi.product_id)
               where p.status
-              and (oi.product_id != 0 and oi.product_id != ". (int)$this->_id .")
+              and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
               and order_id in (
                 select distinct order_id as id from ". DB_PREFIX ."orders_items
-                where product_id = ". (int)$this->_id ."
+                where product_id = ". (int)$this->_data['id'] ."
               )
               group by oi.product_id
               order by total_quantity desc;"
@@ -80,7 +79,7 @@
             left join ". DB_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
             left join ". DB_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
             left join ". DB_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
-            where product_id = ". (int)$this->_id ."
+            where product_id = ". (int)$this->_data['id'] ."
             order by group_name, value_name, custom_value;"
           );
 
@@ -99,7 +98,7 @@
 
           $query = database::query(
             "select * from ". DB_PREFIX ."products_info
-            where product_id = ". (int)$this->_id ."
+            where product_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -119,7 +118,7 @@
 
           $products_campaigns_query = database::query(
             "select * from ". DB_PREFIX ."products_campaigns
-            where product_id = ". (int)$this->_id ."
+            where product_id = ". (int)$this->_data['id'] ."
             and (year(start_date) < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
             and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
             order by end_date asc
@@ -143,7 +142,7 @@
 
           $products_to_categories_query = database::query(
             "select * from ". DB_PREFIX ."products_to_categories
-            where product_id = ". (int)$this->_id .";"
+            where product_id = ". (int)$this->_data['id'] .";"
           );
 
           while ($product_to_category = database::fetch($products_to_categories_query)) {
@@ -200,7 +199,7 @@
 
           $query = database::query(
             "select * from ". DB_PREFIX ."products_images
-            where product_id = ". (int)$this->_id ."
+            where product_id = ". (int)$this->_data['id'] ."
             order by priority asc, id asc;"
           );
           while ($row = database::fetch($query)) {
@@ -225,7 +224,7 @@
 
           $products_options_query = database::query(
             "select * from ". DB_PREFIX ."products_options
-            where product_id = ". (int)$this->_id ."
+            where product_id = ". (int)$this->_data['id'] ."
             order by priority;"
           );
 
@@ -251,7 +250,8 @@
 
             $option_values_query = database::query(
               "select * from ". DB_PREFIX ."products_options_values
-              where product_id = ". (int)$this->_id ."
+              where product_id = ". (int)$this->_data['id'] ."
+              and group_id = ". (int)$option['group_id'] ."
               order by priority;"
             );
 
@@ -285,10 +285,11 @@
                 switch ($value['price_operator']) {
 
                   case '+':
+
                     if ($value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+                      $value['price_adjust'] = (float)currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
-                      $value['price_adjust'] = $value[settings::get('store_currency_code')];
+                      $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
                     }
                     break;
 
@@ -336,7 +337,7 @@
 
           $query = database::query(
             "select * from ". DB_PREFIX ."products_options_stock
-            where product_id = ". (int)$this->_id ."
+            where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
           );
@@ -397,7 +398,7 @@
 
           $query = database::query(
             "select category_id from ". DB_PREFIX ."products_to_categories
-            where product_id = ". (int)$this->_id .";"
+            where product_id = ". (int)$this->_data['id'] .";"
           );
 
           while ($row = database::fetch($query)) {
@@ -412,7 +413,7 @@
 
           $products_prices_query = database::query(
             "select * from ". DB_PREFIX ."products_prices
-            where product_id = ". (int)$this->_id ."
+            where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
           $product_price = database::fetch($products_prices_query);
@@ -457,6 +458,16 @@
 
           break;
 
+        case 'supplier':
+
+          $this->_data['supplier'] = null;
+
+          if (!empty($this->supplier_id)) {
+            $this->_data['supplier'] = reference::supplier($this->supplier_id);
+          }
+
+          break;
+
         case 'sold_out_status':
 
           $this->_data['sold_out_status'] = [];
@@ -489,7 +500,7 @@
 
           $query = database::query(
             "select * from ". DB_PREFIX ."products
-            where id = ". (int)$this->_id ."
+            where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
 
@@ -508,6 +519,34 @@
           }
 
           break;
+      }
+    }
+
+    public function adjust_stock($combination, $quantity) {
+
+      if (!empty($combination)) {
+        database::query(
+          "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+          set quantity = quantity + ". (float)$quantity ."
+          where product_id = ". (int)$this->_data['id'] ."
+          and combination =  '". database::input($combination) ."'
+          limit 1;"
+        );
+
+        if (!database::affected_rows()) {
+          trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
+        }
+      }
+
+      database::query(
+        "update ". DB_TABLE_PRODUCTS ."
+        set quantity = quantity + ". (int)$quantity ."
+        where id = ". (int)$this->_data['id'] ."
+        limit 1;"
+      );
+
+      if (!database::affected_rows()) {
+        trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .')', E_USER_WARNING);
       }
     }
   }

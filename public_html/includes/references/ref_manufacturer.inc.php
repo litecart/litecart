@@ -2,8 +2,6 @@
 
   class ref_manufacturer {
 
-    private $_id;
-    private $_cache_token;
     private $_language_codes;
     private $_data = [];
 
@@ -11,17 +9,12 @@
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
-      $this->_id = (int)$manufacturer_id;
+      $this->_data['id'] = (int)$manufacturer_id;
       $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
       ]);
-
-      $this->_cache_token = cache::token('manufacturer_'.(int)$manufacturer_id, [$language_code]);
-      if ($cache = cache::get($this->_cache_token)) {
-        $this->_data = $cache;
-      }
     }
 
     public function &__get($name) {
@@ -59,7 +52,7 @@
 
           $query = database::query(
             "select * from ". DB_PREFIX ."manufacturers_info
-            where manufacturer_id = ". (int)$this->_id ."
+            where manufacturer_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
@@ -77,7 +70,7 @@
 
           $query = database::query(
             "select * from ". DB_PREFIX ."manufacturers
-            where id = ". (int)$this->_id ."
+            where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
 
@@ -97,7 +90,5 @@
 
           break;
       }
-
-      cache::set($this->_cache_token, $this->_data);
     }
   }

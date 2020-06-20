@@ -19,6 +19,8 @@ Done! Node.js should now have installed all necessary libraries, you can now use
     grunt phplint (Check scripts for syntax errors)
     grunt watch   (Watch for changes in .less and .js and update minified versions on the fly)
 
+    npm update    (Update your node modules to newer versions)
+
 # Social Coding
 
   [Github Repository](https://www.github.com/litecart/litecart)

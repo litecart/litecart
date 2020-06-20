@@ -1,5 +1,7 @@
 <?php
 
+  document::$snippets['title'][] = language::translate('title_most_shopping_customers', 'Most Shopping Customers');
+
   breadcrumbs::add(language::translate('title_most_shopping_customers', 'Most Shopping Customers'));
 
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
@@ -37,7 +39,7 @@
     order by total_amount desc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
+  if ($_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($customer = database::fetch($customers_query)) {

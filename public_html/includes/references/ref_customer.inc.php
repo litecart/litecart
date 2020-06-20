@@ -2,11 +2,10 @@
 
   class ref_customer {
 
-    private $_id;
     private $_data = [];
 
     function __construct($customer_id) {
-      $this->_id = (int)$customer_id;
+      $this->_data['id'] = (int)$customer_id;
     }
 
     public function &__get($name) {
@@ -37,7 +36,7 @@
 
           $query = database::query(
             "select * from ". DB_PREFIX ."customers
-            where id = ". (int)$this->_id ."
+            where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
 

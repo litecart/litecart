@@ -48,33 +48,33 @@
         if (!empty($row['id'])) {
           if ($page = database::fetch(database::query("select id from ". DB_PREFIX ."pages where id = ". (int)$row['id'] ." limit 1;"))) {
             $page = new ent_page($page['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."pages (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $page = new ent_page($row['id']);
           }
-
-      // No page, let's create it
-        if (!$page = database::fetch($page_query)) {
-          if (empty($_POST['insert'])) {
-            echo "[Skipped] New page on line $line was not inserted to database.\r\n";
-            continue;
-          }
-          $page = new ent_page();
-          echo "Inserting new page '{$row['title']}'\r\n";
+        }
 
         if (!empty($page->data['id'])) {
           if (empty($_POST['update'])) continue;
           echo 'Updating existing page '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
+
         } else {
           if (empty($_POST['insert'])) continue;
           echo 'Creating new page: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
+
+          if (!empty($row['id'])) {
+            database::query(
+              "insert into ". DB_PREFIX ."pages (id, date_created)
+              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+            );
+            $page = new ent_page($row['id']);
+          } else {
+            $page = new ent_page();
+          }
         }
 
         if (isset($row['dock'])) $row['dock'] = explode(',', $row['dock']);
 
-      // Set new page data
+      // Set page data
         $fields = [
           'parent_id',
           'status',
@@ -85,7 +85,6 @@
           if (isset($row[$field])) $page->data[$field] = $row[$field];
         }
 
-      // Set page info data
         $fields = [
           'title',
           'content',

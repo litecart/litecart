@@ -93,6 +93,7 @@
       }
 
     } else {
+
       switch (true) {
         case (substr($setting['function'], 0, 8) == 'password'):
           $setting['value'] = '****************';

@@ -1,4 +1,7 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_import_export_csv', 'Import/Export CSV');
+
   breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
   if (isset($_POST['import_categories'])) {
@@ -32,38 +35,38 @@
         if (!empty($row['id'])) {
           if ($category = database::fetch(database::query("select id from ". DB_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
             $category = new ent_category($category['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."categories (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $category = new ent_category($row['id']);
           }
 
         } elseif (!empty($row['code'])) {
           if ($category = database::fetch(database::query("select id from ". DB_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
-          } else {
-            $category = new ent_category();
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($category = database::fetch(database::query("select category_id as id from ". DB_PREFIX ."categories_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
-          } else {
-            $category = new ent_category();
           }
-
-        } else {
-          echo "[Skipped] Could not identify category on line $line.\r\n";
-          continue;
         }
 
         if (!empty($category->data['id'])) {
           if (empty($_POST['update'])) continue;
           echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
+
         } else {
           if (empty($_POST['insert'])) continue;
           echo 'Creating new category: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
+
+          if (!empty($row['id'])) {
+            database::query(
+              "insert into ". DB_PREFIX ."categories (id, date_created)
+              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+            );
+            $page = new ent_category($row['id']);
+          } else {
+            $page = new ent_category();
+          }
         }
 
       // Set new category data
@@ -210,59 +213,53 @@
         if (!empty($row['id'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
             $product = new ent_product($product['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."products (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $product = new ent_product($row['id']);
           }
 
         } elseif (!empty($row['code'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
-          } else {
-            $product = new ent_product();
           }
 
         } elseif (!empty($row['sku'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
-          } else {
-            $product = new ent_product();
           }
 
         } elseif (!empty($row['mpn'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
-          } else {
-            $product = new ent_product();
           }
 
         } elseif (!empty($row['gtin'])) {
           if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
-          } else {
-            $product = new ent_product();
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($product = database::fetch(database::query("select product_id as id from ". DB_PREFIX ."products_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
-          } else {
-            $product = new ent_product();
           }
-
-        } else {
-          echo "[Skipped] Could not identify product on line $line.\r\n";
-          continue;
         }
 
         if (!empty($product->data['id'])) {
           if (empty($_POST['update'])) continue;
           echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
+
         } else {
           if (empty($_POST['insert'])) continue;
           echo 'Creating new product: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
+
+          if (!empty($row['id'])) {
+            database::query(
+              "insert into ". DB_PREFIX ."products (id, date_created)
+              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+            );
+            $product = new ent_product($row['id']);
+          } else {
+            $product = new ent_product();
+          }
         }
 
         if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
@@ -517,38 +514,38 @@
         if (!empty($row['id'])) {
           if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
             $manufacturer = new ent_manufacturer($manufacturer['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."manufacturers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $manufacturer = new ent_manufacturer($row['id']);
           }
 
         } else if (!empty($row['code'])) {
           if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
             $manufacturer = new ent_manufacturer($manufacturer['id']);
-          } else {
-            $manufacturer = new ent_manufacturer();
           }
 
         } else if (!empty($row['name']) && !empty($row['language_code'])) {
           if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
             $manufacturer = new ent_manufacturer($manufacturer['id']);
-          } else {
-            $manufacturer = new ent_manufacturer();
           }
-
-        } else {
-          echo "[Skipped] Could not identify manufacturer on line $line.\r\n";
-          continue;
         }
 
         if (!empty($manufacturer->data['id'])) {
           if (empty($_POST['update'])) continue;
           echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
+
         } else {
           if (empty($_POST['insert'])) continue;
           echo 'Creating new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
+
+          if (!empty($row['id'])) {
+            database::query(
+              "insert into ". DB_PREFIX ."manufacturers (id, date_created)
+              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+            );
+            $manufacturer = new ent_manufacturer($row['id']);
+          } else {
+            $panufacturer = new ent_manufacturer();
+          }
         }
 
       // Set new manufacturer data
@@ -692,31 +689,34 @@
         if (!empty($row['id'])) {
           if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
             $supplier = new ent_supplier($supplier['id']);
-          } else {
-            database::query("insert into ". DB_PREFIX ."suppliers (id, date_created) values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');");
-            $supplier = new ent_supplier($row['id']);
           }
 
         } else if (!empty($row['code'])) {
           if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
             $supplier = new ent_supplier($supplier['id']);
-          } else {
-            $supplier = new ent_supplier();
           }
 
-        } else {
-          echo "[Skipped] Could not identify supplier on line $line.\r\n";
-          continue;
         }
 
         if (!empty($supplier->data['id'])) {
           if (empty($_POST['update'])) continue;
           echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
+
         } else {
           if (empty($_POST['insert'])) continue;
           echo 'Creating new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
+
+          if (!empty($row['id'])) {
+            database::query(
+              "insert into ". DB_PREFIX ."suppliers (id, date_created)
+              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+            );
+            $supplier = new ent_supplier($row['id']);
+          } else {
+            $suppliers = new ent_supplier();
+          }
         }
 
       // Set new supplier data
@@ -853,7 +853,12 @@
               </div>
 
                 <div class="form-group">
-                  <label><?php echo functions::form_draw_checkbox('insert_categories', 'true', true); ?> <?php echo language::translate('text_insert_new_categories', 'Insert new categories'); ?></label>
+                  <div class="checkbox">
+                    <label><?php echo functions::form_draw_checkbox('update', 'true', true); ?> <?php echo language::translate('title_update_existing', 'Update Existing'); ?></label>
+                  </div>
+                  <div class="checkbox">
+                    <label><?php echo functions::form_draw_checkbox('insert', 'true', true); ?> <?php echo language::translate('title_insert_new', 'Insert New'); ?></label>
+                  </div>
                 </div>
 
                 <?php echo functions::form_draw_button('import_categories', language::translate('title_import', 'Import'), 'submit'); ?>

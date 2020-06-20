@@ -11,10 +11,10 @@
       @ini_set('session.use_cookies', 1);
       @ini_set('session.use_only_cookies', 1);
       @ini_set('session.use_trans_sid', 0);
-      @ini_set('session.cookie_httponly', 1);
+      @ini_set('session.cookie_httponly', 0);
       @ini_set('session.cookie_lifetime', 0);
       @ini_set('session.cookie_path', WS_DIR_APP);
-      @ini_set('session.cookie_samesite', 'Strict');
+      @ini_set('session.cookie_samesite', 'Lax');
 
       register_shutdown_function(['session', 'close']);
 
@@ -50,11 +50,6 @@
     public static function destroy() {
 
       self::clear();
-
-      if (ini_get('session.use_cookies')) {
-        $params = session_get_cookie_params();
-        header('Set-Cookie: '. session_name() .'=; Path='. WS_DIR_APP .'; Max-Age=-1; SameSite=Strict');
-      }
 
       return session_destroy();
     }

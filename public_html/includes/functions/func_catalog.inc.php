@@ -2,28 +2,14 @@
 
   function catalog_category_trail($category_id=0, $language_code='') {
 
+    trigger_error('catalog_category_trail() is deprecated. Use instead reference::category(id)->path', E_USER_DEPRECATED);
+
     if (empty($language_code)) $language_code = language::$selected['code'];
 
     $trail = [];
 
-    if (empty($category_id)) $category_id = 0;
-
-    $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name
-      from ". DB_PREFIX ."categories c
-      left join ". DB_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.id = ". (int)$category_id ."
-      limit 1;"
-    );
-
-    if (!$category = database::fetch($categories_query)) [];
-
-    if (!empty($category['parent_id'])) {
-      $trail = functions::catalog_category_trail($category['parent_id']);
-      $trail[$category['id']] = $category['name'];
-
-    } else if (isset($category['id'])) {
-      $trail = [$category['id'] => $category['name']];
+    foreach (reference::category($category_id, $language_code)->path as $category) {
+      $trail[$category->id] = $category->name;
     }
 
     return $trail;
@@ -31,25 +17,15 @@
 
   function catalog_category_descendants($category_id=0, $language_code='') {
 
-    if (empty($language_code)) $language_code = language::$selected['code'];
+    trigger_error('catalog_category_descendants() is deprecated. Use instead reference::category(id)->descendants', E_USER_DEPRECATED);
 
-    $subcategories = [];
+    $descendants = [];
 
-    if (empty($category_id)) $category_id = 0;
-
-    $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name
-      from ". DB_PREFIX ."categories c
-      left join ". DB_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($language_code) ."')
-      where c.parent_id = ". (int)$category_id .";"
-    );
-
-    while ($category = database::fetch($categories_query)) {
-      $subcategories[$category['id']] = $category['name'];
-      $subcategories = $subcategories + catalog_category_descendants($category['id'], $language_code);
+    foreach (reference::category($category_id, $language_code)->path as $category) {
+      $descendants[$category->id] = $category->name;
     }
 
-    return $subcategories;
+    return $descendants;
   }
 
   function catalog_categories_query($parent_id=0) {
@@ -129,6 +105,7 @@
         )"
       );
     }
+
     $sql_where_attributes = [];
     if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
       foreach ($filter['attributes'] as $group => $values) {
@@ -179,7 +156,7 @@
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
 
         ". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : null) ."
-        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
+        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
       ) p
 
       left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
@@ -207,7 +184,7 @@
       )
 
       ". (!empty($sql_outer_sort) ? "order by ". implode(",", $sql_outer_sort) : "") ."
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";"
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
     );
 
     $products_query = database::query($query);
@@ -225,36 +202,65 @@
     if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
     if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
-    $sql_where_prices = "";
-    if (!empty($filter['price_ranges'])) {
+    $sql_where_categories = '';
+    if (!empty($filter['categories'])) {
+      $sql_where_categories = (
+        "and p.id in (
+          select product_id from ". DB_PREFIX ."products_to_categories
+          where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
+        )"
+      );
+    }
 
+    $sql_where_attributes = [];
+    if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
+      foreach ($filter['attributes'] as $group => $values) {
+        if (empty($values) || !is_array($values)) continue;
+        foreach ($values as $value) {
+          $sql_where_attributes[$group][] = "find_in_set('". database::input($group.'-'.$value) ."', pa.attributes)";
+        }
+        $sql_where_attributes[$group] = "(". implode(" or ", $sql_where_attributes[$group]) .")";
+      }
+      $sql_where_attributes = "and (". implode(" and ", $sql_where_attributes) .")";
+    }
+
+    $sql_where_prices = [];
+    if (!empty($filter['price_ranges']) && is_array($filter['price_ranges'])) {
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
-        $sql_where_prices .= " or (if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
+        $sql_where_prices[] = "(if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
       }
-
-      $sql_where_prices = "or (". ltrim($sql_where_prices, " or ") .")";
+      $sql_where_prices = "and (". implode(" or ", $sql_where_prices) .")";
     }
 
     $query = (
       "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
-        ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", database::input($filter['categories'])) ."', categories), 1, 0)" : false) ."
         ". (!empty($filter['manufacturers']) ? "+ if(p.manufacturer_id and p.manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."'), 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."
         ". (!empty($filter['products']) ? "+ if(p.id in ('". implode("', '", database::input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences
 
       from (
-        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
         from ". DB_PREFIX ."products p
+
+        left join (
+          select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
+          from ". DB_PREFIX ."products_attributes
+          group by product_id
+        ) pa on (p.id = pa.product_id)
+
         left join ". DB_PREFIX ."products_to_categories ptc on (p.id = ptc.product_id)
+
         left join ". DB_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+
         where p.status
           and (p.id
           ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
-          ". (!empty($filter['categories']) ? "or ptc.category_id in (". implode(",", database::input($filter['categories'])) .")" : null) ."
+          ". (!empty($sql_where_categories) ? $sql_where_categories : null) ."
+          ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
           ". (!empty($filter['manufacturers']) ? "or manufacturer_id in ('". implode("', '", database::input($filter['manufacturers'])) ."')" : null) ."
           ". (!empty($filter['keywords']) ? "or (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
         )
@@ -264,7 +270,7 @@
         ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
         group by ptc.product_id
-        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : "") ."
+        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
       ) p
 
       left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
@@ -292,7 +298,7 @@
       )
 
       order by occurrences desc
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) ."". (int)$filter['limit'] : null) .";"
+      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
     );
 
     $products_query = database::query($query);
@@ -300,42 +306,9 @@
     return $products_query;
   }
 
-  function catalog_stock_adjust($product_id, $option_stock_combination, $quantity) {
+  function catalog_stock_adjust($product_id, $combination, $quantity) {
 
-    if (empty($product_id)) return;
+    trigger_error('catalog_stock_adjust() is deprecated. Use instead reference::product(id)->adjust_stock()', E_USER_DEPRECATED);
 
-    if (!empty($option_stock_combination)) {
-      database::query(
-        "update ". DB_PREFIX ."products_options_stock
-        set quantity = quantity + ". (float)$quantity ."
-        where product_id = ". (int)$product_id ."
-        and combination =  '". database::input($option_stock_combination) ."'
-        limit 1;"
-      );
-
-      if (!database::affected_rows()) {
-        trigger_error('Could not adjust stock for product (ID: '. $product_id .', Combination: '. $option_stock_combination .')', E_USER_WARNING);
-      }
-    }
-
-    database::query(
-      "update ". DB_PREFIX ."products
-      set quantity = quantity + ". (int)$quantity ."
-      where id = ". (int)$product_id ."
-      limit 1;"
-    );
-
-    if (!database::affected_rows()) {
-      trigger_error('Could not adjust stock for product (ID: '. $product_id .')', E_USER_WARNING);
-    }
-  }
-
-  function catalog_purchase_count_adjust($product_id, $quantity) {
-
-    database::query(
-      "update ". DB_PREFIX ."products
-      set purchases = purchases + ". (int)$quantity ."
-      where id = ". (int)$product_id ."
-      limit 1;"
-    );
+    return reference::product($product_id)->adjust_stock($combination, $quantity);
   }

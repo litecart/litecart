@@ -6,19 +6,19 @@
 
     public static function __callStatic($resource, $arguments) {
 
-      if (empty($arguments[0])) {
+      if (!isset($arguments[0])) {
         trigger_error('Passed argument cannot be empty', E_USER_WARNING);
         return;
-      }
-
-      if (isset(self::$_cache[$resource]) && count(self::$_cache[$resource]) >= 100) {
-        self::$_cache[$resource] = [];
       }
 
       $checksum = md5(json_encode($arguments, JSON_UNESCAPED_SLASHES));
 
       if (isset(self::$_cache[$resource][$checksum])) {
         return self::$_cache[$resource][$checksum];
+      }
+
+      if (isset(self::$_cache[$resource]) && count(self::$_cache[$resource]) >= 100) {
+        array_shift(self::$_cache[$resource]);
       }
 
       $component = null;
