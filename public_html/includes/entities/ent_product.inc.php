@@ -422,7 +422,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options']['values'], 'id')) ."');"
+        and group_id not in ('". @implode("', '", array_column($this->data['options'], 'group_id')) ."');"
       );
 
     // Update options
@@ -456,6 +456,7 @@
           database::query(
             "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
             where product_id = ". (int)$this->data['id'] ."
+            and group_id = ". (int)$option['group_id'] ."
             and id not in ('". @implode("', '", @array_column($option['values'], 'id')) ."');"
           );
 

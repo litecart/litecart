@@ -376,11 +376,11 @@ html {
 }
 .listing .product-column .image-wrapper .sticker.new,
 .listing .product-row .image-wrapper .sticker.new {
-  background: rgba(251, 184, 41, 0.85);
+  background: rgba(251, 184, 41, 0.9);
 }
 .listing .product-column .image-wrapper .sticker.sale,
 .listing .product-row .image-wrapper .sticker.sale {
-  background: rgba(237, 60, 50, 0.85);
+  background: rgba(237, 60, 50, 0.9);
 }
 .listing .product-column .name,
 .listing .product-row .name {
