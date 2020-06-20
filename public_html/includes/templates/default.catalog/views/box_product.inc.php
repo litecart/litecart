@@ -217,9 +217,10 @@
       x = '<?php echo currency::$selected['suffix']; ?>',
       s = n < 0 ? '-' : '',
       i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
+      f = n - i,
       j = (j = i.length) > 3 ? j % 3 : 0;
 
-    return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '') + x;
+    return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (<?php echo (settings::get('auto_decimals')) ? "(c && f)" : "c"; ?> ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
   }
 
   $('#box-product form[name=buy_now_form]').bind('input propertyChange', function(e) {
