@@ -87,4 +87,37 @@
     }
   }
 
-//
+// Adjust tables
+  $columns_query = database::query(
+    "select * from information_schema.COLUMNS
+    where TABLE_SCHEMA = '". DB_DATABASE ."'
+    and TABLE_NAME like '". DB_PREFIX ."%';"
+  );
+
+  while ($column = database::fetch($columns_query)) {
+    switch ($column['COLUMN_NAME']) {
+      case 'id':
+        break;
+
+      case 'date_updated':
+        database::query(
+          "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
+          change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` timestamp not null default current_timestamp on update current_timestamp;"
+        );
+        break;
+
+      case 'date_created':
+        database::query(
+          "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
+          change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` timestamp not null default current_timestamp;"
+        );
+        break;
+
+      default:
+        database::query(
+          "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
+          change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". $column['COLUMN_TYPE'] ." null". (!empty($column['COLUMN_DEFAULT']) ? ' default ' . $column['COLUMN_DEFAULT'] : '') .";"
+        );
+        break;
+    }
+  }
