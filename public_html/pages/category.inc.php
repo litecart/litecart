@@ -65,8 +65,8 @@
       list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
       $_page->snippets['image'] = [
         'original' => $category->image ? 'images/' . $category->image : '',
-        'thumbnail_1x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
+        'thumbnail_1x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
         'viewport' => [
           'width' => $width,
           'height' => $height,

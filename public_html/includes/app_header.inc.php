@@ -2,16 +2,17 @@
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '2.3');
 
-  if (!file_exists(__DIR__ . '/config.inc.php')) {
-    header('Location: ./install/');
-    exit;
-  }
-
 // Start redirecting output to the output buffer
   ob_start();
 
 // Get config
-  require_once __DIR__ . '/config.inc.php';
+  if (!defined('FS_DIR_APP')) {
+    if (!file_exists(__DIR__ . '/config.inc.php')) {
+      header('Location: ./install/');
+      exit;
+    }
+    require_once __DIR__ . '/config.inc.php';
+  }
 
 // Virtual Modifications System
   require_once __DIR__ . '/library/lib_vmod.inc.php';

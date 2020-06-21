@@ -123,7 +123,7 @@
 
         if (preg_match('#\.[a-z]{2,4}$#', self::$request)) exit; // Don't return an error page for content with a defined extension (presumably static)
 
-        $not_found_file = FS_DIR_APP . 'logs/not_found.log';
+        $not_found_file = FS_DIR_STORAGE . 'logs/not_found.log';
 
         $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
         $lines[] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

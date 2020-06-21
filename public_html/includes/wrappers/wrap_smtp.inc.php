@@ -17,7 +17,7 @@
       $this->_username = $username;
       $this->_password = $password;
 
-      $this->_log_handle = fopen(FS_DIR_APP . 'logs/last_smtp.log', 'w');
+      $this->_log_handle = fopen(FS_DIR_STORAGE . 'logs/last_smtp.log', 'w');
     }
 
     function __destruct() {

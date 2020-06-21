@@ -54,12 +54,12 @@
       <li style="flex-grow: 1;"></li>
 
       <li class="language dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. language::$selected['code'] .'.png'); ?>" alt="<?php echo language::$selected['code']; ?>" title="<?php echo htmlspecialchars(language::$selected['name']); ?>" style="max-height: 1em;" /> <b class="caret"></b></a>
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/languages/'. language::$selected['code'] .'.png'); ?>" alt="<?php echo language::$selected['code']; ?>" title="<?php echo htmlspecialchars(language::$selected['name']); ?>" style="max-height: 1em;" /> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>
             <a href="<?php echo document::href_link(null, ['language' => $language['code']], true); ?>">
-              <img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" style="max-height: 1em;" /> <?php echo $language['name']; ?>
+              <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" style="max-height: 1em;" /> <?php echo $language['name']; ?>
             </a>
           </li>
           <?php } ?>

@@ -34,11 +34,11 @@
 
     public function load($filename) {
 
-      if (!is_file(FS_DIR_APP . 'vmods/'. $filename)) throw new Exception('Invalid vmod ('. $filename .')');
+      if (!is_file(FS_DIR_STORAGE . 'vmods/'. $filename)) throw new Exception('Invalid vmod ('. $filename .')');
 
       $this->reset();
 
-      $xml = file_get_contents(FS_DIR_APP . 'vmods/'. $filename);
+      $xml = file_get_contents(FS_DIR_STORAGE . 'vmods/'. $filename);
       $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
 
       $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -50,8 +50,8 @@
 
       $this->data['filename'] = $filename;
       $this->data['id'] = preg_replace('#\.(xml|disabled)$#', '', $filename);
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_APP . 'vmods/' . $filename));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_APP . 'vmods/' . $filename));
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_STORAGE . 'vmods/' . $filename));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_STORAGE . 'vmods/' . $filename));
 
       switch ($dom->documentElement->tagName) {
 
@@ -358,9 +358,9 @@
 
       $dom->appendChild( $vmod_node );
 
-      if (!empty($previous->data['filename'])) unlink(FS_DIR_APP . 'vmods/' . $previous->data['filename']);
+      if (!empty($previous->data['filename'])) unlink(FS_DIR_STORAGE . 'vmods/' . $previous->data['filename']);
 
-      $dom->save(FS_DIR_APP . 'vmods/' . $this->data['filename']);
+      $dom->save(FS_DIR_STORAGE . 'vmods/' . $this->data['filename']);
 
       $this->previous = $this->data;
 
@@ -369,7 +369,7 @@
 
     public function delete() {
 
-      unlink(FS_DIR_APP . 'vmods/' . $this->previous['filename']);
+      unlink(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename']);
 
       $this->reset();
 

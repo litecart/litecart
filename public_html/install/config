@@ -11,10 +11,12 @@
 
   define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
   define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');
+  define('FS_DIR_STORAGE',     FS_DIR_APP . '/');
 
 // Web System
   define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
   define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');
+  define('WS_DIR_STORAGE',     WS_DIR_APP . '/');
 
 ######################################################################
 ## Backward Compatible Directory Definitions (LiteCart <2.2)  ########

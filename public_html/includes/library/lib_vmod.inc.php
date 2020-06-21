@@ -29,14 +29,14 @@
       } else {
 
       // Get last modification date for modifications
-        $folder_last_modified = filemtime(FS_DIR_APP .'vmods/');
+        $folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/');
         if ($folder_last_modified > $last_modified) {
           $last_modified = $folder_last_modified;
         }
       }
 
     // Load installed
-      $installed_file = FS_DIR_APP . 'vmods/.installed';
+      $installed_file = FS_DIR_STORAGE . 'vmods/.installed';
       if (is_file($installed_file)) {
         foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $vmod_id) {
           self::$_installed[] = $vmod_id;
@@ -44,7 +44,7 @@
       }
 
     // Get modifications from cache
-      $cache_file = FS_DIR_APP . 'cache/vmod_modifications.cache';
+      $cache_file = FS_DIR_STORAGE . 'cache/vmod_modifications.cache';
       if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
         if ($cache = file_get_contents($cache_file)) {
           if ($cache = json_decode($cache, true)) {
@@ -54,7 +54,7 @@
         }
       }
 
-      $checked_file = FS_DIR_APP . 'cache/vmod_checked.cache';
+      $checked_file = FS_DIR_STORAGE . 'cache/vmod_checked.cache';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($short_file, $modified_file, $checksum) = explode(';', $line);
@@ -67,7 +67,7 @@
 
     // Load modifications from disk
       if (empty(self::$_modifications)) {
-        foreach (glob(FS_DIR_APP .'vmods/*.xml') as $file) {
+        foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
           self::_load_file($file);
         }
 
@@ -82,8 +82,8 @@
       }
 
     // Load settings
-      if (!is_file(FS_DIR_APP . 'vmods/.settings')) file_put_contents(FS_DIR_APP . 'vmods/.settings', '{}');
-      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_APP . 'vmods/.settings'), true)) {
+      if (!is_file(FS_DIR_STORAGE . 'vmods/.settings')) file_put_contents(FS_DIR_STORAGE . 'vmods/.settings', '{}');
+      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/.settings'), true)) {
         self::$_settings = [];
       }
 
@@ -109,7 +109,7 @@
       }
 
       $short_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_APP . 'cache/modifications/' . preg_replace('#[/\\\\]+#', '—', $short_file);
+      $modified_file = FS_DIR_STORAGE . 'cache/modifications/' . preg_replace('#[/\\\\]+#', '—', $short_file);
 
     // Returned already checked file
       if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
@@ -208,13 +208,13 @@
       }
 
     // Create cache folder for modified files if missing
-      if (!is_dir(FS_DIR_APP . 'cache/modifications/')) {
-        if (!mkdir(FS_DIR_APP . 'cache/modifications/', 0777)) {
+      if (!is_dir(FS_DIR_STORAGE . 'cache/modifications/')) {
+        if (!mkdir(FS_DIR_STORAGE . 'cache/modifications/', 0777)) {
           throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
         }
       }
 
-      if (!is_writable(FS_DIR_APP . 'cache/modifications/')) {
+      if (!is_writable(FS_DIR_STORAGE . 'cache/modifications/')) {
         throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
       }
 
@@ -229,7 +229,7 @@
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
-      file_put_contents(FS_DIR_APP . 'cache/vmod_checked.cache', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . 'cache/vmod_checked.cache', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
 
@@ -299,7 +299,7 @@
             })($vmod['install']);
           }
 
-          file_put_contents(FS_DIR_APP . 'vmods/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+          file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
           self::$_installed[] = $vmod['id'];
         }
 

@@ -22,7 +22,6 @@
 
       // Load template settings structure
         $template_config = include vmod::check(FS_DIR_APP . 'includes/templates/' . basename($_POST['template_catalog']) .'/config.inc.php');
-        if (!is_array($template_config)) include vmod::check(FS_DIR_APP . 'includes/templates/' . basename($_POST['template_catalog']) .'/config.inc.php'); // Backwards compatibility
 
       // Set template default settings
         $settings = [];

@@ -37,7 +37,7 @@
       $images = '';
       if ($category['image']) {
         $images = '    <image:image>' . PHP_EOL
-                . '      <image:loc>'. document::link(WS_DIR_APP . 'images/' . $category['image']) .'</image:loc>' . PHP_EOL
+                . '      <image:loc>'. document::link(WS_DIR_STORAGE . 'images/' . $category['image']) .'</image:loc>' . PHP_EOL
                 . '    </image:image>' . PHP_EOL;
       }
 
@@ -76,7 +76,7 @@
       $images = '';
       if ($product['image']) {
         $images = '    <image:image>' . PHP_EOL
-                . '      <image:loc>'. document::link(WS_DIR_APP . 'images/' . $product['image']) .'</image:loc>' . PHP_EOL
+                . '      <image:loc>'. document::link(WS_DIR_STORAGE . 'images/' . $product['image']) .'</image:loc>' . PHP_EOL
                 . '    </image:image>' . PHP_EOL;
       }
 

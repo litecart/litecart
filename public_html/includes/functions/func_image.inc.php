@@ -22,10 +22,10 @@
 
     try {
 
-      if (!is_file($source)) $source = FS_DIR_APP . 'images/no_image.png';
+      if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
       $options = [
-        'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_APP . 'cache/',
+        'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_STORAGE . 'cache/',
         'width' => !empty($options['width']) ? $options['width'] : 0,
         'height' => !empty($options['height']) ? $options['height'] : 0,
         'clipping' => !empty($options['clipping']) ? $options['clipping'] : 'FIT_ONLY_BIGGER',
@@ -61,7 +61,7 @@
       }
 
       if (!empty($options['watermark'])) {
-        if ($options['watermark'] === true) $options['watermark'] = FS_DIR_APP . 'images/logotype.png';
+        if ($options['watermark'] === true) $options['watermark'] = FS_DIR_STORAGE . 'images/logotype.png';
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
@@ -88,7 +88,7 @@
 
   function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=false) {
 
-    if (!is_file($source)) $source = FS_DIR_APP . 'images/no_image.png';
+    if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
     $path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
 
@@ -146,19 +146,19 @@
       '.'.$extension,
     ]);
 
-    if (is_file(FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename)) {
+    if (is_file(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2) . '/' . $filename)) {
       return 'cache/' . substr($filename, 0, 2) . '/' . $filename;
     }
 
-    if (!is_dir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
-      if (!mkdir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
+    if (!is_dir(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2))) {
+      if (!mkdir(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2))) {
         trigger_error('Could not create cache subfolder', E_USER_WARNING);
         return false;
       }
     }
 
     return image_process($source, [
-      'destination' => FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename,
+      'destination' => FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2) . '/' . $filename,
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,
@@ -174,7 +174,7 @@
 
     $cachename = sha1($webpath);
 
-    foreach (glob(FS_DIR_APP . 'cache/'. substr($cachename, 0, 3) .'/' . $cachename .'*') as $file) {
+    foreach (glob(FS_DIR_STORAGE . 'cache/'. substr($cachename, 0, 3) .'/' . $cachename .'*') as $file) {
       unlink($file);
     }
   }

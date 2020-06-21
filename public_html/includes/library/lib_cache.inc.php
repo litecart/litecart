@@ -29,7 +29,7 @@
       }
 
       if (settings::get('cache_clear_thumbnails')) {
-        foreach (glob(FS_DIR_APP .'cache/*', GLOB_ONLYDIR) as $dir) {
+        foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
           foreach (glob($dir.'/*.{jpg,png,webp}', GLOB_BRACE) as $file) {
             unlink($file);
           }
@@ -179,7 +179,7 @@
 
         case 'file':
 
-          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
+          $cache_file = FS_DIR_STORAGE .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
@@ -233,7 +233,7 @@
 
         case 'file':
 
-          $cache_file = FS_DIR_APP .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
+          $cache_file = FS_DIR_STORAGE .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
           if (!is_dir(dirname($cache_file))) {
             if (!mkdir(dirname($cache_file))) {
@@ -327,13 +327,13 @@
 
     // Clear modifications
       if (empty($keyword)) {
-        foreach (glob(FS_DIR_APP . 'cache/vmods/*.php') as $file) {
+        foreach (glob(FS_DIR_STORAGE . 'cache/vmods/*.php') as $file) {
           if (is_file($file)) unlink($file);
         }
       }
 
     // Clear files
-      foreach (glob(FS_DIR_APP .'cache/*', GLOB_ONLYDIR) as $dir) {
+      foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
         $search = !empty($keyword) ? '/*_'.$keyword.'*.cache' : '/*.cache';
         foreach (glob($dir.$search) as $file) unlink($file);
       }

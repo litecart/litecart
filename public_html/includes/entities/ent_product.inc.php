@@ -562,11 +562,11 @@
       );
 
       while ($product_image = database::fetch($products_images_query)) {
-        if (is_file(FS_DIR_APP . 'images/' . $product_image['filename'])) {
-          unlink(FS_DIR_APP . 'images/' . $product_image['filename']);
+        if (is_file(FS_DIR_STORAGE . 'images/' . $product_image['filename'])) {
+          unlink(FS_DIR_STORAGE . 'images/' . $product_image['filename']);
         }
 
-        functions::image_delete_cache(FS_DIR_APP . 'images/' . $product_image['filename']);
+        functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $product_image['filename']);
 
         database::query(
           "delete from ". DB_PREFIX ."products_images
@@ -590,10 +590,10 @@
             $image['id'] = database::insert_id();
           }
 
-          if (!empty($image['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $image['new_filename'])) {
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $image['filename']);
-            functions::image_delete_cache(FS_DIR_APP . 'images/' . $image['new_filename']);
-            rename(FS_DIR_APP . 'images/' . $image['filename'], FS_DIR_APP . 'images/' . $image['new_filename']);
+          if (!empty($image['new_filename']) && !is_file(FS_DIR_STORAGE . 'images/' . $image['new_filename'])) {
+            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $image['filename']);
+            functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $image['new_filename']);
+            rename(FS_DIR_STORAGE . 'images/' . $image['filename'], FS_DIR_STORAGE . 'images/' . $image['new_filename']);
             $image['filename'] = $image['new_filename'];
           }
 
@@ -644,13 +644,13 @@
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_APP . 'images/products/')) mkdir(FS_DIR_APP . 'images/products/', 0777);
+      if (!is_dir(FS_DIR_STORAGE . 'images/products/')) mkdir(FS_DIR_STORAGE . 'images/products/', 0777);
 
       if (!$image = new ent_image($file)) return false;
 
     // 456-Fancy-product-title-N.jpg
       $i=1;
-      while (empty($filename) || is_file(FS_DIR_APP . 'images/' . $filename)) {
+      while (empty($filename) || is_file(FS_DIR_STORAGE . 'images/' . $filename)) {
         $filename = 'products/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type;
       }
 
@@ -661,9 +661,9 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 90)) return false;
+      if (!$image->write(FS_DIR_STORAGE . 'images/' . $filename, 90)) return false;
 
-      functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
+      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
 
       database::query(
         "insert into ". DB_PREFIX ."products_images

@@ -25,8 +25,8 @@
         'name' => $manufacturer['name'],
         'image' => [
           'original' => 'images/' . $manufacturer['image'],
-          'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 320, 100, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
-          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 640, 200, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+          'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer['image'], 320, 100, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer['image'], 640, 200, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
         ],
         'link' => document::ilink('manufacturer', ['manufacturer_id' => $manufacturer['id']]),
       ];

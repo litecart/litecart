@@ -55,7 +55,7 @@
 
       <section class="hidden-xs hidden-sm col-md-4" style="align-self: center;">
         <div class="logotype">
-          <img src="<?php echo document::href_link(WS_DIR_APP . 'images/logotype.png'); ?>" class="img-responsive" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" class="img-responsive" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
         </div>
 
         <ul class="modules list-inline text-center">
