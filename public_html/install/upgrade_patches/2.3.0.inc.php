@@ -10,7 +10,11 @@
   $deleted_files = [
     FS_DIR_ADMIN . 'customers.app/mailchimp.png',
     FS_DIR_APP . 'includes/functions/func_password.inc.php',
-    FS_DIR_APP . 'ext/jquery/jquery-3.4.1.min.js',
+    FS_DIR_APP . 'ext/chartist/',
+    FS_DIR_APP . 'ext/featherlight/',
+    FS_DIR_APP . 'ext/fontawesome/',
+    FS_DIR_APP . 'ext/jquery/',
+    FS_DIR_APP . 'ext/trumbowyg/',
     FS_DIR_APP . 'vqmod/',
   ];
 
@@ -18,6 +22,11 @@
     if (!file_delete($pattern)) {
       echo '<span class="error">[Skipped]</span></p>';
     }
+  }
+
+// Move some files
+  foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
+    rename($file, FS_DIR_APP . 'vendor/' . basename($file));
   }
 
 // Modify some files
