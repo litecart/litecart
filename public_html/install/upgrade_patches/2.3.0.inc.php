@@ -62,7 +62,12 @@
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######",
-      'replace' => "## Backward Compatible Directory Definitions (LiteCart <2.2)   #######",
+      'replace' => "## Backward Compatible Directory Definitions (LiteCart <2.2) #########",
+    ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'pattern'  => '#'. preg_quote('## Backward Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?'. preg_quote('## Database ##########################################################', '#') .'#',
+      'replace' => '## Database ##########################################################',
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
