@@ -388,6 +388,6 @@
         mkdir(dirname($new_file));
       }
 
-      rename($file, $new_file);
+      file_rename($file, $new_file);
     }
   }

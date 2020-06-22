@@ -69,6 +69,8 @@
 // Function to rename file or folder
   function file_rename($source, $target) {
 
+    echo 'Rename '. $source . ' to ' . $target . '<br />' . PHP_EOL;
+
     $result = rename($source, $target);
 
     return $result;
