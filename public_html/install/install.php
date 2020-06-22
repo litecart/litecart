@@ -338,18 +338,6 @@
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
-    ### Admin > Folder ############################################
-
-    if (!empty($_REQUEST['admin_folder']) && $_REQUEST['admin_folder'] != 'admin') {
-      echo '<p>Renaming admin folder...';
-      if (is_dir('../admin/')) {
-        rename('../admin/', '../'.$_REQUEST['admin_folder']);
-        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-      } else {
-        echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
-      }
-    }
-
     ### Admin > .htaccess Protection ##############################
 
     echo '<p>Securing admin folder...';
@@ -509,10 +497,10 @@
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
       $files_to_delete = [
-        '../includes/templates/default.catalog/css/app.css',
-        '../includes/templates/default.catalog/css/checkout.css',
-        '../includes/templates/default.catalog/css/framework.css',
-        '../includes/templates/default.catalog/css/printable.css',
+        '../frontend/templates/default/css/app.css',
+        '../frontend/templates/default/css/checkout.css',
+        '../frontend/templates/default/css/framework.css',
+        '../frontend/templates/default/css/printable.css',
       ];
 
       foreach ($files_to_delete as $file) {
@@ -526,11 +514,11 @@
     } else {
 
       $files_to_delete = [
-        '../includes/templates/default.catalog/css/*.min.css',
-        '../includes/templates/default.catalog/css/*.min.css.map',
-        '../includes/templates/default.catalog/js/*.min.js',
-        '../includes/templates/default.catalog/js/*.min.js.map',
-        '../includes/templates/default.catalog/less/',
+        '../frontend/templates/default/css/*.min.css',
+        '../frontend/templates/default/css/*.min.css.map',
+        '../frontend/templates/default/js/*.min.js',
+        '../frontend/templates/default/js/*.min.js.map',
+        '../frontend/templates/default/less/',
       ];
 
       foreach ($files_to_delete as $file) {
@@ -542,7 +530,7 @@
         }
       }
 
-      foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
+      foreach (glob('../frontend/templates/default/layouts/*.inc.php') as $file) {
         echo 'Modify '. $file . PHP_EOL;
         $contents = file_get_contents($file);
         $search_replace = [

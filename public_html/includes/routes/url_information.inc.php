@@ -8,6 +8,7 @@
           'pattern' => '#^.*-i-([0-9]+)/?$#',
           'page' => 'information',
           'params' => 'page_id=$1',
+          'endpoint' => 'frontend',
           'options' => [
             'redirect' => true,
           ],

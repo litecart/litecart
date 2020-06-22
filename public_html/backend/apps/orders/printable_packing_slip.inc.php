@@ -1,0 +1,20 @@
+<?php
+  document::$template = settings::get('store_template');
+  document::$snippets['template_path'] = WS_DIR_APP . 'frontend/templates/'. settings::get('store_template') .'/';
+  document::$layout = 'printable';
+
+  if (empty($_GET['order_id'])) die('Missing order ID');
+
+  $order = new ent_order($_GET['order_id']);
+
+  $session_language = language::$selected['code'];
+  language::set($order->data['language_code']);
+
+  $_page = new ent_view();
+  $_page->snippets['order'] = $order->data;
+  echo $_page->stitch('pages/printable_packing_slip');
+
+  language::set($session_language);
+
+  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+  exit;

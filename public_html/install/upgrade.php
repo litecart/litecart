@@ -146,10 +146,10 @@
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
         $files_to_delete = [
-          FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
-          FS_DIR_APP . 'includes/templates/default.catalog/css/checkout.css',
-          FS_DIR_APP . 'includes/templates/default.catalog/css/framework.css',
-          FS_DIR_APP . 'includes/templates/default.catalog/css/printable.css',
+          FS_DIR_APP . 'frontend/templates/default/css/app.css',
+          FS_DIR_APP . 'frontend/templates/default/css/checkout.css',
+          FS_DIR_APP . 'frontend/templates/default/css/framework.css',
+          FS_DIR_APP . 'frontend/templates/default/css/printable.css',
         ];
 
         foreach ($files_to_delete as $file) {
@@ -159,18 +159,18 @@
       } else {
 
         $files_to_delete = [
-          FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css',
-          FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css.map',
-          FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js',
-          FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js.map',
-          FS_DIR_APP . 'includes/templates/default.catalog/less/',
+          FS_DIR_APP . 'frontend/templates/default/css/*.min.css',
+          FS_DIR_APP . 'frontend/templates/default/css/*.min.css.map',
+          FS_DIR_APP . 'frontend/templates/default/js/*.min.js',
+          FS_DIR_APP . 'frontend/templates/default/js/*.min.js.map',
+          FS_DIR_APP . 'frontend/templates/default/less/',
         ];
 
         foreach ($files_to_delete as $file) {
           file_delete($file);
         }
 
-        foreach (glob(FS_DIR_APP . 'includes/templates/default.catalog/layouts/*.inc.php') as $file) {
+        foreach (glob(FS_DIR_APP . 'frontend/templates/default/layouts/*.inc.php') as $file) {
           $contents = file_get_contents($file);
           $search_replace = [
             'app.min.css'  => 'app.css',

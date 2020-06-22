@@ -8,6 +8,7 @@
           'pattern' => '#^.*-m-([0-9]+)/?$#',
           'page' => 'manufacturer',
           'params' => 'manufacturer_id=$1',
+          'endpoint' => 'frontend',
           'options' => [
             'redirect' => true,
           ],

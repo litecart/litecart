@@ -1,0 +1,87 @@
+<?php
+
+  document::$snippets['title'][] = language::translate('title_template', 'Template');
+
+  breadcrumbs::add(language::translate('title_template', 'Template'));
+
+  if (isset($_POST['save'])) {
+
+    try {
+      if (!preg_match('#(\.catalog)$#', $_POST['template'])) throw new Exception(language::translate('error_invalid_template', 'Not a valid template'));
+
+      if ($_POST['template'] != settings::get('store_template')) {
+        database::query(
+          "update ". DB_PREFIX ."settings
+          set
+            `value` = '". database::input($_POST['template']) ."',
+            date_updated = '". date('Y-m-d H:i:s') ."'
+          where `key` = '". database::input('store_template') ."'
+          limit 1;"
+        );
+
+      // Load template settings structure
+        $template_config = include vmod::check(FS_DIR_APP . 'frontend/templates/' . basename($_POST['template']) .'/config.inc.php');
+
+      // Set template default settings
+        $settings = [];
+        foreach (array_keys($template_config) as $i) {
+          $settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
+        }
+
+        database::query(
+          "update ". DB_PREFIX ."settings
+          set
+            `value` = '". database::input(json_encode($settings, JSON_UNESCAPED_SLASHES)) ."',
+            date_updated = '". date('Y-m-d H:i:s') ."'
+          where `key` = '". database::input('store_template_settings') ."'
+          limit 1;"
+        );
+
+        if (!empty($settings)) {
+          $redirect_to_settings = true;
+        }
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+
+      if (!empty($redirect_to_settings)) {
+        $redirect_url = document::link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']);
+      } else {
+        $redirect_url = document::link();
+      }
+
+      header('Location: '. $redirect_url);
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+?>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <?php echo $app_icon; ?> <?php echo language::translate('title_template', 'Template'); ?>
+  </div>
+
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('template_form', 'post', null, false, 'style="max-width: 320px;"'); ?>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_catalog_template', 'Catalog Template'); ?></label>
+          <div class="input-group">
+            <?php echo functions::form_draw_templates_list('template', empty($_POST['template']) ? settings::get('store_template') : true); ?>
+            <span class="input-group-btn">
+              <a class="btn btn-default" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
+            </span>
+          </div>
+      </div>
+
+      <div class="btn-group">
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+      </div>
+
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
+</div>

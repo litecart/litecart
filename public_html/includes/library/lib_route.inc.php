@@ -1,6 +1,7 @@
 <?php
 
   class route {
+
     private static $_classes = [];
     private static $_links_cache = [];
     private static $_links_cache_token;
@@ -14,7 +15,7 @@
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
     // Load cached links (url rewrites)
-      self::$_links_cache_token = cache::token('links', ['site', 'language']);
+      self::$_links_cache_token = cache::token('links', ['site', 'endpoint', 'language'], 'file', 900);
       self::$_links_cache = cache::get(self::$_links_cache_token);
 
       event::register('after_capture', [__CLASS__, 'after_capture']);
@@ -38,14 +39,15 @@
         if (!$routes = self::$_classes[$name]->routes())  continue;
 
         foreach ($routes as $route) {
-          self::add($route['pattern'], $route['page'], $route['params'], $route['options']);
+          self::add($route['pattern'], $route['endpoint'], $route['page'], $route['params'], $route['options']);
         }
       }
     }
 
-    public static function add($pattern, $page, $params='', $options=[]) {
+    public static function add($pattern, $endpoint, $page, $params='', $options=[]) {
       self::$_routes[] = [
         'pattern' => $pattern,
+        'endpoint' => $endpoint,
         'page' => $page,
         'params' => $params,
         'options' => $options,
@@ -76,7 +78,11 @@
       if (empty(self::$route)) self::identify();
 
       if (!empty(self::$route['page'])) {
-        $page = FS_DIR_APP . 'pages/' . self::$route['page'] .'.inc.php';
+        if (!empty(self::$route['endpoint']) && self::$route['endpoint'] == 'backend') {
+          $page = FS_DIR_APP . 'backend/pages/' . self::$route['page'] .'.inc.php';
+      } else {
+          $page = FS_DIR_APP . 'frontend/pages/' . self::$route['page'] .'.inc.php';
+        }
       } else {
         $page = false;
       }
@@ -132,7 +138,7 @@
         sort($lines);
 
         if (count($lines) >= 100) {
-          $email = new email();
+          $email = new ent_email();
           $email->add_recipient(settings::get('store_email'))
                 ->set_subject('[Not Found Report] '. settings::get('store_name'))
                 ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))

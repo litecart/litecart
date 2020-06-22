@@ -2,7 +2,7 @@
 
   class document {
 
-    public static $template = '';
+    public static $template = 'default';
     public static $layout = 'default';
     public static $snippets = [];
     public static $settings = [];
@@ -19,14 +19,13 @@
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template
-      if (preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
-        self::$template = settings::get('store_template_admin');
+      if (!empty(route::$route['endpoint']) && route::$route['endpoint'] == 'backend') {
+        define('FS_DIR_TEMPLATE', FS_DIR_APP . 'backend/template/');
+        define('WS_DIR_TEMPLATE', WS_DIR_APP . 'backend/template/');
       } else {
-        self::$template = settings::get('store_template_catalog');
+        define('FS_DIR_TEMPLATE', FS_DIR_APP . 'frontend/templates/'. self::$template .'/');
+        define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. self::$template .'/');
       }
-
-      define('FS_DIR_TEMPLATE', FS_DIR_APP .'includes/templates/'. self::$template .'/');
-      define('WS_DIR_TEMPLATE', WS_DIR_APP .'includes/templates/'. self::$template .'/');
 
     // Set AJAX layout on AJAX request
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
@@ -60,9 +59,9 @@
       }
 
     // Get template settings
-      $template_config = include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php');
+      $template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('store_template') .'/config.inc.php');
 
-      self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
+      self::$settings = @json_decode(settings::get('frontend/templates/default/_settings'), true);
 
       foreach (array_keys($template_config) as $i) {
         if (!isset(self::$settings[$template_config[$i]['key']])) {

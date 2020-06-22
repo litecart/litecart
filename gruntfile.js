@@ -32,15 +32,15 @@ module.exports = function(grunt) {
         options: {
           compress: true,
           sourceMap: true,
-          sourceMapBasepath: 'public_html/includes/templates/default.admin/less/',
+          sourceMapBasepath: 'public_html/backend/template/less/',
           sourceMapRootpath: '../less/',
           sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
-          'public_html/includes/templates/default.admin/css/app.min.css'       : 'public_html/includes/templates/default.admin/less/app.less',
-          'public_html/includes/templates/default.admin/css/framework.min.css' : 'public_html/includes/templates/default.admin/less/framework.less',
-          'public_html/includes/templates/default.admin/css/printable.min.css' : 'public_html/includes/templates/default.admin/less/printable.less',
+          'public_html/backend/template/css/app.min.css'       : 'public_html/backend/template/less/app.less',
+          'public_html/backend/template/css/framework.min.css' : 'public_html/backend/template/less/framework.less',
+          'public_html/backend/template/css/printable.min.css' : 'public_html/backend/template/less/printable.less',
         }
       },
       frontend_template: {
@@ -50,40 +50,40 @@ module.exports = function(grunt) {
           relativeUrls: true
         },
         files: {
-          'public_html/includes/templates/default.catalog/css/app.css'       : 'public_html/includes/templates/default.catalog/less/app.less',
-          'public_html/includes/templates/default.catalog/css/checkout.css'  : 'public_html/includes/templates/default.catalog/less/checkout.less',
-          'public_html/includes/templates/default.catalog/css/framework.css' : 'public_html/includes/templates/default.catalog/less/framework.less',
-          'public_html/includes/templates/default.catalog/css/printable.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
-          'public_html/includes/templates/default.catalog/css/variables.css' : 'public_html/includes/templates/default.catalog/less/variables.less',
+          'public_html/frontend/templates/default/css/app.css'       : 'public_html/frontend/templates/default/less/app.less',
+          'public_html/frontend/templates/default/css/checkout.css'  : 'public_html/frontend/templates/default/less/checkout.less',
+          'public_html/frontend/templates/default/css/framework.css' : 'public_html/frontend/templates/default/less/framework.less',
+          'public_html/frontend/templates/default/css/printable.css' : 'public_html/frontend/templates/default/less/printable.less',
+          'public_html/frontend/templates/default/css/variables.css' : 'public_html/frontend/templates/default/less/variables.less',
         }
       },
       frontend_template_minified: {
         options: {
           compress: true,
           sourceMap: true,
-          sourceMapBasepath: 'public_html/includes/templates/default.catalog/less/',
+          sourceMapBasepath: 'public_html/frontend/templates/default/less/',
           sourceMapRootpath: '../less/',
           sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
-          'public_html/includes/templates/default.catalog/css/app.min.css'       : 'public_html/includes/templates/default.catalog/less/app.less',
-          'public_html/includes/templates/default.catalog/css/checkout.min.css'  : 'public_html/includes/templates/default.catalog/less/checkout.less',
-          'public_html/includes/templates/default.catalog/css/framework.min.css' : 'public_html/includes/templates/default.catalog/less/framework.less',
-          'public_html/includes/templates/default.catalog/css/printable.min.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
+          'public_html/frontend/templates/default/css/app.min.css'       : 'public_html/frontend/templates/default/less/app.less',
+          'public_html/frontend/templates/default/css/checkout.min.css'  : 'public_html/frontend/templates/default/less/checkout.less',
+          'public_html/frontend/templates/default/css/framework.min.css' : 'public_html/frontend/templates/default/less/framework.less',
+          'public_html/frontend/templates/default/css/printable.min.css' : 'public_html/frontend/templates/default/less/printable.less',
         }
       },
       featherlight_minified: {
         options: {
           compress: true,
           sourceMap: true,
-          sourceMapBasepath: 'public_html/ext/featherlight/',
+          sourceMapBasepath: 'public_html/vendor/featherlight/',
           sourceMapRootpath: './',
           sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
-          'public_html/ext/featherlight/featherlight.min.css'       : 'public_html/ext/featherlight/featherlight.less',
+          'public_html/vendor/featherlight/featherlight.min.css'       : 'public_html/vendor/featherlight/featherlight.less',
         }
       },
     },
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
           compass: false
         },
         files: {
-          'public_html/ext/trumbowyg/ui/trumbowyg.min.css': 'public_html/ext/trumbowyg/ui/trumbowyg.scss'
+          'public_html/vendor/trumbowyg/ui/trumbowyg.min.css': 'public_html/vendor/trumbowyg/ui/trumbowyg.scss'
         }
       }
     },
@@ -108,7 +108,7 @@ module.exports = function(grunt) {
           sourceMap: true,
         },
         files: {
-          'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
+          'public_html/vendor/featherlight/featherlight.min.js'   : ['public_html/vendor/featherlight/featherlight.js'],
         }
       },
       litecart: {
@@ -116,8 +116,8 @@ module.exports = function(grunt) {
           sourceMap: true,
         },
         files: {
-          'public_html/includes/templates/default.admin/js/app.min.js'   : ['public_html/includes/templates/default.admin/js/app.js'],
-          'public_html/includes/templates/default.catalog/js/app.min.js' : ['public_html/includes/templates/default.catalog/js/app.js'],
+          'public_html/backend/template/js/app.min.js'   : ['public_html/backend/template/js/app.js'],
+          'public_html/frontend/templates/default/js/app.min.js' : ['public_html/frontend/templates/default/js/app.js'],
         }
       },
     },
@@ -140,21 +140,21 @@ module.exports = function(grunt) {
       },
       less: {
         files: [
-          'public_html/ext/featherlight/featherlight.less',
+          'public_html/vendor/featherlight/featherlight.less',
           'public_html/includes/templates/**/*.less',
         ],
         tasks: ['less']
       },
       javascripts: {
         files: [
-          'public_html/ext/featherlight/featherlight.js',
+          'public_html/vendor/featherlight/featherlight.js',
           'public_html/includes/templates/**/js/*.js',
         ],
         tasks: ['uglify']
       },
       sass: {
         files: [
-          'public_html/ext/trumbowyg/ui/trumbowyg.scss',
+          'public_html/vendor/trumbowyg/ui/trumbowyg.scss',
         ],
         tasks: ['sass']
       },

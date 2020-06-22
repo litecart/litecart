@@ -8,6 +8,7 @@
           'pattern' => '#^(?:index\.php)?$#',
           'page' => 'index',
           'params' => '',
+          'endpoint' => 'frontend',
           'options' => [
             'redirect' => true,
           ],

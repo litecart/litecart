@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>LiteCart Installer</title>
-<link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.min.css" />
+<link rel="stylesheet" href="../frontend/templates/default/css/framework.min.css" />
 <style>
 html {
   background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%);
@@ -49,5 +49,5 @@ span.warning {
 <div class="glass-edges">
   <main id="content">
     <header class="text-center">
-      <img src="../includes/templates/default.admin/images/logotype.svg" alt="LiteCart" style="max-height: 100px" />
+      <img src="../backend/template/images/logotype.svg" alt="LiteCart" style="max-height: 100px" />
     </header>

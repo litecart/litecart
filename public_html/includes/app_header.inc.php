@@ -14,16 +14,12 @@
     require_once __DIR__ . '/config.inc.php';
   }
 
-// Virtual Modifications System
+// Virtual Modification System
   require_once __DIR__ . '/library/lib_vmod.inc.php';
-  vmod::init(); // Requires hard initialization as autoloader comes later
+  vmod::init();
 
 // Compatibility and Polyfills
   require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
-
-// Virtual Modifications System
-  require_once FS_DIR_APP . 'includes/library/lib_vmod.inc.php';
-  vmod::init(); // Jump start the library
 
 // Autoloader
   require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
@@ -43,6 +39,3 @@
   if (file_get_contents('php://input')) {
     class_exists('form');
   }
-
-// Run operations before capture
-  event::fire('before_capture');

@@ -1414,9 +1414,9 @@ END;
     }
   }
 
-  function form_draw_templates_list($type='catalog', $name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_templates_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $folders = glob(FS_DIR_APP . 'includes/templates/*.'. $type);
+    $folders = glob(FS_DIR_APP . 'frontend/templates/*', GLOB_ONLYDIR);
 
     $options = [];
 

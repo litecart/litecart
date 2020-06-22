@@ -29,6 +29,14 @@
     rename($file, FS_DIR_APP . 'vendor/' . basename($file));
   }
 
+  foreach (glob(FS_DIR_APP . 'frontend/templates/*.catalog') as $file) {
+    rename($file, FS_DIR_APP . 'frontend/templates/' . preg_replace('\.catalog$', '', basename($file)));
+  }
+
+  foreach (glob(FS_DIR_APP . 'frontend/templates/*.widget') as $file) {
+    rename($file, FS_DIR_APP . 'frontend/templates/' . preg_replace('\.catalog$', '', basename($file)));
+  }
+
 // Modify some files
   $modified_files = [
     [
@@ -58,15 +66,20 @@
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "	define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
-      'replace' => "	define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . "	define('FS_DIR_STORAGE',     FS_DIR_APP . '/');" . PHP_EOL,
+      'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
+      'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . 'backend/');" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "	define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
-      'replace' => "	define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . "	define('WS_DIR_STORAGE',     WS_DIR_APP . '/');" . PHP_EOL,
+      'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
+      'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                 . "  define('FS_DIR_STORAGE',     FS_DIR_APP);" . PHP_EOL,
+    ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
+      'replace' => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                 . "  define('WS_DIR_STORAGE',     WS_DIR_APP);" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
