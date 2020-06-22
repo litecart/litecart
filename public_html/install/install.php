@@ -236,7 +236,6 @@
       '{DB_DATABASE_CHARSET}' => 'utf8',
       '{DB_PERSISTENT_CONNECTIONS}' => 'false',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
-      '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
     ];
 
     $config = strtr($config, $map);
