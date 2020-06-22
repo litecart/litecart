@@ -538,13 +538,13 @@ END;
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_APP .'ext/trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_APP .'vendor/trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
+                                                  . '<link href="'. WS_DIR_APP .'vendor/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
 
-    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_APP .'ext/trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
-                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_APP .'ext/trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
-                                                  . '<script src="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
-                                                  . '<script src="'. WS_DIR_APP .'ext/trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_APP .'vendor/trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
+                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_APP .'vendor/trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
+                                                  . '<script src="'. WS_DIR_APP .'vendor/trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_APP .'vendor/trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
                                         . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL

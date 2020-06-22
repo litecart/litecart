@@ -163,8 +163,8 @@
 
     $selector = str_replace("'", '"', $selector);
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/featherlight/featherlight.min.css" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_APP .'ext/featherlight/featherlight.min.js"></script>';
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'vendor/featherlight/featherlight.min.css" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_APP .'vendor/featherlight/featherlight.min.js"></script>';
     document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL
