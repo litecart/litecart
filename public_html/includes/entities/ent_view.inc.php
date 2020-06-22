@@ -34,7 +34,6 @@
         $search_replace = [];
         foreach (array_keys($this->snippets) as $key) {
           if (!is_string($this->snippets[$key])) continue;
-          $search_replace['<!--snippet:'.$key.'-->'] = &$this->snippets[$key];
           $search_replace['{snippet:'.$key.'}'] = &$this->snippets[$key];
         }
 
@@ -47,12 +46,7 @@
 
     // Clean orphan snippets
       if ($cleanup) {
-        $search = [
-          '#\{snippet:.*?\}#',
-          '#<!--snippet:.*?-->#',
-        ];
-
-        $this->html = preg_replace($search, '', $this->html);
+        $this->html = preg_replace('#\{snippet:.*?\}#', '', $this->html);
       }
 
       return $this->html;
