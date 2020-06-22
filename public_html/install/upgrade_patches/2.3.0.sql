@@ -24,3 +24,5 @@ UPDATE `lc_settings` SET `key` = 'store_template' WHERE `key` = 'store_template_
 UPDATE `lc_settings` SET `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'store_template' LIMIT 1;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` = 'store_template_admin' LIMIT 1;
+-- --------------------------------------------------------
+DELETE FROM `lc_settings` WHERE `key` = 'gzip_enabled' LIMIT 1;

@@ -2,8 +2,8 @@
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '2.3');
 
-// Start redirecting output to the output buffer
-  ob_start();
+// Capture output buffer
+  ob_start('ob_gzhandler');
 
 // Get config
   if (!defined('FS_DIR_APP')) {
@@ -33,7 +33,6 @@
   require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
 // Jump-start some library modules
-  class_exists('compression');
   class_exists('notices');
   class_exists('stats');
   if (file_get_contents('php://input')) {
