@@ -338,34 +338,6 @@
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
-    ### Admin > .htaccess Protection ##############################
-
-    echo '<p>Securing admin folder...';
-
-    $htaccess = '# Solve 401 rewrite and auth conflict on some machines' . PHP_EOL
-              .  'ErrorDocument 401 "Access Forbidden"' . PHP_EOL
-              . PHP_EOL
-              . '# Basic authentication' . PHP_EOL
-              . '<IfModule mod_auth.c>' . PHP_EOL
-              . '  AuthType Basic' . PHP_EOL
-              . '  AuthName "Restricted Area"' . PHP_EOL
-              . '  AuthUserFile "' . FS_DIR_APP . $_REQUEST['admin_folder'] . '/.htpasswd"' . PHP_EOL
-              . '  Require valid-user' . PHP_EOL
-              . '</IfModule>' . PHP_EOL
-              . '<IfModule mod_auth_basic.c>' . PHP_EOL
-              . '  AuthType Basic' . PHP_EOL
-              . '  AuthName "Restricted Area"' . PHP_EOL
-              . '  AuthUserFile "' . FS_DIR_APP . $_REQUEST['admin_folder'] . '/.htpasswd"' . PHP_EOL
-              . '  Require valid-user' . PHP_EOL
-              . '</IfModule>';
-
-    if (is_dir('../'.$_REQUEST['admin_folder'])) {
-      file_put_contents('../'. $_REQUEST['admin_folder'] .'/.htaccess', $htaccess);
-      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-    } else {
-      echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
-    }
-
     ### Admin > .htpasswd Users ###################################
 
     echo '<p>Granting admin access for user '. $_REQUEST['username'] .'...';

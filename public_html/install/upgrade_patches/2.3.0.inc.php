@@ -329,6 +329,8 @@
   }
 
 // Move some files
+  file_rename($file, FS_DIR_ADMIN . '.htpasswd', FS_DIR_APP . '.htpasswd');
+
   foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
     file_rename($file, FS_DIR_APP . 'backend/apps/' . preg_replace('\.app$', '', basename($file)));
   }
@@ -428,8 +430,8 @@
   $modified_files = [
     [
       'file'    => FS_DIR_APP . '.htaccess',
-      'search'  => "#  AuthUserFile "{APP_DIR}.htpasswd"",
-      'replace' => "SetEnv MOD_REWRITE On",
+      'search'  => '#AuthUserFile ".*?.htpasswd"#',
+      'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',

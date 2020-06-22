@@ -77,7 +77,7 @@
         limit 1;"
       );
 
-      $htpasswd = file_get_contents(FS_DIR_ADMIN . '.htpasswd');
+      $htpasswd = file_get_contents(FS_DIR_APP . '.htpasswd');
 
     // Rename .htpasswd user
       if (empty($this->previous) && $this->data['username'] != $this->previous['username']) {
@@ -91,7 +91,7 @@
         $htpasswd = preg_replace('#^(?:\#+)?('. preg_quote($this->data['username'], '#') .'):(.*)$#m', '#${1}:${2}', $htpasswd);
       }
 
-      file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
+      file_put_contents(FS_DIR_APP . '.htpasswd', $htpasswd);
 
       $this->previous = $this->data;
 
