@@ -141,14 +141,16 @@ module.exports = function(grunt) {
       less: {
         files: [
           'public_html/vendor/featherlight/featherlight.less',
-          'public_html/includes/templates/**/*.less',
+          'public_html/backend/template/**/*.less',
+          'public_html/frontend/templates/**/*.less',
         ],
         tasks: ['less']
       },
       javascripts: {
         files: [
           'public_html/vendor/featherlight/featherlight.js',
-          'public_html/includes/templates/**/js/*.js',
+          'public_html/backend/template/**/js/*.js',
+          'public_html/frontend/templates/**/js/*.js',
         ],
         tasks: ['uglify']
       },
