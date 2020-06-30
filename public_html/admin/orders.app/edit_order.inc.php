@@ -591,12 +591,12 @@
               <tr>
                 <th><?php echo language::translate('title_item', 'Item'); ?></th>
                 <th style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-                <th style="width: 175px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-                <th style="width: 420px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
-                <th style="width: 175px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-                <th style="min-width: 200px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-                <th style="min-width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-                <th style="width: 30px;">&nbsp;</th>
+                <th style="width: 150px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+                <th style="width: 175px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
+                <th style="width: 125px;" class="text-center"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+                <th style="width: 200px;" class="text-center"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+                <th style="width: 200px;" class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+                <th style="width: 75px;">&nbsp;</th>
               </tr>
             </thead>
             <tbody>
@@ -649,7 +649,7 @@
               <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
               <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
               <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
-              <td>
+              <td class="text-right">
                 <a class="edit" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-fw'); ?></a>
                 <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #cc3333;"'); ?></a>
               </td>
@@ -680,7 +680,7 @@
                 <th style="width: 30px;">&nbsp;</th>
                 <th style="width: 250px;"><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
                 <th class="text-right"><?php echo language::translate('title_title', 'Title'); ?></th>
-                <th style="width: 240px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+                <th style="width: 200px;"><?php echo language::translate('title_value', 'Value'); ?></th>
                 <th style="width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
                 <th style="width: 30px;">&nbsp;</th>
               </tr>
@@ -1327,7 +1327,7 @@
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
-               + '    <td>'
+               + '    <td class="text-right">'
                + '      <a class="edit" href="#" title="<?php echo functions::general_escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-pencil fa-fw')); ?></a>'
                + '      <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #cc3333;"')); ?></a>'
                + '    </td>'

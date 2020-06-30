@@ -154,7 +154,6 @@
       $amount = round($value / $currency_value, $decimals);
       $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
       $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
-
       if (empty(self::$currencies[$currency_code])) $suffix = ' ' . $currency_code;
 
       if ($auto_decimals && settings::get('auto_decimals')) {
