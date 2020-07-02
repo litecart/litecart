@@ -7,11 +7,11 @@
 
   &.products {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: 10px;
+    grid-gap: @default-gutter-size/2;
 
     @media (min-width: (@media-breakpoint-xs)) {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      grid-gap: 20px;
+      grid-gap: @default-gutter-size;
     }
   }
 

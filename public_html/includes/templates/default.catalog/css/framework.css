@@ -1502,7 +1502,7 @@ ul.list-inline li {
 @media (min-width: 768px) {
   .navbar-header {
     float: left;
-    width: 270px;
+    width: 305px;
   }
 }
 .navbar-header > * {
