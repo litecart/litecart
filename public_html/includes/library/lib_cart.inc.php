@@ -219,6 +219,8 @@
 
             case 'checkbox':
 
+              $selected_values = array_filter(preg_split('#\s*,\s*#', $options[$matched_group]));
+
               $matched_values = array();
               foreach ($option['values'] as $value) {
                 $possible_values = array_unique(
@@ -228,7 +230,8 @@
                   )
                 );
 
-                if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
+
+                if ($matched_value = array_intersect($selected_values, $possible_values)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
                 }
