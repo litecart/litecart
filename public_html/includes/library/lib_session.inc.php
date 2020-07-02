@@ -18,6 +18,11 @@
 
       register_shutdown_function(array('session', 'close'));
 
+      if (isset($_COOKIE[ini_get('session.name')]) && $_COOKIE[ini_get('session.name')] == '') {
+        trigger_error('Resetting a broken session missing a session id', E_USER_WARNING);
+        unset($_COOKIE[ini_get('session.name')]);
+      }
+
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
 
       self::$data = &$_SESSION;
