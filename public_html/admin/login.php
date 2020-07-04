@@ -116,6 +116,8 @@
 
       user::load($user['id']);
 
+      session::regenerate_id();
+
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
         header('Set-Cookie: remember_me='. $user['username'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
