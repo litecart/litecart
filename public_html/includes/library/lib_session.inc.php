@@ -10,18 +10,14 @@
       ini_set('session.gc_maxlifetime', 65535);
       ini_set('session.use_cookies', 1);
       ini_set('session.use_only_cookies', 1);
+      ini_set('session.use_strict_mode', 1);
       ini_set('session.use_trans_sid', 0);
-      ini_set('session.cookie_httponly', 0);
+      ini_set('session.cookie_httponly', 1);
       ini_set('session.cookie_lifetime', 0);
       ini_set('session.cookie_path', WS_DIR_APP);
-      ini_set('session.cookie_samesite', 'Lax');
+      ini_set('session.cookie_samesite', 'Strict');
 
       register_shutdown_function(array('session', 'close'));
-
-      if (isset($_COOKIE[ini_get('session.name')]) && $_COOKIE[ini_get('session.name')] == '') {
-        trigger_error('Resetting a broken session missing a session id', E_USER_WARNING);
-        unset($_COOKIE[ini_get('session.name')]);
-      }
 
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
 
@@ -54,9 +50,7 @@
     }
 
     public static function destroy() {
-
-      self::clear();
-
+      session_unset();
       return session_destroy();
     }
 
