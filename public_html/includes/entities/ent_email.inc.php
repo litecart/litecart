@@ -66,6 +66,8 @@
       $this->data['bccs'] = json_decode($email['bccs'], true);
       $this->data['multiparts'] = json_decode($email['multiparts'], true);
 
+      $this->previous = $this->data;
+
       return $this;
     }
 
@@ -266,7 +268,7 @@
     // Prepare headers
       $headers = [
         'Date' => date('r'),
-        'From' => $this->format_contact($this->data['sender']),
+        'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
         'Reply-To' => $this->format_contact($this->data['sender']),
         'Return-Path' => $this->format_contact($this->data['sender']),
         'MIME-Version' => '1.0',
@@ -290,6 +292,8 @@
         }
         $headers['Cc'] = implode(', ', $ccs);
       }
+
+    // SMTP does not need a header for BCCs
 
     // Prepare subject
       $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
@@ -348,7 +352,7 @@
           $data = $headers . "\r\n"
                 . $body;
 
-          $result = $smtp->send($this->data['sender']['email'], $recipients, $data);
+          $result = $smtp->send(settings::get('store_email'), $recipients, $data);
 
         } catch(Exception $e) {
           trigger_error('Failed sending email "'. $this->data['subject'] .'": '. $e->getMessage(), E_USER_WARNING);
@@ -362,6 +366,7 @@
         $headers = preg_replace('#(To:.*\r\n)#', '', $headers);
         $headers = preg_replace('#(Subject:.*\r\n)#', '', $headers);
 
+      // PHP mail() needs a header for BCCs
         if (!empty($this->data['bccs'])) {
           $bccs = [];
           foreach ($this->data['bccs'] as $bcc) {

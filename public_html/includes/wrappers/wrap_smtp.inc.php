@@ -123,9 +123,7 @@
 
     public function read($expected_response=null) {
 
-      $response = '';
-
-      $buffer = '';
+      $response = $buffer = '';
       while (substr($buffer, 3, 1) != ' ') {
         if (!$buffer = fgets($this->_socket, 256)) throw new Exception('No response from socket');
         fwrite($this->_log_handle, "< $buffer");

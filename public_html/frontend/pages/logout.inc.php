@@ -8,8 +8,11 @@
   session::regenerate_id();
   session::$data['cart']['uid'] = null;
 
-  header('Set-Cookie: cart[uid]=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict');
-  header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict');
+  header('Set-Cookie: cart[uid]=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
+
+  if (!empty($_COOKIE['customer_remember_me'])) {
+    header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
+  }
 
   notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
 

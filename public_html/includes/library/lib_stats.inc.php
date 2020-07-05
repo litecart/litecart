@@ -47,7 +47,7 @@
       self::set('page_capture_time', $page_parse_time);
 
     // Memory peak usage
-      self::set('memory_peak_usage', memory_get_peak_usage(true) / 1000000);
+      self::set('memory_peak_usage', memory_get_peak_usage(true) / 1e6);
 
     // Page parse time
       $page_parse_time = microtime(true) - self::$_page_parse_start;

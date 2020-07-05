@@ -12,11 +12,17 @@
       if (empty($_POST['email'])) throw new Exception(language::translate('error_must_enter_email', 'You must enter a valid email address'));
       if (empty($_POST['message'])) throw new Exception(language::translate('error_must_enter_message', 'You must enter a message'));
 
+      $message = strtr(language::translate('email_customer_feedback', "** This is an email from %sender_name <%sender_email> **\r\n\r\n%message"), array(
+        '%sender_name' => $_POST['name'],
+        '%sender_email' => $_POST['email'],
+        '%message' => $_POST['message'],
+      ));
+
       $email = new ent_email();
       $email->set_sender($_POST['email'], $_POST['name'])
             ->add_recipient(settings::get('store_email'), settings::get('store_name'))
             ->set_subject($_POST['subject'])
-            ->add_body($_POST['message']);
+            ->add_body($message);
 
       $result = $email->send();
 

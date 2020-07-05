@@ -61,7 +61,9 @@
 
           } else {
 
-            header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict');
+            if (!empty($_COOKIE['remember_me'])) {
+              header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
+            }
 
             if (++$user['login_attempts'] < 3) {
               database::query(
@@ -82,7 +84,7 @@
           }
 
         } else {
-          header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict');
+          header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
         }
       }
     }

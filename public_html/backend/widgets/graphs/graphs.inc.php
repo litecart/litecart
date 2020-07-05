@@ -48,7 +48,6 @@
       if (!isset($monthly_sales[date('m', $timestamp)]['total_sales'])) $monthly_sales[date('m', $timestamp)]['total_sales'] = 0;
       if (!isset($monthly_sales[date('m', $timestamp)]['total_sales_last_year'])) $monthly_sales[date('m', $timestamp)]['total_sales_last_year'] = 0;
     }
-
     $monthly_sales[date('m')]['label'] = '\u2605'.$monthly_sales[date('m')]['label'];
 
     uasort($monthly_sales, function($a, $b) { return $a['month'] > $b['month'] ? 1 : -1; });

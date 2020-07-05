@@ -156,7 +156,7 @@
             break;
 
           default:
-            $hash_string .= is_array($dependency) ? implode('', $dependency) : $dependency;
+            $hash_string .= is_array($dependency) ? implode(',', $dependency) : $dependency;
             break;
         }
       }

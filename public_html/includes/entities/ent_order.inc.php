@@ -538,10 +538,6 @@
 
     public function validate($shipping = null, $payment = null) {
 
-      if (empty($_COOKIE[session_name()])) {
-        return language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser have cookies enabled or try another browser.');
-      }
-
     // Validate items
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
 

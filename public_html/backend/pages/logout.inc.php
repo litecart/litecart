@@ -5,7 +5,11 @@
 
   user::reset();
 
-  header('Set-Cookie: remember_me=; path='. WS_DIR_APP .'; expires=-1; HttpOnly; SameSite=Strict');
+  session::regenerate_id();
+
+  if (!empty($_COOKIE['remember_me'])) {
+    header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
+  }
 
   header('Location: ' . document::link(WS_DIR_ADMIN . 'login'));
   exit;

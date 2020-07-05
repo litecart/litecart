@@ -6,15 +6,16 @@
 
     public static function init() {
 
-      @ini_set('session.name', 'LCSESSID');
-      @ini_set('session.gc_maxlifetime', 65535);
-      @ini_set('session.use_cookies', 1);
-      @ini_set('session.use_only_cookies', 1);
-      @ini_set('session.use_trans_sid', 0);
-      @ini_set('session.cookie_httponly', 0);
-      @ini_set('session.cookie_lifetime', 0);
-      @ini_set('session.cookie_path', WS_DIR_APP);
-      @ini_set('session.cookie_samesite', 'Lax');
+      ini_set('session.name', 'LCSESSID');
+      ini_set('session.gc_maxlifetime', 65535);
+      ini_set('session.use_cookies', 1);
+      ini_set('session.use_only_cookies', 1);
+      ini_set('session.use_strict_mode', 1);
+      ini_set('session.use_trans_sid', 0);
+      ini_set('session.cookie_httponly', 1);
+      ini_set('session.cookie_lifetime', 0);
+      ini_set('session.cookie_path', WS_DIR_APP);
+      ini_set('session.cookie_samesite', 'Strict');
 
       register_shutdown_function(['session', 'close']);
 
@@ -26,7 +27,8 @@
       if (empty(self::$data['last_ip_address'])) self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
       if (empty(self::$data['last_user_agent'])) self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
-      if ($_SERVER['REMOTE_ADDR'] != self::$data['last_ip_address'] && $_SERVER['HTTP_USER_AGENT'] != self::$data['last_user_agent']) {
+      if ((!empty(self::$data['last_ip_address']) && $_SERVER['REMOTE_ADDR'] != self::$data['last_ip_address'])
+       || (!empty(self::$data['last_user_agent']) && $_SERVER['HTTP_USER_AGENT'] != self::$data['last_user_agent'])) {
         self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
         self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         self::regenerate_id();
@@ -48,9 +50,7 @@
     }
 
     public static function destroy() {
-
-      self::clear();
-
+      session_unset();
       return session_destroy();
     }
 
