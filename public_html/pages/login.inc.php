@@ -20,7 +20,9 @@
 
     try {
 
-      header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
+      if (!empty($_COOKIE['customer_remember_me'])) {
+        header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
+      }
 
       if (empty($_POST['email']) || empty($_POST['password'])) {
         throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
