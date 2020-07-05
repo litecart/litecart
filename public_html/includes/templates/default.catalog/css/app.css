@@ -19,7 +19,7 @@ html {
 }
 @media (min-width: 992px) {
   #header {
-    grid-template-columns: 250px auto 250px;
+    grid-template-columns: 300px auto 300px;
   }
 }
 #header .logotype img {
@@ -160,7 +160,7 @@ html {
 }
 @media (min-width: 768px) {
   #sidebar {
-    width: 250px;
+    width: 300px;
   }
   #sidebar > *:first-child {
     margin-top: 0;
@@ -389,6 +389,11 @@ html {
   align-content: center;
   flex-direction: column;
   height: 40px;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 115%;
+  border-bottom: 0;
+  margin: 0;
 }
 .listing .product-column .manufacturer-name,
 .listing .product-row .manufacturer-name {

@@ -7,11 +7,11 @@
 
   &.products {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: 10px;
+    grid-gap: @default-gutter-size/2;
 
     @media (min-width: (@media-breakpoint-xs)) {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      grid-gap: 20px;
+      grid-gap: @default-gutter-size;
     }
   }
 
@@ -122,6 +122,11 @@
       align-content: center;
       flex-direction: column;
       height: 40px;
+      font-size: 1em;
+      font-weight: 400;
+      line-height: 115%;
+      border-bottom: 0;
+      margin: 0;
     }
 
     .manufacturer-name {

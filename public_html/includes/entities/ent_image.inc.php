@@ -242,7 +242,7 @@
               ImageAlphaBlending($_resized, true);
               ImageSaveAlpha($_resized, true);
 
-              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[0], $this->_whitespace[0], 127));
+              ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
             // Perform resample
               if (($this->width() / $destination_width) > ($this->height() / $destination_height)) {

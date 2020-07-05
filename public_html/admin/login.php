@@ -21,7 +21,9 @@
 
     try {
 
-      header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict');
+      if (!empty($_COOKIE['remember_me'])) {
+        header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
+      }
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
 
@@ -116,11 +118,13 @@
 
       user::load($user['id']);
 
+      session::regenerate_id();
+
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        header('Set-Cookie: remember_me='. $user['username'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict');
-      } else {
-        header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Expires=-1; HttpOnly; SameSite=Strict');
+        header('Set-Cookie: remember_me='. $user['username'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Strict', false);
+      } else if (!empty($_COOKIE['remember_me'])) {
+        header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Strict', false);
       }
 
       if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
