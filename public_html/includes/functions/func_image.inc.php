@@ -174,7 +174,7 @@
 
     $cachename = sha1($webpath);
 
-    foreach (glob(FS_DIR_APP . 'cache/'. substr($cachename, 0, 3) .'/' . $cachename .'*') as $file) {
+    foreach (glob(FS_DIR_APP . 'cache/'. substr($cachename, 0, 2) .'/' . $cachename .'*') as $file) {
       unlink($file);
     }
   }
