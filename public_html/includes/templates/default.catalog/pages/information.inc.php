@@ -3,6 +3,7 @@
 </div>
 
 <div id="content">
+  {snippet:breadcrumbs}
   {snippet:notices}
 
   <section id="box-information" class="box">
