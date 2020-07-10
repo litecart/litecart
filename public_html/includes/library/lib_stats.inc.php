@@ -34,6 +34,11 @@
     }
 
     public static function after_capture() {
+
+    // Capture parse time
+      $page_parse_time = microtime(true) - self::$_page_parse_start;
+      self::set('page_capture_time', $page_parse_time);
+
       if (self::get('page_parse_time') > 5) {
         notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
         error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. $_SERVER['REQUEST_URI']);
@@ -41,10 +46,6 @@
     }
 
     public static function before_output() {
-
-    // Capture parse time
-      $page_parse_time = microtime(true) - self::$_page_parse_start;
-      self::set('page_capture_time', $page_parse_time);
 
     // Memory peak usage
       self::set('memory_peak_usage', memory_get_peak_usage(true) / 1e6);
