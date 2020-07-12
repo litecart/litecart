@@ -197,8 +197,8 @@
         'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 200, 60),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 400, 120),
         'viewport' => array(
-          'width' => $width,
-          'height' => $height,
+          'width' => 200,
+          'height' => 60,
         ),
       );
     }
