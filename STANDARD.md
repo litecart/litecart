@@ -378,9 +378,9 @@
 
   Walking through an array and back reference the source variable:
 
-    foreach ($array as $key => &$item) {
-      $item = 'value';
-    }
+    foreach ($array as &$item) {
+      $item['param'] = 'value';
+    } unset($item);
 
 
 ## Matryoshka Dolls
