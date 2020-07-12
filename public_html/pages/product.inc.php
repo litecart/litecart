@@ -52,7 +52,7 @@
 
   if (!empty($_GET['category_id'])) {
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
-    foreach (array_slice(reference::category($_GET['category_id'])->path, 0, -1) as $category_crumb) {
+    foreach (reference::category($_GET['category_id'])->path as $category_crumb) {
       document::$snippets['title'][] = $category_crumb->name;
       breadcrumbs::add($category_crumb->name, document::ilink('category', array('category_id' => $category_crumb->id)));
     }
@@ -197,8 +197,8 @@
         'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 200, 60),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 400, 120),
         'viewport' => array(
-          'width' => $width,
-          'height' => $height,
+          'width' => 200,
+          'height' => 60,
         ),
       );
     }

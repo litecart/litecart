@@ -493,9 +493,9 @@
                 and id = ". (int)$value['id'] ."
                 limit 1;"
               );
-            }
+            } unset($value);
           }
-        }
+        } unset($option);
       }
 
     // Delete stock options

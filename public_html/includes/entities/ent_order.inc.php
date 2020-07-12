@@ -373,7 +373,7 @@
           and id = ". (int)$row['id'] ."
           limit 1;"
         );
-      }
+      } unset($row);
 
     // Delete comments
       database::query(
@@ -413,7 +413,7 @@
             and id = ". (int)$comment['id'] ."
             limit 1;"
           );
-        }
+        } unset($comment);
 
         if (!empty($notify_comments)) {
 
@@ -473,7 +473,7 @@
         if (empty($row['calculate'])) continue;
         $this->data['payment_due'] += $row['value'] + $row['tax'];
         $this->data['tax_total'] += $row['tax'];
-      }
+      } unset($row);
     }
 
     public function add_item($item) {
