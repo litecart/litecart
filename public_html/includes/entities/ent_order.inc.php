@@ -341,7 +341,7 @@
           and id = ". (int)$item['id'] ."
           limit 1;"
         );
-      }
+      } unset($item);
 
     // Delete order total items
       database::query(
