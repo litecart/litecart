@@ -844,51 +844,127 @@ END;
 
   function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id=0, $depth=1, $index=0, &$iterator) {
-
-      $options = [];
-
-      if ($parent_id == 0) $options[] = [functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0'];
-
-      $categories_query = database::query(
-        "select c.id, ci.name
-        from ". DB_PREFIX ."categories c
-        left join ". DB_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
-        where parent_id = ". (int)$parent_id ."
-        order by c.priority asc, ci.name asc;"
-      );
-
-      while ($category = database::fetch($categories_query)) {
-        $index++;
-
-        $options[] = [str_repeat('&nbsp;&nbsp;&nbsp;', $depth) . functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' '. $category['name'], $category['id'], 'data-index="'. $index .'" data-name="'. htmlspecialchars($category['name']) .'"'];
-
-        $sub_categories_query = database::query(
-          "select id
-          from ". DB_PREFIX ."categories c
-          where parent_id = ". (int)$category['id'] ."
-          limit 1;"
-        );
-
-        $sub_options = $iterator($category['id'], $depth+1, $index, $iterator);
-
-        $options = array_merge($options, $sub_options);
-      }
-
-      return $options;
-    };
-
-    $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
-    $options = array_merge($options, $iterator(0, 1, 0, $iterator));
-
-    if ($multiple) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      return form_draw_select_field($name, $options, $input, $parameters);
+    if (!$multiple) {
+      return form_draw_category_field($name, $options, $input, $parameters);
     }
+
+    $html = '<div class="input-group" style="flex-direction: column;"' . (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
+          . '  <div class="form-control" style="overflow-y: auto; min-height: 200px;">' . PHP_EOL
+          . '    ' . PHP_EOL
+          . '  </div>' . PHP_EOL
+          . '  <div class="dropdown">' . PHP_EOL
+          . '  '. functions::form_draw_text_field('category_query', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_category', 'Search category')) .' &hellip;"') . PHP_EOL
+          . '    <ul class="dropdown-menu" style="right: 0;">' . PHP_EOL
+          . '    </ul>' . PHP_EOL
+          . '  </div>' . PHP_EOL
+          . '</div>';
+
+    $javascript =
+<<<END
+  $('input[name="category_query"]').on('focus', function(e){
+    $(this).closest('.dropdown').addClass('open');
+  });
+
+  $('input[name="category_query"]').closest('dropdown').click('focus', function(e){
+    e.stopPropagation();
+  });
+
+  $('body').click(function(e){
+    $(this).closest('.dropdown').removeClass('open');
+  });
+
+  var xhr_category_search = null;
+  $('input[name="category_query"]').on('input', function(e){
+
+    var dropdown = $(this).closest('.dropdown');
+
+    $(dropdown).find('.dropdown-menu').html('');
+
+    if (xhr_category_search) xhr_category_search.abort();
+
+    if ($(this).val() == '') {
+
+      $.getJSON('%link&parent_id=0', function(result) {
+
+        $(dropdown).find('.dropdown-menu').html('');
+
+        $.each(result, function(i, category) {
+          $(dropdown).find('.dropdown-menu').append(
+            '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
+            '  <a href="%link&parent_id='+ category.id +'">' +
+            '    <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
+            '    %folder_icon '+ category.name +
+            '  </a>' +
+            '</li>'
+          );
+        });
+
+        $(dropdown).find('.dropdown-menu a').on('click', function(e){
+          alert('x');
+          e.preventDefault();
+
+          $.getJSON($(this).attr('href'), function(result) {
+
+            $(dropdown).find('.dropdown-menu').html('');
+
+            $.each(result, function(i, category) {
+              $(dropdown).find('.dropdown-menu').append(
+                '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
+                '  <a>' +
+                '    <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
+                '    %folder_icon '+ category.name +
+                '  </a>' +
+                '</li>'
+              );
+            });
+          });
+        });
+      });
+
+      return;
+    }
+
+    xhr_category_search = $.ajax({
+      type: 'get',
+      async: true,
+      cache: true,
+      url: '%link&query=' + $(this).val(),
+      dataType: 'json',
+
+      beforeSend: function(jqXHR) {
+        jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+      },
+
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+
+      success: function(json) {
+
+        if (!json) {
+          $(dropdown).find('dropdown-menu').html('<li class="text-center no-results"><em>:(</em></li>');
+        }
+
+        $.each(json, function(i, result) {
+          $(dropdown).find('.dropdown-menu').append(
+            '<li class="list-item" data-id="'+ result.id +'" data-name="'+ result.name +'"><a>' +
+            '  <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
+            '  %folder_icon '+ result.name +
+            '</a></li>'
+          );
+        });
+      },
+    });
+  });
+END;
+
+    document::$snippets['javascript'][] = strtr($javascript, [
+      '%link' => document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'categories.json']),
+      '%add' => language::translate('title_add', 'Add'),
+      '%folder_icon' => functions::draw_fonticon('folder'),
+    ]);
+
+    return $html;
   }
 
   function form_draw_countries_list($name, $input=true, $multiple=false, $parameters='') {

@@ -73,6 +73,8 @@
       'quantity_units' => 'quantity_units.inc.php',
       'edit_quantity_unit' => 'edit_quantity_unit.inc.php',
       'csv' => 'csv.inc.php',
+      'category_picker' => 'category_picker.inc.php',
+      'categories.json' => 'categories.json.inc.php',
       'products.json' => 'products.json.inc.php',
       'stock_transactions' => 'stock_transactions.inc.php',
       'edit_stock_transaction' => 'edit_stock_transaction.inc.php',

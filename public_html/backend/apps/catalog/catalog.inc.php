@@ -504,7 +504,7 @@
           </li>
           <li>
             <div>
-              <?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?>
+              <?php echo functions::form_draw_category_field('category_id', true, 'style="min-width: 250px;"'); ?>
             </div>
           </li>
           <li>
