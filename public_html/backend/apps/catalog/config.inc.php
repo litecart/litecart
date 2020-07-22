@@ -15,6 +15,11 @@
         'params' => [],
       ],
       [
+        'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
+        'doc' => 'stock_transactions',
+        'params' => [],
+      ],
+      [
         'title' => language::translate('title_attribute_groups', 'Attribute Groups'),
         'doc' => 'attribute_groups',
         'params' => [],
@@ -69,5 +74,7 @@
       'edit_quantity_unit' => 'edit_quantity_unit.inc.php',
       'csv' => 'csv.inc.php',
       'products.json' => 'products.json.inc.php',
+      'stock_transactions' => 'stock_transactions.inc.php',
+      'edit_stock_transaction' => 'edit_stock_transaction.inc.php',
     ],
   ];

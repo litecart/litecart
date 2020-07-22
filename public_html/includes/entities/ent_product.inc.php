@@ -244,7 +244,6 @@
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'] .",
         keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
-        quantity = ". (float)$this->data['quantity'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",
         purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
@@ -544,7 +543,6 @@
             dim_y = '". database::input($stock_option['dim_y']) ."',
             dim_z = '". database::input($stock_option['dim_z']) ."',
             dim_class = '". database::input($stock_option['dim_class']) ."',
-            quantity = '". database::input($stock_option['quantity']) ."',
             priority = '". $i++ ."',
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where product_id = ". (int)$this->data['id'] ."

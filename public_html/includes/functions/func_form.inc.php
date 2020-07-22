@@ -678,6 +678,12 @@ END;
       case 'quantity_units':
         return form_draw_quantity_units_list($name, $input, true, $parameters);
 
+      case 'stock_option':
+        return form_draw_stock_options_list($name, $input, false, $parameters);
+
+      case 'stock_options':
+        return form_draw_stock_options_list($name, $input, true, $parameters);
+
       case 'order_status':
         return form_draw_order_status_list($name, $input, false, $parameters);
 
@@ -1361,6 +1367,69 @@ END;
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
       return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_stock_options_list($name, $input=true, $multiple=false, $parameters='') {
+
+    $options = [];
+
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
+
+    $products_query = database::query(
+      "select p.id, p.sku, pi.name from ". DB_TABLE_PRODUCTS ." p
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      order by name;"
+    );
+
+    while ($product = database::fetch($products_query)) {
+
+      $products_stock_option_query = database::query(
+        "select pos.id, pos.product_id, pos.combination, pos.sku, pi.name from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ." pos
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pos.product_id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        where pos.product_id = ". (int)$product['id'] ."
+        and pos.combination != ''
+        order by pi.name;"
+      );
+
+      if (database::num_rows($products_stock_option_query)) {
+        while ($stock_option = database::fetch($products_stock_option_query)) {
+
+          $option_names = '';
+          if (!empty($stock_option['combination'])) {
+            foreach(explode(',', $stock_option['combination']) as $combination) {
+              list($group_id, $value_id) = explode('-', $combination);
+
+              $option_groups_query = database::query(
+                "select pcg.id, pcgi.name from ". DB_TABLE_OPTION_GROUPS ." pcg
+                left join ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi on (pcgi.group_id = pcg.id and pcgi.language_code = '". database::input(language::$selected['code']) ."')
+                where pcg.id = ". (int)$group_id .";"
+              );
+              $option_group = database::fetch($option_groups_query);
+
+              $option_values_query = database::query(
+                "select pcv.id, pcvi.name from ". DB_TABLE_OPTION_VALUES ." pcv
+                left join ". DB_TABLE_OPTION_VALUES_INFO ." pcvi on (pcvi.value_id = pcv.id and pcvi.language_code = '". database::input(language::$selected['code']) ."')
+                where pcv.group_id = ". (int)$group_id ."
+                and pcv.id = ". (int)$value_id .";"
+              );
+              $option_value = database::fetch($option_values_query);
+
+              $option_names = $option_names . ($option_names  ? ' + ' : '') . $option_group['name'] .': '. $option_value['name'];
+            }
+          }
+
+          $options[] = [$stock_option['name'] . (!empty($option_names) ? ': ' . $option_names : '') .' &mdash; '. ($stock_option['sku'] ? $stock_option['sku'] : 'n/a'), $stock_option['id'], 'data-product-id="'. $stock_option['product_id'] .'" data-name="'. htmlspecialchars($stock_option['name'] . (!empty($option_names) ? ': ' . $option_names : '')) .'" data-combination="'. $stock_option['combination'] .'" data-sku="'. htmlspecialchars($stock_option['sku']) .'"'];
+        }
+      } else {
+        $options[] = [$product['name'] .' &mdash; '. ($product['sku'] ? $product['sku'] : 'n/a'), $product['id'], 'data-product-id="'. $product['id'] .'" data-name="'. htmlspecialchars($product['name']) .'" data-combination="" data-sku="'. htmlspecialchars($product['sku']) .'"'];
+      }
+    }
+
+    if ($multiple) {
+      return functions::form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      return functions::form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
