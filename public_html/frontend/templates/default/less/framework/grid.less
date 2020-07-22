@@ -1,6 +1,6 @@
 /* Grid - Bootstrap Compatible */
 
-.twelve-eighty {
+.container {
   min-width: 320px;
   max-width: 1280px;
   margin: 0 auto;
@@ -18,6 +18,9 @@
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 1rem;
   margin-bottom: 1rem;
+  &.layout {
+    grid-gap: 2rem;
+  }
   &.column {
     flex-direction: column;
   }

@@ -1,7 +1,5 @@
 <footer id="footer" class="hidden-print">
-
-  <div class="twelve-eighty">
-
+  <div class="container">
     <div class="row">
 
       <div class="col-md-8">
@@ -72,12 +70,11 @@
       </section>
 
     </div>
-
   </div>
 </footer>
 
 <section id="copyright">
-  <div class="notice twelve-eighty">
+  <div class="container notice">
     <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
     Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
   </div>

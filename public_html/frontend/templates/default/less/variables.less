@@ -5,97 +5,88 @@
 /* CSS Variables */
 
 :root {
-  --site-background-color: @site-background-color;
-  --page-background-color: @page-background-color;
-  --sidebar-width: @sidebar-width;
+  --site-background-color: #efeef3;
+  --header-background-color: #fff;
+  --sidebar-width: 300px;
 
-  --navigation-background-color: @navigation-background-color;
-  --navigation-text-color: @navigation-text-color;
+  --navigation-background-color: #553b63;
+  --navigation-text-color: #fff;
 
-  --navigation-background-color: @navigation-background-color;
-  --navigation-text-color: @navigation-text-color;
+  --footer-background-color: #2c232d;
+  --footer-title-color: #fff;
+  --footer-text-color: #fff;
 
-  --footer-background-color: @footer-background-color;
-  --footer-title-color: @footer-title-color;
-  --footer-text-color: @footer-text-color;
+  --copyright-background-color: #1e171f;
+  --copyright-text-color: #666;
 
-  --footer-background-color: @footer-background-color;
-  --footer-text-color: @footer-text-color;
+  --default-background-color: #d1cbd2;
+  --default-background-color-hover: #e4e4e4;
+  --default-background-color-active: #ccc;
+  --default-border-color: transparent;
+  --default-line-height: 150%;
+  --default-text-font: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --default-text-color: #000;
+  --default-text-size: 12px;
+  --default-title-color: #333;
+  --default-title-border-color: #f0f0f0;
+  --default-notice-background-color: #f0f0f0;
+  --default-notice-text-color: #333;
 
-  --copyright-background-color: @copyright-background-color;
-  --copyright-text-color: @copyright-text-color;
+  --primary-background-color: #3ba5c6;
+  --primary-background-color-hover: #4aaac7;
+  --primary-background-color-active: #3596b3;
+  --primary-text-color: #fff;
+  --primary-notice-background-color: #5bc0de;
+  --primary-notice-text-color: #000;
 
-  --default-background-color: @default-background-color;
-  --default-background-color-active: @default-background-color;
-  --default-background-color-hover: @default-background-color;
-  --default-border-color: @default-border-color;
-  --default-line-height: @default-line-height;
-  --default-text-font: @default-text-font;
-  --default-text-color: @default-text-color;
-  --default-text-size: @default-text-size - 2;
-  --default-title-color: @default-text-color;
-  --default-title-border-color: @default-title-border-color;
-  --default-notice-background-color: @default-notice-background-color;
-  --default-notice-text-color: @default-notice-text-color;
+  --success-background-color: #91C231;
+  --success-background-color-hover: calc(var(--success-background-color) * 1.1);
+  --success-background-color-active: calc(var(--success-background-color) * .9);
+  --success-border-color: #91C231;
+  --success-text-color: #fff;
+  --success-notice-background-color: #d6eca6;
+  --success-notice-text-color: #567d00;
 
-  --primary-background-color: @primary-background-color;
-  --primary-background-color-hover: @primary-background-color-hover;
-  --primary-background-color-active: @primary-background-color-active;
-  --primary-text-color: @primary-text-color;
-  --primary-notice-background-color: @primary-notice-background-color;
-  --primary-notice-text-color: @primary-notice-text-color;
+  //--warning-background-color: transparent;
+  //--warning-background-color-hover: transparent;
+  //--warning-background-color-active: transparent;
+  --warning-border-color: #aa0000;
+  //--warning-text-color: #fff;
+  --warning-notice-background-color: #ffcc66;
+  --warning-notice-text-color: #aa0000;
 
-  --success-background-color: @success-background-color;
-  --success-background-color-hover: @success-background-color-hover;
-  --success-background-color-active: @success-background-color-active;
-  --success-border-color: @success-border-color;
-  --success-text-color: @success-text-color;
-  --success-notice-background-color: @success-notice-background-color;
-  --success-notice-text-color: @success-notice-text-color;
+  //--danger-background-color: transparent;
+  //--danger-background-color-hover: transparent;
+  //--danger-background-color-active: transparent;
+  --danger-border-color: #c44;
+  //--danger-text-color: #fff;
+  --danger-notice-background-color: #fcc;
+  --danger-notice-text-color: #c44;
 
-  --warning-background-color: @warning-background-color;
-  --warning-background-color-hover: @warning-background-color-hover;
-  --warning-background-color-active: @warning-background-color-active;
-  --warning-border-color: @warning-border-color;
-  --warning-text-color: @warning-text-color;
-  --warning-notice-background-color: @warning-notice-background-color;
-  --warning-notice-text-color: @warning-notice-text-color;
+  --breadcrumbs-background-color: #ddd6e0;
+  --breadcrumbs-text-color: #000;
+  --breadcrumbs-border-color: transparent;
 
-  --danger-background-color: @danger-background-color;
-  --danger-background-color-hover: @danger-background-color-hover;
-  --danger-background-color-active: @danger-background-color-active;
-  --danger-border-color: @danger-border-color;
-  --danger-text-color: @danger-text-color;
-  --danger-notice-background-color: @danger-notice-background-color;
-  --danger-notice-text-color: @danger-notice-text-color;
+  --table-striped-row-background-odd: #f9f9f9;
+  --table-striped-row-background-even: #fff;
+  --table-row-hover-background: #ececec;
 
-  --breadcrumbs-background-color: @breadcrumbs-background-color;
-  --breadcrumbs-text-color: @breadcrumbs-text-color;
-  --breadcrumbs-border-color: @breadcrumbs-border-color;
-
-  --table-striped-row-background-odd: @table-striped-row-background-odd;
-  --table-striped-row-background-even: @table-striped-row-background-even;
-  --table-row-hover-background: @table-row-hover-background;
-
-  --border-radius: @border-radius;
-  --input-background-color: @input-background-color;
-  --input-text-color: @input-text-color;
-  --link-text-color: @link-text-color;
-  --shadow-color: @shadow-color;
-  --whitespace-color: @whitespace-color;
+  --border-radius: 4px;
+  --input-background-color: #f4f3f5;
+  --input-text-color: #000;
+  --link-text-color: #5bc0de;
+  --shadow-color: rgba(0,0,0,0.5);
+  --whitespace-color: #fff;
+  --gutter-size: 1rem;
 }
 
 @media (min-width: @media-breakpoint-sm) {
   :root {
-    --default-text-size: @default-text-size - 1;
+    --default-text-size: ~"calc(var(--default-text-size) + 1px)";
   }
 }
 @media (min-width: @media-breakpoint-md) {
   :root {
-    --default-text-size: @default-text-size;
-  }
-}
-@media (min-width: @media-breakpoint-lg) {
-  :root {
+    --default-text-size: ~"calc(var(--default-text-size) + 1px)";
   }
 }

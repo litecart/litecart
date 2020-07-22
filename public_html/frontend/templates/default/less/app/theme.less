@@ -11,6 +11,10 @@ html {
 }
 
 #header {
+  background: var(--header-background-color);
+}
+
+#header .container {
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
@@ -85,8 +89,8 @@ html {
     }
   }
   img {
-    max-width: 50px;
-    max-height: 50px;
+    max-width: 60px;
+    max-height: 60px;
   }
   .badge {
     background: red;
@@ -113,9 +117,10 @@ html {
 }
 
 #site-menu {
-  margin: 0 .5rem 1rem .5rem;
+  background: var(--navigation-background-color);
+  margin-bottom: ~"calc(var(--gutter-size) *2)";
+  color: ~"var(--navigation-text-color)";
   @media (min-width: (@media-breakpoint-sm)) {
-    margin: 0 1rem 1rem 1rem;
     .navbar-header {
       float: left;
       width: ~"calc(var(--sidebar-width) + 1em)";
@@ -166,23 +171,19 @@ html {
     }
     width: var(--sidebar-width);
     + #content {
-      margin-left: 1rem;
+      margin-left: 3rem;
     }
   }
 }
 
 #content {
   grid-area: content;
-  grid-gap: .5rem;
-  @media (min-width: (@media-breakpoint-sm)) {
-    grid-gap: 1rem;
-  }
 }
 
 #footer {
   padding: .5rem;
-  background: #272723;
-  color: #fff;
+  background: var(--footer-background-color);
+  color: var(--footer-text-color);
 
   @media (min-width: (@media-breakpoint-sm)) {
     padding: 1rem;
@@ -215,7 +216,6 @@ html {
   }
 
   .title {
-    color: #999;
     border-color: #999;
     font-size: 1.5em;
     margin: 0 0 0.75em 0;
@@ -223,9 +223,9 @@ html {
 }
 
 #copyright {
-  background: #333;
+  background: var(--copyright-background-color);
   .notice {
-    color: #666;
+    color: var(--copyright-text-color);
     padding: 1rem;
     text-align: center;
     a {

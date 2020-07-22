@@ -13,11 +13,10 @@
 </head>
 <body>
 
-<div id="page" class="twelve-eighty">
+<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
-
-  <header id="header" class="hidden-print">
+<header id="header" class="hidden-print">
+  <div class="container">
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
       <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
     </a>
@@ -29,14 +28,12 @@
     <div class="text-right">
       <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_cart.inc.php'); ?>
     </div>
-  </header>
+  </div>
+</header>
 
   <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_menu.inc.php'); ?>
 
-  <main id="main">
-    {snippet:content}
-  </main>
-</div>
+{snippet:content}
 
 <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_footer.inc.php'); ?>
 

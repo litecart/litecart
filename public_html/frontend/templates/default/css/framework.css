@@ -236,6 +236,24 @@ hr {
   border: 0;
   border-top: 1px solid var(--default-border-color);
 }
+/* Boxes */
+.box {
+  margin-bottom: calc(var(--gutter-size) *2);
+}
+.box.white {
+  padding: var(--gutter-size);
+  border-radius: var(--border-radius);
+  background: #fff;
+}
+.box.border {
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
+}
+.box > .title {
+  margin-top: 0;
+}
 /* Breadcrumbs - Bootstrap Compatible */
 ul.breadcrumb {
   margin: 0 0 1rem 0;
@@ -264,6 +282,7 @@ ul.breadcrumb li a {
   padding: 0.5em 1em;
   text-decoration: none;
   font-weight: normal;
+  line-height: 100%;
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   box-shadow: 0 1px 1px var(--shadow-color);
@@ -694,10 +713,11 @@ ul.breadcrumb li a {
   display: none;
   float: left;
   min-width: 160px;
-  padding: 5px 0;
+  padding: 0.5em;
   margin: 2px 0 0;
   list-style: none;
   text-align: left;
+  color: var(--default-text-color);
   background-color: #fff;
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
@@ -826,7 +846,7 @@ tr.semi-transparent td {
   box-shadow: 0 0 0.25rem 0 var(--link-text-color);
 }
 /* Grid - Bootstrap Compatible */
-.twelve-eighty {
+.container {
   min-width: 320px;
   max-width: 1280px;
   margin: 0 auto;
@@ -842,6 +862,9 @@ tr.semi-transparent td {
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 1rem;
   margin-bottom: 1rem;
+}
+.row.layout {
+  grid-gap: 2rem;
 }
 .row.column {
   flex-direction: column;
@@ -1053,7 +1076,7 @@ input[type="number"] {
 input[type="checkbox"] {
   -webkit-appearance: none;
   position: relative;
-  background: #fff;
+  background: var(--input-background-color);
   height: 1em;
   width: 1em;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -1085,7 +1108,7 @@ input[type="checkbox"]:checked:after {
 input[type="radio"] {
   -webkit-appearance: none;
   position: relative;
-  background: #fff;
+  background: var(--input-background-color);
   height: 1em;
   width: 1em;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -1140,10 +1163,11 @@ input[type="radio"]:checked:after {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .form-control[type="color"] {
-  height: 37px;
+  height: 42px;
 }
 .form-control[type="file"] {
-  font-size: 0.85em;
+  font-size: 12px;
+  padding: 5px;
 }
 .form-control[disabled] {
   opacity: 0.5;
@@ -1151,34 +1175,15 @@ input[type="radio"]:checked:after {
 .form-control[readonly] {
   color: #999;
 }
-.select-wrapper {
-  position: relative;
-  width: 100%;
-  background: var(--form-input-background);
-}
-.select-wrapper:before {
-  content: ' ';
-  position: absolute;
-  top: 50%;
-  width: 0;
-  height: 0;
-  right: 2em;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #000;
-}
-.select-wrapper select.form-control {
-  background: transparent;
+select.form-control {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  padding-right: 2rem;
-}
-.select-wrapper.multiple .form-control {
-  padding: 0;
-}
-.select-wrapper.multiple option {
-  padding: 1em 2em;
+  padding-right: calc(var(--default-gutter-size) * 2);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1em center;
+  background-size: 16px 12px;
 }
 .input-unstyled {
   margin: 0;
@@ -1283,8 +1288,7 @@ input[type="radio"]:checked:after {
   display: block;
   padding: 0.25rem;
   line-height: var(--default-line-height);
-  background-color: #fff;
-  border: 1px solid var(--default-border-color);
+  background-color: var(--whitespace-color);
   border-radius: var(--border-radius);
   transition: border 0.2s ease-in-out;
 }
@@ -1461,9 +1465,6 @@ ul.list-inline li {
   flex-direction: column;
   position: relative;
   border-radius: var(--border-radius);
-  margin-bottom: 1em;
-  background-color: var(--navigation-background-color);
-  color: var(--navigation-text-color);
 }
 .navbar li.open > a {
   background: rgba(0, 0, 0, 0.15) !important;
@@ -1471,18 +1472,18 @@ ul.list-inline li {
 .navbar li:not(.open) > a:hover {
   background: rgba(0, 0, 0, 0.05);
 }
-@media (min-width: 768px) {
-  .navbar .dropdown-menu {
-    background: #fff;
-    border: none;
-  }
+.navbar .navbar-nav {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 .navbar .navbar-nav > li > a {
   color: inherit;
   transition: all 125ms linear;
 }
 .navbar.navbar-bordered {
-  min-height: 52px;
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 .navbar.navbar-bordered .navbar-nav > li > a {
@@ -1502,11 +1503,22 @@ ul.list-inline li {
   padding: 0.5em 1em;
 }
 @media (min-width: 768px) {
+  .navbar .dropdown-menu {
+    background: #fff;
+    border: none;
+  }
+}
+@media (min-width: 768px) {
   .navbar {
     flex-direction: row;
   }
   .navbar .navbar-nav {
-    float: left;
+    flex-direction: row;
+    align-self: flex-start;
+    flex-wrap: wrap;
+  }
+  .navbar .navbar-right {
+    align-self: flex-end;
   }
 }
 @media (max-width: 767px) {
@@ -1526,7 +1538,6 @@ ul.list-inline li {
 }
 .navbar-collapse {
   flex: 1 1 auto;
-  overflow-x: visible;
   border-top: 1px solid transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   -webkit-overflow-scrolling: touch;
@@ -1541,15 +1552,13 @@ ul.list-inline li {
 }
 @media (min-width: 768px) {
   .navbar-collapse {
+    justify-content: space-between;
     width: auto;
     border-top: 0;
     box-shadow: none;
   }
   .navbar-collapse.collapse {
-    display: block !important;
-    height: auto !important;
-    padding-bottom: 0;
-    overflow: visible !important;
+    display: flex;
   }
   .navbar-collapse.in {
     overflow-y: visible;
@@ -1593,11 +1602,6 @@ ul.list-inline li {
 @media (min-width: 768px) {
   .navbar-header .navbar-toggle {
     display: none;
-  }
-}
-@media (min-width: 768px) {
-  .navbar-right {
-    float: right !important;
   }
 }
 .navbar-form {

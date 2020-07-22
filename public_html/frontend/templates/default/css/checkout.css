@@ -66,11 +66,20 @@
 }
 #box-checkout-shipping .option,
 #box-checkout-payment .option {
+  display: block;
   position: relative;
+  border-radius: var(--border-radius);
+  background-color: var(--default-background-color);
+  margin: 1em 0;
+  border: 2px solid transparent;
 }
 #box-checkout-shipping .option.btn,
 #box-checkout-payment .option.btn {
   padding: 12px;
+}
+#box-checkout-shipping .option.active,
+#box-checkout-payment .option.active {
+  border-color: var(--default-border-color);
 }
 #box-checkout-shipping .option:not(.active) .content,
 #box-checkout-payment .option:not(.active) .content {
@@ -80,14 +89,17 @@
 #box-checkout-shipping .option:not(.active):not(.disabled),
 #box-checkout-payment .option:not(.active):not(.disabled) {
   opacity: 0.75;
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -o-transition: all 0.25s ease;
   transition: all 0.25s ease;
+  cursor: hand;
 }
 #box-checkout-shipping .option .thumbnail,
 #box-checkout-payment .option .thumbnail {
   padding: 0 !important;
+}
+#box-checkout-shipping .option .title,
+#box-checkout-payment .option .title {
+  margin: 1em 0;
+  font-weight: 600;
 }
 #box-checkout-shipping .option .error,
 #box-checkout-payment .option .error {
@@ -100,6 +112,10 @@
   overflow-y: auto;
   text-align: left;
   transition: all 0.25s ease;
+}
+#box-checkout-shipping .option [class*="col-"],
+#box-checkout-payment .option [class*="col-"] {
+  align-self: center;
 }
 @media (min-width: 768px) {
   #box-checkout-shipping .price,
