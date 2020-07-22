@@ -2,7 +2,7 @@
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '2.3');
 
-// Capture output buffer
+// Capture output buffer (use compression)
   ob_start('ob_gzhandler');
 
 // Get config
@@ -15,7 +15,7 @@
   }
 
 // Virtual Modification System
-  require_once __DIR__ . '/library/lib_vmod.inc.php';
+  require_once FS_DIR_APP . 'includes/library/lib_vmod.inc.php';
   vmod::init();
 
 // Compatibility and Polyfills

@@ -27,7 +27,7 @@
         define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. self::$template .'/');
       }
 
-    // Set AJAX layout on AJAX request
+    // Default to AJAX layout on AJAX request
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         self::$layout = 'ajax';
       }
@@ -171,11 +171,22 @@
             }
           }
 
+        // Minify Inline CSS
+          $search_replace = array(
+              '#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
+              '#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
+              '#\s+#' => ' ', // Replace multiple whitespace
+              '#^\s+#' => ' ', // Replace leading whitespace
+            '#\s*([:;{}])\s*#' => '$1',
+              '#;}#' => '}',
+          );
+
+          $styles = preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL, $styles));
+
           if (!empty($styles)) {
             $styles = '<style>' . PHP_EOL
                    . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                   //. implode(PHP_EOL . PHP_EOL, $styles) . PHP_EOL
-                   . preg_replace('#/\*.*?\*/#ms', '', implode(PHP_EOL . PHP_EOL, $styles)) . PHP_EOL
+                   . $styles . PHP_EOL
                    . '/*]]>*/-->' . PHP_EOL
                    . '</style>' . PHP_EOL;
 
@@ -222,11 +233,13 @@
             }
           }
 
+        // Remove JS comments
+          $javascript = preg_replace('#/\*[\s\S]*?\*/|([^:]|^)//.*$#m', '', $javascript);
+
           if (!empty($javascript)) {
             $javascript = '<script>' . PHP_EOL
                         . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                        //. implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
-                        . preg_replace('#(?:(?:/\*(?:[^*]|(?:\*+[^*/]))*\*+/)|(?:(?<!\:|\\\|\')//.*))#', '', implode(PHP_EOL . PHP_EOL, $javascript)) . PHP_EOL
+                        . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
                         . '/*]]>*/-->' . PHP_EOL
                         . '</script>' . PHP_EOL;
 
@@ -235,20 +248,6 @@
             }
           }
         }
-      }
-
-    // Minify Inline CSS
-      if (preg_match('#<style>(?:\R*<!--/\*--><!\[CDATA\[/\*><!--\*/\R)(.*?)(?:\R/\*\]\]>\*/-->\R*)</style>#is', $GLOBALS['output'], $matches)) {
-        $search_replace = [
-          '#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
-          '#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
-          '#\s+#' => ' ', // Replace multiple whitespace
-          '#^\s+#' => ' ', // Replace leading whitespace
-          '#\s*([{}])\s*#' => '$1',
-          '#;}#' => '}',
-        ];
-        $minified = preg_replace(array_keys($search_replace), array_values($search_replace), $matches[1]);
-        $GLOBALS['output'] = preg_replace('#(<style>(?:\R*<!--/\*--><!\[CDATA\[/\*><!--\*/\R)).*?((?:\R/\*\]\]>\*/-->\R*)</style>)#is', '$1'. $minified .'$2', $GLOBALS['output']);
       }
 
       if (class_exists('stats', false)) {

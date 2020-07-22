@@ -178,7 +178,7 @@
         $decimals = $auto_decimals;
       }
 
-      list($integers, $fractions) = explode('.', $amount);
+      @list($integers, $fractions) = explode('.', $amount);
 
       return '<span class="currency-amount"><small class="currency">'. $currency_code . '</small> ' . $prefix . number_format($integers, 0, language::$selected['decimal_point'], language::$selected['thousands_sep']) . ($fractions ? '<span class="decimals">'. language::$selected['decimal_point'] . $fractions .'</span>' : '') . $suffix . '</span>';
     }

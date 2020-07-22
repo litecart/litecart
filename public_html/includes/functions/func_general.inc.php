@@ -129,6 +129,7 @@
     $text = preg_replace('#\[.*\]#U', '', $text);
 
   // Keep a-z0-9 and convert symbols to -
+    $text = preg_replace('#\'#i', '', $text);
     $text = preg_replace('#&(amp;)?\#?[a-z0-9]+;#i', '-', $text);
     $text = preg_replace(['#[^a-z0-9]#i', '#[-]+#'], '-', $text);
     $text = trim($text, '-');

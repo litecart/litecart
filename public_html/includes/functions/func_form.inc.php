@@ -45,19 +45,17 @@
 
   function form_draw_captcha_field($name, $id, $parameters='') {
 
-    $output = '<div class="input-group">' . PHP_EOL
-            . '  <span class="input-group-addon">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
-            . '  ' . form_draw_text_field('captcha', '', $parameters . ' style="font-size: 24px; text-align: center;"') . PHP_EOL
-            . '</div>';
-
-    return $output;
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
+         . '  ' . form_draw_text_field('captcha', '', $parameters . ' style="font-size: 24px; text-align: center;"') . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_category_field($name, $value=true, $parameters='') {
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    $account_name = language::translate('title_guest', 'Guest');
+    $account_name = language::translate('title_root', 'Root');
 
     if (!empty($value)) {
       $category_query = database::query(
@@ -79,12 +77,14 @@
   }
 
   function form_draw_checkbox($name, $value, $input=true, $parameters='') {
+
     if ($input === true) $input = form_reinsert_value($name, $value);
 
     return '<input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
   }
 
   function form_draw_color_field($name, $value=true, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
@@ -100,39 +100,40 @@
 
     $columns = array_keys($csv[0]);
 
-    $output = '<table class="table table-striped table-hover data-table" data-toggle="csv">' . PHP_EOL
-            . '  <thead>' . PHP_EOL
-            . '    <tr>' . PHP_EOL;
+    $html = '<table class="table table-striped table-hover data-table" data-toggle="csv">' . PHP_EOL
+          . '  <thead>' . PHP_EOL
+          . '    <tr>' . PHP_EOL;
 
     foreach ($columns as $column) {
-      $output .= '      <th>'. $column .'</th>' . PHP_EOL;
+      $html .= '      <th>'. $column .'</th>' . PHP_EOL;
     }
 
-    $output .= '      <th><a class="add-column" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></th>' . PHP_EOL
-             . '    </tr>' . PHP_EOL
-             . '  </thead>' . PHP_EOL
-             . '  <tbody>' . PHP_EOL;
+    $html .= '      <th><a class="add-column" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></th>' . PHP_EOL
+           . '    </tr>' . PHP_EOL
+           . '  </thead>' . PHP_EOL
+           . '  <tbody>' . PHP_EOL;
 
     foreach ($csv as $line => $row) {
-      $output .= '    <tr>' . PHP_EOL;
+      $html .= '    <tr>' . PHP_EOL;
       foreach ($columns as $column) {
-        $output .= '      <td contenteditable>'. $row[$column] .'</td>' . PHP_EOL;
+        $html .= '      <td contenteditable>'. $row[$column] .'</td>' . PHP_EOL;
       }
-      $output .= '      <td><a class="remove" href="#">'. functions::draw_fonticon('fa-times-circle', 'style="color: #d33"') .'</a></td>' . PHP_EOL
-               . '    </tr>' . PHP_EOL;
+      $html .= '      <td><a class="remove" href="#">'. functions::draw_fonticon('fa-times-circle', 'style="color: #d33"') .'</a></td>' . PHP_EOL
+             . '    </tr>' . PHP_EOL;
     }
 
-    $output .= '  </tbody>' . PHP_EOL
-             . '  <tfoot>' . PHP_EOL
-             . '    <tr>' . PHP_EOL
-             . '      <td colspan="'. (count($columns)+1) .'"><a class="add-row" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></td>' . PHP_EOL
-             . '    </tr>' . PHP_EOL
-             . '  </tfoot>' . PHP_EOL
-             . '</table>' . PHP_EOL
-             . PHP_EOL
-             . form_draw_textarea($name, $value, 'style="display: none;"');
+    $html .= '  </tbody>' . PHP_EOL
+           . '  <tfoot>' . PHP_EOL
+           . '    <tr>' . PHP_EOL
+           . '      <td colspan="'. (count($columns)+1) .'"><a class="add-row" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></td>' . PHP_EOL
+           . '    </tr>' . PHP_EOL
+           . '  </tfoot>' . PHP_EOL
+           . '</table>' . PHP_EOL
+           . PHP_EOL
+           . form_draw_textarea($name, $value, 'style="display: none;"');
 
-    document::$snippets['javascript']['table2csv'] = <<<END
+    document::$snippets['javascript']['table2csv'] =
+<<<END
 $('table[data-toggle="csv"]').on('click', '.remove', function(e) {
   e.preventDefault();
   var parent = $(this).closest('tbody');
@@ -174,7 +175,7 @@ $('table[data-toggle="csv"]').keyup(function(e) {
 });
 END;
 
-    return $output;
+    return $html;
   }
 
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
@@ -391,8 +392,7 @@ END;
       }
     }
 
-    $html = '<div class="select-wrapper">' . PHP_EOL
-          . '  <select name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    $html = '<select class="form-control" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
 
@@ -406,18 +406,17 @@ END;
 
       if (!is_array($option)) $option = [$option, $option];
 
-      $html .= '    <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
 
-    $html .= '  </select>'
-           . '</div>';
+    $html .= '</select>';
 
     return $html;
   }
 
   function form_draw_select_multiple_field($name, $options=[], $input=true, $parameters='') {
 
-    $html = '<div class="form-control" style="overflow-y: auto; max-height: 200px;">' . PHP_EOL;
+    $html = '<div class="form-control" style="overflow-y: auto; max-height: 200px;" ' . (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
 
@@ -687,25 +686,25 @@ END;
 
       case 'regional_input': //Deprecated
       case 'regional_text':
-        $output = '';
+        $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $output .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input, $parameters);
+          $html .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input, $parameters);
         }
-        return $output;
+        return $html;
 
       case 'regional_textarea':
-        $output = '';
+        $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $output .= form_draw_regional_textarea($language_code, $name.'['. $language_code.']', $input, $parameters);
+          $html .= form_draw_regional_textarea($language_code, $name.'['. $language_code.']', $input, $parameters);
         }
-        return $output;
+        return $html;
 
       case 'regional_wysiwyg':
-        $output = '';
+        $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $output .= form_draw_regional_wysiwyg_field($language_code, $name.'['. $language_code.']', $input, $parameters);
+          $html .= form_draw_regional_wysiwyg_field($language_code, $name.'['. $language_code.']', $input, $parameters);
         }
-        return $output;
+        return $html;
 
       case 'page':
         return form_draw_pages_list($name, $input, false, $parameters);
@@ -714,11 +713,11 @@ END;
         return form_draw_pages_list($name, $input, true, $parameters);
 
       case 'radio':
-        $output = '';
+        $html = '';
         for ($i=0; $i<count($options); $i++) {
-          $output .= '<div class="radio"><label>'. form_draw_radio_button($name, $options[$i], $input, $parameters) .' '. $options[$i] .'</label></div>';
+          $html .= '<div class="radio"><label>'. form_draw_radio_button($name, $options[$i], $input, $parameters) .' '. $options[$i] .'</label></div>';
         }
-        return $output;
+        return $html;
 
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = [$options[$i]];
