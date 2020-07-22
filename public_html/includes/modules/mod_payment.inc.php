@@ -3,16 +3,18 @@
   class mod_payment extends abs_module {
     public $data = [];
 
-    public function __construct() {
+    public function __construct($selected=null, $userdata=null) {
 
-      if (!isset(session::$data['payment']) || !is_array(session::$data['payment'])) {
-        session::$data['payment'] = [];
+      if (!empty($selected)) {
+        $this->data['selected'] = $selected;
       }
-
-      $this->data = &session::$data['payment'];
 
       if (empty($this->data['selected'])) {
         $this->data['selected'] = [];
+      }
+
+      if (!empty($userdata)) {
+        $this->data['userdata'] = $userdata;
       }
 
       if (!isset($this->data['userdata'])) {
@@ -39,8 +41,6 @@
       if (empty($this->modules)) return [];
 
       $this->data['options'] = [];
-
-      if (empty($this->modules)) return;
 
       $subtotal = ['amount' => 0, 'tax' => 0];
       foreach ($items as $item) {
@@ -81,16 +81,12 @@
 
     public function select($module_id, $option_id, $userdata=null) {
 
-      if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
-        $this->data['selected'] = [];
-        //notices::add('errors', language::translate('error_invalid_payment_option', 'Cannot set an invalid payment option.'));
-        return;
+      if (empty($option_id) && strpos($module_id, ':') !== false) {
+        list($module_id, $option_id) = explode(':', $module_id);
       }
 
-      if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
-        //notices::add('errors', language::translate('error_cannot_select_payment_option_with_error', 'Cannot set a payment option that contains errors.'));
-        return;
-      }
+      if (!isset($this->data['options'][$module_id]['options'][$option_id])) return;
+      if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) return;
 
       if (!empty($userdata)) {
         $this->data['userdata'][$module_id] = $userdata;
@@ -154,58 +150,23 @@
     }
 
     public function pre_check($order) {
-
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
-
-      if (!method_exists($this->modules[$module_id], 'pre_check')) return;
-
-      return $this->modules[$module_id]->pre_check($order);
+      return $this->run('pre_check', null, $order);
     }
 
     public function transfer($order) {
-
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
-
-      if (!method_exists($this->modules[$module_id], 'transfer')) return;
-
-      return $this->modules[$module_id]->transfer($order);
+      return $this->run('transfer', null, $order);
     }
 
     public function verify($order) {
-
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
-
-      if (!method_exists($this->modules[$module_id], 'verify')) return;
-
-      return $this->modules[$module_id]->verify($order);
+      return $this->run('verify', null, $order);
     }
 
     public function after_process($order) {
-
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
-
-      if (!method_exists($this->modules[$module_id], 'after_process')) return;
-
-      return $this->modules[$module_id]->after_process($order);
+      return $this->run('after_process', null, $order);
     }
 
     public function receipt($order) {
-
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
-
-      if (!method_exists($this->modules[$module_id], 'receipt')) return;
-
-      return $this->modules[$module_id]->receipt($order);
+      return $this->run('receipt', null, $order);
     }
 
     public function run($method_name, $module_id=null) {

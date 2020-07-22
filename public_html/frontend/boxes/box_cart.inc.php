@@ -4,7 +4,7 @@
   $box_cart = new ent_view();
   $box_cart->snippets = [
     'items' => [],
-    'link' => document::ilink('checkout'),
+    'link' => document::ilink('shopping_cart'),
     'num_items' => cart::$total['items'],
   ];
 

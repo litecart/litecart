@@ -74,9 +74,17 @@
 
 #box-checkout-shipping, #box-checkout-payment {
   .option {
+    display: block;
     position: relative;
+    border-radius: var(--border-radius);
+    background-color: var(--default-background-color);
+    margin: 1em 0;
+    border: 2px solid transparent;
     &.btn {
       padding: 12px;
+    }
+    &.active {
+      border-color: var(--default-border-color);
     }
     &:not(.active) {
       .content {
@@ -85,14 +93,16 @@
       }
       &:not(.disabled) {
         opacity: 0.75;
-        -webkit-transition: all 0.25s ease;
-        -moz-transition: all 0.25s ease;
-        -o-transition: all 0.25s ease;
         transition: all 0.25s ease;
+        cursor: hand;
       }
     }
     .thumbnail {
       padding: 0 !important;
+    }
+    .title {
+      margin: 1em 0;
+      font-weight: 600;
     }
     .error {
       color: #c00;
@@ -103,6 +113,9 @@
       overflow-y: auto;
       text-align: left;
       transition: all 0.25s ease;
+    }
+    [class*="col-"] {
+      align-self: center;
     }
   }
   @media(min-width: @media-breakpoint-sm) {

@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<header id="header" class="twelve-eighty">
+<header id="header" class="container">
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
     <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
   </a>
@@ -31,10 +31,7 @@
   </div>
 </header>
 
-
-<main id="page">
-  {snippet:content}
-</main>
+{snippet:content}
 
 {snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>

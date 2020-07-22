@@ -56,29 +56,26 @@
       return true;
     }
 
-    public function update($fields, $old_fields=null) {
-
-      if (empty($this->modules)) return false;
-
-      foreach ($this->modules as $module) {
-        if (!method_exists($module, 'update')) continue;
-        $module->update($fields, $old_fields);
-      }
+    public function update($customer, $previous=[]) {
+      return $this->run('update', null, $customer, $previous);
     }
 
-    public function delete($fields) {
-
-      if (empty($this->modules)) return false;
-
-      foreach ($this->modules as $module) {
-        if (!method_exists($module, 'delete')) continue;
-        $module->delete($fields);
-      }
+    public function delete($customer) {
+      return $this->run('delete', null, $customer);
     }
 
-    public function run($method_name, $module_id) {
-      if (method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
+    public function run($method_name, $module_id=null) {
+
+      if (!empty($module_id)) {
+       $modules = [$module_id];
+      } else {
+        $modules = array_keys($this->modules);
+      }
+
+      foreach ($modules as $module_id) {
+        if (method_exists($this->modules[$module_id], $method_name)) {
+          return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
+        }
       }
     }
   }

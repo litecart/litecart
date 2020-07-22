@@ -71,10 +71,8 @@
         'items',
         'order_total',
         'order_status_id',
-        'shipping_option',
         'shipping_tracking_id',
         'shipping_tracking_url',
-        'payment_option',
         'payment_transaction_id',
         'display_prices_including_tax',
         'reference',
@@ -121,6 +119,9 @@
       foreach ($fields as $field) {
         if (isset($_POST['customer']['shipping_address'][$field])) $order->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
       }
+
+      $order->shipping->data['selected'] = $_POST['shipping_option'];
+      $order->payment->data['selected'] = $_POST['payment_option'];
 
       $order->save();
 

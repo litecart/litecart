@@ -52,24 +52,6 @@
       }
     }
 
-    public function before_process($order) {
-
-      if (empty($this->modules)) return;
-
-      foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], 'before_process')) $module->before_process($order);
-      }
-    }
-
-    public function after_process($order) {
-
-      if (empty($this->modules)) return;
-
-      foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], 'after_process')) $module->after_process($order);
-      }
-    }
-
     public function success($order) {
 
       if (empty($this->modules)) return;
@@ -88,21 +70,11 @@
     }
 
     public function update($order) {
-
-      if (empty($this->modules)) return;
-
-      foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], 'update')) $module->update($order);
-      }
+      return $this->run('update', null, $order);
     }
 
     public function delete($order) {
-
-      if (empty($this->modules)) return;
-
-      foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], 'delete')) $module->delete($order);
-      }
+      return $this->run('delete', null, $order);
     }
 
     public function run($method_name, $module_id) {

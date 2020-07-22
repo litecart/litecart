@@ -4,18 +4,18 @@
     public $data = [];
     public $items = [];
 
-    public function __construct($type='session') {
+    public function __construct($selected=null, $userdata=null) {
 
-      if ($type == 'session') {
-        if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) {
-          session::$data['shipping'] = [];
-        }
-
-        $this->data = &session::$data['shipping'];
+      if (!empty($selected)) {
+        $this->data['selected'] = $selected;
       }
 
       if (empty($this->data['selected'])) {
         $this->data['selected'] = [];
+      }
+
+      if (!empty($userdata)) {
+        $this->data['userdata'] = $userdata;
       }
 
       if (!isset($this->data['userdata'])) {
@@ -79,17 +79,15 @@
 
     public function select($module_id, $option_id, $userdata=null) {
 
+      if (empty($option_id) && strpos($module_id, ':') !== false) {
+        list($module_id, $option_id) = explode(':', $module_id);
+      }
+
       $this->data['selected'] = [];
 
-      if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
-        //notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
-        return;
-      }
+      if (!isset($this->data['options'][$module_id]['options'][$option_id])) return;
 
-      if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) {
-        //notices::add('errors', language::translate('error_cannot_select_shipping_option_with_error', 'Cannot set a shipping option that contains errors.'));
-        return;
-      }
+      if (!empty($this->data['options'][$module_id]['options'][$option_id]['error'])) return;
 
       if (!empty($userdata)) {
         $this->data['userdata'][$module_id] = $userdata;
@@ -150,14 +148,7 @@
     }
 
     public function after_process($order) {
-
-      if (empty($this->data['selected']['id'])) return;
-
-      list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
-
-      if (!method_exists($this->modules[$module_id], 'after_process')) return;
-
-      return $this->modules[$module_id]->after_process($order);
+      return $this->run('after_process', null, $order);
     }
 
     public function run($method_name, $module_id=null) {

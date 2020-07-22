@@ -2,7 +2,9 @@
 
   header('X-Robots-Tag: noindex');
 
-  functions::draw_lightbox();
+  $order = &session::$data['order'];
+
+  if (empty($order->data['items'])) return;
 
   if (empty(cart::$items)) return;
 
@@ -21,7 +23,7 @@
   }
 
   if (file_get_contents('php://input') == '') {
-    foreach (customer::$data as $key => $value) {
+    foreach ($order->data['customer'] as $key => $value) {
       $_POST[$key] = $value;
     }
   }
@@ -74,7 +76,7 @@
     ];
 
     foreach ($fields as $field) {
-      if (isset($_POST[$field])) customer::$data[$field] = $_POST[$field];
+      if (isset($_POST[$field])) $order->data['customer'][$field] = $_POST[$field];
     }
 
   // Shipping address
@@ -92,17 +94,17 @@
     ];
 
     foreach ($fields as $field) {
-      if (!empty(customer::$data['different_shipping_address'])) {
+      if (!empty($order->data['customer']['different_shipping_address'])) {
         if (isset($_POST['shipping_address'][$field])) {
-          customer::$data['shipping_address'][$field] = $_POST['shipping_address'][$field];
+          $order->data['customer']['shipping_address'][$field] = $_POST['shipping_address'][$field];
         } else {
-          customer::$data['shipping_address'][$field] = null;
+          $order->data['customer']['shipping_address'][$field] = null;
         }
       } else {
         if (isset($_POST[$field])) {
-          customer::$data['shipping_address'][$field] = $_POST[$field];
+          $order->data['customer']['shipping_address'][$field] = $_POST[$field];
         } else {
-          customer::$data['shipping_address'][$field] = null;
+          $order->data['customer']['shipping_address'][$field] = null;
         }
       }
     }
@@ -110,28 +112,17 @@
     if (empty(notices::$data['errors'])) {
 
     // Create customer account
-      if (settings::get('accounts_enabled') && empty(customer::$data['id']) && !empty(customer::$data['email'])) {
+      if (settings::get('accounts_enabled') && empty($order->data['customer']['id']) && !empty($order->data['customer']['email'])) {
         if (settings::get('register_guests') || !empty($_POST['create_account'])) {
 
           if (!database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
 
             $customer = new ent_customer();
-            foreach (array_keys($customer->data) as $key) {
-              if (isset(customer::$data[$key])) $customer->data[$key] = customer::$data[$key];
-            }
+            $customer->data = array_replace($customer->data, array_intersect_key($order->data['customer'], $customer->data));
 
             $customer->set_password($_POST['password']);
 
             $customer->save();
-
-            database::query(
-              "update ". DB_PREFIX ."customers
-              set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-                  last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-                  last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
-              where id = ". (int)$customer->data['id'] ."
-              limit 1;"
-            );
 
             $aliases = [
               '%store_name' => settings::get('store_name'),
@@ -153,9 +144,17 @@
 
             notices::add('success', language::translate('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
 
+            database::query(
+              "update ". DB_PREFIX ."customers
+              set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+                  last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+                  last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
+              where id = ". (int)$customer->data['id'] ."
+              limit 1;"
+            );
+
             customer::load($customer->data['id']);
           }
-
         }
       }
 
@@ -171,13 +170,21 @@
 
   $account_exists = false;
   if (settings::get('accounts_enabled')) {
-    if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
+    if (empty($order->data['customer']['id']) && !empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($order->data['customer']['email']) ."' limit 1;"))) {
       $account_exists = true;
     }
   }
 
+  $subscribed_to_newsletter = false;
+  if (!empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($order->data['customer']['email']) ."');"))) {
+    $subscribed_to_newsletter = true;
+  }
+
+  functions::draw_lightbox();
+
   $box_checkout_customer = new ent_view();
   $box_checkout_customer->snippets = [
     'account_exists' => $account_exists,
+    'subscribed_to_newsletter' => $subscribed_to_newsletter,
   ];
   echo $box_checkout_customer->stitch('views/box_checkout_customer');

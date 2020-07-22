@@ -10,7 +10,6 @@
 
   if (empty($order->data['id'])) die('Error: Missing session order object');
 
-  $payment = new mod_payment();
   $order_module = new mod_order();
 
   $_page = new ent_view();
@@ -18,7 +17,7 @@
   $_page->snippets = [
     'order' => $order->data,
     'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key'], 'media' => 'print']),
-    'payment_receipt' => $payment->receipt($order),
+    'payment_receipt' => $order->payment->receipt($order),
     'order_success_modules_output' => $order_module->success($order),
   ];
 

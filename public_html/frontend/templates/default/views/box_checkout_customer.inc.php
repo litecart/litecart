@@ -204,7 +204,7 @@
   </div>
   <?php } ?>
 
-  <?php if (empty(customer::$data['newsletter'])) { ?>
+  <?php if (!$subscribed_to_newsletter) { ?>
   <div class="newsletter">
     <label class="checkbox">
       <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>

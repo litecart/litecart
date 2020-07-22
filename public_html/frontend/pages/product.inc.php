@@ -222,7 +222,7 @@
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
 
-    $shipping = new mod_shipping('local');
+    $shipping = new mod_shipping();
 
     $shipping_items = [
       [
@@ -251,6 +251,7 @@
 // Options
   if (count($product->options) > 0) {
     foreach ($product->options as $group) {
+
       $values = '';
       switch ($group['function']) {
 

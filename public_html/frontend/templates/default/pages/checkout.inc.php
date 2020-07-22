@@ -1,34 +1,33 @@
-<div id="content" class="twelve-eighty">
-  {snippet:notices}
+<main id="main" class="container">
+  <div id="content">
+    {snippet:notices}
 
-  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
+    <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
 
-  <section id="box-checkout" class="box">
-    <div class="cart wrapper"></div>
+      <section id="box-checkout" class="box">
+       <div class="row" style="grid-gap: 2rem;">
+         <div class="col-md-6">
+           <div class="customer wrapper"></div>
+          </div>
 
-    <div class="row" style="grid-gap: 2rem;">
-      <div class="col-md-6">
-        <div class="customer wrapper"></div>
-      </div>
+          <div class="col-md-6">
+            <div class="shipping wrapper"></div>
 
-      <div class="col-md-6">
-        <div class="shipping wrapper"></div>
+            <div class="payment wrapper"></div>
+          </div>
+        </div>
 
-        <div class="payment wrapper"></div>
-      </div>
-    </div>
+        <div class="summary wrapper"></div>
+      </section>
 
-    <div class="summary wrapper"></div>
-  </section>
-
-  <?php echo functions::form_draw_form_end(); ?>
-</div>
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
+</main>
 
 <script>
 // Queue Handler
 
   var updateQueue = [
-    {component: 'cart',     data: null, refresh: true},
     {component: 'customer', data: null, refresh: true},
     {component: 'shipping', data: null, refresh: true},
     {component: 'payment',  data: null, refresh: true},
@@ -76,20 +75,17 @@
 
     var url = '';
     switch (task.component) {
-      case 'cart':
-        url = '<?php echo document::ilink('ajax/checkout_cart'); ?>';
-        break;
       case 'customer':
-        url = '<?php echo document::ilink('ajax/checkout_customer'); ?>';
+        url = '<?php echo document::ilink('checkout/customer'); ?>';
         break;
       case 'shipping':
-        url = '<?php echo document::ilink('ajax/checkout_shipping'); ?>';
+        url = '<?php echo document::ilink('checkout/shipping'); ?>';
         break;
       case 'payment':
-        url = '<?php echo document::ilink('ajax/checkout_payment'); ?>';
+        url = '<?php echo document::ilink('checkout/payment'); ?>';
         break;
       case 'summary':
-        url = '<?php echo document::ilink('ajax/checkout_summary'); ?>';
+        url = '<?php echo document::ilink('checkout/summary'); ?>';
         break;
       default:
         alert('Error: Invalid component ' + task.component);
@@ -99,16 +95,16 @@
     if (task.data === true) {
       switch (task.component) {
         case 'customer':
-          task.data = 'token=' + $(':input[name="token"]').val() + '&' + $('#box-checkout-customer :input').serialize();
+          task.data = $('#box-checkout-customer :input').serialize();
           break;
         case 'shipping':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-shipping .option.active :input').serialize();
+          task.data = $('#box-checkout-shipping .option.active :input').serialize();
           break;
         case 'payment':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-payment .option.active :input').serialize();
+          task.data = $('#box-checkout-payment .option.active :input').serialize();
           break;
         case 'summary':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-summary :input').serialize();
+          task.data = $('#box-checkout-summary :input').serialize();
           break;
       }
     }
@@ -140,32 +136,6 @@
   }
 
   runQueue();
-
-// Cart
-
-  $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
-    e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
-             + '&remove_cart_item=' + $(this).val();
-    queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', true, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', true, true);
-  });
-
-  $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
-    e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
-             + '&update_cart_item=' + $(this).val();
-    queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', true, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', true, true);
-  });
 
 // Customer Form: Toggles
 
@@ -324,7 +294,6 @@
             var data = 'token=' + $(':input[name="token"]').val()
                      + '&' + $('#box-checkout-customer :input').serialize();
             queueUpdateTask('customer', data, true);
-            queueUpdateTask('cart', null, true);
             queueUpdateTask('shipping', true, true);
             queueUpdateTask('payment', true, true);
             queueUpdateTask('summary', null, true);
@@ -346,7 +315,6 @@
              + '&' + $('#box-checkout-customer :input').serialize()
              + '&save_customer_details=true';
     queueUpdateTask('customer', data, true);
-    queueUpdateTask('cart', null, true);
     queueUpdateTask('shipping', true, true);
     queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', null, true);
