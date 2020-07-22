@@ -34,7 +34,7 @@
 
         // Remove deleted modules
           database::query(
-            "delete from ". DB_TABLE_MODULES ."
+            "delete from ". DB_PREFIX ."modules
             where module_id = '". database::input($module['id']) ."'
             limit 1;"
           );

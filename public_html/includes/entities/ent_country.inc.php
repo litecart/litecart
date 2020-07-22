@@ -73,7 +73,7 @@
       }
 
       $country_query = database::query(
-        "select id from ". DB_TABLE_COUNTRIES ."
+        "select id from ". DB_PREFIX ."countries
         where id != ". $this->data['id'] ."
         and (
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."'

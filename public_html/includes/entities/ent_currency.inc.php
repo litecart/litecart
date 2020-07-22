@@ -70,7 +70,7 @@
       }
 
       $currency_query = database::query(
-        "select id from ". DB_TABLE_CURRENCIES ."
+        "select id from ". DB_PREFIX ."currencies
         where (
           code = '". database::input($this->data['code']) ."'
           ". (!empty($this->data['number']) ? "or number = '". database::input($this->data['number']) ."'" : "") ."

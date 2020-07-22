@@ -526,7 +526,7 @@
 
       if (!empty($combination)) {
         database::query(
-          "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+          "update ". DB_PREFIX ."options_stock
           set quantity = quantity + ". (float)$quantity ."
           where product_id = ". (int)$this->_data['id'] ."
           and combination =  '". database::input($combination) ."'
@@ -539,7 +539,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PRODUCTS ."
+        "update ". DB_PREFIX ."products
         set quantity = quantity + ". (int)$quantity ."
         where id = ". (int)$this->_data['id'] ."
         limit 1;"

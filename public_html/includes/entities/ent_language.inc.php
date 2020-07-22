@@ -62,7 +62,7 @@
       }
 
       $language_query = database::query(
-        "select id from ". DB_TABLE_LANGUAGES ."
+        "select id from ". DB_PREFIX ."languages
         where (
           code = '". database::input($this->data['code']) ."'
           ". (!empty($this->data['code2']) ? "or code2 = '". database::input($this->data['code2']) ."'" : "") ."

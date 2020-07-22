@@ -79,7 +79,7 @@
       order by end_date asc
     ) pc on (pc.product_id = p.id)
 
-    left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
+    left join ". DB_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
     where (p.quantity > 0 or ss.hidden != 1)
 

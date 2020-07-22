@@ -159,7 +159,7 @@
           $this->_data['descendants'] = [];
 
           $categories_query = database::query(
-            "select @pv:=id as id, parent_id from ". DB_TABLE_CATEGORIES ."
+            "select @pv:=id as id, parent_id from ". DB_PREFIX ."categories
             join (select @pv := ". (int)$this->_data['id'] .") tmp
             where status
             and parent_id = @pv;"
