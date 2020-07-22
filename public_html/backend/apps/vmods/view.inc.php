@@ -72,7 +72,8 @@ pre {
 
           <?php echo !empty($operation->attributes()['index']) ? ' (The following matches: '. $operation->attributes()['index'] .')' : ''; ?>
 
-          <?php echo !empty($operation->find->attributes()['offset']) ? ' (Offset: '. $operation->find->attributes()['offset'] .')' : ''; ?>
+          <?php echo !empty($operation->find->attributes()['offset-before']) ? ' (Offset Before: '. $operation->find->attributes()['offset-before'] .')' : ''; ?>
+          <?php echo !empty($operation->find->attributes()['offset-after']) ? ' (Offset After: '. $operation->find->attributes()['offset-after'] .')' : ''; ?>
 
             <pre><code><?php echo htmlspecialchars($operation->find); ?></code></pre>
           </div>
