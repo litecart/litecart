@@ -31,48 +31,22 @@
     }
 
     switch($class) {
-      case 'add':
-        return draw_fonticon('fa-plus', 'style="color: #66cc66;"');
-
-      case 'cancel':
-        return draw_fonticon('fa-times');
-
-      case 'edit':
-        return draw_fonticon('fa-pencil');
-
-      case 'remove':
-        return draw_fonticon('fa-times-circle', 'style="color: #cc3333;"');
-
-      case 'delete':
-        return draw_fonticon('fa-trash-o');
-
-      case 'move-up':
-        return draw_fonticon('fa-arrow-circle-up', 'style="color: #3399cc;"');
-
-      case 'move-down':
-        return draw_fonticon('fa-arrow-circle-down', 'style="color: #3399cc;"');
-
-      case 'ok':
-        return draw_fonticon('fa-check');
-
-      case 'on':
-        return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-
-      case 'off':
-        return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-
-      case 'semi-off':
-        return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ded90f;"');
-
-      case 'save':
-        return draw_fonticon('fa-floppy-o');
-
-      case 'send':
-        return draw_fonticon('fa-paper-plane');
-
-      default:
-        trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);
-        return;
+      case 'add':         return draw_fonticon('fa-plus', 'style="color: #66cc66;"');
+      case 'cancel':      return draw_fonticon('fa-times');
+      case 'edit':        return draw_fonticon('fa-pencil');
+      case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cccc66;"');
+      case 'folder-open': return draw_fonticon('fa-folder-open', 'style="color: #cccc66;"');
+      case 'remove':      return draw_fonticon('fa-times-circle', 'style="color: #cc3333;"');
+      case 'delete':      return draw_fonticon('fa-trash-o');
+      case 'move-up':     return draw_fonticon('fa-arrow-circle-up', 'style="color: #3399cc;"');
+      case 'move-down':   return draw_fonticon('fa-arrow-circle-down', 'style="color: #3399cc;"');
+      case 'ok':          return draw_fonticon('fa-check');
+      case 'on':          return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
+      case 'off':         return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
+      case 'semi-off':    return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ded90f;"');
+      case 'save':        return draw_fonticon('fa-floppy-o');
+      case 'send':        return draw_fonticon('fa-paper-plane');
+      default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
     }
   }
 
