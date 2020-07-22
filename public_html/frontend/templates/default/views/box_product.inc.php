@@ -179,8 +179,8 @@
       <table class="table table-striped table-hover">
 <?php
   foreach ($technical_data as $line) {
-    if (preg_match('#(:|\t)#', $line)) {
-      @list($key, $value) = preg_split('#(:|\t)#', $line);
+    if (preg_match('#(:|  )#', $line)) {
+      @list($key, $value) = preg_split('#(:|  )#', $line);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL

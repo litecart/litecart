@@ -821,31 +821,25 @@
 
           if (empty($this->_resource)) $this->load();
 
-          try {
-
-            if ($this->_resource->getImageDepth() > 16) {
-              $this->_resource->setImageDepth(16);
-            }
-
-            switch (strtolower($type)) {
-              case 'jpg':
-                 $this->_resource->setImageCompression(Imagick::COMPRESSION_JPEG);
-                 break;
-
-              default:
-                 $this->_resource->setImageCompression(Imagick::COMPRESSION_ZIP);
-                 break;
-            }
-
-            $this->_resource->setImageCompressionQuality($quality);
-
-            if ($interlaced) $this->_resource->setInterlaceScheme(Imagick::INTERLACE_PLANE);
-
-            return $this->_resource->writeImage($type.':'.$destination);
-
-          } catch (\ImagickException $e) {
-            throw new Exception("Error applying watermark ($watermark)");
+          if ($this->_resource->getImageDepth() > 16) {
+            $this->_resource->setImageDepth(16);
           }
+
+          switch (strtolower($type)) {
+            case 'jpg':
+               $this->_resource->setImageCompression(Imagick::COMPRESSION_JPEG);
+               break;
+
+            default:
+               $this->_resource->setImageCompression(Imagick::COMPRESSION_ZIP);
+               break;
+          }
+
+          $this->_resource->setImageCompressionQuality($quality);
+
+          if ($interlaced) $this->_resource->setInterlaceScheme(Imagick::INTERLACE_PLANE);
+
+          return $this->_resource->writeImage($type.':'.$destination);
 
           break;
 
@@ -901,15 +895,6 @@
               ImageSaveAlpha($this->_resource, true);
               $result = ImageWebP($this->_resource, $destination, $quality);
               ImageDestroy($this->_resource);
-              return $result;
-
-            case 'webp':
-              if (!function_exists('ImageWebP')) {
-                return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
-              }
-              ImageSaveAlpha($this->_image, true);
-              $result = ImageWebP($this->_image, false, $quality);
-              ImageDestroy($this->_image);
               return $result;
 
             default:

@@ -189,7 +189,7 @@
             and id = ". (int)$filter['id'] ."
             limit 1;"
           );
-        }
+        } unset($filter);
       }
 
       $this->previous = $this->data;

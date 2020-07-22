@@ -138,7 +138,7 @@
     }
 
     $filename = implode('', [
-      md5_file($source),
+      sha1($path),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,
       $clipping_filename_flag,
@@ -170,11 +170,11 @@
 
   function image_delete_cache($file) {
 
-    $webpath = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', str_replace('\\', '/', $file));
+    $webpath = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', str_replace('\\', '/', realpath($file)));
 
-    $cachename = sha1($webpath);
+    $cache_name = sha1($webpath);
 
-    foreach (glob(FS_DIR_STORAGE . 'cache/'. substr($cachename, 0, 3) .'/' . $cachename .'*') as $file) {
+    foreach (glob(FS_DIR_STORAGE . 'cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*') as $file) {
       unlink($file);
     }
   }

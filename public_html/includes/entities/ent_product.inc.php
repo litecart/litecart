@@ -342,7 +342,7 @@
             limit 1;"
           );
         }
-      }
+      } unset($attribute);
 
     // Prices
       foreach (array_keys(currency::$currencies) as $currency_code) {
@@ -409,7 +409,7 @@
             and id = ". (int)$this->data['campaigns'][$key]['id'] ."
             limit 1;"
           );
-        }
+        } unset($campaign);
       }
 
     // Delete options
@@ -495,9 +495,9 @@
                 and id = ". (int)$value['id'] ."
                 limit 1;"
               );
-            }
+            } unset($value);
           }
-        }
+        } unset($option);
       }
 
     // Delete stock options
@@ -551,7 +551,7 @@
             and id = ". (int)$stock_option['id'] ."
             limit 1;"
           );
-        }
+        } unset($stock_option);
       }
 
     // Delete images
@@ -605,7 +605,7 @@
             and id = ". (int)$image['id'] ."
             limit 1;"
           );
-        }
+        } unset($image);
       }
 
     // Update product image

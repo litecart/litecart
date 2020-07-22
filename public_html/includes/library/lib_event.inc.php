@@ -15,11 +15,7 @@
       }
 
       if (in_array($event, self::$_fired_events)) {
-        if (is_callable($callback)) {
-          $callback();
-        } else {
-          call_user_func($callback);
-        }
+        call_user_func_array($callback, array_slice(func_get_args(), 2));
         return;
       }
 

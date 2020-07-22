@@ -221,8 +221,6 @@
                   )
                 );
 
-                if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
-
                 if ($matched_value = array_intersect($selected_values, $possible_values)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
