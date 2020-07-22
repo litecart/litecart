@@ -381,17 +381,6 @@ END;
 
   function form_draw_select_field($name, $options=[], $input=true, $parameters='') {
 
-    if (is_bool($parameters)) {
-      $args = func_get_args();
-      if ($parameters === true) {
-        trigger_error('The 4th parameter $multiple in form_draw_select_field() has been deprecated. Use instead form_draw_select_multiple_field()', E_USER_DEPRECATED);
-        return form_draw_select_multiple_field(@$args[0], @$args[1], @$args[2], @$args[4]);
-      } else {
-        trigger_error('The 4th parameter $multiple in form_draw_select_field() has been deprecated', E_USER_DEPRECATED);
-        return form_draw_select_field(@$args[0], @$args[1], @$args[2], @$args[4]);
-      }
-    }
-
     $html = '<select class="form-control" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
