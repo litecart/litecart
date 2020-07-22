@@ -51,7 +51,6 @@
         'keywords',
         'date_valid_from',
         'date_valid_to',
-        'quantity',
         'quantity_unit_id',
         'purchase_price',
         'purchase_price_currency_code',
@@ -720,7 +719,7 @@
                       </span>
                     </div>
                   </td>
-                  <td><?php echo functions::form_draw_decimal_field('quantity', true); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, null, null, 'disabled'); ?></td>
                   <td></td>
                 </tr>
                 <?php if (!empty($_POST['options_stock'])) foreach (array_keys($_POST['options_stock']) as $key) { ?>
@@ -747,7 +746,7 @@
                       </span>
                     </div>
                   </td>
-                  <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true, 2, null, null, 'disabled'); ?></td>
                   <td class="text-right">
                     <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                     <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
