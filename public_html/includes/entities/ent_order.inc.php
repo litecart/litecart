@@ -479,7 +479,7 @@
         if (empty($row['calculate'])) continue;
         $this->data['payment_due'] += $row['value'] + $row['tax'];
         $this->data['tax_total'] += $row['tax'];
-      }
+      } unset($row);
     }
 
     public function add_item($item) {

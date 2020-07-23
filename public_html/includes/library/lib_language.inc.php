@@ -101,7 +101,7 @@
       }
 
       if (!empty($_COOKIE['cookies_accepted'])) {
-        header('Set-Cookie: language_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Strict', false);
+        header('Set-Cookie: language_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
       }
 
     // Set system locale

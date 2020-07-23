@@ -72,28 +72,13 @@
 
         case 'path':
 
-          $this->_data['path'] = [];
-          $page_index_id = $this->id;
+          $this->_data['path'] = array($this->id => $this);
 
-          $failsafe = 0;
-          while (true) {
-            $page_query = database::query(
-              "select id, parent_id from ". DB_PREFIX ."pages
-              where id = ". (int)$page_index_id ."
-              limit 1;"
-            );
+          $current = $this;
+          while ($current->parent_id) {
 
-            if ($page = database::fetch($page_query)) {
-              $this->_data['path'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
-            }
-
-            if (!empty($page['parent_id'])) {
-              $page_index_id = $page['parent_id'];
-            } else {
-              break;
-            }
-
-            if (++$failsafe == 10) trigger_error('Endless loop while building page path', E_USER_ERROR);
+            $this->_data['path'][$current->parent_id] = $current->parent;
+            $current = $current->parent;
           }
 
           $this->_data['path'] = array_reverse($this->_data['path'], true);

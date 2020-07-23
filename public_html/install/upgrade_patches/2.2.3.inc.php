@@ -42,8 +42,7 @@
 
   database::query(
     "ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
-    ADD `custom_value` VARCHAR(64) NOT NULL AFTER `value_id`,
-    ADD UNIQUE INDEX `product_option_value` (`id`, `product_id`, `group_id`);"
+    ADD `custom_value` VARCHAR(64) NOT NULL AFTER `value_id`;"
   );
 
   database::query(
@@ -346,6 +345,11 @@
       DROP COLUMN `value_id`,
       CHANGE COLUMN `attribute_group_id` `group_id` INT(11) NOT NULL AFTER `product_id`,
       CHANGE COLUMN `attribute_value_id` `value_id` INT(11) NOT NULL AFTER `group_id`;"
+    );
+
+    database::query(
+      "ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+      ADD UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`);"
     );
   }
 

@@ -78,11 +78,11 @@
 
       if (!empty($this->data['id']) && $this->data['is_sale'] != $this->previous['is_sale']) {
         $orders_query = database::query(
-          "select * from ". DB_TBALE_ORDERS ."
+          "select * from ". DB_TABLE_ORDERS ."
           where order_status_id = ". (int)$this->data['id'] .";"
         );
         if (database::num_rows($orders_query)) {
-          throw new Exception('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" the order status is being used by orders');
+          throw new Exception('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" as the order status is already in use by orders');
         }
       }
 
