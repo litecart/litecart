@@ -1,5 +1,10 @@
 <?php
 
+// Move some files
+  foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
+    copy($file, FS_DIR_APP . 'vmods/');
+  }
+
 // Delete old files
   $deleted_files = [
     FS_DIR_ADMIN . 'addons.widget/addons.inc.php',
