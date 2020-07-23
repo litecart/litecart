@@ -146,8 +146,14 @@
       '.'.$extension,
     ]);
 
-    if (is_file(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2) . '/' . $filename)) {
-      return 'cache/' . substr($filename, 0, 2) . '/' . $filename;
+    $cache_file = FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2) . '/' . $filename;
+
+    if (is_file($cache_file)) {
+      if (filemtime($cache_file) >= filemtime($source)) {
+        return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $cache_file);
+      } else {
+        functions::image_delete_cache($source);
+      }
     }
 
     if (!is_dir(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2))) {
@@ -158,7 +164,7 @@
     }
 
     return image_process($source, [
-      'destination' => FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2) . '/' . $filename,
+      'destination' => $cache_file,
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,
