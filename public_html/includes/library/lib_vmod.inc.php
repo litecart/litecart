@@ -111,7 +111,7 @@
       $short_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
       $modified_file = FS_DIR_STORAGE . 'cache/modifications/' . preg_replace('#[/\\\\]+#', '—', $short_file);
 
-    // Returned already checked file
+    // Returned an already checked file
       if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
         self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file];

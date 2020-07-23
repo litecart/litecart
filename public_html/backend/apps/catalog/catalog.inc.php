@@ -349,7 +349,7 @@
         $output .= '<tr>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', ['category_id' => '0'], true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('folder-open') .' <strong><a href="'. document::href_link('', ['category_id' => '0'], true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
