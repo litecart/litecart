@@ -14,6 +14,10 @@
     background: rgba(0, 0, 0, .05);
   }
 
+  @media (min-width: @media-breakpoint-sm) {
+    //flex-direction: row;
+  }
+
   .navbar-nav {
     display: flex;
     flex-direction: column;
@@ -23,6 +27,9 @@
     > li > a {
       color: inherit;
       transition: all 125ms linear;
+    }
+    @media (min-width: @media-breakpoint-sm) {
+      float: left;
     }
   }
 
@@ -112,9 +119,7 @@
 
 .navbar-header {
   display: flex;
-  @media (min-width: @media-breakpoint-sm) {
-    width: auto;
-  }
+  align-items: center;
   > * {
     flex: 1 1 auto;
   }
@@ -129,23 +134,6 @@
       display: block;
     }
   }
-
-  .navbar-toggle {
-    position: relative;
-    flex: 0 1 auto;
-    padding: .25em .5em;
-    margin: .5em .5em .5em 0;
-    background-color: rgba(0, 0, 0, 0.05);
-    background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-    border: none;
-    border-radius: var(--border-radius);
-    &:focus {
-      outline: 0;
-    }
-    @media (min-width: @media-breakpoint-sm) {
-      display: none;
-    }
-  }
 }
 
 .navbar-form {
@@ -156,12 +144,27 @@
 }
 
 .navbar-toggle {
+  position: relative;
+  flex: 0 1 auto;
+  padding: .25em .5em;
+  margin: .5em .5em .5em 0;
+  background-color: rgba(0, 0, 0, 0.05);
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: none;
+  border-radius: var(--border-radius);
+  &:focus {
+    outline: 0;
+  }
+  @media (min-width: @media-breakpoint-sm) {
+    display: none;
+  }
   .icon-bar {
     position: relative;
     background-color: var(--navigation-text-color);
     display: block;
     width: 22px;
     height: 2px;
+    border-radius: 1px;
     transition: all 250ms ease-in-out;
     + .icon-bar {
       margin-top: 4px;

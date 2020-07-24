@@ -58,7 +58,7 @@
 
     @media (min-width: (@media-breakpoint-sm)) {
       &:hover {
-              box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.15);
         transform: scale(1.01);
       }
     }
@@ -95,6 +95,7 @@
 
   .product-column, .product-row {
     position: relative;
+    font-size: ~"calc(var(--default-text-size) - 1px)";
 
     .link {
       text-decoration: none;
@@ -130,11 +131,7 @@
       align-content: center;
       flex-direction: column;
       height: 40px;
-      font-size: 1em;
-      font-weight: 400;
-      line-height: 115%;
-      border-bottom: 0;
-      margin: 0;
+      line-height: 125%;
     }
 
     .manufacturer-name {
@@ -152,9 +149,7 @@
     }
 
     .price-wrapper {
-      font-size: 1.25em;
       .price {
-        font-weight: bold;
         color: #333;
         white-space: nowrap;
       }
@@ -198,8 +193,7 @@
     }
 
     .info {
-      padding: .5rem;
-      text-align: center;
+      padding: 1rem;
     }
 
     .price-wrapper {

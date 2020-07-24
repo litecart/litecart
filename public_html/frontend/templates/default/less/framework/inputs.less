@@ -17,11 +17,10 @@ input[type="checkbox"] {
   background: var(--input-background-color);
   height: 1em;
   width: 1em;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid var(--default-border-color);
   box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
   border-radius: var(--border-radius);
   display: inline-block;
-  vertical-align: middle;
   vertical-align: baseline;
   &:active, &:checked:active {
     box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
@@ -38,7 +37,7 @@ input[type="checkbox"] {
       font-size: 1.5em;
       line-height: 0;
       text-align: center;
-      top: .25em;
+      bottom: .40em;
     }
   }
 }
@@ -49,11 +48,10 @@ input[type="radio"] {
   background: var(--input-background-color);
   height: 1em;
   width: 1em;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid var(--default-border-color);
   box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
   border-radius: 50%;
   display: inline-block;
-  vertical-align: middle;
   vertical-align: baseline;
   &:active, &:checked:active {
     box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
@@ -64,13 +62,12 @@ input[type="radio"] {
     box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
     &:after {
       content: "\2022";
-      transform: rotate(15deg);
       position: absolute;
       font-weight: bold;
-      font-size: 2em;
+	    font-size: 1.9em;
       line-height: 0;
       text-align: center;
-      top: 0.22em;
+	    bottom: .22em;
       left: .04em;
     }
   }
@@ -82,7 +79,7 @@ input[type="radio"] {
     color: #f00;
   }
   &:not([class*=col-]) {
-    margin-bottom: 1rem;
+    margin-bottom: var(--gutter-size);
   }
   > label {
     display: inline-block;
@@ -147,6 +144,11 @@ select.form-control {
 }
 .form-control .checkbox {
   padding: 1em 0;
+}
+.form-control-feedback {
+  position: absolute;
+  right: 24px;
+  top: 35px;
 }
 
 .input-group {

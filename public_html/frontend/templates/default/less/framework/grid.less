@@ -16,8 +16,10 @@
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: 1rem;
-  margin-bottom: 1rem;
+  grid-gap: var(--gutter-size);
+  &.half-gutter {
+    grid-gap: calc(var(--gutter-size)/2);
+  }
   &.layout {
     grid-gap: 2rem;
   }
@@ -32,6 +34,7 @@
     align-items: center;
   }
   [class*="col-"] {
+    position: relative;
     grid-column: span 12;
   }
   @media (min-width: @media-breakpoint-sm) {
@@ -69,15 +72,23 @@
   .make-grid-columns(lg);
 }
 
+@media (min-width: @media-breakpoint-xl) {
+  .make-grid-columns(xl);
+}
+
+@media (min-width: @media-breakpoint-xxl) {
+  .make-grid-columns(xxl);
+}
+
 // Hidden
 
-@media (max-width: (@media-breakpoint-sm - 1px)) {
+@media (max-width: @media-breakpoint-sm - 1px) {
   .hidden-xs { display: none !important; }
 }
-@media (min-width: (@media-breakpoint-sm)) and (max-width: (@media-breakpoint-md - 1px)) {
+@media (min-width: @media-breakpoint-sm) and (max-width: @media-breakpoint-md - 1px) {
   .hidden-sm { display: none; }
 }
-@media (min-width: @media-breakpoint-md) and (max-width: (@media-breakpoint-lg - 1px)) {
+@media (min-width: @media-breakpoint-md) and (max-width: @media-breakpoint-lg - 1px) {
   .hidden-md { display: none; }
 }
 @media (min-width: @media-breakpoint-lg) {

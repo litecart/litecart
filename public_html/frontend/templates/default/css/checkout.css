@@ -1,7 +1,8 @@
+/* Media Breakpoints */
 #content {
   padding: 0.5rem 1rem;
 }
-@media (min-width: 768px) {
+@media (min-width: 576px) {
   #content {
     padding: 1rem;
   }
@@ -28,7 +29,7 @@
   text-align: right;
   line-height: 150%;
 }
-@media (min-width: 768px) {
+@media (min-width: 576px) {
   #header .customer-service {
     font-size: 1.25em;
   }
@@ -117,7 +118,7 @@
 #box-checkout-payment .option [class*="col-"] {
   align-self: center;
 }
-@media (min-width: 768px) {
+@media (min-width: 576px) {
   #box-checkout-shipping .price,
   #box-checkout-payment .price {
     position: absolute;
