@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-sm-8" style="padding-bottom: 0;">
-          <div class="title"><?php echo $module['title']; ?></div>
+          <h3 class="title"><?php echo $module['title']; ?></h3>
 
           <?php if (!empty($option['description'])) { ?>
           <p class="description"><?php echo $option['description']; ?></p>

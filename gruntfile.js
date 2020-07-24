@@ -28,6 +28,16 @@ module.exports = function(grunt) {
     },
 
     less: {
+      backend_template: {
+        options: {
+          compress: false,
+          sourceMap: false,
+          relativeUrls: true
+        },
+        files: {
+          'public_html/backend/template/css/variables.css' : 'public_html/backend/template/less/variables.less',
+        }
+      },
       backend_template_minified: {
         options: {
           compress: true,
