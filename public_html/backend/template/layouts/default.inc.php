@@ -11,7 +11,7 @@
 {snippet:head_tags}
 {snippet:style}
 </head>
-<body>
+<body<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
 
 <div id="backend-wrapper">
   <input id="sidebar-compressed" type="checkbox" hidden />
@@ -53,6 +53,13 @@
       </li>
 
       <li style="flex-grow: 1;"></li>
+
+      <li>
+        <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
+          <label class="btn btn-default btn-sm<?php echo empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>"><input type="radio" name="dark_mode" value="0" <?php echo empty($_COOKIE['dark_mode']) ? ' checked ' : ''; ?>/> <?php echo language::translate('title_light', 'Light'); ?></label>
+          <label class="btn btn-default btn-sm<?php echo !empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>"><input type="radio" name="dark_mode" value="1" <?php echo !empty($_COOKIE['dark_mode']) ? ' checked ' : ''; ?>/> <?php echo language::translate('title_dark', 'Dark'); ?></label>
+        </div>
+      </li>
 
       <li class="language dropdown">
         <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/languages/'. language::$selected['code'] .'.png'); ?>" alt="<?php echo language::$selected['code']; ?>" title="<?php echo htmlspecialchars(language::$selected['name']); ?>" style="max-height: 1em;" /> <b class="caret"></b></a>
@@ -121,5 +128,19 @@
 {snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>
 {snippet:javascript}
+
+<script>
+  $('input[name="dark_mode"]').click(function(){
+    var now = new Date();
+    var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
+    if ($(this).val() == 1) {
+      document.cookie = 'dark_mode=1;expires=0';
+      $('body').addClass('dark-mode');
+    } else {
+      document.cookie = 'dark_mode=0;expires=0';
+      $('body').removeClass('dark-mode');
+    }
+  });
+</script>
 </body>
 </html>

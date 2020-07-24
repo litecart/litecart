@@ -223,3 +223,25 @@ fieldset {
   color: #666;
   text-align: center;
 }
+
+/* Dark Mode */
+
+body.dark-mode {
+  #top-bar > li > a {
+    color: inherit;
+  }
+  #box-apps-menu .app {
+   .icon {
+      color: #000;
+    }
+    &.selected > a {
+      color: #fff;
+    }
+  }
+  #content {
+    background: linear-gradient(180deg, rgba(208, 203, 43, 1) 0px, var(--page-background-color) 4px);
+  }
+  .featherlight-content {
+    background: #283144;
+  }
+}
