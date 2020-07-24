@@ -1,9 +1,9 @@
 /* Input Fields & Input Groups - Bootstrap Compatible */
 
 fieldset {
-  padding: @default-gutter-size;
-  border-color: @default-border-color;
-  border-radius: @default-border-radius;
+  padding: var(--gutter-size);
+  border-color: var(--default-border-color);
+  border-radius: var(--default-border-radius);
   > legend {
     font-size: 1.25em;
     padding: 0.25em 0.5em;
@@ -21,26 +21,89 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   text-align: right;
 }
 
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  position: relative;
+  background: var(--input-background-color);
+  height: 1em;
+  width: 1em;
+  border: 1px solid var(--default-border-color);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  border-radius: var(--border-radius);
+  display: inline-block;
+  vertical-align: middle;
+  vertical-align: baseline;
+  &:active, &:checked:active {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+  }
+  &:checked {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+    &:after {
+      content: "\2713";
+      transform: rotate(15deg);
+      position: absolute;
+      top: .25em;
+      color: var(--input-text-color);
+      font-weight: bold;
+      font-size: 1.5em;
+      line-height: 0;
+      text-align: center;
+    }
+  }
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  position: relative;
+  background: var(--input-background-color);
+  height: 1em;
+  width: 1em;
+  border: 1px solid var(--default-border-color);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  vertical-align: baseline;
+  &:active, &:checked:active {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+  }
+  &:checked {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+    &:after {
+      content: "\2022";
+      transform: rotate(15deg);
+      position: absolute;
+      top: 0.22em;
+      left: .04em;
+      color: var(--input-text-color);
+      font-weight: bold;
+      font-size: 2em;
+      line-height: 0;
+      text-align: center;
+    }
+  }
+}
+
 .form-group {
   &.required label::after {
     content: ' *';
     color: #f00;
   }
-  &:not([class*="col-"]) {
-    margin-bottom: @default-gutter-size;
+  &:not([class*=col-]) {
+    margin-bottom: var(--gutter-size);
   }
   > label {
     display: inline-block;
-    padding-bottom: @form-input-padding/2;
+    padding-bottom: .5em;
   }
 }
 
 .input-field() {
   position: relative;
-  color: #555;
-  background: @form-input-background;
-  border: 1px solid @default-border-color;
-  border-radius: @default-border-radius;
+  color: var(--input-text-color);
+  background: var(--input-background-color);
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
@@ -49,17 +112,19 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
   display: block;
   width: 100%;
   min-width: 1px; // Firefox fix
-  padding: @form-input-padding @form-input-padding * 2;
+  padding: .5em 1em;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  //transition: all 50ms;
+
   &[type="color"] {
     height: 37px;
   }
   &[type="file"] {
-    font-size: 12px;
-    padding: 4px @form-input-padding/2;
+    font-size: .85em;
+    padding: 4px calc(var(--form-input-padding)/2);
   }
   &[disabled] {
-    text: lighter(@default-text-color, 50%);
+    opacity: 0.5;
   }
   &[readonly] {
     color: #999;
@@ -86,10 +151,10 @@ select.form-control {
 }
 
 .checkbox, .radio {
-  padding: @form-input-padding @form-input-padding * 2;
+  padding: .5em 0;
 }
 .form-control .checkbox {
-  padding: @form-input-padding 0;
+  padding: 1em 0;
 }
 
 .input-group {
@@ -105,19 +170,19 @@ select.form-control {
   .input-group-addon {
     flex: 1 0 auto;
     margin: 0 -1px;
-    padding: @form-input-padding @form-input-padding * 2;
-    background-color: @default-color;
-    border-left: 1px solid @default-border-color;
-    border-right: 1px solid @default-border-color;
+    padding: .5em 1em;
+    background-color: var(--default-color);
+    border-left: 1px solid var(--default-border-color);
+    border-right: 1px solid var(--default-border-color);
     color: #555;
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
     .select-wrapper {
       background: none;
-      margin: -@form-input-padding -@form-input-padding * 2;
+      margin: -1em -2em;
       &:before {
-        right: -@form-input-padding * 2;
+        right: -2em;
       }
     }
     select {
@@ -128,7 +193,7 @@ select.form-control {
   }
   .input-group-icon {
     flex: 1 0 auto;
-    padding: @form-input-padding @form-input-padding * 2;
+    padding: .5em 1em;
     margin-right: -12px;
   }
   .input-group-btn {
@@ -136,9 +201,8 @@ select.form-control {
     .btn {
       border-top: none;
       border-bottom: none;
-    }
-    .form-control {
-      padding: .4em 1em;
+      padding: .5em 1em;
+      box-shadow: none;
     }
   }
   .form-control:first-child,
@@ -146,7 +210,7 @@ select.form-control {
   .input-group-btn:first-child > .btn,
   .input-group-btn:first-child > .btn-group > .btn,
   .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-    border-radius: @default-border-radius 0 0 @default-border-radius;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
   .form-control:last-child,
   .input-group-addon:last-child,
@@ -154,7 +218,7 @@ select.form-control {
   .input-group-btn:last-child > .btn-group > .btn,
   .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
     margin-right: -1px;
-    border-radius: 0 @default-border-radius @default-border-radius 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
   + .input-group {
     margin-top: -1px;

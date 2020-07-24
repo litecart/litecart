@@ -5,6 +5,7 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=1600">
+<link rel="stylesheet" href="{snippet:template_path}css/variables.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 {snippet:head_tags}

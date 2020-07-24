@@ -1,6 +1,3 @@
-// Variables
-@import "variables.less";
-
 #backend-wrapper {
   display: flex;
   min-height: 100vh;
@@ -8,13 +5,13 @@
 
 #sidebar {
   flex: 0 0 250px;
-  background: @sidebar-background-color;
+  background: var(--sidebar-background-color);
   transition: all 150ms ease-out;
 }
 
 #main {
   flex: 1 1 auto;
-  background: #fff;
+  background: var(--page-background-color);
   box-shadow: 0 0px 10px rgba(0, 0, 0, .15);
   transition: all 150ms ease-out;
 }
@@ -62,19 +59,25 @@
   padding: 0;
   margin: 0;
   list-style: none;
-  background: #f9fafc;
-  border-bottom: 1px solid @default-border-color;
+  background: var(--top-background-color);
+  border-bottom: 1px solid var(--default-border-color);
   > li {
     flex: 0 0 auto;
     > * {
-      padding: @default-gutter-size/2;
+      padding: ~"calc(var(--gutter-size)/2)";
     }
     > a {
       display: block;
       color: #666;
       text-decoration: none;
       &:hover {
-        background: darken(@default-color, 10%);
+        //background: darken(@default-text-color, 10%);
+      }
+    }
+    .btn-group {
+      padding: 6px;
+      .btn-sm {
+        padding: .15em 1em;
       }
     }
   }
@@ -82,12 +85,12 @@
   .nav-toggle {
     padding: 5px 10px;
     background-color: rgba(0,0,0,0.05);
-    border-radius: @default-border-radius;
+    border-radius: var(--default-border-radius);
   }
 }
 
 #search {
-  margin: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
+  margin: 0 ~"calc(var(--gutter-size)/2)" var(--gutter-size) ~"calc(var(--gutter-size)/2)";
   .loader-wrapper {
     position: relative;
   }
@@ -129,25 +132,29 @@
 #box-apps-menu {
   margin: 0 5px;
   padding: 0;
-  border-top: 1px #dfdfdf solid;
+  border-top: 1px var(--sidebar-border-color) solid;
   display: block;
 
   .app {
     position: relative;
     display: block;
     padding: 0;
-    border-bottom: 1px #dfdfdf solid;
+    border-bottom: 1px var(--sidebar-border-color) solid;
     font-weight: normal;
+
+    .icon {
+      color: #fff;
+    }
 
     a {
       display: block;
-      padding: 5px @default-gutter-size/2;
+      padding: 5px ~"calc(var(--gutter-size)/2)";
       font-size: 1em;
       font-weight: normal;
       text-decoration: none;
       color: inherit;
       &:hover {
-        background: rgba(255, 255, 255, .8);
+        background: rgba(255, 255, 255, .15);
       }
       .fa-stack {
         font-size: 1em;
@@ -155,12 +162,12 @@
     }
 
     &.selected > a {
-      color: #f00;
+      color: var(--default-link-color);
     }
   }
 
   ul {
-    padding-left: @default-gutter-size;
+    padding-left: var(--gutter-size);
     border: none;
     margin-left: 15px;
     li {
@@ -183,7 +190,7 @@
   //max-height: 100%;
   //overflow: auto;
   > h1 {
-    padding: 0 0 @default-gutter-size/2 0;
+    padding: 0 0 ~"calc(var(--gutter-size)/2)" 0;
     margin-top: 0;
     border-bottom: 2px solid transparent;
   }
@@ -193,13 +200,13 @@
 }
 
 fieldset {
-  border: 1px solid @default-border-color;
+  border: 1px solid var(--default-border-color);
 }
 
 /* Footer */
 
 #footer {
-  margin: @default-gutter-size;
+  margin: var(--gutter-size);
   color: #666;
 }
 
@@ -211,7 +218,7 @@ fieldset {
 }
 
 #copyright {
-  margin-bottom: @default-gutter-size;
+  margin-bottom: var(--gutter-size);
   font-size: 0.9em;
   color: #666;
   text-align: center;

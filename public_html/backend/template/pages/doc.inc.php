@@ -1,6 +1,6 @@
 <style>
 #content {
-  background: linear-gradient(135deg, rgba(<?php echo implode(', ', sscanf($theme['color'], "#%02x%02x%02x")); ?>, 1) 0px, rgba(255,255,255,1) 100px);
+  background: linear-gradient(135deg, rgba(<?php echo implode(', ', sscanf($theme['color'], "#%02x%02x%02x")); ?>, 1) 0px, var(--page-background-color) 150px);
 }
 
 #content > .panel-app > .panel-heading {
