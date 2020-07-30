@@ -160,11 +160,13 @@ select.form-control {
   .input-field();
   display: flex;
   .form-control {
-    background: none;
     box-shadow: none;
     border-radius: 0;
     border: none;
     margin-left: -1px;
+    &:not(select) {
+      background: none;
+    }
   }
   .input-group-addon {
     flex: 1 0 auto;
@@ -177,18 +179,7 @@ select.form-control {
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
-    .select-wrapper {
-      background: none;
-      margin: -1em -2em;
-      &:before {
-        right: -2em;
-      }
-    }
-    select {
-      width: auto;
-      background: none;
-      border: none;
-    }
+
   }
   .input-group-icon {
     flex: 1 0 auto;

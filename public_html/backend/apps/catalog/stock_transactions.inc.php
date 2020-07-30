@@ -48,20 +48,22 @@
   </div>
 
   <div class="panel-action">
-    <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></li>
-      <li>
-        <div class="input-group">
-          <?php echo functions::form_draw_date_field('date_from', true, 'style="width: 50%;"'); ?>
-          <span class="input-group-addon">-</span>
-          <?php echo functions::form_draw_date_field('date_to', true, 'style="width: 50%;"'); ?>
-        </div>
-      </li>
-      <li><?php echo functions::form_draw_link_button(document::link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_transaction']), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?></li>
-    </ul>
-    <?php echo functions::form_draw_form_end(); ?>
+      <?php echo functions::form_draw_link_button(document::link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_transaction']), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
   </div>
+
+    <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
+  <div class="panel-filter">
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+      <div class="input-group">
+        <?php echo functions::form_draw_date_field('date_from', true, 'style="width: 50%;"'); ?>
+        <span class="input-group-addon">-</span>
+        <?php echo functions::form_draw_date_field('date_to', true, 'style="width: 50%;"'); ?>
+      </div>
+      <div>
+        <?php echo functions::form_draw_button('search', language::translate('title_filter', 'Filter'), 'submit'); ?>
+      </div>
+  </div>
+    <?php echo functions::form_draw_form_end(); ?>
 
   <div class="panel-body">
     <?php echo functions::form_draw_form_begin('stock_transactions_form', 'post'); ?>
