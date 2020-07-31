@@ -186,8 +186,20 @@
         $this->data['comments'][$row['id']] = $row;
       }
 
-      $this->shipping->data['selected'] = $this->data['shipping_option'];
-      $this->payment->data['selected'] = $this->data['payment_option'];
+      if (!empty($this->data['shipping_option']['id'])) {
+        @list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+        $this->shipping = new mod_shipping($module_id);
+        $this->shipping->select();
+      } else {
+        $this->shipping = new mod_shipping();
+      }
+
+      if (!empty($this->data['payment_option']['id'])) {
+        @list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+        $this->payment = new mod_payment($module_id);
+      } else {
+        $this->payment = new mod_payment();
+      }
 
       $this->previous = $this->data;
     }
