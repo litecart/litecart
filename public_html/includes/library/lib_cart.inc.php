@@ -136,7 +136,7 @@
       $item = [
         'id' => null,
         'product_id' => (int)$product->id,
-        'option_stock_combination' => '',
+        'combination' => '',
         'image' => $product->image,
         'name' => $product->name,
         'code' => $product->code,
@@ -264,10 +264,10 @@
         }
 
       // Options stock
-        foreach ($product->options_stock as $option_stock) {
+        foreach ($product->stock_options as $stock_option) {
 
           $option_match = true;
-          foreach (explode(',', $option_stock['combination']) as $pair) {
+          foreach (explode(',', $stock_option['combination']) as $pair) {
             if (!in_array($pair, array_column($sanitized_options, 'combination'))) {
               $option_match = false;
               break;
@@ -275,19 +275,19 @@
           }
 
           if ($option_match) {
-            //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-            if (($option_stock['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], @$product->quantity_unit['decimals']) .')');
+            //if (($stock_option['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
+            if (($stock_option['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($stock_option['quantity'], @$product->quantity_unit['decimals']) .')');
             }
 
-            $item['option_stock_combination'] = $option_stock['combination'];
-            if (!empty($option_stock['sku'])) $item['sku'] = $option_stock['sku'];
-            if (!empty($option_stock['weight'])) $item['weight'] = $option_stock['weight'];
-            if (!empty($option_stock['weight_class'])) $item['weight_class'] = $option_stock['weight_class'];
-            if (!empty($option_stock['dim_x'])) $item['dim_x'] = $option_stock['dim_x'];
-            if (!empty($option_stock['dim_y'])) $item['dim_y'] = $option_stock['dim_y'];
-            if (!empty($option_stock['dim_z'])) $item['dim_z'] = $option_stock['dim_z'];
-            if (!empty($option_stock['dim_class'])) $item['dim_class'] = $option_stock['dim_class'];
+            $item['combination'] = $stock_option['combination'];
+            if (!empty($stock_option['sku'])) $item['sku'] = $stock_option['sku'];
+            if (!empty($stock_option['weight'])) $item['weight'] = $stock_option['weight'];
+            if (!empty($stock_option['weight_class'])) $item['weight_class'] = $stock_option['weight_class'];
+            if (!empty($stock_option['dim_x'])) $item['dim_x'] = $stock_option['dim_x'];
+            if (!empty($stock_option['dim_y'])) $item['dim_y'] = $stock_option['dim_y'];
+            if (!empty($stock_option['dim_z'])) $item['dim_z'] = $stock_option['dim_z'];
+            if (!empty($stock_option['dim_class'])) $item['dim_class'] = $stock_option['dim_class'];
 
             break;
           }

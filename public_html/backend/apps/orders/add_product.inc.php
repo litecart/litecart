@@ -172,7 +172,7 @@
     var item = {
       id: '',
       product_id: $(form).find(':input[name="product_id"]').val(),
-      option_stock_combination: $(form).find(':input[name="option_stock_combination"]').val(),
+      stock_item_id: $(form).find(':input[name="stock_item_id"]').val(),
       name: $(form).find(':input[name="name"]').val(),
       sku: $(form).find(':input[name="sku"]').val(),
       gtin: $(form).find(':input[name="gtin"]').val(),
@@ -187,31 +187,6 @@
       price: parseFloat($(form).find(':input[name="price"]').val()),
       tax: parseFloat($(form).find(':input[name="tax"]').val())
     };
-
-    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->options_stock, JSON_UNESCAPED_SLASHES) : '[]'; ?>;
-
-    $.each(available_stock_options, function(i, stock_option) {
-      var matched = false;
-      $.each(stock_option.combination.split(','), function(j, current_stock_combination){
-        if ($.inArray(current_stock_combination, selected_option_combinations) != -1) matched = true;
-      });
-
-      if (matched) {
-        item.option_stock_combination = stock_option.combination;
-        item.sku = stock_option.sku;
-        item.gtin = stock_option.gtin;
-        if (stock_option.weight > 0) {
-          item.weight = stock_option.weight;
-          item.weight_class = stock_option.weight_class;
-        }
-        if (stock_option.dim_x > 0) {
-          item.dim_x = stock_option.dim_x;
-          item.dim_y = stock_option.dim_y;
-          item.dim_z = stock_option.dim_z;
-          item.dim_class = stock_option.dim_class;
-        }
-      }
-    });
 
     addItem(item);
     $.featherlight.close();

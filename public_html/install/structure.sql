@@ -386,7 +386,7 @@ CREATE TABLE `lc_orders_items` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) NULL,
   `product_id` INT(11) NULL,
-  `option_stock_combination` VARCHAR(32) NULL,
+  `stock_option_id` INT(11) NULL,
   `options` VARCHAR(4096) NULL,
   `name` VARCHAR(128) NULL,
   `sku` VARCHAR(32) NULL,
@@ -402,7 +402,9 @@ CREATE TABLE `lc_orders_items` (
   `dim_z` DECIMAL(11,4) NULL,
   `dim_class` VARCHAR(2) NULL,
   PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`)
+  KEY `order_id` (`order_id`),
+  KEY `product_id` (`product_id`),
+  KEY `stock_option_id` (`stock_option_id`),
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses` (
@@ -608,10 +610,10 @@ CREATE TABLE `lc_products_options_values` (
   INDEX `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_products_options_stock` (
+CREATE TABLE `lc_products_stock` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) NULL,
-  `combination` VARCHAR(64) NULL,
+  `stock_item_id` INT(11) NULL,
   `sku` VARCHAR(64) NULL,
   `weight` DECIMAL(11,4) NULL,
   `weight_class` VARCHAR(2) NULL,
@@ -621,10 +623,8 @@ CREATE TABLE `lc_products_options_stock` (
   `dim_class` VARCHAR(2) NULL,
   `quantity` DECIMAL(11,4) NULL,
   `priority` TINYINT(2) NULL,
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `product_option_stock` (`product_id`, `combination`),
+  UNIQUE KEY `stock_option` (`product_id`, `combination`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------

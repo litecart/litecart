@@ -331,12 +331,12 @@
 
           break;
 
-        case 'options_stock':
+        case 'stock_options':
 
-          $this->_data['options_stock'] = [];
+          $this->_data['stock_options'] = [];
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."products_options_stock
+            "select * from ". DB_PREFIX ."products_stock_options
             where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
@@ -387,7 +387,7 @@
 
             $row['name'] = implode(',', $row['name']);
 
-            $this->_data['options_stock'][$row['id']] = $row;
+            $this->_data['stock_options'][$row['id']] = $row;
           }
 
           break;
@@ -522,19 +522,19 @@
       }
     }
 
-    public function adjust_stock($combination, $quantity) {
+    public function adjust_stock($stock_item_id, $quantity) {
 
-      if (!empty($combination)) {
+      if (!empty($stock_item_id)) {
         database::query(
-          "update ". DB_PREFIX ."options_stock
+          "update ". DB_PREFIX ."stock_options
           set quantity = quantity + ". (float)$quantity ."
           where product_id = ". (int)$this->_data['id'] ."
-          and combination =  '". database::input($combination) ."'
+          and stock_item_id = ". (int)$stock_item_id ."
           limit 1;"
         );
 
         if (!database::affected_rows()) {
-          trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
+          trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .', Stock Item: '. $stock_item_id .')', E_USER_WARNING);
         }
       }
 

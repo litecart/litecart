@@ -305,10 +305,3 @@
 
     return $products_query;
   }
-
-  function catalog_stock_adjust($product_id, $combination, $quantity) {
-
-    trigger_error('catalog_stock_adjust() is deprecated. Use instead reference::product(id)->adjust_stock()', E_USER_DEPRECATED);
-
-    return reference::product($product_id)->adjust_stock($combination, $quantity);
-  }

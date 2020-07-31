@@ -288,7 +288,7 @@
       if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
-          reference::product($previous_order_item['product_id'])->adjust_stock($previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+          reference::product($previous_order_item['product_id'])->adjust_stock($previous_order_item['stock_item_id'], $previous_order_item['quantity']);
         }
       }
 
@@ -322,13 +322,13 @@
 
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          reference::product($item['product_id'])->adjust_stock($item['option_stock_combination'], -$item['quantity']);
+          reference::product($item['product_id'])->adjust_stock($item['stock_item_id'], -$item['quantity']);
         }
 
         database::query(
           "update ". DB_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",
-          option_stock_combination = '". database::input($item['option_stock_combination']) ."',
+          stock_item_id = ". (int)$item['stock_item_id'] .",
           options = '". (isset($item['options']) ? database::input(serialize($item['options'])) : '') ."',
           name = '". database::input($item['name']) ."',
           sku = '". database::input($item['sku']) ."',
@@ -487,7 +487,7 @@
       $fields = [
         'product_id',
         'options',
-        'option_stock_combination',
+        'stock_item_id',
         'name',
         'sku',
         'gtin',

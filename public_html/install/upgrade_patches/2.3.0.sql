@@ -26,3 +26,30 @@ UPDATE `lc_settings` SET `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHE
 DELETE FROM `lc_settings` WHERE `key` = 'store_template_admin' LIMIT 1;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` = 'gzip_enabled' LIMIT 1;
+-- --------------------------------------------------------
+RENAME TABLE `lc_products_options_stock` TO `lc_products_stock`;
+-- --------------------------------------------------------
+INSERT INTO `lc_products_stock`
+(product_id, sku, weight, weight_class, dim_x, dim_y, dim_z, dim_class, quantity)
+SELECT id, sku, weight, weight_class, dim_x, dim_y, dim_z, dim_class, quantity FROM `lc_products`
+WHERE id NOT IN (
+  SELECT DISTINCT product_id from `lc_products_stock`
+);
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_stock`
+DROP COLUMN `date_updated`,
+DROP COLUMN `date_created`,
+DROP INDEX `product_option_stock`,
+ADD UNIQUE INDEX `stock_option` (`product_id`, `combination`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_items`
+ADD COLUMN `stock_option_id` INT(11) NULL DEFAULT NULL AFTER `product_id`,
+ADD INDEX `product_id` (`product_id`),
+ADD INDEX `stock_option_id` (`stock_option_id`);
+-- --------------------------------------------------------
+UPDATE `lc_orders_items` oi
+LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.combination = oi.option_stock_combination)
+SET stock_option_id = pso.id;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_items`
+DROP COLUMN `option_stock_combination`;

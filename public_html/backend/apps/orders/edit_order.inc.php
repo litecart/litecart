@@ -610,7 +610,7 @@ body.dark-mode #box-comments {
                   <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['.$key.'][option_stock_combination]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['.$key.'][stock_item_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][gtin]', true); ?>
@@ -1287,7 +1287,7 @@ body.dark-mode #box-comments {
                + '    <td>' + item.name
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][option_stock_combination]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][stock_item_id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][options]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'
@@ -1322,7 +1322,7 @@ body.dark-mode #box-comments {
     var row = $('#order-items tbody tr.item').last();
     $(row).find('*[name$="[product_id]"]').val(item.product_id);
     $(row).find('*[name$="[sku]"]').val(item.sku);
-    $(row).find('*[name$="[option_stock_combination]"]').val(item.option_stock_combination);
+    $(row).find('*[name$="[stock_item_id]"]').val(item.stock_item_id);
     $(row).find('*[name$="[name]"]').val(item.name);
     $(row).find('*[name$="[gtin]"]').val(item.gtin);
     $(row).find('*[name$="[taric]"]').val(item.taric);

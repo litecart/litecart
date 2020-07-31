@@ -60,7 +60,7 @@
         $product->data['image'] = null;
         $product->data['images'] = [];
 
-        foreach (['campaigns', 'options_stock'] as $field) {
+        foreach (['campaigns', 'stock_options'] as $field) {
           if (empty($product->data[$field])) continue;
           foreach (array_keys($product->data[$field]) as $key) {
             $product->data[$field][$key]['id'] = null;
@@ -282,7 +282,7 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_PREFIX ."products_options_stock
+          select product_id from ". DB_PREFIX ."products_stock
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
       ) as relevance
