@@ -32,10 +32,3 @@ JavaScripts
 PHP
 ---
 vQmod by Qphoria - Special permitted use - https://github.com/vqmod/vqmod
-
-Inspired By
------------
-LiteCart was born out of ideas of what was missing, what was too much, and what could have been different in other e-commerce platforms.
-
-* OpenCart by Daniel Kerr - http://www.opencart.com/
-* osCommerce by Harald Ponce de Leon - http://www.oscommerce.com/
