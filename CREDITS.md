@@ -12,7 +12,6 @@ Graphics
 * (no-image/camera) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
 * (country flags) Fam Fam Fam - Public Domain - http://www.famfamfam.com/
 * (language flags) Open Web Graphics - Creative Commons Attribution 3.0 Unported - http://www.openwebgraphics.com/
-* (flying cart) J. Bergdahl (jbergdahl@gmail.com) - Designed exclusively for LiteCart - http://jonasbergdahl.deviantart.com/
 
 TrueType Fonts
 --------------
