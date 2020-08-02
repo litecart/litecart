@@ -1,6 +1,6 @@
 <main id="main" class="container">
   <div id="sidebar">
-    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_manufacturer_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_brand_links.inc.php'); ?>
     <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
   </div>
 
@@ -8,7 +8,7 @@
     {snippet:notices}
     {snippet:breadcrumbs}
 
-    <article id="box-manufacturer" class="box">
+    <article id="box-brand" class="box">
       <?php if ($products) { ?>
       <div class="btn-group pull-right hidden-xs">
 <?php
@@ -31,7 +31,7 @@
 
       <?php if ($products) { ?>
       <section class="listing products">
-        <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', ['manufacturer_id']); ?>
+        <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', ['brand_id']); ?>
       </section>
       <?php } ?>
 

@@ -26,11 +26,11 @@
         </li>
         <?php } ?>
 
-        <?php if ($manufacturers) { ?>
-        <li class="manufacturers dropdown">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
+        <?php if ($brands) { ?>
+        <li class="brands dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_brands', 'Brands'); ?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <?php foreach ($manufacturers as $item) { ?>
+            <?php foreach ($brands as $item) { ?>
             <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
             <?php } ?>
           </ul>

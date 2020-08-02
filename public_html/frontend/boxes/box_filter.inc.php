@@ -3,28 +3,28 @@
   $box_filter = new ent_view();
 
   $box_filter->snippets = [
-    'manufacturers' => [],
+    'brands' => [],
     'attributes' => [],
   ];
 
-// Manufacturers
-  if (empty($_GET['manufacturer_id'])) {
-    $manufacturers_query = database::query(
-      "select distinct m.id, m.name from ". DB_PREFIX ."products p
-      left join ". DB_PREFIX ."manufacturers m on m.id = p.manufacturer_id ".
-      (!empty($_GET['category_id']) ? " left join ". DB_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "")."
+// Brands
+  if (empty($_GET['brand_id'])) {
+    $brands_query = database::query(
+      "select distinct b.id, b.name from ". DB_PREFIX ."products p
+      left join ". DB_PREFIX ."brands b on (b.id = p.brand_id)
+      ". (!empty($_GET['category_id']) ? " left join ". DB_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "") ."
       where p.status
-      and manufacturer_id
+      and brand_id
       ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
       order by m.name asc;"
     );
 
-    if (database::num_rows($manufacturers_query) > 1) {
-      while ($manufacturer = database::fetch($manufacturers_query)) {
-        $box_filter->snippets['manufacturers'][] = [
-          'id' => $manufacturer['id'],
-          'name' => $manufacturer['name'],
-          'href' => document::ilink('manufacturer', ['manufacturer_id' => $manufacturer['id']]),
+    if (database::num_rows($brands_query) > 1) {
+      while ($brand = database::fetch($brands_query)) {
+        $box_filter->snippets['brands'][] = [
+          'id' => $brand['id'],
+          'name' => $brand['name'],
+          'href' => document::ilink('brand', ['brand_id' => $brand['id']]),
         ];
       }
     }

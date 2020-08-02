@@ -1179,10 +1179,10 @@ END;
     }
   }
 
-  function form_draw_manufacturers_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_brands_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $manufacturers_query = database::query(
-      "select id, name from ". DB_PREFIX ."manufacturers
+    $brands_query = database::query(
+      "select id, name from ". DB_PREFIX ."brands
       order by name asc;"
     );
 
@@ -1190,8 +1190,8 @@ END;
 
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
-    while ($manufacturer = database::fetch($manufacturers_query)) {
-      $options[] = [$manufacturer['name'], $manufacturer['id']];
+    while ($brand = database::fetch($brands_query)) {
+      $options[] = [$brand['name'], $brand['id']];
     }
 
     if ($multiple) {

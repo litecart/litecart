@@ -35,7 +35,7 @@
   $code_regex = functions::format_regex_code($_GET['query']);
 
   $query =
-    "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
+    "select p.*, pi.name, pi.short_description, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
     (
       if(p.id = '". database::input($_GET['query']) ."', 10, 0)
       + (match(pi.name) against ('". database::input($_GET['query']) ."' in boolean mode))
@@ -55,7 +55,7 @@
     ) as relevance
 
     from (
-      select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, tax_class_id, quantity, sold_out_status_id, views, purchases, date_updated, date_created
+      select id, code, mpn, gtin, sku, brand_id, default_category_id, keywords, image, tax_class_id, quantity, sold_out_status_id, views, purchases, date_updated, date_created
       from ". DB_PREFIX ."products
       where status
       and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -64,7 +64,7 @@
 
     left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
 
-    left join ". DB_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
+    left join ". DB_PREFIX ."brands b on (b.id = p.brand_id)
 
     left join (
       select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price

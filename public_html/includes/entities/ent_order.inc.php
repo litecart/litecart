@@ -464,7 +464,7 @@
 
       cache::clear_cache('order');
       cache::clear_cache('category');
-      cache::clear_cache('manufacturer');
+      cache::clear_cache('brand');
       cache::clear_cache('products');
     }
 
@@ -841,7 +841,7 @@
 
       cache::clear_cache('order');
       cache::clear_cache('category');
-      cache::clear_cache('manufacturer');
+      cache::clear_cache('brand');
       cache::clear_cache('products');
     }
   }

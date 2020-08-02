@@ -36,16 +36,16 @@
         $link->path = $new_path;
         $link->unset_query('category_id');
 
-      } else if (!empty($link->query['manufacturer_id'])) {
+      } else if (!empty($link->query['brand_id'])) {
 
-        $manufacturer = reference::manufacturer($link->query['manufacturer_id'], $language_code);
+        $brand = reference::brand($link->query['brand_id'], $language_code);
 
-        if (!empty($manufacturer->id)) {
-          $new_path .= functions::general_path_friendly($manufacturer->name, $language_code) .'-m-'. $manufacturer->id .'/';
+        if (!empty($brand->id)) {
+          $new_path .= functions::general_path_friendly($brand->name, $language_code) .'-m-'. $brand->id .'/';
         }
 
         $link->path = $new_path;
-        $link->unset_query('manufacturer_id');
+        $link->unset_query('brand_id');
 
       } else if (!empty($product->default_category_id)) {
 

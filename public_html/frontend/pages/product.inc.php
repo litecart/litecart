@@ -28,7 +28,7 @@
     notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
   }
 
-  if (empty($_GET['category_id']) && empty($product->manufacturer)) {
+  if (empty($_GET['category_id']) && empty($product->brand)) {
     if ($product->category_ids) {
       $category_ids = array_values($product->category_ids);
       $_GET['category_id'] = array_shift($category_ids);
@@ -56,10 +56,10 @@
       document::$snippets['title'][] = $category_crumb->name;
       breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
     }
-  } else if (!empty($product->manufacturer)) {
-    document::$snippets['title'][] = $product->manufacturer->name;
-    breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-    breadcrumbs::add($product->manufacturer->name, document::ilink('manufacturer', ['manufacturer_id' => $product->manufacturer->id]));
+  } else if (!empty($product->brand)) {
+    document::$snippets['title'][] = $product->brand->name;
+    breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
+    breadcrumbs::add($product->brand->name, document::ilink('brand', ['brand_id' => $product->brand->id]));
   }
   breadcrumbs::add($product->name);
 
@@ -133,7 +133,7 @@
     ],
     'sticker' => '',
     'extra_images' => [],
-    'manufacturer' => [],
+    'brand' => [],
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
@@ -181,21 +181,21 @@
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }
 
-// Manufacturer
-  if (!empty($product->manufacturer)) {
-    $schema_json['brand']['name'] = $product->manufacturer->name;
-    $_page->snippets['manufacturer'] = [
-      'id' => $product->manufacturer->id,
-      'name' => $product->manufacturer->name,
+// Brand
+  if (!empty($product->brand)) {
+    $schema_json['brand']['name'] = $product->brand->name;
+    $_page->snippets['brand'] = [
+      'id' => $product->brand->id,
+      'name' => $product->brand->name,
       'image' => [],
-      'link' => document::ilink('manufacturer', ['manufacturer_id' => $product->manufacturer->id]),
+      'link' => document::ilink('brand', ['brand_id' => $product->brand->id]),
     ];
 
-    if (!empty($product->manufacturer->image)) {
-      $_page->snippets['manufacturer']['image'] = [
-        'original' => 'images/' . $product->manufacturer->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->manufacturer->image, 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->manufacturer->image, 400, 120),
+    if (!empty($product->brand->image)) {
+      $_page->snippets['brand']['image'] = [
+        'original' => 'images/' . $product->brand->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->brand->image, 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->brand->image, 400, 120),
         'viewport' => [
           'width' => 200,
           'height' => 60,

@@ -1,28 +1,28 @@
 <?php
 
-  if (!empty($_GET['manufacturer_id'])) {
-    $manufacturer = new ent_manufacturer($_GET['manufacturer_id']);
+  if (!empty($_GET['brand_id'])) {
+    $brand = new ent_brand($_GET['brand_id']);
   } else {
-    $manufacturer = new ent_manufacturer();
+    $brand = new ent_brand();
   }
 
   if (empty($_POST)) {
-    foreach ($manufacturer->data as $key => $value) {
+    foreach ($brand->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
 
-  document::$snippets['title'][] = !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer');
+  document::$snippets['title'][] = !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand');
 
-  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
-  breadcrumbs::add(!empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'));
+  breadcrumbs::add(language::translate('title_brands', 'Brands'), document::link(WS_DIR_ADMIN, ['doc' => 'brands'], ['app']));
+  breadcrumbs::add(!empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand'));
 
   if (isset($_POST['save'])) {
 
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
 
-      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_PREFIX ."manufacturers where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_PREFIX ."brands where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
 
       $fields = [
         'status',
@@ -39,19 +39,19 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) $manufacturer->data[$field] = $_POST[$field];
+        if (isset($_POST[$field])) $brand->data[$field] = $_POST[$field];
       }
 
-      $manufacturer->save();
+      $brand->save();
 
-      if (!empty($_POST['delete_image'])) $manufacturer->delete_image();
+      if (!empty($_POST['delete_image'])) $brand->delete_image();
 
       if (is_uploaded_file($_FILES['image']['tmp_name'])) {
-        $manufacturer->save_image($_FILES['image']['tmp_name']);
+        $brand->save_image($_FILES['image']['tmp_name']);
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'brands'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -62,12 +62,12 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($manufacturer->data['id'])) throw new Exception(language::translate('error_must_provide_manufacturer', 'You must provide a manufacturer'));
+      if (empty($brand->data['id'])) throw new Exception(language::translate('error_must_provide_brand', 'You must provide a brand'));
 
-      $manufacturer->delete();
+      $brand->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'brands'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -78,7 +78,7 @@
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'); ?>
+    <?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand'); ?>
   </div>
 
   <ul class="nav nav-tabs">
@@ -87,7 +87,7 @@
   </ul>
 
   <div class="panel-body">
-    <?php echo functions::form_draw_form_begin('manufacturer_form', 'post', false, true); ?>
+    <?php echo functions::form_draw_form_begin('brand_form', 'post', false, true); ?>
 
       <div class="tab-content">
         <div id="tab-general" class="tab-pane active" style="max-width: 640px;">
@@ -123,13 +123,13 @@
             <div class="col-md-6">
               <div id="image">
                 <div class="thumbnail" style="margin-bottom: 15px;">
-                  <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer->data['image'], 400, 100)); ?>" alt="" />
+                  <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->data['image'], 400, 100)); ?>" alt="" />
                 </div>
 
                 <div class="form-group">
-                  <label><?php echo ((isset($manufacturer->data['image']) && $manufacturer->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
+                  <label><?php echo ((isset($brand->data['image']) && $brand->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
                   <?php echo functions::form_draw_file_field('image', ''); ?>
-                  <?php if (!empty($manufacturer->data['image'])) { ?>
+                  <?php if (!empty($brand->data['image'])) { ?>
                   <div class="checkbox">
                     <label><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></label>
                   </div>
@@ -194,7 +194,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (!empty($manufacturer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (!empty($brand->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -215,7 +215,7 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $manufacturer->data['image'], 400, 100)); ?>');
+      $('#image img').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->data['image'], 400, 100)); ?>');
     }
   });
 

@@ -262,19 +262,19 @@
           }
         }
 
-        if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
-          $manufacturers_query = database::query(
-            "select * from ". DB_PREFIX ."manufacturers
-            where name = '". database::input($row['manufacturer_name']) ."'
+        if (empty($row['brand_id']) && !empty($row['brand_name'])) {
+          $brands_query = database::query(
+            "select * from ". DB_PREFIX ."brands
+            where name = '". database::input($row['brand_name']) ."'
             limit 1;"
           );
-          if ($manufacturer = database::fetch($manufacturers_query)) {
-            $row['manufacturer_id'] = $manufacturer['id'];
+          if ($brand = database::fetch($brands_query)) {
+            $row['brand_id'] = $brand['id'];
           } else {
-            $manufacturer = new ent_manufacturer();
-            $manufacturer->data['name'] = $row['manufacturer_name'];
-            $manufacturer->save();
-            $row['manufacturer_id'] = $manufacturer->data['id'];
+            $brand = new ent_brand();
+            $brand->data['name'] = $row['brand_name'];
+            $brand->save();
+            $row['brand_id'] = $brand->data['id'];
           }
         }
 
@@ -296,7 +296,7 @@
 
         $fields = [
           'status',
-          'manufacturer_id',
+          'brand_id',
           'supplier_id',
           'code',
           'sku',
@@ -418,7 +418,7 @@
           'id' => $product->id,
           'status' => $product->status,
           'categories' => implode(',', array_keys($product->categories)),
-          'manufacturer_id' => $product->manufacturer_id,
+          'brand_id' => $product->brand_id,
           'supplier_id' => $product->supplier_id,
           'code' => $product->code,
           'sku' => $product->sku,
@@ -483,7 +483,7 @@
     }
   }
 
-  if (isset($_POST['import_manufacturers'])) {
+  if (isset($_POST['import_brands'])) {
 
     try {
       if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
@@ -510,45 +510,45 @@
       foreach ($csv as $row) {
         $line++;
 
-      // Find manufacturer
+      // Find brand
         if (!empty($row['id'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
+          if ($brand = database::fetch(database::query("select id from ". DB_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;"))) {
+            $brand = new ent_brand($brand['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
+          if ($brand = database::fetch(database::query("select id from ". DB_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;"))) {
+            $brand = new ent_brand($brand['id']);
           }
 
         } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
+          if ($brand = database::fetch(database::query("select id from ". DB_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;"))) {
+            $brand = new ent_brand($brand['id']);
           }
         }
 
-        if (!empty($manufacturer->data['id'])) {
+        if (!empty($brand->data['id'])) {
           if (empty($_POST['update'])) continue;
-          echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          echo 'Updating existing brand '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
 
         } else {
           if (empty($_POST['insert'])) continue;
-          echo 'Creating new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          echo 'Creating new brand: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
 
           if (!empty($row['id'])) {
             database::query(
-              "insert into ". DB_PREFIX ."manufacturers (id, date_created)
+              "insert into ". DB_PREFIX ."brands (id, date_created)
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
-            $manufacturer = new ent_manufacturer($row['id']);
+            $brand = new ent_brand($row['id']);
           } else {
-            $panufacturer = new ent_manufacturer();
+            $panufacturer = new ent_brand();
           }
         }
 
-      // Set new manufacturer data
+      // Set new brand data
         $fields = [
           'status',
           'code',
@@ -559,10 +559,10 @@
         ];
 
         foreach ($fields as $field) {
-          if (isset($row[$field])) $manufacturer->data[$field] = $row[$field];
+          if (isset($row[$field])) $brand->data[$field] = $row[$field];
         }
 
-      // Set manufacturer info data
+      // Set brand info data
         if (!empty($row['language_code'])) {
           $fields = [
             'short_description',
@@ -573,21 +573,21 @@
           ];
 
           foreach ($fields as $field) {
-            if (isset($row[$field])) $manufacturer->data[$field][$row['language_code']] = $row[$field];
+            if (isset($row[$field])) $brand->data[$field][$row['language_code']] = $row[$field];
           }
         }
 
         if (isset($row['new_image'])) {
-          $manufacturer->save_image($row['new_image']);
+          $brand->save_image($row['new_image']);
         }
 
-        $manufacturer->save();
+        $brand->save();
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_PREFIX ."manufacturers
+            "update ". DB_PREFIX ."brands
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-            where id = ". (int)$manufacturer->data['id'] ."
+            where id = ". (int)$brand->data['id'] ."
             limit 1;"
           );
         }
@@ -601,30 +601,30 @@
   }
 
 
-  if (isset($_POST['export_manufacturers'])) {
+  if (isset($_POST['export_brands'])) {
 
     try {
       if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
       $csv = [];
 
-      $manufacturers_query = database::query("select id from ". DB_PREFIX ."manufacturers order by id;");
-      while ($manufacturer = database::fetch($manufacturers_query)) {
-        $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
+      $brands_query = database::query("select id from ". DB_PREFIX ."brands order by id;");
+      while ($brand = database::fetch($brands_query)) {
+        $brand = new ref_brand($brand['id'], $_POST['language_code']);
 
         $csv[] = [
-          'id' => $manufacturer->id,
-          'status' => $manufacturer->status,
-          'code' => $manufacturer->code,
-          'name' => $manufacturer->name,
-          'keywords' => implode(',', $manufacturer->keywords),
-          'short_description' => $manufacturer->short_description,
-          'description' => $manufacturer->description,
-          'meta_description' => $manufacturer->meta_description,
-          'head_title' => $manufacturer->head_title,
-          'h1_title' => $manufacturer->h1_title,
-          'image' => $manufacturer->image,
-          'priority' => $manufacturer->priority,
+          'id' => $brand->id,
+          'status' => $brand->status,
+          'code' => $brand->code,
+          'name' => $brand->name,
+          'keywords' => implode(',', $brand->keywords),
+          'short_description' => $brand->short_description,
+          'description' => $brand->description,
+          'meta_description' => $brand->meta_description,
+          'head_title' => $brand->head_title,
+          'h1_title' => $brand->h1_title,
+          'image' => $brand->image,
+          'priority' => $brand->priority,
           'language_code' => $_POST['language_code'],
         ];
       }
@@ -635,7 +635,7 @@
         header('Content-Type: text/plain; charset='. $_POST['charset']);
       } else {
         header('Content-Type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=manufacturers-'. $_POST['language_code'] .'.csv');
+        header('Content-Disposition: attachment; filename=brands-'. $_POST['language_code'] .'.csv');
       }
 
       switch($_POST['eol']) {
@@ -1018,10 +1018,10 @@
           </div>
 
           <div class="col-sm-6 col-md-3">
-            <?php echo functions::form_draw_form_begin('export_manufacturers_form', 'post'); ?>
+            <?php echo functions::form_draw_form_begin('export_brands_form', 'post'); ?>
 
               <fieldset>
-                <legend><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></legend>
+                <legend><?php echo language::translate('title_brands', 'Brands'); ?></legend>
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_language', 'Language'); ?></label>
@@ -1060,7 +1060,7 @@
                     </div>
                   </div>
 
-                <?php echo functions::form_draw_button('export_manufacturers', language::translate('title_export', 'Export'), 'submit'); ?>
+                <?php echo functions::form_draw_button('export_brands', language::translate('title_export', 'Export'), 'submit'); ?>
               </fieldset>
 
             <?php echo functions::form_draw_form_end(); ?>

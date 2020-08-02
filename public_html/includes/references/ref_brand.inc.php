@@ -1,15 +1,15 @@
 <?php
 
-  class ref_manufacturer {
+  class ref_brand {
 
     private $_language_codes;
     private $_data = [];
 
-    function __construct($manufacturer_id, $language_code=null) {
+    function __construct($brand_id, $language_code=null) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
-      $this->_data['id'] = (int)$manufacturer_id;
+      $this->_data['id'] = (int)$brand_id;
       $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
@@ -51,15 +51,15 @@
           $this->_data['info'] = [];
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."manufacturers_info
-            where manufacturer_id = ". (int)$this->_data['id'] ."
+            "select * from ". DB_PREFIX ."brands_info
+            where brand_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, ['id', 'manufacturer_id', 'language_code'])) continue;
+              if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $value;
             }
           }
@@ -69,7 +69,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."manufacturers
+            "select * from ". DB_PREFIX ."brands
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

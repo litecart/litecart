@@ -8,7 +8,7 @@
 
     <div class="info">
       <h4 class="name"><?php echo $name; ?></h4>
-      <div class="manufacturer-name"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
+      <div class="brand-name"><?php echo !empty($brand) ? $brand['name'] : '&nbsp;'; ?></div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
         <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>

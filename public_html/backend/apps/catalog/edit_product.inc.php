@@ -41,7 +41,7 @@
 
       $fields = [
         'status',
-        'manufacturer_id',
+        'brand_id',
         'supplier_id',
         'delivery_status_id',
         'sold_out_status_id',
@@ -291,8 +291,8 @@
               </div>
 
               <div class="form-group">
-                <label><?php echo language::translate('title_manufacturer', 'Manufacturer'); ?></label>
-                <?php echo functions::form_draw_manufacturers_list('manufacturer_id', true); ?>
+                <label><?php echo language::translate('title_brand', 'Brand'); ?></label>
+                <?php echo functions::form_draw_brands_list('brand_id', true); ?>
               </div>
 
               <div class="form-group">

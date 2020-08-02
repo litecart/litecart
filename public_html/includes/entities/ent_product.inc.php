@@ -238,7 +238,7 @@
       database::query(
         "update ". DB_PREFIX ."products set
         status = ". (int)$this->data['status'] .",
-        manufacturer_id = ". (int)$this->data['manufacturer_id'] .",
+        brand_id = ". (int)$this->data['brand_id'] .",
         supplier_id = ". (int)$this->data['supplier_id'] .",
         delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
@@ -624,7 +624,7 @@
       $this->previous = $this->data;
 
       cache::clear_cache('category');
-      cache::clear_cache('manufacturer');
+      cache::clear_cache('brand');
       cache::clear_cache('products');
     }
 
@@ -716,7 +716,7 @@
       $this->reset();
 
       cache::clear_cache('category');
-      cache::clear_cache('manufacturer');
+      cache::clear_cache('brand');
       cache::clear_cache('products');
     }
   }

@@ -208,13 +208,13 @@
 
           break;
 
-        case 'manufacturer':
+        case 'brand':
 
-          $this->_data['manufacturer'] = [];
+          $this->_data['brand'] = [];
 
-          if (empty($this->_data['manufacturer_id'])) return;
+          if (empty($this->_data['brand_id'])) return;
 
-          $this->_data['manufacturer'] = reference::manufacturer($this->manufacturer_id, $this->_language_codes[0]);
+          $this->_data['brand'] = reference::brand($this->brand_id, $this->_language_codes[0]);
 
           break;
 

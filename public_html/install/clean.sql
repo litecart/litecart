@@ -30,9 +30,9 @@ DROP TABLE IF EXISTS `lc_geo_zones`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_languages`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_manufacturers`;
+DROP TABLE IF EXISTS `lc_brands`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_manufacturers_info`;
+DROP TABLE IF EXISTS `lc_brands_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_modules`;
 -- --------------------------------------------------------

@@ -25,8 +25,8 @@
         'params' => [],
       ],
       [
-        'title' => language::translate('title_manufacturers', 'Manufacturers'),
-        'doc' => 'manufacturers',
+        'title' => language::translate('title_brands', 'Brands'),
+        'doc' => 'brands',
         'params' => [],
       ],
       [
@@ -62,8 +62,8 @@
       'edit_attribute_group' => 'edit_attribute_group.inc.php',
       'edit_product' => 'edit_product.inc.php',
       'edit_category' => 'edit_category.inc.php',
-      'manufacturers' => 'manufacturers.inc.php',
-      'edit_manufacturer' => 'edit_manufacturer.inc.php',
+      'brands' => 'brands.inc.php',
+      'edit_brand' => 'edit_brand.inc.php',
       'suppliers' => 'suppliers.inc.php',
       'edit_supplier' => 'edit_supplier.inc.php',
       'delivery_statuses' => 'delivery_statuses.inc.php',

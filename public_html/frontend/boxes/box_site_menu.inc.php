@@ -7,7 +7,7 @@
 
     $box_site_menu->snippets = [
       'categories' => [],
-      'manufacturers' => [],
+      'brands' => [],
       'pages' => [],
     ];
 
@@ -25,21 +25,21 @@
       ];
     }
 
-  // Manufacturers
+  // Brands
 
     $pages_query = database::query(
-      "select id, name from ". DB_PREFIX ."manufacturers
+      "select id, name from ". DB_PREFIX ."brands
       where status
       and featured
       order by name;"
     );
 
-    while ($manufacturer = database::fetch($pages_query)) {
-      $box_site_menu->snippets['manufacturers'][$manufacturer['id']] = [
-        'type' => 'manufacturer',
-        'id' => $manufacturer['id'],
-        'title' => $manufacturer['name'],
-        'link' => document::ilink('manufacturer', ['manufacturer_id' => $manufacturer['id']]),
+    while ($brand = database::fetch($pages_query)) {
+      $box_site_menu->snippets['brands'][$brand['id']] = [
+        'type' => 'brand',
+        'id' => $brand['id'],
+        'title' => $brand['name'],
+        'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
         'priority' => 0,
       ];
     }

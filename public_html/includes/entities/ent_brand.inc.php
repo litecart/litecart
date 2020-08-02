@@ -1,13 +1,13 @@
 <?php
 
-  class ent_manufacturer {
+  class ent_brand {
     public $data;
     public $previous;
 
-    public function __construct($manufacturer_id='') {
+    public function __construct($brand_id='') {
 
-      if (!empty($manufacturer_id)) {
-        $this->load($manufacturer_id);
+      if (!empty($brand_id)) {
+        $this->load($brand_id);
       } else {
         $this->reset();
       }
@@ -17,19 +17,19 @@
 
       $this->data = [];
 
-      $manufacturer_query = database::query(
-        "show fields from ". DB_PREFIX ."manufacturers;"
+      $brand_query = database::query(
+        "show fields from ". DB_PREFIX ."brands;"
       );
 
-      while ($field = database::fetch($manufacturer_query)) {
+      while ($field = database::fetch($brand_query)) {
         $this->data[$field['Field']] = null;
       }
 
-      $manufacturer_info_query = database::query(
-        "show fields from ". DB_PREFIX ."manufacturers_info;"
+      $brand_info_query = database::query(
+        "show fields from ". DB_PREFIX ."brands_info;"
       );
-      while ($field = database::fetch($manufacturer_info_query)) {
-        if (in_array($field['Field'], ['id', 'manufacturer_id', 'language_code'])) continue;
+      while ($field = database::fetch($brand_info_query)) {
+        if (in_array($field['Field'], ['id', 'brand_id', 'language_code'])) continue;
 
         $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
@@ -40,33 +40,33 @@
       $this->previous = $this->data;
     }
 
-    public function load($manufacturer_id) {
+    public function load($brand_id) {
 
-      if (!preg_match('#^[0-9]+$#', $manufacturer_id)) throw new Exception('Invalid manufacturer (ID: '. $manufacturer_id .')');
+      if (!preg_match('#^[0-9]+$#', $brand_id)) throw new Exception('Invalid brand (ID: '. $brand_id .')');
 
       $this->reset();
 
-      $manufacturers_query = database::query(
-        "select * from ". DB_PREFIX ."manufacturers
-        where id=". (int)$manufacturer_id ."
+      $brands_query = database::query(
+        "select * from ". DB_PREFIX ."brands
+        where id=". (int)$brand_id ."
         limit 1;"
       );
 
-      if ($manufacturer = database::fetch($manufacturers_query)) {
-        $this->data = array_replace($this->data, array_intersect_key($manufacturer, $this->data));
+      if ($brand = database::fetch($brands_query)) {
+        $this->data = array_replace($this->data, array_intersect_key($brand, $this->data));
       } else {
-        throw new Exception('Could not find manufacturer (ID: '. (int)$manufacturer_id .') in database.');
+        throw new Exception('Could not find brand (ID: '. (int)$brand_id .') in database.');
       }
 
-      $manufacturers_info_query = database::query(
-        "select * from ". DB_PREFIX ."manufacturers_info
-        where manufacturer_id = ". (int)$manufacturer_id .";"
+      $brands_info_query = database::query(
+        "select * from ". DB_PREFIX ."brands_info
+        where brand_id = ". (int)$brand_id .";"
       );
 
-      while ($manufacturer_info = database::fetch($manufacturers_info_query)) {
-        foreach ($manufacturer_info as $key => $value) {
-          if (in_array($key, ['id', 'manufacturer_id', 'language_code'])) continue;
-          $this->data[$key][$manufacturer_info['language_code']] = $value;
+      while ($brand_info = database::fetch($brands_info_query)) {
+        foreach ($brand_info as $key => $value) {
+          if (in_array($key, ['id', 'brand_id', 'language_code'])) continue;
+          $this->data[$key][$brand_info['language_code']] = $value;
         }
       }
 
@@ -77,7 +77,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."manufacturers
+          "insert into ". DB_PREFIX ."brands
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -90,7 +90,7 @@
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
-        "update ". DB_PREFIX ."manufacturers set
+        "update ". DB_PREFIX ."brands set
         status = ". (int)$this->data['status'] .",
         featured = ". (int)$this->data['featured'] .",
         code = '". database::input($this->data['code']) ."',
@@ -103,30 +103,30 @@
 
       foreach (array_keys(language::$languages) as $language_code) {
 
-        $manufacturers_info_query = database::query(
-          "select * from ". DB_PREFIX ."manufacturers_info
-          where manufacturer_id = ". (int)$this->data['id'] ."
+        $brands_info_query = database::query(
+          "select * from ". DB_PREFIX ."brands_info
+          where brand_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
 
-        if (!$manufacturer_info = database::fetch($manufacturers_info_query)) {
+        if (!$brand_info = database::fetch($brands_info_query)) {
           database::query(
-            "insert into ". DB_PREFIX ."manufacturers_info
-            (manufacturer_id, language_code)
+            "insert into ". DB_PREFIX ."brands_info
+            (brand_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
         database::query(
-          "update ". DB_PREFIX ."manufacturers_info set
+          "update ". DB_PREFIX ."brands_info set
           short_description = '". database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
           h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
           link = '". database::input($this->data['link'][$language_code]) ."'
-          where manufacturer_id = ". (int)$this->data['id'] ."
+          where brand_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
@@ -134,7 +134,7 @@
 
       $this->previous = $this->data;
 
-      cache::clear_cache('manufacturers');
+      cache::clear_cache('brands');
     }
 
     public function save_image($file) {
@@ -145,12 +145,12 @@
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_STORAGE . 'images/manufacturers/')) mkdir(FS_DIR_STORAGE . 'images/manufacturers/', 0777);
+      if (!is_dir(FS_DIR_STORAGE . 'images/brands/')) mkdir(FS_DIR_STORAGE . 'images/brands/', 0777);
 
       $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
-      $filename = 'manufacturers/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
+      $filename = 'brands/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
 
       if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
@@ -164,7 +164,7 @@
       $image->write(FS_DIR_STORAGE . 'images/' . $filename, 90);
 
       database::query(
-        "update ". DB_PREFIX ."manufacturers
+        "update ". DB_PREFIX ."brands
         set image = '". database::input($filename) ."'
         where id = ". (int)$this->data['id'] .";"
       );
@@ -181,7 +181,7 @@
       functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
       database::query(
-        "update ". DB_PREFIX ."manufacturers
+        "update ". DB_PREFIX ."brands
         set image = ''
         where id = ". (int)$this->data['id'] .";"
       );
@@ -195,33 +195,33 @@
 
       $products_query = database::query(
         "select id from ". DB_PREFIX ."products
-        where manufacturer_id = ". (int)$this->data['id'] ."
+        where brand_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       if (database::num_rows($products_query) > 0) {
-        notices::add('errors', language::translate('error_delete_manufacturer_not_empty_products', 'The manufacturer could not be deleted because there are products linked to it.'));
+        notices::add('errors', language::translate('error_delete_brand_not_empty_products', 'The brand could not be deleted because there are products linked to it.'));
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;
       }
 
-      if (!empty($this->data['image']) && is_file(FS_DIR_STORAGE . 'images/manufacturers/' . $this->data['image'])) {
-        unlink(FS_DIR_STORAGE . 'images/manufacturers/' . $this->data['image']);
+      if (!empty($this->data['image']) && is_file(FS_DIR_STORAGE . 'images/brands/' . $this->data['image'])) {
+        unlink(FS_DIR_STORAGE . 'images/brands/' . $this->data['image']);
       }
 
       database::query(
-        "delete from ". DB_PREFIX ."manufacturers
+        "delete from ". DB_PREFIX ."brands
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "delete from ". DB_PREFIX ."manufacturers_info
-        where manufacturer_id = ". (int)$this->data['id'] .";"
+        "delete from ". DB_PREFIX ."brands_info
+        where brand_id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();
 
-      cache::clear_cache('manufacturers');
+      cache::clear_cache('brands');
     }
   }

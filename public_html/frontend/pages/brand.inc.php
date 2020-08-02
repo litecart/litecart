@@ -1,0 +1,80 @@
+<?php
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
+  if (empty($_GET['brand_id'])) {
+    header('Location: '. document::ilink('brands'));
+    exit;
+  }
+
+  functions::draw_lightbox();
+
+  $brand = reference::brand($_GET['brand_id']);
+
+  if (empty($brand->id)) {
+    http_response_code(410);
+    echo language::translate('error_410_gone', 'The requested file is no longer available');
+    return;
+  }
+
+  if (empty($brand->status)) {
+    http_response_code(404);
+    echo language::translate('error_404_not_found', 'The requested file could not be found');
+    return;
+  }
+
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('brand', ['brand_id' => (int)$brand->id], false) .'" />';
+  document::$snippets['title'][] = $brand->head_title ? $brand->head_title : $brand->name;
+  document::$snippets['description'] = $brand->meta_description ? $brand->meta_description : strip_tags($brand->short_description);
+
+  breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
+  breadcrumbs::add($brand->name);
+
+  $_page = new ent_view();
+
+  $brand_cache_token = cache::token('box_brand', ['get', 'language', 'currency', 'prices'], 'file');
+  if (!$_page->snippets = cache::get($brand_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+
+    $_page->snippets = [
+      'id' => $brand->id,
+      'title' => $brand->h1_title ? $brand->h1_title : $brand->name,
+      'name' => $brand->name,
+      'description' => $brand->description,
+      'link' => $brand->link,
+      'image' => [
+        'original' => 'images/' . $brand->image,
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 200, 0, 'FIT_ONLY_BIGGER'),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 200*2, 0, 'FIT_ONLY_BIGGER'),
+      ],
+      'products' => [],
+      'sort_alternatives' => [
+        'name' => language::translate('title_name', 'Name'),
+        'price' => language::translate('title_price', 'Price'),
+        'popularity' => language::translate('title_popularity', 'Popularity'),
+        'date' => language::translate('title_date', 'Date'),
+      ],
+      'pagination' => null,
+    ];
+
+    $products_query = functions::catalog_products_query([
+      'brands' => [$brand->id],
+      'sort' => $_GET['sort'],
+      'campaigns_first' => true,
+    ]);
+
+    if (database::num_rows($products_query) > 0) {
+      if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page', 20) * ($_GET['page'] - 1)));
+
+      $page_items = 0;
+      while ($listing_item = database::fetch($products_query)) {
+        $_page->snippets['products'][] = $listing_item;
+
+        if (++$page_items == settings::get('items_per_page', 20)) break;
+      }
+    }
+
+    $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page', 20)));
+
+    cache::set($brand_cache_token, $_page->snippets);
+  }
+
+  echo $_page->stitch('pages/brand');

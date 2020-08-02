@@ -106,7 +106,7 @@
         ],
       ],
       'sticker' => $sticker,
-      'manufacturer' => [],
+      'brand' => [],
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
       'quantity_unit_id' => $product['quantity_unit_id'],
@@ -118,10 +118,10 @@
       'sold_out_status_id' => $product['sold_out_status_id'],
     ];
 
-    if (!empty($product['manufacturer_id'])) {
-      $listing_product->snippets['manufacturer'] = [
-        'id' => $product['manufacturer_id'],
-        'name' => $product['manufacturer_name'],
+    if (!empty($product['brand_id'])) {
+      $listing_product->snippets['brand'] = [
+        'id' => $product['brand_id'],
+        'name' => $product['brand_name'],
       ];
     }
 

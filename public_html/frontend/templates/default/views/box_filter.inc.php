@@ -2,12 +2,12 @@
   <h2 class="title"><?php echo language::translate('title_filter', 'Filter'); ?></h2>
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
-    <?php if ($manufacturers) { ?>
-    <div class="box manufacturers">
-      <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
+    <?php if ($brands) { ?>
+    <div class="box brands">
+      <h3 class="title"><?php echo language::translate('title_brands', 'Brands'); ?></h3>
       <div class="form-control">
         <ul class="list-unstyled">
-          <?php foreach ($manufacturers as $manufacturer) echo '<li><label>'. functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true) .' '. $manufacturer['name'] .'</label></li>' . PHP_EOL; ?>
+          <?php foreach ($brands as $brand) echo '<li><label>'. functions::form_draw_checkbox('brands[]', $brand['id'], true) .' '. $brand['name'] .'</label></li>' . PHP_EOL; ?>
         </ul>
       </div>
     </div>

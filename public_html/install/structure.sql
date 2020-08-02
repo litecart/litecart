@@ -39,6 +39,37 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_brands` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `status` TINYINT(1) NULL,
+  `featured` TINYINT(1) NULL,
+  `code` VARCHAR(32) NULL,
+  `name` VARCHAR(64) NULL,
+  `keywords` VARCHAR(256) NULL,
+  `image` VARCHAR(256) NULL,
+  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `code` (`code`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_brands_info` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `brand_id` INT(11) NULL,
+  `language_code` VARCHAR(2) NULL,
+  `short_description` VARCHAR(256) NULL,
+  `description` TEXT NULL,
+  `h1_title` VARCHAR(128) NULL,
+  `head_title` VARCHAR(128) NULL,
+  `meta_description` VARCHAR(512) NULL,
+  `link` VARCHAR(256) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `brand_info` (`brand_id`, `language_code`),
+  KEY `brand_id` (`brand_id`),
+  KEY `language_code` (`language_code`)
+) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_cart_items` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `customer_id` INT(11) NULL,
@@ -257,37 +288,6 @@ CREATE TABLE `lc_languages` (
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_manufacturers` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(1) NULL,
-  `featured` TINYINT(1) NULL,
-  `code` VARCHAR(32) NULL,
-  `name` VARCHAR(64) NULL,
-  `keywords` VARCHAR(256) NULL,
-  `image` VARCHAR(256) NULL,
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `code` (`code`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_manufacturers_info` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `manufacturer_id` INT(11) NULL,
-  `language_code` VARCHAR(2) NULL,
-  `short_description` VARCHAR(256) NULL,
-  `description` TEXT NULL,
-  `h1_title` VARCHAR(128) NULL,
-  `head_title` VARCHAR(128) NULL,
-  `meta_description` VARCHAR(512) NULL,
-  `link` VARCHAR(256) NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `manufacturer` (`manufacturer_id`, `language_code`),
-  KEY `manufacturer_id` (`manufacturer_id`),
-  KEY `language_code` (`language_code`)
-) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_modules` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `module_id` VARCHAR(64) NULL,
@@ -481,7 +481,7 @@ CREATE TABLE `lc_pages_info` (
 CREATE TABLE `lc_products` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NULL,
-  `manufacturer_id` INT(11) NULL,
+  `brand_id` INT(11) NULL,
   `supplier_id` INT(11) NULL,
   `delivery_status_id` INT(11) NULL,
   `sold_out_status_id` INT(11) NULL,
@@ -514,7 +514,7 @@ CREATE TABLE `lc_products` (
   PRIMARY KEY (`id`),
   KEY `status` (`status`),
   KEY `default_category_id` (`default_category_id`),
-  KEY `manufacturer_id` (`manufacturer_id`),
+  KEY `brand_id` (`brand_id`),
   KEY `keywords` (`keywords`),
   KEY `code` (`code`),
   KEY `sku` (`sku`),

@@ -31,13 +31,13 @@
       </p>
       <?php } ?>
 
-      <?php if (!empty($manufacturer)) { ?>
-      <div class="manufacturer">
-        <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>">
-          <?php if ($manufacturer['image']) { ?>
-          <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
+      <?php if (!empty($brand)) { ?>
+      <div class="brand">
+        <a href="<?php echo htmlspecialchars($brand['link']); ?>">
+          <?php if ($brand['image']) { ?>
+          <img src="<?php echo document::href_link(WS_DIR_APP . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" title="<?php echo htmlspecialchars($brand['name']); ?>" />
           <?php } else { ?>
-          <h3><?php echo $manufacturer['name']; ?></h3>
+          <h3><?php echo $brand['name']; ?></h3>
           <?php } ?>
         </a>
       </div>

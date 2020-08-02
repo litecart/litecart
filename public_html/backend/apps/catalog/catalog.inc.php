@@ -265,7 +265,7 @@
     $code_regex = functions::format_regex_code($_GET['query']);
 
     $products_query = database::query(
-      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name,
+      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name
       (
         if(p.id = '". database::input($_GET['query']) ."', 10, 0)
         + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
@@ -288,7 +288,7 @@
       ) as relevance
       from ". DB_PREFIX ."products p
       left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
-      left join ". DB_PREFIX ."manufacturers m on (p.manufacturer_id = m.id)
+      left join ". DB_PREFIX ."brands b on (p.brand_id = b.id)
       left join ". DB_PREFIX ."suppliers s on (p.supplier_id = s.id)
       having relevance > 0
       order by relevance desc;"

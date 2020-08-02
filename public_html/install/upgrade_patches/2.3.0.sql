@@ -53,3 +53,17 @@ SET stock_option_id = pso.id;
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 DROP COLUMN `option_stock_combination`;
+-- --------------------------------------------------------
+RENAME TABLE `lc_manufacturers` TO `lc_brands`;
+-- --------------------------------------------------------
+RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_brands_info`
+CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL AFTER `id`,
+ADD UNIQUE INDEX `brand_info` (`brand_id`, `language_code`),
+ADD INDEX `brand_id` (`brand_id`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_products`
+CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL AFTER `status`,
+DROP INDEX `manufacturer_id`,
+ADD INDEX `brand_id` (`brand_id`);
