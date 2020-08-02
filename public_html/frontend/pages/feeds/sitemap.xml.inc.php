@@ -20,7 +20,7 @@
            . '    <priority>1.0</priority>' . PHP_EOL
            . '  </url>' . PHP_EOL;
 
-  $category_iterator = function($parent_id=0, $category_iterator) {
+  $category_iterator = function($parent_id=0, $_this) {
     $categories_query = functions::catalog_categories_query($parent_id);
 
     $output = '';
@@ -50,7 +50,7 @@
                . '    <priority>1.0</priority>' . PHP_EOL
                . '  </url>' . PHP_EOL;
 
-      $category_iterator($category['id'], $category_iterator);
+      $_this($category['id'], $_this);
     }
 
     return $output;

@@ -18,7 +18,7 @@
       'category_path' => $category_path,
     ];
 
-    $iterator = function($parent_id, $level, &$category_path, &$iterator) {
+    $iterator = function($parent_id, $level, &$category_path, &$_this) {
 
       $tree = [];
 
@@ -39,7 +39,7 @@
         if (in_array($category['id'], $category_path)) {
           $sub_categories_query = functions::catalog_categories_query($category['id']);
           if (database::num_rows($sub_categories_query)) {
-            $tree[$category['id']]['subcategories'] = $iterator($category['id'], $level+1, $category_path, $iterator);
+            $tree[$category['id']]['subcategories'] = $_this($category['id'], $level+1, $category_path, $_this);
           }
         }
       }

@@ -27,7 +27,7 @@
       'subpages' => [],
     ];
 
-    $iterator = function($parent_id, $level, $current_page_path, &$iterator) {
+    $iterator = function($parent_id, $level, $current_page_path, &$_this) {
 
       $output = [];
 
@@ -56,7 +56,7 @@
             where parent_id = ". (int)$page['id'] .";"
           );
           if (database::num_rows($sub_pages_query) > 0) {
-            $output[$page['id']]['subpages'] = $iterator($page['id'], $level+1, $current_page_path, $iterator);
+            $output[$page['id']]['subpages'] = $_this($page['id'], $level+1, $current_page_path, $_this);
           }
         }
       }

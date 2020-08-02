@@ -166,7 +166,7 @@
 
   } else {
 
-    $iterator = function($parent_id, $depth=0, &$iterator) {
+    $iterator = function($parent_id, $depth=0, &$_this) {
 
       $pages_query = database::query(
         "select p.*, pi.title from ". DB_PREFIX ."pages p
@@ -218,7 +218,7 @@
           </tr>
 <?php
         if (in_array($page['id'], $_GET['expanded'])) {
-          $iterator($page['id'], $depth + 1, $iterator);
+          $_this($page['id'], $depth + 1, $_this);
         }
 
         if ($parent_id == 0) {

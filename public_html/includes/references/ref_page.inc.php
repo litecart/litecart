@@ -108,7 +108,7 @@
 
           $this->_data['descendants'] = [];
 
-          $iterator = function($parent_id, &$iterator) {
+          $iterator = function($parent_id, &$_this) {
 
             $descendants = [];
 
@@ -119,7 +119,7 @@
 
             while ($page = database::fetch($pages_query)) {
               $descendants[$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
-              $descendants += $iterator($page['id'], $iterator);
+              $descendants += $_this($page['id'], $_this);
             }
 
             return $descendants;

@@ -1271,7 +1271,7 @@ END;
 
   function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id=0, $level=1, &$iterator) {
+    $iterator = function($parent_id=0, $level=1, &$_this) {
 
       $options = [];
 
@@ -1294,7 +1294,7 @@ END;
           limit 1;"
         );
 
-        $sub_options = $iterator($page['id'], $level+1, $iterator);
+        $sub_options = $_this($page['id'], $level+1, $_this);
 
         $options = array_merge($options, $sub_options);
       }
