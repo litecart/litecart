@@ -1375,7 +1375,7 @@
     output = output.replace(/new_option_value_i/g, 'new_' + new_option_value_i);
     output = output.replace(/new_group_id/g, $(groupElement).val());
     output = output.replace(/new_value_id/g, $(valueElement).val());
-    output = output.replace(/new_custom_value/g, $(customValueElement).val());
+    output = output.replace(/new_custom_value/g, $(customValueElement).val().replace(/"/, '&quot;'));
     $(':input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append(output);
     new_option_value_i++;
 
