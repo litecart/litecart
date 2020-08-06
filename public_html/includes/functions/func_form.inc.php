@@ -539,6 +539,7 @@ END;
     document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_APP .'vendor/trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
                                                   . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_APP .'vendor/trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
                                                   . '<script src="'. WS_DIR_APP .'vendor/trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_APP .'vendor/trumbowyg/plugins/table/trumbowyg.upload.min.js"></script>' . PHP_EOL
                                                   . '<script src="'. WS_DIR_APP .'vendor/trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
@@ -548,6 +549,11 @@ END;
                                         . '        dropdown: ["unorderedList", "orderedList"],' . PHP_EOL
                                         . '        title: "Lists",' . PHP_EOL
                                         . '        ico: "unorderedList",' . PHP_EOL
+                                        . '      }' . PHP_EOL
+                                        . '    },' . PHP_EOL
+                                        . '    plugins: {' . PHP_EOL
+                                        . '      upload: {' . PHP_EOL
+                                        . '        serverPath: "'. WS_DIR_APP .'vendor/trumbowyg/plugins/upload/trumbowyg.upload.php",' . PHP_EOL
                                         . '      }' . PHP_EOL
                                         . '    },' . PHP_EOL
                                         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
