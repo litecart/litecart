@@ -605,7 +605,7 @@ CREATE TABLE `lc_products_options_values` (
   `EUR` DECIMAL(11,4) NULL,
   `priority` TINYINT(2) NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`),
+  UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`, `custom_value`),
   INDEX `product_id` (`product_id`),
   INDEX `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};

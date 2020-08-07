@@ -1,25 +1,39 @@
 <?php
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
-  @ignore_user_abort(true);
-  @set_time_limit(300);
-
   if (php_sapi_name() == 'cli') {
+
+    if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
+      echo "\nLiteCart® 2.2.3.6\n"
+      . "Copyright (c) ". date('Y') ." LiteCart AB\n"
+      . "https://www.litecart.net/\n"
+      . "Usage: php install.php [options]\n\n"
+      . "Options:\n"
+      . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
+      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n";
+      exit;
+    }
+
     $options = [
-      'from_version:',
+      'from_version::', 'development_type::'
     ];
+
     $_REQUEST = getopt(null, $options);
     $_REQUEST['upgrade'] = true;
+
   } else {
     require_once(__DIR__ . '/includes/header.inc.php');
   }
+
+  @ignore_user_abort(true);
+  @set_time_limit(300);
 
   require_once(__DIR__ . '/../includes/config.inc.php');
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
 
   require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
-  require_once(FS_DIR_APP . '/includes/library/lib_database.inc.php');
+  require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');
   require_once(__DIR__ . '/includes/functions.inc.php');
 
 // Turn on errors

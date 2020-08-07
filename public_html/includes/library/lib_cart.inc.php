@@ -189,6 +189,21 @@
           throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, $product->quantity_unit['decimals'])]));
         }
 
+      // Remove empty options
+        $array_filter_recursive = function($array, &$_this) {
+
+          foreach ($array as $i => $value) {
+            if (is_array($value)) $array[$i] = $_this($value, $_this);
+          }
+
+          return array_filter($array, function($v) {
+            if (is_array($v)) return !empty($v);
+            return strlen(trim($v));
+          });
+        };
+
+        $options = $array_filter_recursive($options, $array_filter_recursive);
+
       // Build options structure
         $sanitized_options = [];
         foreach ($product->options as $option) {

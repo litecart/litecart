@@ -16,7 +16,11 @@ module.exports = function(grunt) {
       },
 
       index: {
-        src: ['public_html/index.php'],
+        src: [
+          'public_html/index.php',
+          'public_html/install/install.php',
+          'public_html/install/upgrade.php'
+        ],
         overwrite: true,
         replacements: [
           {
