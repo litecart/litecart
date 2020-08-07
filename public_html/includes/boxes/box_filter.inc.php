@@ -42,8 +42,9 @@
   while ($group = database::fetch($category_filters_query)) {
 
     $attribute_values_query = database::query(
-      "select distinct av.value_id as id, if(av.custom_value != '', av.custom_value, avi.name) as value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." av
-      left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = av.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+      "select distinct av.id, if(pa.custom_value != '', pa.custom_value, avi.name) as value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa
+      left join ". DB_TABLE_ATTRIBUTE_VALUES ." av on (av.id = pa.value_id)
+      left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where product_id in (
         select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
         where category_id = ". (int)$_GET['category_id'] ."
