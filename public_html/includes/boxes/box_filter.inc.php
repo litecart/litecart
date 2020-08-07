@@ -32,7 +32,8 @@
 
 // Attributes
   $category_filters_query = database::query(
-    "select cf.attribute_group_id as id, agi.name as name, cf.select_multiple from ". DB_TABLE_CATEGORIES_FILTERS ." cf
+    "select cf.attribute_group_id as id, ag.sort, agi.name as name, cf.select_multiple from ". DB_TABLE_CATEGORIES_FILTERS ." cf
+    left join ". DB_TABLE_ATTRIBUTE_GROUPS ." ag on (ag.id = cf.attribute_group_id)
     left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = cf.attribute_group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
     where category_id = ". (int)$_GET['category_id'] ."
     order by priority;"
@@ -41,14 +42,14 @@
   while ($group = database::fetch($category_filters_query)) {
 
     $attribute_values_query = database::query(
-      "select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." cf
-      left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = cf.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+      "select distinct av.value_id as id, if(av.custom_value != '', av.custom_value, avi.name) as value from ". DB_TABLE_PRODUCTS_ATTRIBUTES ." av
+      left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = av.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where product_id in (
         select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
         where category_id = ". (int)$_GET['category_id'] ."
       )
-      and cf.group_id = ". (int)$group['id'] ."
-      order by `value`;"
+      and av.group_id = ". (int)$group['id'] ."
+      order by ". (($group['sort'] == 'alphabetical') ? '`value`' : 'av.priority') .";"
     );
 
     $group['values'] = array();

@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL,
+  `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
