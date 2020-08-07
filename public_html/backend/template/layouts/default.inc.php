@@ -24,7 +24,7 @@
       </a>
     </div>
 
-    <div id="search" class="container-fluid">
+    <div id="search">
       <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;"'); ?>
       <div class="results"></div>
     </div>
