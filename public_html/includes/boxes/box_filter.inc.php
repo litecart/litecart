@@ -50,7 +50,7 @@
         where category_id = ". (int)$_GET['category_id'] ."
       )
       and av.group_id = ". (int)$group['id'] ."
-      order by ". (($group['sort'] == 'alphabetical') ? '`value`' : 'av.priority') .";"
+      order by ". (($group['sort'] == 'alphabetical') ? "cast(`value` as unsigned), `value`" : "av.priority") .";"
     );
 
     $group['values'] = array();
