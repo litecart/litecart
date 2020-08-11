@@ -113,6 +113,11 @@
       }
     }
 
+    if (task.component == 'summary') {
+      var comments = $(':input[name="comments"]').val();
+      var terms_agreed = $(':input[name="terms_agreed"]').prop('checked');
+    }
+
     $.ajax({
       type: task.data ? 'post' : 'get',
       url: url,
@@ -126,6 +131,10 @@
       },
       success: function(html) {
         if (task.refresh) $('#box-checkout .'+ task.component +'.wrapper').html(html).fadeTo('fast', 1);
+        if (task.component == 'summary') {
+          $(':input[name="comments"]').val(comments);
+          $(':input[name="terms_agreed"]').prop('checked', terms_agreed);
+        }
       },
       complete: function(html) {
         if (!updateQueue.length) {

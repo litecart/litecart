@@ -1,7 +1,28 @@
 <?php
 
-
   if (php_sapi_name() == 'cli') {
+
+    if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
+      echo "\nLiteCart® 2.2.3.6\n"
+      . "Copyright (c) ". date('Y') ." LiteCart AB\n"
+      . "https://www.litecart.net/\n"
+      . "Usage: php install.php [options]\n\n"
+      . "Options:\n"
+      . "  --db_server          Set database hostname (Default: 127.0.0.1)\n"
+      . "  --db_username        Set database username\n"
+      . "  --db_password        Set database user password\n\n"
+      . "  --db_database        Set database name\n"
+      . "  --db_table_prefix    Set database table prefix (Default: lc_).\n"
+      . "  --db_collation       Set database collation (Default: utf8_swedish_ci)\n"
+      . "  --document_root      Set document root\n\n"
+      . "  --timezone           Set timezone e.g. Europe/London\n\n"
+      . "  --admin_folder       Set admin folder name (Default admin)\n"
+      . "  --username           Set admin username\n"
+      . "  --password           Set admin user password\n\n"
+      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n\n";
+      exit;
+    }
+
     $options = array(
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
       'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',

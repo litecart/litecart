@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NOT NULL,
+  `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
   `date_updated` DATETIME NOT NULL,
   `date_created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
@@ -595,7 +596,7 @@ CREATE TABLE `lc_products_options_values` (
   `EUR` DECIMAL(11,4) NOT NULL,
   `priority` TINYINT(2) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`),
+  UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`, `custom_value`),
   INDEX `product_id` (`product_id`),
   INDEX `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};

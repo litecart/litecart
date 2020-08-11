@@ -24,6 +24,7 @@
 
       $fields = array(
         'code',
+        'sort',
         'name',
         'values',
       );
@@ -58,6 +59,11 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
+  $option_sort_options = array(
+    array(language::translate('title_list_order', 'List Order'), 'priority'),
+    array(language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'),
+  );
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
@@ -71,6 +77,11 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
           <?php echo functions::form_draw_text_field('code', true); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
+          <?php echo functions::form_draw_select_field('sort', $option_sort_options, true); ?>
         </div>
       </div>
 

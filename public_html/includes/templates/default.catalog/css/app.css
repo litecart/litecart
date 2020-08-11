@@ -161,12 +161,10 @@ html {
 @media (min-width: 768px) {
   #sidebar {
     width: 300px;
+    margin-right: 20px;
   }
   #sidebar > *:first-child {
     margin-top: 0;
-  }
-  #sidebar + #content {
-    margin-left: 20px;
   }
 }
 #content {
@@ -277,7 +275,7 @@ html {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 10px;
 }
-@media (min-width: 480px) {
+@media (min-width: 768px) {
   .listing.products {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-gap: 20px;

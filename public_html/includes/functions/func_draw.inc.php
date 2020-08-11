@@ -11,22 +11,22 @@
 
     // Fontawesome
       case (substr($class, 0, 3) == 'fa-'):
-        //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document
+        //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document
         return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
     // Foundation
       case (substr($class, 0, 3) == 'fi-'):
-        document::$snippets['head_tags']['foundation-icons'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css" />';
+        document::$snippets['head_tags']['foundation-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css" />';
         return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
-    // Gyphicon
+    // Glyphicon
       case (substr($class, 0, 10) == 'glyphicon-'):
         //document::$snippets['head_tags']['glyphicon'] = '<link rel="stylesheet" href="'/path/to/glyphicon.min.css" />'; // Not embedded in release
         return '<span class="glyphicon '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></span>';
 
     // Ion Icons
       case (substr($class, 0, 4) == 'ion-'):
-        document::$snippets['head_tags']['ionicons'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css" />';
+        document::$snippets['head_tags']['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css" />';
         return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       default:
