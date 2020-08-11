@@ -110,6 +110,7 @@
       database::query(
         "update ". DB_PREFIX ."attribute_groups set
           code = '". database::input($this->data['code']) ."',
+          sort = '". database::input($this->data['sort']) ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

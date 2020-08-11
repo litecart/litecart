@@ -24,6 +24,7 @@
 
       $fields = [
         'code',
+        'sort',
         'name',
         'values',
       ];
@@ -59,17 +60,26 @@
     }
   }
 
+  $option_sort_options = [
+    [language::translate('title_list_order', 'List Order'), 'priority'],
+    [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
+  ];
 ?>
 <h1><?php echo $app_icon; ?> <?php echo !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_code', 'Code'); ?></label>
-      <?php echo functions::form_draw_text_field('code', true); ?>
-    </div>
-  </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_code', 'Code'); ?></label>
+          <?php echo functions::form_draw_text_field('code', true); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
+          <?php echo functions::form_draw_select_field('sort', $option_sort_options, true); ?>
+        </div>
+      </div>
 
   <div class="form-group">
     <label><?php echo language::translate('title_name', 'Name'); ?></label>

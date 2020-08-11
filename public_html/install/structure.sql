@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(32) NULL,
+  `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  PRIMARY KEY (`id`),
   KEY `code` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
