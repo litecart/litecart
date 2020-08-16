@@ -104,7 +104,7 @@
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : "and (os.is_archived is null or os.is_archived = 0 or unread = 1)") ."
+    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
     ". (!empty($_GET['payment_option_name']) ? "and o.payment_option_name = '". database::input($_GET['payment_option_name']) ."'" : '') ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
