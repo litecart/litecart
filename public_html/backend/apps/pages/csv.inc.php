@@ -131,7 +131,7 @@
         ];
       }
 
-      ob_clean();
+      ob_end_clean();
 
       if ($_POST['output'] == 'screen') {
         header('Content-type: text/plain; charset='. $_POST['charset']);
