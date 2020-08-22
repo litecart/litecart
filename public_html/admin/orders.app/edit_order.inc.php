@@ -680,8 +680,8 @@
                 <th style="width: 30px;">&nbsp;</th>
                 <th style="width: 250px;"><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
                 <th class="text-right"><?php echo language::translate('title_title', 'Title'); ?></th>
-                <th style="width: 200px;"><?php echo language::translate('title_value', 'Value'); ?></th>
-                <th style="width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+                <th style="width: 250px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+                <th style="width: 250px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
                 <th style="width: 30px;">&nbsp;</th>
               </tr>
             </thead>
