@@ -1,6 +1,5 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['setting_group_key'])) $_GET['setting_group_key'] = 'store_info';
 
   if (isset($_POST['save'])) {
 
