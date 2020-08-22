@@ -48,6 +48,18 @@
       if (empty($_POST['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
       if (empty($_POST['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
 
+      if (!empty($_POST['tax_id']) && reference::country($_POST['country_code'])->postcode_format) {
+        if (!preg_match('#'. reference::country($_POST['country_code'])->tax_id_format .'#i', $_POST['tax_id'])) {
+          throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax id format'));
+        }
+      }
+
+      if (!empty($_POST['postcode']) && reference::country($_POST['country_code'])->postcode_format) {
+        if (!preg_match('#'. reference::country($_POST['country_code'])->postcode_format .'#i', $_POST['postcode'])) {
+          throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
+        }
+      }
+
       $mod_customer = new mod_customer();
       $result = $mod_customer->validate($_POST);
       if (!empty($result['error'])) throw new Exception($result['error']);
