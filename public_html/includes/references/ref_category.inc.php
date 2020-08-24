@@ -171,7 +171,7 @@
 
           break;
 
-        case 'subcategories': // To be deprecated
+        case 'subcategories':
         case 'children':
 
           $this->_data['subcategories'] = [];

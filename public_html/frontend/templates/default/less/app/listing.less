@@ -144,7 +144,6 @@
     }
 
     .description {
-      padding: 0 .25rem;
       margin-top: 1rem;
     }
 
@@ -203,7 +202,7 @@
 
   .product-row {
     grid-column: span 4;
-    height: 175px;
+    min-height: 175px;
     .info {
       position: absolute;
       top: 0;
@@ -213,13 +212,16 @@
         left: ~"calc(160px + 1rem)";
       }
     }
+    .name {
+      margin: 0;
+    }
     .image-wrapper {
       display: inline-block;
     }
     .image {
       max-width: 100px;
       @media (min-width: (@media-breakpoint-sm)) {
-        max-width: 160px;
+        max-width: 175px;
       }
     }
     .price-wrapper {
