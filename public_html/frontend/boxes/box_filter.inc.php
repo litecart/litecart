@@ -16,7 +16,7 @@
       where p.status
       and brand_id
       ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
-      order by m.name asc;"
+      order by b.name asc;"
     );
 
     if (database::num_rows($brands_query) > 1) {

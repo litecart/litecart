@@ -253,7 +253,7 @@ html {
 #box-information li a:hover {
   color: var(--link-text-color);
 }
-#box-filter .manufacturers ul {
+#box-filter .brands ul {
   max-height: 200px;
   overflow-y: auto;
 }
@@ -304,7 +304,7 @@ html {
   text-decoration: none;
 }
 .listing .category,
-.listing .manufacturer,
+.listing .brand,
 .listing .product-column,
 .listing .product-row {
   position: relative;
@@ -318,7 +318,7 @@ html {
 }
 @media (min-width: 576px) {
   .listing .category:hover,
-  .listing .manufacturer:hover,
+  .listing .brand:hover,
   .listing .product-column:hover,
   .listing .product-row:hover {
     box-shadow: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.15);
@@ -335,12 +335,12 @@ html {
   color: inherit;
   margin: 0;
 }
-.listing .manufacturer img {
+.listing .brand img {
   width: 100%;
   height: auto;
   padding: 0.5rem;
 }
-.listing .manufacturer .caption {
+.listing .brand .caption {
   margin: 0;
   padding: 0.5em;
   background: #f2f2f2;
@@ -391,8 +391,8 @@ html {
   height: 40px;
   line-height: 125%;
 }
-.listing .product-column .manufacturer-name,
-.listing .product-row .manufacturer-name {
+.listing .product-column .brand-name,
+.listing .product-row .brand-name {
   color: #666;
   font-size: 0.9em;
   overflow: hidden;
