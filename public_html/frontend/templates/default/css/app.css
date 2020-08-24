@@ -193,6 +193,10 @@ html {
 #footer .modules {
   margin: 1rem 0;
 }
+#footer .social-bookmarks {
+  display: flex;
+  justify-content: center;
+}
 #footer .social-bookmarks .thumbnail {
   background: #333;
 }
@@ -254,7 +258,7 @@ html {
   overflow-y: auto;
 }
 #box-recently-viewed-products .listing {
-  grid-template-columns: repeat(auto-fit, minmax(48px, 0.5fr));
+  grid-template-columns: repeat(auto-fit, minmax(48px, 0.3fr));
 }
 .listing {
   display: grid;
