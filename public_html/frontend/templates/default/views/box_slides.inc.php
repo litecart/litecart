@@ -5,19 +5,15 @@
   foreach ($slides as $key => $slide) {
     echo '<div class="item'. (($key == 0) ? ' active' : '') .'">' . PHP_EOL;
 
-    if ($slide['link']) {
-      echo '<a href="'. htmlspecialchars($slide['link']) .'">' . PHP_EOL;
-    }
+    if ($slide['link']) echo '<a href="'. htmlspecialchars($slide['link']) .'">' . PHP_EOL;
 
-    echo '<img src="'. document::href_link($slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
+    echo '<img src="'. document::href_link(WS_DIR_STORAGE . $slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
 
     if (!empty($slide['caption'])) {
       echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;
     }
 
-    if ($slide['link']) {
-      echo '</a>' . PHP_EOL;
-    }
+    if ($slide['link']) echo '</a>' . PHP_EOL;
 
     echo '</div>' . PHP_EOL;
   }
