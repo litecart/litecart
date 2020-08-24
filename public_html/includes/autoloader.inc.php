@@ -44,7 +44,8 @@
         break;
 
       case (substr($class, 0, 4) == 'url_'):
-        require vmod::check(FS_DIR_APP . 'includes/routes/' . $class . '.inc.php');
+        if (is_file($file = vmod::check(FS_DIR_APP . 'backend/routes/' . $class . '.inc.php'))) require $file;
+        if (is_file($file = vmod::check(FS_DIR_APP . 'frontend/routes/' . $class . '.inc.php'))) require $file;
         break;
 
       case (substr($class, 0, 5) == 'wrap_'):
