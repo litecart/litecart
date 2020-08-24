@@ -41,6 +41,14 @@
         $options['destination'] = rtrim($options['destination'], '/') .'/'. basename($source);
       }
 
+      if (is_file($options['destination'])) {
+        if (filemtime($options['destination']) >= filemtime($source)) {
+          return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', $options['destination']);
+        } else {
+          unlink($options['destination']);
+        }
+      }
+
     // Return an already existing file
       if (is_file($options['destination'])) {
         if (!empty($options['overwrite'])) {
