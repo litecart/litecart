@@ -309,6 +309,14 @@
                     }
                     break;
 
+                  case '=':
+                    if ($value[$this->_currency_code] != 0) {
+                      $value['price_adjust'] = $value[$this->_currency_code] - $this->price;
+                    } else {
+                      $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
+                    }
+                    break;
+
                   default:
                     trigger_error('Unknown price operator for option', E_USER_WARNING);
                     break;
