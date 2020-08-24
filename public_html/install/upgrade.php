@@ -28,9 +28,15 @@
   @ignore_user_abort(true);
   @set_time_limit(300);
 
-  require_once(__DIR__ . '/../includes/config.inc.php');
+  if (is_file(__DIR__ . '/../includes/config.inc.php')) {
+    include(__DIR__ . '/../includes/config.inc.php');
+  } else if (is_file(__DIR__ . '/../storage/config.inc.php')) {
+    include(__DIR__ . '/../storage/config.inc.php');
+  }
+
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
+  if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
 
   require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
   require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');

@@ -1,10 +1,5 @@
 <?php
 
-// Move some files
-  foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
-    copy($file, FS_DIR_APP . 'vmods/');
-  }
-
 // Delete old files
   $deleted_files = [
     FS_DIR_ADMIN . 'addons.widget/addons.inc.php',
@@ -336,6 +331,8 @@
 // Move some files
   file_rename($file, FS_DIR_ADMIN . '.htpasswd', FS_DIR_APP . '.htpasswd');
 
+  file_rename($file, FS_DIR_APP . 'includes/config.inc.php', FS_DIR_STORAGE . 'config.inc.php');
+
   foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
     file_rename($file, FS_DIR_APP . 'backend/apps/' . preg_replace('\.app$', '', basename($file)));
   }
@@ -344,7 +341,27 @@
     file_rename($file, FS_DIR_APP . 'backend/widgets/' . preg_replace('\.widget$', '', basename($file)));
   }
 
+  foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
+    file_rename($file, FS_DIR_APP . 'storage/cache/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file));
+  }
+
+  foreach (glob(FS_DIR_APP . 'data/*') as $file) {
+    file_rename($file, FS_DIR_APP . 'storage/data/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file));
+  }
+
+  foreach (glob(FS_DIR_APP . 'images/*') as $file) {
+    file_rename($file, FS_DIR_APP . 'storage/images/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file));
+  }
+
+  foreach (glob(FS_DIR_APP . 'logs/*') as $file) {
+    file_rename($file, FS_DIR_APP . 'storage/logs/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file));
+  }
+
   file_delete(FS_DIR_ADMIN);
+  file_delete(FS_DIR_APP .'cache/');
+  file_delete(FS_DIR_APP .'data/');
+  file_delete(FS_DIR_APP .'images/');
+  file_delete(FS_DIR_APP .'logs/');
 
   foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
     file_rename($file, FS_DIR_APP . 'frontend/boxes/' . basename($file);
@@ -365,7 +382,7 @@
   file_delete(FS_DIR_APP . 'includes/templates/');
 
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
-    copy($file, FS_DIR_APP . 'vmods/');
+    copy($file, FS_DIR_STORAGE. 'vmods/');
     file_delete(FS_DIR_APP . 'vqmod/');
   }
 
@@ -406,13 +423,13 @@
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
       'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . "  define('FS_DIR_STORAGE',     FS_DIR_APP);" . PHP_EOL,
+                 . "  define('FS_DIR_STORAGE',     FS_DIR_APP . 'storage/');" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
       'replace' => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . "  define('WS_DIR_STORAGE',     WS_DIR_APP);" . PHP_EOL,
+                 . "  define('WS_DIR_STORAGE',     WS_DIR_APP . 'storage/');" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',

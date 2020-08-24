@@ -17,7 +17,7 @@
         <?php if ($_GET['page'] == 1 && $image) { ?>
         <div class="col-md-4">
           <div class="thumbnail">
-            <img src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail_1x']); ?>" />
+            <img src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_1x']); ?>" />
           </div>
         </div>
         <?php } ?>

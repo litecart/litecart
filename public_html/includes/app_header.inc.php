@@ -7,11 +7,11 @@
 
 // Get config
   if (!defined('FS_DIR_APP')) {
-    if (!file_exists(__DIR__ . '/config.inc.php')) {
+    if (!file_exists(__DIR__ . '/../storage/config.inc.php')) {
       header('Location: ./install/');
       exit;
     }
-    require_once __DIR__ . '/config.inc.php';
+    require_once __DIR__ . '/../storage/config.inc.php';
   }
 
 // Virtual Modification System

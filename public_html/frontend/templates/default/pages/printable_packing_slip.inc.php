@@ -49,7 +49,7 @@ table.items tbody tr:nth-child(11) {
     <header class="header">
       <div class="row">
         <div class="col-xs-6">
-          <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+          <img class="logotype" src="<?php echo document::link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
         </div>
 
         <div class="col-xs-6 text-right">

@@ -47,7 +47,7 @@
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], false) .'" />';
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link('images/' . $product->image) .'"/>';
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_STORAGE . 'images/' . $product->image) .'"/>';
   }
 
   if (!empty($_GET['category_id'])) {

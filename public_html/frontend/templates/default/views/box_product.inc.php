@@ -5,16 +5,16 @@
       <div class="images row">
 
         <div class="col-xs-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+          <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
             <?php echo $sticker; ?>
           </a>
         </div>
 
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-xs-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
           </a>
         </div>
         <?php } ?>
@@ -35,7 +35,7 @@
       <div class="brand">
         <a href="<?php echo htmlspecialchars($brand['link']); ?>">
           <?php if ($brand['image']) { ?>
-          <img src="<?php echo document::href_link(WS_DIR_APP . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" title="<?php echo htmlspecialchars($brand['name']); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" title="<?php echo htmlspecialchars($brand['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $brand['name']; ?></h3>
           <?php } ?>

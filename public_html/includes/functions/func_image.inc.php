@@ -46,7 +46,7 @@
         if (!empty($options['overwrite'])) {
           unlink($options['destination']);
         } else {
-          return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+          return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
         }
       }
 
@@ -67,7 +67,7 @@
 
       if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
 
-      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+      return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
 
     } catch (Exception $e) {
       trigger_error($e->getMessage() , E_USER_WARNING);
@@ -90,7 +90,7 @@
 
     if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
-    $path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
+    $path = preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', str_replace('\\', '/', realpath($source)));
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
       return $path;
@@ -150,7 +150,7 @@
 
     if (is_file($cache_file)) {
       if (filemtime($cache_file) >= filemtime($source)) {
-        return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $cache_file);
+        return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', $cache_file);
       } else {
         functions::image_delete_cache($source);
       }
@@ -176,7 +176,7 @@
 
   function image_delete_cache($file) {
 
-    $webpath = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', str_replace('\\', '/', realpath($file)));
+    $webpath = preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', '', str_replace('\\', '/', realpath($file)));
 
     $cache_name = sha1($webpath);
 

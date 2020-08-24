@@ -16,6 +16,7 @@
       . "  --db_collation       Set database collation (Default: utf8_swedish_ci)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
+      . "  --storage_folder     Set storage folder name (Default storage)\n"
       . "  --admin_folder       Set admin folder name (Default admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
@@ -25,7 +26,7 @@
 
     $options = [
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
+      'document_root:', 'timezone::', 'storage_folder::', 'admin_folder::', 'username::', 'password::', 'development_type::',
     ];
     $_REQUEST = getopt(null, $options);
     $_REQUEST['install'] = true;
@@ -247,6 +248,7 @@
     $config = file_get_contents('config');
 
     $map = [
+      '{STORAGE_FOLDER}' => rtrim($_REQUEST['storage_folder'], '/'),
       '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
       '{DB_TYPE}' => 'mysql',
       '{DB_SERVER}' => $_REQUEST['db_server'],

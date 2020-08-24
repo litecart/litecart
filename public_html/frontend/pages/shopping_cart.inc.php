@@ -34,7 +34,7 @@
     $_page->snippets['items'][$key] = array(
       'product_id' => $item['product_id'],
       'link' => document::ilink('product', array('product_id' => $item['product_id'])),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $item['image'], 320, 320, 'FIT_USE_WHITESPACING'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 320, 320, 'FIT_USE_WHITESPACING'),
       'name' => $item['name'],
       'sku' => $item['sku'],
       'options' => array(),

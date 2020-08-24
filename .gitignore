@@ -2,24 +2,21 @@
 # Application Files #
 #####################
 
-public_html/cache/*
-public_html/data/*
-public_html/images/*
-public_html/logs/*
-
-!public_html/**/index.html
-!public_html/**/.htaccess
+public_html/storage/*
 
 public_html/admin/.htaccess
 public_html/admin/.htpasswd
 public_html/data/blacklist.txt
 public_html/data/whitelist.txt
-public_html/includes/config.inc.php
+public_html/storage/config.inc.php
 public_html/.htaccess
 public_html/.user.ini
 public_html/favicon.ico
 public_html/php.ini
 public_html/robots.txt
+
+!public_html/**/index.html
+!public_html/**/.htaccess
 
 #####################
 # Development files #

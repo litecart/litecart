@@ -97,7 +97,7 @@
         </div>
       </div>
 
-      <?php if (!empty($slide->data['image'])) echo '<p><img src="'. document::href_link('images/' . $slide->data['image']) .'" alt="" class="img-responsive" /></p>'; ?>
+      <?php if (!empty($slide->data['image'])) echo '<p><img src="'. document::href_link(WS_DIR_STORAGE . 'images/' . $slide->data['image']) .'" alt="" class="img-responsive" /></p>'; ?>
 
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
