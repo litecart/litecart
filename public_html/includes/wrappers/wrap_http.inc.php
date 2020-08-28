@@ -126,7 +126,7 @@
       );
 
       if (class_exists('stats', false)) {
-        stats::set('http_requests', stats::get('external_requests') + 1);
+        stats::set('http_requests', stats::get('http_requests') + 1);
         stats::set('http_duration', stats::get('http_duration') + $this->last_response['duration']);
       }
 
