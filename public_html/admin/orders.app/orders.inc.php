@@ -44,8 +44,16 @@
 
       sort($_POST['orders']);
 
-      echo call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
-      return;
+      $output = call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
+
+      if ($output) {
+        echo $output;
+        return;
+      }
+
+      if (empty(notices::$data['errors'])) {
+        header('Location: '. $_SERVER['REQUEST_URI']);
+      }
 
     } catch (Exception $e) {
       notices::add('errors', $e->getMessage());
