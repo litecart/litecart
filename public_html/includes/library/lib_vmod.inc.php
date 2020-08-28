@@ -17,8 +17,16 @@
 
       $timestamp = microtime(true);
 
-      self::$aliases['#^admin/#'] = BACKEND_ALIAS . '/';
+    // Backwards Compatibility
+      self::$aliases['#^admin/#'] = 'backend/';
+      self::$aliases['#^admin/(.*?)\.app/#'] = 'backend/apps/$1/';
+      self::$aliases['#^admin/(.*?)\.widget/#'] = 'backend/widgets/$1/';
+      self::$aliases['#^pages/#'] = 'frontend/pages/';
+      self::$aliases['#^includes/boxes/#'] = 'frontend/boxes/';
       self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
+      self::$aliases['#^includes/routes/#'] = 'frontend/routes/';
+      self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/';
+      self::$aliases['#^includes/templates/(.*?)\.catalog/#'] = 'frontend/templates/$1/';
 
       $last_modified = null;
 
