@@ -668,7 +668,6 @@
         </div>
 
         <div id="tab-stock" class="tab-pane">
-
           <h2><?php echo language::translate('title_stock', 'Stock'); ?></h2>
 
           <div class="row" style="max-width: 960px;">
