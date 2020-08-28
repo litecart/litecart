@@ -1,8 +1,5 @@
 <?php
 
-  ob_clean();
-
-  header('Content-type: application/json; charset='. language::$selected['charset']);
 
   try {
 
@@ -42,6 +39,9 @@
   $json = json_encode($json, JSON_UNESCAPED_SLASHES);
 
   language::convert_characters($json, 'UTF-8', language::$selected['charset']);
-  echo $json;
 
+  ob_end_clean();
+  header('Content-type: application/json; charset='. language::$selected['charset']);
+
+  echo $json;
   exit;
