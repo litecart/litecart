@@ -16,9 +16,10 @@
 .btn {
   cursor: pointer;
   display: inline-block;
-  padding: .5em 1em;
+  padding: 0 1em;
   text-decoration:  none;
   font-weight: normal;
+  line-height: 250%;
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   box-shadow: 0 1px 1px var(--shadow-color);
@@ -32,8 +33,13 @@
   //&.btn-warning { .btn("warning"); }
   &.btn-danger { .btn("danger"); }
 
-  &.btn-sm { font-size: 11px; }
-  &.btn-lg { font-size: 18px; }
+  &.btn-sm {
+    font-size: 11px;
+    line-height: 200%;
+  }
+  &.btn-lg {
+    font-size: 18px;
+  }
 
   &.active, &:active { box-shadow: inset 1px 1px 1px rgba(0,0,0,0.25) !important; }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }

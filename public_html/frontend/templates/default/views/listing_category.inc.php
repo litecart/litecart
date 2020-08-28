@@ -3,7 +3,7 @@
     <img class="img-responsive hidden-xs hidden-sm" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" alt="" />
 
     <div class="caption">
-      <h3><?php echo $name; ?></h3>
+      <div><?php echo $name; ?></div>
       <div class="short-description"><?php echo $short_description; ?></div>
     </div>
   </a>

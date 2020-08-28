@@ -42,7 +42,7 @@
     <ul id="top-bar" class="hidden-print">
       <li>
         <div>
-          <label class="nav-toggle" for="sidebar-compressed" >
+          <label class="nav-toggle" for="sidebar-compressed">
             <?php echo functions::draw_fonticon('fa-bars'); ?>
           </label>
         </div>

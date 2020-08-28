@@ -7,7 +7,7 @@
     </div>
 
     <div class="info">
-      <h4 class="name"><?php echo $name; ?></h4>
+      <div class="name"><?php echo $name; ?></div>
       <div class="brand-name"><?php echo !empty($brand) ? $brand['name'] : '&nbsp;'; ?></div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>

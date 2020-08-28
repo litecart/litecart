@@ -13,7 +13,8 @@
 </head>
 <body>
 
-<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
+<div id="site-wrapper">
+  <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
 <header id="header" class="hidden-print">
   <div class="container">
@@ -21,21 +22,25 @@
       <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
     </a>
 
-    <div class="text-center hidden-xs">
-      <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_region.inc.php'); ?>
+      <div class="text-center hidden-xs" style="font-size: 1.5em;">
+        <?php //include vmod::check(FS_DIR_APP . 'frontend/boxes/box_region.inc.php'); ?>
+        <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
+          <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
+        <?php echo functions::form_draw_form_end(); ?>
+      </div>
+
+      <div class="text-right">
+        <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_cart.inc.php'); ?>
+      </div>
     </div>
+  </header>
 
-    <div class="text-right">
-      <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_cart.inc.php'); ?>
-    </div>
-  </div>
-</header>
+    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_menu.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_menu.inc.php'); ?>
+  {snippet:content}
 
-{snippet:content}
-
-<?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_footer.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_footer.inc.php'); ?>
+</div>
 
 <a id="scroll-up" class="hidden-print" href="#">
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>

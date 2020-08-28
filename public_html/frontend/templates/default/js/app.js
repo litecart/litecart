@@ -1,3 +1,14 @@
+// Toggle Cart
+  $('[data-toggle="cart"]').click(function(e){
+    e.preventDefault();
+    console.log('yes');
+    if ($('#shopping-cart').is(':hidden')) {
+      $('body').addClass('cart-visible');
+    } else {
+      $('body').removeClass('cart-visible');
+    }
+  });
+
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();

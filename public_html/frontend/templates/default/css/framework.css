@@ -851,6 +851,7 @@ tr.semi-transparent td {
 }
 /* Grid - Bootstrap Compatible */
 .container {
+  width: 100%;
   min-width: 320px;
   max-width: 1280px;
   margin: 0 auto;
@@ -1254,6 +1255,48 @@ input[type="radio"]:checked:after {
 }
 .form-control[readonly] {
   color: #999;
+}
+.form-switch {
+  display: block;
+}
+.form-switch input[type="checkbox"] {
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+.form-switch .switch {
+  display: inline-block;
+  position: relative;
+  height: 0.8rem;
+  width: 1.6rem;
+  background: #bcc3ce;
+  background-clip: padding-box;
+  border: 0.05rem solid #bcc3ce;
+  border-radius: 0.45rem;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s, box-shadow 0.2s, color 0.2s;
+}
+.form-switch .switch:before {
+  content: '';
+  display: block;
+  background: #fff;
+  border-radius: 50%;
+  width: 0.7rem;
+  height: 0.7rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: background 0.2s, border 0.2s, box-shadow 0.2s, color 0.2s, left 0.2s;
+}
+.form-switch input[type="checkbox"]:checked + .switch {
+  background: #254461;
+  border-color: #254461;
+}
+.form-switch input[type="checkbox"]:checked + .switch:before {
+  left: 11px;
 }
 select.form-control {
   -webkit-appearance: none;

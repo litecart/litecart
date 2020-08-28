@@ -166,6 +166,24 @@
     window.location.search = $.param(params);
   });
 
+// Data-Table Shift Check Multiple Checkboxes
+  var lastCheckedCheckbox = null;
+  $('.data-table input[type="checkbox"]').click(function(e) {
+    if (!lastCheckedCheckbox) {
+      lastCheckedCheckbox = this;
+      return;
+    }
+
+    if (e.shiftKey) {
+      var start = $('.data-table input[type="checkbox"]').index(this);
+      var end = $('.data-table input[type="checkbox"]').index(lastCheckedCheckbox);
+
+      $('.data-table input[type="checkbox"]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastCheckedCheckbox.checked);
+    }
+
+    lastCheckedCheckbox = this;
+  });
+
 // Keep-alive
   var keepAlive = setInterval(function(){
     $.get({
