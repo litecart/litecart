@@ -52,15 +52,6 @@
       }
     }
 
-    public function before_process($order) {
-
-      if (empty($this->modules)) return;
-
-      foreach ($this->modules as $module_id => $module) {
-        if (method_exists($this->modules[$module_id], 'before_process')) $module->before_process($order);
-      }
-    }
-
     public function after_process($order) {
 
       if (empty($this->modules)) return;
