@@ -28,6 +28,14 @@
   @ignore_user_abort(true);
   @set_time_limit(300);
 
+  if (!is_file(__DIR__ . '/../includes/config.inc.php')) {
+    echo '<h2>No Installation Detected</h2>' . PHP_EOL
+       . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
+       . '<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>' . PHP_EOL;
+    require('includes/footer.inc.php');
+    return;
+  }
+
   require_once(__DIR__ . '/../includes/config.inc.php');
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
