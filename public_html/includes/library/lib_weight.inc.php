@@ -70,8 +70,8 @@
       }
 
       $decimals = self::$classes[$class]['decimals'];
-      if ($value == floor($value)) $decimals = 0;
+      $formatted = rtrim(rtrim(number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']), '0'), '.');
 
-      return number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
+      return $formatted .' '. self::$classes[$unit]['unit'];
     }
   }

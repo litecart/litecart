@@ -80,16 +80,16 @@
       return $value * (self::$classes[$to]['value'] / self::$classes[$from]['value']);
     }
 
-    public static function format($value, $unit) {
+    public static function format($value, $class) {
 
-      if (!isset(self::$classes[$unit])) {
-        trigger_error('The unit '. $unit .' is not a valid length class.', E_USER_WARNING);
+      if (!isset(self::$classes[$class])) {
+        trigger_error('The unit '. $class .' is not a valid length class.', E_USER_WARNING);
         return;
       }
 
       $decimals = self::$classes[$class]['decimals'];
-      if ($value == floor($value)) $decimals = 0;
+      $formatted = rtrim(rtrim(number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']), '0'), '.');
 
-      return number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$unit]['unit'];
+      return $formatted .' '. self::$classes[$unit]['unit'];
     }
   }
