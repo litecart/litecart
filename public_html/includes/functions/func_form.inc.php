@@ -164,13 +164,15 @@
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    $value = number_format((float)$value, (int)$decimals, '.', '');
+    if ($value != '') {
+      $value = rtrim(rtrim(number_format((float)$value, (int)$decimals, '.', ''), '0'), '.');
+    }
 
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
                                                                        . '  });';
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. $value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {
