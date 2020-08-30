@@ -51,6 +51,7 @@
             'tax' => 0,
           );
         }
+
         switch($tax_rate['type']) {
           case 'fixed':
             $tax_rates[$tax_rate['id']]['tax'] += $tax_rate['rate'];
@@ -64,9 +65,11 @@
       return $tax_rates;
     }
 
-    public static function get_rates($tax_class_id, $customer='customer') {
+    public static function get_rates($tax_class_id, $customer=null) {
 
       if (empty($tax_class_id)) return array();
+
+      if (empty($customer)) $customer = 'customer';
 
     // Presets
       if (is_string($customer)) {
