@@ -22,5 +22,5 @@ body {
   <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
   <hr />
   <h1><?php echo language::translate('maintenance_mode:title', 'Maintenance Mode'); ?></h1>
-  <p><?php echo language::translate('maintenance_mode:description', 'The site is currently in maintenance mode and we will be back shortly.'); ?></p>
+  <p><?php echo language::translate('maintenance_mode:description', 'This site is currently in maintenance mode. We\'ll be back shortly.'); ?></p>
 </section>
