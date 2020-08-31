@@ -12,7 +12,10 @@
     }
 
     $_POST['keywords'] = implode(',', $_POST['keywords']);
-    if (empty($product->data['id']) && isset($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
+
+    if (empty($product->data['id']) && isset($_GET['category_id'])) {
+      $_POST['categories'][] = $_GET['category_id'];
+    }
   }
 
   document::$snippets['title'][] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product');
