@@ -1042,18 +1042,17 @@
 // Update gross price
   $('input[name^="prices"]').bind('input change', function() {
     var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1],
-        currency_decimals = get_currency_decimals(currency_code),
-        net_field = $('input[name="prices['+ currency_code +']"]'),
-        net_price = Number($(this).val()),
-        gross_field = $('input[name="gross_prices['+ currency_code +']"]'),
-        gross_price = Number(Number($(this).val()) * (1+(get_tax_rate()/100))).toFixed(currency_decimals);
+        decimals = get_currency_decimals(currency_code),
+        gross_field = $('input[name="gross_prices['+ currency_code +']"]');
 
-    if (net_price != 0) {
+    var gross_price = Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals);
+    gross_price = String(gross_price).replace(/0+$/, '').replace(/\.$/, '');
+
+    if ($(this).val() == 0) {
+      $(this).val('');
       $(gross_field).val('');
-      $(gross_field).attr('placeholder', String(gross_price).replace(/0+$/, '').replace(/\.$/, ''));
     } else {
-      $(net_field).val('');
-      $(gross_field).removeAttr('placeholder');
+      $(gross_field).val(gross_price);
     }
 
     update_currency_prices();
@@ -1062,29 +1061,28 @@
 // Update net price
   $('input[name^="gross_prices"]').bind('input change', function() {
     var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1],
-        currency_decimals = get_currency_decimals(currency_code),
-        net_field = $('input[name="prices['+ currency_code +']"]'),
-        net_price = Number(Number($(this).val()) / (1+(get_tax_rate()/100))).toFixed(currency_decimals),
-        gross_field = $('input[name="gross_prices['+ currency_code +']"]'),
-        gross_price = Number($(this).val());
+        decimals = get_currency_decimals(currency_code),
+        net_field = $('input[name="prices['+ currency_code +']"]');
 
-    if (gross_price != 0) {
-      $(net_field).val(String(net_price).replace(/0+$/, '').replace(/\.$/, ''));
-      $(gross_field).removeAttr('placeholder');
-    } else {
-      $(gross_price).val('');
+    var net_price = Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals);
+    net_price = String(net_price).replace(/0+$/, '').replace(/\.$/, '');
+
+    if ($(this).val() == 0) {
+      $(this).val('');
       $(net_field).val('');
+    } else {
+      $(net_field).val(net_price);
     }
 
     update_currency_prices();
   });
 
-// Update currency price placeholders
+// Update price placeholders
   function update_currency_prices() {
     var store_currency_code = '<?php echo settings::get('store_currency_code'); ?>',
         currencies = ['<?php echo implode("','", array_keys(currency::$currencies)); ?>'],
-        net_price = Number($('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val()),
-        gross_price = Number($('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val());
+        net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val(),
+        gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
 
     if (!net_price) net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
     if (!gross_price) gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
