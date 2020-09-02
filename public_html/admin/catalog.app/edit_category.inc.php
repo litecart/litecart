@@ -115,7 +115,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
-                <?php echo functions::form_draw_categories_list('parent_id', true); ?>
+                <?php echo functions::form_draw_category_field('parent_id', true); ?>
               </div>
 
               <div class="form-group">

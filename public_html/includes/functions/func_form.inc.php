@@ -88,6 +88,38 @@
     return $output;
   }
 
+  function form_draw_category_field($name, $value=true, $parameters='') {
+
+    if ($value === true) $value = form_reinsert_value($name);
+
+    $account_name = language::translate('title_root', 'Root');
+
+    if (!empty($value)) {
+      $category_query = database::query(
+        "select c.id, c.code, ci.name, c.date_created from ". DB_TABLE_CATEGORIES ." c
+        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+        where c.id = ". (int)$value ."
+        limit 1;"
+      );
+
+      $category_name = database::fetch($category_query, 'name');
+    } else {
+      $category_name = '['. language::translate('title_root', 'Root') .']';
+    }
+
+    functions::draw_lightbox();
+
+    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
+         . '  <div class="form-control">' . PHP_EOL
+         . '    ' . form_draw_hidden_field($name, true) . PHP_EOL
+         . '    '. functions::draw_fonticon('fa-folder', 'style="color: #cc6;"') .' <span class="name" style="display: inline-block;">'. $category_name .'</span>' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '  <div style="align-self: center;">' . PHP_EOL
+         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'category_picker', 'parent_id' => $value]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '</div>';
+  }
+
   function form_draw_checkbox($name, $value, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
 
