@@ -90,10 +90,6 @@
       case 'random':
         $sql_outer_sort[] = "rand()";
         break;
-
-      default:
-        trigger_error('Invalid sort method ('. $filter['sort'] .')', E_USER_WARNING);
-        break;
     }
 
     $sql_where_categories = '';
