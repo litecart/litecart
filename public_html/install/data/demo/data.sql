@@ -1,29 +1,30 @@
 INSERT INTO `lc_attribute_groups` (`id`, `code`, `sort`, `date_updated`, `date_created`) VALUES
-(1, 'color', 'priority', NOW(), NOW()),
-(2, 'size', 'alphabetical', NOW(), NOW());
+(1, 'size', 'alphabetical', NOW(), NOW()),
+(2, 'color', 'priority', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_attribute_groups_info` (`id`, `group_id`, `language_code`, `name`) VALUES
-(1, 1, 'en', 'Color'),
-(2, 2, 'en', 'Size');
+(1, 1, 'en', 'Size'),
+(2, 2, 'en', 'Color');
 -- --------------------------------------------------------
 INSERT INTO `lc_attribute_values` (`id`, `group_id`, `date_updated`, `date_created`) VALUES
 (1, 1, NOW(), NOW()),
 (2, 1, NOW(), NOW()),
 (3, 1, NOW(), NOW()),
-(4, 1, NOW(), NOW()),
+(4, 2, NOW(), NOW()),
 (5, 2, NOW(), NOW()),
 (6, 2, NOW(), NOW()),
+(7, 2, NOW(), NOW()),
 (7, 2, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_attribute_values_info` (`id`, `value_id`, `language_code`, `name`) VALUES
-(1, 1, 'en', 'Yellow'),
-(2, 2, 'en', 'Green'),
-(3, 3, 'en', 'Red'),
-(4, 4, 'en', 'Blue'),
-(5, 5, 'en', 'Purple'),
-(6, 6, 'en', 'Small'),
-(7, 7, 'en', 'Medium'),
-(8, 8, 'en', 'Large');
+(1, 1, 'en', 'Small'),
+(2, 2, 'en', 'Medium'),
+(3, 3, 'en', 'Large'),
+(4, 4, 'en', 'Yellow'),
+(5, 5, 'en', 'Green'),
+(6, 6, 'en', 'Red'),
+(7, 7, 'en', 'Blue'),
+(8, 8, 'en', 'Purple');
 -- --------------------------------------------------------
 INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `list_style`, `keywords`, `image`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 1, '', 'columns', '', '', 0, NOW(), NOW()),
