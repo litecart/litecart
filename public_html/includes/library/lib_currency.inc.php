@@ -159,15 +159,16 @@
         $currency_value = self::$currencies[$currency_code]['value'];
       }
 
+      $amount = self::format_raw($value, $currency_code, $currency_value);
       $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
       $prefix = isset(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
       $suffix = isset(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : ' ' . $currency_code;
 
       if ($auto_decimals && settings::get('auto_decimals')) {
-        if ($amount - floor($amount) == 0) $decimals = 0;
+        if ($amount == floor($amount)) $decimals = 0;
       }
 
-      return $prefix . number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
+      return $prefix . number_format((float)$amount, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
     }
 
     public static function format_html($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
@@ -192,7 +193,7 @@
       if ($auto_decimals === true && settings::get('auto_decimals')) {
         if ($amount == floor($amount)) $decimals = 0;
       } else if ($auto_decimals === false) {
-        $decimals = self::$currencies[$currency_code]['decimals'] ? self::$currencies[$currency_code]['decimals'] : 0;
+        $decimals = isset(self::$currencies[$currency_code]['decimals']) ? self::$currencies[$currency_code]['decimals'] : 0;
       } else {
         $decimals = $auto_decimals;
       }

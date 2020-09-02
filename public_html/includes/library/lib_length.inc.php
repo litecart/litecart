@@ -88,7 +88,7 @@
       }
 
       $decimals = self::$classes[$class]['decimals'];
-      $formatted = rtrim(rtrim(number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']), '0'), '.');
+      $formatted = rtrim(rtrim(number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']), '0'), language::$selected['decimal_point']);
 
       return $formatted .' '. self::$classes[$unit]['unit'];
     }
