@@ -792,7 +792,7 @@
 
     $query = database::query(
       "select av.id, avi.name from ". DB_TABLE_ATTRIBUTE_VALUES ." av
-      left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." avi on (avi.value_id = av.id and avi.language_code = '". database::input(languave::$selected['code']) ."')
+      left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where group_id = ". (int)$group_id ."
       order by name;"
     );
