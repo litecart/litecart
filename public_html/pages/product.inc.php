@@ -234,7 +234,6 @@
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,
         'dim_x' => $product->dim_x,
-        'dim_x' => $product->dim_x,
         'dim_y' => $product->dim_y,
         'dim_z' => $product->dim_z,
         'dim_class' => $product->dim_class,

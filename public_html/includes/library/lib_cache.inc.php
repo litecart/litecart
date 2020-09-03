@@ -291,7 +291,7 @@
           return true;
 
         default:
-          trigger_error('Invalid cache type ('. $storage .')', E_USER_WARNING);
+          trigger_error('Invalid cache type ('. $token['storage'] .')', E_USER_WARNING);
           return;
       }
     }
