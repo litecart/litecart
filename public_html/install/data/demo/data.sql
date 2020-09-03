@@ -14,7 +14,7 @@ INSERT INTO `lc_attribute_values` (`id`, `group_id`, `date_updated`, `date_creat
 (5, 2, NOW(), NOW()),
 (6, 2, NOW(), NOW()),
 (7, 2, NOW(), NOW()),
-(7, 2, NOW(), NOW());
+(8, 2, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_attribute_values_info` (`id`, `value_id`, `language_code`, `name`) VALUES
 (1, 1, 'en', 'Small'),
