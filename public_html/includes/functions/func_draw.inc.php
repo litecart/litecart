@@ -7,7 +7,7 @@
     // Fontawesome (Deprecated)
       case (substr($class, 0, 3) == 'fa '):
         trigger_error('Fonticon syntax "fa " is deprecated, use instead "fa-"', E_USER_DEPRECATED);
-        return draw_fonticon(substr($class, 3), $parameters);
+        return draw_fonticon(substr($class, 3), $params);
 
     // Fontawesome
       case (substr($class, 0, 3) == 'fa-'):
