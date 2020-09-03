@@ -25,9 +25,9 @@
     return count(reference::country($country_code)->zones);
   }
 
-  function reference_verify_zone_code($country_code, $code) {
+  function reference_verify_zone_code($country_code, $zone_code) {
     trigger_error(__METHOD__." is deprecated. Use instead isset(reference::country('$country_code')->zones[$zone_code])", E_USER_DEPRECATED);
-    return isset(reference::country($country_code)->zones[$code]);
+    return isset(reference::country($country_code)->zones[$zone_code]);
   }
 
   function reference_get_postcode_required($country_code) {
