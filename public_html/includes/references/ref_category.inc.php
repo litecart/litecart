@@ -112,6 +112,23 @@
 
           break;
 
+        case 'num_subcategories':
+
+          if (!empty($this->_data['subcategories'])) {
+            $this->_data['num_subcategories'] = count($this->_data['subcategories']);
+            break;
+          }
+
+          $query = database::query(
+            "select count(id) as num_subcategories from ". DB_PREFIX ."categories
+            where status
+            and parent_id ". (int)$this->_data['id'] .";"
+          );
+
+          $this->_data['num_subcategories'] = (int)database::fetch($query, 'num_subcategories');
+
+          break;
+
         case 'num_products':
 
           if (!empty($this->_data['products'])) {

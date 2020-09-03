@@ -4,7 +4,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.2.3.6\n"
+      echo "\nLiteCart® 2.2.4\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php install.php [options]\n\n"
@@ -25,8 +25,22 @@
     require_once(__DIR__ . '/includes/header.inc.php');
   }
 
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+  ini_set('ignore_repeated_errors', 'On');
+  ini_set('log_errors', 'Off');
+  ini_set('display_errors', 'On');
+  ini_set('html_errors', 'On');
+
   @ignore_user_abort(true);
   @set_time_limit(300);
+
+  if (!is_file(__DIR__ . '/../includes/config.inc.php')) {
+    echo '<h2>No Installation Detected</h2>' . PHP_EOL
+       . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
+       . '<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>' . PHP_EOL;
+    require('includes/footer.inc.php');
+    return;
+  }
 
   require_once(__DIR__ . '/../includes/config.inc.php');
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
@@ -35,13 +49,6 @@
   require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
   require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');
   require_once(__DIR__ . '/includes/functions.inc.php');
-
-// Turn on errors
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
-  ini_set('ignore_repeated_errors', 'On');
-  ini_set('log_errors', 'Off');
-  ini_set('display_errors', 'On');
-  ini_set('html_errors', 'On');
 
 // Set platform name
   preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);
@@ -214,7 +221,7 @@
         if (is_file($file)) unlink($file);
       }
 
-      if (is_file($file = FS_DIR_APP . 'vqmod/chekced.cache')) unlink($file);
+      if (is_file($file = FS_DIR_APP . 'vqmod/checked.cache')) unlink($file);
       if (is_file($file = FS_DIR_APP . 'vqmod/mods.cache')) unlink($file);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;

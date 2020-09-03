@@ -281,12 +281,11 @@
           $sanitized_options[] = array(
             'group_id' => $option['id'],
             'value_id' => !empty($value['id']) ? $value['id'] : 0,
-            'combination' => $option['id'] .'-'. (!empty($value['id']) ? $value['id'] : 0),
+            'combination' => $option['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : 0),
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           );
         }
-
       // Options stock
         foreach ($product->options_stock as $option_stock) {
 

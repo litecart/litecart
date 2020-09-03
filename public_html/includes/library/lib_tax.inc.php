@@ -18,9 +18,7 @@
 
     public static function get_tax($value, $tax_class_id, $customer=null) {
 
-      if ($value == 0) return 0;
-
-      if ($tax_class_id == 0) return 0;
+      if (!$value || !$tax_class_id) return 0;
 
       $tax_rates = self::get_rates($tax_class_id, $customer);
 
@@ -31,7 +29,6 @@
             $tax += $tax_rate['rate'];
             break;
           case 'percent':
-            $val = $value / 100 * $tax_rate['rate'];
             $tax += $value / 100 * $tax_rate['rate'];
             break;
         }
@@ -54,6 +51,7 @@
             'tax' => 0,
           );
         }
+
         switch($tax_rate['type']) {
           case 'fixed':
             $tax_rates[$tax_rate['id']]['tax'] += $tax_rate['rate'];
@@ -67,13 +65,11 @@
       return $tax_rates;
     }
 
-    public static function get_rates($tax_class_id, $customer='customer') {
+    public static function get_rates($tax_class_id, $customer=null) {
 
       if (empty($tax_class_id)) return array();
 
-      $tax_rates = array();
-
-      if ($customer === null) $customer = 'customer';
+      if (empty($customer)) $customer = 'customer';
 
     // Presets
       if (is_string($customer)) {
@@ -160,6 +156,7 @@
         ;"
       );
 
+      $tax_rates = array();
       while ($rate = database::fetch($tax_rates_query)) {
         $tax_rates[$rate['id']] = $rate;
       }

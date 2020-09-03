@@ -14,7 +14,7 @@
 
     <div class="row">
       <?php if ($_GET['page'] == 1 && $image) { ?>
-      <div class="col-md-4">
+      <div class="hidden-xs hidden-sm col-md-4">
         <div class="thumbnail">
           <img src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail_1x']); ?>" />
         </div>

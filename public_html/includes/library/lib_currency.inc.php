@@ -146,33 +146,79 @@
         @list($value, $auto_decimals, , $currency_code, $currency_value) = func_get_args();
       }
 
-      if ($currency_code === null) $currency_code = self::$selected['code'];
-
-      if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
-
-      $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
-      $amount = round($value / $currency_value, $decimals);
-      $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
-      $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
-      if (empty(self::$currencies[$currency_code])) $suffix = ' ' . $currency_code;
-
-      if ($auto_decimals && settings::get('auto_decimals')) {
-        if ($amount - floor($amount) == 0) {
-          $decimals = 0;
-        }
+      if (empty($currency_code)) {
+        $currency_code = self::$selected['code'];
       }
 
-      return $prefix . number_format($amount, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
+      if (empty(self::$currencies[$currency_code]) && empty($currency_value)) {
+        trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
+      }
+
+      if (empty($currency_value)) {
+        if (empty(self::$currencies[$currency_code]['value'])) return false;
+        $currency_value = self::$currencies[$currency_code]['value'];
+      }
+
+      $amount = self::format_raw($value, $currency_code, $currency_value);
+      $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
+      $prefix = isset(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
+      $suffix = isset(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : ' ' . $currency_code;
+
+      if ($auto_decimals && settings::get('auto_decimals')) {
+        if ($amount == floor($amount)) $decimals = 0;
+      }
+
+      return $prefix . number_format((float)$amount, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
+    }
+
+    public static function format_html($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
+
+      if (empty($currency_code)) {
+        $currency_code = self::$selected['code'];
+      }
+
+      if (empty(self::$currencies[$currency_code]) && empty($currency_value)) {
+        trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
+      }
+
+      if (empty($currency_value)) {
+        if (empty(self::$currencies[$currency_code]['value'])) return false;
+        $currency_value = self::$currencies[$currency_code]['value'];
+      }
+
+      $amount = self::format_raw($value, $currency_code, $currency_value);
+      $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
+      $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
+
+      if ($auto_decimals === true && settings::get('auto_decimals')) {
+        if ($amount == floor($amount)) $decimals = 0;
+      } else if ($auto_decimals === false) {
+        $decimals = isset(self::$currencies[$currency_code]['decimals']) ? self::$currencies[$currency_code]['decimals'] : 0;
+      } else {
+        $decimals = $auto_decimals;
+      }
+
+      list($integers, $fractions) = explode('.', number_format($amount, $decimals, '.', ''));
+
+      return '<span class="currency-amount"><small class="currency">'. $currency_code . '</small> ' . $prefix . number_format((int)$integers, 0, '', language::$selected['thousands_sep']) . ($fractions ? '<span class="decimals">'. language::$selected['decimal_point'] . $fractions .'</span>' : '') . $suffix . '</span>';
     }
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
-      if (empty($currency_code)) $currency_code = self::$selected['code'];
-      if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
+      if (empty($currency_code)) {
+        $currency_code = self::$selected['code'];
+      }
 
-      if (empty($currency_value)) $currency_value = currency::$currencies[$currency_code]['value'];
+      if (empty(self::$currencies[$currency_code]) && empty($currency_value)) {
+        trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
+      }
 
-      return number_format($value / $currency_value, currency::$currencies[$currency_code]['decimals'], '.', '');
+      if (empty($currency_value)) {
+        if (empty(self::$currencies[$currency_code]['value'])) return false;
+        $currency_value = self::$currencies[$currency_code]['value'];
+      }
+
+      return rtrim(rtrim(number_format($value / $currency_value, (int)self::$currencies[$currency_code]['decimals'], '.', ''), '0'), '.');
     }
 
   // Round a store currency amount in a remote currency

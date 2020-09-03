@@ -90,10 +90,8 @@
 
     if (!is_file($source)) $source = FS_DIR_APP . 'images/no_image.png';
 
-    $path = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
-
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
-      return $path;
+      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
     }
 
     if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
@@ -138,7 +136,7 @@
     }
 
     $filename = implode('', [
-      sha1($path),
+      sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,
       $clipping_filename_flag,
@@ -146,8 +144,15 @@
       '.'.$extension,
     ]);
 
-    if (is_file(FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename)) {
-      return 'cache/' . substr($filename, 0, 2) . '/' . $filename;
+    $cache_file = FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename;
+
+  // Return an already existing file
+    if (is_file($cache_file)) {
+      if (filemtime($cache_file) >= filemtime($source)) {
+        return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $cache_file);
+      } else {
+        unlink($cache_file);
+      }
     }
 
     if (!is_dir(FS_DIR_APP . 'cache/' . substr($filename, 0, 2))) {
@@ -158,7 +163,7 @@
     }
 
     return image_process($source, array(
-      'destination' => FS_DIR_APP . 'cache/' . substr($filename, 0, 2) . '/' . $filename,
+      'destination' => $cache_file,
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,

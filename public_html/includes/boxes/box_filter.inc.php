@@ -46,8 +46,10 @@
       left join ". DB_TABLE_ATTRIBUTE_VALUES ." av on (av.id = pa.value_id)
       left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where product_id in (
-        select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-        where category_id = ". (int)$_GET['category_id'] ."
+        select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." p2c
+        left join ". DB_TABLE_PRODUCTS ." p on (p.id = p2c.product_id)
+        where p.status
+        and p2c.category_id = ". (int)$_GET['category_id'] ."
       )
       and av.group_id = ". (int)$group['id'] ."
       order by ". (($group['sort'] == 'alphabetical') ? "cast(`value` as unsigned), `value`" : "av.priority") .";"

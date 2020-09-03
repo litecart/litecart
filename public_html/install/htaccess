@@ -14,7 +14,7 @@ ErrorDocument 500 "Internal Server Error"
 
   # Tell PHP that the mod_rewrite module is enabled
   <IfModule mod_env.c>
-    SetEnv HTTP_MOD_REWRITE On
+    SetEnv MOD_REWRITE On
   </IfModule>
 
   # Redirect from any alias domain to primary domain
