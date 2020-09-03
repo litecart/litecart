@@ -367,7 +367,7 @@
               return $this->_image->contrastImage(2);
 
             case 'gamma':
-              return $this->gammaImage(1.25);
+              return $this->_image->gammaImage(1.25);
 
             case 'pixelate':
               $width = $this->_image->getImageWidth();
