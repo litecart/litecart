@@ -44,9 +44,10 @@
 
       sort($_POST['orders']);
 
-      $output = call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
+      ob_start();
+      call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
 
-      if ($output) {
+      if ($output = ob_get_clean()) {
         echo $output;
         return;
       }
