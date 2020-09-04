@@ -761,7 +761,7 @@
       }
     }
 
-    public function output($type='jpg', $quality=90) {
+    public function output($type='jpg', $quality=90, $interlaced=false) {
 
       switch($this->_library) {
         case 'imagick':
@@ -817,7 +817,7 @@
 
             case 'webp':
               if (!function_exists('ImageWebP')) {
-                return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
+                return $this->output($type, $quality, $interlaced);
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, false, $quality);
