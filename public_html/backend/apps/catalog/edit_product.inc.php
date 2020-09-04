@@ -464,7 +464,7 @@
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 0, null); ?>
+                  <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
                   <span class="input-group-addon">
                     <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
                   </span>
@@ -487,7 +487,7 @@
               <tbody>
                 <tr>
                   <td><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-                <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 0, null, 'placeholder=""'); ?></td>
+                <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 'min="0"'); ?></td>
                 </tr>
 <?php
   foreach (currency::$currencies as $currency) {
@@ -495,7 +495,7 @@
 ?>
                 <tr>
                   <td><?php echo functions::form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-                <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 0, null, 'placeholder=""'); ?></td>
+                <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 'min="0"'); ?></td>
                 </tr>
 <?php
   }
@@ -517,7 +517,7 @@
                     <?php echo functions::form_draw_datetime_field('campaigns['.$key.'][end_date]', true); ?>
                   </td>
                   <td>- %<br />
-                    <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 0, null); ?>
+                    <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?>
                   </td>
                   <td><?php echo settings::get('store_currency_code'); ?><br />
                     <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns['.$key.']['. settings::get('store_currency_code') .']', true); ?>
@@ -1164,7 +1164,7 @@
                + '    <?php echo functions::general_escape_js(functions::form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
                + '  </td>'
                + '  <td>- %<br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 0, null)); ?>'
+               + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 'min="0"')); ?>'
                + '  </td>'
                + '  <td><?php echo functions::general_escape_js(settings::get('store_currency_code')); ?><br />'
                + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', '')); ?>'
@@ -1548,7 +1548,7 @@
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 3, 'min="0"')); ?>'
                + '      <span class="input-group-addon">'
                + '        <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '', false, 'style="width: auto;"')); ?>'
                + '      </span>'
@@ -1556,9 +1556,9 @@
                + '  </td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 3, 'min="0"')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 3, 'min="0"')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 3, 'min="0"')); ?>'
                + '      <span class="input-group-addon">'
                + '        <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '', false, 'style="width: auto;"')); ?>'
                + '      </span>'

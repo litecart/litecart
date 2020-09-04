@@ -246,7 +246,7 @@ END;
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="datetime-local" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='') {
+  function form_draw_decimal_field($name, $value=true, $decimals=2, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
     $value = number_format((float)$value, (int)$decimals, '.', '');
@@ -255,7 +255,7 @@ END;
                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
                                                                        . '  });';
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal" step="any" '. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {
@@ -318,10 +318,10 @@ END;
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="month" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="month" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='') {
+  function form_draw_number_field($name, $value=true, $parameters='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_password_field($name, $value='', $parameters='') {

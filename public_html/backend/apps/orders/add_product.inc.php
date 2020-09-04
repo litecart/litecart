@@ -86,7 +86,7 @@
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('weight', true, 2, 0); ?>
+            <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
             <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?></span>
           </div>
         </div>
@@ -94,11 +94,11 @@
         <div class="form-group col-md-8">
           <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('dim_x', true, 1, 0); ?>
+            <?php echo functions::form_draw_decimal_field('dim_x', true, 3, 'min="0"'); ?>
             <span class="input-group-addon">x</span>
-            <?php echo functions::form_draw_decimal_field('dim_y', true, 1, 0); ?>
+            <?php echo functions::form_draw_decimal_field('dim_y', true, 3, 'min="0"'); ?>
             <span class="input-group-addon">x</span>
-            <?php echo functions::form_draw_decimal_field('dim_z', true, 1, 0); ?>
+            <?php echo functions::form_draw_decimal_field('dim_z', true, 3, 'min="0"'); ?>
             <span class="input-group-addon">
               <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
             </span>
