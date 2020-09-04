@@ -67,3 +67,9 @@ ALTER TABLE `lc_products`
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL AFTER `status`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `key` = 'store_template' WHERE `key` = 'store_template_catalog';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `key` = 'store_template_settings' WHERE `key` = 'store_template_catalog_settings';
+-- --------------------------------------------------------
+DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings');

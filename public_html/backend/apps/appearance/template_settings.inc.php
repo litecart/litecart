@@ -11,7 +11,7 @@
   if (empty($settings)) $settings = [];
 
 // Insert template settings
-  $saved_settings = json_decode(settings::get('frontend/templates/default/_settings'), true);
+  $saved_settings = json_decode(settings::get('store_template_settings'), true);
 
   foreach ($settings as $key => $setting) {
 
