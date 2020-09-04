@@ -111,7 +111,7 @@ CREATE TABLE `lc_categories_filters` (
   `priority` INT(11) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `attribute_filter` (`category_id`, `attribute_group_id`),
-  INDEX `category_id` (`category_id`)
+  KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_categories_info` (
@@ -535,9 +535,9 @@ CREATE TABLE `lc_products_attributes` (
   `custom_value` VARCHAR(256) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
-  INDEX `product_id` (`product_id`),
-  INDEX `group_id` (`group_id`),
-  INDEX `value_id` (`value_id`)
+  KEY `product_id` (`product_id`),
+  KEY `group_id` (`group_id`),
+  KEY `value_id` (`value_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_campaigns` (
@@ -590,8 +590,8 @@ CREATE TABLE `lc_products_options` (
   `priority` TINYINT(2) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `product_option` (`product_id`, `group_id`),
-  INDEX `product_id` (`product_id`),
-  INDEX `priority` (`priority`)
+  KEY `product_id` (`product_id`),
+  KEY `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_options_values` (
@@ -606,8 +606,8 @@ CREATE TABLE `lc_products_options_values` (
   `priority` TINYINT(2) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`, `custom_value`),
-  INDEX `product_id` (`product_id`),
-  INDEX `priority` (`priority`)
+  KEY `product_id` (`product_id`),
+  KEY `priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_stock` (
