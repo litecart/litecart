@@ -197,7 +197,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     if ($value != '') {
-      $value = rtrim(rtrim(number_format((float)$value, (int)$decimals, '.', ''), '0'), '.');
+      $value = (float)number_format((float)$value, (int)$decimals, '.', '');
     }
 
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL

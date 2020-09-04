@@ -1045,8 +1045,7 @@
         decimals = get_currency_decimals(currency_code),
         gross_field = $('input[name="gross_prices['+ currency_code +']"]');
 
-    var gross_price = Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals);
-    gross_price = String(gross_price).replace(/0+$/, '').replace(/\.$/, '');
+    var gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
 
     if ($(this).val() == 0) {
       $(this).val('');
@@ -1064,8 +1063,7 @@
         decimals = get_currency_decimals(currency_code),
         net_field = $('input[name="prices['+ currency_code +']"]');
 
-    var net_price = Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals);
-    net_price = String(net_price).replace(/0+$/, '').replace(/\.$/, '');
+    var net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
 
     if ($(this).val() == 0) {
       $(this).val('');
@@ -1094,8 +1092,8 @@
           currency_net_price = net_price / get_currency_value(currency_code);
           currency_gross_price = gross_price / get_currency_value(currency_code);
 
-      currency_net_price = currency_net_price ? String(currency_net_price.toFixed(currency_decimals)).replace(/0+$/, '').replace(/\.$/, '') : '';
-      currency_gross_price = currency_gross_price ? String(currency_gross_price.toFixed(currency_decimals)).replace(/0+$/, '').replace(/\.$/, '') : '';
+      currency_net_price = currency_net_price ? parseFloat(currency_net_price.toFixed(currency_decimals)) : '';
+      currency_gross_price = currency_gross_price ? parseFloat(currency_gross_price.toFixed(currency_decimals)) : '';
 
       $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price);
       $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price);

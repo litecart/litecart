@@ -294,15 +294,15 @@
       sku: $(form).find(':input[name="sku"]').val(),
       gtin: $(form).find(':input[name="gtin"]').val(),
       taric: $(form).find(':input[name="taric"]').val(),
-      weight: $(form).find(':input[name="weight"]').val().replace(/0+$/, '').replace(/\.$/, ''),
+      weight: $(form).find(':input[name="weight"]').val(),
       weight_class: $(form).find(':input[name="weight_class"]').val(),
-      dim_x: $(form).find(':input[name="dim_x"]').val().replace(/0+$/, '').replace(/\.$/, ''),
-      dim_y: $(form).find(':input[name="dim_y"]').val().replace(/0+$/, '').replace(/\.$/, ''),
-      dim_z: $(form).find(':input[name="dim_z"]').val().replace(/0+$/, '').replace(/\.$/, ''),
+      dim_x: $(form).find(':input[name="dim_x"]').val(),
+      dim_y: $(form).find(':input[name="dim_y"]').val(),
+      dim_z: $(form).find(':input[name="dim_z"]').val(),
       dim_class: $(form).find(':input[name="dim_class"]').val(),
-      quantity: $(form).find(':input[name="quantity"]').val().replace(/0+$/, '').replace(/\.$/, ''),
-      price: $(form).find(':input[name="price"]').val().replace(/0+$/, '').replace(/\.$/, ''),
-      tax: $(form).find(':input[name="tax"]').val().replace(/0+$/, '').replace(/\.$/, '')
+      quantity: $(form).find(':input[name="quantity"]').val(),
+      price: $(form).find(':input[name="price"]').val(),
+      tax: $(form).find(':input[name="tax"]').val()
     };
 
     var selected_option_combinations = [];
@@ -383,13 +383,13 @@
         item.sku = stock_option.sku;
         item.gtin = stock_option.gtin;
         if (stock_option.weight > 0) {
-          item.weight = stock_option.weight.replace(/0+$/, '').replace(/\.$/, '');
+          item.weight = stock_option.weight;
           item.weight_class = stock_option.weight_class;
         }
         if (stock_option.dim_x > 0) {
-          item.dim_x = stock_option.dim_x.replace(/0+$/, '').replace(/\.$/, '');
-          item.dim_y = stock_option.dim_y.replace(/0+$/, '').replace(/\.$/, '');
-          item.dim_z = stock_option.dim_z.replace(/0+$/, '').replace(/\.$/, '');
+          item.dim_x = stock_option.dim_x;
+          item.dim_y = stock_option.dim_y;
+          item.dim_z = stock_option.dim_z;
           item.dim_class = stock_option.dim_class;
         }
       }
