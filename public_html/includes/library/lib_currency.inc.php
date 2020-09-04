@@ -218,7 +218,7 @@
         $currency_value = self::$currencies[$currency_code]['value'];
       }
 
-      return rtrim(rtrim(number_format($value / $currency_value, (int)self::$currencies[$currency_code]['decimals'], '.', ''), '0'), '.');
+      return number_format($value / $currency_value, (int)self::$currencies[$currency_code]['decimals'], '.', '');
     }
 
   // Round a store currency amount in a remote currency
