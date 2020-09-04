@@ -47,7 +47,7 @@
       <?php } ?>
     </ul>
 
-		<ul class="nav nav-pills nav-stacked" style="max-height: 90vh; overflow-y: auto;">
+		<ul class="nav nav-pills nav-stacked">
       <?php if (!empty($_GET['parent_id'])) { ?>
       <li>
         <a href="<?php echo document::link(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id], true); ?>">
@@ -62,18 +62,12 @@
         </a>
       <li>
       <?php } ?>
-      <?php if (empty($categories)) { ?>
-      <li>
-        <em class="nav-item"><?php echo language::translate('text_no_subcategories', 'No subcategories'); ?></em>
-      <li>
-      <?php } ?>
 		</ul>
 	</div>
 
 </div>
 
 <script>
-
 	$('#modal-category-picker').on('click', 'a', function(e){
     e.preventDefault();
     $('.modal-body').load($(this).attr('href')+' .modal-body');

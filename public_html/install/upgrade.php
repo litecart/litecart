@@ -221,7 +221,7 @@
         if (is_file($file)) unlink($file);
       }
 
-      if (is_file($file = FS_DIR_APP . 'vqmod/chekced.cache')) unlink($file);
+      if (is_file($file = FS_DIR_APP . 'vqmod/checked.cache')) unlink($file);
       if (is_file($file = FS_DIR_APP . 'vqmod/mods.cache')) unlink($file);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
