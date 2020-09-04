@@ -35,6 +35,3 @@
 // Jump-start some library modules
   class_exists('notices');
   class_exists('stats');
-  if (file_get_contents('php://input')) {
-    class_exists('form');
-  }
