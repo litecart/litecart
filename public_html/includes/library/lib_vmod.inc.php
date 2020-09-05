@@ -15,13 +15,13 @@
 
       require_once self::$_root . 'vqmod/vqmod.php';
 
-      vqmod::$replaces['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
+      VQMod::$replaces['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
 
       $config = file_get_contents(self::$_root.'includes/config.inc.php');
       preg_match('#define\(\'BACKEND_ALIAS\',\s+\'(.*?)\'\);#', $config, $matches);
-      vqmod::$replaces['#^admin/#'] = $matches[1] . '/';
+      VQMod::$replaces['#^admin/#'] = $matches[1] . '/';
 
-      vqmod::bootup();
+      VQMod::bootup();
 
       self::$_time_elapsed += microtime(true) - $timestamp;
     }
@@ -38,7 +38,7 @@
         if (!file_exists($file)) $file = preg_replace('#^('. preg_quote($matches[1], '#') .')#', self::$_root . 'includes/templates/default.catalog/', $file);
       }
 
-      $modified_file = vqmod::modcheck($file);
+      $modified_file = VQMod::modcheck($file);
 
       self::$_time_elapsed += microtime(true) - $timestamp;
 
