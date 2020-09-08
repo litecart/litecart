@@ -1112,7 +1112,7 @@
 
     <?php foreach (currency::$currencies as $currency) { ?>
     if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-      var value = (Number($('input[name="prices[<?php echo $currency['code']; ?>]"]').val()) * (100 - Number($(this).val())) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+      var value = Number($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
       $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
     } else {
       $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("");
@@ -1127,13 +1127,13 @@
 
   $('#table-campaigns').on('keyup change input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
     var parent = $(this).closest('tr');
-    var percentage = Number($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val()) - Number($(this).val()) / Number($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val()) * 100;
+    var percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
     percentage = percentage.toFixed(2);
     $(parent).find('input[name$="[percentage]"]').val(percentage);
 
     <?php foreach (currency::$currencies as $currency) { ?>
     var value = 0;
-    value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val()) / <?php echo $currency['value']; ?>;
+    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = value.toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
     if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
