@@ -22,6 +22,14 @@
     try {
       if (empty($_POST['values'])) $_POST['values'] = array();
 
+      foreach ($_POST['values'] as $value) {
+        foreach ($value['name'] as $name) {
+          if (preg_match('#(["\',\[\]<>])#', $name, $matches)) {
+            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), array('%char' => $matches[1])));
+          }
+        }
+      }
+
       $fields = array(
         'code',
         'sort',
