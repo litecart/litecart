@@ -89,8 +89,8 @@
 
     database::query(
       "insert into ". DB_TABLE_PREFIX ."attribute_values
-      (id, group_id)
-      select id, group_id from ". DB_TABLE_PREFIX ."option_values"
+      (id, group_id, priority)
+      select id, group_id, priority from ". DB_TABLE_PREFIX ."option_values"
     );
 
     database::query(
@@ -250,8 +250,8 @@
 
           database::query(
             "insert into ". DB_TABLE_PREFIX ."attribute_values
-            (id, group_id, date_updated, date_created)
-            values (". (int)$option_value['id'] .", ". (int)$attribute_group_id .", '". database::input($option_group['date_updated']) ."', '". database::input($option_group['date_created']) ."');"
+            (id, group_id, priority, date_updated, date_created)
+            values (". (int)$option_value['id'] .", ". (int)$attribute_group_id .", ". (int)$option_value['priority'] .", '". database::input($option_group['date_updated']) ."', '". database::input($option_group['date_created']) ."');"
           );
 
           database::query(
