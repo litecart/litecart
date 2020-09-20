@@ -23,7 +23,7 @@
       }
 
     // Load modules
-      $this->load('shipping');
+      $this->load();
 
     // Attach userdata to module
       if (!empty($this->data['selected'])) {

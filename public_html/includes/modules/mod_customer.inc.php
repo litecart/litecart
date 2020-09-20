@@ -7,7 +7,7 @@
 
       $this->_get_address_cache = &session::$data['get_address_cache'];
 
-      $this->load('customer');
+      $this->load();
     }
 
     public function get_address($fields) {

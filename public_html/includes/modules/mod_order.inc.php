@@ -3,7 +3,7 @@
   class mod_order extends abs_module {
 
     public function __construct() {
-      $this->load('order');
+      $this->load();
     }
 
     public function actions() {

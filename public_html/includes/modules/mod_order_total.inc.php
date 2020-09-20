@@ -3,7 +3,7 @@
   class mod_order_total extends abs_module {
 
     public function __construct() {
-      $this->load('order_total');
+      $this->load();
     }
 
     public function process($order) {
