@@ -49,7 +49,23 @@
 
   // Daily Sales
 
-    $daily_sales = array();
+    switch (true) {
+
+     // Western Week
+      case (extension_loaded('intl') && IntlCalendar::createInstance()->getFirstDayOfWeek() == 1):
+        $daily_sales = array(7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array());
+        break;
+
+    // Middle-Eastern Week
+      case (extension_loaded('intl') && IntlCalendar::createInstance()->getFirstDayOfWeek() == 2):
+        $daily_sales = array(6 => array(), 7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array());
+        break;
+
+    // ISO-8601 Week
+      default:
+        $daily_sales = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array());
+        break;
+    }
 
     $orders_query = database::query(
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday from ". DB_TABLE_ORDERS ."
@@ -82,8 +98,6 @@
     }
 
     $daily_sales[date('N')]['label'] = '\u2605'.$daily_sales[date('N')]['label'];
-
-    ksort($daily_sales);
 ?>
 <style>
 #chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {
