@@ -58,6 +58,7 @@
         'quantity_unit_id',
         'purchase_price',
         'purchase_price_currency_code',
+        'recommended_price',
         'prices',
         'campaigns',
         'tax_class_id',
@@ -475,6 +476,11 @@
                     <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
                   </span>
                 </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
+                <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'recommended_price', true, 2, 0, null); ?>
               </div>
 
               <div class="form-group col-md-6">

@@ -248,6 +248,7 @@
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",
         purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
+        recommended_price = ". (float)$this->data['recommended_price'] .",
         tax_class_id = ". (int)$this->data['tax_class_id'] .",
         code = '". database::input($this->data['code']) ."',
         sku = '". database::input($this->data['sku']) ."',

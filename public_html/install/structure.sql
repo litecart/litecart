@@ -494,6 +494,7 @@ CREATE TABLE `lc_products` (
   `dim_class` VARCHAR(2) NOT NULL,
   `purchase_price` DECIMAL(10,4) NOT NULL,
   `purchase_price_currency_code` VARCHAR(3) NOT NULL,
+  `recommended_price` DECIMAL(11,4) NOT NULL,
   `tax_class_id` INT(11) NOT NULL,
   `image` VARCHAR(256) NOT NULL,
   `views` INT(11) NOT NULL,
