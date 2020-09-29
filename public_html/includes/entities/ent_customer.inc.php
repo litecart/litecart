@@ -78,15 +78,8 @@
           (email, date_created)
           values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
-        $this->data['id'] = database::insert_id();
 
-        if (!empty($this->data['email'])) {
-          database::query(
-            "update ". DB_TABLE_ORDERS ."
-            set customer_id = ". (int)$this->data['id'] ."
-            where customer_email = '". database::input($this->data['email']) ."';"
-          );
-        }
+        $this->data['id'] = database::insert_id();
       }
 
       database::query(
