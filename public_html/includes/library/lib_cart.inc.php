@@ -234,7 +234,7 @@
 
             case 'checkbox':
 
-              $selected_values = array_filter(preg_split('#\s*,\s*#', $options[$matched_group]));
+              $selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
 
               $matched_values = array();
               foreach ($option['values'] as $value) {
