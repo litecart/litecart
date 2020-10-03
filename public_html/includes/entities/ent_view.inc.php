@@ -8,7 +8,7 @@
       if (!empty($view)) {
 
       // Absolute path
-        if (preg_match('#^/#', $view)) {
+        if (preg_match('#^([A-Z]:)?/#', $view)) {
           $file = $view;
 
       // Relative path
