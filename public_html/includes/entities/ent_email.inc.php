@@ -363,8 +363,8 @@
     // Deliver via PHP mail()
       } else {
 
-        $headers = preg_replace('#(To:.*\r\n)#', '', $headers);
-        $headers = preg_replace('#(Subject:.*\r\n)#', '', $headers);
+        $headers = preg_replace('#To:.*?\r\n#', '', $headers);
+        $headers = preg_replace('#Subject:.*?\r\n#', '', $headers);
 
       // PHP mail() needs a header for BCCs
         if (!empty($this->data['bccs'])) {

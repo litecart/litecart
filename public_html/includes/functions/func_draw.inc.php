@@ -1,28 +1,28 @@
 <?php
 
-  function draw_fonticon($class, $params=null) {
+  function draw_fonticon($class, $parameters=null) {
 
     switch(true) {
 
     // Fontawesome
       case (substr($class, 0, 3) == 'fa-'):
         //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document
-        return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        return '<i class="fa '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
     // Foundation
       case (substr($class, 0, 3) == 'fi-'):
         document::$snippets['head_tags']['foundation-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css" />';
-        return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
     // Glyphicon
       case (substr($class, 0, 10) == 'glyphicon-'):
         //document::$snippets['head_tags']['glyphicon'] = '<link rel="stylesheet" href="'/path/to/glyphicon.min.css" />'; // Not embedded in release
-        return '<span class="glyphicon '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></span>';
+        return '<span class="glyphicon '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></span>';
 
     // Ion Icons
       case (substr($class, 0, 4) == 'ion-'):
         document::$snippets['head_tags']['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css" />';
-        return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
     // Material Design Icons
       case (substr($class, 0, 4) == 'mdi-'):

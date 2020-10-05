@@ -44,8 +44,17 @@
 
       sort($_POST['orders']);
 
-      echo call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders']);
-      return;
+      ob_start();
+      call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
+
+      if ($output = ob_get_clean()) {
+        echo $output;
+        return;
+      }
+
+      if (empty(notices::$data['errors'])) {
+        header('Location: '. $_SERVER['REQUEST_URI']);
+      }
 
     } catch (Exception $e) {
       notices::add('errors', $e->getMessage());
@@ -73,8 +82,8 @@
       "o.uid = '". database::input($_GET['query']) ."'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
       "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
-      "o.customer_company like '%". database::input($_GET['query']) ."%'",
-      "concat(o.customer_firstname, ' ', o.customer_lastname) like '%". database::input($_GET['query']) ."%'",
+      "concat(o.customer_company, ' ', o.customer_firstname, ' ', o.customer_lastname, ' ', o.customer_address1, ' ', o.customer_address2, ' ', o.customer_postcode, ' ', o.customer_city) like '%". database::input($_GET['query']) ."%'",
+      "concat(o.shipping_company, ' ', o.shipping_firstname, ' ', o.shipping_lastname, ' ', o.shipping_address1, ' ', o.shipping_address2, ' ', o.shipping_postcode, ' ', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
       "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
       "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
       "o.reference like '%". database::input($_GET['query']) ."%'",
@@ -104,7 +113,7 @@
     left join ". DB_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : "and (os.is_archived is null or os.is_archived = 0 or unread = 1)") ."
+    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
     ". (!empty($_GET['payment_option_name']) ? "and o.payment_option_name = '". database::input($_GET['payment_option_name']) ."'" : '') ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."

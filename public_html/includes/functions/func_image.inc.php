@@ -101,7 +101,7 @@
     $path = preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', str_replace('\\', '/', realpath($source)));
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
-      return $path;
+      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
     }
 
     if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
@@ -146,7 +146,7 @@
     }
 
     $filename = implode('', [
-      sha1($path),
+      sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,
       $clipping_filename_flag,

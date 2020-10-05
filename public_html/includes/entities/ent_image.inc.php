@@ -54,7 +54,7 @@
 
       if (!empty($file)) $this->_file = $file;
 
-      $this->_whitespace = explode(',', settings::get('image_whitespace_color'));
+      $this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
     }
 
     public function &__get($name) {

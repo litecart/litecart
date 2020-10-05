@@ -22,7 +22,7 @@
       }
 
     // Load modules
-      $this->load('payment');
+      $this->load();
 
     // Attach userdata to module
       if (!empty($this->data['selected'])) {

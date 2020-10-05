@@ -359,8 +359,8 @@
   );
 
   while ($product = database::fetch($products_query)) {
-    foreach (preg_split('#,#', $product['product_groups']) as $product_group) {
-      list($group_id, $value_id) = preg_split('#-#', $product_group);
+    foreach (explode(',', $product['product_groups']) as $product_group) {
+      list($group_id, $value_id) = explode('-', $product_group);
 
       database::query(
         "insert into `". DB_PREFIX ."products_attributes`

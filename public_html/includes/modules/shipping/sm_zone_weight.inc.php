@@ -76,7 +76,7 @@
         case '<':
         case '&lt;':
         case 'ITEM_WEIGHT_LOWER_THAN_VALUE':
-          foreach (array_reverse(preg_split('#[\|;]#', $rate_table)) as $rate) {
+          foreach (array_reverse(preg_split('#[\|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY)) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight < $rate_weight) {
               $cost = $rate_cost;
@@ -87,7 +87,7 @@
         case '<=':
         case '&lt;=':
         case 'ITEM_WEIGHT_LOWER_THAN_OR_EQUALS_VALUE':
-          foreach (array_reverse(preg_split('#[\|;]#', $rate_table)) as $rate) {
+          foreach (array_reverse(preg_split('#[\|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY)) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight <= $rate_weight) {
               $cost = $rate_cost;
@@ -98,7 +98,7 @@
         case '>':
         case '&gt;':
         case 'ITEM_WEIGHT_HIGHER_THAN_VALUE':
-          foreach (preg_split('#[\|;]#', $rate_table) as $rate) {
+          foreach (preg_split('#[|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight > $rate_weight) {
               $cost = $rate_cost;
@@ -110,7 +110,7 @@
         case '&gt;=':
         case 'ITEM_WEIGHT_HIGHER_THAN_OR_EQUALS_VALUE':
         default:
-          foreach (preg_split('#[\|;]#', $rate_table) as $rate) {
+          foreach (preg_split('#[|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY) as $rate) {
             list($rate_weight, $rate_cost) = explode(':', $rate);
             if ($shipping_weight >= $rate_weight) {
               $cost = $rate_cost;

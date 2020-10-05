@@ -11,7 +11,9 @@
       $_POST[$key] = $value;
     }
 
-    if (!empty($_GET['parent_id'])) $_POST['parent_id'] = $_GET['parent_id'];
+    if (empty($category->data['id']) && !empty($_GET['parent_id'])) {
+      $_POST['parent_id'] = $_GET['parent_id'];
+    }
   }
 
   document::$snippets['title'][] = !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category');
@@ -113,7 +115,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
-                <?php echo functions::form_draw_categories_list('parent_id', true); ?>
+                <?php echo functions::form_draw_category_field('parent_id', true); ?>
               </div>
 
               <div class="form-group">

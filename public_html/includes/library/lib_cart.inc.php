@@ -225,7 +225,7 @@
 
             case 'checkbox':
 
-              $selected_values = array_filter(preg_split('#\s*,\s*#', $options[$matched_group]));
+              $selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
 
               $matched_values = [];
               foreach ($option['values'] as $value) {
@@ -272,12 +272,11 @@
           $sanitized_options[] = [
             'group_id' => $option['id'],
             'value_id' => !empty($value['id']) ? $value['id'] : 0,
-            'combination' => $option['id'] .'-'. (!empty($value['id']) ? $value['id'] : 0),
+            'combination' => $option['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : 0),
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           ];
         }
-
       // Options stock
         foreach ($product->stock_options as $stock_option) {
 

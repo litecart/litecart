@@ -7,24 +7,19 @@
       $this->modules = [];
     }
 
-    public function load($type, $filter=null) {
+    public function load($filter=null) {
 
       $this->reset();
 
-      if (!empty($filter) && !is_array($filter)) $filter = [$filter];
+      $type = preg_replace('#mod_(.*)$#', '$1', get_called_class());
 
-      switch($type) {
-        case 'job':
-          $directory = FS_DIR_APP . 'includes/modules/jobs/';
-          break;
-        default:
-          $directory = FS_DIR_APP . 'includes/modules/' . $type . '/';
-          break;
-      }
+      $directory = FS_DIR_APP . 'includes/modules/' . $type . '/';
+
+      if (!empty($filter) && !is_array($filter)) $filter = array($filter);
 
       $modules_query = database::query(
         "select * from ". DB_PREFIX ."modules
-        where type = '". database::input($type) ."'
+        where type = '". database::input(strtr($type, array('jobs' => 'job'))) ."'
         ". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
       );
 
@@ -57,7 +52,7 @@
         $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) ? 1 : 0;
         $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 
-        if ($type == 'job') {
+        if ($type == 'jobs') {
           $object->date_pushed = $module['date_pushed'];
           $object->date_processed = $module['date_processed'];
         }

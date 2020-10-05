@@ -50,7 +50,7 @@
       }
 
       if (!empty($_POST['new_password'])) {
-        $customer->set_password($_POST['password']);
+        $customer->set_password($_POST['new_password']);
       }
 
       $customer->save();

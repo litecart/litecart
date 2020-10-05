@@ -3,7 +3,7 @@
   class mod_order extends abs_module {
 
     public function __construct() {
-      $this->load('order');
+      $this->load();
     }
 
     public function actions() {
@@ -77,11 +77,17 @@
       return $this->run('delete', null, $order);
     }
 
-    public function run($method_name, $module_id) {
+    public function run($method_name, $module_id=null) {
 
       if (empty($this->modules)) return;
 
-      foreach ($this->modules as $module_id => $module) {
+      if (!empty($module_id)) {
+        $module_ids = array($module_id);
+      } else {
+        $module_ids = array_keys($this->modules);
+      }
+
+      foreach ($module_ids as $module_id) {
         if (method_exists($this->modules[$module_id], $method_name)) {
           call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
         }

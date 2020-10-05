@@ -10,7 +10,10 @@
     foreach ($tax_rate->data as $key => $value) {
       $_POST[$key] = $value;
     }
-    $_POST['address_type'] = 'shipping';
+
+    if (empty($tax_rate->data['id'])) {
+      $_POST['address_type'] = 'shipping';
+    }
   }
 
   document::$snippets['title'][] = !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate');

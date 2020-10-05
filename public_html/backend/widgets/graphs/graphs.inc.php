@@ -6,59 +6,69 @@
   $widget_graphs_cache_token = cache::token('widget_graphs', ['site'], 'memory', 300);
   if (cache::capture($widget_graphs_cache_token)) {
 
-  // Order Statuses flagged as Sale
-    $order_statuses = [];
-    $orders_status_query = database::query(
-      "select id from ". DB_PREFIX ."order_statuses where is_sale;"
-    );
-    while ($order_status = database::fetch($orders_status_query)) {
-      $order_statuses[] = (int)$order_status['id'];
-    }
-
   // Monthly Sales
 
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '%m') as month from ". DB_PREFIX ."orders
-      where order_status_id in ('". implode("', '", $order_statuses) ."')
-      and date_created > '". date('Y-m-01 00:00:00', strtotime('-11 months')) ."'
-      group by month
-      order by month asc;"
+      "select sum(payment_due - tax_total) as total_sales, date_format(date_created, '%Y') as year, date_format(date_created, '%m') as month
+      from ". DB_TABLE_ORDERS ."
+      where order_status_id in (
+        select id from ". DB_PREFIX ."order_statuses
+        where is_sale
+      )
+      and date_created between '". date('Y-m-01 00:00:00', strtotime('-36 months')) ."' and '". date('Y-m-t 23:59:59') ."'
+      group by year, month
+      order by year, month asc;"
     );
 
     $monthly_sales = [];
     while ($orders = database::fetch($orders_query)) {
-      $monthly_sales[$orders['month']]['total_sales'] = (int)$orders['total_sales'];
+      settype($orders['total_sales'], 'float');
+      $monthly_sales[$orders['year']][$orders['month']] = $orders;
     }
 
-    $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '%m') as month from ". DB_PREFIX ."orders
-      where order_status_id in ('". implode("', '", $order_statuses) ."')
-      and date_created > '". date('Y-m-01 00:00:00', strtotime('-23 months')) ."' and date_created < '". date('Y-m-t 23:59:59', strtotime('-12 months')) ."'
-      group by month
-      order by month asc;"
-    );
-
-    while ($orders = database::fetch($orders_query)) {
-      $monthly_sales[$orders['month']]['total_sales_last_year'] = (int)$orders['total_sales'];
+    for ($timestamp = date('Y', strtotime('-36 months')); $timestamp < strtotime('Dec 31'); $timestamp = strtotime('+1 months', $timestamp)) {
+      $year = date('Y', $timestamp);
+      $month = date('m', $timestamp);
+      $monthly_sales[$year][$month]['year'] = $year;
+      $monthly_sales[$year][$month]['month'] = $month;
+      $monthly_sales[$year][$month]['label'] = language::strftime('%b', $timestamp);
+      if (!isset($monthly_sales[$year][$month]['total_sales'])) $monthly_sales[$year][$month]['total_sales'] = 0;
     }
 
-    for ($timestamp=time(); strtotime('-12 months') < $timestamp; $timestamp = strtotime('-1 month', $timestamp)) {
-      $monthly_sales[date('m', $timestamp)]['month'] = date('Y-m', $timestamp);
-      $monthly_sales[date('m', $timestamp)]['label'] = language::strftime('%b', $timestamp);
-      if (!isset($monthly_sales[date('m', $timestamp)]['total_sales'])) $monthly_sales[date('m', $timestamp)]['total_sales'] = 0;
-      if (!isset($monthly_sales[date('m', $timestamp)]['total_sales_last_year'])) $monthly_sales[date('m', $timestamp)]['total_sales_last_year'] = 0;
-    }
-    $monthly_sales[date('m')]['label'] = '\u2605'.$monthly_sales[date('m')]['label'];
+    $monthly_sales[date('Y')][date('m')]['label'] = '\u2605'.$monthly_sales[date('Y')][date('m')]['label'];
 
-    uasort($monthly_sales, function($a, $b) { return $a['month'] > $b['month'] ? 1 : -1; });
+    ksort($monthly_sales);
+    foreach (array_keys($monthly_sales) as $year) {
+      ksort($monthly_sales[$year]);
+    }
 
   // Daily Sales
 
-    $daily_sales = [];
+    switch (true) {
+
+     // Western Week
+      case (extension_loaded('intl') && IntlCalendar::createInstance()->getFirstDayOfWeek() == 1):
+        $daily_sales = array(7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array());
+        break;
+
+    // Middle-Eastern Week
+      case (extension_loaded('intl') && IntlCalendar::createInstance()->getFirstDayOfWeek() == 2):
+        $daily_sales = array(6 => array(), 7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array());
+        break;
+
+    // ISO-8601 Week
+      default:
+        $daily_sales = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array());
+        break;
+    }
 
     $orders_query = database::query(
-      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday from ". DB_PREFIX ."orders
-      where order_status_id in ('". implode("', '", $order_statuses) ."')
+      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday
+      from ". DB_TABLE_ORDERS ."
+      where order_status_id in (
+        select id from ". DB_PREFIX ."order_statuses
+        where is_sale
+      )
       and (date_created >= '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
       group by weekday
       order by weekday asc;"
@@ -69,8 +79,12 @@
     }
 
     $orders_query = database::query(
-      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(payment_due - tax_total) from ". DB_PREFIX ."orders
-      where order_status_id in ('". implode("', '", $order_statuses) ."')
+      "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(payment_due - tax_total)
+      from ". DB_TABLE_ORDERS ."
+      where order_status_id in (
+        select id from ". DB_TABLE_ORDER_STATUSES ."
+        where is_sale
+      )
       and (date_created > '". date('Y-m-d H:i:s', strtotime('-3 months', strtotime('Monday this week'))) ."' and date_created < '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
       group by weekday
       order by weekday asc;"
@@ -87,8 +101,6 @@
     }
 
     $daily_sales[date('N')]['label'] = '\u2605'.$daily_sales[date('N')]['label'];
-
-    ksort($daily_sales);
 ?>
 <style>
 #chart-sales-monthly, #chart-sales-daily {
@@ -101,39 +113,63 @@
   font-size: 12px;
   color: #999;
 }
-
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
-  stroke: rgba(59, 165, 198, .25);
+  stroke: #ececec;
 }
-
 #chart-sales-monthly .ct-series-b .ct-bar, #chart-sales-daily .ct-series-b .ct-bar {
-  stroke: rgba(59, 165, 198, 1);
+  stroke: #d2d2d2;
 }
-
+#chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
+  stroke: #3ba5c6;
+}
 #chart-sales-monthly .ct-bar{
   stroke-width: 20px;
+}
+
+#chart-sales-daily .ct-series-a .ct-bar {
+  stroke: #e4e4e4;
+}
+#chart-sales-daily .ct-series-b .ct-bar {
+  stroke: #3ba5c6;
 }
 #chart-sales-daily .ct-bar {
   stroke-width: 10px;
 }
 </style>
 
-<div class="row">
-  <div class="widget col-md-8">
-    <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
-  </div>
+<div id="widget-graphs" class="widget">
+  <div class="row" style="margin-bottom: 0;">
+    <div class="col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
+        </div>
 
-  <div class="widget col-md-4">
-    <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+        <div class="panel-body">
+          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="widget col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
+        </div>
+
+        <div class="panel-body">
+          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 // Monthly Sales
-
   var data = {
-    labels: <?php echo json_encode(array_column($monthly_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
-    series: <?php echo json_encode([array_column($monthly_sales, 'total_sales_last_year'), array_column($monthly_sales, 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
+    labels: <?php echo json_encode(array_column($monthly_sales[date('Y')], 'label'), JSON_UNESCAPED_SLASHES); ?>,
+    series: <?php echo json_encode(array(array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {

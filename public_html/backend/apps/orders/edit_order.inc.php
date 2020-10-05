@@ -25,7 +25,9 @@
       $_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] / $_POST['currency_value'];
     }
 
-    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
+    if (empty($order->data['id'])) {
+      $_POST['customer']['country_code'] = settings::get('default_country_code');
+    }
   }
 
   document::$snippets['title'][] = !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order');
@@ -128,8 +130,7 @@
       if (!empty($_POST['email_order_copy'])) {
 
         $bccs = [];
-        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
-          if (empty($email)) continue;
+        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
           $bccs[] = $email;
         }
 
@@ -663,8 +664,8 @@ body.dark-mode #box-comments {
                 <th style="width: 30px;">&nbsp;</th>
                 <th style="width: 250px;"><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
                 <th class="text-right"><?php echo language::translate('title_title', 'Title'); ?></th>
-                <th style="width: 200px;"><?php echo language::translate('title_value', 'Value'); ?></th>
-                <th style="width: 200px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+                <th style="width: 250px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+                <th style="width: 250px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
                 <th style="width: 30px;">&nbsp;</th>
               </tr>
             </thead>

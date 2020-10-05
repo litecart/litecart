@@ -309,6 +309,14 @@
                     }
                     break;
 
+                  case '=':
+                    if ($value[$this->_currency_code] != 0) {
+                      $value['price_adjust'] = $value[$this->_currency_code] - $this->price;
+                    } else {
+                      $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
+                    }
+                    break;
+
                   default:
                     trigger_error('Unknown price operator for option', E_USER_WARNING);
                     break;
@@ -540,7 +548,7 @@
 
       database::query(
         "update ". DB_PREFIX ."products
-        set quantity = quantity + ". (int)$quantity ."
+        set quantity = quantity + ". (float)$quantity ."
         where id = ". (int)$this->_data['id'] ."
         limit 1;"
       );

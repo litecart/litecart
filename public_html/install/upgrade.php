@@ -25,6 +25,12 @@
     require_once(__DIR__ . '/includes/header.inc.php');
   }
 
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+  ini_set('ignore_repeated_errors', 'On');
+  ini_set('log_errors', 'Off');
+  ini_set('display_errors', 'On');
+  ini_set('html_errors', 'On');
+
   @ignore_user_abort(true);
   @set_time_limit(300);
 
@@ -49,13 +55,6 @@
   require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
   require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');
   require_once(__DIR__ . '/includes/functions.inc.php');
-
-// Turn on errors
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
-  ini_set('ignore_repeated_errors', 'On');
-  ini_set('log_errors', 'Off');
-  ini_set('display_errors', 'On');
-  ini_set('html_errors', 'On');
 
 // Set platform name
   preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);
@@ -228,7 +227,7 @@
         if (is_file($file)) unlink($file);
       }
 
-      if (is_file($file = FS_DIR_APP . 'vqmod/chekced.cache')) unlink($file);
+      if (is_file($file = FS_DIR_APP . 'vqmod/checked.cache')) unlink($file);
       if (is_file($file = FS_DIR_APP . 'vqmod/mods.cache')) unlink($file);
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;

@@ -22,7 +22,6 @@ body {
   left: 50%;
   margin-top: -64px;
   margin-left: -64px;
-  opacity: 0.5;
 }
 
 #box-login-wrapper {

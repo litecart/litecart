@@ -3,7 +3,7 @@
   class mod_jobs extends abs_module {
 
     public function __construct() {
-      $this->load('job');
+      $this->load();
     }
 
     public function process($modules=null, $force=false) {

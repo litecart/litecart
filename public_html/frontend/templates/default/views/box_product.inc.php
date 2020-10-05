@@ -43,6 +43,13 @@
       </div>
       <?php } ?>
 
+      <?php if ($recommended_price) { ?>
+      <div class="recommmended-price" style="margin: 1em 0;">
+        <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
+        <span class="value"><?php echo currency::format($recommended_price); ?></span>
+      </div>
+      <?php } ?>
+
       <?php if ($cheapest_shipping_fee !== null) { ?>
       <div class="cheapest-shipping" style="margin: 1em 0;">
         <?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), ['%price' => currency::format($cheapest_shipping_fee)]); ?>
@@ -179,8 +186,8 @@
       <table class="table table-striped table-hover">
 <?php
   foreach ($technical_data as $line) {
-    if (preg_match('#(:|  )#', $line)) {
-      @list($key, $value) = preg_split('#(:|  )#', $line);
+    if (preg_match('#[:\t]#', $line)) {
+      @list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
