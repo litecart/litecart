@@ -42,10 +42,10 @@
         throw new Exception(strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), array('%charset' => !empty($_POST['charset']) ? $_POST['charset'] : 'NULL')));
       }
 
-      if (!setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale']))) {
+      if (!setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
         throw new Exception(strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), array('%locale' => !empty($_POST['locale']) ? $_POST['locale'] : 'NULL')));
       }
-      setlocale(LC_ALL, preg_split('#\s*,\s*#', language::$selected['locale'])); // Restore
+      setlocale(LC_ALL, preg_split('#\s*,\s*#', language::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY)); // Restore
 
       ##########
 
@@ -139,24 +139,24 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-            <?php echo functions::form_draw_text_field('code', true, 'required="required" pattern="[a-z]{2}"'); ?>
+          <?php echo functions::form_draw_text_field('code', true, 'required="required" pattern="[a-z]{2}"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-            <?php echo functions::form_draw_text_field('code2', true, 'required="required" pattern="[a-z]{3}"'); ?>
+          <?php echo functions::form_draw_text_field('code2', true, 'required="required" pattern="[a-z]{3}"'); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-            <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8"'); ?>
+          <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
-            <?php echo functions::form_draw_text_field('locale', true, 'placeholder="E.g. en_US.utf8,en-US.UTF-8,english"'); ?>
+          <?php echo functions::form_draw_text_field('locale', true, 'placeholder="E.g. en_US.utf8,en-US.UTF-8,english"'); ?>
         </div>
       </div>
 

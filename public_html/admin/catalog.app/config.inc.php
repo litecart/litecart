@@ -15,7 +15,7 @@
         'params' => array(),
       ),
       array(
-        'title' => language::translate('title_attribute_groups', 'Attribute Groups'),
+        'title' => language::translate('title_attributes', 'Attributes'),
         'doc' => 'attribute_groups',
         'params' => array(),
       ),
