@@ -51,7 +51,9 @@
 
         $module_options = $module->options($items, $subtotal['amount'], $subtotal['tax'], $currency_code, $customer);
 
-        if (empty($module_options['options'])) continue;
+        if (!empty($module_options['options'])) $module_options = $module_options['options']; // Backwards compatibility
+
+        if (empty($module_options)) continue;
 
         $this->data['options'][$module->id] = $module_options;
         $this->data['options'][$module->id]['id'] = $module->id;
@@ -59,12 +61,13 @@
 
         foreach ($module_options['options'] as $option) {
 
+          if (!isset($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility
+
           $this->data['options'][$module->id]['options'][$option['id']] = [
             'id' => $option['id'],
             'icon' => $option['icon'],
             'title' => !empty($option['title']) ? $option['title'] : $this->data['options'][$module->id]['title'],
-            'name' => $option['name'],
-            'description' => $option['description'],
+            'description' => !empty($option['fields']) ? $option['description'] : '',
             'fields' => !empty($option['fields']) ? $option['fields'] : '',
             'cost' => (float)$option['cost'],
             'tax_class_id' => (int)$option['tax_class_id'],
@@ -97,7 +100,6 @@
         'id' => $module_id.':'.$option_id,
         'icon' => $this->data['options'][$module_id]['options'][$option_id]['icon'],
         'title' => $this->data['options'][$module_id]['options'][$option_id]['title'],
-        'name' => $this->data['options'][$module_id]['options'][$option_id]['name'],
         'cost' => $this->data['options'][$module_id]['options'][$option_id]['cost'],
         'tax_class_id' => $this->data['options'][$module_id]['options'][$option_id]['tax_class_id'],
       ];

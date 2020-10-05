@@ -9,7 +9,7 @@
     public $priority = 0;
 
     public function __construct() {
-      $this->name = language::translate(__CLASS__.':title', 'Cash on Delivery');
+      $this->name = language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery');
     }
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -23,23 +23,18 @@
         if (!reference::country($country_code)->in_geo_zone($zone_code, $this->settings['geo_zones'])) return;
       }
 
-      $method = [
-        'title' => $this->name,
-        'description' => language::translate(__CLASS__.':description', ''),
-        'options' => [
-          [
-            'id' => 'cod',
-            'icon' => $this->settings['icon'],
-            'name' => reference::country($country_code)->name,
-            'description' => '',
-            'fields' => '',
-            'cost' => $this->settings['fee'],
-            'tax_class_id' => $this->settings['tax_class_id'],
-            'confirm' => language::translate(__CLASS__.':title_confirm_order', 'Confirm Order'),
-          ],
-        ]
+      return [
+        [
+          'id' => 'cod',
+          'icon' => $this->settings['icon'],
+          'title' => language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
+          'description' => '',
+          'fields' => '',
+          'cost' => $this->settings['fee'],
+          'tax_class_id' => $this->settings['tax_class_id'],
+          'confirm' => language::translate(__CLASS__.':title_confirm_order', 'Confirm Order'),
+        ],
       ];
-      return $method;
     }
 
     public function transfer($order) {

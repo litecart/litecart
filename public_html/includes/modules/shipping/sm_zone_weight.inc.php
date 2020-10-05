@@ -8,7 +8,7 @@
     public $website = 'https://www.litecart.net';
 
     public function __construct() {
-      $this->name = language::translate(__CLASS__.':title', 'Zone Based Shipping');
+      $this->name = language::translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -26,8 +26,6 @@
       for ($i=1; $i <= 3; $i++) {
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
 
-        $name = language::translate(__CLASS__.':title_option_name_zone_'.$i);
-
         if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($customer['shipping_address']['zone_code'], $this->settings['geo_zone_id_'.$i])) continue;
 
         $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
@@ -35,8 +33,8 @@
         $options[] = [
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
-          'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
-          'description' => weight::format($total_weight, $this->settings['weight_class']),
+          'title' => language::translate(__CLASS__.':title_option_name_zone_'.$i),
+          'description' => reference::country($customer['shipping_address']['country_code'])->name .', '. weight::format($total_weight, $this->settings['weight_class']),
           'fields' => '',
           'cost' => $cost,
           'tax_class_id' => $this->settings['tax_class_id'],
@@ -44,7 +42,7 @@
         ];
       }
 
-      $name = language::translate(__CLASS__.':title_option_name_zone_x');
+      $title = ;
 
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
@@ -53,8 +51,8 @@
           $options[] = [
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
-            'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
-            'description' => weight::format($total_weight, $this->settings['weight_class']),
+            'title' => language::translate(__CLASS__.':title_option_name_zone_x'),,
+            'description' => reference::country($customer['shipping_address']['country_code'])->name .', '. weight::format($total_weight, $this->settings['weight_class']),
             'fields' => '',
             'cost' => $cost + $this->settings['handling_fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
@@ -63,11 +61,6 @@
           return;
         }
       }
-
-      $options = [
-        'title' => $this->name,
-        'options' => $options,
-      ];
 
       return $options;
     }
