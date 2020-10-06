@@ -55,6 +55,20 @@
 
     public function save() {
 
+      $user_query = database::query(
+        "select id from ". DB_TABLE_USERS ."
+        where (
+          lower(username) = '". database::input(strtolower($this->data['username'])) ."'
+          ". (!empty($this->data['email']) ? "or lower(email) = '". database::input(strtolower($this->data['email'])) ."'" : "") ."
+        )
+        ". (!empty($this->data['id']) ? "and id != ". (int)$this->data['id'] : "") ."
+        limit 1;"
+      );
+
+      if (database::num_rows($user_query)) {
+        throw new Exception(language::translate('error_user_conflict', 'The user conflicts another user in the database'));
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_USERS ."
