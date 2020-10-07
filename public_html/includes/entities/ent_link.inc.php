@@ -162,7 +162,7 @@
       $output .= $this->path;
 
       if (!empty($this->_components['query'])) {
-        $output .= '?'.http_build_query($this->_components['query'], '', '&');
+        $output .= '?'.preg_replace('#(=(&|$))#', '', http_build_query($this->_components['query'], '', '&'));
       }
 
       if (!empty($this->_components['fragment'])) {
