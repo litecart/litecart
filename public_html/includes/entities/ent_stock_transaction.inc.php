@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_PREFIX ."stock_transactions;"
+        "show fields from ". DB_TABLE_PREFIX ."stock_transactions;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -33,7 +33,7 @@
       $this->reset();
 
       $stock_transactions_query = database::query(
-        "select * from ". DB_PREFIX ."stock_transactions
+        "select * from ". DB_TABLE_PREFIX ."stock_transactions
         where id = ". (int)$transaction_id ."
         limit 1;"
       );
@@ -45,7 +45,7 @@
       }
 
       $transactions_contents_query = database::query(
-        "select * from ". DB_PREFIX ."stock_transactions_contents
+        "select * from ". DB_TABLE_PREFIX ."stock_transactions_contents
         where transaction_id = ". (int)$this->data['id'] .";"
       );
 
@@ -58,15 +58,15 @@
             @list($group_id, $value_id) = explode('-', $combination);
 
             $attribute_groups_query = database::query(
-              "select ag.id, agi.name from ". DB_PREFIX ."attribute_groups ag
-              left join ". DB_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
+              "select ag.id, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
+              left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
               where ag.id = ". (int)$group_id .";"
             );
             $attribute_group = database::fetch($attribute_groups_query);
 
             $attribute_values_query = database::query(
-              "select avi.id, ovi.name from ". DB_PREFIX ."attribute_values av
-              left join ". DB_PREFIX ."attribute_values_info avi on (ovi.value_id = avi.id and ovi.language_code = '". database::input(language::$selected['code']) ."')
+              "select avi.id, ovi.name from ". DB_TABLE_PREFIX ."attribute_values av
+              left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (ovi.value_id = avi.id and ovi.language_code = '". database::input(language::$selected['code']) ."')
               where avi.group_id = ". (int)$group_id ."
               and avi.id = ". (int)$value_id .";"
             );
@@ -88,7 +88,7 @@
     // Insert/update transaction
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."stock_transactions
+          "insert into ". DB_TABLE_PREFIX ."stock_transactions
           (name, notes, date_created)
           values ('". database::input($this->data['name']) ."', '". database::input($this->data['notes']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -96,7 +96,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."stock_transactions set
+        "update ". DB_TABLE_PREFIX ."stock_transactions set
         name = '". database::input($this->data['name']) ."',
         notes = '". database::input($this->data['notes']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -111,7 +111,7 @@
 
     // Delete transaction contents
       database::query(
-        "delete from ". DB_PREFIX ."stock_transactions_contents
+        "delete from ". DB_TABLE_PREFIX ."stock_transactions_contents
         where transaction_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", database::input(array_column($this->data['contents'], 'id'))) ."');"
       );
@@ -120,7 +120,7 @@
       foreach ($this->data['contents'] as &$content) {
         if (empty($content['id'])) {
           database::query(
-            "insert into ". DB_PREFIX ."stock_transactions_contents
+            "insert into ". DB_TABLE_PREFIX ."stock_transactions_contents
             (transaction_id)
             values (". (int)$this->data['id'] .");"
           );
@@ -128,7 +128,7 @@
         }
 
         database::query(
-          "update ". DB_PREFIX ."stock_transactions_contents
+          "update ". DB_TABLE_PREFIX ."stock_transactions_contents
           set product_id = ". (int)$content['product_id'] .",
             combination = '". database::input($content['combination']) ."',
             sku = '". database::input($content['sku']) ."',
@@ -158,7 +158,7 @@
 
     // ..then delete
       database::query(
-        "delete from ". DB_PREFIX ."stock_transactions
+        "delete from ". DB_TABLE_PREFIX ."stock_transactions
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

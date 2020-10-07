@@ -97,13 +97,13 @@
 
     $orders_query = database::query(
       "select count(o.id) as total_count, sum(oi.total_sales) as total_sales
-      from ". DB_PREFIX ."orders o
+      from ". DB_TABLE_PREFIX ."orders o
       left join (
-        select order_id, sum(price * quantity) as total_sales from ". DB_PREFIX ."orders_items
+        select order_id, sum(price * quantity) as total_sales from ". DB_TABLE_PREFIX ."orders_items
         group by order_id
       ) oi on (oi.order_id = o.id)
       where o.order_status_id in (
-        select id from ". DB_PREFIX ."order_statuses
+        select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
       )
       and (o.customer_id = ". (int)$customer->data['id'] ." or o.customer_email = '". database::input($customer->data['email']) ."');"

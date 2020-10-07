@@ -11,7 +11,7 @@
         if (!functions::validate_email($recipient)) continue;
 
         database::query(
-          "insert ignore into ". DB_PREFIX ."newsletter_recipients
+          "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
           (email, date_created)
           values ('". database::input($recipient) ."', '". date('Y-m-d H:i:s') ."');"
         );
@@ -34,7 +34,7 @@
       if (empty($_POST['recipients'])) throw new Exception(language::translate('error_must_select_recipients', 'You must select recipients'));
 
       database::query(
-        "delete from ". DB_PREFIX ."newsletter_recipients
+        "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
         where id in ('". implode("', '", database::input($_POST['recipients'])) ."');"
       );
 
@@ -54,7 +54,7 @@
     header('Content-Type: text/plain; charset='. language::$selected['code']);
 
     $recipients_query = database::query(
-      "select email from ". DB_PREFIX ."newsletter_recipients
+      "select email from ". DB_TABLE_PREFIX ."newsletter_recipients
       where id
       ". (!empty($_GET['query']) ? "c.email like '%". database::input($_GET['query']) ."%'" : "") ."
       order by date_created desc;"
@@ -71,7 +71,7 @@
   $recipients = [];
 
   $recipients_query = database::query(
-    "select * from ". DB_PREFIX ."newsletter_recipients
+    "select * from ". DB_TABLE_PREFIX ."newsletter_recipients
     where id
     ". (!empty($_GET['query']) ? "and email like '%". database::input($_GET['query']) ."%'" : "") ."
     order by date_created desc;"

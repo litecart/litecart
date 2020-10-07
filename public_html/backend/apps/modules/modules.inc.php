@@ -58,7 +58,7 @@
 
 // Installed Modules
   $installed_modules_query = database::query(
-    "select * from ". DB_PREFIX ."modules
+    "select * from ". DB_TABLE_PREFIX ."modules
     where type = '". database::input($type) ."';"
   );
 

@@ -18,7 +18,7 @@
       $this->data = [];
 
       $categories_query = database::query(
-        "show fields from ". DB_PREFIX ."categories;"
+        "show fields from ". DB_TABLE_PREFIX ."categories;"
       );
 
       while ($field = database::fetch($categories_query)) {
@@ -26,7 +26,7 @@
       }
 
       $categories_info_query = database::query(
-        "show fields from ". DB_PREFIX ."categories_info;"
+        "show fields from ". DB_TABLE_PREFIX ."categories_info;"
       );
 
       while ($field = database::fetch($categories_info_query)) {
@@ -50,7 +50,7 @@
       $this->reset();
 
       $categories_query = database::query(
-        "select * from ". DB_PREFIX ."categories
+        "select * from ". DB_TABLE_PREFIX ."categories
         where id=". (int)$category_id ."
         limit 1;"
       );
@@ -62,7 +62,7 @@
       }
 
       $categories_info_query = database::query(
-        "select * from ". DB_PREFIX ."categories_info
+        "select * from ". DB_TABLE_PREFIX ."categories_info
         where category_id = ". (int)$category_id .";"
       );
 
@@ -75,8 +75,8 @@
 
     // Filters
       $category_filters_query = database::query(
-        "select cf.*, agi.name as attribute_group_name from ". DB_PREFIX ."categories_filters cf
-        left join ". DB_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and language_code = '". database::input(language::$selected['code']) ."')
+        "select cf.*, agi.name as attribute_group_name from ". DB_TABLE_PREFIX ."categories_filters cf
+        left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and language_code = '". database::input(language::$selected['code']) ."')
         where category_id = ". (int)$this->data['id'] ."
         order by priority;"
       );
@@ -101,7 +101,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."categories
+          "insert into ". DB_TABLE_PREFIX ."categories
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -116,7 +116,7 @@
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
-        "update ". DB_PREFIX ."categories
+        "update ". DB_TABLE_PREFIX ."categories
         set parent_id = ". (int)$this->data['parent_id'] .",
           status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
@@ -132,7 +132,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $categories_info_query = database::query(
-          "select * from ". DB_PREFIX ."categories_info
+          "select * from ". DB_TABLE_PREFIX ."categories_info
           where category_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -140,14 +140,14 @@
 
         if (!$category_info = database::fetch($categories_info_query)) {
           database::query(
-            "insert into ". DB_PREFIX ."categories_info
+            "insert into ". DB_TABLE_PREFIX ."categories_info
             (category_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
         database::query(
-          "update ". DB_PREFIX ."categories_info set
+          "update ". DB_TABLE_PREFIX ."categories_info set
           name = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['name'][$language_code]) : '') ."',
           short_description = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['short_description'][$language_code]) : '') ."',
           description = '". (!empty($this->data['name'][$language_code]) ? database::input($this->data['description'][$language_code], true) : '') ."',
@@ -162,7 +162,7 @@
 
     // Delete filters
       database::query(
-        "delete from ". DB_PREFIX ."categories_filters
+        "delete from ". DB_TABLE_PREFIX ."categories_filters
         where category_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['filters'], 'id')) ."');"
       );
@@ -173,7 +173,7 @@
         foreach ($this->data['filters'] as &$filter) {
           if (empty($filter['id'])) {
             database::query(
-              "insert into ". DB_PREFIX ."categories_filters
+              "insert into ". DB_TABLE_PREFIX ."categories_filters
               (category_id, attribute_group_id)
               values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
             );
@@ -181,7 +181,7 @@
           }
 
           database::query(
-            "update ". DB_PREFIX ."categories_filters set
+            "update ". DB_TABLE_PREFIX ."categories_filters set
               attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
               select_multiple = ". (!empty($filter['select_multiple']) ? 1 : 0) .",
               priority = ". $filter_priority++ ."
@@ -229,7 +229,7 @@
       functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
 
       database::query(
-        "update ". DB_PREFIX ."categories
+        "update ". DB_TABLE_PREFIX ."categories
         set image = '". database::input($filename) ."'
         where id = ". (int)$this->data['id'] .";"
       );
@@ -246,7 +246,7 @@
       functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
       database::query(
-        "update ". DB_PREFIX ."categories
+        "update ". DB_TABLE_PREFIX ."categories
         set image = ''
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -260,7 +260,7 @@
       if (empty($this->data['id'])) return;
 
       $products_query = database::query(
-        "select product_id from ". DB_PREFIX ."products_to_categories
+        "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
         where category_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -272,7 +272,7 @@
       }
 
       $subcategories_query = database::query(
-        "select id from ". DB_PREFIX ."categories
+        "select id from ". DB_TABLE_PREFIX ."categories
         where parent_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -288,13 +288,13 @@
       $this->save();
 
       database::query(
-        "delete from ". DB_PREFIX ."categories
+        "delete from ". DB_TABLE_PREFIX ."categories
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "delete from ". DB_PREFIX ."categories_info
+        "delete from ". DB_TABLE_PREFIX ."categories_info
         where category_id = ". (int)$this->data['id'] .";"
       );
 

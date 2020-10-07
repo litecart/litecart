@@ -12,7 +12,7 @@
       "select sum(payment_due - tax_total) as total_sales, date_format(date_created, '%Y') as year, date_format(date_created, '%m') as month
       from ". DB_TABLE_ORDERS ."
       where order_status_id in (
-        select id from ". DB_PREFIX ."order_statuses
+        select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
       )
       and date_created between '". date('Y-m-01 00:00:00', strtotime('-36 months')) ."' and '". date('Y-m-t 23:59:59') ."'
@@ -66,7 +66,7 @@
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday
       from ". DB_TABLE_ORDERS ."
       where order_status_id in (
-        select id from ". DB_PREFIX ."order_statuses
+        select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
       )
       and (date_created >= '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')

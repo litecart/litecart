@@ -52,12 +52,12 @@
           $this->_data['also_purchased_products'] = [];
 
             $query = database::query(
-              "select oi.product_id, sum(oi.quantity) as total_quantity from ". DB_PREFIX ."orders_items oi
-              left join ". DB_PREFIX ."products p on (p.id = oi.product_id)
+              "select oi.product_id, sum(oi.quantity) as total_quantity from ". DB_TABLE_PREFIX ."orders_items oi
+              left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
               where p.status
               and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
               and order_id in (
-                select distinct order_id as id from ". DB_PREFIX ."orders_items
+                select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_items
                 where product_id = ". (int)$this->_data['id'] ."
               )
               group by oi.product_id
@@ -75,10 +75,10 @@
           $this->_data['attributes'] = [];
 
           $product_attributes_query = database::query(
-            "select pa.*, ag.code, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_PREFIX ."products_attributes pa
-            left join ". DB_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
-            left join ". DB_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
-            left join ". DB_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
+            "select pa.*, ag.code, agi.name as group_name, avi.name as value_name, pa.custom_value from ". DB_TABLE_PREFIX ."products_attributes pa
+            left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
+            left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
+            left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
             where product_id = ". (int)$this->_data['id'] ."
             order by group_name, value_name, custom_value;"
           );
@@ -97,7 +97,7 @@
         case 'meta_description':
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."products_info
+            "select * from ". DB_TABLE_PREFIX ."products_info
             where product_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -117,7 +117,7 @@
           $this->_data['campaign'] = [];
 
           $products_campaigns_query = database::query(
-            "select * from ". DB_PREFIX ."products_campaigns
+            "select * from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (year(start_date) < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
             and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
@@ -141,13 +141,13 @@
           $this->_data['categories'] = [];
 
           $products_to_categories_query = database::query(
-            "select * from ". DB_PREFIX ."products_to_categories
+            "select * from ". DB_TABLE_PREFIX ."products_to_categories
             where product_id = ". (int)$this->_data['id'] .";"
           );
 
           while ($product_to_category = database::fetch($products_to_categories_query)) {
             $categories_info_query = database::query(
-              "select * from ". DB_PREFIX ."categories_info
+              "select * from ". DB_TABLE_PREFIX ."categories_info
               where category_id = ". (int)$product_to_category['category_id'] ."
               and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
               order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -178,7 +178,7 @@
           $this->_data['delivery_status'] = [];
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."delivery_statuses_info
+            "select * from ". DB_TABLE_PREFIX ."delivery_statuses_info
             where delivery_status_id = ". (int)$this->_data['delivery_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -198,7 +198,7 @@
           $this->_data['images'] = [];
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."products_images
+            "select * from ". DB_TABLE_PREFIX ."products_images
             where product_id = ". (int)$this->_data['id'] ."
             order by priority asc, id asc;"
           );
@@ -223,7 +223,7 @@
           $this->_data['options'] = [];
 
           $products_options_query = database::query(
-            "select * from ". DB_PREFIX ."products_options
+            "select * from ". DB_TABLE_PREFIX ."products_options
             where product_id = ". (int)$this->_data['id'] ."
             order by priority;"
           );
@@ -232,7 +232,7 @@
 
           // Group
             $attribute_group_info_query = database::query(
-              "select * from ". DB_PREFIX ."attribute_groups_info
+              "select * from ". DB_TABLE_PREFIX ."attribute_groups_info
               where group_id = ". (int)$option['group_id'] ."
               and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
               order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -249,7 +249,7 @@
             $option['values'] = [];
 
             $option_values_query = database::query(
-              "select * from ". DB_PREFIX ."products_options_values
+              "select * from ". DB_TABLE_PREFIX ."products_options_values
               where product_id = ". (int)$this->_data['id'] ."
               and group_id = ". (int)$option['group_id'] ."
               order by priority;"
@@ -260,7 +260,7 @@
               if (!empty($value['value_id'])) {
 
                 $attribute_values_info_query = database::query(
-                  "select * from ". DB_PREFIX ."attribute_values_info
+                  "select * from ". DB_TABLE_PREFIX ."attribute_values_info
                   where value_id = ". (int)$value['value_id'] ."
                   and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                   order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -344,7 +344,7 @@
           $this->_data['stock_options'] = [];
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."products_stock_options
+            "select * from ". DB_TABLE_PREFIX ."products_stock_options
             where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
@@ -378,8 +378,8 @@
               list($group_id, $value_id) = explode('-', $combination);
 
               $options_values_query = database::query(
-                "select * from ". DB_PREFIX ."products_options_values pov
-                left join ". DB_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
+                "select * from ". DB_TABLE_PREFIX ."products_options_values pov
+                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
                 where pov.value_id = ". (int)$value_id ."
                 and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -405,7 +405,7 @@
           $this->_data['parents'] = [];
 
           $query = database::query(
-            "select category_id from ". DB_PREFIX ."products_to_categories
+            "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
             where product_id = ". (int)$this->_data['id'] .";"
           );
 
@@ -420,7 +420,7 @@
           $this->_data['price'] = 0;
 
           $products_prices_query = database::query(
-            "select * from ". DB_PREFIX ."products_prices
+            "select * from ". DB_TABLE_PREFIX ."products_prices
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
@@ -444,7 +444,7 @@
           ];
 
           $quantity_unit_query = database::query(
-            "select id, decimals, separate from ". DB_PREFIX ."quantity_units
+            "select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
             where id = ". (int)$this->quantity_unit_id ."
             limit 1;"
           );
@@ -452,7 +452,7 @@
           if (!$this->_data['quantity_unit'] = database::fetch($quantity_unit_query)) return;
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."quantity_units_info
+            "select * from ". DB_TABLE_PREFIX ."quantity_units_info
             where quantity_unit_id = ". (int)$this->quantity_unit_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -481,7 +481,7 @@
           $this->_data['sold_out_status'] = [];
 
           $query = database::query(
-            "select id, orderable from ". DB_PREFIX ."sold_out_statuses
+            "select id, orderable from ". DB_TABLE_PREFIX ."sold_out_statuses
             where id = ". (int)$this->sold_out_status_id ."
             limit 1;"
           );
@@ -489,7 +489,7 @@
           if (!$this->_data['sold_out_status'] = database::fetch($query)) return;
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."sold_out_statuses_info
+            "select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
             where sold_out_status_id = ". (int)$this->_data['sold_out_status_id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -507,7 +507,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."products
+            "select * from ". DB_TABLE_PREFIX ."products
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
@@ -534,7 +534,7 @@
 
       if (!empty($stock_item_id)) {
         database::query(
-          "update ". DB_PREFIX ."stock_options
+          "update ". DB_TABLE_PREFIX ."stock_options
           set quantity = quantity + ". (float)$quantity ."
           where product_id = ". (int)$this->_data['id'] ."
           and stock_item_id = ". (int)$stock_item_id ."
@@ -547,7 +547,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."products
+        "update ". DB_TABLE_PREFIX ."products
         set quantity = quantity + ". (float)$quantity ."
         where id = ". (int)$this->_data['id'] ."
         limit 1;"

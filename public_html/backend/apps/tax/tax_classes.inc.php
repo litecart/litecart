@@ -9,7 +9,7 @@
   $tax_classes = [];
 
   $tax_classses_query = database::query(
-    "select * from ". DB_PREFIX ."tax_classes
+    "select * from ". DB_TABLE_PREFIX ."tax_classes
     order by name asc;"
   );
 

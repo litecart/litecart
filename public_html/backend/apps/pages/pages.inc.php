@@ -121,8 +121,8 @@
     ];
 
     $pages_query = database::query(
-      "select p.*, pi.title from ". DB_PREFIX ."pages p
-      left join ". DB_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+      "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
       where p.id
       ". (empty($_GET['query']) ? "and parent_id = 0" : "") ."
       ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
@@ -140,8 +140,8 @@
 
         $num_subpages = database::num_rows(
           database::query(
-            "select * from ". DB_PREFIX ."pages p
-            left join ". DB_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+            "select * from ". DB_TABLE_PREFIX ."pages p
+            left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
             where parent_id = ". (int)$page['id'] .";"
           )
         );
@@ -169,8 +169,8 @@
     $iterator = function($parent_id, $depth=0, &$_this) {
 
       $pages_query = database::query(
-        "select p.*, pi.title from ". DB_PREFIX ."pages p
-        left join ". DB_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+        "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
+        left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
         where parent_id = ". (int)$parent_id ."
         ". ((!empty($_GET['dock']) && $depth == 0) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
         order by p.priority, pi.title;"
@@ -186,8 +186,8 @@
         $page['dock'] = explode(',', $page['dock']);
 
         $subpages_query = database::query(
-          "select p.*, pi.title from ". DB_PREFIX ."pages p
-          left join ". DB_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+          "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
+          left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
           where parent_id = ". (int)$page['id'] ."
           order by p.priority, pi.title;"
         );
@@ -227,8 +227,8 @@
       }
     };
 
-    $num_pages = database::num_rows(database::query("select id from ". DB_PREFIX ."pages;"));
-    $num_root_pages = database::num_rows(database::query("select id from ". DB_PREFIX ."pages where parent_id = 0;"));
+    $num_pages = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages;"));
+    $num_root_pages = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;"));
     $iterator(0, 0, $iterator);
   }
 ?>

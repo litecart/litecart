@@ -132,20 +132,20 @@
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
 
       $tax_rates_query = database::query(
-        "select * from ". DB_PREFIX ."tax_rates
+        "select * from ". DB_TABLE_PREFIX ."tax_rates
         where tax_class_id = ". (int)$tax_class_id ."
         and (
           (
             address_type = 'payment'
             and geo_zone_id in (
-              select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
+              select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['country_code']) ."'
               and (zone_code is null or zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
             )
           ) or (
             address_type = 'shipping'
             and geo_zone_id in (
-              select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
+              select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['shipping_address']['country_code']) ."'
               and (zone_code is null or zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
             )
@@ -171,7 +171,7 @@
     public static function get_class_name($tax_class_id) {
 
       $tax_class_query = database::query(
-        "select name from ". DB_PREFIX ."tax_classes
+        "select name from ". DB_TABLE_PREFIX ."tax_classes
         where id = " . (int)$tax_class_id . "
         limit 1;"
       );
@@ -186,7 +186,7 @@
     public static function get_rate_name($tax_rate_id) {
 
       $tax_rates_query = database::query(
-        "select name from ". DB_PREFIX ."tax_rates
+        "select name from ". DB_TABLE_PREFIX ."tax_rates
         where id = " . (int)$tax_rate_id . "
         limit 1;"
       );

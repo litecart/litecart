@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_PREFIX ."customers;"
+        "show fields from ". DB_TABLE_PREFIX ."customers;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -42,7 +42,7 @@
       $this->reset();
 
       $customer_query = database::query(
-        "select * from ". DB_PREFIX ."customers
+        "select * from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$customer_id ."
         limit 1;"
       );
@@ -69,7 +69,7 @@
       }
 
       $newsletter_recipient_query = database::query(
-        "select id from ". DB_PREFIX ."newsletter_recipients
+        "select id from ". DB_TABLE_PREFIX ."newsletter_recipients
         where email = '". database::input($this->data['email']) ."'
         limit 1;"
       );
@@ -87,7 +87,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."customers
+          "insert into ". DB_TABLE_PREFIX ."customers
           (email, date_created)
           values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -96,7 +96,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."customers
+        "update ". DB_TABLE_PREFIX ."customers
         set
           code = '". database::input($this->data['code']) ."',
           status = '". (!empty($this->data['status']) ? '1' : '0') ."',
@@ -131,7 +131,7 @@
 
       if (!empty($this->previous['email']) && $this->previous['email'] != $this->data['email']) {
         database::query(
-          "update ". DB_PREFIX ."newsletter_recipients
+          "update ". DB_TABLE_PREFIX ."newsletter_recipients
           set email = '". database::input($this->data['email']) ."'
           where email = '". database::input($this->previous['email']) ."';"
         );
@@ -139,13 +139,13 @@
 
       if (!empty($this->data['newsletter'])) {
         database::query(
-          "insert ignore into ". DB_PREFIX ."newsletter_recipients
+          "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
           (email, date_created)
           values ('". database::input($this->data['email']) ."', '". date('Y-m-d H:i:s') ."');"
         );
       } else if (!empty($this->previous['id'])) {
         database::query(
-          "delete from ". DB_PREFIX ."newsletter_recipients
+          "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
           where email = '". database::input($this->data['email']) ."';"
         );
       }
@@ -170,7 +170,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."customers
+        "update ". DB_TABLE_PREFIX ."customers
         set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -182,19 +182,19 @@
     public function delete() {
 
       database::query(
-        "update ". DB_PREFIX ."orders
+        "update ". DB_TABLE_PREFIX ."orders
         set customer_id = 0
         where customer_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_PREFIX ."customers
+        "delete from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "delete from ". DB_PREFIX ."newsletter_recipients
+        "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
         where email = '". database::input($this->data['email']) ."'
         limit 1;"
       );

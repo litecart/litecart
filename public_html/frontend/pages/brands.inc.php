@@ -11,8 +11,8 @@
 
     $brands_query = database::query(
       "select b.id, b.name, b.image, bi.short_description, bi.link
-      from ". DB_PREFIX ."brands b
-      left join ". DB_PREFIX ."brands_info bi on (bi.brand_id = b.id and bi.language_code = '". language::$selected['code'] ."')
+      from ". DB_TABLE_PREFIX ."brands b
+      left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.brand_id = b.id and bi.language_code = '". language::$selected['code'] ."')
       where status
       order by name;"
     );

@@ -14,9 +14,9 @@
   }
 
   $stock_transactions_query = database::query(
-    "select id, name, date_created from ". DB_PREFIX ."stock_transactions t
+    "select id, name, date_created from ". DB_TABLE_PREFIX ."stock_transactions t
     left join (
-      select transaction_id, sku from ". DB_PREFIX ."stock_transactions_contents
+      select transaction_id, sku from ". DB_TABLE_PREFIX ."stock_transactions_contents
       group by transaction_id
     ) tc on (tc.transaction_id = t.id)
     ". (!empty($sql_where_query) ? "where (". implode(" or ", $sql_where_query) .")" : "") ."

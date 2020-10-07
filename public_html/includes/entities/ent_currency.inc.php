@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_PREFIX ."currencies;"
+        "show fields from ". DB_TABLE_PREFIX ."currencies;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -35,7 +35,7 @@
       $this->reset();
 
       $currency_query = database::query(
-        "select * from ". DB_PREFIX ."currencies
+        "select * from ". DB_TABLE_PREFIX ."currencies
         ". (preg_match('#^[0-9]{1,2}$#', $currency_code) ? "where id = '". (int)$currency_code ."'" : "") ."
         ". (preg_match('#^[0-9]{3}$#', $currency_code) ? "where number = '". database::input($currency_code) ."'" : "") ."
         ". (preg_match('#^[A-Z]{3}$#', $currency_code) ? "where code = '". database::input($currency_code) ."'" : "") ."
@@ -70,7 +70,7 @@
       }
 
       $currency_query = database::query(
-        "select id from ". DB_PREFIX ."currencies
+        "select id from ". DB_TABLE_PREFIX ."currencies
         where (
           code = '". database::input($this->data['code']) ."'
           ". (!empty($this->data['number']) ? "or number = '". database::input($this->data['number']) ."'" : "") ."
@@ -85,7 +85,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."currencies
+          "insert into ". DB_TABLE_PREFIX ."currencies
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -93,7 +93,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."currencies
+        "update ". DB_TABLE_PREFIX ."currencies
         set
           status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
@@ -117,17 +117,17 @@
           }
 
           database::query(
-            "alter table ". DB_PREFIX ."products_prices
+            "alter table ". DB_TABLE_PREFIX ."products_prices
             change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
 
           database::query(
-            "alter table ". DB_PREFIX ."products_campaigns
+            "alter table ". DB_TABLE_PREFIX ."products_campaigns
             change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
 
           database::query(
-            "alter table ". DB_PREFIX ."products_options_values
+            "alter table ". DB_TABLE_PREFIX ."products_options_values
             change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
         }
@@ -135,37 +135,37 @@
       } else {
 
         $products_prices_query = database::query(
-          "show fields from ". DB_PREFIX ."products_prices
+          "show fields from ". DB_TABLE_PREFIX ."products_prices
           where `Field` = '". database::input($this->data['code']) ."';"
         );
 
         if (!database::num_rows($products_prices_query)) {
           database::query(
-            "alter table ". DB_PREFIX ."products_prices
+            "alter table ". DB_TABLE_PREFIX ."products_prices
             add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
         }
 
         $products_campaigns_query = database::query(
-          "show fields from ". DB_PREFIX ."products_campaigns
+          "show fields from ". DB_TABLE_PREFIX ."products_campaigns
           where `Field` = '". database::input($this->data['code']) ."';"
         );
 
         if (!database::num_rows($products_campaigns_query)) {
           database::query(
-            "alter table ". DB_PREFIX ."products_campaigns
+            "alter table ". DB_TABLE_PREFIX ."products_campaigns
             add `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
         }
 
         $products_options_query = database::query(
-          "show fields from ". DB_PREFIX ."products_options_values
+          "show fields from ". DB_TABLE_PREFIX ."products_options_values
           where `Field` = '". database::input($this->data['code']) ."';"
         );
 
         if (!database::num_rows($products_options_query)) {
           database::query(
-            "alter table ". DB_PREFIX ."products_options_values
+            "alter table ". DB_TABLE_PREFIX ."products_options_values
             add `". database::input($this->data['code']) ."` decimal(11, 4) not null after `price_operator`;"
           );
         }
@@ -187,21 +187,21 @@
       }
 
       database::query(
-        "delete from ". DB_PREFIX ."currencies
+        "delete from ". DB_TABLE_PREFIX ."currencies
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "alter table ". DB_PREFIX ."products_prices drop `". database::input($this->data['code']) ."`;"
+        "alter table ". DB_TABLE_PREFIX ."products_prices drop `". database::input($this->data['code']) ."`;"
       );
 
       database::query(
-        "alter table ". DB_PREFIX ."products_campaigns drop `". database::input($this->data['code']) ."`;"
+        "alter table ". DB_TABLE_PREFIX ."products_campaigns drop `". database::input($this->data['code']) ."`;"
       );
 
       database::query(
-        "alter table ". DB_PREFIX ."products_options_values drop `". database::input($this->data['code']) ."`;"
+        "alter table ". DB_TABLE_PREFIX ."products_options_values drop `". database::input($this->data['code']) ."`;"
       );
 
       $this->reset();

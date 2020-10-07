@@ -24,24 +24,24 @@
       sum(otsf.value) as total_shipping_fees,
       sum(otpf.value) as total_payment_fees,
       date_format(o.date_created, '%Y-%m') as `year_month`
-    from ". DB_PREFIX ."orders o
+    from ". DB_TABLE_PREFIX ."orders o
     left join (
-      select order_id, sum(value) as value from ". DB_PREFIX ."orders_totals
+      select order_id, sum(value) as value from ". DB_TABLE_PREFIX ."orders_totals
       where module_id = 'ot_subtotal'
       group by order_id
     ) otst on (o.id = otst.order_id)
     left join (
-      select order_id, sum(value) as value from ". DB_PREFIX ."orders_totals
+      select order_id, sum(value) as value from ". DB_TABLE_PREFIX ."orders_totals
       where module_id = 'ot_shipping_fee'
       group by order_id
     ) otsf on (o.id = otsf.order_id)
     left join (
-      select order_id, sum(value) as value from ". DB_PREFIX ."orders_totals
+      select order_id, sum(value) as value from ". DB_TABLE_PREFIX ."orders_totals
       where module_id = 'ot_payment_fee'
       group by order_id
     ) otpf on (o.id = otpf.order_id)
     where o.order_status_id in (
-      select id from ". DB_PREFIX ."order_statuses
+      select id from ". DB_TABLE_PREFIX ."order_statuses
       where is_sale
     )
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : "") ."

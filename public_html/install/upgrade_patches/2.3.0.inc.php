@@ -401,17 +401,17 @@
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "DB_TABLE_PREFIX",
-      'replace' => "DB_PREFIX",
+      'replace' => "DB_TABLE_PREFIX",
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'brands_info`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'brands_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_CATEGORIES_INFO',                   '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'categories_info`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_CATEGORIES_INFO',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_info`');" . PHP_EOL,
       'replace' => "",
     ],
     [
@@ -477,7 +477,7 @@
   $columns_query = database::query(
     "select * from information_schema.COLUMNS
     where TABLE_SCHEMA = '". DB_DATABASE ."'
-    and TABLE_NAME like '". DB_PREFIX ."%';"
+    and TABLE_NAME like '". DB_TABLE_PREFIX ."%';"
   );
 
   while ($column = database::fetch($columns_query)) {
@@ -509,10 +509,10 @@
   }
 
 // Remove some indexes if they exist
-  if (database::num_rows("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer' AND INDEX_SCHEMA = '". DB_PREFIX ."brands_info';")) {
-    database::query("ALTER TABLE `". DB_PREFIX ."brands_info` DROP INDEX `manufacturer`;");
+  if (database::num_rows("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")) {
+    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer`;");
   }
 
-  if (database::num_rows("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer_info' AND INDEX_SCHEMA = '". DB_PREFIX ."brands_info';")) {
-    database::query("ALTER TABLE `". DB_PREFIX ."brands_info` DROP INDEX `manufacturer_info`;");
+  if (database::num_rows("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")) {
+    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer_info`;");
   }

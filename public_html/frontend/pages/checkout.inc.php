@@ -19,7 +19,7 @@
 // Resume incomplete order in session
   if (!empty($resume_id)) {
     $order_query = database::query(
-      "select * from ". DB_PREFIX ."orders
+      "select * from ". DB_TABLE_PREFIX ."orders
       where id = ". (int)$resume_id ."
       and order_status_id = 0
       and date_created > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
@@ -53,12 +53,6 @@
 
   if (!empty($payment->data['selected'])) {
     $order->data['payment_option'] = $payment->data['selected'];
-  }
-
-  $order_total = new mod_order_total();
-  $rows = $order_total->process($order);
-  foreach ($rows as $row) {
-    $order->add_ot_row($row);
   }
 
   $_page = new ent_view();

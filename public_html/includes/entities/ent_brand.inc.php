@@ -18,7 +18,7 @@
       $this->data = [];
 
       $brand_query = database::query(
-        "show fields from ". DB_PREFIX ."brands;"
+        "show fields from ". DB_TABLE_PREFIX ."brands;"
       );
 
       while ($field = database::fetch($brand_query)) {
@@ -26,7 +26,7 @@
       }
 
       $brand_info_query = database::query(
-        "show fields from ". DB_PREFIX ."brands_info;"
+        "show fields from ". DB_TABLE_PREFIX ."brands_info;"
       );
       while ($field = database::fetch($brand_info_query)) {
         if (in_array($field['Field'], ['id', 'brand_id', 'language_code'])) continue;
@@ -47,7 +47,7 @@
       $this->reset();
 
       $brands_query = database::query(
-        "select * from ". DB_PREFIX ."brands
+        "select * from ". DB_TABLE_PREFIX ."brands
         where id=". (int)$brand_id ."
         limit 1;"
       );
@@ -59,7 +59,7 @@
       }
 
       $brands_info_query = database::query(
-        "select * from ". DB_PREFIX ."brands_info
+        "select * from ". DB_TABLE_PREFIX ."brands_info
         where brand_id = ". (int)$brand_id .";"
       );
 
@@ -77,7 +77,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."brands
+          "insert into ". DB_TABLE_PREFIX ."brands
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -90,7 +90,7 @@
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
-        "update ". DB_PREFIX ."brands set
+        "update ". DB_TABLE_PREFIX ."brands set
         status = ". (int)$this->data['status'] .",
         featured = ". (int)$this->data['featured'] .",
         code = '". database::input($this->data['code']) ."',
@@ -104,7 +104,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $brands_info_query = database::query(
-          "select * from ". DB_PREFIX ."brands_info
+          "select * from ". DB_TABLE_PREFIX ."brands_info
           where brand_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -112,14 +112,14 @@
 
         if (!$brand_info = database::fetch($brands_info_query)) {
           database::query(
-            "insert into ". DB_PREFIX ."brands_info
+            "insert into ". DB_TABLE_PREFIX ."brands_info
             (brand_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
         database::query(
-          "update ". DB_PREFIX ."brands_info set
+          "update ". DB_TABLE_PREFIX ."brands_info set
           short_description = '". database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
@@ -164,7 +164,7 @@
       $image->write(FS_DIR_STORAGE . 'images/' . $filename, 90);
 
       database::query(
-        "update ". DB_PREFIX ."brands
+        "update ". DB_TABLE_PREFIX ."brands
         set image = '". database::input($filename) ."'
         where id = ". (int)$this->data['id'] .";"
       );
@@ -181,7 +181,7 @@
       functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
       database::query(
-        "update ". DB_PREFIX ."brands
+        "update ". DB_TABLE_PREFIX ."brands
         set image = ''
         where id = ". (int)$this->data['id'] .";"
       );
@@ -194,7 +194,7 @@
       if (empty($this->data['id'])) return;
 
       $products_query = database::query(
-        "select id from ". DB_PREFIX ."products
+        "select id from ". DB_TABLE_PREFIX ."products
         where brand_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -210,13 +210,13 @@
       }
 
       database::query(
-        "delete from ". DB_PREFIX ."brands
+        "delete from ". DB_TABLE_PREFIX ."brands
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "delete from ". DB_PREFIX ."brands_info
+        "delete from ". DB_TABLE_PREFIX ."brands_info
         where brand_id = ". (int)$this->data['id'] .";"
       );
 

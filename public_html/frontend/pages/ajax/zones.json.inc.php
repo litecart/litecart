@@ -4,7 +4,7 @@
   if (!isset($_GET['country_code'])) exit;
 
   $zones_query = database::query(
-    "select * from ". DB_PREFIX ."zones
+    "select * from ". DB_TABLE_PREFIX ."zones
     where country_code = '". database::input($_GET['country_code']) ."'
     order by name asc;"
   );

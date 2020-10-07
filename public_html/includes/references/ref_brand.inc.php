@@ -51,7 +51,7 @@
           $this->_data['info'] = [];
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."brands_info
+            "select * from ". DB_TABLE_PREFIX ."brands_info
             where brand_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -69,7 +69,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."brands
+            "select * from ". DB_TABLE_PREFIX ."brands
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

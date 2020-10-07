@@ -51,7 +51,7 @@
           $this->_data['info'] = [];
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."categories_info
+            "select * from ". DB_TABLE_PREFIX ."categories_info
             where category_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -96,10 +96,10 @@
           $this->_data['products'] = [];
 
           $query = database::query(
-            "select id from ". DB_PREFIX ."products
+            "select id from ". DB_TABLE_PREFIX ."products
             where status
             and id in (
-              select product_id from ". DB_PREFIX ."products_to_categories
+              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
               where category_id = ". (int)$this->_data['id'] ."
             )
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -120,7 +120,7 @@
           }
 
           $query = database::query(
-            "select count(id) as num_subcategories from ". DB_PREFIX ."categories
+            "select count(id) as num_subcategories from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id ". (int)$this->_data['id'] .";"
           );
@@ -137,10 +137,10 @@
           }
 
           $query = database::query(
-            "select count(id) as num_products from ". DB_PREFIX ."products
+            "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
             where status
             and id in (
-              select product_id from ". DB_PREFIX ."products_to_categories
+              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
               where category_id = ". (int)$this->_data['id'] ."
             )
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -158,7 +158,7 @@
           if (empty($this->parent_id)) return;
 
           $query = database::query(
-            "select id from ". DB_PREFIX ."categories
+            "select id from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id = ". (int)$this->parent_id ."
             and id != ". (int)$this->_data['id'] ."
@@ -176,7 +176,7 @@
           $this->_data['descendants'] = [];
 
           $categories_query = database::query(
-            "select @pv:=id as id, parent_id from ". DB_PREFIX ."categories
+            "select @pv:=id as id, parent_id from ". DB_TABLE_PREFIX ."categories
             join (select @pv := ". (int)$this->_data['id'] .") tmp
             where status
             and parent_id = @pv;"
@@ -194,7 +194,7 @@
           $this->_data['subcategories'] = [];
 
           $query = database::query(
-            "select id from ". DB_PREFIX ."categories
+            "select id from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id = ". (int)$this->_data['id'] ."
             order by priority;"
@@ -211,7 +211,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."categories
+            "select * from ". DB_TABLE_PREFIX ."categories
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

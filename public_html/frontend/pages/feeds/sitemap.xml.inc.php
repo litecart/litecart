@@ -59,7 +59,7 @@
   $output .= $category_iterator(0, $category_iterator);
 
   $products_query = database::query(
-    "select id, image, date_updated from ". DB_PREFIX ."products
+    "select id, image, date_updated from ". DB_TABLE_PREFIX ."products
     where status
     order by id;"
   );

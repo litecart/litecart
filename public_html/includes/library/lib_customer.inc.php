@@ -16,7 +16,7 @@
         list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
 
         $customer_query = database::query(
-          "select * from ". DB_PREFIX ."customers
+          "select * from ". DB_TABLE_PREFIX ."customers
           where email = '". database::input($email) ."'
           limit 1;"
         );
@@ -70,7 +70,7 @@
 
     // Build list of supported countries
       $countries_query = database::query(
-        "select * from ". DB_PREFIX ."countries
+        "select * from ". DB_TABLE_PREFIX ."countries
         where status;"
       );
 
@@ -110,7 +110,7 @@
             'SU' => 'RU', // ccTLD .su is not a country
           ]);
           $countries_query = database::query(
-            "select * from ". DB_PREFIX ."countries
+            "select * from ". DB_TABLE_PREFIX ."countries
             where status
             and iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
             limit 1;"
@@ -196,7 +196,7 @@
       session::$data['customer'] = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_PREFIX ."customers;"
+        "show fields from ". DB_TABLE_PREFIX ."customers;"
       );
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
@@ -214,7 +214,7 @@
       self::reset();
 
       $customer_query = database::query(
-        "select * from ". DB_PREFIX ."customers
+        "select * from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$customer_id ."
         limit 1;"
       );

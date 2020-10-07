@@ -34,7 +34,7 @@
       }
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
-      if (database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
+      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
 
       if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
       if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
@@ -93,7 +93,7 @@
       $customer->save();
 
       database::query(
-        "update ". DB_PREFIX ."customers
+        "update ". DB_TABLE_PREFIX ."customers
         set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
             last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
             last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'

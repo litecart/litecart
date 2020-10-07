@@ -17,7 +17,7 @@
         self::clear_cache();
 
         database::query(
-          "update ". DB_PREFIX ."settings
+          "update ". DB_TABLE_PREFIX ."settings
           set value = '0'
           where `key` = 'cache_clear'
           limit 1;"
@@ -36,7 +36,7 @@
         }
 
         database::query(
-          "update ". DB_PREFIX ."settings
+          "update ". DB_TABLE_PREFIX ."settings
           set value = '0'
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
@@ -363,7 +363,7 @@
 
     // Set breakpoint (for all session cache)
       database::query(
-        "update ". DB_PREFIX ."settings
+        "update ". DB_TABLE_PREFIX ."settings
         set value = '". date('Y-m-d H:i:s') ."'
         where `key` = 'cache_system_breakpoint'
         limit 1;"

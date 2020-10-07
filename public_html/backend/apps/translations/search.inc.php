@@ -21,7 +21,7 @@
         $sql_update_fields .= "text_".database::input($language_code) ." = '". database::input(trim($translation['text_'.database::input($language_code)]), !empty($translation['html']) ? true : false) ."', " . PHP_EOL;
       }
       database::query(
-        "update ". DB_PREFIX ."translations
+        "update ". DB_TABLE_PREFIX ."translations
         set
         html = ". (!empty($translation['html']) ? 1 : 0) .",
           ". $sql_update_fields ."
@@ -42,7 +42,7 @@
   if (isset($_POST['delete']) && !empty($_POST['translation_id'])) {
 
     database::query(
-      "delete from ". DB_PREFIX ."translations
+      "delete from ". DB_TABLE_PREFIX ."translations
       where id = '". database::input($_POST['translation_id']) ."'
       limit 1;"
     );
@@ -55,7 +55,7 @@
 
 // Languages
   $languages_query = database::query(
-    "select * from ". DB_PREFIX ."languages
+    "select * from ". DB_TABLE_PREFIX ."languages
     where code in ('". implode("', '", database::input($_GET['languages'])) ."')
     order by priority;"
   );
@@ -69,7 +69,7 @@
   $translations = [];
 
   $translations_query = database::query(
-    "select * from ". DB_PREFIX ."translations
+    "select * from ". DB_TABLE_PREFIX ."translations
     where (code is not null and code != '')
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : null) ."
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : null) ."

@@ -29,7 +29,7 @@
   $brands = [];
 
   $brands_query = database::query(
-    "select * from ". DB_PREFIX ."brands
+    "select * from ". DB_TABLE_PREFIX ."brands
     order by name asc;"
   );
 
@@ -39,7 +39,7 @@
   while ($brand = database::fetch($brands_query)) {
 
     $products_query = database::query(
-      "select id from ". DB_PREFIX ."products
+      "select id from ". DB_TABLE_PREFIX ."products
       where brand_id = ". (int)$brand['id'] .";"
     );
 

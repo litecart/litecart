@@ -10,7 +10,7 @@
   @set_time_limit(60*5);
 
   database::query(
-    "update ". DB_PREFIX ."settings
+    "update ". DB_TABLE_PREFIX ."settings
     set value = '". date('Y-m-d H:i:s') ."'
     where `key` = 'jobs_last_run'
     limit 1;"

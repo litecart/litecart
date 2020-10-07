@@ -35,7 +35,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_PREFIX ."customers
+            "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

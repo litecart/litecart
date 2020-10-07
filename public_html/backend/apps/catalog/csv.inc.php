@@ -33,17 +33,17 @@
 
       // Find category
         if (!empty($row['id'])) {
-          if ($category = database::fetch(database::query("select id from ". DB_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
             $category = new ent_category($category['id']);
           }
 
         } elseif (!empty($row['code'])) {
-          if ($category = database::fetch(database::query("select id from ". DB_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($category = database::fetch(database::query("select category_id as id from ". DB_PREFIX ."categories_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+          if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_PREFIX ."categories_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $category = new ent_category($category['id']);
           }
         }
@@ -60,7 +60,7 @@
 
           if (!empty($row['id'])) {
             database::query(
-              "insert into ". DB_PREFIX ."categories (id, date_created)
+              "insert into ". DB_TABLE_PREFIX ."categories (id, date_created)
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $page = new ent_category($row['id']);
@@ -107,7 +107,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_PREFIX ."categories
+            "update ". DB_TABLE_PREFIX ."categories
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$category->data['id'] ."
             limit 1;"
@@ -130,7 +130,7 @@
 
       $csv = [];
 
-      $categories_query = database::query("select id from ". DB_PREFIX ."categories order by parent_id, id;");
+      $categories_query = database::query("select id from ". DB_TABLE_PREFIX ."categories order by parent_id, id;");
       while ($category = database::fetch($categories_query)) {
         $category = new ref_category($category['id'], $_POST['language_code']);
 
@@ -211,32 +211,32 @@
 
       // Find product
         if (!empty($row['id'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
             $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['code'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['sku'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['mpn'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['gtin'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($product = database::fetch(database::query("select product_id as id from ". DB_PREFIX ."products_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+          if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PREFIX ."products_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
             $product = new ent_product($product['id']);
           }
         }
@@ -253,7 +253,7 @@
 
           if (!empty($row['id'])) {
             database::query(
-              "insert into ". DB_PREFIX ."products (id, date_created)
+              "insert into ". DB_TABLE_PREFIX ."products (id, date_created)
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $product = new ent_product($row['id']);
@@ -264,7 +264,7 @@
 
         if (empty($row['brand_id']) && !empty($row['brand_name'])) {
           $brands_query = database::query(
-            "select * from ". DB_PREFIX ."brands
+            "select * from ". DB_TABLE_PREFIX ."brands
             where name = '". database::input($row['brand_name']) ."'
             limit 1;"
           );
@@ -280,7 +280,7 @@
 
         if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
           $suppliers_query = database::query(
-            "select * from ". DB_PREFIX ."suppliers
+            "select * from ". DB_TABLE_PREFIX ."suppliers
             where name = '". database::input($row['supplier_name']) ."'
             limit 1;"
           );
@@ -382,7 +382,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_PREFIX ."products
+            "update ". DB_TABLE_PREFIX ."products
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$product->data['id'] ."
             limit 1;"
@@ -406,8 +406,8 @@
       $csv = [];
 
       $products_query = database::query(
-        "select p.id from ". DB_PREFIX ."products p
-        left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
+        "select p.id from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
         order by pi.name;"
       );
 
@@ -512,17 +512,17 @@
 
       // Find brand
         if (!empty($row['id'])) {
-          if ($brand = database::fetch(database::query("select id from ". DB_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;"))) {
             $brand = new ent_brand($brand['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($brand = database::fetch(database::query("select id from ". DB_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;"))) {
             $brand = new ent_brand($brand['id']);
           }
 
         } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($brand = database::fetch(database::query("select id from ". DB_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;"))) {
+          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;"))) {
             $brand = new ent_brand($brand['id']);
           }
         }
@@ -539,7 +539,7 @@
 
           if (!empty($row['id'])) {
             database::query(
-              "insert into ". DB_PREFIX ."brands (id, date_created)
+              "insert into ". DB_TABLE_PREFIX ."brands (id, date_created)
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $brand = new ent_brand($row['id']);
@@ -585,7 +585,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_PREFIX ."brands
+            "update ". DB_TABLE_PREFIX ."brands
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$brand->data['id'] ."
             limit 1;"
@@ -608,7 +608,7 @@
 
       $csv = [];
 
-      $brands_query = database::query("select id from ". DB_PREFIX ."brands order by id;");
+      $brands_query = database::query("select id from ". DB_TABLE_PREFIX ."brands order by id;");
       while ($brand = database::fetch($brands_query)) {
         $brand = new ref_brand($brand['id'], $_POST['language_code']);
 
@@ -687,12 +687,12 @@
 
       // Find supplier
         if (!empty($row['id'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
+          if ($supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
             $supplier = new ent_supplier($supplier['id']);
           }
 
         } else if (!empty($row['code'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
+          if ($supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
             $supplier = new ent_supplier($supplier['id']);
           }
 
@@ -710,7 +710,7 @@
 
           if (!empty($row['id'])) {
             database::query(
-              "insert into ". DB_PREFIX ."suppliers (id, date_created)
+              "insert into ". DB_TABLE_PREFIX ."suppliers (id, date_created)
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $supplier = new ent_supplier($row['id']);
@@ -738,7 +738,7 @@
 
         if (!empty($row['date_created'])) {
           database::query(
-            "update ". DB_PREFIX ."suppliers
+            "update ". DB_TABLE_PREFIX ."suppliers
             set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
             where id = ". (int)$supplier->data['id'] ."
             limit 1;"
@@ -758,7 +758,7 @@
     try {
       $csv = [];
 
-      $suppliers_query = database::query("select id from ". DB_PREFIX ."suppliers order by id;");
+      $suppliers_query = database::query("select id from ". DB_TABLE_PREFIX ."suppliers order by id;");
       while ($supplier = database::fetch($suppliers_query)) {
         $supplier = new ref_supplier($supplier['id']);
 

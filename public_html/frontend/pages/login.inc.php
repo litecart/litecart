@@ -29,7 +29,7 @@
       }
 
       $customer_query = database::query(
-        "select * from ". DB_PREFIX ."customers
+        "select * from ". DB_TABLE_PREFIX ."customers
         where lower(email) = lower('". database::input($_POST['email']) ."')
         limit 1;"
       );
@@ -48,7 +48,7 @@
 
       if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
         database::query(
-          "update ". DB_PREFIX ."customers
+          "update ". DB_TABLE_PREFIX ."customers
           set password_hash = '". database::input(password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
           where id = ". (int)$customer['id'] ."
           limit 1;"
@@ -56,7 +56,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."customers set
+        "update ". DB_TABLE_PREFIX ."customers set
           num_logins = num_logins + 1,
           last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',

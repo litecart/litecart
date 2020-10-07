@@ -10,7 +10,7 @@
 
   if (!empty(customer::$data['email'])) {
     $newsletter_recipient_query = database::query(
-      "select id from ". DB_PREFIX ."newsletter_recipients
+      "select id from ". DB_TABLE_PREFIX ."newsletter_recipients
       where email = '". database::input(customer::$data['email']) ."'
       limit 1;"
     );
@@ -43,7 +43,7 @@
 
           if (!functions::validate_email($_POST['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
 
-          if (!database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
             if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
             if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
           }
@@ -115,7 +115,7 @@
       if (settings::get('accounts_enabled') && empty($order->data['customer']['id']) && !empty($order->data['customer']['email'])) {
         if (settings::get('register_guests') || !empty($_POST['create_account'])) {
 
-          if (!database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
 
             $customer = new ent_customer();
             $customer->data = array_replace($customer->data, array_intersect_key($order->data['customer'], $customer->data));
@@ -145,7 +145,7 @@
             notices::add('success', language::translate('success_account_has_been_created', 'A customer account has been created that will let you keep track of orders.'));
 
             database::query(
-              "update ". DB_PREFIX ."customers
+              "update ". DB_TABLE_PREFIX ."customers
               set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
                   last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
                   last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
@@ -160,7 +160,7 @@
 
       if (!empty($_POST['newsletter'])) {
         database::query(
-          "insert ignore into ". DB_PREFIX ."newsletter_recipients
+          "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
           (email, date_created)
           values ('". database::input($_POST['email']) ."', '". date('Y-m-d H:i:s') ."');"
         );
@@ -170,13 +170,13 @@
 
   $account_exists = false;
   if (settings::get('accounts_enabled')) {
-    if (empty($order->data['customer']['id']) && !empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($order->data['customer']['email']) ."' limit 1;"))) {
+    if (empty($order->data['customer']['id']) && !empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($order->data['customer']['email']) ."' limit 1;"))) {
       $account_exists = true;
     }
   }
 
   $subscribed_to_newsletter = false;
-  if (!empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($order->data['customer']['email']) ."');"))) {
+  if (!empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($order->data['customer']['email']) ."');"))) {
     $subscribed_to_newsletter = true;
   }
 

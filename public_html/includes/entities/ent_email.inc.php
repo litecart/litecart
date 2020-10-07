@@ -20,7 +20,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_PREFIX ."emails;"
+        "show fields from ". DB_TABLE_PREFIX ."emails;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -49,7 +49,7 @@
       $this->reset();
 
       $email_query = database::query(
-        "select * from ". DB_PREFIX ."emails
+        "select * from ". DB_TABLE_PREFIX ."emails
         where id = ". (int)$email_id ."
         limit 1;"
       );
@@ -75,7 +75,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."emails
+          "insert into ". DB_TABLE_PREFIX ."emails
           (status, code, date_created) values
           ('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -84,7 +84,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."emails set
+        "update ". DB_TABLE_PREFIX ."emails set
         status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
         code = '". database::input($this->data['code']) ."',
         charset = '". database::input($this->data['charset']) ."',
@@ -246,7 +246,7 @@
     public function cleanup($time_ago='-30 days') {
 
       database::query(
-        "delete from ". DB_PREFIX ."emails
+        "delete from ". DB_TABLE_PREFIX ."emails
         where status in ('sent', 'error')
         and date_updated < '". date('Y-m-d H:i:s', strtotime($time_ago)) ."';"
       );
@@ -403,7 +403,7 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_PREFIX ."emails
+        "delete from ". DB_TABLE_PREFIX ."emails
         where id = ". (int)$this->data['id'] .";"
       );
 

@@ -65,7 +65,7 @@
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => '  define(\'DB_TABLE_ADDRESSES\',                         \'`\'. DB_DATABASE .\'`.`\'. DB_PREFIX . \'addresses`\');' . PHP_EOL,
+      'search'  => '  define(\'DB_TABLE_ADDRESSES\',                         \'`\'. DB_DATABASE .\'`.`\'. DB_TABLE_PREFIX . \'addresses`\');' . PHP_EOL,
       'replace' => '',
     ],
   ];

@@ -25,7 +25,7 @@
   $slides = [];
 
   $slides_query = database::query(
-    "select * from ". DB_PREFIX ."slides
+    "select * from ". DB_TABLE_PREFIX ."slides
     order by priority, name;"
   );
 

@@ -282,14 +282,14 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_PREFIX ."products_stock
+          select product_id from ". DB_TABLE_PREFIX ."products_stock
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
       ) as relevance
-      from ". DB_PREFIX ."products p
-      left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
-      left join ". DB_PREFIX ."brands b on (p.brand_id = b.id)
-      left join ". DB_PREFIX ."suppliers s on (p.supplier_id = s.id)
+      from ". DB_TABLE_PREFIX ."products p
+      left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_PREFIX ."brands b on (p.brand_id = b.id)
+      left join ". DB_TABLE_PREFIX ."suppliers s on (p.supplier_id = s.id)
       having relevance > 0
       order by relevance desc;"
     );
@@ -359,8 +359,8 @@
     // Output subcategories
       $categories_query = database::query(
         "select c.id, c.status, ci.name
-        from ". DB_PREFIX ."categories c
-        left join ". DB_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
+        from ". DB_TABLE_PREFIX ."categories c
+        left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
         where c.parent_id = ". (int)$category_id ."
         order by c.priority asc, ci.name asc;"
       );
@@ -387,8 +387,8 @@
 
         if (in_array($category['id'], $category_trail)) {
 
-          if (database::num_rows(database::query("select id from ". DB_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
-           || database::fetch(database::query("select category_id from ". DB_PREFIX ."products_to_categories where category_id = ".(int)$category['id']." limit 1;")) > 0) {
+          if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
+           || database::fetch(database::query("select category_id from ". DB_TABLE_PREFIX ."products_to_categories where category_id = ".(int)$category['id']." limit 1;")) > 0) {
             $output .= $_this($category['id'], $depth+1, $category_trail, $num_category_rows, $_this);
 
             // Output products
@@ -425,9 +425,9 @@
       $output = '';
 
       $products_query = database::query(
-        "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_PREFIX ."products p
-        left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
-        left join ". DB_PREFIX ."products_to_categories p2c on (p2c.product_id = p.id)
+        "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+        left join ". DB_TABLE_PREFIX ."products_to_categories p2c on (p2c.product_id = p.id)
         where ". (!empty($category_id) ? "p2c.category_id = ". (int)$category_id : "(p2c.category_id is null or p2c.category_id = 0)") ."
         group by p.id
         order by pi.name asc;"

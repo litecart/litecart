@@ -26,7 +26,7 @@
   $users = [];
 
   $users_query = database::query(
-    "select * from ". DB_PREFIX ."users
+    "select * from ". DB_TABLE_PREFIX ."users
     order by username;"
   );
 

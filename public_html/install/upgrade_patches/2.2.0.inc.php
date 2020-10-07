@@ -151,51 +151,51 @@
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'cart_items`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'attribute_groups`');" . PHP_EOL
-                 . "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'attribute_groups_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'attribute_values`');" . PHP_EOL
-                 . "  define('DB_TABLE_ATTRIBUTE_VALUES_INFO',             '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'attribute_values_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'cart_items`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');" . PHP_EOL
+                 . "  define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');" . PHP_EOL
+                 . "  define('DB_TABLE_ATTRIBUTE_VALUES_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'categories`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'categories`');" . PHP_EOL
-                 . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'categories_filters`');" . PHP_EOL
-                 . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'categories_images`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
+                 . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_filters`');" . PHP_EOL
+                 . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'delivery_statuses_info`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'delivery_statuses_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'emails`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL
+                 . "  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'emails`');" . PHP_EOL,
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS',                    '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'product_groups`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups`');" . PHP_EOL,
       'replace' => "",
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_INFO',               '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'product_groups_info`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_info`');" . PHP_EOL,
       'replace' => "",
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES',             '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'product_groups_values`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values`');" . PHP_EOL,
       'replace' => "",
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES_INFO',        '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'product_groups_values_info`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES_INFO',        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values_info`');" . PHP_EOL,
       'replace' => "",
     ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'products`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'products`');" . PHP_EOL
-                 . "  define('DB_TABLE_PRODUCTS_ATTRIBUTES',               '`'. DB_DATABASE .'`.`'. DB_PREFIX . 'products_attributes`');" . PHP_EOL,
+      'search'  => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL,
+      'replace' => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL
+                 . "  define('DB_TABLE_PRODUCTS_ATTRIBUTES',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_attributes`');" . PHP_EOL,
     ],
   ];
 
@@ -270,7 +270,7 @@
 
 // Order Public Key
   database::query(
-    "ALTER TABLE `". DB_PREFIX ."orders`
+    "ALTER TABLE `". DB_TABLE_PREFIX ."orders`
 	  ADD COLUMN `public_key` VARCHAR(32) NOT NULL AFTER `domain`;"
   );
 
@@ -292,21 +292,21 @@
 
 // Fix unique indexes (ALTER IGNORE is deprecated)
   $tables = [
-    ['table' => DB_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'],
-    ['table' => DB_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'],
-    ['table' => DB_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'],
-    ['table' => DB_PREFIX.'manufacturers_info',         'index' => 'manufacturer_info',        'columns' => '`manufacturer_id`, `language_code`'],
-    ['table' => DB_PREFIX.'option_groups_info',         'index' => 'option_group_info',        'columns' => '`group_id`, `language_code`'],
-    ['table' => DB_PREFIX.'option_values_info',         'index' => 'option_value_info',        'columns' => '`value_id`, `language_code`'],
-    ['table' => DB_PREFIX.'order_statuses_info',        'index' => 'order_status_info',        'columns' => '`order_status_id`, `language_code`'],
-    ['table' => DB_PREFIX.'pages_info',                 'index' => 'page_info',                'columns' => '`page_id`, `language_code`'],
-    ['table' => DB_PREFIX.'products_info',              'index' => 'product_info',             'columns' => '`product_id`, `language_code`'],
-    ['table' => DB_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'],
-    ['table' => DB_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'],
-    ['table' => DB_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'],
-    ['table' => DB_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'],
-    ['table' => DB_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'],
-    ['table' => DB_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'],
+    ['table' => DB_TABLE_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'manufacturers_info',         'index' => 'manufacturer_info',        'columns' => '`manufacturer_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'option_groups_info',         'index' => 'option_group_info',        'columns' => '`group_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'option_values_info',         'index' => 'option_value_info',        'columns' => '`value_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'order_statuses_info',        'index' => 'order_status_info',        'columns' => '`order_status_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'pages_info',                 'index' => 'page_info',                'columns' => '`page_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'products_info',              'index' => 'product_info',             'columns' => '`product_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'],
+    ['table' => DB_TABLE_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'],
+    ['table' => DB_TABLE_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'],
+    ['table' => DB_TABLE_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'],
   ];
 
   foreach ($tables as $table) {
@@ -326,34 +326,34 @@
 
 // Remove some indexes
   $index_query = database::query(
-    "SHOW KEYS FROM `". DB_PREFIX ."products_prices`
+    "SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_prices`
     WHERE Key_name = 'product_price'
     AND Non_unique = 0;"
   );
 
   if (database::num_rows($index_query)) {
     database::query(
-      "ALTER TABLE `". DB_PREFIX ."products_prices`
+      "ALTER TABLE `". DB_TABLE_PREFIX ."products_prices`
       DROP KEY `product_price`;"
     );
   }
 
   $index_query = database::query(
-    "SHOW KEYS FROM `". DB_PREFIX ."products_to_categories`
+    "SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_to_categories`
     WHERE Key_name = 'mapping'
     AND Non_unique = 0;"
   );
 
   if (database::num_rows($index_query)) {
     database::query(
-      "ALTER TABLE `". DB_PREFIX ."products_to_categories`
+      "ALTER TABLE `". DB_TABLE_PREFIX ."products_to_categories`
       DROP KEY `mapping`;"
     );
   }
 
 // Migrate product groups to product attributes
   $products_query = database::query(
-    "select id, product_groups from `". DB_PREFIX ."products`
+    "select id, product_groups from `". DB_TABLE_PREFIX ."products`
     where product_groups != ''
     order by id;"
   );
@@ -363,7 +363,7 @@
       list($group_id, $value_id) = explode('-', $product_group);
 
       database::query(
-        "insert into `". DB_PREFIX ."products_attributes`
+        "insert into `". DB_TABLE_PREFIX ."products_attributes`
         (product_id, group_id, value_id) values
         (". (int)$product['id'] .", ". (int)$group_id .", ". (int)$value_id .");"
       );
@@ -372,15 +372,15 @@
 
 // Migrate product groups to category filters
   $categories_query = database::query(
-    "select id from `". DB_PREFIX ."categories`
+    "select id from `". DB_TABLE_PREFIX ."categories`
     order by id;"
   );
 
   while ($category = database::fetch($categories_query)) {
     $products_attributes_query = database::query(
-      "select distinct group_id from `". DB_PREFIX ."products_attributes`
+      "select distinct group_id from `". DB_TABLE_PREFIX ."products_attributes`
       where product_id in (
-        select id from `". DB_PREFIX ."products_to_categories`
+        select id from `". DB_TABLE_PREFIX ."products_to_categories`
         where category_id = ". (int)$category['id'] ."
       )
       order by group_id;"
@@ -388,7 +388,7 @@
 
     while ($attribute = database::fetch($products_attributes_query)) {
       database::query(
-        "insert into `". DB_PREFIX ."categories_filters`
+        "insert into `". DB_TABLE_PREFIX ."categories_filters`
         (category_id, attribute_group_id, select_multiple) values
         (". (int)$category['id'] .", ". (int)$attribute['group_id'] .", 1);"
       );
@@ -397,6 +397,6 @@
 
 // Finally remove product_groups column
   database::query(
-    "alter table `". DB_PREFIX ."products`
+    "alter table `". DB_TABLE_PREFIX ."products`
     drop column `product_groups`;"
   );

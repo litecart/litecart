@@ -68,7 +68,7 @@
 
 // Get current platform database version
   $platform_database_version_query = database::query(
-    "select `value` from ". DB_PREFIX ."settings
+    "select `value` from ". DB_TABLE_PREFIX ."settings
     where `key` = 'platform_database_version'
     limit 1;"
   );
@@ -217,7 +217,7 @@
       echo '<p>Clear cache... ';
 
       database::query(
-        "update ". DB_PREFIX ."settings
+        "update ". DB_TABLE_PREFIX ."settings
         set value = '1'
         where `key` = 'cache_clear'
         limit 1;"

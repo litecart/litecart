@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_PREFIX ."languages;"
+        "show fields from ". DB_TABLE_PREFIX ."languages;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -35,7 +35,7 @@
       $this->reset();
 
       $language_query = database::query(
-        "select * from ". DB_PREFIX ."languages
+        "select * from ". DB_TABLE_PREFIX ."languages
         ". (preg_match('#^[0-9]+$#', $language_code) ? "where id = '". (int)$language_code ."'" : "") ."
         ". (preg_match('#^[a-z]{2}$#', $language_code) ? "where code = '". database::input($language_code) ."'" : "") ."
         ". (preg_match('#^[a-z]{3}$#', $language_code) ? "where code2 = '". database::input($language_code) ."'" : "") ."
@@ -62,7 +62,7 @@
       }
 
       $language_query = database::query(
-        "select id from ". DB_PREFIX ."languages
+        "select id from ". DB_TABLE_PREFIX ."languages
         where (
           code = '". database::input($this->data['code']) ."'
           ". (!empty($this->data['code2']) ? "or code2 = '". database::input($this->data['code2']) ."'" : "") ."
@@ -77,7 +77,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_PREFIX ."languages
+          "insert into ". DB_TABLE_PREFIX ."languages
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -85,7 +85,7 @@
       }
 
       database::query(
-        "update ". DB_PREFIX ."languages
+        "update ". DB_TABLE_PREFIX ."languages
         set
           status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
@@ -116,22 +116,22 @@
 
           } else {
             database::query(
-              "alter table ". DB_PREFIX ."translations
+              "alter table ". DB_TABLE_PREFIX ."translations
               change `text_". database::input($this->previous['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
             );
 
             $info_tables = [
-              DB_PREFIX . "attribute_groups_info",
-              DB_PREFIX . "attribute_values_info",
-              DB_PREFIX . "categories_info",
-              DB_PREFIX . "delivery_statuses_info",
-              DB_PREFIX . "brands_info",
-              DB_PREFIX . "order_statuses_info",
-              DB_PREFIX . "pages_info",
-              DB_PREFIX . "products_info",
-              DB_PREFIX . "quantity_units_info",
-              DB_PREFIX . "slides_info",
-              DB_PREFIX . "sold_out_statuses_info",
+              DB_TABLE_PREFIX . "attribute_groups_info",
+              DB_TABLE_PREFIX . "attribute_values_info",
+              DB_TABLE_PREFIX . "categories_info",
+              DB_TABLE_PREFIX . "delivery_statuses_info",
+              DB_TABLE_PREFIX . "brands_info",
+              DB_TABLE_PREFIX . "order_statuses_info",
+              DB_TABLE_PREFIX . "pages_info",
+              DB_TABLE_PREFIX . "products_info",
+              DB_TABLE_PREFIX . "quantity_units_info",
+              DB_TABLE_PREFIX . "slides_info",
+              DB_TABLE_PREFIX . "sold_out_statuses_info",
             ];
 
             foreach ($info_tables as $table) {
@@ -147,13 +147,13 @@
       } else {
 
         $translations_query = database::query(
-          "show fields from ". DB_PREFIX ."translations
+          "show fields from ". DB_TABLE_PREFIX ."translations
           where `Field` = 'text_". database::input($this->data['code']) ."';"
         );
 
         if (!database::num_rows($translations_query)) {
           database::query(
-            "alter table ". DB_PREFIX ."translations
+            "alter table ". DB_TABLE_PREFIX ."translations
             add `text_". database::input($this->data['code']) ."` text not null after text_en;"
           );
         }
@@ -179,35 +179,35 @@
       }
 
       database::query(
-        "delete from ". DB_PREFIX ."languages
+        "delete from ". DB_TABLE_PREFIX ."languages
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       $translations_query = database::query(
-        "show fields from ". DB_PREFIX ."translations
+        "show fields from ". DB_TABLE_PREFIX ."translations
         where `Field` = 'text_". database::input($this->data['code']) ."';"
       );
 
       if (database::num_rows($translations_query) == 1) {
         database::query(
-          "alter table ". DB_PREFIX ."translations
+          "alter table ". DB_TABLE_PREFIX ."translations
           drop `text_". database::input($this->data['code']) ."`;"
         );
       }
 
       $info_tables = [
-        DB_PREFIX . "attribute_groups_info",
-        DB_PREFIX . "attribute_values_info",
-        DB_PREFIX . "categories_info",
-        DB_PREFIX . "delivery_statuses_info",
-        DB_PREFIX . "brands_info",
-        DB_PREFIX . "order_statuses_info",
-        DB_PREFIX . "pages_info",
-        DB_PREFIX . "products_info",
-        DB_PREFIX . "quantity_units_info",
-        DB_PREFIX . "slides_info",
-        DB_PREFIX . "sold_out_statuses_info",
+        DB_TABLE_PREFIX . "attribute_groups_info",
+        DB_TABLE_PREFIX . "attribute_values_info",
+        DB_TABLE_PREFIX . "categories_info",
+        DB_TABLE_PREFIX . "delivery_statuses_info",
+        DB_TABLE_PREFIX . "brands_info",
+        DB_TABLE_PREFIX . "order_statuses_info",
+        DB_TABLE_PREFIX . "pages_info",
+        DB_TABLE_PREFIX . "products_info",
+        DB_TABLE_PREFIX . "quantity_units_info",
+        DB_TABLE_PREFIX . "slides_info",
+        DB_TABLE_PREFIX . "sold_out_statuses_info",
       ];
 
       foreach ($info_tables as $table) {

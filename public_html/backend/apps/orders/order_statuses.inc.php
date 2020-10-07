@@ -9,8 +9,8 @@
   $order_statuses = [];
 
   $order_statuses_query = database::query(
-    "select os.*, osi.name, os.priority from ". DB_PREFIX ."order_statuses os
-    left join ". DB_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". language::$selected['code'] ."')
+    "select os.*, osi.name, os.priority from ". DB_TABLE_PREFIX ."order_statuses os
+    left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". language::$selected['code'] ."')
     order by os.priority, osi.name asc;"
   );
 

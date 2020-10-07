@@ -11,7 +11,7 @@
 
       if ($_POST['template'] != settings::get('store_template')) {
         database::query(
-          "update ". DB_PREFIX ."settings
+          "update ". DB_TABLE_PREFIX ."settings
           set
             `value` = '". database::input($_POST['template']) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -29,7 +29,7 @@
         }
 
         database::query(
-          "update ". DB_PREFIX ."settings
+          "update ". DB_TABLE_PREFIX ."settings
           set
             `value` = '". database::input(json_encode($settings, JSON_UNESCAPED_SLASHES)) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'

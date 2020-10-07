@@ -3,7 +3,7 @@
   function format_address($address) {
 
     $country_query = database::query(
-      "select * from ". DB_PREFIX ."countries
+      "select * from ". DB_TABLE_PREFIX ."countries
       where iso_code_2 = '". database::input($address['country_code']) ."'
       limit 1;"
     );

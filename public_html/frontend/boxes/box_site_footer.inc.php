@@ -11,8 +11,8 @@
     ];
 
     $pages_query = database::query(
-      "select p.id, pi.title from ". DB_PREFIX ."pages p
-      left join ". DB_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
@@ -27,8 +27,8 @@
     }
 
     $pages_query = database::query(
-      "select p.id, pi.title from ". DB_PREFIX ."pages p
-      left join ". DB_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
       and find_in_set('customer_service', dock)
       order by p.priority, pi.title;"
@@ -43,7 +43,7 @@
     }
 
     $modules_query = database::query(
-      "select id, settings  from ". DB_PREFIX ."modules
+      "select id, settings  from ". DB_TABLE_PREFIX ."modules
       where type in ('shipping', 'payment')
       and status
       order by type, id;"
