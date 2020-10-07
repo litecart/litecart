@@ -184,6 +184,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('default', ['replace', 'less', 'sass', 'uglify']);
+  grunt.registerTask('compile', ['less', 'sass', 'uglify']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);

@@ -42,8 +42,6 @@
         ];
       }
 
-      $title = ;
-
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
           $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
@@ -51,7 +49,7 @@
           $options[] = [
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
-            'title' => language::translate(__CLASS__.':title_option_name_zone_x'),,
+            'title' => language::translate(__CLASS__.':title_option_name_zone_x'),
             'description' => reference::country($customer['shipping_address']['country_code'])->name .', '. weight::format($total_weight, $this->settings['weight_class']),
             'fields' => '',
             'cost' => $cost + $this->settings['handling_fee'],

@@ -173,22 +173,22 @@
 
         // Minify Inline CSS
           $search_replace = array(
-              '#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
-              '#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
-              '#\s+#' => ' ', // Replace multiple whitespace
-              '#^\s+#' => ' ', // Replace leading whitespace
+            '#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
+            '#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
+            '#\s+#' => ' ', // Replace multiple whitespace
+            '#^\s+#' => ' ', // Replace leading whitespace
             '#\s*([:;{}])\s*#' => '$1',
-              '#;}#' => '}',
+            '#;}#' => '}',
           );
 
           $styles = preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL, $styles));
 
           if (!empty($styles)) {
             $styles = '<style>' . PHP_EOL
-                   . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                   . $styles . PHP_EOL
-                   . '/*]]>*/-->' . PHP_EOL
-                   . '</style>' . PHP_EOL;
+                    . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                    . $styles . PHP_EOL
+                    . '/*]]>*/-->' . PHP_EOL
+                    . '</style>' . PHP_EOL;
 
             if (!$GLOBALS['output'] = preg_replace('#</head>#', preg_replace('#\$(\d+)#', '\\\$$1', $styles . '</head>'), $GLOBALS['output'], 1)) {
               trigger_error('Failed extracting styles', E_USER_ERROR);

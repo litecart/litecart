@@ -69,8 +69,6 @@
 
         if (!is_file(FS_DIR_APP . $path_and_file)) throw new Exception('File does not exist');
 
-        echo "";
-
         $buffer = file_get_contents(FS_DIR_APP . $path_and_file);
 
         foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
