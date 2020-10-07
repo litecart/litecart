@@ -170,14 +170,6 @@
 
         if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete value linked to product attributes');
 
-        $products_options_query = database::query(
-          "select id from ". DB_TABLE_PREFIX ."products_options_values
-          where value_id = ". (int)$value['id'] ."
-          limit 1;"
-        );
-
-        if (database::num_rows($products_options_query)) throw new Exception('Cannot delete value linked to product options');
-
         database::query(
           "delete from ". DB_TABLE_PREFIX ."attribute_values
           where group_id = ". (int)$this->data['id'] ."
@@ -249,22 +241,6 @@
     public function delete() {
 
       if (empty($this->data['id'])) return;
-
-    // Check products for attribute
-      $products_attributes_query = database::query(
-        "select id from ". DB_TABLE_PREFIX ."products_attributes
-        where group_id = ". (int)$this->data['id'] .";"
-      );
-
-      if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete group linked to products');
-
-    // Check products for options
-      $products_options_query = database::query(
-        "select id from ". DB_TABLE_PREFIX ."products_attributes
-        where group_id = ". (int)$this->data['id'] .";"
-      );
-
-      if (database::num_rows($products_options_query)) throw new Exception('Cannot delete group linked to products');
 
       $this->data['values'] = [];
       $this->save();

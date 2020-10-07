@@ -120,18 +120,6 @@ INSERT INTO `lc_products_info` (`id`, `product_id`, `language_code`, `name`, `sh
 (4, 4, 'en', 'Blue Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Blue\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic'),
 (5, 5, 'en', 'Purple Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Purple\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic');
 -- --------------------------------------------------------
-INSERT INTO `lc_products_options` (`id`, `product_id`, `group_id`, `function`, `sort`) VALUES
-(1, 1, 1, 'select', 'priority');
--- --------------------------------------------------------
-INSERT INTO `lc_products_options_values` (`id`, `product_id`, `group_id`, `value_id`, `price_operator`, `USD`, `priority`) VALUES
-(1, 1, 1, 1, '+', 0.0000, 1),
-(2, 1, 1, 2, '+', 2.5000, 2),
-(3, 1, 1, 3, '+', 5.0000, 3);
--- --------------------------------------------------------
-INSERT INTO `lc_products_options_stock` (`id`, `product_id`, `combination`, `sku`, `weight`, `weight_class`, `dim_x`, `dim_y`, `dim_z`, `dim_class`, `quantity`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 1, '1-1', 'RD001-S', 1.0, 'kg', 6.0000, 10.0000, 10.0000, 'cm', 10, 0, NOW(), NOW()),
-(2, 1, '1-2', 'RD001-M', 1.1, 'kg', 8.0000, 12.5000, 12.5000, 'cm', 10, 1, NOW(), NOW()),
-(3, 1, '1-3', 'RD001-L', 1.2, 'kg', 10.0000, 15.0000, 15.0000, 'cm', 10, 2, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_products_prices` (`id`, `product_id`, `USD`) VALUES
 (1, 1, 20.0000),

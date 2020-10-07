@@ -51,7 +51,6 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div><strong><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
-                        <?php if (!empty($item['options'])) echo '<div class="options">'. implode('<br />', $item['options']) .'</div>'; ?>
                         <?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
                       </div>
 

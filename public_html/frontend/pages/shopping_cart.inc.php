@@ -46,12 +46,6 @@
       'quantity_unit' => $item['quantity_unit'],
       'error' => $item['error'],
     );
-
-    if (!empty($item['options'])) {
-      foreach ($item['options'] as $k => $v) {
-        $_page->snippets['items'][$key]['options'][] = $k .': '. $v;
-      }
-    }
   }
 
   echo $_page->stitch('pages/shopping_cart');

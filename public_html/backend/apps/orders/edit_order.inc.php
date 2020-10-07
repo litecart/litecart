@@ -1289,7 +1289,6 @@ body.dark-mode #box-comments {
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][stock_item_id]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][options]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][gtin]', '')); ?>'
@@ -1344,24 +1343,6 @@ body.dark-mode #box-comments {
     $(row).find('.dim_y').text(String(item.dim_y).trim('.0'));
     $(row).find('.dim_z').text(String(item.dim_z).trim('.0'));
     $(row).find('.dim_class').text(item.dim_class);
-
-    if (item.options) {
-      var product_options = '';
-      $.each(item.options, function(group, value) {
-        product_options += '<div>'
-                         + '  - '+ group +': ';
-        if ($.isArray(value)) {
-          $.each(value, function(i, array_value) {
-            product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'" />' + array_value +', ';
-          });
-          product_options = product_options.substring(0, product_options.length - 2);
-        } else {
-          product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'" />' + value;
-        }
-        product_options += '</div>';
-      });
-      $(row).find('input[type="hidden"][name$="[options]"]').replaceWith(product_options);
-    }
 
     calculate_total();
   }

@@ -44,7 +44,6 @@
       $this->data['images'] = [];
       $this->data['prices'] = [];
       $this->data['campaigns'] = [];
-      $this->data['options'] = [];
       $this->data['stock_options'] = [];
 
       $this->previous = $this->data;
@@ -134,35 +133,7 @@
         $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
       }
 
-    // Options
-      $products_options_query = database::query(
-        "select po.*, agi.name from ". DB_TABLE_PREFIX ."products_options po
-        left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.id = po.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
-        where product_id = ". (int)$this->data['id'] ."
-        order by priority asc;"
-      );
-
-      while ($option = database::fetch($products_options_query)) {
-
-        $option['values'] = [];
-
-      // Option Values
-        $products_options_values_query = database::query(
-          "select pov.*, if(pov.value_id = 0, custom_value, avi.name) as name from ". DB_TABLE_PREFIX ."products_options_values
-          left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
-          where product_id = ". (int)$this->data['id'] ."
-          and group_id = ". (int)$option['group_id'] ."
-          order by priority asc;"
-        );
-
-        while ($value = database::fetch($products_options_values_query)) {
-          $option['values'][$value['id']] = $value;
-        }
-
-        $this->data['options'][$option['group_id']] = $option;
-      }
-
-    // Options stock
+    // Stock Options
       $products_stock_options_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."products_stock
         where product_id = ". (int)$this->data['id'] ."
@@ -412,94 +383,6 @@
         } unset($campaign);
       }
 
-    // Delete options
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_options
-        where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_options_values
-        where product_id = ". (int)$this->data['id'] ."
-        and group_id not in ('". @implode("', '", array_column($this->data['options'], 'group_id')) ."');"
-      );
-
-    // Update options
-      if (!empty($this->data['options'])) {
-
-        $i = 0;
-        foreach ($this->data['options'] as &$option) {
-
-          if (empty($option['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."products_options
-              (product_id)
-              values (". (int)$this->data['id'] .");"
-            );
-            $option['id'] = database::insert_id();
-          }
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."products_options
-            set
-              group_id = ". (int)$option['group_id'] .",
-              function = '". database::input($option['function']) ."',
-              required = ". (!empty($option['required']) ? 1 : 0) .",
-              sort = '". @database::input($option['sort']) ."',
-              priority = ". ++$i ."
-            where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$option['id'] ."
-            limit 1;"
-          );
-
-        // Delete option values
-          database::query(
-            "delete from ". DB_TABLE_PREFIX ."products_options_values
-            where product_id = ". (int)$this->data['id'] ."
-            and group_id = ". (int)$option['group_id'] ."
-            and id not in ('". @implode("', '", @array_column($option['values'], 'id')) ."');"
-          );
-
-        // Update option values
-          if (!empty($option['values'])) {
-
-            $j = 0;
-            foreach ($option['values'] as &$value) {
-
-              if (empty($value['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."products_options_values
-                  (product_id, group_id, value_id)
-                  values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .", ". (int)$value['value_id'] .");"
-                );
-                $value['id'] = database::insert_id();
-              }
-
-              $sql_currencies = "";
-              foreach (array_keys(currency::$currencies) as $currency_code) {
-                $sql_currencies .= $currency_code ." = '". (isset($value[$currency_code]) ? (float)$value[$currency_code] : 0) ."', ";
-              }
-
-              database::query(
-                "update ". DB_TABLE_PREFIX ."products_options_values
-                set
-                  group_id = ". (int)$option['group_id'] .",
-                  value_id = ". (int)$value['value_id'] .",
-                  custom_value = '". database::input($value['custom_value']) ."',
-                  price_operator = '". database::input($value['price_operator']) ."',
-                  $sql_currencies
-                  priority = ". ++$j ."
-                where product_id = ". (int)$this->data['id'] ."
-                and group_id = ". (int)$option['group_id'] ."
-                and id = ". (int)$value['id'] ."
-                limit 1;"
-              );
-            } unset($value);
-          }
-        } unset($option);
-      }
-
     // Delete stock options
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_stock
@@ -686,7 +569,6 @@
 
       $this->data['images'] = [];
       $this->data['campaigns'] = [];
-      $this->data['options'] = [];
       $this->data['stock_options'] = [];
       $this->save();
 

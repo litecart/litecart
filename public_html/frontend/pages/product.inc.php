@@ -149,7 +149,6 @@
     'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
     'catalog_only_mode' => settings::get('catalog_only_mode'),
-    'options' => [],
   ];
 
 // Extra Images
@@ -245,92 +244,6 @@
 
     if (!empty($cheapest_shipping)) {
       $_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['cost'], $cheapest_shipping['tax_class_id']);
-    }
-  }
-
-// Options
-  if (count($product->options) > 0) {
-    foreach ($product->options as $group) {
-
-      $values = '';
-      switch ($group['function']) {
-
-        case 'checkbox':
-
-          foreach ($group['values'] as $value) {
-
-            $price_adjust_text = '';
-            $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
-
-            if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
-            }
-
-            $values .= '<div class="checkbox">' . PHP_EOL
-                     . '  <label>' . functions::form_draw_checkbox('options['.$group['name'].'][]', $value['name'], true, 'data-group-id="'. (int)$value['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
-                     . '</div>';
-          }
-          break;
-
-        case 'radio':
-
-          foreach ($group['values'] as $value) {
-
-            $price_adjust_text = '';
-            $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
-
-            if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
-            }
-
-            $values .= '<div class="radio">' . PHP_EOL
-                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$value['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
-                     . '</div>';
-          }
-          break;
-
-        case 'select':
-
-          $options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
-          foreach ($group['values'] as $value) {
-
-            $price_adjust_text = '';
-            $price_adjust = currency::format_raw(tax::get_price($value['price_adjust'], $product->tax_class_id));
-            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
-
-            if ($value['price_adjust']) {
-              $price_adjust_text = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
-              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
-            }
-
-            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
-          }
-
-          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$value['group_id'] .'"'. (!empty($group['required']) ? ' required="required"' : ''));
-          break;
-
-        case 'text':
-
-          $values .= functions::form_draw_text_field('options['.$group['name'].']', true, 'data-group-id="'. (int)$value['group_id'] .'"' . (!empty($group['required']) ? ' required="required"' : '')) . PHP_EOL;
-          break;
-
-        case 'textarea':
-
-          $values .= functions::form_draw_textarea('options['.$group['name'].']', true, !empty($group['required']) ? 'data-group-id="'. (int)$value['group_id'] .'" required="required"' : '') . PHP_EOL;
-          break;
-      }
-
-      $_page->snippets['options'][] = [
-        'id' => $group['id'],
-        'group_id' => $group['group_id'],
-        'name' => $group['name'],
-        'required' => !empty($group['required']) ? 1 : 0,
-        'values' => $values,
-      ];
     }
   }
 

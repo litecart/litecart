@@ -27,6 +27,10 @@ DELETE FROM `lc_settings` WHERE `key` = 'store_template_admin' LIMIT 1;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` = 'gzip_enabled' LIMIT 1;
 -- --------------------------------------------------------
+RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
+-- --------------------------------------------------------
+RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
+-- --------------------------------------------------------
 RENAME TABLE `lc_products_options_stock` TO `lc_products_stock`;
 -- --------------------------------------------------------
 INSERT INTO `lc_products_stock`

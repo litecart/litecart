@@ -129,7 +129,7 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(json_encode([$product->id, $options]));
+          $item_key = md5(json_encode([$product->id]));
         }
       }
 
@@ -189,94 +189,6 @@
           throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, $product->quantity_unit['decimals'])]));
         }
 
-      // Remove empty options
-        $array_filter_recursive = function($array, &$_this) {
-
-          foreach ($array as $i => $value) {
-            if (is_array($value)) $array[$i] = $_this($value, $_this);
-          }
-
-          return array_filter($array, function($v) {
-            if (is_array($v)) return !empty($v);
-            return strlen(trim($v));
-          });
-        };
-
-        $options = $array_filter_recursive($options, $array_filter_recursive);
-
-      // Build options structure
-        $sanitized_options = [];
-        foreach ($product->options as $option) {
-
-        // Check group
-          $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
-          $matched_group = @reset(array_intersect(array_keys($options), array_values($possible_groups)));
-
-          if (empty($matched_group)) {
-            if (!empty($option['required'])) {
-              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
-            } else {
-              continue;
-            }
-          }
-
-        // Check values
-          switch ($option['function']) {
-
-            case 'checkbox':
-
-              $selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
-
-              $matched_values = [];
-              foreach ($option['values'] as $value) {
-                $possible_values = array_unique(
-                  array_merge(
-                    [$value['name']],
-                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
-                  )
-                );
-
-                if ($matched_value = array_intersect($selected_values, $possible_values)) {
-                  $matched_values[] = $matched_value;
-                  $item['extras'] += $value['price_adjust'];
-                }
-              }
-              break;
-
-            case 'radio':
-            case 'select':
-
-              foreach ($option['values'] as $value) {
-                $possible_values = array_unique(
-                  array_merge(
-                    [$value['name']],
-                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
-                  )
-                );
-
-                if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
-                  $matched_value = $matched_value[0];
-                  $item['extras'] += $value['price_adjust'];
-                  break;
-                }
-              }
-              break;
-          }
-
-          if (!empty($option['required']) && (!isset($matched_value) || $matched_value == '')) {
-            throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
-          }
-
-          if (empty($matched_group) || (empty($matched_values) && empty($matched_value))) continue;
-
-          $sanitized_options[] = [
-            'group_id' => $option['id'],
-            'value_id' => !empty($value['id']) ? $value['id'] : 0,
-            'combination' => $option['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : 0),
-            'name' => $matched_group,
-            'value' => !empty($matched_values) ? $matched_values : $matched_value,
-          ];
-        }
       // Options stock
         foreach ($product->stock_options as $stock_option) {
 

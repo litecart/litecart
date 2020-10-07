@@ -516,3 +516,32 @@
   if (database::num_rows("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")) {
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer_info`;");
   }
+
+// Separate and migrate stock options from product options
+  $stock_items_query = database::query(
+    "select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+  );
+
+  while ($stock_option = database::fetch($stock_items_query)) {
+    foreach (explode(',', $stock_option['combination']) as $pair) {
+
+      list($group_id,$value_id) = explode('-', $pair);
+
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_customizations_values
+        where product_id = ". (int)$stock_option['product_id'] ."
+        and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_customizations
+        where product_id = ". (int)$stock_option['product_id'] ."
+        and group_id = ". (int)$group_id ."
+        and product_id not in (
+          select product_id from ". DB_TABLE_PREFIX ."products_customizations_values
+          where product_id = ". (int)$stock_option['product_id'] ."
+          and group_id = ". (int)$group_id ."
+        );"
+      );
+    }
+  }

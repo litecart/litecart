@@ -114,15 +114,6 @@
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
-        <?php if ($options) { ?>
-          <?php foreach ($options as $option) { ?>
-          <div class="form-group">
-            <label><?php echo $option['name']; ?></label>
-            <?php echo $option['values']; ?>
-          </div>
-          <?php } ?>
-        <?php } ?>
-
         <div class="price-wrapper">
           <?php if ($campaign_price) { ?>
           <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>

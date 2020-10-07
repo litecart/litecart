@@ -581,36 +581,6 @@ CREATE TABLE `lc_products_info` (
   FULLTEXT KEY `description` (`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_products_options` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) NULL,
-  `group_id` INT(11) NULL,
-  `function` VARCHAR(32) NULL,
-  `required` TINYINT(1) NULL,
-  `sort` VARCHAR(16) NULL,
-  `priority` TINYINT(2) NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `product_option` (`product_id`, `group_id`),
-  KEY `product_id` (`product_id`),
-  KEY `priority` (`priority`)
-) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_products_options_values` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) NULL,
-  `group_id` INT(11) NULL,
-  `value_id` INT(11) NULL,
-  `custom_value` VARCHAR(64) NULL,
-  `price_operator` VARCHAR(1) NULL,
-  `USD` DECIMAL(11,4) NULL,
-  `EUR` DECIMAL(11,4) NULL,
-  `priority` TINYINT(2) NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`, `custom_value`),
-  KEY `product_id` (`product_id`),
-  KEY `priority` (`priority`)
-) ENGINE=MyISAM DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
 CREATE TABLE `lc_products_stock` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) NULL,
