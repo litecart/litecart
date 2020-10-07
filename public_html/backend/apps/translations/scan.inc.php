@@ -82,7 +82,7 @@
             "update ". DB_PREFIX ."translations
             set text_en = '". database::input($translation, true) ."'
             where code = '". database::input($code) ."'
-            and text_en = ''
+            and (text_en is null or text_en = '')
             limit 1;"
           );
 
@@ -102,7 +102,7 @@
 
     $settings_query = database::query(
       "select `key` from ". DB_PREFIX ."settings
-      where setting_group_key != '';"
+      where (setting_group_key is not null and setting_group_key != '');"
     );
 
     while ($setting = database::fetch($settings_query)) {

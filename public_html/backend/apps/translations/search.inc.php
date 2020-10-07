@@ -70,11 +70,11 @@
 
   $translations_query = database::query(
     "select * from ". DB_PREFIX ."translations
-    where code != ''
+    where (code is not null and code != '')
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : null) ."
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : null) ."
     ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or `text_". implode("` like '%". database::input($_GET['query']) ."%' or `text_", database::input($_GET['languages'])) ."` like '%". database::input($_GET['query']) ."%')" : null) ."
-    ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '' or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
+    ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '') or (`text_", database::input($_GET['languages'])) ."` is null or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
     ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", ['cm', 'job', 'om', 'ot', 'pm', 'sm']) ."_%:%')" : null) ."
     order by date_updated desc;"
   );

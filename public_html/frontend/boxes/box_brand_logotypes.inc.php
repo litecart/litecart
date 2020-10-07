@@ -7,7 +7,7 @@
       "select id, image, name from ". DB_PREFIX ."brands
       where status
       and featured
-      and image != ''
+      and (image is not null and image != '')
       order by rand();"
     );
 

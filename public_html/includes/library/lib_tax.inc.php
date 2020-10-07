@@ -140,14 +140,14 @@
             and geo_zone_id in (
               select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['country_code']) ."'
-              and (zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
+              and (zone_code is null or zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
             )
           ) or (
             address_type = 'shipping'
             and geo_zone_id in (
               select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['shipping_address']['country_code']) ."'
-              and (zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
+              and (zone_code is null or zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
             )
           )
         )

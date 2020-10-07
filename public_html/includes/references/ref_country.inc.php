@@ -109,8 +109,8 @@
       $zones_to_geo_zones_query = database::query(
         "select id from ". DB_PREFIX ."zones_to_geo_zones
         where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
-        and (country_code = '' or country_code = '". database::input($this->_country_code) ."')
-        ". (!empty($zone_code) ? "and (zone_code = '' or zone_code = '". database::input($zone_code) ."')" : "") ."
+        and (country_code is null or country_code = '' or country_code = '". database::input($this->_country_code) ."')
+        ". (!empty($zone_code) ? "and (zone_code is null or zone_code = '' or zone_code = '". database::input($zone_code) ."')" : "") ."
         limit 1;"
       );
 

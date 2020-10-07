@@ -34,9 +34,9 @@
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         $translations_query = database::query(
-          "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_PREFIX ."translations
+          "select id, code, if(text_". self::$selected['code'] ." is not null and text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_PREFIX ."translations
           where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
-          having text != '';"
+          having (text is not null and text != '');"
         );
 
         while ($translation = database::fetch($translations_query)) {
@@ -229,8 +229,8 @@
         $secondary_translation_query = database::query(
           "select id, text_en, `text_". $language_code ."` from ". DB_PREFIX ."translations
           where text_en = '". database::input($translation['text_en']) ."'
-          and text_en != ''
-          and text_". self::$selected['code'] ." != ''
+          and (text_en is not null and text_en != '')
+          and (text_". self::$selected['code'] ." is not null and text_". self::$selected['code'] ." != '')
           limit 1;"
         );
 

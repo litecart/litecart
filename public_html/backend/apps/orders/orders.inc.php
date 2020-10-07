@@ -64,7 +64,7 @@
   $payment_options_query = database::query(
     "select distinct payment_option_name
     from ". DB_PREFIX ."orders o
-    where payment_option_name != ''
+    where (payment_option_name is not null and payment_option_name != '')
     order by payment_option_name asc"
   );
 
