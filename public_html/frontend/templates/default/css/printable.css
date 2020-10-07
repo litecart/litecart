@@ -31,6 +31,9 @@ hr {
   .page[data-size="A4"] {
     height: calc(29.7cm - 15mm - 15mm);
   }
+  .page[data-="A4"][data-orientation="portrait"] {
+    height: calc(21cm - 15mm - 15mm);
+  }
   h1 {
     margin-top: 0;
   }

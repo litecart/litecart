@@ -28,27 +28,26 @@ body {
 }
 </style>
 
-<main id="main">
-  <iframe id="order-copy" src="<?php echo document::ilink('printable_order_copy', [], ['order_id', 'public_key']); ?>" style="border: 0;"></iframe>
 
-  <div id="sidebar" class="hidden-print shadow">
+<iframe id="order-copy" src="<?php echo document::ilink('printable_order_copy', array(), array('order_id', 'public_key')); ?>" style="border: 0;"></iframe>
 
-    <ul id="actions" class="list-unstyled">
-      <li><a class="btn btn-default btn-block btn-lg" href="javascript:$('#order-copy').get(0).contentWindow.print();"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></a></li>
-    </ul>
+<div id="sidebar" class="hidden-print shadow">
 
-    <h1 style="margin-top: 0;"><?php echo language::translate('title_comments', 'Comments'); ?></h1>
+  <ul id="actions" class="list-unstyled">
+    <li><a class="btn btn-default btn-block btn-lg" href="javascript:$('#order-copy').get(0).contentWindow.print();"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></a></li>
+  </ul>
 
-    <div id="comments" class="bubbles">
-      <?php foreach ($comments as $comment) { ?>
-      <div class="bubble <?php echo $comment['type']; ?>">
-        <div class="text"><?php echo nl2br($comment['text']); ?></div>
-        <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])); ?></div>
-      </div>
-      <?php } ?>
+  <h1 style="margin-top: 0;"><?php echo language::translate('title_comments', 'Comments'); ?></h1>
+
+  <div id="comments" class="bubbles">
+    <?php foreach ($comments as $comment) { ?>
+    <div class="bubble <?php echo $comment['type']; ?>">
+      <div class="text"><?php echo nl2br($comment['text']); ?></div>
+      <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($comment['date_created'])); ?></div>
     </div>
+    <?php } ?>
   </div>
-</main>
+</div>
 
 <script>
 // Scroll to last comment

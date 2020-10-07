@@ -5,7 +5,7 @@ ul.list-unstyled {
   padding: 0;
   li {
     margin: 0;
-    padding: calc(var(--gutter-size)/4) 0;
+    padding: @default-gutter-size/4 0;
     list-style: none;
   }
   ul {
@@ -17,10 +17,10 @@ ul.list-unstyled {
 ul.list-inline {
   margin: 0;
   padding: 0;
-  display: inline-flex;
-  flex-wrap: wrap;
   li {
-    padding: calc(var(--gutter-size)/4);
+    display: inline-block;
+    margin: 0;
+    padding: @default-gutter-size/4;
     list-style: none;
   }
 }

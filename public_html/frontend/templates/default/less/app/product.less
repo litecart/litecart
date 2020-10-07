@@ -1,13 +1,13 @@
 #view-full-page {
   float: right;
   display: inline-block;
-  padding: .5rem 1rem;
+  padding: @default-gutter-size/2 @default-gutter-size;
 }
 
 #box-product {
 
   .images {
-    margin-bottom: 2rem;
+    margin-bottom: @default-gutter-size*2;
   }
 
   .main-image {
@@ -17,9 +17,9 @@
       color: #fff;
       font-size: 12px;
       font-weight: bold;
-      top: 17px;
-      left: -34px;
-      padding: .25rem .5rem;
+      top: 15px;
+      left: -35px;
+      padding: @default-gutter-size/4 @default-gutter-size/2;
       position: absolute;
       text-align: center;
       text-transform: uppercase;
@@ -63,7 +63,7 @@
   }
   .social-bookmarks {
     font-size: 1.75em;
-    margin: 1rem 0;
+    margin: @default-gutter-size 0;
   }
   .description {
     p:first-child {

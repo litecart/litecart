@@ -1,7 +1,5 @@
-<main id="main" class="container">
-  <div id="content">
-    {snippet:notices}
+<div id="content">
+  {snippet:notices}
 
-    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_categories.inc.php'); ?>
-  </div>
-</main>
+  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_categories.inc.php'); ?>
+</div>

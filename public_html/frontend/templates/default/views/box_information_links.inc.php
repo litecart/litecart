@@ -1,11 +1,11 @@
 <?php
-  $draw_page = function($page, $page_path, $depth=1, &$_this) {
+  $draw_page = function($page, $page_path, $depth=1, &$draw_page) {
     echo '<li class="page-'. $page['id'] . (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'">' . PHP_EOL
        . '  <a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;
     if (!empty($page['subpages'])) {
       echo '  <ul class="nav nav-pills nav-stacked">' . PHP_EOL;
       foreach ($page['subpages'] as $subpage) {
-        echo PHP_EOL . $_this($subpage, $page_path, $depth+1, $_this);
+        echo PHP_EOL . $draw_page($subpage, $page_path, $depth+1, $draw_page);
       }
       echo '  </ul>' . PHP_EOL;
     }

@@ -7,7 +7,7 @@
     </div>
 
     <div class="info">
-      <div class="name"><?php echo $name; ?></div>
+      <h4 class="name"><?php echo $name; ?></h4>
       <div class="brand-name hidden-xs"><?php echo !empty($brand) ? $brand['name'] : '&nbsp;'; ?></div>
       <div class="description"><?php echo $short_description; ?></div>
     </div>

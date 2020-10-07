@@ -1,15 +1,16 @@
-<main id="main" class="container">
-  <div id="sidebar">
-    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_category_tree.inc.php'); ?>
-    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
-  </div>
+<div id="sidebar">
+  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_category_tree.inc.php'); ?>
 
-  <div id="content">
-    {snippet:notices}
-    {snippet:breadcrumbs}
+  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
+</div>
 
-    <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_product.inc.php'); ?>
-    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_similar_products.inc.php'); ?>
-    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_also_purchased_products.inc.php'); ?>
-  </div>
-</main>
+<div id="content">
+  {snippet:notices}
+  {snippet:breadcrumbs}
+
+  <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_product.inc.php'); ?>
+
+  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_similar_products.inc.php'); ?>
+
+  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_also_purchased_products.inc.php'); ?>
+</div>

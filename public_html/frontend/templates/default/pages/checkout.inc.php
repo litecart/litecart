@@ -1,33 +1,34 @@
-<main id="main" class="container">
-  <div id="content">
-    {snippet:notices}
+<div id="content" class="twelve-eighty">
+  {snippet:notices}
 
-    <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
+  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
 
-      <section id="box-checkout" class="box">
-       <div class="row" style="grid-gap: 2rem;">
-         <div class="col-md-6">
-           <div class="customer wrapper"></div>
-          </div>
+  <section id="box-checkout" class="box">
+    <div class="cart wrapper"></div>
 
-          <div class="col-md-6">
-            <div class="shipping wrapper"></div>
+    <div class="row" style="grid-gap: 2rem;">
+      <div class="col-md-6">
+        <div class="customer wrapper"></div>
+      </div>
 
-            <div class="payment wrapper"></div>
-          </div>
-        </div>
+      <div class="col-md-6">
+        <div class="shipping wrapper"></div>
 
-        <div class="summary wrapper"></div>
-      </section>
+        <div class="payment wrapper"></div>
+      </div>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
-</main>
+    <div class="summary wrapper"></div>
+  </section>
+
+  <?php echo functions::form_draw_form_end(); ?>
+</div>
 
 <script>
 // Queue Handler
 
   var updateQueue = [
+    {component: 'cart',     data: null, refresh: true},
     {component: 'customer', data: null, refresh: true},
     {component: 'shipping', data: null, refresh: true},
     {component: 'payment',  data: null, refresh: true},
@@ -75,17 +76,20 @@
 
     var url = '';
     switch (task.component) {
+      case 'cart':
+        url = '<?php echo document::ilink('ajax/checkout_cart'); ?>';
+        break;
       case 'customer':
-        url = '<?php echo document::ilink('checkout/customer'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_customer'); ?>';
         break;
       case 'shipping':
-        url = '<?php echo document::ilink('checkout/shipping'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_shipping'); ?>';
         break;
       case 'payment':
-        url = '<?php echo document::ilink('checkout/payment'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_payment'); ?>';
         break;
       case 'summary':
-        url = '<?php echo document::ilink('checkout/summary'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_summary'); ?>';
         break;
       default:
         alert('Error: Invalid component ' + task.component);
@@ -95,16 +99,16 @@
     if (task.data === true) {
       switch (task.component) {
         case 'customer':
-          task.data = $('#box-checkout-customer :input').serialize();
+          task.data = 'token=' + $(':input[name="token"]').val() + '&' + $('#box-checkout-customer :input').serialize();
           break;
         case 'shipping':
-          task.data = $('#box-checkout-shipping .option.active :input').serialize();
+          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-shipping .option.active :input').serialize();
           break;
         case 'payment':
-          task.data = $('#box-checkout-payment .option.active :input').serialize();
+          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-payment .option.active :input').serialize();
           break;
         case 'summary':
-          task.data = $('#box-checkout-summary :input').serialize();
+          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-summary :input').serialize();
           break;
       }
     }
@@ -146,21 +150,47 @@
 
   runQueue();
 
+// Cart
+
+  $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
+    e.preventDefault();
+    var data = 'token=' + $(':input[name="token"]').val()
+             + '&' + $(this).closest('td').find(':input').serialize()
+             + '&remove_cart_item=' + $(this).val();
+    queueUpdateTask('cart', data, true);
+    queueUpdateTask('customer', true, true);
+    queueUpdateTask('shipping', true, true);
+    queueUpdateTask('payment', true, true);
+    queueUpdateTask('summary', true, true);
+  });
+
+  $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
+    e.preventDefault();
+    var data = 'token=' + $(':input[name="token"]').val()
+             + '&' + $(this).closest('td').find(':input').serialize()
+             + '&update_cart_item=' + $(this).val();
+    queueUpdateTask('cart', data, true);
+    queueUpdateTask('customer', true, true);
+    queueUpdateTask('shipping', true, true);
+    queueUpdateTask('payment', true, true);
+    queueUpdateTask('summary', true, true);
+  });
+
 // Customer Form: Toggles
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="different_shipping_address"]', function(e){
     if (this.checked == true) {
-      $('#box-checkout-customer .shipping-address fieldset').prop('disabled', false).slideDown('fast');
+      $('#box-checkout-customer .shipping-address fieldset').removeAttr('disabled').slideDown('fast');
     } else {
-      $('#box-checkout-customer .shipping-address fieldset').prop('disabled', true).slideUp('fast');
+      $('#box-checkout-customer .shipping-address fieldset').attr('disabled', 'disabled').slideUp('fast');
     }
   });
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="create_account"]', function(){
     if (this.checked == true) {
-      $('#box-checkout-customer .account fieldset').prop('disabled', false).slideDown('fast');
+      $('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast');
     } else {
-      $('#box-checkout-customer .account fieldset').prop('disabled', true).slideUp('fast');
+      $('#box-checkout-customer .account fieldset').attr('disabled', 'disabled').slideUp('fast');
     }
   });
 
@@ -284,10 +314,10 @@
     if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
       if (window.customer_form_checksum == null) return;
       window.customer_form_changed = true;
-      $('#box-checkout-customer button[name="save_customer_details"]').prop('disabled', false);
+      $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
     } else {
       window.customer_form_changed = false;
-      $('#box-checkout-customer button[name="save_customer_details"]').prop('disabled', true);
+      $('#box-checkout-customer button[name="save_customer_details"]').attr('disabled', 'disabled');
     }
   });
 
@@ -303,6 +333,7 @@
             var data = 'token=' + $(':input[name="token"]').val()
                      + '&' + $('#box-checkout-customer :input').serialize();
             queueUpdateTask('customer', data, true);
+            queueUpdateTask('cart', null, true);
             queueUpdateTask('shipping', true, true);
             queueUpdateTask('payment', true, true);
             queueUpdateTask('summary', null, true);
@@ -324,6 +355,7 @@
              + '&' + $('#box-checkout-customer :input').serialize()
              + '&save_customer_details=true';
     queueUpdateTask('customer', data, true);
+    queueUpdateTask('cart', null, true);
     queueUpdateTask('shipping', true, true);
     queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', null, true);

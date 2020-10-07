@@ -1,14 +1,3 @@
-// Toggle Cart
-  $('[data-toggle="cart"]').click(function(e){
-    e.preventDefault();
-    console.log('yes');
-    if ($('#shopping-cart').is(':hidden')) {
-      $('body').addClass('cart-visible');
-    } else {
-      $('body').removeClass('cart-visible');
-    }
-  });
-
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();
@@ -19,7 +8,7 @@
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
 // Sidebar parallax effect
-  if (typeof(window._env) !== 'undefined' && window._env.template.settings.sidebar_parallax_effect == true) {
+  if (window.config.template.settings.sidebar_parallax_effect == true) {
 
     var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
     var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
@@ -120,50 +109,48 @@
   });
 
 // Update cart / Keep alive
-  if (typeof(window._env) !== 'undefined') {
-    window.updateCart = function(data) {
-      if (data) $('*').css('cursor', 'wait');
-      $.ajax({
-        url: window._env.platform.url + 'ajax/cart.json',
-        type: data ? 'post' : 'get',
-        data: data,
-        cache: false,
-        async: true,
-        dataType: 'json',
-        beforeSend: function(jqXHR) {
-          jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          if (data) alert('Error while updating cart');
-          console.error('Error while updating cart');
-          console.debug(jqXHR.responseText);
-        },
-        success: function(json) {
-          if (json['alert']) alert(json['alert']);
-          $('#cart .items').html('');
-          if (json['items']) {
-            $.each(json['items'], function(i, item){
-              $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
-            });
-            $('#cart .items').append('<li class="divider"></li>');
-          }
-          $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
-          $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
-          $('#cart .formatted_value').html(json['formatted_value']);
-          if (json['quantity'] > 0) {
-            $('#cart img').attr('src', window._env.template.url + 'images/cart_filled.svg');
-          } else {
-            $('#cart img').attr('src', window._env.template.url + 'images/cart.svg');
-          }
-        },
-        complete: function() {
-          if (data) $('*').css('cursor', '');
+  window.updateCart = function(data) {
+    if (data) $('*').css('cursor', 'wait');
+    $.ajax({
+      url: window.config.platform.url + 'ajax/cart.json',
+      type: data ? 'post' : 'get',
+      data: data,
+      cache: false,
+      async: true,
+      dataType: 'json',
+      beforeSend: function(jqXHR) {
+        jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (data) alert('Error while updating cart');
+        console.error('Error while updating cart');
+        console.debug(jqXHR.responseText);
+      },
+      success: function(json) {
+        if (json['alert']) alert(json['alert']);
+        $('#cart .items').html('');
+        if (json['items']) {
+          $.each(json['items'], function(i, item){
+            $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
+          });
+          $('#cart .items').append('<li class="divider"></li>');
         }
-      });
-    }
-
-    var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
+        $('#cart .items').append('<li><a href="' + config.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
+        $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
+        $('#cart .formatted_value').html(json['formatted_value']);
+        if (json['quantity'] > 0) {
+          $('#cart img').attr('src', config.template.url + 'images/cart_filled.svg');
+        } else {
+          $('#cart img').attr('src', config.template.url + 'images/cart.svg');
+        }
+      },
+      complete: function() {
+        if (data) $('*').css('cursor', '');
+      }
+    });
   }
+
+  var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
 
 /*
  * jQuery Animate From To plugin 1.0

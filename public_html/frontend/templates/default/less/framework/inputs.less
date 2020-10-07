@@ -11,88 +11,26 @@ input[type="number"] {
   text-align: right;
 }
 
-input[type="checkbox"] {
-  -webkit-appearance: none;
-  position: relative;
-  background: var(--input-background-color);
-  height: 1em;
-  width: 1em;
-  border: 1px solid var(--default-border-color);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-  border-radius: var(--border-radius);
-  display: inline-block;
-  vertical-align: baseline;
-  &:active, &:checked:active {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
-  }
-  &:checked {
-    background-color: #e9ecee;
-    border: 1px solid #adb8c0;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
-    &:after {
-      content: "\2713";
-      transform: rotate(15deg);
-      position: absolute;
-      font-weight: bold;
-      font-size: 1.5em;
-      line-height: 0;
-      text-align: center;
-      bottom: .40em;
-    }
-  }
-}
-
-input[type="radio"] {
-  -webkit-appearance: none;
-  position: relative;
-  background: var(--input-background-color);
-  height: 1em;
-  width: 1em;
-  border: 1px solid var(--default-border-color);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-  border-radius: 50%;
-  display: inline-block;
-  vertical-align: baseline;
-  &:active, &:checked:active {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
-  }
-  &:checked {
-    background-color: #e9ecee;
-    border: 1px solid #adb8c0;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
-    &:after {
-      content: "\2022";
-      position: absolute;
-      font-weight: bold;
-	    font-size: 1.9em;
-      line-height: 0;
-      text-align: center;
-	    bottom: .22em;
-      left: .04em;
-    }
-  }
-}
-
 .form-group {
   &.required label::after {
     content: ' *';
     color: #f00;
   }
-  &:not([class*=col-]) {
-    margin-bottom: var(--gutter-size);
+  &:not([class*="col-"]) {
+    margin-bottom: @default-gutter-size;
   }
   > label {
     display: inline-block;
-    padding-bottom: .5em;
+    padding-bottom: @form-input-padding/2;
   }
 }
 
 .input-field() {
   position: relative;
-  color: var(--input-text-color);
-  background: var(--input-background-color);
-  border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
+  color: #555;
+  background: @form-input-background;
+  border: 1px solid @default-border-color;
+  border-radius: @default-border-radius;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
@@ -101,16 +39,15 @@ input[type="radio"] {
   display: block;
   width: 100%;
   min-width: 1px; // Firefox fix
-  padding: .5em 1em;
+  padding: @form-input-padding @form-input-padding * 2;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  //transition: all 50ms;
+  transition: all 50ms;
 
   &[type="color"] {
-    height: 42px;
+    height: 37px;
   }
   &[type="file"] {
     font-size: 12px;
-    padding: 5px;
   }
   &[disabled] {
     opacity: 0.5;
@@ -120,15 +57,37 @@ input[type="radio"] {
   }
 }
 
-select.form-control {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding-right: ~"calc(var(--default-gutter-size) * 2)";
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1em center;
-  background-size: 16px 12px
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  background: @form-input-background;
+  &:before {
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    right: @form-input-padding * 2;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000;
+  }
+  select.form-control {
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: @default-gutter-size * 2;
+  }
+}
+
+.select-wrapper.multiple {
+  .form-control {
+    padding: 0;
+  }
+  option {
+    padding: @form-input-padding @form-input-padding*2;
+  }
 }
 
 .input-unstyled {
@@ -140,15 +99,10 @@ select.form-control {
 }
 
 .checkbox, .radio {
-  padding: .5em 0;
+  padding: @form-input-padding @form-input-padding * 2;
 }
 .form-control .checkbox {
-  padding: 1em 0;
-}
-.form-control-feedback {
-  position: absolute;
-  right: 24px;
-  top: 35px;
+  padding: @form-input-padding 0;
 }
 
 .input-group {
@@ -164,19 +118,19 @@ select.form-control {
   .input-group-addon {
     flex: 1 0 auto;
     margin: 0 -1px;
-    padding: .5em 1em;
-    background-color: var(--default-color);
-    border-left: 1px solid var(--default-border-color);
-    border-right: 1px solid var(--default-border-color);
+    padding: @form-input-padding @form-input-padding * 2;
+    background-color: @default-color;
+    border-left: 1px solid @default-border-color;
+    border-right: 1px solid @default-border-color;
     color: #555;
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
     .select-wrapper {
       background: none;
-      margin: -1em -2em;
+      margin: -@form-input-padding -@form-input-padding * 2;
       &:before {
-        right: -2em;
+        right: -@form-input-padding * 2;
       }
     }
     select {
@@ -187,18 +141,15 @@ select.form-control {
   }
   .input-group-icon {
     flex: 1 0 auto;
-    padding: .5em 1em;
-    + .form-control {
-      padding-left: 0;
-    }
+    padding: @form-input-padding @form-input-padding * 2;
+    margin-right: -12px;
   }
   .input-group-btn {
     flex: 1 0 auto;
     .btn {
       border-top: none;
       border-bottom: none;
-      padding: .5em 1em;
-      box-shadow: none;
+      padding: 7px 12px;
     }
   }
   .form-control:first-child,
@@ -206,7 +157,7 @@ select.form-control {
   .input-group-btn:first-child > .btn,
   .input-group-btn:first-child > .btn-group > .btn,
   .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    border-radius: @default-border-radius 0 0 @default-border-radius;
   }
   .form-control:last-child,
   .input-group-addon:last-child,
@@ -214,7 +165,7 @@ select.form-control {
   .input-group-btn:last-child > .btn-group > .btn,
   .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
     margin-right: -1px;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    border-radius: 0 @default-border-radius @default-border-radius 0;
   }
   + .input-group {
     margin-top: -1px;

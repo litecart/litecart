@@ -1,18 +1,18 @@
 /* Breadcrumbs - Bootstrap Compatible */
 
 ul.breadcrumb {
-  margin: 0 0 var(--gutter-size) 0;
-  padding: .5em 1em;
+  margin: 0 0 @default-gutter-size 0;
+  padding: @default-gutter-size/2 @default-gutter-size;
+  margin-bottom: @default-gutter-size;
   list-style: none;
-  background-color: var(--breadcrumbs-background-color);
-  border: 1px solid var(--breadcrumbs-border-color);
-  border-radius: var(--border-radius);
+  background-color: @breadcrumbs-background-color;
+  border-radius: @default-border-radius;
   li {
     display: inline-block;
     &::before {
       content: "/\00a0";
       padding: 0 5px;
-      color: var(--breadcrumbs-text-color);
+      color: #ccc;
     }
     a {
       color: inherit;

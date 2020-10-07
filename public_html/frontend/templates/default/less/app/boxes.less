@@ -1,8 +1,23 @@
 /* Boxes */
 
-#box-campaign-products, #box-latest-products, #box-popular-products, #box-similar-products, #box-also-purchased-products {
-  .title {
-    margin: 0 0 1rem 0;
+.box {
+  margin: @default-gutter-size 0;
+
+  &.white {
+    margin: @default-gutter-size;
+    padding: @default-gutter-size;
+    border-radius: @default-border-radius;
+    background: #fff;
+  }
+  &.border {
+    margin: @default-gutter-size;
+    padding: @default-gutter-size;
+    border: 1px solid @default-border-color;
+    border-radius: @default-border-radius;
+  }
+
+  > .title {
+    margin-top: 0;
   }
 }
 
@@ -19,17 +34,17 @@
       color: inherit;
       line-height: 175%;
       &.active {
-        color: var(--link-text-color);
+        color: @default-link-color;
       }
       &:hover {
-        color: var(--link-text-color);
+        color: @default-link-color;
       }
     }
   }
 }
 
 #box-filter {
-  .brands {
+  .manufacturers {
     ul {
       max-height: 200px;
       overflow-y: auto;

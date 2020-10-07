@@ -5,7 +5,6 @@
 <meta charset="{snippet:charset}" />
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="{snippet:template_path}css/variables.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/checkout.min.css" />
@@ -14,7 +13,7 @@
 </head>
 <body>
 
-<header id="header" class="container">
+<header id="header" class="twelve-eighty">
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
     <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
   </a>
@@ -31,7 +30,10 @@
   </div>
 </header>
 
-{snippet:content}
+
+<main id="page">
+  {snippet:content}
+</main>
 
 {snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>
