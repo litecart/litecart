@@ -34,7 +34,10 @@
 </style>
 
 <div id="widget-discussions" class="widget panel panel-default">
-  <div class="panel-heading"><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></div>
+  <div class="panel-heading">
+    <?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
+  </div>
+
   <div class="panel-body">
       <div class="row">
       <?php foreach ($discussions as $item) { ?>

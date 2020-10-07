@@ -140,9 +140,10 @@
 <div id="widget-graphs" class="widget">
   <div class="row" style="margin-bottom: 0;">
     <div class="col-md-8">
+
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="panel-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
+          <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>
         </div>
 
         <div class="panel-body">
@@ -154,7 +155,7 @@
     <div class="widget col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="panel-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
+          <?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>
         </div>
 
         <div class="panel-body">

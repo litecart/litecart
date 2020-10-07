@@ -44,7 +44,10 @@
 </style>
 
 <div id="widget-addons" class="widget panel panel-default">
-  <div class="panel-heading"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></div>
+  <div class="panel-heading">
+    <?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?>
+  </div>
+
   <div class="panel-body">
     <div class="row">
       <?php foreach ($addons as $item) { ?>
