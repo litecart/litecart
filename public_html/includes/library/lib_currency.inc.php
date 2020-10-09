@@ -45,7 +45,7 @@
 
       session::$data['currency'] = self::$currencies[$code];
 
-      if (!empty($_COOKIE['cookies_accepted'])) {
+      if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
         header('Set-Cookie: currency_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
       }
     }
