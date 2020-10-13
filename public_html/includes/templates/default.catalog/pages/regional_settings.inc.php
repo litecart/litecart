@@ -1,4 +1,4 @@
-<main id="content">
+<main id="content" class="content_regional_settings">
   {snippet:notices}
 
   <div id="box-regional-settings">

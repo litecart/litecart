@@ -1,4 +1,4 @@
-<main id="content">
+<main id="content" class="content_order_success">
   {snippet:notices}
 
   <div id="box-order-success" class="box text-center">

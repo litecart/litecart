@@ -5,7 +5,7 @@
   </div>
 </aside>
 
-<main id="content">
+<main id="content" class="content_order_history">
   {snippet:notices}
 
   <div id="box-order-history" class="box">

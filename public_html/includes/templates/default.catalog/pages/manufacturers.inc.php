@@ -1,4 +1,4 @@
-<main id="content">
+<main id="content" class="content_manufacturers">
   {snippet:notices}
 
   <div id="box-manufacturers" class="box">

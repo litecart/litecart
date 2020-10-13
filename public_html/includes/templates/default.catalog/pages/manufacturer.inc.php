@@ -3,7 +3,7 @@
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php'); ?>
 </aside>
 
-<main id="content">
+<main id="content" class="content_manufacturer">
   {snippet:notices}
   {snippet:breadcrumbs}
 

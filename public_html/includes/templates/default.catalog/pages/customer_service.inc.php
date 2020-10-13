@@ -5,7 +5,7 @@
   </div>
 </aside>
 
-<main id="content">
+<main id="content" class="content_customer_service">
   {snippet:notices}
 
   <div id="box-customer-service" class="box">
