@@ -4,14 +4,26 @@
 
   breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));
 
+// Table Rows
+  $tables_query = database::query(
+    "SELECT * FROM information_schema.TABLES
+    WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
+    order by TABLE_NAME;"
+  );
+
+  $tables = [];
   $defined_tables = [];
-  foreach (get_defined_constants() as $constant) {
-    if (preg_match('#^`'. preg_quote(DB_DATABASE, '#') .'`\.`(.*)`$#', $constant, $matches)) {
-      $defined_tables[] = $matches[1];
+
+  while ($table = database::fetch($tables_query)) {
+    $tables[] = $table;
+    if (preg_match('#^'.preg_quote(DB_TABLE_PREFIX, '#').'#', $table['TABLE_NAME'])) {
+      $defined_tables[] = $table['TABLE_NAME'];
     }
   }
 
-  if (empty($_POST)) $_POST['tables'] = $defined_tables;
+  if (empty($_POST)) {
+    $_POST['tables'] = $defined_tables;
+  }
 
   if (isset($_POST['convert'])) {
 
@@ -19,8 +31,10 @@
       if (empty($_POST['tables'])) throw new Exception(language::translate('error_must_select_tables', 'You must select tables'));
       if (empty($_POST['collation']) && empty($_POST['engine'])) throw new Exception(language::translate('error_must_select_action_to_perform', 'You must select an action to perform'));
 
+      $table_names = array_column($tables, 'TABLE_NAME');
+
       foreach ($_POST['tables'] as $table) {
-        if (!in_array($table, $defined_tables)) throw new Exception(strtr(language::translate('error_unknown_defined_table_x', 'Unknown defined table (%table)')), ['%table' => $table]);
+        if (!in_array($table, $table_names)) throw new Exception(strtr(language::translate('error_unknown_table_x', 'Unknown table (%table)')), ['%table' => $table]);
       }
 
       $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
@@ -28,8 +42,7 @@
       if (!empty($_POST['set_database_default'])) {
         database::query(
           "alter database `". DB_DATABASE ."`
-          default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."
-          collate = ". database::input($_POST['collation']) .";"
+          default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";"
         );
       }
 
@@ -37,8 +50,7 @@
         foreach ($_POST['tables'] as $table) {
           database::query(
             "alter table `". DB_DATABASE ."`.`". $table ."`
-            convert to character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."
-            collate ". database::input($_POST['collation']) .";"
+            convert to character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ." collate ". database::input($_POST['collation']) .";"
           );
         }
       }
@@ -61,21 +73,10 @@
     }
   }
 
-// Table Rows
-  $tables = [];
-
-  $tables_query = database::query(
-    "select * from `information_schema`.`TABLES`
-    where TABLE_SCHEMA = '". DB_DATABASE ."';"
-  );
-
-  while ($table = database::fetch($tables_query)) {
-    if (!in_array($table['TABLE_NAME'], $defined_tables)) continue;
-    $tables[] = $table;
-  }
 
 // Number of Rows
-  $num_rows = database::num_rows($tables_query);
+  $num_rows = count($tables);
+
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">

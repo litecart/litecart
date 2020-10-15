@@ -441,6 +441,11 @@
       'search'  => "// Database tables",
       'replace' => "// Database Tables - Backward Compatibility (LiteCart <2.3)",
     ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1",
+      'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8mb4');",
+    ],
   ];
 
   foreach ($modified_files as $modification) {
@@ -545,3 +550,64 @@
       );
     }
   }
+
+// Convert Table Charset and Collations
+  $collations = [];
+
+  $collations_query = database::query(
+    "select COLLATION_NAME FROM `information_schema`.`COLLATIONS`
+    where CHARACTER_SET_NAME = 'utf8mb4'
+    order by COLLATION_NAME;"
+  );
+
+  while ($collation = database::fetch($collations_query, 'COLLATION_NAME')) {
+    $collations[] = $collation;
+  }
+
+  $engines_query = database::query(
+    "show engines;"
+  );
+
+  while ($engine = database::fetch($engines_query))
+    if ($engine['Engine'] != 'Aria') {
+      $found_aria = true;
+      break;
+    }
+  }
+
+  $tables_query = database::query(
+    "SELECT TABLE_NAME FROM information_schema.TABLES
+    WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
+    AND TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+    order by TABLE_NAME;"
+  );
+
+  while ($table = database::fetch($tables_query)) {
+
+    $new_collation = preg_replace('#^(.*?)_.*$#', 'utf8mb4_$1', $table['TABLE_COLLATION']);
+
+    if (!in_array($new_collation, $collations)) {
+      if (in_array('utf8mb4_0900_ai_ci', $collations)) {
+        $new_collation = 'utf8mb4_0900_ai_ci';
+      } else {
+        $new_collation = 'utf8mb4_swedish_ci';
+      }
+    }
+
+    database::query(
+      "alter table `". DB_DATABASE ."`.`". $table ."`
+      convert to character set utf8mb4 collate ". database::input($new_collation) .";"
+    );
+
+    if (!empty($found_aria)) {
+      database::query(
+        "alter table `". DB_DATABASE ."`.`". $table ."`
+        engine=Aria;"
+      );
+    }
+  }
+
+  database::query(
+    "alter database `". DB_DATABASE ."`
+    default character set utf8mb4 collate ". database::input($new_collation) .";"
+  );

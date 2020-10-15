@@ -1212,7 +1212,8 @@ END;
   function form_draw_mysql_collations_list($name, $input=true, $multiple=false, $parameters='') {
 
     $collations_query = database::query(
-      "SELECT * FROM `information_schema`.`COLLATIONS`
+      "select * from information_schema.COLLATIONS
+      where CHARACTER_SET_NAME = 'utf8mb4'
       order by COLLATION_NAME;"
     );
 

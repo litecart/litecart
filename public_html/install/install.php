@@ -13,7 +13,8 @@
       . "  --db_password        Set database user password\n\n"
       . "  --db_database        Set database name\n"
       . "  --db_table_prefix    Set database table prefix (Default: lc_).\n"
-      . "  --db_collation       Set database collation (Default: utf8_swedish_ci)\n"
+      . "  --db_collation       Set database collation (Default: utf8mb4_swedish_ci)\n"
+      . "  --db_engine          Set table storage engine (Default: Aria / MyISAM)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
       . "  --storage_folder     Set storage folder name (Default storage)\n"
@@ -102,7 +103,11 @@
     }
 
     if (empty($_REQUEST['db_collation'])) {
-      $_REQUEST['db_collation'] = 'utf8_swedish_ci';
+      $_REQUEST['db_collation'] = 'utf8mb4_swedish_ci';
+    }
+
+    if (empty($_REQUEST['db_engine'])) {
+      $_REQUEST['db_engine'] = 'Aria';
     }
 
     if (!isset($_REQUEST['db_table_prefix'])) {
@@ -241,6 +246,30 @@
       }
     }
 
+    ### Database > Check Engines ##################################
+
+    echo '<p>Checking MySQL storage engine... ';
+
+    $engines_query = database::query(
+      "show engines;"
+    );
+
+    while ($engine = database::fetch($engines_query))
+      if ($engine['Engine'] != 'Aria') {
+        $found_engine = true;
+        break;
+      }
+    }
+
+    if (!empty($found_engine)) {
+      echo $_REQUEST['db_engine'] . ' <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      echo $_REQUEST['db_engine'] . ' <span class="warning">[Warning] Not found, defaulting to MyISAM</span></p>' . PHP_EOL . PHP_EOL;
+      $_REQUEST['db_engine'] = 'MyIsam';
+    }
+
+    define('DB_STORAGE_ENGINE', $_REQUEST['db_engine']);
+
     ### Config > Write ############################################
 
     echo '<p>Writing config file... ';
@@ -294,6 +323,7 @@
     $map = [
       '`lc_' => '`'.$_REQUEST['db_table_prefix'],
       '{DATABASE_COLLATION}' => $_REQUEST['db_collation'],
+      '{DATABASE_ENGINE}' => $_REQUEST['db_engine'],
     ];
 
     foreach ($map as $search => $replace) {
