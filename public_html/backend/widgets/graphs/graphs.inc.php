@@ -103,12 +103,6 @@
     $daily_sales[date('N')]['label'] = '\u2605'.$daily_sales[date('N')]['label'];
 ?>
 <style>
-#chart-sales-monthly, #chart-sales-daily {
-  padding: 1rem;
-  border 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
-}
-
 #chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {
   font-size: 12px;
   color: #999;
@@ -139,7 +133,7 @@
 
 <div id="widget-graphs" class="widget">
   <div class="row" style="margin-bottom: 0;">
-    <div class="col-md-8">
+    <div class="col-md-9">
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -152,7 +146,7 @@
       </div>
     </div>
 
-    <div class="widget col-md-4">
+    <div class="widget col-md-3">
       <div class="panel panel-default">
         <div class="panel-heading">
           <?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>

@@ -247,6 +247,7 @@ END;
   }
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $parameters='') {
+
     if ($value === true) $value = form_reinsert_value($name);
 
     if ($value != '') {

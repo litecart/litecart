@@ -33,7 +33,7 @@
       <?php echo language::translate('title_orders', 'Orders'); ?>
     </div>
 
-    <div class="panel-body table-responsive">
+    <div class="panel-body">
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>

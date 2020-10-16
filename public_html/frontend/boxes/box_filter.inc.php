@@ -19,7 +19,7 @@
       order by b.name asc;"
     );
 
-    if (database::num_rows($brands_query) > 1) {
+    if (database::num_rows($brands_query)) {
       while ($brand = database::fetch($brands_query)) {
         $box_filter->snippets['brands'][] = [
           'id' => $brand['id'],
