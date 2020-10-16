@@ -105,6 +105,10 @@
       return true;
     }
 
+    public static function set_option($option, $value, $link='default') {
+      return mysqli_options(self::$_links[$link], $option, $value);
+    }
+
     public static function disconnect($link=null) {
 
       if (!empty($link)) {
