@@ -176,7 +176,7 @@
 
       $measure_start = microtime(true);
 
-      $array = $result->fetch_assoc();
+      $row = $result->fetch_assoc();
 
       $duration = microtime(true) - $measure_start;
 
@@ -185,14 +185,14 @@
       }
 
       if ($column) {
-        if (isset($array[$column])) {
-          return $array[$column];
+        if (isset($row[$column])) {
+          return $row[$column];
         } else {
           return false;
         }
       }
 
-      return $array;
+      return $row;
     }
 
     public static function seek($result, $offset) {
