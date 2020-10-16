@@ -1,7 +1,7 @@
 <?php
 
   $widget_addons_cache_token = cache::token('widget_addons', [], 'memory', 43200);
-  if (cache::capture($widget_addons_cache_token, 43200, true)) {
+  if (cache::capture($widget_addons_cache_token, 43200, false)) {
 
     try {
       $url = document::link('https://www.litecart.net/feeds/addons');
@@ -29,17 +29,24 @@
         $addons = [];
         foreach ($rss->channel->item as $item) {
           $addons[] = $item;
-          if (count($addons) == 16) break;
+          if (count($addons) == 20) break;
         }
 ?>
 <style>
-#widget-addons .row [class^="col-"] > * {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+#widget-addons .addons {
+  columns: auto 250px;
 }
-#widget-addons .row [class^="col-"] .description {
+#widget-addons .addon {
+  margin-bottom: 1em;
+  break-inside: avoid;
+}
+#widget-addons .description {
   opacity: 0.85;
+}
+#widget-addons .title, #widget-addons .description {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 
@@ -49,9 +56,9 @@
   </div>
 
   <div class="panel-body">
-    <div class="row">
+    <div class="addons">
       <?php foreach ($addons as $item) { ?>
-      <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="addon">
         <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
         <div class="description"><?php echo (string)$item->description; ?></div>
       </div>

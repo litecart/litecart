@@ -19,17 +19,24 @@
         $discussions = [];
         foreach ($rss->channel->item as $item) {
           $discussions[] = $item;
-          if (count($discussions) == 16) break;
+          if (count($discussions) == 20) break;
         }
 ?>
 <style>
-#widget-discussions .row [class^="col-"] > * {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+#widget-discussions .threads {
+  columns: auto 250px;
 }
-#widget-discussions .row [class^="col-"] .description {
+#widget-discussions .thread {
+  margin-bottom: 1em;
+  break-inside: avoid;
+}
+#widget-discussions .description {
   opacity: 0.85;
+}
+#widget-discussions .title, #widget-discussions .description {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 
@@ -39,9 +46,9 @@
   </div>
 
   <div class="panel-body">
-      <div class="row">
+      <div class="threads">
       <?php foreach ($discussions as $item) { ?>
-      <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="thread">
         <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
         <div class="description"><?php echo language::strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></div>
       </div>
