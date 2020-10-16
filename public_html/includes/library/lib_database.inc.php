@@ -50,6 +50,8 @@
       self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
       self::query("SET names '". database::input($charset) ."';", $link);
 
+      self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, true, $link);
+
       event::register('shutdown', [__CLASS__, 'disconnect']);
 
       return self::$_links[$link];
