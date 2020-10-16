@@ -70,12 +70,12 @@
 
   $translations_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."translations
-    where (code is not null and code != '')
+    where id
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : null) ."
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : null) ."
-    ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or `text_". implode("` like '%". database::input($_GET['query']) ."%' or `text_", database::input($_GET['languages'])) ."` like '%". database::input($_GET['query']) ."%')" : null) ."
-    ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '') or (`text_", database::input($_GET['languages'])) ."` is null or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
-    ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", ['cm', 'job', 'om', 'ot', 'pm', 'sm']) ."_%:%')" : null) ."
+    ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or (" . implode(" or ", array_map(function($s){ return "`text_$s like '%". database::input($_GET['query']) ."%'";}, database::input($_GET['languages']))) .")" : "") ."
+    ". (!empty($_GET['untranslated']) ? "and (". implode(" or ", array_map(function($s){ return "(text_$s is null or text_$s = '')"; }, database::input($_GET['languages']))) .")" : null) ."
+    ". (empty($_GET['modules']) ? " and code not regexp '^(cm|job|om|ot|pm|sm)_'" : null) ."
     order by date_updated desc;"
   );
 
