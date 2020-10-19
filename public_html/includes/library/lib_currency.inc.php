@@ -79,25 +79,6 @@
         return $_COOKIE['currency_code'];
       }
 
-    // Get currency from country (via browser locale)
-      if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#^([a-z]{2}-[A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        if (preg_match('#-([A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
-          if (!empty($matches[1])) $country_code = $matches[1];
-        }
-        if (!empty($country_code)) {
-          $countries_query = database::query(
-            "select * from ". DB_TABLE_COUNTRIES ."
-            where iso_code_2 = '". database::input($country_code) ."'
-            limit 1;"
-          );
-          $country = database::fetch($countries_query);
-
-          if (!empty($country['currency_code']) && in_array($country['currency_code'], $enabled_currencies)) {
-            return $country['currency_code'];
-          }
-        }
-      }
-
     // Get currency from country (via TLD)
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
         $countries_query = database::query(
@@ -105,9 +86,33 @@
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
         );
+
         $country = database::fetch($countries_query);
+
         if (!empty($country['currency_code']) && in_array($country['currency_code'], $enabled_currencies)) {
           return $country['currency_code'];
+        }
+      }
+
+    // Get currency from country (via browser locale)
+      if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#^([a-z]{2}-[A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+
+        if (preg_match('#-([A-Z]{2})#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+          if (!empty($matches[1])) $country_code = $matches[1];
+        }
+
+        if (!empty($country_code)) {
+          $countries_query = database::query(
+            "select * from ". DB_TABLE_COUNTRIES ."
+            where iso_code_2 = '". database::input($country_code) ."'
+            limit 1;"
+          );
+
+          $country = database::fetch($countries_query);
+
+          if (!empty($country['currency_code']) && in_array($country['currency_code'], $enabled_currencies)) {
+            return $country['currency_code'];
+          }
         }
       }
 
