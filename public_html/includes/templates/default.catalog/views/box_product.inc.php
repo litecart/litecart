@@ -219,7 +219,7 @@
     var n = this,
       c = <?php echo (int)currency::$selected['decimals']; ?>,
       d = '<?php echo language::$selected['decimal_point']; ?>',
-      t = '<?php echo language::$selected['thousands_sep']; ?>',
+      t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
       p = '<?php echo currency::$selected['prefix']; ?>',
       x = '<?php echo currency::$selected['suffix']; ?>',
       s = n < 0 ? '-' : '',
