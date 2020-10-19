@@ -367,7 +367,7 @@
 
   $('#box-checkout .shipping.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-shipping .option').removeClass('active');
-    $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
+    $(this).find('input[name="shipping[option_id]"]').prop('checked', true).trigger('change');
     $(this).addClass('active');
 
     $('#box-checkout-shipping .option.active :input').prop('disabled', false);
@@ -384,7 +384,7 @@
 
   $('#box-checkout .payment.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-payment .option').removeClass('active');
-    $(this).find('input[name="payment[option_id]"]').prop('checked', true);
+    $(this).find('input[name="payment[option_id]"]').prop('checked', true).trigger('change');
     $(this).addClass('active');
 
     $('#box-checkout-payment .option.active :input').prop('disabled', false);
