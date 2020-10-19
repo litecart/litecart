@@ -1237,6 +1237,39 @@
     }
   }
 
+  function form_draw_product_field($name, $value=true, $parameters='') {
+
+    if ($value === true) $value = form_reinsert_value($name);
+
+    $product_name = '('. language::translate('title_no_product', 'No Product') .')';
+
+    if (!empty($value)) {
+      $product_query = database::query(
+        "select p.id, pi.name from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code)
+        where p.id = ". (int)$value ."
+        limit 1;"
+      );
+
+      if ($product = database::fetch($product_query)) {
+        $product_name = $product['name'];
+      }
+    }
+
+    functions::draw_lightbox();
+
+    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
+         . '  <div class="form-control">' . PHP_EOL
+         . '    ' . form_draw_hidden_field($name, true) . PHP_EOL
+         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
+         . '    [<span class="id" style="display: inline-block;">'. (int)$value .'</span>]' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '  <div style="align-self: center;">' . PHP_EOL
+         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'product_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '</div>';
+  }
+
   function form_draw_products_list($name, $input=true, $multiple=false, $parameters='') {
 
     $options = array();
