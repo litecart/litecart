@@ -140,30 +140,20 @@
 <script>
   $('#box-create-account').on('change', ':input', function() {
     if ($(this).val() == '') return;
+
     $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
-      type: 'post',
-      data: $(this).closest('form').serialize(),
-      cache: false,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
-      },
-      success: function(data) {
-        if (data['alert']) {
-          alert(data['alert']);
-          return;
-        }
+
+    $.getJSON(
+      '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+      $('.billing-address :input').serialize(),
+      function(data) {
+        if (data['alert']) alert(data['alert']);
         $.each(data, function(key, value) {
-          console.log(key +' '+ value);
-          if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key]);
+          $('.billing-address :input[name="'+key+'"]').val(value);
         });
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
       }
+    ).always(function(){
+      $('body').css('cursor', 'auto');
     });
   });
 

@@ -199,23 +199,16 @@
   $('#box-checkout .customer.wrapper').on('change', '.billing-address :input', function() {
     if ($(this).val() == '') return;
     if (console) console.log('Retrieving address (Trigger: '+ $(this).attr('name') +')');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
-      type: 'post',
-      data: 'token=' + $(':input[name="token"]').val()
-             + '&' + $('.billing-address :input').serialize(),
-      cache: false,
-      async: true,
-      dataType: 'json',
-      success: function(data) {
+    $.getJSON(
+      '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+      $('.billing-address :input').serialize(),
+      function(data) {
         if (data['alert']) alert(data['alert']);
         $.each(data, function(key, value) {
-          if ($('.billing-address *[name="'+key+'"]').length && $('.billing-address *[name="'+key+'"]').val() == '') {
-            $('.billing-address *[name="'+key+'"]').val(value);
-          }
+          $('.billing-address :input[name="'+key+'"]').val(value);
         });
-      },
-    });
+      }
+    );
   });
 
 // Customer Form: Fields
