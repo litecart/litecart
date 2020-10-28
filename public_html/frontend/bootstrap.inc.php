@@ -19,9 +19,6 @@
     }
   }
 
-// Load routes
-  route::load(FS_DIR_APP . 'frontend/routes/url_*.inc.php');
-
 // Append default route
   route::add('#^([0-9a-zA-Z_/\.]+)$#', 'frontend', '$1');
 

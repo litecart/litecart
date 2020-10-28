@@ -15,6 +15,9 @@
 
   require_once('includes/app_header.inc.php');
 
+  route::load(FS_DIR_APP . 'frontend/routes/url_*.inc.php');
+  route::load(FS_DIR_APP . 'backend/routes/url_*.inc.php');
+
   if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request)) {
     require vmod::check(FS_DIR_APP . 'backend/bootstrap.inc.php');
   } else {
