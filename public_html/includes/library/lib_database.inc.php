@@ -30,7 +30,7 @@
 
       if (self::$_links[$link]->connect_error) exit;
 
-      self::set_encoding($charset);
+      self::set_encoding($charset, $link);
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
