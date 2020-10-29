@@ -112,8 +112,8 @@
       </li>
 
       <li>
-        <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout.php'); ?>" title="<?php echo language::translate('text_logout', 'Logout'); ?>">
-          <?php echo functions::draw_fonticon('fa-sign-out'); ?> <?php echo language::translate('title_sign_out', 'Sign Out'); ?>
+        <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout.php'); ?>" title="<?php echo language::translate('title_logout', 'Logout'); ?>">
+          <?php echo functions::draw_fonticon('fa-sign-out'); ?> <?php echo language::translate('title_logout', 'Logout'); ?>
         </a>
       </li>
 
