@@ -131,7 +131,7 @@
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php echo functions::form_draw_text_field('name', true); ?>
+          <?php echo functions::form_draw_text_field('name', true); ?>
         </div>
 
       </div>

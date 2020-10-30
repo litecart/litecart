@@ -641,7 +641,7 @@
             return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
           }
           if (!empty($shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
-            return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains an error');
+            return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
           }
         }
       }
@@ -656,7 +656,7 @@
             return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
           }
           if (!empty($payment->data['options'][$module_id]['options'][$option_id]['error'])) {
-            return language::translate('error_payment_method_contains_error', 'The selected payment method contains an error');
+            return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
           }
         }
       }
