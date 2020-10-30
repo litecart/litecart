@@ -26,7 +26,7 @@
 
   $(document).on('cookiesAccepted', function(){
     // Run code here for when cookies are accepted
-  }
+  });
 
   if (document.cookie.match(/cookies_accepted=1/)) {
     $(document).trigger('cookiesAccepted');
