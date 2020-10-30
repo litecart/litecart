@@ -185,10 +185,10 @@
           $this->_data['descendants'] = array();
 
           $categories_query = database::query(
-            "select @pv:=id as id, parent_id from ". DB_TABLE_CATEGORIES ."
-            join (select @pv := ". (int)$this->_data['id'] .") tmp
-            where status
-            and parent_id = @pv;"
+            "select id, parent_id from ". DB_TABLE_CATEGORIES ."
+            join (select @parent_id := ". $this->_data['id'] .") tmp
+            where find_in_set(parent_id, @parent_id)
+            and length(@parent_id := concat(@parent_id, ',', id));"
           );
 
           while ($row = database::fetch($categories_query)) {
