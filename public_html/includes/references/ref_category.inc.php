@@ -145,7 +145,8 @@
             where status
             and id in (
               select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
-              where category_id = ". (int)$this->_data['id'] ."
+              where category_id = ". $this->_data['id'] ."
+              ". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
             )
             and (quantity > 0 or sold_out_status_id in (
               select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
