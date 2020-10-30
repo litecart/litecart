@@ -102,6 +102,10 @@
               select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
               where category_id = ". (int)$this->_data['id'] ."
             )
+            and (quantity > 0 or sold_out_status_id in (
+              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              where (hidden is null or hidden = 0)
+            ))
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
@@ -143,6 +147,10 @@
               select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
               where category_id = ". (int)$this->_data['id'] ."
             )
+            and (quantity > 0 or sold_out_status_id in (
+              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              where (hidden is null or hidden = 0)
+            ))
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
