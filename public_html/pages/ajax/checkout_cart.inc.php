@@ -2,6 +2,8 @@
 
   header('X-Robots-Tag: noindex');
 
+  unset(notices::$data['notices']['maintenance_mode']);
+
   if (empty(cart::$items)) {
     echo '<div id="content">' . PHP_EOL
         . '  <p>'. language::translate('description_no_items_in_cart', 'There are no items in your cart.') .'</p>' . PHP_EOL

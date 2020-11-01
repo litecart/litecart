@@ -21,7 +21,7 @@
         '%message' => language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
         '%preview' => language::translate('title_preview', 'Preview'),
         '%link' => document::href_ilink('maintenance_mode'),
-      )));
+      )), 'maintenance_mode');
     } else {
       http_response_code(503);
       include vmod::check(FS_DIR_APP . 'pages/maintenance_mode.inc.php');

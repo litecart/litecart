@@ -2,6 +2,8 @@
 
   header('X-Robots-Tag: noindex');
 
+  unset(notices::$data['notices']['maintenance_mode']);
+
   functions::draw_lightbox();
 
   if (empty(cart::$items)) return;
