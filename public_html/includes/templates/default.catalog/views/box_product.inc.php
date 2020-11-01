@@ -139,7 +139,7 @@
          <?php } ?>
         </div>
 
-        <?php if (!$catalog_only_mode) { ?>
+        <?php if (!$catalog_only_mode && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
@@ -148,7 +148,7 @@
               <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
             </div>
 
-            <div style="flex: 1 0 auto; padding-left: 1em;">
+            <div style="padding-left: 1em;">
               <?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity <= 0 && !$orderable) ? ' disabled="disabled"' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
             </div>
           </div>
@@ -157,6 +157,12 @@
 
         <?php echo functions::form_draw_form_end(); ?>
       </div>
+
+      <?php if ($quantity <= 0 && !empty($sold_out_status) && empty($sold_out_status['orderable'])) { ?>
+      <div class="out-of-stock-notice">
+        <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and can not be purchased.'); ?>
+      </div>
+      <?php } ?>
 
       <hr />
 
