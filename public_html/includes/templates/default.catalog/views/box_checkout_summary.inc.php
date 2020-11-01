@@ -1,3 +1,15 @@
+<style>
+.input-wrapper {
+  position: relative;
+}
+.input-wrapper .remaining {
+  position: absolute;
+  bottom: .5em;
+  right: .5em;
+  color: #999;
+}
+</style>
+
 <section id="box-checkout-summary" class="box">
   <h2 class="title"><?php echo language::translate('title_order_summary', 'Order Summary'); ?></h2>
 
@@ -29,7 +41,10 @@
 
   <div class="comments form-group">
     <label><?php echo language::translate('title_comments', 'Comments'); ?></label>
-    <?php echo functions::form_draw_textarea('comments', true); ?>
+    <div class="input-wrapper">
+      <?php echo functions::form_draw_textarea('comments', true, 'maxlength="512" rows="4"'); ?>
+      <small class="remaining"></small>
+    </div>
   </div>
 
   <div class="confirm row">
@@ -50,3 +65,10 @@
     </div>
   </div>
 </section>
+
+<script>
+  $('textarea[maxlength]').bind('input', function() {
+    var remaining = $(this).attr('maxlength') - $(this).val().length;
+    $(this).closest('.input-wrapper').find('.remaining').text(remaining);
+  });
+</script>
