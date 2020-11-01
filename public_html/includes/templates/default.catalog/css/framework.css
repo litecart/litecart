@@ -277,27 +277,28 @@ ul.breadcrumb li a {
   padding: 0.5em 1em;
   text-decoration: none;
   font-weight: normal;
-  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 .btn.btn-default {
-  background: #fcfcfc;
+  background: #f9f9f9;
   color: #555;
   text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .btn.btn-default:hover:not(.active):not(.disabled):not([disabled]) {
-  background: #f6f6f6;
+  background: #f3f3f3;
 }
 .btn.btn-default.active {
-  background: #efefef;
+  background: #ececec;
   border-color: transparent;
 }
 .btn.btn-primary {
   background: #2e9cd4;
   color: #fff;
   text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .btn.btn-primary:hover:not(.active):not(.disabled):not([disabled]) {
   background: #2a95cb;
@@ -310,6 +311,7 @@ ul.breadcrumb li a {
   background: #98cc34;
   color: #fff;
   text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .btn.btn-success:hover:not(.active):not(.disabled):not([disabled]) {
   background: #91c231;
@@ -322,12 +324,26 @@ ul.breadcrumb li a {
   background: #d9534f;
   color: #fff;
   text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .btn.btn-danger:hover:not(.active):not(.disabled):not([disabled]) {
   background: #d74945;
 }
 .btn.btn-danger.active {
   background: #d43f3a;
+  border-color: transparent;
+}
+.btn.btn-transparent {
+  background: transparent;
+  color: #555;
+  text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.btn.btn-transparent:hover:not(.active):not(.disabled):not([disabled]) {
+  background: rgba(0, 0, 0, 0);
+}
+.btn.btn-transparent.active {
+  background: rgba(0, 0, 0, 0);
   border-color: transparent;
 }
 .btn.btn-sm {
@@ -1059,6 +1075,9 @@ textarea {
 input[type="number"] {
   text-align: right;
 }
+input[type="number"]::-webkit-inner-spin-button {
+  margin-left: 0.5em;
+}
 .form-group.required label::after {
   content: ' *';
   color: #f00;
@@ -1076,7 +1095,6 @@ input[type="number"] {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   display: block;
   width: 100%;
   min-width: 1px;
@@ -1145,7 +1163,6 @@ input[type="number"] {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   display: flex;
 }
 .input-group .form-control {
@@ -1159,7 +1176,7 @@ input[type="number"] {
   flex: 1 0 auto;
   margin: 0 -1px;
   padding: 0.5em 1em;
-  background-color: #fcfcfc;
+  background-color: #f9f9f9;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   color: #555;

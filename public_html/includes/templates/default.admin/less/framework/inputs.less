@@ -20,6 +20,9 @@ input, button, select, textarea {
 input[data-type="currency"], input[data-type="number"], input[data-type="decimal"] {
   text-align: right;
 }
+input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]::-webkit-inner-spin-button {
+  margin-left: @form-input-padding;
+}
 
 .form-group {
   &.required label::after {
