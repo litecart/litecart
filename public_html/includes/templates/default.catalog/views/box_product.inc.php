@@ -90,14 +90,14 @@
         <?php if ($delivery_status) { ?>
         <div class="stock-delivery">
           <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>:
-          <span class="value"><?php echo $delivery_status; ?></span>
+          <span class="value"><?php echo $delivery_status['name']; ?></span>
         </div>
         <?php } ?>
        <?php } else { ?>
         <?php if ($sold_out_status) { ?>
-          <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
+          <div class="<?php echo empty($sold_out_status['orderable']) ? 'stock-partly-available' : 'stock-unavailable'; ?>">
             <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-            <span class="value"><?php echo $sold_out_status; ?></span>
+            <span class="value"><?php echo $sold_out_status['name']; ?></span>
           </div>
         <?php } else { ?>
           <div class="stock-unavailable">
