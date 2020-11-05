@@ -200,7 +200,7 @@ table.items tbody tr:nth-child(11) {
         <?php } ?>
 
         <?php if (settings::get('store_tax_id')) { ?>
-        <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
+        <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
         <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
         <?php } ?>
       </div>
