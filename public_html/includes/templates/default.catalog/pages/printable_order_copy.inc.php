@@ -105,9 +105,9 @@ table.items tbody tr:nth-child(11) {
     <table class="items table table-striped data-table">
       <thead>
         <tr>
-          <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
           <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+          <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
           <th class="text-right"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
           <th class="text-right"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
           <th class="text-right"><?php echo language::translate('title_sum', 'Sum'); ?></th>
@@ -116,7 +116,6 @@ table.items tbody tr:nth-child(11) {
       <tbody>
         <?php foreach ($order['items'] as $item) { ?>
         <tr>
-          <td><?php echo (float)$item['quantity']; ?></td>
           <td><?php echo $item['sku']; ?></td>
           <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php
@@ -137,6 +136,7 @@ table.items tbody tr:nth-child(11) {
     }
 ?>
           </td>
+          <td><?php echo (float)$item['quantity']; ?></td>
           <?php if (!empty($order['display_prices_including_tax'])) { ?>
           <td class="text-right"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
