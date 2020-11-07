@@ -84,7 +84,7 @@
         $this->data['id'] = database::insert_id();
       }
 
-      $this->data['keywords'] = explode(',', $this->data['keywords']);
+      $this->data['keywords'] = explode('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
       $this->data['keywords'] = implode(',', $this->data['keywords']);

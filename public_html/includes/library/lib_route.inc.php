@@ -132,7 +132,7 @@
         sort($lines);
 
         if (count($lines) >= 100) {
-          $email = new email();
+          $email = new ent_email();
           $email->add_recipient(settings::get('store_email'))
                 ->set_subject('[Not Found Report] '. settings::get('store_name'))
                 ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))
@@ -174,7 +174,7 @@
     // Set params that are inherited from the current page
       if ($inherit_params === true) {
         foreach ($_GET as $key => $value) {
-          if (in_array($key, array('currency', 'language'))) continue;
+          if (in_array($key, array('country', 'currency', 'language'))) continue;
           $link->set_query($key, $value);
         }
       } else if (is_array($inherit_params)) {

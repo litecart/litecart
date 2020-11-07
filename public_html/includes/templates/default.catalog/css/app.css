@@ -546,6 +546,12 @@ html {
 #box-product .stock-unavailable .value {
   color: #cc0000;
 }
+#box-product .out-of-stock-notice {
+  background: #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 4px;
+}
 #box-product .social-bookmarks {
   font-size: 1.75em;
   margin: 20px 0;

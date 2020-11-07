@@ -199,23 +199,16 @@
   $('#box-checkout .customer.wrapper').on('change', '.billing-address :input', function() {
     if ($(this).val() == '') return;
     if (console) console.log('Retrieving address (Trigger: '+ $(this).attr('name') +')');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
-      type: 'post',
-      data: 'token=' + $(':input[name="token"]').val()
-             + '&' + $('.billing-address :input').serialize(),
-      cache: false,
-      async: true,
-      dataType: 'json',
-      success: function(data) {
+    $.getJSON(
+      '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+      $('.billing-address :input').serialize(),
+      function(data) {
         if (data['alert']) alert(data['alert']);
         $.each(data, function(key, value) {
-          if ($('.billing-address *[name="'+key+'"]').length && $('.billing-address *[name="'+key+'"]').val() == '') {
-            $('.billing-address *[name="'+key+'"]').val(value);
-          }
+          $('.billing-address :input[name="'+key+'"]').val(value);
         });
-      },
-    });
+      }
+    );
   });
 
 // Customer Form: Fields
@@ -367,7 +360,7 @@
 
   $('#box-checkout .shipping.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-shipping .option').removeClass('active');
-    $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
+    $(this).find('input[name="shipping[option_id]"]').prop('checked', true).trigger('change');
     $(this).addClass('active');
 
     $('#box-checkout-shipping .option.active :input').prop('disabled', false);
@@ -384,7 +377,7 @@
 
   $('#box-checkout .payment.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-payment .option').removeClass('active');
-    $(this).find('input[name="payment[option_id]"]').prop('checked', true);
+    $(this).find('input[name="payment[option_id]"]').prop('checked', true).trigger('change');
     $(this).addClass('active');
 
     $('#box-checkout-payment .option.active :input').prop('disabled', false);

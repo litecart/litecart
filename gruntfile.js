@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         ]
       },
 
-      index: {
+      app: {
         src: [
           'public_html/index.php',
           'public_html/install/install.php',

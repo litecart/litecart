@@ -110,7 +110,6 @@
 
 // Update cart / Keep alive
   window.updateCart = function(data) {
-    if (data) $('*').css('cursor', 'wait');
     $.ajax({
       url: window.config.platform.url + 'ajax/cart.json',
       type: data ? 'post' : 'get',
@@ -143,9 +142,6 @@
         } else {
           $('#cart img').attr('src', config.template.url + 'images/cart.svg');
         }
-      },
-      complete: function() {
-        if (data) $('*').css('cursor', '');
       }
     });
   }

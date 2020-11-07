@@ -82,8 +82,8 @@
       "o.uid = '". database::input($_GET['query']) ."'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
       "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
-      "o.customer_company like '%". database::input($_GET['query']) ."%'",
-      "concat(o.customer_firstname, ' ', o.customer_lastname) like '%". database::input($_GET['query']) ."%'",
+      "concat(o.customer_company, ' ', o.customer_firstname, ' ', o.customer_lastname, ' ', o.customer_address1, ' ', o.customer_address2, ' ', o.customer_postcode, ' ', o.customer_city) like '%". database::input($_GET['query']) ."%'",
+      "concat(o.shipping_company, ' ', o.shipping_firstname, ' ', o.shipping_lastname, ' ', o.shipping_address1, ' ', o.shipping_address2, ' ', o.shipping_postcode, ' ', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
       "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
       "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
       "o.reference like '%". database::input($_GET['query']) ."%'",
@@ -245,8 +245,8 @@ table .fa-star:hover {
             <td class="text-center"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
             <td>
-              <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_packing_slip', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-              <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'printable_order_copy', 'order_id' => $order['id'], 'media' => 'print')); ?>" target="_blank" title="<?php echo language::translate('title_order_copy', 'Order Copy'); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+              <a href="<?php echo document::href_link('printable_packing_slip', array('order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print')); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+              <a href="<?php echo document::href_link('printable_order_copy', array('order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print')); ?>" target="_blank" title="<?php echo language::translate('title_order_copy', 'Order Copy'); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
               <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
             </td>
           </tr>

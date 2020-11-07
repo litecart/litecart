@@ -537,7 +537,7 @@
           "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
           set quantity = quantity + ". (float)$quantity ."
           where product_id = ". (int)$this->_data['id'] ."
-          and combination =  '". database::input($combination) ."'
+          and combination = '". database::input($combination) ."'
           limit 1;"
         );
 
@@ -548,7 +548,7 @@
 
       database::query(
         "update ". DB_TABLE_PRODUCTS ."
-        set quantity = quantity + ". (int)$quantity ."
+        set quantity = quantity + ". (float)$quantity ."
         where id = ". (int)$this->_data['id'] ."
         limit 1;"
       );

@@ -129,8 +129,7 @@
       if (!empty($_POST['email_order_copy'])) {
 
         $bccs = array();
-        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
-          if (empty($email)) continue;
+        foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
           $bccs[] = $email;
         }
 
@@ -192,20 +191,13 @@
 }
 
 #box-comments {
-    border: 1px solid #e5e5e5;
-    padding: 2em;
-    background: #fcfcfc;
-    border-radius: 0.5em;
-}
-
-#box-comments .bubbles ..text {
-  display: none;
+  height: 100%;
 }
 
 #box-comments .bubbles .private {
   position: absolute;
   top: 0.5em;
-  right: 2em;
+  right: 2.5em;
   cursor: pointer;
 }
 #box-comments .bubbles .private input[name$="[hidden]"] {
@@ -221,7 +213,7 @@
 #box-comments .bubbles .notify  {
   position: absolute;
   top: 0.5em;
-  right: 3.5em;
+  right: 4em;
   cursor: pointer;
 }
 #box-comments .bubbles .notify input[name$="[notify]"] {
@@ -310,7 +302,7 @@
             </div>
 
             <div class="panel-body">
-              <div class="row">
+              <div class="row" style="margin-bottom: 0;">
                 <div class="col-md-6 customer-details">
                   <h3><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h3>
 
@@ -326,13 +318,13 @@
 
                   <div class="row">
                     <div class="form-group col-md-6">
-                      <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-                      <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
+                      <label><?php echo language::translate('title_company', 'Company'); ?></label>
+                      <?php echo functions::form_draw_text_field('customer[company]', true); ?>
                     </div>
 
                     <div class="form-group col-md-6">
-                      <label><?php echo language::translate('title_company', 'Company'); ?></label>
-                      <?php echo functions::form_draw_text_field('customer[company]', true); ?>
+                      <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+                      <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
                     </div>
                   </div>
 
@@ -470,9 +462,9 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" style="margin-bottom: 0;">
             <div class="col-md-6">
-              <div class="panel panel-default">
+              <div class="panel panel-default" style="margin-bottom: 0;">
                 <div class="panel-heading">
                   <h2 class="panel-title"><?php echo language::translate('title_payment_information', 'Payment Information'); ?></h2>
                 </div>
@@ -499,7 +491,7 @@
             </div>
 
             <div class="col-md-6">
-              <div class="panel panel-default">
+              <div class="panel panel-default" style="margin-bottom: 0;">
                 <div class="panel-heading">
                   <h2 class="panel-title"><?php echo language::translate('title_shipping_information', 'Shipping Information'); ?></h2>
                 </div>
@@ -537,11 +529,13 @@
           </div>
         </div>
 
-        <div id="box-comments" class="col-lg-4">
+        <div class="col-lg-4">
+          <div id="box-comments" class="panel panel-default" style="margin-bottom: 0;">
+            <div class="panel-heading">
+              <h2 class="panel-title"><?php echo language::translate('title_comments', 'Comments'); ?></h2>
+            </div>
 
-          <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-
-          <div class="bubbles">
+            <div class="panel-body bubbles">
 <?php
   foreach (array_keys($_POST['comments']) as $key) {
 
@@ -559,26 +553,27 @@
 
     if (!empty($_POST['comments'][$key]['hidden'])) $type .= ' semi-transparent';
 ?>
-            <div class="bubble <?php echo $type; ?>">
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
+              <div class="bubble <?php echo $type; ?>">
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
 
-              <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
+                <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
 
-              <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
+                <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
 
-              <div class="actions">
-                <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
-                <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
+                <div class="actions">
+                  <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
+                  <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
+                </div>
               </div>
+              <?php } ?>
+
+              <div class="add text-right"><button class="btn btn-default" type="button" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></button></div>
             </div>
-            <?php } ?>
 
-            <div class="add text-right"><button class="btn btn-default" type="button" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></button></div>
           </div>
-
         </div>
       </div>
 

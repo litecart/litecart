@@ -35,6 +35,10 @@
           'subcategories' => array(),
         );
 
+        if (settings::get('category_tree_product_count')) {
+          $tree[$category['id']]['num_products'] = reference::category($category['id'])->num_products;
+        }
+
         if (in_array($category['id'], $category_path)) {
           $sub_categories_query = functions::catalog_categories_query($category['id']);
           if (database::num_rows($sub_categories_query)) {

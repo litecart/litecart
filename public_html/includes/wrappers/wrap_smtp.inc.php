@@ -84,12 +84,6 @@
 
         switch(true) {
 
-          case (in_array('DIGEST-MD5', $auths)):
-            $this->write("AUTH DIGEST-MD5\r\n", 334);
-            $realm = base64_decode(substr($this->_last_response, 4));
-            $this->write(base64_encode($this->_username .' '. md5($this->_username .':'. $realm .':'. $this->_password)) . "\r\n", 235);
-            break;
-
           case (in_array('CRAM-MD5', $auths));
             $this->write("AUTH CRAM-MD5\r\n", 334);
             $challenge = base64_decode(substr($this->_last_response, 4));

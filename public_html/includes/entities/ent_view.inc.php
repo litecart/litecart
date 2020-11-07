@@ -8,7 +8,7 @@
       if (!empty($view)) {
 
       // Absolute path
-        if (preg_match('#^/#', $view)) {
+        if (preg_match('#^([A-Z]:)?/#', $view)) {
           $file = $view;
 
       // Relative path
@@ -17,10 +17,16 @@
           if (!is_file($file)) $file = vmod::check(FS_DIR_APP . 'includes/templates/default.catalog/'. $view .'.inc.php');
         }
 
-        $this->html = $this->_process_view($file, $this->snippets);
+      // Process view in an isolated scope
+        $this->html = (function(){
+          ob_start();
+          extract(func_get_arg(1));
+          include vmod::check(func_get_arg(0));
+          return ob_get_clean();
+        })($file, $this->snippets);
       }
 
-      if (empty($this->html)) return null;
+      if (empty($this->html)) return '';
 
       if (!empty($this->snippets)) {
 
@@ -49,20 +55,5 @@
       }
 
       return $this->html;
-    }
-
-  // Method to process isolated PHP logic in a view
-    private function _process_view($_file) {
-
-    // Extract snippets
-      if (!empty($this->snippets)) {
-        extract($this->snippets);
-      }
-
-      ob_start();
-      include vmod::check($_file);
-      $html = ob_get_clean();
-
-      return $html;
     }
   }

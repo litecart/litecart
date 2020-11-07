@@ -17,32 +17,36 @@ ErrorDocument 500 "Internal Server Error"
     SetEnv MOD_REWRITE On
   </IfModule>
 
-  # Redirect from any alias domain to primary domain
-  #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
-  #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteRule ^ http://www.mydomain.com%{REQUEST_URI} [R=301,L]
-
-  # Redirect www to non-www
-  #RewriteCond %{HTTP_HOST} ^www\.(.*)$
-  #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
-
-  # Redirect non-www to www
-  #RewriteCond %{HTTP_HOST} !^www\.
-  #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-
-  # Force HTTPS (Standard SSL)
+  # 1A - Force HTTPS (Standard SSL)
   #RewriteCond %{HTTPS} off
   #RewriteCond %{REQUEST_METHOD} !=POST
   #RewriteCond %{REQUEST_URI} !^\.well-known/
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-  # Force HTTPS (CloudFlare Flexi SSL / Load Balancing Servers)
+  # 1B - Force HTTPS (CloudFlare Flexi SSL / Load Balancing Servers)
   #RewriteCond %{HTTPS} off
   #RewriteCond %{HTTP:X-Forwarded-Proto} =http
   #RewriteCond %{REQUEST_METHOD} !=POST
+  #RewriteCond %{REQUEST_URI} !^\.well-known/
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # 2A - Redirect non-www to www
+  #RewriteCond %{HTTP_HOST} !^www\.
+  #RewriteCond %{REQUEST_METHOD} !=POST
+  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # 2B - Redirect www to non-www
+  #RewriteCond %{HTTP_HOST} ^www\.(.*)$
+  #RewriteCond %{REQUEST_METHOD} !=POST
+  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # 3 - Redirect from any alias domain to primary domain
+  #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
+  #RewriteCond %{REQUEST_METHOD} !=POST
+  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteRule ^ https://www.mydomain.com%{REQUEST_URI} [R=301,L]
 
   # Web path to catalog root
   RewriteBase {BASE_DIR}
@@ -69,11 +73,11 @@ ErrorDocument 500 "Internal Server Error"
 
 # Cacheable external content
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css)$">
+  <FilesMatch "\.(css|js)$">
     Header set Cache-Control "max-age=86400, public, must-revalidate"
   </FilesMatch>
 
-  <FilesMatch "\.(eot|gif|ico|jpe?g|js|otf|pdf|png|svg|ttf|tiff?|woff2?)$">
+  <FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
     Header set Cache-Control "max-age=604800, public, must-revalidate"
   </FilesMatch>
 </IfModule>

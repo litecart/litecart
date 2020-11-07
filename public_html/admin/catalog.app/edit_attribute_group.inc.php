@@ -22,6 +22,14 @@
     try {
       if (empty($_POST['values'])) $_POST['values'] = array();
 
+      foreach ($_POST['values'] as $value) {
+        foreach ($value['name'] as $name) {
+          if (preg_match('#(["\',\[\]<>])#', $name, $matches)) {
+            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), array('%char' => $matches[1])));
+          }
+        }
+      }
+
       $fields = array(
         'code',
         'sort',
@@ -98,6 +106,7 @@
             <tr>
               <th><?php echo language::translate('title_id', 'ID'); ?></th>
               <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+              <th><?php echo language::translate('title_in_use', 'In Use'); ?></th>
               <th>&nbsp;</th>
             </tr>
           </thead>
@@ -106,7 +115,8 @@
             <tr>
               <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
               <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, ''); ?></td>
-              <td class="text-right"><?php echo empty($num_products) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"') .'</a>' : false; ?></td>
+              <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
+              <td class="text-right"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"') .'</a>' : false; ?></td>
             </tr>
             <?php } ?>
           </tbody>
@@ -141,6 +151,7 @@
     var output = '<tr>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
                + '  <td><?php echo functions::general_escape_js($name_fields); ?></td>'
+               + '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>'
                + '  <td class="text-right"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     output = output.replace(/new_value_index/g, 'new_' + new_value_index);

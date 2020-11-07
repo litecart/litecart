@@ -90,6 +90,14 @@
             $this->data['values'][$value['id']][$key][$value_info['language_code']] = $value_info[$key];
           }
         }
+
+        $product_option_values_query = database::query(
+          "select id from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
+          where value_id = ". (int)$value['id'] ."
+          limit 1;"
+        );
+
+        $this->data['values'][$value['id']]['in_use'] = database::num_rows($product_option_values_query) ? true : false;
       }
 
       $this->previous = $this->data;

@@ -2,6 +2,8 @@
 
   header('X-Robots-Tag: noindex');
 
+  unset(notices::$data['notices']['maintenance_mode']);
+
   if (empty(cart::$items)) return;
 
   if (empty(customer::$data['country_code'])) customer::$data['country_code'] = settings::get('default_country_code');

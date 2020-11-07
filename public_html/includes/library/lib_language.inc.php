@@ -100,7 +100,7 @@
         session::$data['language'] = self::$languages[$code];
       }
 
-      if (!empty($_COOKIE['cookies_accepted'])) {
+      if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
         header('Set-Cookie: language_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
       }
 

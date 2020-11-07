@@ -77,8 +77,8 @@
         break;
 
       case 'popularity':
-        $sql_inner_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
-        $sql_outer_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+        $sql_inner_sort[] = "(p.purchases / ceil(datediff(now(), p.date_created)/7)) desc, (p.views / ceil(datediff(now(), p.date_created)/7)) desc";
+        $sql_outer_sort[] = "(p.purchases / ceil(datediff(now(), p.date_created)/7)) desc, (p.views / ceil(datediff(now(), p.date_created)/7)) desc";
         break;
 
       case 'products':
@@ -104,14 +104,14 @@
 
     $sql_where_attributes = array();
     if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
-      foreach ($filter['attributes'] as $group => $values) {
-        if (empty($values) || !is_array($values)) continue;
-        foreach ($values as $value) {
-          $sql_where_attributes[$group][] = "find_in_set('". database::input($group.'-'.$value) ."', pa.attributes)";
-        }
-        $sql_where_attributes[$group] = "(". implode(" or ", $sql_where_attributes[$group]) .")";
+      foreach ($filter['attributes'] as $group_id => $values) {
+        $sql_where_attributes[] =
+          "and p.id in (
+            select distinct product_id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+            where (group_id = ". (int)$group_id ." and (value_id in ('". implode("', '", database::input($values)) ."') or custom_value in ('". implode("', '", database::input($values)) ."')))
+          )";
       }
-      $sql_where_attributes = "and (". implode(" and ", $sql_where_attributes) .")";
+      $sql_where_attributes = implode(PHP_EOL, $sql_where_attributes);
     }
 
     $sql_where_prices = array();
@@ -124,18 +124,12 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price
+      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, group_concat(concat(pa.group_id, '-', if(pa.custom_value != '', pa.custom_value, pa.value_id)) separator ',') as attributes
 
       from (
-        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, pa.attributes, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
+        select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, p.keywords, p.image, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
 
         from ". DB_TABLE_PRODUCTS ." p
-
-        left join (
-          select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
-          from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
-          group by product_id
-        ) pa on (p.id = pa.product_id)
 
         left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
 
@@ -159,6 +153,8 @@
 
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
 
+      left join ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa on (p.id = pa.product_id)
+
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
         from ". DB_TABLE_PRODUCTS_PRICES ."
@@ -178,6 +174,8 @@
         ". (!empty($filter['campaign']) ? "and campaign_price > 0" : null) ."
         ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
       )
+
+      group by p.id
 
       ". (!empty($sql_outer_sort) ? "order by ". implode(",", $sql_outer_sort) : "") ."
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
@@ -210,7 +208,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, (0
+      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, group_concat(concat(pa.group_id, '-', if(pa.custom_value != '', pa.custom_value, pa.value_id)) separator ',') as attributes, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", database::input($filter['categories'])) ."', categories), 1, 0)" : false) ."
@@ -244,6 +242,8 @@
 
       left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
 
+      left join ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa on (p.id = pa.product_id)
+
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
         from ". DB_TABLE_PRODUCTS_PRICES ."
@@ -263,6 +263,8 @@
         ". (!empty($filter['campaign']) ? "or campaign_price > 0" : null) ."
         ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
       )
+
+      group by p.id
 
       order by occurrences desc
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"

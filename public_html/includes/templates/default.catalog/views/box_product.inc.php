@@ -43,6 +43,13 @@
       </div>
       <?php } ?>
 
+      <?php if ($recommended_price) { ?>
+      <div class="recommmended-price" style="margin: 1em 0;">
+        <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
+        <span class="value"><?php echo currency::format($recommended_price); ?></span>
+      </div>
+      <?php } ?>
+
       <?php if ($cheapest_shipping_fee !== null) { ?>
       <div class="cheapest-shipping" style="margin: 1em 0;">
         <?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), array('%price' => currency::format($cheapest_shipping_fee))); ?>
@@ -83,14 +90,14 @@
         <?php if ($delivery_status) { ?>
         <div class="stock-delivery">
           <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>:
-          <span class="value"><?php echo $delivery_status; ?></span>
+          <span class="value"><?php echo $delivery_status['name']; ?></span>
         </div>
         <?php } ?>
        <?php } else { ?>
         <?php if ($sold_out_status) { ?>
-          <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
+          <div class="<?php echo empty($sold_out_status['orderable']) ? 'stock-partly-available' : 'stock-unavailable'; ?>">
             <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-            <span class="value"><?php echo $sold_out_status; ?></span>
+            <span class="value"><?php echo $sold_out_status['name']; ?></span>
           </div>
         <?php } else { ?>
           <div class="stock-unavailable">
@@ -132,7 +139,7 @@
          <?php } ?>
         </div>
 
-        <?php if (!$catalog_only_mode) { ?>
+        <?php if (!$catalog_only_mode && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
@@ -141,7 +148,7 @@
               <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
             </div>
 
-            <div style="flex: 1 0 auto; padding-left: 1em;">
+            <div style="padding-left: 1em;">
               <?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity <= 0 && !$orderable) ? ' disabled="disabled"' : '') .'>'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
             </div>
           </div>
@@ -150,6 +157,12 @@
 
         <?php echo functions::form_draw_form_end(); ?>
       </div>
+
+      <?php if ($quantity <= 0 && !empty($sold_out_status) && empty($sold_out_status['orderable'])) { ?>
+      <div class="out-of-stock-notice">
+        <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and can not be purchased.'); ?>
+      </div>
+      <?php } ?>
 
       <hr />
 
@@ -179,8 +192,8 @@
       <table class="table table-striped table-hover">
 <?php
   foreach ($technical_data as $line) {
-    if (preg_match('#(:|\t)#', $line)) {
-      @list($key, $value) = preg_split('#(:|\t)#', $line);
+    if (preg_match('#[:\t]#', $line)) {
+      @list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
@@ -212,7 +225,7 @@
     var n = this,
       c = <?php echo (int)currency::$selected['decimals']; ?>,
       d = '<?php echo language::$selected['decimal_point']; ?>',
-      t = '<?php echo language::$selected['thousands_sep']; ?>',
+      t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
       p = '<?php echo currency::$selected['prefix']; ?>',
       x = '<?php echo currency::$selected['suffix']; ?>',
       s = n < 0 ? '-' : '',

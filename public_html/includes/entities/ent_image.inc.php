@@ -53,7 +53,7 @@
 
       if (!empty($file)) $this->set($file);
 
-      $this->_whitespace = explode(',', settings::get('image_whitespace_color'));
+      $this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
     }
 
     public function set($file) {
@@ -761,7 +761,7 @@
       }
     }
 
-    public function output($type='jpg', $quality=90) {
+    public function output($type='jpg', $quality=90, $interlaced=false) {
 
       switch($this->_library) {
         case 'imagick':
@@ -817,7 +817,7 @@
 
             case 'webp':
               if (!function_exists('ImageWebP')) {
-                return $this->write(preg_replace('#\.webp$#', '.jpg', $destination), $quality, $interlaced);
+                return $this->output($type, $quality, $interlaced);
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, false, $quality);

@@ -72,12 +72,14 @@
       "select id, concat(firstname, ' ', lastname) as name, email,
       (
         if(id = '". database::input($_GET['query']) ."', 10, 0)
-        + if(concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%', 5, 0)
         + if(email like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(tax_id like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(concat(company, ' ', firstname, ' ', lastname, ' ', address1, ' ', address2, ' ', postcode, ' ', city) like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(concat(shipping_company, ' ', shipping_firstname, ' ', shipping_lastname, ' ', shipping_address1, ' ', shipping_address2, ' ', shipping_postcode, ' ', shipping_city) like '%". database::input($_GET['query']) ."%', 5, 0)
       ) as relevance
       from ". DB_TABLE_CUSTOMERS ."
       having relevance > 0
-      order by relevance desc, id asc
+      order by relevance desc, id desc
       limit 5;"
     );
 
@@ -101,16 +103,18 @@
       "select id, concat(customer_firstname, ' ', customer_lastname) as customer_name,
       (
         if(id = '". database::input($_GET['query']) ."', 10, 0)
+        + if(reference like '%". database::input($_GET['query']) ."%', 5, 0)
         + if(customer_email like '%". database::input($_GET['query']) ."%', 5, 0)
         + if(customer_tax_id like '%". database::input($_GET['query']) ."%', 5, 0)
-        + if(concat(customer_firstname, ' ', customer_lastname) like '%". database::input($_GET['query']) ."%', 5, 0)
-        + if(customer_company like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(concat(customer_company, ' ', customer_firstname, ' ', customer_lastname, ' ', customer_address1, ' ', customer_address2, ' ', customer_postcode, ' ', customer_city) like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(concat(shipping_company, ' ', shipping_firstname, ' ', shipping_lastname, ' ', shipping_address1, ' ', shipping_address2, ' ', shipping_postcode, ' ', shipping_city) like '%". database::input($_GET['query']) ."%', 5, 0)
+        + if(payment_transaction_id like '". database::input($_GET['query']) ."', 5, 0)
         + if(shipping_tracking_id like '%". database::input($_GET['query']) ."%', 5, 0)
         + if(payment_transaction_id like '%". database::input($_GET['query']) ."%', 5, 0)
       ) as relevance
       from ". DB_TABLE_ORDERS ."
       having relevance > 0
-      order by relevance desc, id asc
+      order by relevance desc, id desc
       limit 5;"
     );
 

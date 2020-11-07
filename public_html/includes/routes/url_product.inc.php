@@ -26,7 +26,11 @@
 
       if (!empty($link->query['category_id'])) {
 
-        $category = reference::category($link->query['category_id'], $language_code);
+        if (in_array($link->query['category_id'], array_keys($product->categories))) {
+          $category = reference::category($link->query['category_id'], $language_code);
+        } else {
+          $category = reference::category($product->default_category_id, $language_code);
+        }
 
         foreach ($category->path as $category_crumb) {
           $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';

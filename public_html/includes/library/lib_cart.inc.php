@@ -27,7 +27,7 @@
 
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
-        if (!empty($_COOKIE['cookies_accepted'])) {
+        if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
           header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
         }
       }
@@ -234,7 +234,7 @@
 
             case 'checkbox':
 
-              $selected_values = array_filter(preg_split('#\s*,\s*#', $options[$matched_group]));
+              $selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
 
               $matched_values = array();
               foreach ($option['values'] as $value) {

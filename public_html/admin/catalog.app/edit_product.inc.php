@@ -40,7 +40,7 @@
       if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
       if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 
-      $_POST['keywords'] = explode(',', $_POST['keywords']);
+      $_POST['keywords'] = preg_split('#\s*,\s*#', $_POST['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
       $fields = array(
         'status',
@@ -58,6 +58,7 @@
         'quantity_unit_id',
         'purchase_price',
         'purchase_price_currency_code',
+        'recommended_price',
         'prices',
         'campaigns',
         'tax_class_id',
@@ -478,6 +479,11 @@
               </div>
 
               <div class="form-group col-md-6">
+                <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
+                <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'recommended_price', true, 2, 0, null); ?>
+              </div>
+
+              <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
                 <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
               </div>
@@ -566,6 +572,8 @@
             <li>
 
               <div class="pull-right">
+                <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>
+                <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>
                 <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>
               </div>
 
@@ -1112,7 +1120,7 @@
 
     <?php foreach (currency::$currencies as $currency) { ?>
     if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-      var value = (Number($('input[name="prices[<?php echo $currency['code']; ?>]"]').val()) * (100 - Number($(this).val())) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+      var value = Number($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
       $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
     } else {
       $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("");
@@ -1127,13 +1135,13 @@
 
   $('#table-campaigns').on('keyup change input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
     var parent = $(this).closest('tr');
-    var percentage = Number($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val()) - Number($(this).val()) / Number($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val()) * 100;
+    var percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
     percentage = percentage.toFixed(2);
     $(parent).find('input[name$="[percentage]"]').val(percentage);
 
     <?php foreach (currency::$currencies as $currency) { ?>
     var value = 0;
-    value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val()) / <?php echo $currency['value']; ?>;
+    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = value.toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
     if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
@@ -1189,6 +1197,16 @@
     $(this).closest('li').remove();
   });
 
+  $('#tab-options').on('click', '.move-group-up, .move-group-down', function(e) {
+    e.preventDefault();
+    var row = $(this).closest('li');
+    if ($(this).is('.move-group-up') && $(row).prevAll().length > 0) {
+      $(row).insertBefore($(row).prev());
+    } else if ($(this).is('.move-group-down') && $(row).nextAll().length > 0) {
+      $(row).insertAfter($(row).next());
+    }
+  });
+
   $('#tab-options').on('click', '.remove', function(e) {
     e.preventDefault();
     $(this).closest('tr').remove();
@@ -1197,7 +1215,7 @@
   $('#tab-options').on('click', '.move-up, .move-down', function(e) {
     e.preventDefault();
     var row = $(this).closest('tr');
-    if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
+    if ($(this).is('.move-up') && $(row).prevAll().length > 0) {
       $(row).insertBefore($(row).prev());
     } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
       $(row).insertAfter($(row).next());
@@ -1314,6 +1332,8 @@
     if (!$('#tab-options input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
       var output = '<li>'
                  + '  <div class="pull-right">'
+                 + '    <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
+                 + '    <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
                  + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
                  + '  </div>'
                  + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_option[group_id]"] option:selected').text() +'</h2>'
@@ -1391,6 +1411,8 @@
 
     var output = '<li>'
                + '  <div class="pull-right">'
+               + '    <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
+               + '    <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
                + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
                + '  </div>'
                + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_option[group_id]"] option:selected').text() +'</h2>'

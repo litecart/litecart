@@ -2,6 +2,8 @@
 
   header('X-Robots-Tag: noindex');
 
+  unset(notices::$data['notices']['maintenance_mode']);
+
   if (empty(cart::$items)) return;
 
   if (empty($shipping)) $shipping = new mod_shipping();

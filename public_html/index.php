@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.2.4
+ * LiteCart® 2.2.5
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -21,7 +21,7 @@
         '%message' => language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
         '%preview' => language::translate('title_preview', 'Preview'),
         '%link' => document::href_ilink('maintenance_mode'),
-      )));
+      )), 'maintenance_mode');
     } else {
       http_response_code(503);
       include vmod::check(FS_DIR_APP . 'pages/maintenance_mode.inc.php');
@@ -34,7 +34,7 @@
   route::load(FS_DIR_APP . 'includes/routes/url_*.inc.php');
 
 // Append default route
-  route::add('#^([0-9a-zA-Z_/\.]+)(?:\.php)?$#', '$1');
+  route::add('#^([0-9a-zA-Z_\-/\.]+)(?:\.php)?$#', '$1');
 
 // Go
   route::process();

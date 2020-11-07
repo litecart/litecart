@@ -20,6 +20,9 @@ input, button, select, textarea {
 input[data-type="currency"], input[data-type="number"], input[data-type="decimal"] {
   text-align: right;
 }
+input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]::-webkit-inner-spin-button {
+  margin-left: @form-input-padding;
+}
 
 .form-group {
   &.required label::after {
@@ -107,9 +110,6 @@ input[data-type="currency"], input[data-type="number"], input[data-type="decimal
 }
 
 .checkbox, .radio {
-  padding: @form-input-padding @form-input-padding * 2;
-}
-.form-control .checkbox {
   padding: @form-input-padding 0;
 }
 

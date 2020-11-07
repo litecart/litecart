@@ -32,13 +32,15 @@
 
     public function load($user_id) {
 
-      if (!preg_match('#^[0-9]+$#', $user_id)) throw new Exception('Invalid user (ID: '. $user_id .')');
+      if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $user_id)) throw new Exception('Invalid user (ID: '. $user_id .')');
 
       $this->reset();
 
       $user_query = database::query(
         "select * from ". DB_TABLE_USERS ."
-        where id = ". (int)$user_id ."
+        ". (preg_match('#^[0-9]+$#', $user_id) ? "where id = '". (int)$user_id ."'" : "") ."
+        ". (!preg_match('#^[0-9]+$#', $user_id) ? "where lower(username) = '". database::input(strtolower($user_id)) ."'" : "") ."
+        ". (preg_match('#@#', $user_id) ? "where lower(email) = '". database::input(strtolower($user_id)) ."'" : "") ."
         limit 1;"
       );
 
@@ -54,6 +56,20 @@
     }
 
     public function save() {
+
+      $user_query = database::query(
+        "select id from ". DB_TABLE_USERS ."
+        where (
+          lower(username) = '". database::input(strtolower($this->data['username'])) ."'
+          ". (!empty($this->data['email']) ? "or lower(email) = '". database::input(strtolower($this->data['email'])) ."'" : "") ."
+        )
+        ". (!empty($this->data['id']) ? "and id != ". (int)$this->data['id'] : "") ."
+        limit 1;"
+      );
+
+      if (database::num_rows($user_query)) {
+        throw new Exception(language::translate('error_user_conflict', 'The user conflicts another user in the database'));
+      }
 
       if (empty($this->data['id'])) {
         database::query(

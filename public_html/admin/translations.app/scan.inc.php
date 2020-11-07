@@ -19,8 +19,8 @@
     $deleted_translations = 0;
 
     foreach ($iterator as $file) {
-      if (pathinfo($file, PATHINFO_EXTENSION) != 'php') continue;
-      //if (strpos(pathinfo($file, PATHINFO_FILENAME), 'vq2') !== false) continue;
+      if (preg_match('#\.php#', $file)) continue;
+      //if (preg_match('#^'. preg_quote(FS_DIR_APP, '#') .'vqmods/#', $file)) continue;
 
       $found_files++;
       $contents = file_get_contents($file);
@@ -96,7 +96,7 @@
 
       while ($group = database::fetch($settings_groups_query)) {
         $translation_keys[] = 'settings_group:title_'.$group['key'];
-        $translation_keys[] = 'settings_group:title_'.$group['key'];
+        $translation_keys[] = 'settings_group:description__'.$group['key'];
       }
 
       $settings_query = database::query(

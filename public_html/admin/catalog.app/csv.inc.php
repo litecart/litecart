@@ -379,6 +379,7 @@
           'dim_class',
           'purchase_price',
           'purchase_price_currency_code',
+          'recommended_price',
           'delivery_status_id',
           'sold_out_status_id',
           'date_valid_from',
@@ -390,8 +391,8 @@
           if (isset($row[$field])) $product->data[$field] = $row[$field];
         }
 
-        if (isset($row['keywords'])) $product->data['keywords'] = preg_split('#, ?#', $row['keywords']);
-        if (isset($row['categories'])) $product->data['categories'] = preg_split('#, ?#', $row['categories']);
+        if (isset($row['keywords'])) $product->data['keywords'] = preg_split('#\s*,\s*#', $row['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+        if (isset($row['categories'])) $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
 
       // Set price
         if (!empty($row['currency_code'])) {
@@ -500,6 +501,7 @@
           'images' => implode(';', $product->images),
           'purchase_price' => $product->purchase_price,
           'purchase_price_currency_code' => $product->purchase_price_currency_code,
+          'recommended_price' => $product->recommended_price,
           'price' => $product->price,
           'tax_class_id' => $product->tax_class_id,
           'quantity' => $product->quantity,

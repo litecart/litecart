@@ -96,7 +96,7 @@
     'offers' => array(
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
-      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
+      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? (float)currency::format_raw(tax::get_price($product->campaign['price'], $product->tax_class_id)) : (float)currency::format_raw(tax::get_price($product->price, $product->tax_class_id)),
       'priceValidUntil' => (!empty($product->campaign) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
@@ -116,7 +116,7 @@
     'name' => $product->name,
     'short_description' => !empty($product->short_description) ? $product->short_description : '',
     'description' => !empty($product->description) ? $product->description : '<em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em>',
-    'technical_data' => !empty($product->technical_data) ? preg_split('#\r\n|\r|\n#', $product->technical_data) : array(),
+    'technical_data' => preg_split('#\r\n?|\n#', $product->technical_data, -1, PREG_SPLIT_NO_EMPTY),
     'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
     'attributes' => $product->attributes,
@@ -133,6 +133,7 @@
     'sticker' => '',
     'extra_images' => array(),
     'manufacturer' => array(),
+    'recommended_price' => tax::get_price($product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
@@ -142,8 +143,8 @@
     'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
     'quantity_unit' => $product->quantity_unit,
     'stock_status' => null,
-    'delivery_status' => !empty($product->delivery_status['name']) ? $product->delivery_status['name'] : '',
-    'sold_out_status' => !empty($product->sold_out_status['name']) ? $product->sold_out_status['name'] : '',
+    'delivery_status' => !empty($product->delivery_status) ? $product->delivery_status : array(),
+    'sold_out_status' => !empty($product->sold_out_status) ? $product->sold_out_status : array(),
     'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
     'catalog_only_mode' => settings::get('catalog_only_mode'),
@@ -267,7 +268,7 @@
             }
 
             $values .= '<div class="checkbox">' . PHP_EOL
-                     . '  <label>' . functions::form_draw_checkbox('options['.$group['name'].'][]', $value['name'], true, 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '  <label>' . functions::form_draw_checkbox('options['.$group['name'].'][]', $value['name'], true, 'data-group-id="'. (int)$value['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                      . '</div>';
           }
           break;
@@ -286,7 +287,7 @@
             }
 
             $values .= '<div class="radio">' . PHP_EOL
-                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$value['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                      . '</div>';
           }
           break;
@@ -305,25 +306,26 @@
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
+            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
           }
 
-          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, !empty($group['required']) ? 'required="required"' : '');
+          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$value['group_id'] .'"'. (!empty($group['required']) ? ' required="required"' : ''));
           break;
 
         case 'text':
 
-          $values .= functions::form_draw_text_field('options['.$group['name'].']', true, 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) . PHP_EOL;
+          $values .= functions::form_draw_text_field('options['.$group['name'].']', true, 'data-group-id="'. (int)$value['group_id'] .'"' . (!empty($group['required']) ? ' required="required"' : '')) . PHP_EOL;
           break;
 
         case 'textarea':
 
-          $values .= functions::form_draw_textarea('options['.$group['name'].']', true, !empty($group['required']) ? 'required="required"' : '') . PHP_EOL;
+          $values .= functions::form_draw_textarea('options['.$group['name'].']', true, !empty($group['required']) ? 'data-group-id="'. (int)$value['group_id'] .'" required="required"' : '') . PHP_EOL;
           break;
       }
 
       $_page->snippets['options'][] = array(
         'id' => $group['id'],
+        'group_id' => $group['group_id'],
         'name' => $group['name'],
         'required' => !empty($group['required']) ? 1 : 0,
         'values' => $values,

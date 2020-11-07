@@ -72,12 +72,6 @@
           }
         }
 
-        if (!empty($customer)) {
-          $customer = new ent_customer($customer['id']);
-        } else {
-          $customer = new ent_customer();
-        }
-
         $fields = array(
           'code',
           'email',

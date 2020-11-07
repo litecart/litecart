@@ -28,7 +28,7 @@
       if (empty($_POST['zones'])) $_POST['zones'] = array();
 
       foreach ($_POST['zones'] as $zone) {
-        if (empty($zone['code']) || empty($zone['name'])) throw new Exception(language::translate('error_zone_must_have_name_and_code', 'A zone must have a name and code'));
+        if (empty($zone['code']) || empty($zone['name'])) throw new Exception(language::translate('error_zone_must_have_name_and_code', 'A zone/state/province must have a name and code'));
       }
 
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
