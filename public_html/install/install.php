@@ -285,7 +285,6 @@
       '{DB_PASSWORD}' => $_REQUEST['db_password'],
       '{DB_DATABASE}' => $_REQUEST['db_database'],
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
-      '{DB_DATABASE_CHARSET}' => 'utf8',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
     ];
 

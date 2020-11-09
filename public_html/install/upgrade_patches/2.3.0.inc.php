@@ -403,7 +403,11 @@
       'search'  => "DB_TABLE_PREFIX",
       'replace' => "DB_TABLE_PREFIX",
     ],
-
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
+      'replace' => "",
+    ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
@@ -446,11 +450,6 @@
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "// Database tables",
       'replace' => "// Database Tables - Backward Compatibility (LiteCart <2.3)",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1",
-      'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8mb4');",
     ],
   ];
 
