@@ -403,6 +403,12 @@
       'search'  => "DB_TABLE_PREFIX",
       'replace' => "DB_TABLE_PREFIX",
     ],
+
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "  define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
+      'replace' => "",
+    ],
     [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL,

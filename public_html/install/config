@@ -30,7 +30,6 @@
   define('DB_DATABASE', '{DB_DATABASE}');
   define('DB_PREFIX', '{DB_PREFIX}');
   define('DB_CONNECTION_CHARSET', 'utf8mb4');
-  define('DB_PERSISTENT_CONNECTIONS', 'false');
 
 // Database Tables - Backward Compatibility (LiteCart <2.3)
   define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');
