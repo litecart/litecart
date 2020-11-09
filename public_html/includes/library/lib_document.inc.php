@@ -43,8 +43,8 @@
 
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_APP . 'favicon.ico">';
 
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'vendor/fontawesome/font-awesome.min.css" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'vendor/jquery/jquery-3.5.0.min.js"></script>';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'vendor/fontawesome/font-awesome.min.css') .'" />';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'vendor/jquery/jquery-3.5.1.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -299,5 +299,14 @@
 
     public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
       return htmlspecialchars(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
+    }
+
+    public static function rlink($resource) {
+      $timestamp = filemtime($resource);
+      return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => $timestamp]);
+    }
+
+    public static function href_rlink($resource) {
+      return htmlspecialchars(self::rlink($resource));
     }
   }

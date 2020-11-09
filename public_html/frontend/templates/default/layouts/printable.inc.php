@@ -3,8 +3,8 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/printable.min.css" />
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/printable.min.css'); ?>" />
 {snippet:head_tags}
 {snippet:style}
 </head>
