@@ -63,7 +63,7 @@
 
         if (!empty($route['params'])) {
           parse_str(preg_replace($route['pattern'], $route['params'], self::$request), $params);
-          $_GET = array_merge($_GET, $params);
+          $_GET = array_filter(array_merge($_GET, $params));
         }
 
         self::$route = $route;
