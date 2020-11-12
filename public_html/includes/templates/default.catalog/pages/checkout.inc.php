@@ -99,16 +99,16 @@
     if (task.data === true) {
       switch (task.component) {
         case 'customer':
-          task.data = 'token=' + $(':input[name="token"]').val() + '&' + $('#box-checkout-customer :input').serialize();
+          task.data = $('#box-checkout-customer :input').serialize();
           break;
         case 'shipping':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-shipping .option.active :input').serialize();
+          task.data = $('#box-checkout-shipping .option.active :input').serialize();
           break;
         case 'payment':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-payment .option.active :input').serialize();
+          task.data = $('#box-checkout-payment .option.active :input').serialize();
           break;
         case 'summary':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-summary :input').serialize();
+          task.data = $('#box-checkout-summary :input').serialize();
           break;
       }
     }
@@ -154,8 +154,7 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
+    var data = $(this).closest('td').find(':input').serialize()
              + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
@@ -166,8 +165,7 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
+    var data = $(this).closest('td').find(':input').serialize()
              + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
@@ -323,8 +321,7 @@
         if (!$(this).is(':focus')) {
           if (window.customer_form_changed) {
             if (console) console.log('Autosaving customer details');
-            var data = 'token=' + $(':input[name="token"]').val()
-                     + '&' + $('#box-checkout-customer :input').serialize();
+            var data = $('#box-checkout-customer :input').serialize();
             queueUpdateTask('customer', data, true);
             queueUpdateTask('cart', null, true);
             queueUpdateTask('shipping', true, true);
@@ -344,8 +341,7 @@
 
   $('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $('#box-checkout-customer :input').serialize()
+    var data = $('#box-checkout-customer :input').serialize()
              + '&save_customer_details=true';
     queueUpdateTask('customer', data, true);
     queueUpdateTask('cart', null, true);
@@ -366,8 +362,7 @@
     $('#box-checkout-shipping .option.active :input').prop('disabled', false);
     $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
 
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $('#box-checkout-shipping .option.active :input').serialize();
+    var data = $('#box-checkout-shipping .option.active :input').serialize();
     queueUpdateTask('shipping', data, false);
     queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', null, true);
@@ -383,8 +378,7 @@
     $('#box-checkout-payment .option.active :input').prop('disabled', false);
     $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
 
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $('#box-checkout-payment .option.active :input').serialize();
+    var data = $('#box-checkout-payment .option.active :input').serialize();
     queueUpdateTask('payment', data, false);
     queueUpdateTask('summary', null, true);
   });
