@@ -11,7 +11,7 @@
         return;
       }
 
-      $checksum = md5(json_encode($arguments, JSON_UNESCAPED_SLASHES));
+      $checksum = crc32(http_build_query($arguments));
 
       if (isset(self::$_cache[$resource][$checksum])) {
         return self::$_cache[$resource][$checksum];

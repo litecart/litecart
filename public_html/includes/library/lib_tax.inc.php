@@ -127,7 +127,7 @@
         }
       }
 
-      $checksum = md5(http_build_query($customer));
+      $checksum = crc32(http_build_query($customer));
 
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
 
