@@ -9,25 +9,28 @@
   $box_checkout_summary = new ent_view();
 
   $box_checkout_summary->snippets = [
-    'order' => $order,
+    'order_total' => $order->data['order_total'],
+    'tax_total' => $order->data['tax_total'],
+    'payment_due' => $order->data['payment_due'],
+    'currency_code' => $order->data['currency_code'],
     'error' => $order->validate(),
     'selected_shipping' => null,
     'selected_payment' => null,
     'consent' => null,
-    'confirm' => !empty($order->payment->data['selected']['confirm']) ? $order->payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
+    'confirm' => !empty($order->payment->selected['confirm']) ? $order->payment->selected['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   ];
 
-  if (!empty($order->shipping->data['selected'])) {
+  if (!empty($order->shipping->selected)) {
     $box_checkout_summary->snippets['selected_shipping'] = array(
-      'icon' => is_file(FS_DIR_APP . $order->shipping->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_APP . $order->shipping->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
-      'title' => $order->shipping->data['selected']['title'],
+      'icon' => is_file(FS_DIR_APP . $order->shipping->selected['icon']) ? functions::image_thumbnail(FS_DIR_APP . $order->shipping->selected['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'title' => $order->shipping->selected['title'],
     );
   }
 
-  if (!empty($order->payment->data['selected'])) {
+  if (!empty($order->payment->selected)) {
     $box_checkout_summary->snippets['selected_payment'] = array(
-      'icon' => is_file(FS_DIR_APP . $order->payment->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_APP . $order->payment->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
-      'title' => $order->payment->data['selected']['title'],
+      'icon' => is_file(FS_DIR_APP . $order->payment->selected['icon']) ? functions::image_thumbnail(FS_DIR_APP . $order->payment->selected['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'title' => $order->payment->selected['title'],
     );
   }
 

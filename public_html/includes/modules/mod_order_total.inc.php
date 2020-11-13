@@ -16,6 +16,10 @@
         if ($rows = $module->process($order)) {
           foreach ($rows as $row) {
 
+            if (!empty($row['tax_class_id'])) {
+              $row['tax'] = tax::get_tax($row['value'], $row['tax_class_id'], $order->data['customer']);
+            }
+
           // Round amounts
             if (settings::get('round_amounts')) {
               $row['value'] = currency::round($row['value'], $order->data['currency_code']);

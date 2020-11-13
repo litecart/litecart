@@ -1,11 +1,11 @@
 <?php
 
   class mod_customer extends abs_module {
-    private $_get_address_cache;
+    private $_cache;
 
     public function __construct() {
 
-      $this->_get_address_cache = &session::$data['get_address_cache'];
+      $this->_cache = &session::$data['get_address_cache'];
 
       $this->load();
     }
@@ -14,10 +14,13 @@
 
       if (empty($this->modules)) return false;
 
-      $checksum = md5(http_build_query($fields));
-      if (isset($this->_get_address_cache[$checksum])) {
-        return $this->_get_address_cache[$checksum];
+      $checksum = crc32(http_build_query($fields));
+
+      if (isset($this->_cache[$checksum])) {
+        return $this->_cache[$checksum];
       }
+
+      $this->_cache[$checksum] = [];
 
       foreach ($this->modules as $module) {
 
@@ -26,15 +29,13 @@
         if ($result = $module->get_address($fields)) {
           if (is_array($result) && empty($result['error'])) {
             foreach ($result as $key => $value) {
-              if (!empty($result[$key])) $fields[$key] = $result[$key];
+              if (!empty($result[$key])) $this->_cache[$checksum][$key] = $result[$key];
             }
           }
         }
       }
 
-      $this->_get_address_cache[$checksum] = $fields;
-
-      return $fields;
+      return $this->_cache[$checksum];
     }
 
     public function validate(&$fields) {
