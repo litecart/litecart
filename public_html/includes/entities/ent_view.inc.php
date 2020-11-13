@@ -13,12 +13,8 @@
 
       // Relative path
         } else {
-          if (!empty(route::$route['endpoint']) && route::$route['endpoint'] == 'backend') {
-            $file = vmod::check(FS_DIR_APP . 'backend/template/'. $view .'.inc.php');
-          } else {
-            $file = vmod::check(FS_DIR_APP . 'frontend/templates/' . document::$template .'/'. $view .'.inc.php');
-            if (!is_file($file)) $file = vmod::check(FS_DIR_APP . 'frontend/templates/default/'. $view .'.inc.php');
-          }
+          $file = vmod::check(FS_DIR_TEMPLATE . $view .'.inc.php');
+          if (!is_file($file)) $file = vmod::check(FS_DIR_APP . 'frontend/templates/default/'. $view .'.inc.php');
         }
 
       // Process view in an isolated scope

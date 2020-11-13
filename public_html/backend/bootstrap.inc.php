@@ -1,9 +1,5 @@
 <?php
 
-  route::identify();
-
-// Run operations before capture
-  event::fire('before_capture');
-
-// Go
-  route::process();
+// Set template
+  define('FS_DIR_TEMPLATE', FS_DIR_APP . 'backend/template/');
+  define('WS_DIR_TEMPLATE', WS_DIR_APP . 'backend/template/');

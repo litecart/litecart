@@ -2,7 +2,6 @@
 
   class document {
 
-    public static $template = 'default';
     public static $layout = 'default';
     public static $snippets = [];
     public static $settings = [];
@@ -17,15 +16,6 @@
     public static function before_capture() {
 
       header('X-Powered-By: '. PLATFORM_NAME);
-
-    // Set template
-      if (!empty(route::$route['endpoint']) && route::$route['endpoint'] == 'backend') {
-        define('FS_DIR_TEMPLATE', FS_DIR_APP . 'backend/template/');
-        define('WS_DIR_TEMPLATE', WS_DIR_APP . 'backend/template/');
-      } else {
-        define('FS_DIR_TEMPLATE', FS_DIR_APP . 'frontend/templates/'. self::$template .'/');
-        define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. self::$template .'/');
-      }
 
     // Default to AJAX layout on AJAX request
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
@@ -59,14 +49,8 @@
       }
 
     // Get template settings
-      $template_settings = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('store_template') .'/config.inc.php');
-
-      self::$settings = @json_decode(settings::get('store_template_settings'), true);
-
-      foreach ($template_settings as $setting) {
-        if (!isset(self::$settings[$setting['key']])) {
-          self::$settings[$setting['key']] = $setting['default_value'];
-        }
+      if (route::$route['endpoint'] == 'frontend') {
+        self::$settings = @json_decode(settings::get('template_settings'), true);
       }
     }
 

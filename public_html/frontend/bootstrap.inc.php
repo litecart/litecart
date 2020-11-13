@@ -1,7 +1,8 @@
 <?php
 
-// Template
-  document::$settings = settings::get('store_template');
+// Set template
+  define('FS_DIR_TEMPLATE', FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/');
+  define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/');
 
 // Maintenance Mode
   if (settings::get('maintenance_mode')) {
@@ -18,14 +19,3 @@
       exit;
     }
   }
-
-// Append default route
-  route::add('#^([0-9a-zA-Z_/\.]+)$#', 'frontend', '$1');
-
-  route::identify();
-
-// Run operations before capture
-  event::fire('before_capture');
-
-// Go
-  route::process();

@@ -18,10 +18,22 @@
   route::load(FS_DIR_APP . 'frontend/routes/url_*.inc.php');
   route::load(FS_DIR_APP . 'backend/routes/url_*.inc.php');
 
-  if (preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', route::$request)) {
+// Append last destination route
+  route::add('#^([0-9a-zA-Z_/\.]+)$#', 'frontend', '$1');
+
+  route::identify();
+
+// Set template
+  if (!empty(route::$route['endpoint']) && route::$route['endpoint'] == 'backend') {
     require vmod::check(FS_DIR_APP . 'backend/bootstrap.inc.php');
   } else {
     require vmod::check(FS_DIR_APP . 'frontend/bootstrap.inc.php');
   }
+
+// Run operations before capture
+  event::fire('before_capture');
+
+// Go capture the content
+  route::process();
 
   require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
