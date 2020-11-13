@@ -113,7 +113,7 @@
     if (!empty($filter['categories'])) {
       $sql_where_categories = (
         "and p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+          select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
           where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
         )"
       );
@@ -155,7 +155,7 @@
         ". (!empty($sql_where_categories) ? $sql_where_categories : null) ."
         ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
         ". (!empty($filter['brands']) ? "and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
-        ". (!empty($filter['keywords']) ? "and (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
+        ". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
         and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
@@ -217,7 +217,7 @@
     if (!empty($filter['categories'])) {
       $sql_where_categories = (
         "and p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+          select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
           where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
         )"
       );
@@ -273,7 +273,7 @@
           ". (!empty($sql_where_categories) ? $sql_where_categories : null) ."
           ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
           ". (!empty($filter['brands']) ? "or brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
-          ". (!empty($filter['keywords']) ? "or (find_in_set('". implode("', p.keywords) or find_in_set('", database::input($filter['keywords'])) ."', p.keywords))" : null) ."
+          ". (!empty($filter['keywords']) ? "or (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         )
         and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')

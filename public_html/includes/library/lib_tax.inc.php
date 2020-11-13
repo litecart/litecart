@@ -129,7 +129,9 @@
 
       $checksum = crc32(http_build_query($customer));
 
-      if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
+      if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) {
+        return self::$_cache['rates'][$tax_class_id][$checksum];
+      }
 
       $tax_rates_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."tax_rates

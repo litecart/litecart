@@ -364,7 +364,7 @@
   file_delete(FS_DIR_APP .'logs/');
 
   foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
-    file_rename($file, FS_DIR_APP . 'frontend/boxes/' . basename($file);
+    file_rename($file, FS_DIR_APP . 'frontend/boxes/' . basename($file));
   }
 
   file_delete(FS_DIR_APP . 'includes/boxes/');

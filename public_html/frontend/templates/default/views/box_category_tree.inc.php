@@ -26,10 +26,6 @@
 
 <section id="box-category-tree" class="box hidden-xs">
   <h2 class="title"><?php echo $title; ?></h2>
-
-  <ul class="nav nav-stacked nav-pills<?php if (!empty(document::$settings['compact_category_tree']) && !empty($category_path)) echo ' compact'; ?>">
-    <?php foreach ($categories as $category) $draw_branch($category, $category_path, $draw_branch); ?>
-  </ul>
 </section>
 
 <?php if (!empty(document::$settings['compact_category_tree'])) { ?>

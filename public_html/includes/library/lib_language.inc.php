@@ -11,7 +11,7 @@
 
     // Bind selected language to session
       if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
-        if (!isset(session::$data['backend']['language'])) session::$data['backend']['language'] = [];
+        if (empty(session::$data['backend']['language'])) session::$data['backend']['language'] = [];
         self::$selected = &session::$data['backend']['language'];
       } else {
         if (!isset(session::$data['language'])) session::$data['language'] = [];
