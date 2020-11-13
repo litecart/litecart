@@ -234,6 +234,24 @@
         }
       }
 
+    // Prefetch
+      if (preg_match_all('#<(img|link|script)[^>]+>#', $GLOBALS['output'], $matches)) {
+
+        $prefetches = [];
+        foreach ($matches[0] as $match) {
+          if (preg_match('#(https?:)?//(?!'. preg_quote($_SERVER['HTTP_HOST'], '#') .')[0-9a-z-\.]+#', $match, $m)) {
+            $prefetches[] = $m[0];
+          }
+        }
+
+        if ($prefetches) {
+          header('Link: '. implode(', ', array_map(function($str){return '<'.$str.'>; rel=dns-prefetch';}, $prefetches)));
+        //  if (!$GLOBALS['output'] = preg_replace('#<head([^>]*)>#', '<head$1>' . PHP_EOL . '<link rel="dns-prefetch" href="'. implode('">'. PHP_EOL .'<link rel="dns-prefetch" href="', array_unique($prefetches)) .'">', $GLOBALS['output'], 1)) {
+        //    trigger_error('Failed extracting prefetch domains', E_USER_ERROR);
+        //  }
+        }
+      }
+
       if (class_exists('stats', false)) {
         stats::set('output_optimization', microtime(true) - $microtime_start);
       }
