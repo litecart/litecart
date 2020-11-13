@@ -72,8 +72,12 @@ CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL AFTER `status`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'store_template' WHERE `key` = 'store_template_catalog';
+UPDATE `lc_settings` SET `key` = 'template', title = 'Template' WHERE `key` = 'store_template_catalog';
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'store_template_settings' WHERE `key` = 'store_template_catalog_settings';
+UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'store_template_catalog_settings';
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings');
+-- --------------------------------------------------------
+ALTER TABLE `lc_settings`
+CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL AFTER `type`,
+CHANGE COLUMN `value` `value` VARCHAR(8192) NULL DEFAULT NULL AFTER `key`;
