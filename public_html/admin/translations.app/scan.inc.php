@@ -19,7 +19,7 @@
     $deleted_translations = 0;
 
     foreach ($iterator as $file) {
-      if (preg_match('#\.php#', $file)) continue;
+      if (!preg_match('#\.php$#', $file)) continue;
       //if (preg_match('#^'. preg_quote(FS_DIR_APP, '#') .'vqmods/#', $file)) continue;
 
       $found_files++;
