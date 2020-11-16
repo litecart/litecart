@@ -162,10 +162,10 @@
 
     ### PHP > Check Disabled Functions ############################
 
-    echo '<p>Checking for disabled PHP functions... ';
+    echo '<p>Checking available PHP functions... ';
 
     $critical_functions = array('error_log', 'ini_set');
-    $important_functions = array('allow_url_fopen', 'exec', 'apache_get_modules');
+    $important_functions = array('allow_url_fopen', 'shell_exec', 'exec', 'apache_get_modules');
 
     if ($disabled_functions = array_intersect($critical_functions, preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY))) {
       throw new Exception('<span class="error">[Error] Critical functions are disabled ('. implode(', ', $disabled_functions) .'). You need to unblock them in php.ini</span></p>' . PHP_EOL . PHP_EOL);

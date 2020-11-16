@@ -18,15 +18,15 @@
 
       <?php foreach ($order_total as $row) { ?>
       <tr>
-        <td class="text-right" colspan="5"><strong><?php echo $row['title']; ?>:</strong></td>
+        <td class="text-right" style="white-space: normal;" colspan="5"><strong><?php echo $row['title']; ?>:</strong></td>
         <td class="text-right"><?php echo !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false); ?></td>
       </tr>
       <?php } ?>
 
       <?php if ($tax_total) { ?>
       <tr>
-        <td class="text-right" style="color: #999999;" colspan="5"><?php echo $incl_excl_tax; ?>:</td>
-        <td class="text-right" style="color: #999999;"><?php echo $tax_total; ?></td>
+        <td class="text-right" style="color: #999;" colspan="5"><?php echo $incl_excl_tax; ?>:</td>
+        <td class="text-right" style="color: #999;"><?php echo $tax_total; ?></td>
       </tr>
       <?php } ?>
 

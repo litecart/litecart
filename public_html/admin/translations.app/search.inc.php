@@ -110,16 +110,15 @@ th:not(:last-child) {
     <?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?>
   </div>
 
-  <?php if (count($_GET['languages']) > 1) { ?>
-  <div class="panel-action">
-    <button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button>
-  </div>
-  <?php } ?>
-
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
+      <?php if (count($_GET['languages']) > 1) { ?>
+      <div>
+        <button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button>
+      </div>
+      <?php } ?>
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
       <div><?php echo functions::form_draw_select_field('endpoint', array(array('-- '. language::translate('title_all', 'All') .' --', ''), array(language::translate('title_frontend', 'Frontend'), 'frontend'), array(language::translate('title_backend', 'Backend'), 'backend'))); ?></div>
       <div>
@@ -172,7 +171,7 @@ th:not(:last-child) {
         </table>
       </div>
 
-      <div class="pull-right">
+      <div class="panel-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
       </div>
 

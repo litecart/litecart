@@ -147,7 +147,6 @@
     'sold_out_status' => !empty($product->sold_out_status) ? $product->sold_out_status : array(),
     'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
-    'catalog_only_mode' => settings::get('catalog_only_mode'),
     'options' => array(),
   );
 

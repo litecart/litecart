@@ -1,12 +1,11 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'price';
+
   if (empty($_GET['manufacturer_id'])) {
     header('Location: '. document::ilink('manufacturers'));
     exit;
   }
-
-  functions::draw_lightbox();
 
   $manufacturer = reference::manufacturer($_GET['manufacturer_id']);
 
@@ -76,5 +75,7 @@
 
     cache::set($manufacturer_cache_token, $_page->snippets);
   }
+
+  functions::draw_lightbox();
 
   echo $_page->stitch('pages/manufacturer');

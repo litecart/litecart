@@ -139,7 +139,7 @@
          <?php } ?>
         </div>
 
-        <?php if (!$catalog_only_mode && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
+        <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
