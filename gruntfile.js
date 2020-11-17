@@ -91,13 +91,13 @@ module.exports = function(grunt) {
         options: {
           compress: true,
           sourceMap: true,
-          sourceMapBasepath: 'public_html/vendor/featherlight/',
+          sourceMapBasepath: 'public_html/assets/featherlight/',
           sourceMapRootpath: './',
           sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
-          'public_html/vendor/featherlight/featherlight.min.css'       : 'public_html/vendor/featherlight/featherlight.less',
+          'public_html/assets/featherlight/featherlight.min.css'       : 'public_html/assets/featherlight/featherlight.less',
         }
       },
     },
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
           compass: false
         },
         files: {
-          'public_html/vendor/trumbowyg/ui/trumbowyg.min.css': 'public_html/vendor/trumbowyg/ui/trumbowyg.scss'
+          'public_html/assets/trumbowyg/ui/trumbowyg.min.css': 'public_html/assets/trumbowyg/ui/trumbowyg.scss'
         }
       }
     },
@@ -122,7 +122,7 @@ module.exports = function(grunt) {
           sourceMap: true,
         },
         files: {
-          'public_html/vendor/featherlight/featherlight.min.js'   : ['public_html/vendor/featherlight/featherlight.js'],
+          'public_html/assets/featherlight/featherlight.min.js'   : ['public_html/assets/featherlight/featherlight.js'],
         }
       },
       litecart: {
@@ -152,25 +152,28 @@ module.exports = function(grunt) {
         ],
         tasks: ['replace']
       },
+
       less: {
         files: [
-          'public_html/vendor/featherlight/featherlight.less',
+          'public_html/assets/featherlight/featherlight.less',
           'public_html/backend/template/**/*.less',
           'public_html/frontend/templates/**/*.less',
         ],
         tasks: ['less']
       },
+
       javascripts: {
         files: [
-          'public_html/vendor/featherlight/featherlight.js',
+          'public_html/assets/featherlight/featherlight.js',
           'public_html/backend/template/**/js/*.js',
           'public_html/frontend/templates/**/js/*.js',
         ],
         tasks: ['uglify']
       },
+
       sass: {
         files: [
-          'public_html/vendor/trumbowyg/ui/trumbowyg.scss',
+          'public_html/assets/trumbowyg/ui/trumbowyg.scss',
         ],
         tasks: ['sass']
       },
