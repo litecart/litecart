@@ -268,7 +268,7 @@
         $route = WS_DIR_APP . $route;
       }
 
-      return route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
+      return (string)route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
     }
 
     public static function href_ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
@@ -282,7 +282,7 @@
         if ($inherit_params === null) $inherit_params = true;
       }
 
-      return route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
+      return (string)route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
     public static function href_link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {

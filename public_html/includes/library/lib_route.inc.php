@@ -205,7 +205,7 @@
         }
       }
 
-      return (string)$link;
+      return $link;
     }
 
     public static function rewrite(ent_link $link, $language_code=null) {
