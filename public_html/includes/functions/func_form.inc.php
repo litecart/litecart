@@ -133,7 +133,7 @@
   }
 
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name);
+    if ($value === true) $value = (float)form_reinsert_value($name);
     if ($value == 0) $value = '';
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
@@ -195,11 +195,8 @@
   }
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name);
-
-    if ($value != '') {
-      $value = (float)number_format((float)$value, (int)$decimals, '.', '');
-    }
+    if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
+    if ($value == 0) $value = '';
 
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
@@ -295,6 +292,7 @@
 
   function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
+    if ($value == 0) $value = '';
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
