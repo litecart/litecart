@@ -1245,7 +1245,7 @@
     if (!empty($value)) {
       $product_query = database::query(
         "select p.id, pi.name from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code)
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where p.id = ". (int)$value ."
         limit 1;"
       );
