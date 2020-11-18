@@ -134,6 +134,7 @@
 
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
+    if ($value == 0) $value = '';
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 

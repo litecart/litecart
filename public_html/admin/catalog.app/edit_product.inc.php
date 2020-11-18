@@ -1056,7 +1056,6 @@
     var gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
 
     if ($(this).val() == 0) {
-      $(this).val('');
       $(gross_field).val('');
     } else {
       $(gross_field).val(gross_price);
@@ -1074,7 +1073,6 @@
     var net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
 
     if ($(this).val() == 0) {
-      $(this).val('');
       $(net_field).val('');
     } else {
       $(net_field).val(net_price);
