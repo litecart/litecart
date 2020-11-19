@@ -13,6 +13,7 @@
     $json['items'][] = array(
       'key' => $key,
       'product_id' => $item['product_id'],
+      'options' => $item['options'],
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'thumbnail' => document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $item['image'], 320, 320, 'FIT_USE_WHITESPACING')),
       'name' => $item['name'],
