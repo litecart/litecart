@@ -272,7 +272,7 @@
       database::query(
         "delete from " . DB_TABLE_PRODUCTS_TO_CATEGORIES . "
         where product_id = ". (int)$this->data['id'] ."
-        and category_id not in ('". @implode("', '", database::input($this->data['categories'])) ."');"
+        and category_id not in ('". implode("', '", database::input($this->data['categories'])) ."');"
       );
 
       foreach ($this->data['categories'] as $category_id) {
@@ -319,7 +319,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['attributes'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['attributes'], 'id')) ."');"
       );
 
       if (!empty($this->data['attributes'])) {
@@ -380,7 +380,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
       );
 
     // Update campaigns
@@ -417,13 +417,13 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['options'], 'id')) ."');"
       );
 
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
         where product_id = ". (int)$this->data['id'] ."
-        and group_id not in ('". @implode("', '", array_column($this->data['options'], 'group_id')) ."');"
+        and group_id not in ('". implode("', '", array_column($this->data['options'], 'group_id')) ."');"
       );
 
     // Update options
@@ -458,7 +458,7 @@
             "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
             where product_id = ". (int)$this->data['id'] ."
             and group_id = ". (int)$option['group_id'] ."
-            and id not in ('". @implode("', '", @array_column($option['values'], 'id')) ."');"
+            and id not in ('". implode("', '", @array_column($option['values'], 'id')) ."');"
           );
 
         // Update option values
@@ -503,7 +503,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
       );
 
     // Update stock options
@@ -557,7 +557,7 @@
       $products_images_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_IMAGES ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
 
       while ($product_image = database::fetch($products_images_query)) {

@@ -69,7 +69,7 @@
       $template_config = include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php');
       if (!is_array($template_config)) include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
 
-      self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
+      self::$settings = settings::get('store_template_catalog_settings') ? json_decode(settings::get('store_template_catalog_settings'), true) : array();
 
       foreach (array_keys($template_config) as $i) {
         if (!isset(self::$settings[$template_config[$i]['key']])) {

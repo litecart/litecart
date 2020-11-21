@@ -16,7 +16,13 @@
 
       foreach (explode('&', http_build_query($superglobal)) as $pair) {
 
-        @list($key, $value) = explode('=', $pair);
+        if (strpos($pair, '=') !== false) {
+          list($key, $value) = explode('=', $pair);
+        } else {
+          $key = $pair;
+          $value = '';
+        }
+
         $key = urldecode($key);
         $value = urldecode($value);
 
@@ -390,10 +396,10 @@
       $args = func_get_args();
       if ($parameters === true) {
         trigger_error('The 4th parameter $multiple in form_draw_select_field() has been deprecated. Use instead form_draw_select_multiple_field()', E_USER_DEPRECATED);
-        return form_draw_select_multiple_field(@$args[0], @$args[1], @$args[2], @$args[4]);
+        return form_draw_select_multiple_field($args[0], $args[1], $args[2], isset($args[4]) ? $args[4] : '');
       } else {
         trigger_error('The 4th parameter $multiple in form_draw_select_field() has been deprecated', E_USER_DEPRECATED);
-        return form_draw_select_field(@$args[0], @$args[1], @$args[2], @$args[4]);
+        return form_draw_select_field($args[0], $args[1], $args[2], isset($args[4]) ? $args[4] : '');
       }
     }
 

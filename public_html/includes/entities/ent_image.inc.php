@@ -482,7 +482,7 @@
           // Top
             for (; $top < $original_y; ++$top) {
               for ($x = 0; $x < $original_x; ++$x) {
-                if (@imagecolorat($this->_image, $x, $top) != $hexcolor) {
+                if (imagecolorat($this->_image, $x, $top) != $hexcolor) {
                   break 2;
                 }
               }
@@ -498,7 +498,7 @@
             // Bottom
             for (; $bottom > 0; --$bottom) {
               for ($x = 0; $x < $original_x; ++$x) {
-                if (@imagecolorat($this->_image, $x, $bottom-1) != $hexcolor) {
+                if (imagecolorat($this->_image, $x, $bottom-1) != $hexcolor) {
                   break 2;
                 }
               }
@@ -507,7 +507,7 @@
           // Left
             for (; $left < $original_x; ++$left) {
               for ($y = $top; $y <= $bottom; ++$y) {
-                if (@imagecolorat($this->_image, $left, $y) != $hexcolor) {
+                if (imagecolorat($this->_image, $left, $y) != $hexcolor) {
                   break 2;
                 }
               }
@@ -516,7 +516,7 @@
           // Right
             for (; $right > 0; --$right) {
               for ($y = $top; $y <= $bottom; ++$y) {
-                if (@imagecolorat($this->_image, $right-1, $y) != $hexcolor) {
+                if (imagecolorat($this->_image, $right-1, $y) != $hexcolor) {
                   break 2;
                 }
               }

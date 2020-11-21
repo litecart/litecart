@@ -126,7 +126,8 @@
     // Backwards compatibility
       if (is_bool($currency_code) === true) {
         trigger_error(__METHOD__.'() does no longer support a boolean value for third argument', E_USER_DEPRECATED);
-        @list($value, $auto_decimals, , $currency_code, $currency_value) = func_get_args();
+        $args = func_get_args();
+        self::format($args[0], $args[1], $args[3], isset($args[4]) ? $args[4] : null);
       }
 
       if (empty($currency_code)) {
@@ -181,7 +182,12 @@
         $decimals = $auto_decimals;
       }
 
-      @list($integers, $fractions) = explode('.', number_format($amount, $decimals, '.', ''));
+      if ($decimals) {
+        list($integers, $fractions) = explode('.', number_format($amount, $decimals, '.', ''));
+      } else {
+        $integers = $amount;
+        $fractions = 0;
+      }
 
       return '<span class="currency-amount"><small class="currency">'. $currency_code . '</small> ' . $prefix . number_format((int)$integers, 0, '', language::$selected['thousands_sep']) . ($fractions ? '<span class="decimals">'. language::$selected['decimal_point'] . $fractions .'</span>' : '') . $suffix . '</span>';
     }

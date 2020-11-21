@@ -8,7 +8,10 @@
 
       $client = new wrap_http();
       $client->timeout = 10;
-      $response = @$client->call('GET', $url);
+      $response = $client->call('GET', $url);
+
+      if ($response) throw new Exception('No response');
+
       libxml_use_internal_errors(true);
       $rss = simplexml_load_string($response);
 

@@ -290,7 +290,7 @@
       database::query(
         "delete from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
     // Insert/update order items
@@ -347,7 +347,7 @@
       database::query(
         "delete from ". DB_TABLE_ORDERS_TOTALS ."
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['order_total'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['order_total'], 'id')) ."');"
       );
 
     // Insert/update order total
@@ -379,7 +379,7 @@
       database::query(
         "delete from ". DB_TABLE_ORDERS_COMMENTS ."
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['comments'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['comments'], 'id')) ."');"
       );
 
     // Insert/update comments

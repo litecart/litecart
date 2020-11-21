@@ -90,7 +90,7 @@
       database::query(
         "delete from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
         where geo_zone_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['zones'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['zones'], 'id')) ."');"
       );
 
       if (!empty($this->data['zones'])) {

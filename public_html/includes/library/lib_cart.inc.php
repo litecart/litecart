@@ -195,7 +195,7 @@
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, @$product->quantity_unit['decimals']))));
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, isset($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : 0))));
         }
 
       // Remove empty options
@@ -219,7 +219,7 @@
 
         // Check group
           $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
-          $matched_group = @reset(array_intersect(array_keys($options), array_values($possible_groups)));
+          $matched_group = reset(array_intersect(array_keys($options), array_values($possible_groups)));
 
           if (empty($matched_group)) {
             if (!empty($option['required'])) {
@@ -300,7 +300,7 @@
           if ($option_match) {
             //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
             if (($option_stock['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], @$product->quantity_unit['decimals']) .')');
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], isset($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : 0) .')');
             }
 
             $item['option_stock_combination'] = $option_stock['combination'];
