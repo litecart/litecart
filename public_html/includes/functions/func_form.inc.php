@@ -225,7 +225,7 @@
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="file" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_fonticon_field($name, $value=true, $type, $icon, $parameters='') {
+  function form_draw_fonticon_field($name, $value, $type, $icon, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
@@ -819,7 +819,7 @@
 
   function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id=0, $depth=1, $index=0, &$iterator) {
+    $iterator = function($parent_id, $depth, $index, &$iterator) {
 
       $options = array();
 
@@ -1174,7 +1174,7 @@
 
   function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id=0, $level=1, &$iterator) {
+    $iterator = function($parent_id, $level, &$iterator) {
 
       $options = array();
 
@@ -1427,7 +1427,7 @@
     }
   }
 
-  function form_draw_templates_list($type='catalog', $name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_templates_list($type, $name, $input=true, $multiple=false, $parameters='') {
 
     $folders = glob(FS_DIR_APP . 'includes/templates/*.'. $type);
 

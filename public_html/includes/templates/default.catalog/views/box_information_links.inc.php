@@ -1,5 +1,5 @@
 <?php
-  $draw_page = function($page, $page_path, $depth=1, &$draw_page) {
+  $draw_page = function($page, $page_path, $depth, &$draw_page) {
     echo '<li class="page-'. $page['id'] . (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'">' . PHP_EOL
        . '  <a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;
     if (!empty($page['subpages'])) {

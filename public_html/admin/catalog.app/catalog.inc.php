@@ -341,7 +341,7 @@
 
     $category_trail = array_keys(reference::category($_GET['category_id'])->path);
 
-    $category_iterator = function($category_id=0, $depth=1, &$category_iterator) {
+    $category_iterator = function($category_id, $depth, &$category_iterator) {
       global $category_trail, $num_category_rows;
 
       $output = '';
