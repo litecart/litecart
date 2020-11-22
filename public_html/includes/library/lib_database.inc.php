@@ -30,7 +30,7 @@
 
       if (self::$_links[$link]->connect_error) exit;
 
-      self::set_encoding($charset, $link);
+      self::set_charset($charset, $link);
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
@@ -59,7 +59,13 @@
     }
 
     public static function set_charset($charset, $link='default') {
-      return self::$_links[$link]->set_charset($charset);
+
+      if (!$result = self::$_links[$link]->set_charset($charset)) {
+        trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
+        return false;
+      }
+
+      return $result;
     }
 
     public static function set_encoding($charset, $collation=null, $link='default') {
@@ -96,7 +102,7 @@
 
       $charset = strtr($charset, $charset_to_mysql_character_set);
 
-      if (!self::set_charset($charset)) {
+      if (!self::set_charset($charset, $link)) {
         trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
         return false;
       }
