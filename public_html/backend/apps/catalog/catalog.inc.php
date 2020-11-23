@@ -301,11 +301,11 @@
         try {
           $warning = null;
 
-          if ($product['date_valid_from'] > date('Y-m-d H:i:s')) {
+          if (strtotime($product['date_valid_from']) > time()) {
             throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
           }
 
-          if ($product['date_valid_to'] > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
+          if (strtotime($product['date_valid_to']) > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
             throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
           }
 
@@ -448,7 +448,7 @@
             throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
           }
 
-          if ($product['date_valid_to'] > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
+          if (strtotime($product['date_valid_to']) > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
             throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
           }
 
