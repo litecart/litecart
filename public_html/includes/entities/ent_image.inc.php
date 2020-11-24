@@ -671,7 +671,7 @@
 
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!in_array(strtolower($type), array('gif', 'jpg', 'png', 'webp'))) {
+      if (!preg_match('#^(gif|jpe?g|png|webp)$#i', $type)) {
         throw new Exception("Unknown image output format ($type)");
       }
 
