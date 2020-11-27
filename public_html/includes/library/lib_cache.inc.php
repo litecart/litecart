@@ -184,7 +184,8 @@
           if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
             if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
 
-            $data = @json_decode(file_get_contents($cache_file), true);
+            if (!$data = file_get_contents($cache_file)) return;
+            if (!$data = json_decode($data, true)) return;
 
             if (strtolower(language::$selected['charset']) != 'utf-8') {
               $data = language::convert_characters($data, 'UTF-8', language::$selected['charset']);
@@ -246,7 +247,7 @@
             $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
           }
 
-          return @file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
+          return file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
 
         case 'memory':
 

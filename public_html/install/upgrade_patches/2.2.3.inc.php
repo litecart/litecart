@@ -77,8 +77,8 @@
 
     database::query(
       "insert into ". DB_TABLE_PREFIX ."attribute_groups
-      (id, date_updated, date_created)
-      select id, date_updated, date_created from ". DB_TABLE_PREFIX ."option_groups"
+      (id, sort, date_updated, date_created)
+      select id, sort, date_updated, date_created from ". DB_TABLE_PREFIX ."option_groups"
     );
 
     database::query(

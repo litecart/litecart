@@ -617,7 +617,7 @@
           // Top
             for (; $top < $original_y; ++$top) {
               for ($x = 0; $x < $original_x; ++$x) {
-                if (@imagecolorat($this->_resource, $x, $top) != $hexcolor) {
+                if (imagecolorat($this->_resource, $x, $top) != $hexcolor) {
                   break 2;
                 }
               }
@@ -633,7 +633,7 @@
             // Bottom
             for (; $bottom > 0; --$bottom) {
               for ($x = 0; $x < $original_x; ++$x) {
-                if (@imagecolorat($this->_resource, $x, $bottom-1) != $hexcolor) {
+                if (imagecolorat($this->_resource, $x, $bottom-1) != $hexcolor) {
                   break 2;
                 }
               }
@@ -642,7 +642,7 @@
           // Left
             for (; $left < $original_x; ++$left) {
               for ($y = $top; $y <= $bottom; ++$y) {
-                if (@imagecolorat($this->_resource, $left, $y) != $hexcolor) {
+                if (imagecolorat($this->_resource, $left, $y) != $hexcolor) {
                   break 2;
                 }
               }
@@ -651,7 +651,7 @@
           // Right
             for (; $right > 0; --$right) {
               for ($y = $top; $y <= $bottom; ++$y) {
-                if (@imagecolorat($this->_resource, $right-1, $y) != $hexcolor) {
+                if (imagecolorat($this->_resource, $right-1, $y) != $hexcolor) {
                   break 2;
                 }
               }
@@ -811,7 +811,7 @@
 
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!in_array($type, ['gif', 'jpg', 'png', 'svg', 'webp'])) {
+      if (!preg_match('#^(gif|jpe?g|png|webp)$#i', $type)) {
         throw new Exception("Unknown image format ($type)");
       }
 

@@ -186,7 +186,8 @@ END;
   }
 
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name);
+    if ($value === true) $value = (float)form_reinsert_value($name);
+    if ($value == 0) $value = '';
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
@@ -225,7 +226,7 @@ END;
   function form_draw_date_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
+    if (!in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
       $value = date('Y-m-d', strtotime($value));
     } else {
       $value = '';
@@ -237,7 +238,7 @@ END;
   function form_draw_datetime_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    if (!in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-00-00', '1970-01-01'])) {
+    if (!in_array(substr($value, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
       $value = date('Y-m-d\TH:i', strtotime($value));
     } else {
       $value = '';
@@ -248,11 +249,8 @@ END;
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $parameters='') {
 
-    if ($value === true) $value = form_reinsert_value($name);
-
-    if ($value != '') {
-      $value = (float)number_format((float)$value, (int)$decimals, '.', '');
-    }
+    if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
+    if ($value == 0) $value = '';
 
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
@@ -275,7 +273,7 @@ END;
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="file" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_fonticon_field($name, $value=true, $type, $icon, $parameters='') {
+  function form_draw_fonticon_field($name, $value=true, $type='text', $icon='', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
@@ -442,7 +440,7 @@ END;
   function form_draw_select_optgroup_field($name, $groups=[], $input=true, $multiple=false, $parameters='') {
     if (!is_array($groups)) $groups = [$groups];
 
-    $html = '<div class="form-control">' . PHP_EOL
+    $html = '<div class="'. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .'">' . PHP_EOL
           . '  <select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
@@ -1281,7 +1279,7 @@ END;
 
   function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id=0, $level=1, &$_this) {
+    $iterator = function($parent_id, $level) use (&$iterator) {
 
       $options = [];
 
@@ -1304,7 +1302,7 @@ END;
           limit 1;"
         );
 
-        $sub_options = $_this($page['id'], $level+1, $_this);
+        $sub_options = $iterator($page['id'], $level+1);
 
         $options = array_merge($options, $sub_options);
       }
@@ -1316,7 +1314,7 @@ END;
 
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
-    $options = array_merge($options, $iterator(0, 1, $iterator));
+    $options = array_merge($options, $iterator(0, 1));
 
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
@@ -1347,6 +1345,39 @@ END;
     } else {
       return form_draw_select_field($name, $options, $input, $parameters);
     }
+  }
+
+  function form_draw_product_field($name, $value=true, $parameters='') {
+
+    if ($value === true) $value = form_reinsert_value($name);
+
+    $product_name = '('. language::translate('title_no_product', 'No Product') .')';
+
+    if (!empty($value)) {
+      $product_query = database::query(
+        "select p.id, pi.name from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        where p.id = ". (int)$value ."
+        limit 1;"
+      );
+
+      if ($product = database::fetch($product_query)) {
+        $product_name = $product['name'];
+      }
+    }
+
+    functions::draw_lightbox();
+
+    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
+         . '  <div class="form-control">' . PHP_EOL
+         . '    ' . form_draw_hidden_field($name, true) . PHP_EOL
+         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
+         . '    [<span class="id" style="display: inline-block;">'. (int)$value .'</span>]' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '  <div style="align-self: center;">' . PHP_EOL
+         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'product_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_products_list($name, $input=true, $multiple=false, $parameters='') {

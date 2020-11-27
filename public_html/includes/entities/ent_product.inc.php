@@ -242,7 +242,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_to_categories
         where product_id = ". (int)$this->data['id'] ."
-        and category_id not in ('". @implode("', '", database::input($this->data['categories'])) ."');"
+        and category_id not in ('". implode("', '", database::input($this->data['categories'])) ."');"
       );
 
       foreach ($this->data['categories'] as $category_id) {
@@ -289,7 +289,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_attributes
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['attributes'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['attributes'], 'id')) ."');"
       );
 
       if (!empty($this->data['attributes'])) {
@@ -350,7 +350,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_campaigns
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
       );
 
     // Update campaigns
@@ -387,7 +387,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_stock
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['stock_options'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['options'], 'id')) ."');"
       );
 
     // Update stock options
@@ -439,7 +439,7 @@
       $products_images_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."products_images
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
 
       while ($product_image = database::fetch($products_images_query)) {

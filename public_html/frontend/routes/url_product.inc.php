@@ -5,9 +5,9 @@
     function routes() {
       return [
         [
-          'pattern' => '#^(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$#',
+          'pattern' => '#^(?:.*-c-([0-9]+)/)?(?:.*-m-([0-9]+)/)?.*-p-([0-9]+)$#',
           'page' => 'product',
-          'params' => 'category_id=$1&product_id=$2',
+          'params' => 'category_id=$1&manufacturer_id=$2&product_id=$3',
           'endpoint' => 'frontend',
           'options' => [
             'redirect' => true,
@@ -27,7 +27,11 @@
 
       if (!empty($link->query['category_id'])) {
 
-        $category = reference::category($link->query['category_id'], $language_code);
+        if (in_array($link->query['category_id'], array_keys($product->categories))) {
+          $category = reference::category($link->query['category_id'], $language_code);
+        } else {
+          $category = reference::category($product->default_category_id, $language_code);
+        }
 
         foreach ($category->path as $category_crumb) {
           $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';

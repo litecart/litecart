@@ -44,7 +44,7 @@
       );
 
       $url = document::ilink('push_jobs');
-      $disabled_functions = explode(',', str_replace(' ', '', ini_get('disable_functions')));
+      $disabled_functions = preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY);
 
       if (!in_array('exec', $disabled_functions)) {
         exec('wget -q -O - '. $url .' > /dev/null 2>&1 &');

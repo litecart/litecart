@@ -45,7 +45,12 @@
 
         if (substr($setting['key'], 0, 8) == 'regional') {
 
-          $value = @json_decode($setting['value'], true);
+          if ($setting['value']) {
+            $value = json_decode($setting['value'], true);
+          } else {
+            $value = array();
+          }
+
           if (isset($value[language::$selected['code']])) {
             self::$_cache[$key] = $value[language::$selected['code']];
 

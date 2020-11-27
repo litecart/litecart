@@ -26,8 +26,6 @@
       'order_statuses' => 'order_statuses.inc.php',
       'edit_order_status' => 'edit_order_status.inc.php',
       'add_product' => 'add_product.inc.php',
-      'printable_order_copy' => 'printable_order_copy.inc.php',
-      'printable_packing_slip' => 'printable_packing_slip.inc.php',
       'product_picker' => 'product_picker.inc.php',
     ],
   ];

@@ -37,13 +37,14 @@
 
     public function load($customer_id) {
 
-      if (!preg_match('#^[0-9]+$#', $customer_id)) throw new Exception('Invalid customer (ID: '. $customer_id .')');
+      if (!preg_match('#(^[0-9]+$|@)#', $customer_id)) throw new Exception('Invalid customer (ID: '. $customer_id .')');
 
       $this->reset();
 
       $customer_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
-        where id = ". (int)$customer_id ."
+        ". (preg_match('#^[0-9]+$#', $customer_id) ? "where id = '". (int)$customer_id ."'" : "") ."
+        ". (preg_match('#@#', $customer_id) ? "where lower(email) = '". database::input(strtolower($customer_id)) ."'" : "") ."
         limit 1;"
       );
 

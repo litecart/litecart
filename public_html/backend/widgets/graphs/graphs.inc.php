@@ -47,12 +47,12 @@
     switch (true) {
 
      // Western Week
-      case (extension_loaded('intl') && IntlCalendar::createInstance()->getFirstDayOfWeek() == 1):
+      case (extension_loaded('intl') && class_exists('IntlCalendar', false) && IntlCalendar::createInstance()->getFirstDayOfWeek() == 1):
         $daily_sales = array(7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array());
         break;
 
     // Middle-Eastern Week
-      case (extension_loaded('intl') && IntlCalendar::createInstance()->getFirstDayOfWeek() == 2):
+      case (extension_loaded('intl') && class_exists('IntlCalendar', false) && IntlCalendar::createInstance()->getFirstDayOfWeek() == 2):
         $daily_sales = array(6 => array(), 7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array());
         break;
 

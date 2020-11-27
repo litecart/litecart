@@ -201,14 +201,10 @@ body.dark-mode #box-comments {
   background: #283144;
 }
 
-#box-comments .bubbles ..text {
-  display: none;
-}
-
 #box-comments .bubbles .private {
   position: absolute;
   top: 0.5em;
-  right: 2em;
+  right: 2.5em;
   cursor: pointer;
 }
 #box-comments .bubbles .private input[name$="[hidden]"] {
@@ -224,7 +220,7 @@ body.dark-mode #box-comments {
 #box-comments .bubbles .notify  {
   position: absolute;
   top: 0.5em;
-  right: 3.5em;
+  right: 4em;
   cursor: pointer;
 }
 #box-comments .bubbles .notify input[name$="[notify]"] {
@@ -313,13 +309,13 @@ body.dark-mode #box-comments {
             </div>
 
             <div class="panel-body">
-              <div class="row">
+              <div class="row" style="margin-bottom: 0;">
                 <div class="col-md-6 customer-details">
                   <h3><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h3>
 
                   <div class="form-group">
                     <div class="input-group">
-                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer']['id']; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customer_picker')); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                       <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                       <span class="input-group-btn">
                         <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
@@ -329,13 +325,13 @@ body.dark-mode #box-comments {
 
                   <div class="row">
                     <div class="form-group col-md-6">
-                      <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-                      <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
+                      <label><?php echo language::translate('title_company', 'Company'); ?></label>
+                      <?php echo functions::form_draw_text_field('customer[company]', true); ?>
                     </div>
 
                     <div class="form-group col-md-6">
-                      <label><?php echo language::translate('title_company', 'Company'); ?></label>
-                      <?php echo functions::form_draw_text_field('customer[company]', true); ?>
+                      <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
+                      <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
                     </div>
                   </div>
 
@@ -473,9 +469,9 @@ body.dark-mode #box-comments {
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" style="margin-bottom: 0;">
             <div class="col-md-6">
-              <div class="panel panel-default">
+              <div class="panel panel-default" style="margin-bottom: 0;">
                 <div class="panel-heading">
                   <h2 class="panel-title"><?php echo language::translate('title_payment_information', 'Payment Information'); ?></h2>
                 </div>
@@ -502,7 +498,7 @@ body.dark-mode #box-comments {
             </div>
 
             <div class="col-md-6">
-              <div class="panel panel-default">
+              <div class="panel panel-default" style="margin-bottom: 0;">
                 <div class="panel-heading">
                   <h2 class="panel-title"><?php echo language::translate('title_shipping_information', 'Shipping Information'); ?></h2>
                 </div>
@@ -540,11 +536,13 @@ body.dark-mode #box-comments {
           </div>
         </div>
 
-        <div id="box-comments" class="col-lg-4">
+        <div class="col-lg-4">
+          <div id="box-comments" class="panel panel-default" style="margin-bottom: 0;">
+            <div class="panel-heading">
+              <h2 class="panel-title"><?php echo language::translate('title_comments', 'Comments'); ?></h2>
+            </div>
 
-          <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-
-          <div class="bubbles">
+            <div class="panel-body bubbles">
 <?php
   foreach (array_keys($_POST['comments']) as $key) {
 
@@ -562,26 +560,27 @@ body.dark-mode #box-comments {
 
     if (!empty($_POST['comments'][$key]['hidden'])) $type .= ' semi-transparent';
 ?>
-            <div class="bubble <?php echo $type; ?>">
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
-              <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
+              <div class="bubble <?php echo $type; ?>">
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
 
-              <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
+                <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
 
-              <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
+                <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($_POST['comments'][$key]['date_created'])); ?></div>
 
-              <div class="actions">
-                <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
-                <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
+                <div class="actions">
+                  <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
+                  <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
+                </div>
               </div>
+              <?php } ?>
+
+              <div class="add text-right"><button class="btn btn-default" type="button" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></button></div>
             </div>
-            <?php } ?>
 
-            <div class="add text-right"><button class="btn btn-default" type="button" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_comment', 'Add Comment'); ?></button></div>
           </div>
-
         </div>
       </div>
 

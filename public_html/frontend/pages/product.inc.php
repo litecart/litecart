@@ -97,7 +97,7 @@
     'offers' => [
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
-      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
+      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? (float)currency::format_raw(tax::get_price($product->campaign['price'], $product->tax_class_id)) : (float)currency::format_raw(tax::get_price($product->price, $product->tax_class_id)),
       'priceValidUntil' => (!empty($product->campaign) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
@@ -141,14 +141,13 @@
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
     'tax_rates' => [],
-    'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
+    'quantity' => round($product->quantity, $product->quantity_unit['decimals'] ? $product->quantity_unit['decimals'] : 0),
     'quantity_unit' => $product->quantity_unit,
     'stock_status' => null,
-    'delivery_status' => !empty($product->delivery_status['name']) ? $product->delivery_status['name'] : '',
-    'sold_out_status' => !empty($product->sold_out_status['name']) ? $product->sold_out_status['name'] : '',
+    'delivery_status' => !empty($product->delivery_status) ? $product->delivery_status : array(),
+    'sold_out_status' => !empty($product->sold_out_status) ? $product->sold_out_status : array(),
     'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
-    'catalog_only_mode' => settings::get('catalog_only_mode'),
   ];
 
 // Extra Images

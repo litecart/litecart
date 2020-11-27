@@ -49,8 +49,14 @@
       }
 
     // Get template settings
-      if (route::$route['endpoint'] == 'frontend') {
-        self::$settings = @json_decode(settings::get('template_settings'), true);
+      $template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('template') .'/config.inc.php');
+
+      self::$settings = settings::get('template_settings') ? json_decode(settings::get('template_settings'), true) : array();
+
+      foreach (array_keys($template_config) as $i) {
+        if (!isset(self::$settings[$template_config[$i]['key']])) {
+          self::$settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
+        }
       }
     }
 
@@ -282,7 +288,7 @@
         $route = WS_DIR_APP . $route;
       }
 
-      return route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
+      return (string)route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
     }
 
     public static function href_ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
@@ -296,7 +302,7 @@
         if ($inherit_params === null) $inherit_params = true;
       }
 
-      return route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
+      return (string)route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
     public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {

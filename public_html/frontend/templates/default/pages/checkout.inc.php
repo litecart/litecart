@@ -99,16 +99,16 @@
     if (task.data === true) {
       switch (task.component) {
         case 'customer':
-          task.data = 'token=' + $(':input[name="token"]').val() + '&' + $('#box-checkout-customer :input').serialize();
+          task.data = $('#box-checkout-customer :input').serialize();
           break;
         case 'shipping':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-shipping .option.active :input').serialize();
+          task.data = $('#box-checkout-shipping .option.active :input').serialize();
           break;
         case 'payment':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-payment .option.active :input').serialize();
+          task.data = $('#box-checkout-payment .option.active :input').serialize();
           break;
         case 'summary':
-          task.data = $(':input[name="token"]').val() + '&' + $('#box-checkout-summary :input').serialize();
+          task.data = $('#box-checkout-summary :input').serialize();
           break;
       }
     }
@@ -154,8 +154,7 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
+    var data = $(this).closest('td').find(':input').serialize()
              + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
@@ -166,8 +165,7 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $(this).closest('td').find(':input').serialize()
+    var data = $(this).closest('td').find(':input').serialize()
              + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
@@ -199,23 +197,16 @@
   $('#box-checkout .customer.wrapper').on('change', '.billing-address :input', function() {
     if ($(this).val() == '') return;
     if (console) console.log('Retrieving address (Trigger: '+ $(this).attr('name') +')');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
-      type: 'post',
-      data: 'token=' + $(':input[name="token"]').val()
-             + '&' + $('.billing-address :input').serialize(),
-      cache: false,
-      async: true,
-      dataType: 'json',
-      success: function(data) {
+    $.getJSON(
+      '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+      $('.billing-address :input').serialize(),
+      function(data) {
         if (data['alert']) alert(data['alert']);
         $.each(data, function(key, value) {
-          if ($('.billing-address *[name="'+key+'"]').length && $('.billing-address *[name="'+key+'"]').val() == '') {
-            $('.billing-address *[name="'+key+'"]').val(value);
-          }
+          $('.billing-address :input[name="'+key+'"]').val(value);
         });
-      },
-    });
+      }
+    );
   });
 
 // Customer Form: Fields
@@ -330,8 +321,7 @@
         if (!$(this).is(':focus')) {
           if (window.customer_form_changed) {
             if (console) console.log('Autosaving customer details');
-            var data = 'token=' + $(':input[name="token"]').val()
-                     + '&' + $('#box-checkout-customer :input').serialize();
+            var data = $('#box-checkout-customer :input').serialize();
             queueUpdateTask('customer', data, true);
             queueUpdateTask('cart', null, true);
             queueUpdateTask('shipping', true, true);
@@ -351,8 +341,7 @@
 
   $('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $('#box-checkout-customer :input').serialize()
+    var data = $('#box-checkout-customer :input').serialize()
              + '&save_customer_details=true';
     queueUpdateTask('customer', data, true);
     queueUpdateTask('cart', null, true);
@@ -367,14 +356,13 @@
 
   $('#box-checkout .shipping.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-shipping .option').removeClass('active');
-    $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
+    $(this).find('input[name="shipping[option_id]"]').prop('checked', true).trigger('change');
     $(this).addClass('active');
 
     $('#box-checkout-shipping .option.active :input').prop('disabled', false);
     $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
 
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $('#box-checkout-shipping .option.active :input').serialize();
+    var data = $('#box-checkout-shipping .option.active :input').serialize();
     queueUpdateTask('shipping', data, false);
     queueUpdateTask('payment', true, true);
     queueUpdateTask('summary', null, true);
@@ -384,14 +372,13 @@
 
   $('#box-checkout .payment.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-payment .option').removeClass('active');
-    $(this).find('input[name="payment[option_id]"]').prop('checked', true);
+    $(this).find('input[name="payment[option_id]"]').prop('checked', true).trigger('change');
     $(this).addClass('active');
 
     $('#box-checkout-payment .option.active :input').prop('disabled', false);
     $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
 
-    var data = 'token=' + $(':input[name="token"]').val()
-             + '&' + $('#box-checkout-payment .option.active :input').serialize();
+    var data = $('#box-checkout-payment .option.active :input').serialize();
     queueUpdateTask('payment', data, false);
     queueUpdateTask('summary', null, true);
   });

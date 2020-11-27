@@ -25,7 +25,7 @@
     </div>
 
     <div id="search">
-      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;"'); ?>
+      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
       <div class="results"></div>
     </div>
 
@@ -111,7 +111,7 @@
       </li>
 
       <li>
-        <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout'); ?>" title="<?php echo language::translate('text_logout', 'Logout'); ?>">
+        <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout'); ?>" title="<?php echo language::translate('title_sign_out', 'Sign Out'); ?>">
           <?php echo functions::draw_fonticon('fa-sign-out'); ?> <?php echo language::translate('title_sign_out', 'Sign Out'); ?>
         </a>
       </li>

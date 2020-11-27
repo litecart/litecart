@@ -1,9 +1,10 @@
 /* Buttons & Button Groups - Bootstrap Compatible */
 
-.btn(@background-color: #f8f8f8, @color: #555) {
+.btn(@background-color: #f8f8f8, @color: #555, @border-color: @default-border-color) {
   background: @background-color;
   color: @color;
   text-decoration: none;
+  border: 1px solid @default-border-color;
   &:hover:not(.active):not(.disabled):not([disabled]) {
     background: darken(@background-color, 2.5%);
   }
@@ -19,7 +20,6 @@
   padding: @form-input-padding @form-input-padding*2;
   text-decoration:  none;
   font-weight: normal;
-  border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
   text-align: center;

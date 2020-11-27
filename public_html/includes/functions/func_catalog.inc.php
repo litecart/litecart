@@ -94,8 +94,8 @@
         break;
 
       case 'popularity':
-        $sql_inner_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
-        $sql_outer_sort[] = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+        $sql_inner_sort[] = "(p.purchases / ceil(datediff(now(), p.date_created)/7)) desc, (p.views / ceil(datediff(now(), p.date_created)/7)) desc";
+        $sql_outer_sort[] = "(p.purchases / ceil(datediff(now(), p.date_created)/7)) desc, (p.views / ceil(datediff(now(), p.date_created)/7)) desc";
         break;
 
       case 'products':
@@ -192,7 +192,7 @@
         ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
       )
 
-      group by pa.product_id
+      group by p.id
 
       ". (!empty($sql_outer_sort) ? "order by ". implode(",", $sql_outer_sort) : "") ."
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
@@ -310,7 +310,7 @@
         ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
       )
 
-      group by pa.product_id
+      group by p.id
 
       order by occurrences desc
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"

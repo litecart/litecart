@@ -1,5 +1,7 @@
 <?php
 
+  route::load(FS_DIR_APP . 'includes/routes/url_*.inc.php'); // Needed for url rewriting
+
   user::require_login();
 
   breadcrumbs::reset();

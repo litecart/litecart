@@ -80,7 +80,7 @@
       );
 
       if (database::num_rows($currency_query)) {
-        throw new Exception(language::translate('error_currency_conflict', 'The currency conflicts another language in the database'));
+        throw new Exception(language::translate('error_currency_conflict', 'The currency conflicts another currency in the database'));
       }
 
       if (empty($this->data['id'])) {

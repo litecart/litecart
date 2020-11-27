@@ -192,7 +192,7 @@
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
                 <div id="categories" class="form-control">
 <?php
-  $catalog_tree_iterator = function($category_id=0, $depth=1, $count=0, $catalog_tree_iterator) {
+  $catalog_tree_iterator = function($category_id=0, $depth=1, $count=0) use (&$catalog_tree_iterator) {
 
     $output = '';
 
@@ -215,7 +215,7 @@
       $output .= '  <div class="checkbox"><label>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label></div>' . PHP_EOL;
 
       if (database::num_rows(database::query("select * from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0) {
-        $output .= $catalog_tree_iterator($category['id'], $depth+1, $count, $catalog_tree_iterator);
+        $output .= $catalog_tree_iterator($category['id'], $depth+1, $count);
       }
     }
 
@@ -224,7 +224,7 @@
     return $output;
   };
 
-  echo $catalog_tree_iterator(0, 1, 0, $catalog_tree_iterator);
+  echo $catalog_tree_iterator(0, 1, 0);
 ?>
                 </div>
               </div>
@@ -936,7 +936,6 @@
     var gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
 
     if ($(this).val() == 0) {
-      $(this).val('');
       $(gross_field).val('');
     } else {
       $(gross_field).val(gross_price);
@@ -954,7 +953,6 @@
     var net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
 
     if ($(this).val() == 0) {
-      $(this).val('');
       $(net_field).val('');
     } else {
       $(net_field).val(net_price);

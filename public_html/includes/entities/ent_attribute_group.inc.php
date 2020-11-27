@@ -157,7 +157,7 @@
       $values_query = database::query(
         "select id from ". DB_TABLE_PREFIX ."attribute_values
         where group_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['values'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
 
       while ($value = database::fetch($values_query)) {

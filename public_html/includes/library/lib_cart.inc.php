@@ -27,7 +27,7 @@
 
     // Update cart cookie
       if (!isset($_COOKIE['cart']['uid']) || $_COOKIE['cart']['uid'] != self::$data['uid']) {
-        if (!empty($_COOKIE['cookies_accepted'])) {
+        if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
           header('Set-Cookie: cart[uid]='. self::$data['uid'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
         }
       }
@@ -186,7 +186,7 @@
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, $product->quantity_unit['decimals'])]));
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, isset($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : 0)]));
         }
 
       // Options stock
@@ -203,7 +203,7 @@
           if ($option_match) {
             //if (($stock_option['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
             if (($stock_option['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($stock_option['quantity'], @$product->quantity_unit['decimals']) .')');
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($stock_option['quantity'], isset($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : 0) .')');
             }
 
             $item['combination'] = $stock_option['combination'];

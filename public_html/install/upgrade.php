@@ -31,8 +31,10 @@
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
 
-  @ignore_user_abort(true);
-  @set_time_limit(300);
+  if (preg_match('#^(off|false|0)$#i', ini_get('safe_mode'))) {
+    ignore_user_abort(true);
+    set_time_limit(300);
+  }
 
   if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
@@ -116,7 +118,7 @@
         echo PLATFORM_DATABASE_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else if (!empty($_REQUEST['from_version'])) {
         define('PLATFORM_DATABASE_VERSION', $_REQUEST['from_version']);
-        echo $_REQUEST['from_version'] . '(User Defined) <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+        echo $_REQUEST['from_version'] . ' (User Defined) <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
       }
@@ -304,25 +306,24 @@ input[name="development_type"]:checked + div {
 <form name="upgrade_form" method="post">
   <h1>Upgrade</h1>
 
+  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
   <div class="form-group">
     <label>Version</label>
-
-    <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
     <ul class="list-inline" style="font-size: 2em;">
       <li><?php echo PLATFORM_DATABASE_VERSION; ?></li>
       <li>→</li>
       <li><?php echo PLATFORM_VERSION; ?></li>
     </ul>
-    <?php } else { ?>
-    <div class="form-group">
-      <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
-      <select class="form-control" name="from_version">
-        <option value="">-- Select Version --</option>
-        <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
-      </select>
-    </div>
-    <?php } ?>
   </div>
+  <?php } else { ?>
+  <div class="form-group">
+    <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
+    <select class="form-control" name="from_version">
+      <option value="">-- Select Version --</option>
+      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
+    </select>
+  </div>
+  <?php } ?>
 
   <h3>Development</h3>
 

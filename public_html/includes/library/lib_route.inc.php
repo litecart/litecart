@@ -65,7 +65,7 @@
 
         if (!empty($route['params'])) {
           parse_str(preg_replace($route['pattern'], $route['params'], self::$request), $params);
-          $_GET = array_merge($_GET, $params);
+          $_GET = array_filter(array_merge($_GET, $params));
         }
 
         self::$route = $route;
@@ -125,14 +125,17 @@
 
       } else {
 
+        $request = new ent_link(document::link());
+
         http_response_code(404);
 
-        if (preg_match('#\.[a-z]{2,4}$#', self::$request)) exit; // Don't return an error page for content with a defined extension (presumably static)
+      // Don't return an error page for content with a defined extension (presumably static)
+        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html|php)$#', $request->path)) exit;
 
         $not_found_file = FS_DIR_STORAGE . 'logs/not_found.log';
 
         $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
-        $lines[] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $lines[] = $request->path;
         $lines = array_unique($lines);
 
         sort($lines);
@@ -150,7 +153,7 @@
 
         echo '<div id="content">'
            . '  <h1>HTTP 404 - Not Found</h1>'
-           . '  <p>Could not find a matching reference for '. parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) .'.</p>'
+           . '  <p>Could not find a matching reference for '. $request->path .'.</p>'
            . '</div>';
 
         return;
@@ -213,7 +216,7 @@
         }
       }
 
-      return (string)$link;
+      return $link;
     }
 
     public static function rewrite(ent_link $link, $language_code=null) {

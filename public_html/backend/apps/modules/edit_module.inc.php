@@ -98,7 +98,7 @@
 
     <?php echo !empty($object->author) ? '<p style="font-style: italic;"><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>' : false; ?>
 
-    <?php echo !empty($object->description) ? '<p style="max-width: 400px;">'. $object->description .'</p>' : ''; ?>
+    <?php echo !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : ''; ?>
 
     <?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
 

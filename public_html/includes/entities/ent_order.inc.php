@@ -311,7 +311,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."orders_items
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
     // Insert/update order items
@@ -368,7 +368,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."orders_totals
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['order_total'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['order_total'], 'id')) ."');"
       );
 
     // Insert/update order total
@@ -400,7 +400,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."orders_comments
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['comments'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['comments'], 'id')) ."');"
       );
 
     // Insert/update comments
@@ -659,7 +659,7 @@
             return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
           }
           if (!empty($this->shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
-            return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains an error');
+            return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
           }
         }
       }
@@ -674,7 +674,7 @@
             return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
           }
           if (!empty($this->payment->data['options'][$module_id]['options'][$option_id]['error'])) {
-            return language::translate('error_payment_method_contains_error', 'The selected payment method contains an error');
+            return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
           }
         }
       }
@@ -772,9 +772,9 @@
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
-        '%billing_address' => functions::format_address($this->data['customer']),
+        '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
         '%payment_transaction_id' => !empty($this->data['payment_transaction_id']) ? $this->data['payment_transaction_id'] : '-',
-        '%shipping_address' => functions::format_address($this->data['customer']['shipping_address']),
+        '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
@@ -797,10 +797,10 @@
             }
           }
 
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br />\r\n";
 
         } else {
-          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "\r\n";
+          $aliases['%order_items'] .= (float)$item['quantity'] .' x '. $item['name'] . (!empty($options) ? ' ('. implode(', ', $options) .')' : '') . "<br />\r\n";
         }
       }
 

@@ -102,6 +102,10 @@
               select product_id from ". DB_TABLE_PREFIX ."products_to_categories
               where category_id = ". (int)$this->_data['id'] ."
             )
+            and (quantity > 0 or sold_out_status_id in (
+              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              where (hidden is null or hidden = 0)
+            ))
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
@@ -141,8 +145,13 @@
             where status
             and id in (
               select product_id from ". DB_TABLE_PREFIX ."products_to_categories
-              where category_id = ". (int)$this->_data['id'] ."
+              where category_id = ". $this->_data['id'] ."
+              ". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
             )
+            and (quantity > 0 or sold_out_status_id in (
+              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              where (hidden is null or hidden = 0)
+            ))
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
@@ -176,10 +185,10 @@
           $this->_data['descendants'] = [];
 
           $categories_query = database::query(
-            "select @pv:=id as id, parent_id from ". DB_TABLE_PREFIX ."categories
-            join (select @pv := ". (int)$this->_data['id'] .") tmp
-            where status
-            and parent_id = @pv;"
+            "select id, parent_id from ". DB_TABLE_CATEGORIES ."
+            join (select @parent_id := ". $this->_data['id'] .") tmp
+            where find_in_set(parent_id, @parent_id)
+            and length(@parent_id := concat(@parent_id, ',', id));"
           );
 
           while ($row = database::fetch($categories_query)) {

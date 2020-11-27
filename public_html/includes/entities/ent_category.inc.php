@@ -92,7 +92,7 @@
     public function save() {
 
       if (!empty($this->data['id']) && $this->data['parent_id'] == $this->data['id']) {
-        throw new Exception(language::translate('error_cannot_atatch_category_to_self', 'Cannot attach category to itself'));
+        throw new Exception(language::translate('error_cannot_attach_category_to_self', 'Cannot attach category to itself'));
       }
 
       if (!empty($this->data['id']) && !empty($this->data['parent_id']) && in_array($this->data['parent_id'], array_keys(reference::category($this->data['id'])->descendants))) {
@@ -164,7 +164,7 @@
       database::query(
         "delete from ". DB_TABLE_PREFIX ."categories_filters
         where category_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['filters'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['filters'], 'id')) ."');"
       );
 
     // Update filters

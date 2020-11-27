@@ -430,7 +430,7 @@ CREATE TABLE `lc_order_statuses_info` (
   `name` VARCHAR(64) NULL,
   `description` VARCHAR(256) NULL,
   `email_subject` VARCHAR(128) NULL,
-  `email_message` VARCHAR(2048) NULL,
+  `email_message` TEXT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_status_info` (`order_status_id`, `language_code`),
   KEY `order_status_id` (`order_status_id`),

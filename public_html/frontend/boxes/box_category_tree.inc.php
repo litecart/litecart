@@ -18,7 +18,7 @@
       'category_path' => $category_path,
     ];
 
-    $iterator = function($parent_id, $level, &$category_path, &$_this) {
+    $iterator = function($parent_id, $level) use (&$iterator, &$category_path) {
 
       $tree = [];
 
@@ -36,10 +36,14 @@
           'subcategories' => [],
         ];
 
+        if (settings::get('category_tree_product_count')) {
+          $tree[$category['id']]['num_products'] = reference::category($category['id'])->num_products;
+        }
+
         if (in_array($category['id'], $category_path)) {
           $sub_categories_query = functions::catalog_categories_query($category['id']);
           if (database::num_rows($sub_categories_query)) {
-            $tree[$category['id']]['subcategories'] = $_this($category['id'], $level+1, $category_path, $_this);
+            $tree[$category['id']]['subcategories'] = $iterator($category['id'], $level+1);
           }
         }
       }
@@ -49,7 +53,9 @@
       return $tree;
     };
 
-    $box_category_tree->snippets['categories'] = $iterator($parent_id, 0, $category_path, $iterator);
+    if ($box_category_tree->snippets['categories'] = $iterator(0, 0)) {
+      echo $box_category_tree->stitch('views/box_category_tree');
+    }
 
     echo $box_category_tree->stitch('views/box_category_tree');
 
