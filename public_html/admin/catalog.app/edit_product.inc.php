@@ -223,8 +223,6 @@
       }
     }
 
-    database::free($categories_query);
-
     return $output;
   };
 
