@@ -166,7 +166,7 @@
 
   } else {
 
-    $iterator = function($parent_id, $depth=0, &$iterator) {
+    $iterator = function($parent_id, $depth=0) use (&$iterator) {
 
       $pages_query = database::query(
         "select p.*, pi.title from ". DB_TABLE_PAGES ." p
@@ -218,7 +218,7 @@
           </tr>
 <?php
         if (in_array($page['id'], $_GET['expanded'])) {
-          $iterator($page['id'], $depth + 1, $iterator);
+          $iterator($page['id'], $depth + 1);
         }
 
         if ($parent_id == 0) {
@@ -229,7 +229,7 @@
 
     $num_pages = database::num_rows(database::query("select id from ". DB_TABLE_PAGES));
     $num_root_pages = database::num_rows(database::query("select id from ". DB_TABLE_PAGES ." where parent_id = 0;"));
-    $iterator(0, 0, $iterator);
+    $iterator(0, 0);
   }
 ?>
         </tbody>

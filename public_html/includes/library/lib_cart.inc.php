@@ -199,10 +199,10 @@
         }
 
       // Remove empty options
-        $array_filter_recursive = function($array, &$_this) {
+        $array_filter_recursive = function($array) use (&$array_filter_recursive) {
 
           foreach ($array as $i => $value) {
-            if (is_array($value)) $array[$i] = $_this($value, $_this);
+            if (is_array($value)) $array[$i] = $array_filter_recursive($value);
           }
 
           return array_filter($array, function($v) {
@@ -211,7 +211,7 @@
           });
         };
 
-        $options = $array_filter_recursive($options, $array_filter_recursive);
+        $options = $array_filter_recursive($options);
 
       // Build options structure
         $sanitized_options = array();

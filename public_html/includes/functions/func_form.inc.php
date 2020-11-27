@@ -819,7 +819,7 @@
 
   function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id, $depth, $index, &$iterator) {
+    $iterator = function($parent_id, $depth, $index) use (&$iterator) {
 
       $options = array();
 
@@ -845,7 +845,7 @@
           limit 1;"
         );
 
-        $sub_options = $iterator($category['id'], $depth+1, $index, $iterator);
+        $sub_options = $iterator($category['id'], $depth+1, $index);
 
         $options = array_merge($options, $sub_options);
       }
@@ -857,7 +857,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    $options = array_merge($options, $iterator(0, 1, 0, $iterator));
+    $options = array_merge($options, $iterator(0, 1, 0));
 
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
@@ -1174,7 +1174,7 @@
 
   function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id, $level, &$iterator) {
+    $iterator = function($parent_id, $level) use (&$iterator) {
 
       $options = array();
 
@@ -1197,7 +1197,7 @@
           limit 1;"
         );
 
-        $sub_options = $iterator($page['id'], $level+1, $iterator);
+        $sub_options = $iterator($page['id'], $level+1);
 
         $options = array_merge($options, $sub_options);
       }
@@ -1209,7 +1209,7 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    $options = array_merge($options, $iterator(0, 1, $iterator));
+    $options = array_merge($options, $iterator(0, 1));
 
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);

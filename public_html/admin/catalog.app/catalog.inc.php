@@ -341,7 +341,7 @@
 
     $category_trail = array_keys(reference::category($_GET['category_id'])->path);
 
-    $category_iterator = function($category_id, $depth, &$category_iterator) {
+    $category_iterator = function($category_id, $depth) use (&$category_iterator) {
       global $category_trail, $num_category_rows;
 
       $output = '';
@@ -390,7 +390,7 @@
 
           if (database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
            || database::fetch(database::query("select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." where category_id = ".(int)$category['id']." limit 1;")) > 0) {
-            $output .= $category_iterator($category['id'], $depth+1, $category_iterator);
+            $output .= $category_iterator($category['id'], $depth+1);
 
             // Output products
             if (in_array($category['id'], $category_trail)) {
@@ -482,7 +482,7 @@
       return $output;
     }
 
-    echo $category_iterator(0, 1, $category_iterator);
+    echo $category_iterator(0, 1);
 ?>
         </tbody>
         <tfoot>

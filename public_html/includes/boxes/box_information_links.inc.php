@@ -19,7 +19,7 @@
       'page_path' => $current_page_path,
     );
 
-    $iterator = function($parent_id, $level, $current_page_path, &$iterator) {
+    $iterator = function($parent_id, $level) use (&$iterator, &$current_page_path) {
 
       $output = array();
 
@@ -48,7 +48,7 @@
             where parent_id = ". (int)$page['id'] .";"
           );
           if (database::num_rows($sub_pages_query) > 0) {
-            $output[$page['id']]['subpages'] = $iterator($page['id'], $level+1, $current_page_path, $iterator);
+            $output[$page['id']]['subpages'] = $iterator($page['id'], $level+1);
           }
         }
       }
@@ -58,7 +58,7 @@
       return $output;
     };
 
-    if ($box_information_links->snippets['pages'] = $iterator(0, 0, $current_page_path, $iterator)) {
+    if ($box_information_links->snippets['pages'] = $iterator(0, 0)) {
       echo $box_information_links->stitch('views/box_information_links');
     }
 
