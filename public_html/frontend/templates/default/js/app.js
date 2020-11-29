@@ -540,11 +540,9 @@
     this.$element
       .removeClass('collapse')
       .addClass('collapsing')[dimension](0)
-      .attr('aria-expanded', true)
 
     this.$trigger
       .removeClass('collapsed')
-      .attr('aria-expanded', true)
 
     this.transitioning = 1
 
@@ -580,11 +578,9 @@
     this.$element
       .addClass('collapsing')
       .removeClass('collapse in')
-      .attr('aria-expanded', false)
 
     this.$trigger
       .addClass('collapsed')
-      .attr('aria-expanded', false)
 
     this.transitioning = 1
 
@@ -621,10 +617,7 @@
   Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
     var isOpen = $element.hasClass('in')
 
-    $element.attr('aria-expanded', isOpen)
-    $trigger
-      .toggleClass('collapsed', !isOpen)
-      .attr('aria-expanded', isOpen)
+    $trigger.toggleClass('collapsed', !isOpen)
   }
 
   function getTargetFromTrigger($trigger) {
@@ -734,7 +727,6 @@
 
       if (e.isDefaultPrevented()) return
 
-      $this.attr('aria-expanded', 'false')
       $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
     })
   }
@@ -763,9 +755,7 @@
 
       if (e.isDefaultPrevented()) return
 
-      $this
-        .trigger('focus')
-        .attr('aria-expanded', 'true')
+      $this.trigger('focus')
 
       $parent
         .toggleClass('open')
