@@ -17,10 +17,15 @@
 
       $this->reset();
 
-      $components = is_array($link) ? $link : parse_url($link);
-
-      foreach ($components as $component => $value) {
-        $this->$component = $value;
+      if ($link instanceof ent_link) {
+        foreach (array_keys($this->_components) as $component) {
+          $this->$component = $link->$component;
+        }
+      } else {
+        $components = is_array($link) ? $link : parse_url($link);
+        foreach ($components as $component => $value) {
+          $this->$component = $value;
+        }
       }
     }
 
