@@ -22,7 +22,7 @@
     $_REQUEST['upgrade'] = true;
 
   } else {
-    require_once(__DIR__ . '/includes/header.inc.php');
+    require_once __DIR__ . '/includes/header.inc.php';
   }
 
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
@@ -54,9 +54,9 @@
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
 
-  require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
-  require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');
-  require_once(__DIR__ . '/includes/functions.inc.php');
+  require_once FS_DIR_APP . 'includes/error_handler.inc.php';
+  require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
+  require_once FS_DIR_APP . 'includes/library/lib_database.inc.php';
 
 // Set platform name
   preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);

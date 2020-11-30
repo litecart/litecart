@@ -1,7 +1,6 @@
 <?php
 
-// Delete old files
-  $deleted_files = [
+  perform_action('delete', [
     FS_DIR_ADMIN . 'addons.widget/addons.inc.php',
     FS_DIR_ADMIN . 'addons.widget/config.inc.php',
     FS_DIR_ADMIN . 'addons.widget/index.html',
@@ -320,168 +319,139 @@
     FS_DIR_APP . 'includes/functions/func_password.inc.php',
     FS_DIR_APP . 'frontend/templates/default.admin/',
     FS_DIR_APP . 'frontend/templates/default.catalog/',
-  ];
+  ]);
 
-  foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      echo '<span class="error">[Skipped]</span></p>';
-    }
-  }
-
-// Move some files
-  file_rename($file, FS_DIR_ADMIN . '.htpasswd', FS_DIR_APP . '.htpasswd');
-
-  file_rename($file, FS_DIR_APP . 'includes/config.inc.php', FS_DIR_STORAGE . 'config.inc.php');
+  perform_action('move', [
+    FS_DIR_ADMIN . '.htpasswd' => FS_DIR_APP . '.htpasswd',
+    FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_STORAGE . 'config.inc.php',
+  ]);
 
   foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
-    file_rename($file, FS_DIR_APP . 'backend/apps/' . preg_replace('\.app$', '', basename($file)));
+      perform_action('move', [[$file => FS_DIR_APP . 'backend/apps/' . preg_replace('\.app$', '', basename($file)]])]]);
   }
 
   foreach (glob(FS_DIR_ADMIN . '*.widget') as $file) {
-    file_rename($file, FS_DIR_APP . 'backend/widgets/' . preg_replace('\.widget$', '', basename($file)));
+    perform_action('move', [[$file =>FS_DIR_APP . 'backend/widgets/' . preg_replace('\.widget$', '', basename($file))]]);
   }
 
   foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
-    file_rename($file, FS_DIR_APP . 'storage/cache/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file));
+    perform_action('move', [[$file =>FS_DIR_APP . 'storage/cache/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'data/*') as $file) {
-    file_rename($file, FS_DIR_APP . 'storage/data/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file));
+    perform_action('move', [[$file =>FS_DIR_APP . 'storage/data/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file)]]);
+  }
+
+  foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
+    perform_action('move', [[$file =>FS_DIR_APP . 'assets/' . basename($file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'images/*') as $file) {
-    file_rename($file, FS_DIR_APP . 'storage/images/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file));
+    perform_action('move', [[$file =>FS_DIR_APP . 'storage/images/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'logs/*') as $file) {
-    file_rename($file, FS_DIR_APP . 'storage/logs/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file));
+    perform_action('move', [[$file =>FS_DIR_APP . 'storage/logs/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file)]]);
   }
-
-  file_delete(FS_DIR_ADMIN);
-  file_delete(FS_DIR_APP .'cache/');
-  file_delete(FS_DIR_APP .'data/');
-  file_delete(FS_DIR_APP .'images/');
-  file_delete(FS_DIR_APP .'logs/');
 
   foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
-    file_rename($file, FS_DIR_APP . 'frontend/boxes/' . basename($file));
+    perform_action('move', [[$file =>FS_DIR_APP . 'frontend/boxes/' . basename($file)]]);
   }
-
-  file_delete(FS_DIR_APP . 'includes/boxes/');
-
-  foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
-    file_rename($file, FS_DIR_APP . 'vendor/' . basename($file));
-  }
-
-  file_delete(FS_DIR_APP . 'ext/');
 
   foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog') as $file) {
-    file_rename($file, FS_DIR_APP . 'frontend/templates/' . preg_replace('\.catalog$', '', basename($file)));
+    perform_action('move', [[$file =>FS_DIR_APP . 'frontend/templates/' . preg_replace('\.catalog$', '', basename($file))]]);
   }
-
-  file_delete(FS_DIR_APP . 'includes/templates/');
 
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
-    copy($file, FS_DIR_STORAGE. 'vmods/');
-    file_delete(FS_DIR_APP . 'vqmod/');
+    perform_action('move', [[$file =>FS_DIR_STORAGE . 'vmods/' . basename($file)]]);
   }
 
-// Modify some files
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . '.htaccess',
-      'search'  => "SetEnv HTTP_MOD_REWRITE On",
-      'replace' => "SetEnv MOD_REWRITE On",
-    ],
-    [
-      'file'    => FS_DIR_APP . '.htaccess',
-      'search'  => "RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
-      'replace' => "RewriteRule ^.*$ index.php [QSA,L]",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "DB_TABLE_PREFIX",
-      'replace' => "DB_TABLE_PREFIX",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL,
-      'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL
-                 . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('DB_TABLE_CATEGORIES_INFO',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_info`');" . PHP_EOL,
-      'replace' => "",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
-      'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . 'backend/');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
-      'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . "  define('FS_DIR_STORAGE',     FS_DIR_APP . 'storage/');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
-      'replace' => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
-                 . "  define('WS_DIR_STORAGE',     WS_DIR_APP . 'storage/');" . PHP_EOL,
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######",
-      'replace' => "## Backward Compatible Directory Definitions (LiteCart <2.2) #########",
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "// Database tables",
-      'replace' => "// Database Tables - Backward Compatibility (LiteCart <2.3)",
-    ],
-  ];
+  rmdir(FS_DIR_ADMIN);
+  rmdir(FS_DIR_APP .'cache/');
+  rmdir(FS_DIR_APP .'data/');
+  rmdir(FS_DIR_APP .'images/');
+  rmdir(FS_DIR_APP . 'includes/boxes/');
+  rmdir(FS_DIR_APP . 'includes/templates/');
+  rmdir(FS_DIR_APP .'logs/');
+  rmdir(FS_DIR_APP . 'ext/');
+  rmdir(FS_DIR_APP . 'vqmod/');
 
-  foreach ($modified_files as $modification) {
-    if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
-    }
-  }
+  perform_action('modify', [
+    FS_DIR_APP . '.htaccess' => [
+      [
+        'search'  => "RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
+        'replace' => "RewriteRule ^.*$ index.php [QSA,L]",
+      ],
+    ],
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "DB_TABLE_PREFIX",
+        'replace' => "DB_TABLE_PREFIX",
+      ],
+      [
+        'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL,
+        'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'brands_info`');" . PHP_EOL
+                   . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('DB_TABLE_CATEGORIES_INFO',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_info`');" . PHP_EOL,
+        'replace' => "",
+      ],
+      [
+        'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
+        'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . 'backend/');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
+        'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                   . "  define('FS_DIR_STORAGE',     FS_DIR_APP . 'storage/');" . PHP_EOL,
+      ],
+      [
+        'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
+        'replace' => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
+                   . "  define('WS_DIR_STORAGE',     WS_DIR_APP . 'storage/');" . PHP_EOL,
+      ],
+      [
+        'search'  => "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######",
+        'replace' => "## Backward Compatible Directory Definitions (LiteCart <2.2) #########",
+      ],
+      [
+        'search'  => "// Database tables",
+        'replace' => "// Database Tables - Backward Compatibility (LiteCart <2.3)",
+      ],
+    ],
+  ], 'abort');
 
-  $modified_files = [
-    [
-      'file'    => FS_DIR_APP . '.htaccess',
-      'search'  => '#AuthUserFile ".*?.htpasswd"#',
-      'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'pattern'  => '#'. preg_quote('## Backward Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?'. preg_quote('## Database ##########################################################', '#') .'#',
-      'replace' => '## Database ##########################################################',
-    ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'pattern'  => '#'. preg_quote(PHP_EOL, '#') .'// Password Encryption Salt.*?\);'. preg_quote(PHP_EOL, '#') .'#m',
-      'replace' => '',
-    ],
-  ];
 
-  foreach ($modified_files as $modification) {
-    if (!file_modify_regex($modification['file'], $modification['search'], $modification['replace'])) {
-      die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
-    }
-  }
+  perform_action('modify', [
+    FS_DIR_APP . '.htaccess' => [
+      [
+        'search'  => '#AuthUserFile ".*?.htpasswd"#',
+        'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
+        'regexp'  => true,
+      ],
+    ],
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'pattern'  => '#'. preg_quote('## Backward Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?'. preg_quote('## Database ##########################################################', '#') .'#',
+        'replace' => '## Database ##########################################################',
+        'regexp'  => true,
+      ],
+      [
+        'pattern'  => '#'. preg_quote(PHP_EOL, '#') .'// Password Encryption Salt.*?\);'. preg_quote(PHP_EOL, '#') .'#m',
+        'replace' => '',
+        'regexp'  => true,
+      ],
+    ],
+  ], 'abort');
 
 // Adjust tables
   $columns_query = database::query(

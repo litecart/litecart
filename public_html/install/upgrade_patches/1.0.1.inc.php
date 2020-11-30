@@ -1,10 +1,5 @@
 <?php
-  $deleted_files = [
-    FS_DIR_APP . 'includes/modules/get_address/',
-  ];
 
-  foreach ($deleted_files as $pattern) {
-    if (!file_delete($pattern)) {
-      die('<span class="error">[Error]</span></p>');
-    }
-  }
+  perform_action('delete', [
+    FS_DIR_APP . 'includes/modules/get_address/',
+  ]);

@@ -6,7 +6,7 @@
 
   ini_set('display_errors', 'On');
 
-  $document_root = file_absolute_path(dirname(__FILE__) . '/..') .'/';
+  $document_root = file_realpath(dirname(__FILE__) . '/..') .'/';
 
   function return_bytes($string) {
     sscanf($string, '%u%c', $number, $suffix);

@@ -29,8 +29,10 @@
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
       'document_root:', 'timezone::', 'storage_folder::', 'admin_folder::', 'username::', 'password::', 'development_type::',
     ];
+
     $_REQUEST = getopt(null, $options);
     $_REQUEST['install'] = true;
+
   } else {
     require __DIR__ . '/includes/header.inc.php';
   }
@@ -44,7 +46,8 @@
 
   try {
 
-    require_once __DIR__ . '/includes/functions.inc.php';
+    require_once FS_DIR_APP . '/includes/library/lib_event.inc.php';
+    require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
@@ -57,12 +60,12 @@
 
     echo '<p>Checking installation parameters...';
 
-    define('FS_DIR_APP', file_absolute_path(__DIR__ .'/../') .'/');
+    define('FS_DIR_APP', file_realpath(__DIR__ .'/../') .'/');
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_absolute_path($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
+      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
     } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_absolute_path($_REQUEST['document_root']), '/'), '#') .'#', '', FS_DIR_APP));
+      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_realpath($_REQUEST['document_root']), '/'), '#') .'#', '', FS_DIR_APP));
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
@@ -376,12 +379,11 @@
 
     ### Files > Default Data ######################################
 
-    echo '<p>Copying default files...';
-    if (file_xcopy('data/default/public_html/', FS_DIR_APP)) {
-      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-    } else {
-      echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
-    }
+    echo '<p>Copying default files...</p>' . PHP_EOL;
+
+    perform_action('copy', ['data/default/public_html/' => FS_DIR_APP]);
+
+    echo PHP_EOL;
 
     ### .htaccess mod rewrite #####################################
 
@@ -447,8 +449,7 @@
     ### Regional Data Patch #######################################
 
     if (!empty($_REQUEST['country_code'])) {
-
-      echo '<p>Patching installation with regional data...';
+      echo '<p>Patching installation with regional data...' . PHP_EOL;
 
       $directories = glob('data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
 
@@ -474,11 +475,11 @@
         }
 
         if (file_exists('data/'. $dir .'/public_html/')) {
-          file_xcopy('data/'. $dir .'/public_html/', FS_DIR_APP);
+          perform_action('copy', "data/$dir/public_html/" => FS_DIR_APP);
         }
       }
 
-      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      echo PHP_EOL;
     }
 
     ### Database > Tables > Demo Data #############################
@@ -505,13 +506,11 @@
     ### Files > Demo Data #########################################
 
     if (!empty($_REQUEST['demo_data'])) {
-      echo '<p>Copying demo files...';
+      echo '<p>Copying demo files...' . PHP_EOL;
 
-      if (file_xcopy('data/demo/public_html/', FS_DIR_APP)) {
-        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-      } else {
-        echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
-      }
+      perform_action('copy', ['data/demo/public_html/' => FS_DIR_APP]);
+
+      echo PHP_EOL;
     }
 
     ### Files > Delete Some Files #########################################
@@ -593,7 +592,8 @@
 
     ### #############################################################
 
-    echo PHP_EOL . '<h2>Complete</h2>' . PHP_EOL
+    echo PHP_EOL
+       . '<h2>Complete</h2>' . PHP_EOL
        . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL
        . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'/">administration area</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
        . '<p>Check out our <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
@@ -612,9 +612,8 @@
          . '</form>' . PHP_EOL;
     }
 
-
   } catch (Exception $e) {
-    echo $e->getMessage() . PHP_EOL;
+    echo PHP_EOL . '[ABORTED] ' . $e->getMessage() . PHP_EOL;
   }
 
   $buffer = ob_get_clean();
