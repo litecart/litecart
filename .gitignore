@@ -4,17 +4,16 @@
 
 public_html/storage/*
 
+!public_html/**/index.html
+!public_html/**/.htaccess
+
 public_html/admin/.htaccess
 public_html/admin/.htpasswd
-public_html/storage/config.inc.php
 public_html/.htaccess
 public_html/.user.ini
 public_html/favicon.ico
 public_html/php.ini
 public_html/robots.txt
-
-!public_html/**/index.html
-!public_html/**/.htaccess
 
 #####################
 # Development files #
@@ -32,6 +31,7 @@ node_modules/
 # OS generated files #
 ######################
 
+.ftpquota
 .DS_Store
 .DS_Store?
 ._.DS_Store
@@ -41,4 +41,3 @@ node_modules/
 ehthumbs.db
 Thumbs.db
 error_log
-.ftpquota
