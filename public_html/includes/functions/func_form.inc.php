@@ -365,31 +365,6 @@
          . '</div>';
   }
 
-  function form_draw_select_optgroup_field($name, $groups=array(), $input=true, $multiple=false, $parameters='') {
-    if (!is_array($groups)) $groups = array($groups);
-
-    $html = '<div class="select-wrapper'. ($multiple ? ' multiple' : '') .'">' . PHP_EOL
-          . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
-
-    foreach ($groups as $group) {
-      $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
-      foreach ($group['options'] as $option) {
-        if ($input === true) {
-          $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-        } else {
-          $option_input = $input;
-        }
-        $html .= '      <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
-      }
-      $html .= '    </optgroup>' . PHP_EOL;
-    }
-
-    $html .= '  </select>' . PHP_EOL
-           . '</div>';
-
-    return $html;
-  }
-
   function form_draw_select_field($name, $options=array(), $input=true, $parameters='') {
 
     if (is_bool($parameters)) {
@@ -445,6 +420,31 @@
     }
 
     $html .= '</div>';
+
+    return $html;
+  }
+
+  function form_draw_select_optgroup_field($name, $groups=array(), $input=true, $multiple=false, $parameters='') {
+    if (!is_array($groups)) $groups = array($groups);
+
+    $html = '<div class="select-wrapper'. ($multiple ? ' multiple' : '') .'">' . PHP_EOL
+          . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+
+    foreach ($groups as $group) {
+      $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
+      foreach ($group['options'] as $option) {
+        if ($input === true) {
+          $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+        } else {
+          $option_input = $input;
+        }
+        $html .= '      <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+      }
+      $html .= '    </optgroup>' . PHP_EOL;
+    }
+
+    $html .= '  </select>' . PHP_EOL
+           . '</div>';
 
     return $html;
   }

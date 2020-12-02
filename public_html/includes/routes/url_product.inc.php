@@ -32,8 +32,10 @@
           $category = reference::category($product->default_category_id, $language_code);
         }
 
-        foreach ($category->path as $category_crumb) {
-          $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
+        if (!empty($category->id)) {
+          foreach ($category->path as $category_crumb) {
+            $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
+          }
         }
 
         $link->path = $new_path;
