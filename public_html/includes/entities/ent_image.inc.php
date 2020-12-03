@@ -698,7 +698,7 @@
                break;
           }
 
-          $this->_image->setImageCompressionQuality($quality);
+          $this->_image->setImageCompressionQuality((int)$quality);
 
           if ($interlaced) $this->_image->setInterlaceScheme(Imagick::INTERLACE_PLANE);
 
@@ -773,7 +773,7 @@
           }
 
           $this->_image->setImageFormat($type);
-          $this->_image->setImageCompressionQuality($quality);
+          $this->_image->setImageCompressionQuality((int)$quality);
           return $this->_image->getImageBlob();
 
         case 'gd':
