@@ -219,7 +219,8 @@
 
         // Check group
           $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
-          $matched_group = reset(array_intersect(array_keys($options), array_values($possible_groups)));
+          $matched_groups = array_intersect(array_keys($options), array_values($possible_groups));
+          $matched_group = array_shift($matched_groups);
 
           if (empty($matched_group)) {
             if (!empty($option['required'])) {
