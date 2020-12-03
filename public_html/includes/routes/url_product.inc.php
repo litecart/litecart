@@ -59,8 +59,6 @@
         foreach ($category->path as $category_crumb) {
           $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
         }
-
-        $new_path .= functions::general_path_friendly($category->name, $language_code) .'-c-'. $product->default_category_id .'/';
       }
 
       $new_path .= functions::general_path_friendly($product->name, $language_code) .'-p-'. $product->id;
