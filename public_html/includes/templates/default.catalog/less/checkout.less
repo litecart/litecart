@@ -36,20 +36,21 @@
 }
 
 #box-checkout-cart {
-  .thumbnail {
-    max-width: 64px;
+  li {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 1em;
   }
-  tr td {
-    vertical-align: middle;
-    &:first-child a {
-      display: inline-block;
-    }
-    &:last-child {
-      text-align: right;
-    }
+  .name {
+    font-weight: 600;
   }
   .error {
     color: #f00;
+  }
+  .unit-price, .total-price {
+    font-size: 1.25em;
+  }
+  .unit-price::before {
+    content: 'à'
   }
   .subtotal {
     font-size: 1.5em;
@@ -63,7 +64,7 @@
   }
   button[type=submit]:not([disabled]) {
     font-weight: bold;
-    color: rgba(255,0,0,1);
+    color: rgba(255, 0, 0, 1);
     animation: flasher 1s linear infinite;
   }
 }

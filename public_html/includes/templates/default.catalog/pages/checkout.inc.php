@@ -154,7 +154,7 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
     e.preventDefault();
-    var data = $(this).closest('td').find(':input').serialize()
+    var data = $(this).closest('li').find(':input').serialize()
              + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
@@ -165,7 +165,7 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
     e.preventDefault();
-    var data = $(this).closest('td').find(':input').serialize()
+    var data = $(this).closest('li').find(':input').serialize()
              + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
     queueUpdateTask('customer', true, true);
