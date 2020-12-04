@@ -77,10 +77,8 @@
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
-    if (database::num_rows($subcategories_query)) {
-      while ($subcategory = database::fetch($subcategories_query)) {
-        $_page->snippets['subcategories'][] = $subcategory;
-      }
+    while ($subcategory = database::fetch($subcategories_query)) {
+      $_page->snippets['subcategories'][] = $subcategory;
     }
 
   // Products

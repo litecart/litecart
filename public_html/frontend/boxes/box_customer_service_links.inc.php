@@ -61,8 +61,6 @@
         }
       }
 
-      database::free($pages_query);
-
       return $output;
     };
 

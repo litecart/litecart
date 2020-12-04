@@ -82,7 +82,7 @@
           where order_status_id = ". (int)$this->data['id'] .";"
         );
         if (database::num_rows($orders_query)) {
-          throw new Exception('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" as the order status is already in use by orders');
+          throw new Exception(language::translate('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" as the order status is already in use by orders'));
         }
       }
 

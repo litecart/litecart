@@ -835,7 +835,7 @@
                break;
           }
 
-          $this->_resource->setImageCompressionQuality($quality);
+          $this->_image->setImageCompressionQuality((int)$quality);
 
           if ($interlaced) $this->_resource->setInterlaceScheme(Imagick::INTERLACE_PLANE);
 

@@ -44,7 +44,7 @@
 
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], false) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />';
 
   if (!empty($product->image)) {
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_STORAGE . 'images/' . $product->image) .'"/>';
@@ -175,7 +175,7 @@
 // Stickers
   if (!empty($product->campaign['price'])) {
     $percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
-    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />-'. $percentage .' %</div>';
+    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />-'. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }

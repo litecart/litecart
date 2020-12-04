@@ -413,7 +413,9 @@ html {
   white-space: nowrap;
 }
 .listing .product-column .price-wrapper .regular-price,
-.listing .product-row .price-wrapper .regular-price {
+.listing .product-row .price-wrapper .regular-price,
+.listing .product-column .price-wrapper .recommended-price,
+.listing .product-row .price-wrapper .recommended-price {
   color: #333;
   font-size: 0.75em;
   font-weight: normal;
@@ -528,10 +530,11 @@ html {
 #box-product .price-wrapper {
   font-size: 1.75em;
 }
-#box-product .regular-price {
+#box-product .price-wrapper .regular-price,
+#box-product .price-wrapper .recommended-price {
   font-size: 0.75em;
 }
-#box-product .campaign-price {
+#box-product .price-wrapper .campaign-price {
   color: #cc0000;
 }
 #box-product .tax {
