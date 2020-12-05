@@ -217,7 +217,7 @@
       if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
 
       $value = self::convert($value, settings::get('store_currency_code'), $currency_code);
-      $value = round($value, self::$currencies[$currency_code]['decimals']);
+      $value = round($value, (int)self::$currencies[$currency_code]['decimals']);
       $value = self::convert($value, $currency_code, settings::get('store_currency_code'));
 
       return $value;

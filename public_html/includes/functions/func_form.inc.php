@@ -201,7 +201,7 @@
   }
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $min=null, $max=null, $parameters='') {
-    if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
+    if ($value === true) $value = round((float)form_reinsert_value($name), (int)$decimals);
     if ($value == 0) $value = '';
 
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
