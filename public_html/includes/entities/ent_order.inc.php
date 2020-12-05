@@ -282,7 +282,7 @@
       if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
-          reference::product($previous_order_item['product_id'])->adjust_stock($previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+          reference::ent_product($previous_order_item['product_id'])->adjust_stock($previous_order_item['quantity'], $previous_order_item['option_stock_combination']);
         }
       }
 
@@ -316,7 +316,7 @@
 
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          reference::product($item['product_id'])->adjust_stock($item['option_stock_combination'], -$item['quantity']);
+          reference::ent_product($item['product_id'])->adjust_stock(-$item['quantity'], $item['option_stock_combination']);
         }
 
         database::query(

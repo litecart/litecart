@@ -531,30 +531,7 @@
     }
 
     public function adjust_stock($combination, $quantity) {
-
-      if (!empty($combination)) {
-        database::query(
-          "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-          set quantity = quantity + ". (float)$quantity ."
-          where product_id = ". (int)$this->_data['id'] ."
-          and combination = '". database::input($combination) ."'
-          limit 1;"
-        );
-
-        if (!database::affected_rows()) {
-          trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
-        }
-      }
-
-      database::query(
-        "update ". DB_TABLE_PRODUCTS ."
-        set quantity = quantity + ". (float)$quantity ."
-        where id = ". (int)$this->_data['id'] ."
-        limit 1;"
-      );
-
-      if (!database::affected_rows()) {
-        trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .')', E_USER_WARNING);
-      }
+      trigger_error('catalog_stock_adjust() is deprecated. Use instead ent_product::adjust_stock()', E_USER_DEPRECATED);
+      return reference::ent_product($this->_data['id'])->adjust_stock($quantity, $combination);
     }
   }
