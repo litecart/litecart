@@ -323,7 +323,7 @@
           "update ". DB_TABLE_ORDERS_ITEMS ."
           set product_id = ". (int)$item['product_id'] .",
           option_stock_combination = '". database::input($item['option_stock_combination']) ."',
-          options = '". (isset($item['options']) ? database::input(serialize($item['options'])) : '') ."',
+          options = '". (!empty($item['options']) ? database::input(serialize($item['options'])) : '') ."',
           name = '". database::input($item['name']) ."',
           sku = '". database::input($item['sku']) ."',
           gtin = '". database::input($item['gtin']) ."',
