@@ -282,7 +282,7 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."products_stock
+          select product_id from ". DB_TABLE_PREFIX ."stock_items
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
       ) as relevance
@@ -450,7 +450,7 @@
 
           if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
            || database::fetch(database::query("select category_id from ". DB_TABLE_PREFIX ."products_to_categories where category_id = ".(int)$category['id']." limit 1;")) > 0) {
-            $output .= $_this($category['id'], $depth+1);
+            $output .= $category_iterator($category['id'], $depth+1);
 
             // Output products
             if (in_array($category['id'], $category_trail)) {

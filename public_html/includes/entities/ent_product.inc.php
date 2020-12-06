@@ -135,7 +135,7 @@
 
     // Stock Options
       $products_stock_options_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."products_stock
+        "select * from ". DB_TABLE_PREFIX ."products_stock_options
         where product_id = ". (int)$this->data['id'] ."
         order by priority;"
       );

@@ -48,6 +48,7 @@ ADD UNIQUE INDEX `stock_option` (`product_id`, `combination`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 ADD COLUMN `stock_option_id` INT(11) NULL DEFAULT NULL AFTER `product_id`,
+CHANGE COLUMN `options` `customizations` VARCHAR(4096) NULL DEFAULT NULL AFTER `stock_option_id`,
 ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_option_id` (`stock_option_id`);
 -- --------------------------------------------------------

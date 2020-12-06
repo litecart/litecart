@@ -158,7 +158,7 @@
       );
 
       while ($item = database::fetch($order_items_query)) {
-        $item['options'] = unserialize($item['options']);
+        $item['options'] = $item['options'] ? json_decode($item['options'], true) : '';
         $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
         $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
         $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
@@ -188,7 +188,7 @@
       }
 
       if (!empty($this->data['shipping_option']['id'])) {
-        @list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+        list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
         $this->shipping = new mod_shipping($module_id);
         $this->shipping->select();
       } else {
@@ -196,7 +196,7 @@
       }
 
       if (!empty($this->data['payment_option']['id'])) {
-        @list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+        list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
         $this->payment = new mod_payment($module_id);
       } else {
         $this->payment = new mod_payment();
@@ -344,7 +344,7 @@
           "update ". DB_TABLE_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",
           stock_item_id = ". (int)$item['stock_item_id'] .",
-          options = '". (isset($item['options']) ? database::input(serialize($item['options'])) : '') ."',
+          options = '". (!empty($item['options']) ? database::input(json_encode($item['options'], JSON_UNESCAPED_SLASHES)) : '') ."',
           name = '". database::input($item['name']) ."',
           sku = '". database::input($item['sku']) ."',
           gtin = '". database::input($item['gtin']) ."',

@@ -681,7 +681,7 @@
           </div>
 
           <div>
-            <button class="btn btn-default"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a>
+            <button class="btn btn-default" type="button"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a>
           </div>
         </div>
       </div>

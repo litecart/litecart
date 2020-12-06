@@ -62,9 +62,11 @@
   background: var(--top-background-color);
   border-bottom: 1px solid var(--default-border-color);
   > li {
+    align-self: center;
     flex: 0 0 auto;
     > * {
-      padding: ~"calc(var(--gutter-size)/2)";
+      //padding: ~"calc(var(--gutter-size)/2)";
+      padding: var(--gutter-size);
     }
     > a {
       display: block;

@@ -126,6 +126,11 @@
     FS_DIR_APP . 'ext/index.html',
     FS_DIR_APP . 'ext/jquery/',
     FS_DIR_APP . 'ext/trumbowyg/',
+    FS_DIR_APP . 'cache/.htaccess',
+    FS_DIR_APP . 'cache/index.html',
+    FS_DIR_APP . 'data/.htaccess',
+    FS_DIR_APP . 'data/index.html',
+    FS_DIR_APP . 'ext/index.html',
     FS_DIR_APP . 'includes/boxes/box_account_links.inc.php',
     FS_DIR_APP . 'includes/boxes/box_also_purchased_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_campaign_products.inc.php',
@@ -147,6 +152,33 @@
     FS_DIR_APP . 'includes/boxes/box_site_menu.inc.php',
     FS_DIR_APP . 'includes/boxes/box_slides.inc.php',
     FS_DIR_APP . 'includes/boxes/index.html',
+    FS_DIR_APP . 'includes/functions/func_password.inc.php',
+    FS_DIR_APP . 'includes/functions/func_reference.inc.php',
+    FS_DIR_APP . 'includes/library/index.html',
+    FS_DIR_APP . 'includes/library/lib_breadcrumbs.inc.php',
+    FS_DIR_APP . 'includes/library/lib_cache.inc.php',
+    FS_DIR_APP . 'includes/library/lib_cart.inc.php',
+    FS_DIR_APP . 'includes/library/lib_compression.inc.php',
+    FS_DIR_APP . 'includes/library/lib_currency.inc.php',
+    FS_DIR_APP . 'includes/library/lib_customer.inc.php',
+    FS_DIR_APP . 'includes/library/lib_database.inc.php',
+    FS_DIR_APP . 'includes/library/lib_document.inc.php',
+    FS_DIR_APP . 'includes/library/lib_event.inc.php',
+    FS_DIR_APP . 'includes/library/lib_form.inc.php',
+    FS_DIR_APP . 'includes/library/lib_functions.inc.php',
+    FS_DIR_APP . 'includes/library/lib_language.inc.php',
+    FS_DIR_APP . 'includes/library/lib_length.inc.php',
+    FS_DIR_APP . 'includes/library/lib_notices.inc.php',
+    FS_DIR_APP . 'includes/library/lib_reference.inc.php',
+    FS_DIR_APP . 'includes/library/lib_route.inc.php',
+    FS_DIR_APP . 'includes/library/lib_session.inc.php',
+    FS_DIR_APP . 'includes/library/lib_settings.inc.php',
+    FS_DIR_APP . 'includes/library/lib_stats.inc.php',
+    FS_DIR_APP . 'includes/library/lib_tax.inc.php',
+    FS_DIR_APP . 'includes/library/lib_user.inc.php',
+    FS_DIR_APP . 'includes/library/lib_vmod.inc.php',
+    FS_DIR_APP . 'includes/library/lib_volume.inc.php',
+    FS_DIR_APP . 'includes/library/lib_weight.inc.php',
     FS_DIR_APP . 'includes/templates/default.admin/',
     FS_DIR_APP . 'includes/templates/default.catalog/config.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/css',
@@ -277,7 +309,15 @@
     FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product_row.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/notices.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/pagination.inc.php',
-    FS_DIR_APP . 'pages/ajax',
+    FS_DIR_APP . 'pages/ajax/cart.json.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_cart.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_customer.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_payment.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_shipping.inc.php',
+    FS_DIR_APP . 'pages/ajax/checkout_summary.inc.php',
+    FS_DIR_APP . 'pages/ajax/get_address.json.inc.php',
+    FS_DIR_APP . 'pages/ajax/index.html',
+    FS_DIR_APP . 'pages/ajax/zones.json.inc.php',
     FS_DIR_APP . 'pages/categories.inc.php',
     FS_DIR_APP . 'pages/category.inc.php',
     FS_DIR_APP . 'pages/checkout.inc.php',
@@ -305,20 +345,11 @@
     FS_DIR_APP . 'pages/reset_password.inc.php',
     FS_DIR_APP . 'pages/search.inc.php',
     FS_DIR_APP . 'pages/ajax/cart.json.inc.php',
-    FS_DIR_APP . 'frontend/pages/checkout/cart.inc.php',
-    FS_DIR_APP . 'frontend/pages/checkout/customer.inc.php',
-    FS_DIR_APP . 'frontend/pages/checkout/payment.inc.php',
-    FS_DIR_APP . 'frontend/pages/checkout/shipping.inc.php',
-    FS_DIR_APP . 'frontend/pages/checkout/summary.inc.php',
     FS_DIR_APP . 'pages/ajax/get_address.json.inc.php',
     FS_DIR_APP . 'pages/ajax/index.html',
     FS_DIR_APP . 'pages/ajax/zones.json.inc.php',
     FS_DIR_APP . 'pages/feeds/index.html',
     FS_DIR_APP . 'pages/feeds/sitemap.xml.inc.php',
-    FS_DIR_APP . 'includes/library/lib_compression.inc.php',
-    FS_DIR_APP . 'includes/functions/func_password.inc.php',
-    FS_DIR_APP . 'frontend/templates/default.admin/',
-    FS_DIR_APP . 'frontend/templates/default.catalog/',
   ]);
 
   perform_action('move', [
@@ -331,49 +362,59 @@
   }
 
   foreach (glob(FS_DIR_ADMIN . '*.widget') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'backend/widgets/' . preg_replace('\.widget$', '', basename($file))]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'backend/widgets/' . preg_replace('\.widget$', '', basename($file))]]);
   }
 
   foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'storage/cache/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file)]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'storage/cache/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'data/*') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'storage/data/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file)]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'storage/data/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'assets/' . basename($file)]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'assets/' . basename($file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'images/*') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'storage/images/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file)]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'storage/images/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'logs/*') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'storage/logs/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file)]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'storage/logs/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file)]]);
   }
 
   foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'frontend/boxes/' . basename($file)]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'frontend/boxes/' . basename($file)]]);
+  }
+
+  foreach (glob(FS_DIR_APP . 'includes/library/*') as $file) {
+    perform_action('move', [[$file => FS_DIR_APP . 'inlcudes/nodes/' . preg_replace('#^lib_#', 'nod_', basename($file))]]);
   }
 
   foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog') as $file) {
-    perform_action('move', [[$file =>FS_DIR_APP . 'frontend/templates/' . preg_replace('\.catalog$', '', basename($file))]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('\.catalog$', '', basename($file))]]);
   }
 
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
     perform_action('move', [[$file =>FS_DIR_STORAGE . 'vmods/' . basename($file)]]);
   }
 
+  foreach (glob(FS_DIR_APP . 'pages/*') as $file) {
+    perform_action('move', [[$file => FS_DIR_APP . preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file)]]);
+  }
+
   rmdir(FS_DIR_ADMIN);
-  rmdir(FS_DIR_APP .'cache/');
-  rmdir(FS_DIR_APP .'data/');
-  rmdir(FS_DIR_APP .'images/');
+  rmdir(FS_DIR_APP . 'cache/');
+  rmdir(FS_DIR_APP . 'data/');
+  rmdir(FS_DIR_APP . 'images/');
   rmdir(FS_DIR_APP . 'includes/boxes/');
   rmdir(FS_DIR_APP . 'includes/templates/');
-  rmdir(FS_DIR_APP .'logs/');
+  rmdir(FS_DIR_APP . 'includes/library/');
+  rmdir(FS_DIR_APP . 'logs/');
   rmdir(FS_DIR_APP . 'ext/');
+  rmdir(FS_DIR_APP . 'pages/');
   rmdir(FS_DIR_APP . 'vqmod/');
 
   perform_action('modify', [
@@ -505,7 +546,7 @@
   while ($stock_option = database::fetch($stock_items_query)) {
     foreach (explode(',', $stock_option['combination']) as $pair) {
 
-      list($group_id,$value_id) = explode('-', $pair);
+      list($group_id, $value_id) = explode('-', $pair);
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_customizations_values
@@ -524,6 +565,22 @@
         );"
       );
     }
+  }
+
+ // Migrate PHP serialized options/customizations to JSON
+  $order_items_query = database::query(
+    "select * from ". DB_TABLE_PREFIX ."orders_items;"
+  );
+
+  while ($item = database::fetch($order_items_query)) {
+    $item['customizations'] = unserialize($item['customizations']);
+
+    database::query(
+      "update ". DB_TABLE_PREFIX ."orders_items
+      set customizations = '". (!empty($item['customizations']) ? json_encode($item['customizations'], JSON_UNESCAPED_SLASHES) : '') ."'
+      where id = ". (int)$item['id'] ."
+      limit 1;"
+    );
   }
 
 // Convert Table Charset and Collations

@@ -1,10 +1,10 @@
 <?php
 
   abstract class abs_module {
-    protected $_modules;
+    public $modules;
 
     public function reset() {
-      $this->_modules = [];
+      $this->modules = [];
     }
 
     public function load($filter=null) {
@@ -58,12 +58,12 @@
         }
 
       // Add module to list
-        $this->_modules[$object->id] = $object;
+        $this->modules[$object->id] = $object;
       }
 
     // Sort modules by priority
-      if (!empty($this->_modules)) {
-        uasort($this->_modules, function($a, $b) {
+      if (!empty($this->modules)) {
+        uasort($this->modules, function($a, $b) {
           if ((int)$a->priority == (int)$b->priority) {
             return ($a->name < $b->name) ? 1 : -1;
           } else if ((int)$a->priority > (int)$b->priority) {

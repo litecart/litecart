@@ -92,7 +92,7 @@
     $module = new $module_id;
 
     $modules[] = [
-      'id' => $module->id,
+      'id' => $module_id,
       'status' => null,
       'name' => $module->name,
       'version' => $module->version,
@@ -139,7 +139,7 @@
           <?php if (!empty($module['installed'])) { ?>
           <tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
             <td><?php echo functions::form_draw_checkbox('modules['. $module['id'] .']', $module['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
+            <td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_'.$type, 'module_id' => $module['id']], true); ?>"><?php echo $module['name']; ?></a></td>
             <?php if ($_GET['doc'] == 'jobs' && !empty($module['status'])) { ?>
             <td class="text-center"><a href="<?php echo document::href_link('', ['doc' => 'run_job', 'module_id' => $module['id']], ['app']); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>

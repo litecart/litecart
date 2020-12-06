@@ -16,7 +16,7 @@
     // Attach userdata to module
       if (!empty($this->selected)) {
         list($module_id, $option_id) = explode(':', $this->selected['id']);
-        if (!empty($this->_modules[$module_id])) $this->_modules[$module_id]->userdata = &$this->selected['userdata'][$module_id];
+        if (!empty($this->modules[$module_id])) $this->modules[$module_id]->userdata = &$this->selected['userdata'][$module_id];
       }
     }
 
@@ -50,7 +50,7 @@
 
     public function options($items, $currency_code=null, $customer=null) {
 
-      if (empty($items) || empty($this->_modules)) return [];
+      if (empty($items) || empty($this->modules)) return [];
 
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
@@ -69,7 +69,7 @@
 
       $this->_cache['options'][$checksum] = [];
 
-      foreach ($this->_modules as $module) {
+      foreach ($this->modules as $module) {
 
         if (!$options = $module->options($items, $subtotal['amount'], $subtotal['tax'], $currency_code, $customer)) continue;
         if (!empty($options['options'])) $options = $options['options']; // Backwards compatibility
@@ -153,8 +153,8 @@
         list($module_id, $option_id) = explode(':', $this->selected['id']);
       }
 
-      if (method_exists($this->_modules[$module_id], $method_name)) {
-        return call_user_func_array([$this->_modules[$module_id], $method_name], array_slice(func_get_args(), 2));
+      if (method_exists($this->modules[$module_id], $method_name)) {
+        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
       }
     }
   }
