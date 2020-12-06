@@ -36,9 +36,26 @@
 }
 
 #box-checkout-cart {
+  .row {
+    margin-bottom: 0;
+  }
+  [class*="col-"] {
+    align-self: center;
+  }
+  .headings {
+    padding: @default-gutter-size/2 @default-gutter-size;
+    border-bottom: 2px solid @default-border-color;
+  }
   li {
+    padding: @default-gutter-size/2 @default-gutter-size;
     border-bottom: 1px solid #e0e0e0;
     margin-bottom: 1em;
+    &:nth-child(odd) {
+      background: @table-striped-row-background-odd;
+    }
+    &:nth-child(even) {
+      background: @table-striped-row-background-even;
+    }
   }
   .name {
     font-weight: 600;
@@ -50,7 +67,7 @@
     font-size: 1.25em;
   }
   .unit-price::before {
-    content: 'à'
+    //content: 'à';
   }
   .subtotal {
     font-size: 1.5em;
