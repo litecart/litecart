@@ -133,7 +133,7 @@
     'sticker' => '',
     'extra_images' => array(),
     'manufacturer' => array(),
-    'recommended_price' => tax::get_price($product->recommended_price, $product->tax_class_id),
+    'recommended_price' => tax::get_price((float)$product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
