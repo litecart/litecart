@@ -93,9 +93,7 @@
 
   $output .= '</urlset>';
 
-  $output = language::convert_characters($output, language::$selected['charset'], 'UTF-8');
-
+  ob_clean();
   header('Content-type: application/xml; charset=UTF-8');
-
   echo $output;
   exit;

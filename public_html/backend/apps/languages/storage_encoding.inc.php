@@ -73,7 +73,6 @@
     }
   }
 
-
 // Number of Rows
   $num_rows = count($tables);
 

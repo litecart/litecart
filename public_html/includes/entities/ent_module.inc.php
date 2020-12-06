@@ -40,21 +40,12 @@
     }
 
     private function _encode_settings($data) {
-
-      language::convert_characters($data, 'UTF-8', language::$selected['charset']);
-
       return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
     private function _decode_settings($data) {
-
       if (empty($data)) return;
-
-      $data = json_decode($data, true);
-
-      language::convert_characters($data, language::$selected['charset'], 'UTF-8');
-
-      return $data;
+      return json_decode($data, true);
     }
 
     public function reset() {

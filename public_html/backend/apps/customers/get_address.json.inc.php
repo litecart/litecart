@@ -1,6 +1,4 @@
 <?php
-  ob_end_clean();
-  header('Content-type: text/plain; charset='. language::$selected['charset']);
 
   $customer_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."customers
@@ -38,10 +36,7 @@
     ],
   ];
 
-  language::convert_characters($json, language::$selected['charset'], 'UTF-8');
-  $json = json_encode($json);
-
-  language::convert_characters($json, 'UTF-8', language::$selected['charset']);
-  echo $json;
-
+  ob_clean();
+  header('Content-type: text/plain; charset='. language::$selected['charset']);
+  echo json_encode($json, JSON_UNESCAPED_SLASHES);
   exit;

@@ -24,12 +24,6 @@
     // Identify/set language
       self::set();
 
-    // Reload languages if not UTF-8
-      if (strtoupper(self::$selected['charset']) != 'UTF-8') {
-        self::load();
-        self::set(self::$selected['code']);
-      }
-
       self::$_cache_token = cache::token('translations', ['endpoint', 'language']);
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {

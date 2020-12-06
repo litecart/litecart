@@ -8,10 +8,6 @@
 
     if (empty($language_code)) $language_code = language::$selected['code'];
 
-    if (strtoupper(language::$selected['charset']) != 'UTF-8') {
-      $text = language::convert_characters($text, null, 'UTF-8'); // Convert to UTF-8
-    }
-
     $text = strip_tags($text);  // Remove HTML tags
     $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');  // Decode special characters
 

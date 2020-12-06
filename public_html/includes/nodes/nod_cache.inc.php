@@ -187,10 +187,6 @@
             if (!$data = file_get_contents($cache_file)) return;
             if (!$data = json_decode($data, true)) return;
 
-            if (strtolower(language::$selected['charset']) != 'utf-8') {
-              $data = language::convert_characters($data, 'UTF-8', language::$selected['charset']);
-            }
-
             return $data;
           }
           return;
@@ -241,10 +237,6 @@
               trigger_error('Could not create cache subfolder', E_USER_WARNING);
               return false;
             }
-          }
-
-          if (strtolower(language::$selected['charset']) != 'utf-8') {
-            $data = language::convert_characters($data, language::$selected['charset'], 'UTF-8');
           }
 
           return file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES));
