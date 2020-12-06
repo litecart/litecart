@@ -105,7 +105,7 @@
               break;
           }
 
-          return is_resource($this->_image) ? true : false;
+          return $this->_image ? true : false;
       }
     }
 
@@ -126,7 +126,7 @@
           $this->_type = $type;
           $this->_image = ImageCreateFromString($binary);
 
-          if (!is_resource($this->_image)) return false;
+          if (!$this->_image) return false;
 
           return true;
       }
@@ -208,9 +208,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -386,9 +386,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -459,9 +459,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -593,9 +593,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -690,6 +690,7 @@
           }
 
           switch(strtolower($type)) {
+            case 'jpeg':
             case 'jpg':
                $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
                break;
@@ -706,9 +707,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -778,9 +779,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -849,7 +850,7 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             list($this->_width, $this->_height) = getimagesize($this->_src);
             return $this->_width;
           }
@@ -877,7 +878,7 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             list($this->_width, $this->_height) = getimagesize($this->_src);
             return $this->_height;
           }
@@ -930,9 +931,9 @@
 
         case 'gd':
 
-          if (is_resource($this->_image)) $this->load();
+          if ($this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
