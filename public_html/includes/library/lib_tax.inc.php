@@ -12,7 +12,7 @@
       if ($calculate_tax) {
         return $value + self::get_tax($value, $tax_class_id, $customer);
       } else {
-        return $value;
+        return (float)$value;
       }
     }
 
