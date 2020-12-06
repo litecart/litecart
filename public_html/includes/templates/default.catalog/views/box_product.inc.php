@@ -43,13 +43,6 @@
       </div>
       <?php } ?>
 
-      <?php if ($recommended_price) { ?>
-      <div class="recommmended-price" style="margin: 1em 0;">
-        <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
-        <span class="value"><?php echo currency::format($recommended_price); ?></span>
-      </div>
-      <?php } ?>
-
       <?php if ($cheapest_shipping_fee !== null) { ?>
       <div class="cheapest-shipping" style="margin: 1em 0;">
         <?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), array('%price' => currency::format($cheapest_shipping_fee))); ?>
@@ -108,6 +101,13 @@
        <?php } ?>
       </div>
 
+      <?php if ($recommended_price) { ?>
+      <div class="recommmended-price" style="margin: 1em 0;">
+        <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
+        <span class="value"><?php echo currency::format($recommended_price); ?></span>
+      </div>
+      <?php } ?>
+
       <hr />
 
       <div class="buy_now" style="margin: 1em 0;">
@@ -126,6 +126,8 @@
         <div class="price-wrapper">
           <?php if ($campaign_price) { ?>
           <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
+          <?php } else if ($recommended_price) { ?>
+          <del class="recommended-price"><?php echo currency::format($recommended_price); ?></del> <strong class="price"><?php echo currency::format($regular_price); ?></strong>
           <?php } else { ?>
           <span class="price"><?php echo currency::format($regular_price); ?></span>
           <?php } ?>
@@ -139,7 +141,7 @@
          <?php } ?>
         </div>
 
-        <?php if (!$catalog_only_mode && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
+        <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
@@ -193,7 +195,7 @@
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
-      @list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
+      list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL

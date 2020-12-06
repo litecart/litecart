@@ -14,10 +14,15 @@
       }
 
       usort($apps, function($a, $b) use ($apps) {
-        if (@$a['priority'] == @$b['priority']) {
+
+        if (!isset($a['priority'])) $a['priority'] = 0;
+        if (!isset($b['priority'])) $b['priority'] = 0;
+
+        if ($a['priority'] == $b['priority']) {
           return ($a['name'] < $b['name']) ? -1 : 1;
         }
-        return (@$a['priority'] < @$b['priority']) ? -1 : 1;
+
+        return ($a['priority'] < $b['priority']) ? -1 : 1;
       });
 
       cache::set($apps_cache_token, $apps);
@@ -40,9 +45,14 @@
       }
 
       usort($widgets, function($a, $b) use ($widgets) {
+
+        if (!isset($a['priority'])) $a['priority'] = 0;
+        if (!isset($b['priority'])) $b['priority'] = 0;
+
         if ($a['priority'] == $b['priority']) {
           return ($a['name'] < $b['name']) ? -1 : 1;
         }
+
         return ($a['priority'] < $b['priority']) ? -1 : 1;
       });
 

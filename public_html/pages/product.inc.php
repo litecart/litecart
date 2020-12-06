@@ -44,7 +44,7 @@
 
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), array('category_id')) .'" />';
 
   if (!empty($product->image)) {
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link('images/' . $product->image) .'"/>';
@@ -133,21 +133,20 @@
     'sticker' => '',
     'extra_images' => array(),
     'manufacturer' => array(),
-    'recommended_price' => tax::get_price($product->recommended_price, $product->tax_class_id),
+    'recommended_price' => tax::get_price((float)$product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
     'tax_rates' => array(),
-    'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
+    'quantity' => round((float)$product->quantity, $product->quantity_unit['decimals'] ? (int)$product->quantity_unit['decimals'] : 0),
     'quantity_unit' => $product->quantity_unit,
     'stock_status' => null,
     'delivery_status' => !empty($product->delivery_status) ? $product->delivery_status : array(),
     'sold_out_status' => !empty($product->sold_out_status) ? $product->sold_out_status : array(),
     'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
-    'catalog_only_mode' => settings::get('catalog_only_mode'),
     'options' => array(),
   );
 
@@ -176,7 +175,7 @@
 // Stickers
   if (!empty($product->campaign['price'])) {
     $percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
-    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />-'. $percentage .' %</div>';
+    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />-'. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }

@@ -53,7 +53,7 @@
 
       $xml = file_get_contents($_FILES['vqmod']['tmp_name']); // DOMDocument::load() does not support Windows paths so we use DOMDocument::loadXML()
 
-      if (!@$dom->loadXML($xml)) {
+      if (!$dom->loadXML($xml)) {
         throw new Exception(language::translate('error_invalid_xml_file', 'Invalid XML file'));
       }
 

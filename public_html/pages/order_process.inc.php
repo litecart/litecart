@@ -64,37 +64,44 @@
           exit;
         }
 
-        switch (@strtoupper($gateway['method'])) {
+        if (!empty($gateway['method'])) {
+          switch (strtoupper($gateway['method'])) {
 
-          case 'POST':
-            echo '<p>'. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
-               . '<form name="gateway_form" method="post" action="'. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')) .'">' . PHP_EOL;
-            if (is_array($gateway['fields'])) {
-              foreach ($gateway['fields'] as $key => $value) echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;
-            } else {
-              echo $gateway['fields'];
-            }
-            echo '</form>' . PHP_EOL
-               . '<script>' . PHP_EOL;
-            if (!empty($gateway['delay'])) {
-              echo '  var t=setTimeout(function(){' . PHP_EOL
-                 . '    document.forms["gateway_form"].submit();' . PHP_EOL
-                 . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
-            } else {
-              echo '  document.forms["gateway_form"].submit();' . PHP_EOL;
-            }
-            echo '</script>';
-            exit;
+            case 'POST':
 
-          case 'HTML':
-            echo $gateway['content'];
-            require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
-            exit;
+              echo '<p>'. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
+                 . '<form name="gateway_form" method="post" action="'. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')) .'">' . PHP_EOL;
 
-          case 'GET':
-          default:
-            header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')));
-            exit;
+              if (is_array($gateway['fields'])) {
+                foreach ($gateway['fields'] as $key => $value) echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;
+              } else {
+                echo $gateway['fields'];
+              }
+
+              echo '</form>' . PHP_EOL
+                 . '<script>' . PHP_EOL;
+
+              if (!empty($gateway['delay'])) {
+                echo '  var t=setTimeout(function(){' . PHP_EOL
+                   . '    document.forms["gateway_form"].submit();' . PHP_EOL
+                   . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
+              } else {
+                echo '  document.forms["gateway_form"].submit();' . PHP_EOL;
+              }
+
+              echo '</script>';
+              exit;
+
+            case 'HTML':
+              echo $gateway['content'];
+              require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+              exit;
+
+            case 'GET':
+            default:
+              header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')));
+              exit;
+          }
         }
       }
     }

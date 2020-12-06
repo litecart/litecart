@@ -164,7 +164,7 @@
       database::query(
         "delete from ". DB_TABLE_CATEGORIES_FILTERS ."
         where category_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['filters'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['filters'], 'id')) ."');"
       );
 
     // Update filters

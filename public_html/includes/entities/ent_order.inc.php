@@ -282,7 +282,7 @@
       if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
-          reference::product($previous_order_item['product_id'])->adjust_stock($previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+          reference::ent_product($previous_order_item['product_id'])->adjust_stock($previous_order_item['quantity'], $previous_order_item['option_stock_combination']);
         }
       }
 
@@ -290,7 +290,7 @@
       database::query(
         "delete from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
     // Insert/update order items
@@ -316,14 +316,14 @@
 
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          reference::product($item['product_id'])->adjust_stock($item['option_stock_combination'], -$item['quantity']);
+          reference::ent_product($item['product_id'])->adjust_stock(-$item['quantity'], $item['option_stock_combination']);
         }
 
         database::query(
           "update ". DB_TABLE_ORDERS_ITEMS ."
           set product_id = ". (int)$item['product_id'] .",
           option_stock_combination = '". database::input($item['option_stock_combination']) ."',
-          options = '". (isset($item['options']) ? database::input(serialize($item['options'])) : '') ."',
+          options = '". (!empty($item['options']) ? database::input(serialize($item['options'])) : '') ."',
           name = '". database::input($item['name']) ."',
           sku = '". database::input($item['sku']) ."',
           gtin = '". database::input($item['gtin']) ."',
@@ -347,7 +347,7 @@
       database::query(
         "delete from ". DB_TABLE_ORDERS_TOTALS ."
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['order_total'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['order_total'], 'id')) ."');"
       );
 
     // Insert/update order total
@@ -379,7 +379,7 @@
       database::query(
         "delete from ". DB_TABLE_ORDERS_COMMENTS ."
         where order_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['comments'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['comments'], 'id')) ."');"
       );
 
     // Insert/update comments

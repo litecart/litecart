@@ -340,9 +340,69 @@
   } else {
 
     $category_trail = array_keys(reference::category($_GET['category_id'])->path);
+    $num_category_rows = 0;
+    $num_product_rows = 0;
 
-    $category_iterator = function($category_id=0, $depth=1, &$category_iterator) {
-      global $category_trail, $num_category_rows;
+    $output_products = function($category_id=0, $depth=1) use (&$output_products, &$num_product_rows) {
+
+      $output = '';
+
+      $products_query = database::query(
+        "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+        left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." p2c on (p2c.product_id = p.id)
+        where ". (!empty($category_id) ? "p2c.category_id = ". (int)$category_id : "(p2c.category_id is null or p2c.category_id = 0)") ."
+        group by p.id
+        order by pi.name asc;"
+      );
+
+      $display_images = true;
+      if (database::num_rows($products_query) > 100) {
+        $display_images = false;
+      }
+
+      while ($product = database::fetch($products_query)) {
+        $num_product_rows++;
+
+        try {
+          $warning = null;
+
+          if ($product['date_valid_from'] > date('Y-m-d H:i:s')) {
+            throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from'])))));
+          }
+
+          if ($product['date_valid_to'] > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
+            throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to'])))));
+          }
+
+          if ($product['quantity'] <= 0) {
+            throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
+          }
+
+        } catch (Exception $e) {
+          $warning = $e->getMessage();
+        }
+
+        $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
+                 . '  <td>'. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
+
+        if ($display_images) {
+          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+        } else {
+          $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+        }
+
+        $output .= '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : '') .'</td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('product', array('product_id' => $product['id'])) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '</tr>' . PHP_EOL;
+      }
+
+      return $output;
+    };
+
+    $category_iterator = function($category_id, $depth) use (&$category_iterator, &$output_products, &$category_trail, &$num_category_rows) {
 
       $output = '';
 
@@ -390,11 +450,11 @@
 
           if (database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
            || database::fetch(database::query("select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." where category_id = ".(int)$category['id']." limit 1;")) > 0) {
-            $output .= $category_iterator($category['id'], $depth+1, $category_iterator);
+            $output .= $category_iterator($category['id'], $depth+1);
 
             // Output products
             if (in_array($category['id'], $category_trail)) {
-              $output .= admin_catalog_category_products($category['id'], $depth+1);
+              $output .= $output_products($category['id'], $depth+1);
             }
 
           } else {
@@ -411,78 +471,15 @@
         }
       }
 
-      database::free($categories_query);
-
       // Output products
       if (empty($category_id)) {
-        $output .= admin_catalog_category_products($category_id, $depth);
+        $output .= $output_products($category_id, $depth);
       }
 
       return $output;
     };
 
-    function admin_catalog_category_products($category_id=0, $depth=1) {
-      global $num_product_rows;
-
-      $output = '';
-
-      $products_query = database::query(
-        "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
-        left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." p2c on (p2c.product_id = p.id)
-        where ". (!empty($category_id) ? "p2c.category_id = ". (int)$category_id : "(p2c.category_id is null or p2c.category_id = 0)") ."
-        group by p.id
-        order by pi.name asc;"
-      );
-
-      $display_images = true;
-      if (database::num_rows($products_query) > 100) {
-        $display_images = false;
-      }
-
-      while ($product=database::fetch($products_query)) {
-        $num_product_rows++;
-
-        try {
-          $warning = null;
-
-          if ($product['date_valid_from'] > date('Y-m-d H:i:s')) {
-            throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from'])))));
-          }
-
-          if ($product['date_valid_to'] > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
-            throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to'])))));
-          }
-
-          if ($product['quantity'] <= 0) {
-            throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
-          }
-
-        } catch (Exception $e) {
-          $warning = $e->getMessage();
-        }
-
-        $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
-                 . '  <td>'. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
-
-        if ($display_images) {
-          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
-        } else {
-          $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
-        }
-
-        $output .= '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : '') .'</td>' . PHP_EOL
-                 . '  <td><a href="'. document::href_ilink('product', array('product_id' => $product['id'])) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
-                 . '</tr>' . PHP_EOL;
-      }
-      database::free($products_query);
-
-      return $output;
-    }
-
-    echo $category_iterator(0, 1, $category_iterator);
+    echo $category_iterator(0, 1);
 ?>
         </tbody>
         <tfoot>

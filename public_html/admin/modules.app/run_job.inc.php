@@ -1,5 +1,9 @@
 <?php
-  @set_time_limit(60*5);
+
+  if (preg_match('#^(off|false|0)$#i', ini_get('safe_mode'))) {
+    set_time_limit(60*5);
+  }
+
   ob_clean();
 
   session::close();

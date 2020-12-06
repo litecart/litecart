@@ -157,7 +157,7 @@
         'extras' => 0,
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
-        'quantity' => !empty($product->quantity_unit['decimals']) ? round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP) : $quantity,
+        'quantity' => !empty($product->quantity_unit['decimals']) ? round((float)$quantity, (int)$product->quantity_unit['decimals'], PHP_ROUND_HALF_UP) : $quantity,
         'quantity_unit' => array(
           'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
           'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',
@@ -195,14 +195,14 @@
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round($product->quantity, @$product->quantity_unit['decimals']))));
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round((float)$product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0))));
         }
 
       // Remove empty options
-        $array_filter_recursive = function($array, &$_this) {
+        $array_filter_recursive = function($array) use (&$array_filter_recursive) {
 
           foreach ($array as $i => $value) {
-            if (is_array($value)) $array[$i] = $_this($value, $_this);
+            if (is_array($value)) $array[$i] = $array_filter_recursive($value);
           }
 
           return array_filter($array, function($v) {
@@ -211,7 +211,7 @@
           });
         };
 
-        $options = $array_filter_recursive($options, $array_filter_recursive);
+        $options = $array_filter_recursive($options);
 
       // Build options structure
         $sanitized_options = array();
@@ -219,7 +219,8 @@
 
         // Check group
           $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
-          $matched_group = @reset(array_intersect(array_keys($options), array_values($possible_groups)));
+          $matched_groups = array_intersect(array_keys($options), array_values($possible_groups));
+          $matched_group = array_shift($matched_groups);
 
           if (empty($matched_group)) {
             if (!empty($option['required'])) {
@@ -300,7 +301,7 @@
           if ($option_match) {
             //if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
             if (($option_stock['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round($option_stock['quantity'], @$product->quantity_unit['decimals']) .')');
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round((float)$option_stock['quantity'], isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0) .')');
             }
 
             $item['option_stock_combination'] = $option_stock['combination'];

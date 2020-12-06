@@ -51,7 +51,7 @@
 
     // Local content
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/font-awesome.min.css" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.4.1.min.js"></script>';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.5.1.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -69,7 +69,7 @@
       $template_config = include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php');
       if (!is_array($template_config)) include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
 
-      self::$settings = @json_decode(settings::get('store_template_catalog_settings'), true);
+      self::$settings = settings::get('store_template_catalog_settings') ? json_decode(settings::get('store_template_catalog_settings'), true) : array();
 
       foreach (array_keys($template_config) as $i) {
         if (!isset(self::$settings[$template_config[$i]['key']])) {
@@ -268,7 +268,7 @@
         $route = WS_DIR_APP . $route;
       }
 
-      return route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
+      return (string)route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
     }
 
     public static function href_ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
@@ -282,7 +282,7 @@
         if ($inherit_params === null) $inherit_params = true;
       }
 
-      return route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
+      return (string)route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
     public static function href_link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {

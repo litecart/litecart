@@ -113,7 +113,7 @@
       );
 
       if ($user = database::fetch($user_query)) {
-        $user['permissions'] = @json_decode($user['permissions'], true);
+        $user['permissions'] = $user['permissions'] ? json_decode($user['permissions'], true) : array();
       }
 
       session::$data['user'] = $user;

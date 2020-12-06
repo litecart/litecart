@@ -48,7 +48,7 @@
       and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."';"
     );
     $orders = database::fetch($orders_query);
-    @$stats['average_order_amount'] = $orders['total_sales'] / $orders['num_orders'];
+    $stats['average_order_amount'] = (!empty($orders['total_sales']) && !empty($orders['num_orders'])) ? ($orders['total_sales'] / $orders['num_orders']) : 0;
 
   // Average order count
     $orders_query = database::query(
@@ -61,7 +61,7 @@
     while ($orders = database::fetch($orders_query)) {
       $total_orders += $orders['num_orders'];
     }
-    @$stats['average_order_count'] = round($total_orders / database::num_rows($orders_query));
+    $stats['average_order_count'] = !empty($total_orders) ? round($total_orders / database::num_rows($orders_query)) : 0;
 
   // Num customers
     $customers_query = database::query(
