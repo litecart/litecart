@@ -482,7 +482,7 @@
                       <?php echo functions::form_draw_text_field('payment_option[name]', true); ?>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-9">
                       <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
                       <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
                     </div>
