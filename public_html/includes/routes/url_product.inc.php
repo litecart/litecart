@@ -28,7 +28,7 @@
 
         if (in_array($link->query['category_id'], array_keys($product->categories))) {
           $category = reference::category($link->query['category_id'], $language_code);
-        } else {
+        } else if !empty($product->default_category_id) {
           $category = reference::category($product->default_category_id, $language_code);
         }
 

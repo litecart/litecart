@@ -41,10 +41,10 @@
         self::$_debug = true;
       }
 
-      if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) self::$_debug = true;
-        if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) self::$_debug = true;
-      }
+      //if (isset($_SERVER['HTTP_CACHE_CONTROL'])) {
+      //  if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'no-cache') !== false) self::$_debug = true;
+      //  if (strpos(strtolower($_SERVER['HTTP_CACHE_CONTROL']), 'max-age=0') !== false) self::$_debug = true;
+      //}
 
       if (!$path) $path = dirname(__DIR__);
       self::$_cwd = self::_realpath($path);
