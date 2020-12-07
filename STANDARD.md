@@ -4,11 +4,11 @@
 
  - PHP code must comply with PHP 5.4+ using E_STRICT.
 
- - HTML code mustcomply with HTML 5.
+ - HTML code must comply with HTML 5.
 
  - Style definitions must be compliant with CSS 3.
 
- - Any use of javascript should dedicate the jQuery framework.
+ - Any use of javascript should honour the jQuery framework.
 
 
 ## Character Encoding
@@ -33,27 +33,6 @@
   Do not use more than one empty line for separating logic.
 
 
-## No Trailing Whitespace
-
-  Make sure you have no trailing whitespace after your code
-
-  Incorrect:
-
-    <?php
-    ··echo·$variable;\n·····
-    ··\n
-    \EOF
-
-  Correct:
-
-    <?php
-    ··echo·$variable;\n
-    \n
-    \EOF
-
-  Note: Most code editors offer a way to trim trailing whitespace upon save.
-
-
 ## Outputting Line Breaks
 
   Use the PHP_EOL constant for outputting line breaks in PHP.
@@ -74,6 +53,27 @@
     \r\n
     Lorem ipsum dolor\r\n
     \r\n
+
+
+## No Trailing Whitespace
+
+  Make sure you have no trailing whitespace after your code
+
+  Incorrect:
+
+    <?php
+    ··echo·$variable;\n·····
+    ··\n
+    \EOF
+
+  Correct:
+
+    <?php
+    ··echo·$variable;\n
+    \n
+    \EOF
+
+  Note: Most code editors offer a way to trim trailing whitespace upon save.
 
 
 ## Indentation
@@ -177,13 +177,11 @@
 
   Scripts that outputs something else but HTML should be named by their output format extension like the following:
 
-    .php
-    .json.php
+    .json.php  >>  .json.inc.php
 
   Included files should be named:
 
-    .inc.php
-    .json.inc.php
+    .php  >>  .inc.php
 
 
 ## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
@@ -228,10 +226,10 @@
 
   Do not EVER use register_globals as we use PHP Superglobals.
 
-	$_GET['variable']
-	$_POST['variable']
-	$_COOKIE['variable']
-	$_SESSION['variable']
+    $_GET['variable']
+    $_POST['variable']
+    $_COOKIE['variable']
+    $_SESSION['variable']
 
 
 ## Naming of Variables and Elements
@@ -383,6 +381,15 @@
     } unset($item);
 
 
+## Iterators
+
+  Preferably use anonymous functions for iterators unless they are also used elsewhere in the platform
+
+    $iterator = function($input) use (&$iterator)  {
+      $iterator();
+    };
+
+
 ## Matryoshka Dolls
 
   Avoid conditional conditions inside loops.
@@ -430,7 +437,7 @@
 
   Database queries should be line breaked, indented, and presented in lowercases.
 
-    database::query(
+    $query = database::query(
       "select * from ". DB_TABLE_NAME ."
       where id = '". (int)$integrer ."'
       ". (isset($string) ? "and string = '". database::input($string) ."'" : "") ."
@@ -440,7 +447,7 @@
   Unlike displaying strings, double quote characters are wrapped around the sql query.
 
 
-## Handling User Input Data
+## Passing User Input Data to the Database
 
   Don't just assume a variable exists with a value:
 
@@ -467,11 +474,11 @@
 
 ## No Sloppy Coding HTML
 
-  No sloppy coding for single HTML tags. We use the XHTML strict standard:
+  No sloppy coding for single HTML tags. We use the strict standard:
 
   Incorrect:
 
-        <img src="" />
+        <img src="">
         <br>
 
   Correct:
