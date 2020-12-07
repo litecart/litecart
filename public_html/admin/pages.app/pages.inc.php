@@ -3,6 +3,10 @@
   if (empty($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) $_GET['parent_id'] = 0;
   if (empty($_GET['expanded'])) $_GET['expanded'] = array();
 
+  document::$snippets['title'][] = language::translate('title_pages', 'Pages');
+
+  breadcrumbs::add(language::translate('title_pages', 'Pages'));
+
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {

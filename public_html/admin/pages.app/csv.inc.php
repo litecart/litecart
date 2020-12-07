@@ -1,5 +1,8 @@
 <?php
 
+  document::$snippets['title'][] = language::translate('title_csv_import_export', 'CSV Import/Export');
+
+  breadcrumbs::add(language::translate('title_pages', 'Pages'), document::href_link(WS_DIR_ADMIN, array('doc' => 'pages'), array('app')));
   breadcrumbs::add(language::translate('title_csv_import_export', 'CSV Import/Export'));
 
   if (isset($_POST['import'])) {

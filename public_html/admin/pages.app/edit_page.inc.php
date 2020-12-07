@@ -14,6 +14,7 @@
 
   document::$snippets['title'][] = !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page');
 
+  breadcrumbs::add(language::translate('title_pages', 'Pages'), document::link(WS_DIR_ADMIN, array('doc' => 'pages'), array('app')));
   breadcrumbs::add(!empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'));
 
   if (isset($_POST['save'])) {

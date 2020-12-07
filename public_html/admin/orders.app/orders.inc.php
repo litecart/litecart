@@ -1,5 +1,9 @@
 <?php
 
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
+  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
+
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
@@ -13,9 +17,9 @@
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
-  if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
+  document::$snippets['title'][] = language::translate('title_orders', 'Orders');
+
+  breadcrumbs::add(language::translate('title_orders', 'Orders'));
 
   if (isset($_POST['star']) || isset($_POST['unstar'])) {
     database::query(

@@ -1,4 +1,9 @@
 <?php
+
+  document::$snippets['title'][] = language::translate('title_vqmods', 'vQmods');
+
+  breadcrumbs::add(language::translate('title_vqmods', 'vQmods'));
+
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {

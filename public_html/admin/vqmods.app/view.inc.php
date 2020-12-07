@@ -2,9 +2,10 @@
 
   $_GET['vqmod'] = basename($_GET['vqmod']);
 
-  document::$snippets['title'][] = language::translate('title_view_vqmod', 'View vQmod');
+  breadcrumbs::add(language::translate('title_vqmods', 'vQmods'), document::href_link(WS_DIR_ADMIN, array('doc' => 'vqmods'), array('app')));
+  breadcrumbs::add(language::translate('title_view_vqmod', 'View vQmod') .' '. basename($_GET['vqmod']));
 
-  breadcrumbs::add(basename($_GET['vqmod']));
+  document::$snippets['title'][] = language::translate('title_view_vqmod', 'View vQmod');
 
   try {
     if (empty($_GET['vqmod'])) throw new Exception(language::translate('error_must_provide_vqmod', 'You must provide a vQmod'));

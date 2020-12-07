@@ -32,6 +32,7 @@
 
   document::$snippets['title'][] = !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order');
 
+  breadcrumbs::add(language::translate('title_orders', 'Orders'), document::link(WS_DIR_ADMIN, array('doc' => 'orders'), array('app')));
   breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
 
 // Mark as read

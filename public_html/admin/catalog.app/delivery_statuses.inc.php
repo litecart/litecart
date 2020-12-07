@@ -3,6 +3,7 @@
 
   document::$snippets['title'][] = language::translate('title_delivery_statuses', 'Delivery Statuses');
 
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'));
 
 // Table Rows

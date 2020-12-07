@@ -2,6 +2,7 @@
 
   document::$snippets['title'][] = language::translate('title_template', 'Template');
 
+  breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
   breadcrumbs::add(language::translate('title_template', 'Template'));
 
   if (isset($_POST['save'])) {

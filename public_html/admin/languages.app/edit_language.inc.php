@@ -14,6 +14,7 @@
 
   document::$snippets['title'][] = !empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language');
 
+  breadcrumbs::add(language::translate('title_languages', 'Languages'), document::link(WS_DIR_ADMIN, array('doc' => 'languages'), array('app')));
   breadcrumbs::add(!empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'));
 
   if (isset($_POST['save'])) {

@@ -14,6 +14,7 @@
 
   document::$snippets['title'][] = !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country');
 
+  breadcrumbs::add(language::translate('title_countries', 'Countries'));
   breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'));
 
   if (isset($_POST['save'])) {

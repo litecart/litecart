@@ -14,6 +14,7 @@
 
   document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');
 
+  breadcrumbs::add(language::translate('title_slides', 'Slides'), document::link(WS_DIR_ADMIN, array('doc' => 'slides'), array('app')));
   breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
 
   if (isset($_POST['save'])) {

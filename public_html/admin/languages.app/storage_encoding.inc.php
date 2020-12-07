@@ -2,6 +2,7 @@
 
   document::$snippets['title'][] = language::translate('title_storage_encoding', 'Storage Encoding');
 
+  breadcrumbs::add(language::translate('title_languages', 'Languages'), document::link(WS_DIR_ADMIN, array('doc' => 'languages'), array('app')));
   breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));
 
   $defined_tables = array();
