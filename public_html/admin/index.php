@@ -31,6 +31,7 @@
     );
 
     if (!empty($app['menu'])) {
+      sort($app['menu']);
       foreach ($app['menu'] as $item) {
 
         if (!empty(user::$data['permissions']) && (empty(user::$data['permissions'][$app['code']]['status']) || !in_array($item['doc'], user::$data['permissions'][$app['code']]['docs']))) continue;

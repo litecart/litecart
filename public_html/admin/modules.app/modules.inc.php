@@ -3,6 +3,7 @@
   switch ($_GET['doc']) {
     case 'customer':
       $title = language::translate('title_customer_modules', 'Customer Modules');
+      $subtitle = language::translate('subtitle_customer_modules', 'These modules act upon customer accounts.');
       $files = glob(FS_DIR_APP . 'includes/modules/customer/*.inc.php');
       $mod_class = new mod_customer();
       $type = 'customer';
@@ -11,6 +12,7 @@
 
     case 'jobs':
       $title = language::translate('title_job_modules', 'Job Modules');
+      $subtitle = language::translate('subtitle_job_modules', 'A job module is a background job that LiteCart pushes frequently to run.');
       $files = glob(FS_DIR_APP . 'includes/modules/jobs/*.inc.php');
       $mod_class = new mod_jobs();
       $type = 'job';
@@ -19,6 +21,7 @@
 
     case 'order':
       $title = language::translate('title_order_modules', 'Order Modules');
+      $subtitle = language::translate('subtitle_order_modules', 'Order modules can interact with orders and support several different behaviors.');
       $files = glob(FS_DIR_APP . 'includes/modules/order/*.inc.php');
       $mod_class = new mod_order();
       $type = 'order';
@@ -27,6 +30,7 @@
 
     case 'order_total':
       $title = language::translate('title_order_total_modules', 'Order Total Modules');
+      $subtitle = language::translate('subtitle_order_total_modules', 'These modules are the calcs that are displayed in the Order Summary section of checkout.');
       $files = glob(FS_DIR_APP . 'includes/modules/order_total/*.inc.php');
       $mod_class = new mod_order_total();
       $type = 'order_total';
@@ -35,6 +39,7 @@
 
     case 'payment':
       $title = language::translate('title_payment_modules', 'Payment Modules');
+      $subtitle = language::translate('subtitle_payment_modules', 'These modules are the different payment choices your customers can use.');
       $files = glob(FS_DIR_APP . 'includes/modules/payment/*.inc.php');
       $mod_class = new mod_payment();
       $type = 'payment';
@@ -43,6 +48,7 @@
 
     case 'shipping':
       $title = language::translate('title_shipping_modules', 'Shipping Modules');
+      $subtitle = language::translate('subtitle_shipping_modules', 'These modules are the different shipping choices your customers can use.');
       $files = glob(FS_DIR_APP . 'includes/modules/shipping/*.inc.php');
       $mod_class = new mod_shipping();
       $type = 'shipping';
@@ -114,6 +120,7 @@
   </div>
 
   <div class="panel-body">
+  <?php echo $subtitle.'<br><br>'; ?>
     <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
       <table class="table table-striped table-hover data-table">
         <thead>
