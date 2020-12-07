@@ -125,7 +125,7 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings'); ?>
+    <?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings').' &ndash; '.$settings_group['name']; ?>
   </div>
 
   <div class="panel-body">
@@ -158,7 +158,7 @@
           </tr>
           <?php } else { ?>
           <tr>
-            <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
+            <td class="text-left"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
             <td style="white-space: normal;">
               <div style="max-height: 200px; overflow-y: auto;" title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
                 <?php echo $setting['value']; ?>
