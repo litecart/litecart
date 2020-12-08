@@ -8,7 +8,7 @@
 
  - Style definitions must be compliant with CSS 3.
 
- - Any use of javascript should honour the jQuery framework.
+ - Any use of JavaScript should honor the jQuery framework.
 
 
 ## Character Encoding
@@ -29,8 +29,6 @@
   Correct:
 
     \n
-
-  Do not use more than one empty line for separating logic.
 
 
 ## Outputting Line Breaks
@@ -175,7 +173,7 @@
 
 ## File Extensions
 
-  Scripts that outputs something else but HTML should be named by their output format extension like the following:
+  Scripts that output something other than HTML should be named by their output format extension like the following:
 
     .json.php  >>  .json.inc.php
 
@@ -186,7 +184,7 @@
 
 ## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
 
-  Single quote characters should be used for PHP and javascript code. Exceptions can be made for best convenience.
+  Single quote characters should be used for PHP and JavaScript code. Exceptions can be made for best convenience.
 
   Use double quotes for all HTML element parameters in accordance with SGML.
 
@@ -234,19 +232,22 @@
 
 ## Naming of Variables and Elements
 
-  Don't make up shortenings. Always use full words unless they are annoyingly long. Don't mix languages, use english only for code and comments. Don't mix lower and upper cases.
+  Simply use PECL styled naming with lowercases and underscores. Don't use CAPS, CamelCase or camelCase.
+  Don't make up abbreviations. Always use full words unless they are annoyingly long. Don't mix languages, use English only for code and comments.
 
   Incorrect:
 
+    $CUSTOMER_ADDRESS // Yelling
     $custaddr // Weird shortenings
     $kund_adress // Foreign language
-    $customerAddress // Mixed cases
-    $customer['customer_address'] // Duplicate prefix
+    $customerStreetAddress // Mixed cases
+    $customer['customer_address1'] // Duplicate prefix
+    $customer_shipping_street_address_name // Annoyingly long
 
   Correct:
 
-    $customer_address
-    $customer['address']
+    $address1
+    $customer['address1']
 
 
 ## Naming of CSS IDs and Classes
@@ -304,21 +305,56 @@
       'this',
       'that',
       ...
-      'last', // <-- Make note of the ending coma
+      'last', // <-- Make note of the ending comma
     );
+
+
+## Code Brackets
+
+  Do not start new lines for opening brackets.
+
+  Incorrect:
+
+    if (condition)
+    {
+      ...
+    }
+    else
+    {
+      ...
+    }
+
+
+
+  Correct:
+
+    if (condition) {
+      ...
+    } else {
+      ...
+    }
 
 
 ## PHP Conditions
 
-  Do not use yoda expressions.
+  Do not use if/endif or yoda expressions.
 
   Incorrect:
 
-    if (true === condition) {
+    if (condition):
+      ...
+    endif;
+
+    if ('happy' == $my_mood) {
+
 
   Correct:
 
-    if (condition === true) {
+    if (condition) {
+      ...
+    }
+
+    if ($my_mood == 'happy') {
 
 
 ## PHP Class Variables and Methods
@@ -337,7 +373,7 @@
 
 ## PHP Function Results
 
-  General functions shall always return data, not output data to the buffer.
+  General functions should always return data, not output data to the buffer.
 
   Incorrect:
 
@@ -383,14 +419,14 @@
 
 ## Iterators
 
-  Preferably use anonymous functions for iterators unless they are also used elsewhere in the platform
+  Preferably use anonymous functions for iterators unless they are also used elsewhere in the platform.
 
     $iterator = function($input) use (&$iterator)  {
       $iterator();
     };
 
 
-## Matryoshka Dolls
+## No Matryoshka Dolls
 
   Avoid conditional conditions inside loops.
 
@@ -435,7 +471,7 @@
 
 ## Database Queries in PHP
 
-  Database queries should be line breaked, indented, and presented in lowercases.
+  Database queries should be line breaked, indented, and presented in lowercase.
 
     $query = database::query(
       "select * from ". DB_TABLE_NAME ."
@@ -444,7 +480,7 @@
       limit 1;"
     );
 
-  Unlike displaying strings, double quote characters are wrapped around the sql query.
+  Unlike when displaying strings, double quote characters are use to wrap SQL queries.
 
 
 ## Passing User Input Data to the Database
@@ -460,7 +496,7 @@
 
   Always assume incoming data is insecure by escaping the input:
 
-    databas::query(
+    database::query(
       "update mytable
       set number = ". (int)$_POST['number'] .",
         string = '". database::input($_POST['string']) ."',
