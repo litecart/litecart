@@ -263,7 +263,7 @@
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_reference', 'Reference'); ?></label>
-              <?php echo functions::form_draw_text_field('reference', true); ?>
+              <?php echo functions::form_draw_text_field('customer[reference]', true); ?>
             </div>
 
             <div class="form-group col-md-3">
