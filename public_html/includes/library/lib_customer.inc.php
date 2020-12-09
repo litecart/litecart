@@ -95,13 +95,6 @@
         }
       }
 
-    // Get country from HTTP header (CloudFlare)
-      if (empty(self::$data['country_code'])) {
-        if (!empty($_SERVER['HTTP_CF_IPCOUNTRY']) && in_array($_SERVER['HTTP_CF_IPCOUNTRY'], $countries)) {
-          self::$data['country_code'] = $_SERVER['HTTP_CF_IPCOUNTRY'];
-        }
-      }
-
     // Get country from TLD
       if (empty(self::$data['country_code'])) {
         if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
@@ -117,6 +110,13 @@
           );
           $country = database::fetch($countries_query);
           if (!empty($country['iso_code_2'])) self::$data['country_code'] = $country['iso_code_2'];
+        }
+      }
+
+    // Get country from HTTP header (CloudFlare)
+      if (empty(self::$data['country_code'])) {
+        if (!empty($_SERVER['HTTP_CF_IPCOUNTRY']) && in_array($_SERVER['HTTP_CF_IPCOUNTRY'], $countries)) {
+          self::$data['country_code'] = $_SERVER['HTTP_CF_IPCOUNTRY'];
         }
       }
 
