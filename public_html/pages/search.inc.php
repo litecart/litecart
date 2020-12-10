@@ -44,6 +44,7 @@
       + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
       + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
       + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
+      + if(p.keywords like '%". database::input($_GET['query']) ."%', 1, 0)
       + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
       + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
       + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
