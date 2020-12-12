@@ -602,6 +602,16 @@
 
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
+    ### Create files ######################################
+
+    echo '<p>Create file container for error logging...';
+
+    if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '')) {
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
+    }
+
     ### #############################################################
 
     echo PHP_EOL . '<h2>Complete</h2>' . PHP_EOL
