@@ -276,6 +276,7 @@
   }
 
   function catalog_stock_adjust($product_id, $combination, $quantity) {
-    trigger_error('catalog_stock_adjust() is deprecated. Use instead ent_product::adjust_stock()', E_USER_DEPRECATED);
-    return reference::ent_product($product_id)->adjust_stock($quantity, $combination);
+    trigger_error('catalog_stock_adjust() is deprecated. Use instead $ent_product->adjust_quantity()', E_USER_DEPRECATED);
+    $product = new ent_product($product_id);
+    return $product->adjust_quantity($quantity, $combination);
   }
