@@ -11,7 +11,12 @@
     die('Missing order or key');
   }
 
-  $order = new ent_order($_GET['order_id']);
+  try {
+    $order = new ent_order($_GET['order_id']);
+  } catch (Exception $e) {
+    notices::add('errors', $e->getMessage());
+    return;
+  }
 
   if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
     http_response_code(401);
