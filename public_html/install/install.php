@@ -276,7 +276,7 @@
 
     define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
 
-    if (file_put_contents('../includes/config.inc.php', $config)) {
+    if (file_put_contents('../includes/config.inc.php', $config) !== false) {
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
@@ -404,8 +404,7 @@
               . '  Require valid-user' . PHP_EOL
               . '</IfModule>';
 
-    if (is_dir('../'.$_REQUEST['admin_folder'])) {
-      file_put_contents('../'. $_REQUEST['admin_folder'] .'/.htaccess', $htaccess);
+    if (is_dir('../'.$_REQUEST['admin_folder']) && file_put_contents('../'. $_REQUEST['admin_folder'] .'/.htaccess', $htaccess) !== false) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
@@ -417,7 +416,7 @@
 
     if (is_dir('../'.$_REQUEST['admin_folder'])) {
       $htpasswd = $_REQUEST['username'] .':{SHA}'. base64_encode(sha1($_REQUEST['password'], true)) . PHP_EOL;
-      if (file_put_contents('../'. $_REQUEST['admin_folder'] . '/.htpasswd', $htpasswd)) {
+      if (file_put_contents('../'. $_REQUEST['admin_folder'] . '/.htpasswd', $htpasswd) !== false) {
         echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
@@ -606,7 +605,15 @@
 
     echo '<p>Create file container for error logging...';
 
-    if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '')) {
+    if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '') !== false) {
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
+    }
+
+    echo '<p>Create files for vQmod cache...';
+
+    if (file_put_contents(FS_DIR_APP . 'vqmod/checked.cache', '') !== false && file_put_contents(FS_DIR_APP . 'vqmod/mods.cache', '') !== false) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;

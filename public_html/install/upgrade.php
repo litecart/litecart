@@ -213,7 +213,7 @@
 
       echo '<p>Reset error log... ';
 
-      if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '')) {
+      if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '') !== false) {
         echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
