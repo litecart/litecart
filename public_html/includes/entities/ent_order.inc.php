@@ -317,7 +317,7 @@
 
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          $product = new ent_product($itemm['product_id']);
+          $product = new ent_product($item['product_id']);
           $product->adjust_quantity(-$item['quantity'], $item['option_stock_combination']);
         }
 
