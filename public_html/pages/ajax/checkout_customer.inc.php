@@ -14,7 +14,7 @@
     }
   }
 
-  if (!empty($_POST['save_customer_details'])) {
+  if (!empty($_POST['customer_details'])) {
 
     try {
       if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
