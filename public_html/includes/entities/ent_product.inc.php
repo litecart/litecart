@@ -264,7 +264,11 @@
 
       if (isset($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
         $this->adjust_quantity($this->data['quantity_adjustment']);
-        $this->data['quantity'] += $this->data['quantity_adjustment'];
+        if (!empty($this->data['quantity'])) {
+          $this->data['quantity'] += (float)$this->data['quantity_adjustment'];
+        } else {
+          $this->data['quantity'] = (float)$this->data['quantity_adjustment'];
+        }
         unset($this->data['quantity_adjustment']);
       }
 
