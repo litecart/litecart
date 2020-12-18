@@ -47,11 +47,7 @@
           $class_name = 'ent_'.$resource;
           $object = new $class_name($arguments[0]);
 
-          self::$_cache[$resource][$checksum] = new StdClass;
-
-          if (!empty($object->data['id'])) {
-            foreach ($object->data as $key => $value) self::$_cache[$resource][$checksum]->$key = $value;
-          }
+          self::$_cache[$resource][$checksum] = (object)$object->data;
 
           return self::$_cache[$resource][$checksum];
 
