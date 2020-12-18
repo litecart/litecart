@@ -121,7 +121,7 @@
             where product_id = ". (int)$this->_data['id'] ."
             and (year(start_date) < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
             and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
-            order by end_date asc
+            order by if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) asc
             limit 1;"
           );
 
