@@ -116,22 +116,17 @@
 
           $this->_data['campaign'] = array();
 
-          $products_campaigns_query = database::query(
-            "select * from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+          $campaigns_query = database::query(
+            "select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as price
+            from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
             where product_id = ". (int)$this->_data['id'] ."
             and (year(start_date) < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
             and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
-            order by if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) asc
             limit 1;"
           );
 
-          if ($products_campaign = database::fetch($products_campaigns_query)) {
-            $this->_data['campaign'] = $products_campaign;
-            if ($products_campaign[$this->_currency_code] > 0) {
-              $this->_data['campaign']['price'] = (float)currency::convert($products_campaign[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-            } else {
-              $this->_data['campaign']['price'] = (float)$products_campaign[settings::get('store_currency_code')];
-            }
+          if ($campaign = database::fetch($campaigns_query)) {
+            $this->_data['campaign'] = $campaign;
           }
 
           break;
