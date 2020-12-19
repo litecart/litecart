@@ -830,7 +830,7 @@
       $categories_query = database::query(
         "select c.id, ci.name
         from ". DB_TABLE_CATEGORIES ." c
-        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
+        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
         where parent_id = ". (int)$parent_id ."
         order by c.priority asc, ci.name asc;"
       );
@@ -1309,7 +1309,7 @@
 
     $quantity_units_query = database::query(
       "select qu.*, qui.name, qui.description from ". DB_TABLE_QUANTITY_UNITS ." qu
-      left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qui.quantity_unit_id = qu.id and language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qui.quantity_unit_id = qu.id and language_code = '". database::input(language::$selected['code']) ."')
       order by qu.priority, qui.name asc;"
     );
 

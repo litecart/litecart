@@ -10,7 +10,7 @@
 
   $sold_out_status_query = database::query(
     "select sos.id, sos.hidden, sos.orderable, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
-    left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". language::$selected['code'] ."')
+    left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". database::input(language::$selected['code']) ."')
     order by sosi.name asc;"
   );
 

@@ -4,7 +4,7 @@
 
     $manufacturers_query = database::query(
       "select a.id, a.name, a.date_created from ". DB_TABLE_MANUFACTURERS ." a
-      left join ". DB_TABLE_MANUFACTURERS_INFO ." ai on (a.id = ai.manufacturer_id and ai.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_MANUFACTURERS_INFO ." ai on (a.id = ai.manufacturer_id and ai.language_code = '". database::input(language::$selected['code']) ."')
       where status
       order by a.name;"
     );

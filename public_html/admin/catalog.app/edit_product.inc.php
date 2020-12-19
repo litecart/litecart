@@ -209,7 +209,7 @@
     $categories_query = database::query(
       "select c.id, ci.name
       from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
       where c.parent_id = ". (int)$category_id ."
       order by c.priority asc, ci.name asc;"
     );

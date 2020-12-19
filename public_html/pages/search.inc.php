@@ -63,7 +63,7 @@
       and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
     ) p
 
-    left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+    left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
     left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
 

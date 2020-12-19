@@ -11,7 +11,7 @@
 
   $quantity_units_query = database::query(
     "select qu.id, qui.name, qui.description from ". DB_TABLE_QUANTITY_UNITS ." qu
-    left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qu.id = qui.quantity_unit_id and qui.language_code = '". language::$selected['code'] ."')
+    left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qu.id = qui.quantity_unit_id and qui.language_code = '". database::input(language::$selected['code']) ."')
     order by qu.priority, qui.name asc;"
   );
 
