@@ -733,7 +733,7 @@
                     </div>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, null, null, 'data-quantity='. (float)$product->data['quantity'] .' readonly'); ?></td>
-                  <td><?php echo functions::form_draw_decimal_field('quantity_adjustment', true); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2, null, null, !empty($_POST['options_stock']) ? 'style="display: none;"' : ''); ?></td>
                   <td></td>
                 </tr>
                 <?php if (!empty($_POST['options_stock'])) foreach (array_keys($_POST['options_stock']) as $key) { ?>
