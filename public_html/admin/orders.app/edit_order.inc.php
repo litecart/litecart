@@ -1211,6 +1211,7 @@
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
       var value = $(row).find(':input[name$="['+field+']"]').val();
+      if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value);
       $(modal).find(':input[name="'+field+'"]').val(value);
     });
   });
@@ -1249,14 +1250,12 @@
         var field = $(element).attr('name');
         item[field] = $(modal).find(':input[name="'+field+'"]').val();
       });
-      console.log(item);
       addItem(item);
     }
 
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
       var value = $(modal).find(':input[name="'+field+'"]').val();
-      if ($(element).attr('type') == 'number') value = Number(value);
       $(row).find(':input[name$="['+field+']"]').val(value).trigger('keyup');
       $(row).find('.'+field).text(value);
     });
