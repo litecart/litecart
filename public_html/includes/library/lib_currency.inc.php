@@ -194,6 +194,10 @@
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
+      if ($value == 0) {
+        return 0;
+      }
+
       if (empty($currency_code)) {
         $currency_code = self::$selected['code'];
       }
@@ -204,7 +208,7 @@
 
       if (empty($currency_value)) {
         if (empty(self::$currencies[$currency_code]['value'])) return false;
-        $currency_value = self::$currencies[$currency_code]['value'];
+        if (!$currency_value = self::$currencies[$currency_code]['value']) return 0;
       }
 
       return number_format($value / $currency_value, (int)self::$currencies[$currency_code]['decimals'], '.', '');
