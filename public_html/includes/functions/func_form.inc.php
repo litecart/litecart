@@ -207,10 +207,6 @@
 
     $value = round((float)$value, $decimals);
 
-    document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
-                                                                       . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
-                                                                       . '  });';
-
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (($value != 0) ? $value : '') .'" data-type="decimal" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' step="any" />';
   }
 
