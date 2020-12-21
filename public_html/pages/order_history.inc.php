@@ -16,7 +16,7 @@
 
   $orders_query = database::query(
     "select o.*, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
-    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
+    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code']) ."')
     where o.order_status_id
     and o.customer_id = ". (int)customer::$data['id'] ."
     order by o.date_created desc;"

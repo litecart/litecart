@@ -1,4 +1,5 @@
 <?php
+
   switch ($_GET['doc']) {
     case 'customer':
       $title = language::translate('title_customer_modules', 'Customer Modules');
@@ -54,6 +55,7 @@
 
   document::$snippets['title'][] = $title;
 
+  breadcrumbs::add(language::translate('title_modules', 'Modules'));
   breadcrumbs::add($title);
 
 // Installed Modules

@@ -77,8 +77,8 @@
 
     database::query(
       "insert into ". DB_TABLE_PREFIX ."attribute_groups
-      (id, date_updated, date_created)
-      select id, date_updated, date_created from ". DB_TABLE_PREFIX ."option_groups"
+      (id, sort, date_updated, date_created)
+      select id, sort, date_updated, date_created from ". DB_TABLE_PREFIX ."option_groups"
     );
 
     database::query(
@@ -347,6 +347,26 @@
       CHANGE COLUMN `attribute_value_id` `value_id` INT(11) NOT NULL AFTER `group_id`;"
     );
   }
+
+// Remove duplicate options
+  database::query(
+    "DELETE FROM `lc_products_options_values` WHERE id IN (
+      SELECT all_duplicates.id FROM (
+        SELECT id FROM `lc_products_options_values` WHERE (product_id, group_id, value_id, custom_value) IN (
+          SELECT product_id, group_id, value_id, custom_value FROM `lc_products_options_values`
+          GROUP BY product_id, group_id, value_id, custom_value
+          HAVING count(*) > 1
+        )
+      ) AS all_duplicates
+      LEFT JOIN (
+        SELECT id FROM `lc_products_options_values`
+        GROUP BY product_id, group_id, value_id, custom_value
+        HAVING count(*) > 1
+      ) AS grouped_duplicates
+      ON all_duplicates.id = grouped_duplicates.id
+      WHERE grouped_duplicates.id IS NULL
+    );"
+  );
 
   database::query(
     "ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values

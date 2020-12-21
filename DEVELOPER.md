@@ -21,10 +21,12 @@ Done! Node.js should now have installed all necessary libraries, you can now use
 
     npm update    (Update your node modules to newer versions)
 
+
 # Social Coding
 
   [Github Repository](https://www.github.com/litecart/litecart)
   Branch: dev
+
 
 ## Changelog / Commit Messages
 

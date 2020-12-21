@@ -1,6 +1,10 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
+  document::$snippets['title'][] = language::translate('title_settings', 'Settings');
+
+  breadcrumbs::add(language::translate('title_settings', 'Settings'));
+
   if (isset($_POST['save'])) {
 
     try {
@@ -82,7 +86,7 @@
       switch (true) {
         case (substr($setting['function'], 0, 14) == 'regional_input'):
           if (!isset($_POST['settings'][$setting['key']])) {
-            $_POST['settings'][$setting['key']] = @json_decode($setting['value'], true);
+            $_POST['settings'][$setting['key']] = !empty($setting['value']) ? json_decode($setting['value'], true) : null;
           }
           break;
 
@@ -99,8 +103,8 @@
           break;
 
         case (substr($setting['function'], 0, 14) == 'regional_input'):
-          $setting['value'] = @json_decode($setting['value'], true);
-          $setting['value'] = @$setting['value'][language::$selected['code']];
+          $setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : null;
+          $setting['value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : null;
           break;
 
         case (substr($setting['function'], 0, 6) == 'toggle'):
@@ -125,7 +129,7 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings'); ?>
+    <?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings').' &ndash; '.$settings_group['name']; ?>
   </div>
 
   <div class="panel-body">
@@ -158,7 +162,7 @@
           </tr>
           <?php } else { ?>
           <tr>
-            <td><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></td>
+            <td class="text-left"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
             <td style="white-space: normal;">
               <div style="max-height: 200px; overflow-y: auto;" title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
                 <?php echo $setting['value']; ?>

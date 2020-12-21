@@ -20,7 +20,7 @@
            . '    <priority>1.0</priority>' . PHP_EOL
            . '  </url>' . PHP_EOL;
 
-  $category_iterator = function($parent_id=0, $category_iterator) {
+  $category_iterator = function($parent_id=0) use (&$category_iterator) {
     $categories_query = functions::catalog_categories_query($parent_id);
 
     $output = '';
@@ -42,13 +42,13 @@
                . '    <priority>1.0</priority>' . PHP_EOL
                . '  </url>' . PHP_EOL;
 
-      $category_iterator($category['id'], $category_iterator);
+      $category_iterator($category['id']);
     }
 
     return $output;
   };
 
-  $output .= $category_iterator(0, $category_iterator);
+  $output .= $category_iterator(0);
 
   $products_query = database::query(
     "select id, date_updated from ". DB_TABLE_PRODUCTS ."

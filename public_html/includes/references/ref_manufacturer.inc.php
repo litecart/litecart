@@ -66,6 +66,51 @@
 
           break;
 
+        case 'products':
+
+          $this->_data['products'] = array();
+
+          $query = database::query(
+            "select id from ". DB_TABLE_PRODUCTS ."
+            where status
+            and manufacturer_id = ". (int)$this->_data['id'] ."
+            and (quantity > 0 or sold_out_status_id in (
+              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              where (hidden is null or hidden = 0)
+            ))
+            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+          );
+
+          while ($row = database::fetch($query)) {
+            $this->_data['products'][$row['id']] = reference::product($row['id'], $this->_language_codes[0]);
+          }
+
+          break;
+
+        case 'num_products':
+
+          if (!empty($this->_data['products'])) {
+            $this->_data['num_products'] = count($this->_data['products']);
+            break;
+          }
+
+          $query = database::query(
+            "select count(id) as num_products from ". DB_TABLE_PRODUCTS ."
+            where status
+            and manufacturer_id = ". (int)$this->_data['id'] ."
+            and (quantity > 0 or sold_out_status_id in (
+              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              where (hidden is null or hidden = 0)
+            ))
+            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+          );
+
+          $this->_data['num_products'] = (int)database::fetch($query, 'num_products');
+
+          break;
+
         default:
 
           $query = database::query(

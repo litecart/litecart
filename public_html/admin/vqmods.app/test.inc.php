@@ -2,9 +2,10 @@
   $_GET['debug'] = true;
   $_GET['vqmod'] = basename($_GET['vqmod']);
 
-  document::$snippets['title'][] = language::translate('title_test_vqmod', 'Test vQmod');
+  breadcrumbs::add(language::translate('title_vqmods', 'vQmods'), document::href_link(WS_DIR_ADMIN, array('doc' => 'vqmods'), array('app')));
+  breadcrumbs::add(language::translate('title_test_vQmod', 'Test vQmod') .' '. basename($_GET['vqmod']));
 
-  breadcrumbs::add(basename($_GET['vqmod']));
+  document::$snippets['title'][] = language::translate('title_test_vqmod', 'Test vQmod');
 
   foreach (glob(FS_DIR_APP . 'vqmod/vqcache/*.php') as $file) {
     unlink($file);

@@ -6,8 +6,10 @@
 
   session::close();
 
-  @ignore_user_abort(true);
-  @set_time_limit(60*5);
+  if (preg_match('#^(off|false|0)$#i', ini_get('safe_mode'))) {
+    ignore_user_abort(true);
+    set_time_limit(60*5);
+  }
 
   database::query(
     "update ". DB_TABLE_SETTINGS ."

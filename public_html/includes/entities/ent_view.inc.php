@@ -17,13 +17,15 @@
           if (!is_file($file)) $file = vmod::check(FS_DIR_APP . 'includes/templates/default.catalog/'. $view .'.inc.php');
         }
 
-      // Process view in an isolated scope
-        $this->html = (function(){
+        $fn = function(){
           ob_start();
           extract(func_get_arg(1));
           include vmod::check(func_get_arg(0));
           return ob_get_clean();
-        })($file, $this->snippets);
+        };
+
+      // Process view in an isolated scope
+        $this->html = $fn($file, $this->snippets);
       }
 
       if (empty($this->html)) return '';

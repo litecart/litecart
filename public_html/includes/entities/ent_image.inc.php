@@ -105,7 +105,7 @@
               break;
           }
 
-          return is_resource($this->_image) ? true : false;
+          return $this->_image ? true : false;
       }
     }
 
@@ -126,7 +126,7 @@
           $this->_type = $type;
           $this->_image = ImageCreateFromString($binary);
 
-          if (!is_resource($this->_image)) return false;
+          if (!$this->_image) return false;
 
           return true;
       }
@@ -208,9 +208,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -386,9 +386,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -459,9 +459,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -482,7 +482,7 @@
           // Top
             for (; $top < $original_y; ++$top) {
               for ($x = 0; $x < $original_x; ++$x) {
-                if (@imagecolorat($this->_image, $x, $top) != $hexcolor) {
+                if (imagecolorat($this->_image, $x, $top) != $hexcolor) {
                   break 2;
                 }
               }
@@ -498,7 +498,7 @@
             // Bottom
             for (; $bottom > 0; --$bottom) {
               for ($x = 0; $x < $original_x; ++$x) {
-                if (@imagecolorat($this->_image, $x, $bottom-1) != $hexcolor) {
+                if (imagecolorat($this->_image, $x, $bottom-1) != $hexcolor) {
                   break 2;
                 }
               }
@@ -507,7 +507,7 @@
           // Left
             for (; $left < $original_x; ++$left) {
               for ($y = $top; $y <= $bottom; ++$y) {
-                if (@imagecolorat($this->_image, $left, $y) != $hexcolor) {
+                if (imagecolorat($this->_image, $left, $y) != $hexcolor) {
                   break 2;
                 }
               }
@@ -516,7 +516,7 @@
           // Right
             for (; $right > 0; --$right) {
               for ($y = $top; $y <= $bottom; ++$y) {
-                if (@imagecolorat($this->_image, $right-1, $y) != $hexcolor) {
+                if (imagecolorat($this->_image, $right-1, $y) != $hexcolor) {
                   break 2;
                 }
               }
@@ -593,9 +593,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -671,7 +671,7 @@
 
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!in_array(strtolower($type), array('gif', 'jpg', 'png', 'webp'))) {
+      if (!preg_match('#^(gif|jpe?g|png|webp)$#i', $type)) {
         throw new Exception("Unknown image output format ($type)");
       }
 
@@ -690,6 +690,7 @@
           }
 
           switch(strtolower($type)) {
+            case 'jpeg':
             case 'jpg':
                $this->_image->setImageCompression(Imagick::COMPRESSION_JPEG);
                break;
@@ -698,7 +699,7 @@
                break;
           }
 
-          $this->_image->setImageCompressionQuality($quality);
+          $this->_image->setImageCompressionQuality((int)$quality);
 
           if ($interlaced) $this->_image->setInterlaceScheme(Imagick::INTERLACE_PLANE);
 
@@ -706,9 +707,9 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -773,14 +774,14 @@
           }
 
           $this->_image->setImageFormat($type);
-          $this->_image->setImageCompressionQuality($quality);
+          $this->_image->setImageCompressionQuality((int)$quality);
           return $this->_image->getImageBlob();
 
         case 'gd':
 
-          if (!is_resource($this->_image)) $this->load();
+          if (!$this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
@@ -849,7 +850,7 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             list($this->_width, $this->_height) = getimagesize($this->_src);
             return $this->_width;
           }
@@ -877,7 +878,7 @@
 
         case 'gd':
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             list($this->_width, $this->_height) = getimagesize($this->_src);
             return $this->_height;
           }
@@ -930,9 +931,9 @@
 
         case 'gd':
 
-          if (is_resource($this->_image)) $this->load();
+          if ($this->_image) $this->load();
 
-          if (!is_resource($this->_image)) {
+          if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 

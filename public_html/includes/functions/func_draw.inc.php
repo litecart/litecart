@@ -94,6 +94,7 @@
       'manufacturer' => array(),
       'short_description' => $product['short_description'],
       'quantity' => $product['quantity'],
+      'recommended_price' => tax::get_price($product['recommended_price'], $product['tax_class_id']),
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
       'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
       'tax' => tax::get_tax($product['price'], $product['tax_class_id']),

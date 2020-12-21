@@ -3,7 +3,8 @@
 
   document::$snippets['title'][] = language::translate('title_attribute_groups', 'Attribute Groups');
 
-  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
+  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'));
 
 // Table Rows
   $attribute_groups = array();

@@ -118,8 +118,6 @@
 
       if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
 
-      breadcrumbs::add($app_config['name'], document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => $app_config['default'])));
-
       $_page = new ent_view();
       $_page->snippets = array(
         'app' => $_GET['app'],

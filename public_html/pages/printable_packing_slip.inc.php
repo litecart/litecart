@@ -1,5 +1,5 @@
 <?php
-  document::$layout = 'blank';
+  document::$layout = 'printable';
 
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
@@ -29,29 +29,7 @@
   language::set($order->data['language_code']);
 
   $_page = new ent_view();
-  $_page->snippets = array(
-    'order' => $order->data,
-    'comments' => array(),
-  );
-
-  foreach ($order->data['comments'] as $comment) {
-    if (!empty($comment['hidden'])) continue;
-
-    switch($comment['author']) {
-      case 'customer':
-        $comment['type'] = 'local';
-        break;
-      case 'staff':
-        $comment['type'] = 'remote';
-        break;
-      default:
-        $comment['type'] = 'event';
-        break;
-    }
-
-    $_page->snippets['comments'][] = $comment;
-  }
-
-  echo $_page->stitch('pages/order');
+  $_page->snippets['order'] = $order->data;
+  echo $_page->stitch('pages/printable_packing_slip');
 
   language::set($session_language);

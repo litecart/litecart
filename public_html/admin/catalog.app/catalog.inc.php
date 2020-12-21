@@ -287,7 +287,7 @@
         ), 5, 0)
       ) as relevance
       from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
       left join ". DB_TABLE_MANUFACTURERS ." m on (p.manufacturer_id = m.id)
       left join ". DB_TABLE_SUPPLIERS ." s on (p.supplier_id = s.id)
       having relevance > 0
@@ -340,95 +340,16 @@
   } else {
 
     $category_trail = array_keys(reference::category($_GET['category_id'])->path);
+    $num_category_rows = 0;
+    $num_product_rows = 0;
 
-    $category_iterator = function($category_id=0, $depth=1, &$category_iterator) {
-      global $category_trail, $num_category_rows;
-
-      $output = '';
-
-      if (empty($category_id)) {
-        $output .= '<tr>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', array('category_id' => '0'), true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '</tr>' . PHP_EOL;
-      }
-
-    // Output subcategories
-      $categories_query = database::query(
-        "select c.id, c.status, ci.name
-        from ". DB_TABLE_CATEGORIES ." c
-        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". language::$selected['code'] ."')
-        where c.parent_id = ". (int)$category_id ."
-        order by c.priority asc, ci.name asc;"
-      );
-
-      while ($category = database::fetch($categories_query)) {
-        $num_category_rows++;
-
-        $output .= '<tr class="'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
-                 . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
-
-        if ($category['id'] == $_GET['category_id']) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
-        } else if (in_array($category['id'], $category_trail)) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
-        } else {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
-        }
-
-        $output .= '  <td>&nbsp;</td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
-                 . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
-                 . '</tr>' . PHP_EOL;
-
-        if (in_array($category['id'], $category_trail)) {
-
-          if (database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
-           || database::fetch(database::query("select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." where category_id = ".(int)$category['id']." limit 1;")) > 0) {
-            $output .= $category_iterator($category['id'], $depth+1, $category_iterator);
-
-            // Output products
-            if (in_array($category['id'], $category_trail)) {
-              $output .= admin_catalog_category_products($category['id'], $depth+1);
-            }
-
-          } else {
-
-            $output .= '<tr>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td><em style="margin-left: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '</tr>' . PHP_EOL;
-          }
-        }
-      }
-
-      database::free($categories_query);
-
-      // Output products
-      if (empty($category_id)) {
-        $output .= admin_catalog_category_products($category_id, $depth);
-      }
-
-      return $output;
-    };
-
-    function admin_catalog_category_products($category_id=0, $depth=1) {
-      global $num_product_rows;
+    $output_products = function($category_id=0, $depth=1) use (&$output_products, &$num_product_rows) {
 
       $output = '';
 
       $products_query = database::query(
         "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." p2c on (p2c.product_id = p.id)
         where ". (!empty($category_id) ? "p2c.category_id = ". (int)$category_id : "(p2c.category_id is null or p2c.category_id = 0)") ."
         group by p.id
@@ -440,7 +361,7 @@
         $display_images = false;
       }
 
-      while ($product=database::fetch($products_query)) {
+      while ($product = database::fetch($products_query)) {
         $num_product_rows++;
 
         try {
@@ -477,12 +398,88 @@
                  . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
-      database::free($products_query);
 
       return $output;
-    }
+    };
 
-    echo $category_iterator(0, 1, $category_iterator);
+    $category_iterator = function($category_id, $depth) use (&$category_iterator, &$output_products, &$category_trail, &$num_category_rows) {
+
+      $output = '';
+
+      if (empty($category_id)) {
+        $output .= '<tr>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', array('category_id' => '0'), true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
+                 . '</tr>' . PHP_EOL;
+      }
+
+    // Output subcategories
+      $categories_query = database::query(
+        "select c.id, c.status, ci.name
+        from ". DB_TABLE_CATEGORIES ." c
+        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+        where c.parent_id = ". (int)$category_id ."
+        order by c.priority asc, ci.name asc;"
+      );
+
+      while ($category = database::fetch($categories_query)) {
+        $num_category_rows++;
+
+        $output .= '<tr class="'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
+                 . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
+
+        if ($category['id'] == $_GET['category_id']) {
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+        } else if (in_array($category['id'], $category_trail)) {
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+        } else {
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+        }
+
+        $output .= '  <td>&nbsp;</td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
+                 . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '</tr>' . PHP_EOL;
+
+        if (in_array($category['id'], $category_trail)) {
+
+          if (database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
+           || database::fetch(database::query("select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." where category_id = ".(int)$category['id']." limit 1;")) > 0) {
+            $output .= $category_iterator($category['id'], $depth+1);
+
+            // Output products
+            if (in_array($category['id'], $category_trail)) {
+              $output .= $output_products($category['id'], $depth+1);
+            }
+
+          } else {
+
+            $output .= '<tr>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td><em style="margin-left: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '</tr>' . PHP_EOL;
+          }
+        }
+      }
+
+      // Output products
+      if (empty($category_id)) {
+        $output .= $output_products($category_id, $depth);
+      }
+
+      return $output;
+    };
+
+    echo $category_iterator(0, 1);
 ?>
         </tbody>
         <tfoot>

@@ -1,6 +1,6 @@
 <?php
 
-  function error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
+  function error_handler($errno, $errstr, $errfile, $errline) {
 
     if (!(error_reporting() & $errno)) return;
 

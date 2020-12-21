@@ -12,7 +12,7 @@
     $manufacturers_query = database::query(
       "select m.id, m.name, m.image, mi.short_description, mi.link
       from ". DB_TABLE_MANUFACTURERS ." m
-      left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (mi.manufacturer_id = m.id and mi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_MANUFACTURERS_INFO ." mi on (mi.manufacturer_id = m.id and mi.language_code = '". database::input(language::$selected['code']) ."')
       where status
       order by name;"
     );

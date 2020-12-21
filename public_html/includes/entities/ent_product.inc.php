@@ -218,11 +218,6 @@
         $this->data['id'] = database::insert_id();
       }
 
-    // Calculate total product quantity from options
-      if (!empty($this->data['options_stock'])) {
-        $this->data['quantity'] = array_sum(array_column($this->data['options_stock'], 'quantity'));
-      }
-
       $this->data['categories'] = array_map('trim', $this->data['categories']);
       $this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
       $this->data['categories'] = array_unique($this->data['categories']);
@@ -244,7 +239,6 @@
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'] .",
         keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
-        quantity = ". (float)$this->data['quantity'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = ". (float)$this->data['purchase_price'] .",
         purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
@@ -268,11 +262,21 @@
         limit 1;"
       );
 
+      if (isset($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
+        $this->adjust_quantity($this->data['quantity_adjustment']);
+        if (!empty($this->data['quantity'])) {
+          $this->data['quantity'] += (float)$this->data['quantity_adjustment'];
+        } else {
+          $this->data['quantity'] = (float)$this->data['quantity_adjustment'];
+        }
+        unset($this->data['quantity_adjustment']);
+      }
+
     // Categories
       database::query(
         "delete from " . DB_TABLE_PRODUCTS_TO_CATEGORIES . "
         where product_id = ". (int)$this->data['id'] ."
-        and category_id not in ('". @implode("', '", database::input($this->data['categories'])) ."');"
+        and category_id not in ('". implode("', '", database::input($this->data['categories'])) ."');"
       );
 
       foreach ($this->data['categories'] as $category_id) {
@@ -319,7 +323,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['attributes'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['attributes'], 'id')) ."');"
       );
 
       if (!empty($this->data['attributes'])) {
@@ -380,7 +384,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
       );
 
     // Update campaigns
@@ -417,13 +421,13 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['options'], 'id')) ."');"
       );
 
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
         where product_id = ". (int)$this->data['id'] ."
-        and group_id not in ('". @implode("', '", array_column($this->data['options'], 'group_id')) ."');"
+        and group_id not in ('". implode("', '", array_column($this->data['options'], 'group_id')) ."');"
       );
 
     // Update options
@@ -458,7 +462,7 @@
             "delete from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
             where product_id = ". (int)$this->data['id'] ."
             and group_id = ". (int)$option['group_id'] ."
-            and id not in ('". @implode("', '", @array_column($option['values'], 'id')) ."');"
+            and id not in ('". implode("', '", !empty($option['values']) ? array_column($option['values'], 'id') : array()) ."');"
           );
 
         // Update option values
@@ -503,7 +507,7 @@
       database::query(
         "delete from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
       );
 
     // Update stock options
@@ -550,6 +554,12 @@
             and id = ". (int)$this->data['options_stock'][$key]['id'] ."
             limit 1;"
           );
+
+          if (isset($this->data['options_stock'][$key]['quantity_adjustment']) && $this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
+            $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
+            $this->data['options_stock'][$key]['quantity'] += $this->data['options_stock'][$key]['quantity_adjustment'];
+            unset($this->data['options_stock'][$key]['quantity_adjustment']);
+          }
         }
       }
 
@@ -557,7 +567,7 @@
       $products_images_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS_IMAGES ."
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
 
       while ($product_image = database::fetch($products_images_query)) {
@@ -628,6 +638,36 @@
       cache::clear_cache('category');
       cache::clear_cache('manufacturer');
       cache::clear_cache('products');
+    }
+
+    public function adjust_quantity($quantity_adjustment, $combination='') {
+
+      if (empty($this->data['id'])) $this->save();
+
+      if (!empty($combination)) {
+        database::query(
+          "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+          set quantity = quantity + ". (float)$quantity_adjustment ."
+          where product_id = ". (int)$this->data['id'] ."
+          and combination = '". database::input($combination) ."'
+          limit 1;"
+        );
+
+        if (!database::affected_rows()) {
+          trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
+        }
+      }
+
+      database::query(
+        "update ". DB_TABLE_PRODUCTS ."
+        set quantity = quantity + ". (float)$quantity_adjustment ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      if (!database::affected_rows()) {
+        trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .')', E_USER_WARNING);
+      }
     }
 
     public function add_image($file, $filename='') {

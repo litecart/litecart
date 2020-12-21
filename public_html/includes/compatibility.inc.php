@@ -116,7 +116,7 @@
               $buffer_valid = true;
             }
           }
-          if (!$buffer_valid && @is_readable('/dev/urandom')) {
+          if (!$buffer_valid && is_readable('/dev/urandom')) {
             $file = fopen('/dev/urandom', 'r');
             $read = 0;
             $local_buffer = '';

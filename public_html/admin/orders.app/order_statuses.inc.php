@@ -10,7 +10,7 @@
 
   $order_statuses_query = database::query(
     "select os.*, osi.name, os.priority from ". DB_TABLE_ORDER_STATUSES ." os
-    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and language_code = '". language::$selected['code'] ."')
+    left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
     order by os.priority, osi.name asc;"
   );
 

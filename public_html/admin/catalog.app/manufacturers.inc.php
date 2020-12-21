@@ -3,6 +3,7 @@
 
   document::$snippets['title'][] = language::translate('title_manufacturers', 'Manufacturers');
 
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'));
 
   if (isset($_POST['enable']) || isset($_POST['disable'])) {

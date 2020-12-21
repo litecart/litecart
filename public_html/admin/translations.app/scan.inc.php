@@ -2,6 +2,7 @@
 
   document::$snippets['title'][] = language::translate('title_scan_translations', 'Scan Translations');
 
+  breadcrumbs::add(language::translate('title_translations', 'Translations'));
   breadcrumbs::add(language::translate('title_scan_translations', 'Scan Translations'));
 
   if (!empty($_POST['scan'])) {
@@ -19,7 +20,7 @@
     $deleted_translations = 0;
 
     foreach ($iterator as $file) {
-      if (preg_match('#\.php#', $file)) continue;
+      if (!preg_match('#\.php$#', $file)) continue;
       //if (preg_match('#^'. preg_quote(FS_DIR_APP, '#') .'vqmods/#', $file)) continue;
 
       $found_files++;

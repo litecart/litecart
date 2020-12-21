@@ -88,6 +88,8 @@
       }
 
       $this->_module = new $module_id;
+      $this->_module->settings = &$this->data['settings'];
+
       $this->data['module_id'] = $module_id;
       $this->data['type'] = $type;
 
