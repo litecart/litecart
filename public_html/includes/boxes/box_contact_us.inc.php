@@ -21,6 +21,7 @@
       $email = new ent_email();
       $email->set_sender($_POST['email'], $_POST['name'])
             ->add_recipient(settings::get('store_email'), settings::get('store_name'))
+            ->add_cc($_POST['email'], $_POST['name'])
             ->set_subject($_POST['subject'])
             ->add_body($message);
 
