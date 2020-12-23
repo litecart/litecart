@@ -88,8 +88,7 @@
       }
 
       $decimals = self::$classes[$class]['decimals'];
-      $formatted = (float)number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']);
 
-      return $formatted .' '. self::$classes[$class]['unit'];
+      return number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
     }
   }
