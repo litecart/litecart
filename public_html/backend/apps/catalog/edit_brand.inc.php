@@ -14,6 +14,7 @@
 
   document::$snippets['title'][] = !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand');
 
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_brands', 'Brands'), document::link(WS_DIR_ADMIN, ['doc' => 'brands'], ['app']));
   breadcrumbs::add(!empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand'));
 

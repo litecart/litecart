@@ -32,6 +32,7 @@
 
   document::$snippets['title'][] = !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order');
 
+  breadcrumbs::add(language::translate('title_orders', 'Orders'), document::link(WS_DIR_ADMIN, ['doc' => 'orders'], ['app']));
   breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
 
 // Mark as read
@@ -315,7 +316,7 @@ body.dark-mode #box-comments {
 
                   <div class="form-group">
                     <div class="input-group">
-                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customer_picker')); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                       <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                       <span class="input-group-btn">
                         <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
@@ -1196,6 +1197,7 @@ body.dark-mode #box-comments {
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
       var value = $(row).find(':input[name$="['+field+']"]').val();
+      if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value);
       $(modal).find(':input[name="'+field+'"]').val(value);
     });
   });
@@ -1234,14 +1236,12 @@ body.dark-mode #box-comments {
         var field = $(element).attr('name');
         item[field] = $(modal).find(':input[name="'+field+'"]').val();
       });
-      console.log(item);
       addItem(item);
     }
 
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
       var value = $(modal).find(':input[name="'+field+'"]').val();
-      if ($(element).attr('type') == 'number') value = Number(value);
       $(row).find(':input[name$="['+field+']"]').val(value).trigger('keyup');
       $(row).find('.'+field).text(value);
     });

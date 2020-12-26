@@ -186,13 +186,15 @@ END;
   }
 
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
-    if ($value === true) $value = (float)form_reinsert_value($name);
-    if ($value == 0) $value = '';
+    if ($value === true) $value = form_reinsert_value($name);
+
+  // Format and show an additional two decimals precision if needed
+    $value = preg_replace('#0{1,2}$#', '', number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2));
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? round($value, currency::$currencies[$currency_code]['decimals']+2) : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. (($value != 0) ? $value : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
          . '  <strong class="input-group-addon" style="opacity: 0.75;">'. $currency_code .'</strong>' . PHP_EOL
          . '</div>';
   }
@@ -249,14 +251,11 @@ END;
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $parameters='') {
 
-    if ($value === true) $value = round((float)form_reinsert_value($name), $decimals);
-    if ($value == 0) $value = '';
+    if ($value === true) $value = form_reinsert_value($name);
 
-    document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
-                                                                       . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
-                                                                       . '  });';
+    $value = round((float)$value, $decimals);
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (float)$value .'" data-type="decimal"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (($value != 0) ? $value : '') .'" data-type="decimal"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {
@@ -1412,7 +1411,7 @@ END;
 
     $quantity_units_query = database::query(
       "select qu.*, qui.name, qui.description from ". DB_TABLE_PREFIX ."quantity_units qu
-      left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.quantity_unit_id = qu.id and language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.quantity_unit_id = qu.id and language_code = '". database::input(language::$selected['code']) ."')
       order by qu.priority, qui.name asc;"
     );
 
@@ -1485,9 +1484,9 @@ END;
 
   function form_draw_stock_items_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $options = array();
+    $options = [];
 
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $stock_items_query = database::query(
       "select si.*, sii.name from ". DB_TABLE_STOCK_ITEMS ." si
@@ -1496,7 +1495,7 @@ END;
     );
 
     while ($stock_item = database::fetch($stock_items_query)) {
-      $options[] = array($stock_item['name'] .' &mdash; '. $stock_item['sku'] . ' ['. (float)$stock_item['quantity'] .']', $stock_item['id']);
+      $options[] = [$stock_item['name'] .' &mdash; '. $stock_item['sku'] . ' ['. (float)$stock_item['quantity'] .']', $stock_item['id']];
     }
 
     if ($multiple) {

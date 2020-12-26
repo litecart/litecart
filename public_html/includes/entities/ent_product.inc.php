@@ -238,6 +238,16 @@
         limit 1;"
       );
 
+      if (isset($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
+        $this->adjust_quantity($this->data['quantity_adjustment']);
+        if (!empty($this->data['quantity'])) {
+          $this->data['quantity'] += (float)$this->data['quantity_adjustment'];
+        } else {
+          $this->data['quantity'] = (float)$this->data['quantity_adjustment'];
+        }
+        unset($this->data['quantity_adjustment']);
+      }
+
     // Categories
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_to_categories
@@ -433,7 +443,11 @@
             limit 1;"
           );
         } unset($stock_option);
-      }
+        if (isset($this->data['options_stock'][$key]['quantity_adjustment']) && $this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
+          $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
+          $this->data['options_stock'][$key]['quantity'] += $this->data['options_stock'][$key]['quantity_adjustment'];
+          unset($this->data['options_stock'][$key]['quantity_adjustment']);
+        }      }
 
     // Delete images
       $products_images_query = database::query(
@@ -510,6 +524,36 @@
       cache::clear_cache('category');
       cache::clear_cache('brand');
       cache::clear_cache('products');
+    }
+
+    public function adjust_quantity($quantity_adjustment, $combination='') {
+
+      if (empty($this->data['id'])) $this->save();
+
+      if (!empty($combination)) {
+        database::query(
+          "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+          set quantity = quantity + ". (float)$quantity_adjustment ."
+          where product_id = ". (int)$this->data['id'] ."
+          and combination = '". database::input($combination) ."'
+          limit 1;"
+        );
+
+        if (!database::affected_rows()) {
+          trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
+        }
+      }
+
+      database::query(
+        "update ". DB_TABLE_PRODUCTS ."
+        set quantity = quantity + ". (float)$quantity_adjustment ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      if (!database::affected_rows()) {
+        trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .')', E_USER_WARNING);
+      }
     }
 
     public function add_image($file, $filename='') {

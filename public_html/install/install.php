@@ -151,7 +151,7 @@
 
     if (version_compare(PHP_VERSION, '5.4', '<')) {
       throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.4+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
-    } else if (version_compare(PHP_VERSION, '7.1', '<=')) {
+    } else if (version_compare(PHP_VERSION, '7.2', '<=')) {
       echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>.</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -161,7 +161,7 @@
 
     echo '<p>Checking for PHP extensions... ';
 
-    $extensions = array('apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'SimpleXML', 'zip');
+    $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'SimpleXML', 'zip'];
 
     if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
       echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
@@ -307,7 +307,7 @@
 
     define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
 
-    if (file_put_contents('../includes/config.inc.php', $config)) {
+    if (file_put_contents('../includes/config.inc.php', $config) !== false) {
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
@@ -408,7 +408,7 @@
 
     if (is_dir('../'.$_REQUEST['admin_folder'])) {
       $htpasswd = $_REQUEST['username'] .':{SHA}'. base64_encode(sha1($_REQUEST['password'], true)) . PHP_EOL;
-      if (file_put_contents('../'. $_REQUEST['admin_folder'] . '/.htpasswd', $htpasswd)) {
+      if (file_put_contents('../'. $_REQUEST['admin_folder'] . '/.htpasswd', $htpasswd) !== false) {
         echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
@@ -589,6 +589,24 @@
     );
 
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+    ### Create files ######################################
+
+    echo '<p>Create file container for error logging...';
+
+    if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '') !== false) {
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
+    }
+
+    echo '<p>Create files for vQmod cache...';
+
+    if (file_put_contents(FS_DIR_APP . 'vqmod/checked.cache', '') !== false && file_put_contents(FS_DIR_APP . 'vqmod/mods.cache', '') !== false) {
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
+    }
 
     ### #############################################################
 

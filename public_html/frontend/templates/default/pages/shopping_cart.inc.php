@@ -20,7 +20,7 @@
       </div>
 
       <div>
-        <a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', array('redirect_url' => document::link())); ?>" data-toggle="lightbox"><?php echo language::translate('title_change', 'Change'); ?></a>
+        <a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>" data-toggle="lightbox"><?php echo language::translate('title_change', 'Change'); ?></a>
       </div>
     </section>
   </aside>
@@ -64,7 +64,7 @@
                           <?php } else { ?>
                             <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                           <?php } ?>
-                          <?php echo functions::form_draw_button('update_cart_item', array($key, functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-left: 0.5em;"'); ?>
+                          <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-left: 0.5em;"'); ?>
                         </div>
                       </div>
                     </div>
@@ -78,7 +78,7 @@
               </div>
 
               <div class="col-xs-2 text-right">
-                <td><?php echo functions::form_draw_button('remove_cart_item', array($key, functions::draw_fonticon('fa-trash')), 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+                <td><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
               </div>
             </div>
           </li>

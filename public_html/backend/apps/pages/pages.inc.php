@@ -3,6 +3,10 @@
   if (empty($_GET['parent_id']) || !is_numeric($_GET['parent_id'])) $_GET['parent_id'] = 0;
   if (empty($_GET['expanded'])) $_GET['expanded'] = [];
 
+  document::$snippets['title'][] = language::translate('title_pages', 'Pages');
+
+  breadcrumbs::add(language::translate('title_pages', 'Pages'));
+
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {
@@ -122,7 +126,7 @@
 
     $pages_query = database::query(
       "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
-      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where p.id
       ". (empty($_GET['query']) ? "and parent_id = 0" : "") ."
       ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
@@ -141,7 +145,7 @@
         $num_subpages = database::num_rows(
           database::query(
             "select * from ". DB_TABLE_PREFIX ."pages p
-            left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+            left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
             where parent_id = ". (int)$page['id'] .";"
           )
         );
@@ -170,7 +174,7 @@
 
       $pages_query = database::query(
         "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
-        left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+        left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where parent_id = ". (int)$parent_id ."
         ". ((!empty($_GET['dock']) && $depth == 0) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
         order by p.priority, pi.title;"
@@ -187,7 +191,7 @@
 
         $subpages_query = database::query(
           "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
-          left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+          left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
           where parent_id = ". (int)$page['id'] ."
           order by p.priority, pi.title;"
         );

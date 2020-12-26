@@ -14,6 +14,7 @@
 
   document::$snippets['title'][] = !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group');
 
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
   breadcrumbs::add(!empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'));
 
@@ -25,7 +26,7 @@
       foreach ($_POST['values'] as $value) {
         foreach ($value['name'] as $name) {
           if (preg_match('#(["\',\[\]<>])#', $name, $matches)) {
-            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), array('%char' => $matches[1])));
+            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), ['%char' => $matches[1]]));
           }
         }
       }

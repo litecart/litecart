@@ -12,7 +12,7 @@
       if ($calculate_tax) {
         return $value + self::get_tax($value, $tax_class_id, $customer);
       } else {
-        return $value;
+        return (float)$value;
       }
     }
 
@@ -160,7 +160,7 @@
         ;"
       );
 
-      $tax_rates = array();
+      $tax_rates = [];
       while ($rate = database::fetch($tax_rates_query)) {
         $tax_rates[$rate['id']] = $rate;
       }

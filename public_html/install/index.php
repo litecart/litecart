@@ -260,7 +260,7 @@
 ?>
 
 <?php if (file_exists('../includes/config.inc.php')) { ?>
-<link rel="stylesheet" href="../ext/featherlight/featherlight.min.css" />
+<link rel="stylesheet" href="../assets/featherlight/featherlight.min.css" />
 
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
   <h2>Existing Installation Detected</h2>
@@ -268,8 +268,8 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="../ext/jquery/jquery-3.4.1.min.js"></script>
-<script src="../ext/featherlight/featherlight.min.js"></script>
+<script src="../assets/jquery/jquery-3.4.1.min.js"></script>
+<script src="../assets/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
   $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';

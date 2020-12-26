@@ -187,6 +187,10 @@
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
+      if ($value == 0) {
+        return 0;
+      }
+
       if (empty($currency_code)) {
         $currency_code = self::$selected['code'];
       }
@@ -197,7 +201,7 @@
 
       if (empty($currency_value)) {
         if (empty(self::$currencies[$currency_code]['value'])) return false;
-        $currency_value = self::$currencies[$currency_code]['value'];
+        if (!$currency_value = self::$currencies[$currency_code]['value']) return 0;
       }
 
       return number_format($value / $currency_value, (int)self::$currencies[$currency_code]['decimals'], '.', '');
@@ -210,7 +214,7 @@
       if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
 
       $value = self::convert($value, settings::get('store_currency_code'), $currency_code);
-      $value = round($value, self::$currencies[$currency_code]['decimals']);
+      $value = round($value, (int)self::$currencies[$currency_code]['decimals']);
       $value = self::convert($value, $currency_code, settings::get('store_currency_code'));
 
       return $value;

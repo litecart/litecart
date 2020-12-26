@@ -4,11 +4,11 @@
 
  - PHP code must comply with PHP 5.4+ using E_STRICT.
 
- - HTML code mustcomply with HTML 5.
+ - HTML code must comply with HTML 5.
 
  - Style definitions must be compliant with CSS 3.
 
- - Any use of javascript should dedicate the jQuery framework.
+ - Any use of JavaScript should honor the jQuery framework.
 
 
 ## Character Encoding
@@ -29,29 +29,6 @@
   Correct:
 
     \n
-
-  Do not use more than one empty line for separating logic.
-
-
-## No Trailing Whitespace
-
-  Make sure you have no trailing whitespace after your code
-
-  Incorrect:
-
-    <?php
-    ··echo·$variable;\n·····
-    ··\n
-    \EOF
-
-  Correct:
-
-    <?php
-    ··echo·$variable;\n
-    \n
-    \EOF
-
-  Note: Most code editors offer a way to trim trailing whitespace upon save.
 
 
 ## Outputting Line Breaks
@@ -74,6 +51,27 @@
     \r\n
     Lorem ipsum dolor\r\n
     \r\n
+
+
+## No Trailing Whitespace
+
+  Make sure you have no trailing whitespace after your code
+
+  Incorrect:
+
+    <?php
+    ··echo·$variable;\n·····
+    ··\n
+    \EOF
+
+  Correct:
+
+    <?php
+    ··echo·$variable;\n
+    \n
+    \EOF
+
+  Note: Most code editors offer a way to trim trailing whitespace upon save.
 
 
 ## Indentation
@@ -175,20 +173,18 @@
 
 ## File Extensions
 
-  Scripts that outputs something else but HTML should be named by their output format extension like the following:
+  Scripts that output something other than HTML should be named by their output format extension like the following:
 
-    .php
-    .json.php
+    .json.php  >>  .json.inc.php
 
   Included files should be named:
 
-    .inc.php
-    .json.inc.php
+    .php  >>  .inc.php
 
 
 ## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
 
-  Single quote characters should be used for PHP and javascript code. Exceptions can be made for best convenience.
+  Single quote characters should be used for PHP and JavaScript code. Exceptions can be made for best convenience.
 
   Use double quotes for all HTML element parameters in accordance with SGML.
 
@@ -228,27 +224,30 @@
 
   Do not EVER use register_globals as we use PHP Superglobals.
 
-	$_GET['variable']
-	$_POST['variable']
-	$_COOKIE['variable']
-	$_SESSION['variable']
+    $_GET['variable']
+    $_POST['variable']
+    $_COOKIE['variable']
+    $_SESSION['variable']
 
 
 ## Naming of Variables and Elements
 
-  Don't make up shortenings. Always use full words unless they are annoyingly long. Don't mix languages, use english only for code and comments. Don't mix lower and upper cases.
+  Simply use PECL styled naming with lowercases and underscores. Don't use CAPS, CamelCase or camelCase.
+  Don't make up abbreviations. Always use full words unless they are annoyingly long. Don't mix languages, use English only for code and comments.
 
   Incorrect:
 
+    $CUSTOMER_ADDRESS // Yelling
     $custaddr // Weird shortenings
     $kund_adress // Foreign language
-    $customerAddress // Mixed cases
-    $customer['customer_address'] // Duplicate prefix
+    $customerStreetAddress // Mixed cases
+    $customer['customer_address1'] // Duplicate prefix
+    $customer_shipping_street_address_name // Annoyingly long
 
   Correct:
 
-    $customer_address
-    $customer['address']
+    $address1
+    $customer['address1']
 
 
 ## Naming of CSS IDs and Classes
@@ -298,29 +297,64 @@
 
   Inline arrays
 
-    my_function(array('this', 'that'));
+    my_function(['this', 'that']);
 
   Defining a variable with more than a handful of values
 
-    $variable = array(
+    $variable = [
       'this',
       'that',
       ...
-      'last', // <-- Make note of the ending coma
-    );
+      'last', // <-- Make note of the ending comma
+    ];
+
+
+## Code Brackets
+
+  Do not start new lines for opening brackets.
+
+  Incorrect:
+
+    if (condition)
+    {
+      ...
+    }
+    else
+    {
+      ...
+    }
+
+
+
+  Correct:
+
+    if (condition) {
+      ...
+    } else {
+      ...
+    }
 
 
 ## PHP Conditions
 
-  Do not use yoda expressions.
+  Do not use if/endif or yoda expressions.
 
   Incorrect:
 
-    if (true === condition) {
+    if (condition):
+      ...
+    endif;
+
+    if ('happy' == $my_mood) {
+
 
   Correct:
 
-    if (condition === true) {
+    if (condition) {
+      ...
+    }
+
+    if ($my_mood == 'happy') {
 
 
 ## PHP Class Variables and Methods
@@ -339,7 +373,7 @@
 
 ## PHP Function Results
 
-  General functions shall always return data, not output data to the buffer.
+  General functions should always return data, not output data to the buffer.
 
   Incorrect:
 
@@ -383,7 +417,16 @@
     } unset($item);
 
 
-## Matryoshka Dolls
+## Iterators
+
+  Preferably use anonymous functions for iterators unless they are also used elsewhere in the platform.
+
+    $iterator = function($input) use (&$iterator)  {
+      $iterator();
+    };
+
+
+## No Matryoshka Dolls
 
   Avoid conditional conditions inside loops.
 
@@ -416,31 +459,31 @@
   Incorrect:
 
     $string = sprintf('Text with %2$s %1$s', $b, $a);
-    $string = str_replace(array('%a', %b), array($a, $b), 'Text with %a %b');
+    $string = str_replace(['%a', %b], [$a, $b], 'Text with %a %b');
 
   Correct:
 
-    $string = strtr('Text with %b %a', array(
+    $string = strtr('Text with %b %a', [
       '%a' => $a,
       '%b' => $b,
-    ));
+    ]);
 
 
 ## Database Queries in PHP
 
-  Database queries should be line breaked, indented, and presented in lowercases.
+  Database queries should be line breaked, indented, and presented in lowercase.
 
-    database::query(
+    $query = database::query(
       "select * from ". DB_TABLE_NAME ."
       where id = '". (int)$integrer ."'
       ". (isset($string) ? "and string = '". database::input($string) ."'" : "") ."
       limit 1;"
     );
 
-  Unlike displaying strings, double quote characters are wrapped around the sql query.
+  Unlike when displaying strings, double quote characters are use to wrap SQL queries.
 
 
-## Handling User Input Data
+## Passing User Input Data to the Database
 
   Don't just assume a variable exists with a value:
 
@@ -453,7 +496,7 @@
 
   Always assume incoming data is insecure by escaping the input:
 
-    databas::query(
+    database::query(
       "update mytable
       set number = ". (int)$_POST['number'] .",
         string = '". database::input($_POST['string']) ."',
@@ -467,11 +510,11 @@
 
 ## No Sloppy Coding HTML
 
-  No sloppy coding for single HTML tags. We use the XHTML strict standard:
+  No sloppy coding for single HTML tags. We use the strict standard:
 
   Incorrect:
 
-        <img src="" />
+        <img src="">
         <br>
 
   Correct:

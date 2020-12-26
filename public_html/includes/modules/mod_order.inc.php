@@ -82,7 +82,7 @@
       if (empty($this->modules)) return;
 
       if (!empty($module_id)) {
-        $module_ids = array($module_id);
+        $module_ids = [$module_id];
       } else {
         $module_ids = array_keys($this->modules);
       }

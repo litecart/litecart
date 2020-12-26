@@ -116,22 +116,17 @@
 
           $this->_data['campaign'] = [];
 
-          $products_campaigns_query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_campaigns
+          $campaigns_query = database::query(
+            "select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as price
+            from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (year(start_date) < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
             and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
-            order by end_date asc
             limit 1;"
           );
 
-          if ($products_campaign = database::fetch($products_campaigns_query)) {
-            $this->_data['campaign'] = $products_campaign;
-            if ($products_campaign[$this->_currency_code] > 0) {
-              $this->_data['campaign']['price'] = (float)currency::convert($products_campaign[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-            } else {
-              $this->_data['campaign']['price'] = (float)$products_campaign[settings::get('store_currency_code')];
-            }
+          if ($campaign = database::fetch($campaigns_query)) {
+            $this->_data['campaign'] = $campaign;
           }
 
           break;
@@ -267,7 +262,10 @@
               while ($option_value_info = database::fetch($options_values_query)) {
                 foreach ($option_value_info as $key => $value) {
                   if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-                  if (empty($row[$key][$option_value_info['value_id']])) $row[$key][$option_value_info['value_id']] = $value;
+                  if (!is_array(empty($row[$key][$option_value_info['value_id']]))) continue;
+                  if (empty($row[$key][$option_value_info['value_id']])) {
+                    $row[$key][$option_value_info['value_id']] = $value;
+                  }
                 }
               }
             }
@@ -410,30 +408,8 @@
     }
 
     public function adjust_stock($stock_item_id, $quantity) {
-
-      if (!empty($stock_item_id)) {
-        database::query(
-          "update ". DB_TABLE_PREFIX ."stock_options
-          set quantity = quantity + ". (float)$quantity ."
-          where product_id = ". (int)$this->_data['id'] ."
-          and stock_item_id = ". (int)$stock_item_id ."
-          limit 1;"
-        );
-
-        if (!database::affected_rows()) {
-          trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .', Stock Item: '. $stock_item_id .')', E_USER_WARNING);
-        }
-      }
-
-      database::query(
-        "update ". DB_TABLE_PREFIX ."products
-        set quantity = quantity + ". (float)$quantity ."
-        where id = ". (int)$this->_data['id'] ."
-        limit 1;"
-      );
-
-      if (!database::affected_rows()) {
-        trigger_error('Could not adjust stock for product (ID: '. $this->_data['id'] .')', E_USER_WARNING);
-      }
+      trigger_error('catalog_stock_adjust() is deprecated. Use instead $ent_product->adjust_quantity()', E_USER_DEPRECATED);
+      $product = new ent_product($this->_data['id']);
+      return $product->adjust_quantity($quantity, $combination);
     }
   }

@@ -358,7 +358,7 @@
   ]);
 
   foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
-      perform_action('move', [[$file => FS_DIR_APP . 'backend/apps/' . preg_replace('\.app$', '', basename($file)]])]]);
+    perform_action('move', [[$file => FS_DIR_APP . 'backend/apps/' . preg_replace('\.app$', '', basename($file)]])]]);
   }
 
   foreach (glob(FS_DIR_ADMIN . '*.widget') as $file) {

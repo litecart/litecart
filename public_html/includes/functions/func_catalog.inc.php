@@ -166,7 +166,7 @@
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
       ) p
 
-      left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
       left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 
@@ -178,11 +178,11 @@
       ) pp on (pp.product_id = p.id)
 
       left join (
-        select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
+        select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
         where (start_date <= '". date('Y-m-d H:i:s') ."')
         and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
-        order by end_date asc
+        group by product_id
       ) pc on (pc.product_id = p.id)
 
       where (p.id
@@ -275,7 +275,7 @@
         ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
       ) p
 
-      left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". language::$selected['code'] ."')
+      left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
       left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 
@@ -287,11 +287,11 @@
       ) pp on (pp.product_id = p.id)
 
       left join (
-        select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as campaign_price
+        select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
         where start_date <= '". date('Y-m-d H:i:s') ."'
         and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
-        order by end_date asc
+        group by product_id
       ) pc on (pc.product_id = p.id)
 
       where (p.id
@@ -310,4 +310,10 @@
     $products_query = database::query($query);
 
     return $products_query;
+  }
+
+  function catalog_stock_adjust($product_id, $combination, $quantity) {
+    trigger_error('catalog_stock_adjust() is deprecated. Use instead $ent_product->adjust_quantity()', E_USER_DEPRECATED);
+    $product = new ent_product($product_id);
+    return $product->adjust_quantity($quantity, $combination);
   }

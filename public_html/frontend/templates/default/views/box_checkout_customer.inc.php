@@ -3,7 +3,7 @@
 
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div style="float:right">
-    <a href="<?php echo document::ilink('login', array('redirect_url' => document::ilink('checkout'))) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+    <a href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout')]) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
   </div>
   <?php } ?>
 
@@ -212,7 +212,7 @@
 
 <script>
   <?php if (!empty(notices::$data['errors'])) { ?>
-  alert("<?php echo functions::general_escape_js(notices::$data['errors'][0]); notices::$data['errors'] = array(); ?>");
+  alert("<?php echo functions::general_escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
   <?php } ?>
 
 // Initiate fields

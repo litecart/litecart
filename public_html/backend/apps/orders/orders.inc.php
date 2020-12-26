@@ -1,5 +1,9 @@
 <?php
 
+  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
+  if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
+  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
+
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
@@ -13,9 +17,9 @@
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
-  if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
-  if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
+  document::$snippets['title'][] = language::translate('title_orders', 'Orders');
+
+  breadcrumbs::add(language::translate('title_orders', 'Orders'));
 
   if (isset($_POST['star']) || isset($_POST['unstar'])) {
     database::query(
@@ -45,7 +49,7 @@
       sort($_POST['orders']);
 
       ob_start();
-      call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders']);
+      call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders']);
 
       if ($output = ob_get_clean()) {
         echo $output;
@@ -110,7 +114,7 @@
   $orders_query = database::query(
     "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_PREFIX ."orders o
     left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
-    left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
+    left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code'])."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."

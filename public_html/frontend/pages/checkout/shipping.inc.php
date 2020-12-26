@@ -21,7 +21,7 @@
   if (!empty($order->shipping->selected['id'])) {
     $key = $order->payment->selected['module_id'] .':'. $order->payment->selected['option_id'];
     if (!isset($options[$key]) || !empty($options[$key]['error'])) {
-      $order->shipping->selected = array(); // Clear because option is no longer present
+      $order->shipping->selected = []; // Clear because option is no longer present
     } else {
       $order->shipping->select($order->payment->selected['module_id'], $order->payment->selected['option_id'], $order->payment->selected['userdata']); // Reinstate a present option
     }

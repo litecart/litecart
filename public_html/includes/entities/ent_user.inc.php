@@ -50,7 +50,7 @@
         throw new Exception('Could not find user (ID: '. (int)$user_id .') in database.');
       }
 
-      $this->data['permissions'] = !empty($this->data['permissions']) ? json_decode($this->data['permissions'], true) : array();
+      $this->data['permissions'] = !empty($this->data['permissions']) ? json_decode($this->data['permissions'], true) : [];
 
       $this->previous = $this->data;
     }

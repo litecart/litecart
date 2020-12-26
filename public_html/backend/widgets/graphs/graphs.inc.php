@@ -48,17 +48,17 @@
 
      // Western Week
       case (extension_loaded('intl') && class_exists('IntlCalendar', false) && IntlCalendar::createInstance()->getFirstDayOfWeek() == 1):
-        $daily_sales = array(7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array());
+        $daily_sales = [7 => [], 1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => []];
         break;
 
     // Middle-Eastern Week
       case (extension_loaded('intl') && class_exists('IntlCalendar', false) && IntlCalendar::createInstance()->getFirstDayOfWeek() == 2):
-        $daily_sales = array(6 => array(), 7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array());
+        $daily_sales = [6 => [], 7 => [], 1 => [], 2 => [], 3 => [], 4 => [], 5 => []];
         break;
 
     // ISO-8601 Week
       default:
-        $daily_sales = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array());
+        $daily_sales = [1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => []];
         break;
     }
 
@@ -164,7 +164,7 @@
 // Monthly Sales
   var data = {
     labels: <?php echo json_encode(array_column($monthly_sales[date('Y')], 'label'), JSON_UNESCAPED_SLASHES); ?>,
-    series: <?php echo json_encode(array(array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
+    series: <?php echo json_encode([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {

@@ -36,6 +36,10 @@
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/fontawesome/font-awesome.min.css') .'" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/jquery/jquery-3.5.1.min.js') .'"></script>';
 
+    // Local content
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'assets/fontawesome/font-awesome.min.css" />';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'assets/jquery/jquery-3.5.1.min.js"></script>';
+
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
         if (count(language::$languages) > 1) {
@@ -51,7 +55,7 @@
     // Get template settings
       $template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('template') .'/config.inc.php');
 
-      self::$settings = settings::get('template_settings') ? json_decode(settings::get('template_settings'), true) : array();
+      self::$settings = settings::get('template_settings') ? json_decode(settings::get('template_settings'), true) : [];
 
       foreach (array_keys($template_config) as $i) {
         if (!isset(self::$settings[$template_config[$i]['key']])) {
@@ -162,14 +166,14 @@
           }
 
         // Minify Inline CSS
-          $search_replace = array(
+          $search_replace = [
             '#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
             '#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
             '#\s+#' => ' ', // Replace multiple whitespace
             '#^\s+#' => ' ', // Replace leading whitespace
             '#\s*([:;{}])\s*#' => '$1',
             '#;}#' => '}',
-          );
+          ];
 
           $styles = preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL, $styles));
 

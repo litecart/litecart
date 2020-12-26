@@ -72,7 +72,7 @@
 
         case 'path':
 
-          $this->_data['path'] = array($this->id => $this);
+          $this->_data['path'] = [$this->id => $this];
 
           $current = $this;
           while ($current->parent_id) {

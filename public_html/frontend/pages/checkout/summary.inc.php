@@ -21,17 +21,17 @@
   ];
 
   if (!empty($order->shipping->selected)) {
-    $box_checkout_summary->snippets['selected_shipping'] = array(
+    $box_checkout_summary->snippets['selected_shipping'] = [
       'icon' => is_file(FS_DIR_APP . $order->shipping->selected['icon']) ? functions::image_thumbnail(FS_DIR_APP . $order->shipping->selected['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $order->shipping->selected['title'],
-    );
+    ];
   }
 
   if (!empty($order->payment->selected)) {
-    $box_checkout_summary->snippets['selected_payment'] = array(
+    $box_checkout_summary->snippets['selected_payment'] = [
       'icon' => is_file(FS_DIR_APP . $order->payment->selected['icon']) ? functions::image_thumbnail(FS_DIR_APP . $order->payment->selected['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
       'title' => $order->payment->selected['title'],
-    );
+    ];
   }
 
   $privacy_policy_id = settings::get('privacy_policy');
