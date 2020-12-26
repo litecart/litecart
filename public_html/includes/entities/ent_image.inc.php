@@ -134,9 +134,9 @@
 
     public function resample($width=1024, $height=1024, $clipping='FIT_ONLY_BIGGER') {
 
-      if ($width == 0 && $height == 0) return;
+      if ((int)$width == 0 && (int)$height == 0) return;
 
-      if ($this->width() == 0 || $this->height() == 0) {
+      if ((int)$this->width() == 0 || (int)$this->height() == 0) {
         throw new Exception('Error getting source image dimensions ('. $this->_src .').');
       }
 
@@ -148,8 +148,8 @@
       $source_ratio = $this->width() / $this->height();
 
     // Complete missing target dimensions
-      if ($width == 0) $width = round($height * $source_ratio);
-      if ($height == 0) $height = round($width / $source_ratio);
+      if ((int)$width == 0) $width = round($height * $source_ratio);
+      if ((int)$height == 0) $height = round($width / $source_ratio);
 
       switch($this->_library) {
 
@@ -256,8 +256,8 @@
             case 'STRETCH':
 
             // Calculate dimensions
-              $destination_width = ($width == 0) ? $this->width() : $width;
-              $destination_height = ($height == 0) ? $this->height() : $height;
+              $destination_width = ((int)$width == 0) ? $this->width() : $width;
+              $destination_height = ((int)$height == 0) ? $this->height() : $height;
 
             // Create output image container
               $_resized = ImageCreateTrueColor($destination_width, $destination_height);

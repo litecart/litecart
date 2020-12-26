@@ -370,7 +370,7 @@
     $('select[name="country_code"]').closest('table').find('input[name="phone"]').removeAttr('placeholder');
   }
 
-  if ($('select[name="zone_code"] option').length == 0) $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
+  if (!$('select[name="zone_code"] option').length) $('select[name="zone_code"]').closest('td').css('opacity', 0.15);
 
 // Init (Shipping address)
 
@@ -404,7 +404,7 @@
     $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[phone]"]').removeAttr('placeholder');
   }
 
-  if ($('select[name="shipping_address[zone_code]"] option').length == 0) $('select[name="shipping_address[zone_code]"]').closest('td').css('opacity', 0.15);
+  if (!$('select[name="shipping_address[zone_code]"] option').length) $('select[name="shipping_address[zone_code]"]').closest('td').css('opacity', 0.15);
 
 // Get Address
 

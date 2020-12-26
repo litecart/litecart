@@ -139,11 +139,11 @@ table.items tbody tr:nth-child(11) {
           <td><?php echo (float)$item['quantity']; ?></td>
           <?php if (!empty($order['display_prices_including_tax'])) { ?>
           <td class="text-right"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
-          <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ($item['price'] != 0 && $item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : 0; ?> %)</td>
+          <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ((float)$item['price'] != 0 && (float)$item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : 0; ?> %)</td>
           <td class="text-right"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
           <?php } else { ?>
           <td class="text-right"><?php echo currency::format($item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
-          <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ($item['price'] != 0 && $item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : 0; ?> %)</td>
+          <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo ((float)$item['price'] != 0 && (float)$item['tax'] != 0) ? round($item['tax'] / $item['price'] * 100) : 0; ?> %)</td>
           <td class="text-right"><?php echo currency::format($item['quantity'] * $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <?php } ?>
         </tr>
@@ -167,7 +167,7 @@ table.items tbody tr:nth-child(11) {
         <?php } ?>
         <?php } ?>
 
-        <?php if (!empty($order['tax_total']) && $order['tax_total'] != 0) { ?>
+        <?php if ((float)$order['tax_total'] != 0) { ?>
         <tr>
           <td class="text-right"><?php echo !empty($order['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
           <td class="text-right"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>

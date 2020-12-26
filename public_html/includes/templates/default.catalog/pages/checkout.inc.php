@@ -54,8 +54,7 @@
   function runQueue() {
 
     if (queueRunLock) return;
-
-    if (updateQueue.length == 0) return;
+    if (!updateQueue.length) return;
 
     queueRunLock = true;
 

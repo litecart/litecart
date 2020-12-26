@@ -297,9 +297,8 @@
 
   function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
-    if ($value == 0) $value = '';
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_password_field($name, $value='', $parameters='') {
@@ -822,7 +821,7 @@
 
       $options = array();
 
-      if ($parent_id == 0) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
+      if (empty($parent_id)) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
 
       $categories_query = database::query(
         "select c.id, ci.name
@@ -1177,7 +1176,7 @@
 
       $options = array();
 
-      if ($parent_id == 0) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
+      if (empty($parent_id)) $options[] = array('['.language::translate('title_root', 'Root').']', '0');
 
       $pages_query = database::query(
         "select p.id, pi.title from ". DB_TABLE_PAGES ." p

@@ -19,14 +19,14 @@
 
       $output = array();
 
-      if (isset($order->data['payment_option']['cost']) && $order->data['payment_option']['cost'] != 0) {
-        $output[] = array(
-          'title' => $order->data['payment_option']['title'] .' ('. $order->data['payment_option']['name'] .')',
-          'value' => $order->data['payment_option']['cost'],
-          'tax' => tax::get_tax($order->data['payment_option']['cost'], $order->data['payment_option']['tax_class_id'], $order->data['customer']),
-          'calculate' => true,
-        );
-      }
+      if (empty($order->data['payment_option']['cost']) || (float)$order->data['payment_option']['cost'] == 0) return;
+
+      $output[] = array(
+        'title' => $order->data['payment_option']['title'] .' ('. $order->data['payment_option']['name'] .')',
+        'value' => $order->data['payment_option']['cost'],
+        'tax' => tax::get_tax($order->data['payment_option']['cost'], $order->data['payment_option']['tax_class_id'], $order->data['customer']),
+        'calculate' => true,
+      );
 
       return $output;
     }

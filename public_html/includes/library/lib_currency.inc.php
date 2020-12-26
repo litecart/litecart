@@ -194,7 +194,7 @@
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
-      if ($value == 0) {
+      if ((float)$value == 0) {
         return 0;
       }
 
