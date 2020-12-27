@@ -55,7 +55,5 @@
       echo $box_category_tree->stitch('views/box_category_tree');
     }
 
-    echo $box_category_tree->stitch('views/box_category_tree');
-
     cache::end_capture($box_category_tree_cache_token);
   }

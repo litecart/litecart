@@ -1,5 +1,4 @@
 <?php
-
   $box_filter = new ent_view();
 
   $box_filter->snippets = [

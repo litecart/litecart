@@ -54,7 +54,7 @@
         if (!empty($options['overwrite'])) {
           unlink($options['destination']);
         } else {
-          return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+          return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', functions::file_realpath($options['destination']));
         }
       }
 
@@ -75,7 +75,7 @@
 
       if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
 
-      return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', str_replace('\\', '/', realpath($options['destination'])));
+      return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', functions::file_realpath($options['destination']));
 
     } catch (Exception $e) {
       trigger_error($e->getMessage() , E_USER_WARNING);
@@ -98,10 +98,10 @@
 
     if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
-    $path = preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '', str_replace('\\', '/', realpath($source)));
+    $path = preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .')#', '',  functions::file_realpath($source));
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
-      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)));
+      return preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', functions::file_realpath($source));
     }
 
     if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
@@ -146,7 +146,7 @@
     }
 
     $filename = implode('', [
-      sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($source)))),
+      sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', functions::file_realpath($source))),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,
       $clipping_filename_flag,
@@ -184,7 +184,7 @@
 
   function image_delete_cache($file) {
 
-    $webpath = preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', '', str_replace('\\', '/', realpath($file)));
+    $webpath = preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', '', functions::file_realpath($file));
 
     $cache_name = sha1($webpath);
 

@@ -52,7 +52,7 @@
       }
 
     // Get modifications from cache
-      $cache_file = FS_DIR_STORAGE . 'cache/vmod_modifications.cache';
+      $cache_file = FS_DIR_STORAGE . 'vmods/.cache/.modifications';
       if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
         if ($cache = file_get_contents($cache_file)) {
           if ($cache = json_decode($cache, true)) {
@@ -62,7 +62,7 @@
         }
       }
 
-      $checked_file = FS_DIR_STORAGE . 'cache/vmod_checked.cache';
+      $checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($short_file, $modified_file, $checksum) = explode(';', $line);
@@ -117,7 +117,7 @@
       }
 
       $short_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_STORAGE . 'cache/modifications/' . preg_replace('#[/\\\\]+#', '—', $short_file);
+      $modified_file = FS_DIR_STORAGE . 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '—', $short_file);
 
     // Returned an already checked file
       if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
@@ -216,13 +216,13 @@
       }
 
     // Create cache folder for modified files if missing
-      if (!is_dir(FS_DIR_STORAGE . 'cache/modifications/')) {
-        if (!mkdir(FS_DIR_STORAGE . 'cache/modifications/', 0777)) {
+      if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
+        if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 0777)) {
           throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
         }
       }
 
-      if (!is_writable(FS_DIR_STORAGE . 'cache/modifications/')) {
+      if (!is_writable(FS_DIR_STORAGE . 'vmods/.cache/')) {
         throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
       }
 
@@ -237,7 +237,7 @@
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
-      file_put_contents(FS_DIR_STORAGE . 'cache/vmod_checked.cache', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
 

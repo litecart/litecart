@@ -1,12 +1,17 @@
 /* Tables - Bootstrap Compatible */
 
 .table {
+  margin: 1em 0;
   width: 100%;
   max-width: 100%;
-  margin: var(--gutter-size) 0;
-  background-color: transparent;
+  background: #fff;
   border-spacing: 0;
   border-collapse: collapse;
+
+  thead {
+    background: var(--default-background-color);
+    color: inherit;
+  }
 
   td, th {
     padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
@@ -39,10 +44,10 @@
   }
 
   > thead > tr > th {
-    padding: 6px 12px;
+    padding: 12px;
     text-align: left;
     vertical-align: bottom;
-    border-bottom: 2px solid var(--default-border-color);
+
     @media print {
       border-color: #000 !important;
     }
@@ -51,13 +56,26 @@
     }
   }
 
+  > tfoot > tr > td {
+    padding: 12px;
+  }
+
+  //&:not(.table-striped) {
+    > thead {
+      border-bottom: 2px solid var(--default-border-color);
+    }
+    > tbody > tr > td {
+      border-bottom: 1px solid var(--default-border-color);
+    }
+    > tfoot {
+      border-top: 1px solid var(--default-border-color);
+    }
+  //}
+
   > tfoot {
+    background: var(--default-background-color);
     padding: 6px 12px;
     text-align: left;
-    border-top: 1px solid var(--default-border-color);
-    @media print {
-      border-color: #000 !important;
-    }
   }
 
   &.table-bordered {
@@ -118,6 +136,12 @@
 
   &.data-table {
     white-space: nowrap;
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
   }
 }
 

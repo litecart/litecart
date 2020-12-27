@@ -46,6 +46,7 @@
       }
 
       if (!password_verify($_POST['password'], $user['password_hash'])) {
+
         if (++$user['login_attempts'] < 3) {
 
           database::query(
@@ -55,7 +56,7 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), 3 - $user['login_attempts']));
+          throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
 
         } else {
 
@@ -67,10 +68,8 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), 15));
+          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
         }
-
-        throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
       }
 
       if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
@@ -119,7 +118,7 @@
       exit;
 
     } catch (Exception $e) {
-      http_response_code(401); // Troublesome with HTTP Auth
+      http_response_code(401);
       notices::add('errors', $e->getMessage());
     }
   }

@@ -418,20 +418,30 @@
   rmdir(FS_DIR_APP . 'vqmod/');
 
   perform_action('modify', [
+    FS_DIR_APP . 'includes/config.inc.php' => [
+      [
+        'search'  => "  define('DB_CONNECTION_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1" . PHP_EOL,
+        'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
+      ],
+    ],
+  );
+
+  perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
       [
         'search'  => "RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
         'replace' => "RewriteRule ^.*$ index.php [QSA,L]",
       ],
+      [
+        'search'  => '#AuthUserFile ".*?.htpasswd"#',
+        'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
+        'regexp'  => true,
+      ],
     ],
     FS_DIR_APP . 'includes/config.inc.php' => [
       [
-        'search'  => "DB_TABLE_PREFIX",
-        'replace' => "DB_TABLE_PREFIX",
-      ],
-      [
         'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
-        'replace' => "",
+        'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8mb4');",
       ],
       [
         'search'  => "  define('DB_PERSISTENT_CONNECTIONS', 'false');" . PHP_EOL,
@@ -461,28 +471,11 @@
                    . "  define('WS_DIR_STORAGE',     WS_DIR_APP . 'storage/');" . PHP_EOL,
       ],
       [
-        'search'  => "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######",
-        'replace' => "## Backward Compatible Directory Definitions (LiteCart <2.2) #########",
-      ],
-      [
         'search'  => "// Database tables",
-        'replace' => "// Database Tables - Backward Compatibility (LiteCart <2.3)",
+        'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],
-    ],
-  ], 'abort');
-
-
-  perform_action('modify', [
-    FS_DIR_APP . '.htaccess' => [
       [
-        'search'  => '#AuthUserFile ".*?.htpasswd"#',
-        'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
-        'regexp'  => true,
-      ],
-    ],
-    FS_DIR_APP . 'includes/config.inc.php' => [
-      [
-        'pattern'  => '#'. preg_quote('## Backward Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?'. preg_quote('## Database ##########################################################', '#') .'#',
+        'pattern'  => '#'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?'. preg_quote('## Database ##########################################################', '#') .'#',
         'replace' => '## Database ##########################################################',
         'regexp'  => true,
       ],
@@ -530,11 +523,11 @@
   }
 
 // Remove some indexes if they exist
-  if (database::num_rows("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")) {
+  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer`;");
   }
 
-  if (database::num_rows("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")) {
+  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer_info`;");
   }
 

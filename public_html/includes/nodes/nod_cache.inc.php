@@ -181,15 +181,16 @@
 
           $cache_file = FS_DIR_STORAGE .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
-          if (file_exists($cache_file) && filemtime($cache_file) > strtotime('-'.$max_age .' seconds')) {
-            if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
+          if (!file_exists($cache_file) || filemtime($cache_file) < strtotime('-'.$max_age .' seconds')) return;
+          if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
 
-            if (!$data = file_get_contents($cache_file)) return;
-            if (!$data = json_decode($data, true)) return;
+          $data = @json_decode(file_get_contents($cache_file), true);
 
-            return $data;
+          if (strtolower(language::$selected['charset']) != 'utf-8') {
+            $data = language::convert_characters($data, 'UTF-8', language::$selected['charset']);
           }
-          return;
+
+          return $data;
 
         case 'memory':
 

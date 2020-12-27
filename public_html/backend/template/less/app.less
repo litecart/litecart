@@ -4,7 +4,7 @@
 }
 
 #sidebar {
-  flex: 0 0 250px;
+  flex: 0 0 var(--sidebar-width);
   background: var(--sidebar-background-color);
   transition: all 150ms ease-out;
 }
@@ -65,8 +65,7 @@
     align-self: center;
     flex: 0 0 auto;
     > * {
-      //padding: ~"calc(var(--gutter-size)/2)";
-      padding: var(--gutter-size);
+      padding: ~"calc(var(--gutter-size)/2)";
     }
     > a {
       display: block;
@@ -134,14 +133,14 @@
 #box-apps-menu {
   margin: 0 5px;
   padding: 0;
-  border-top: 1px var(--sidebar-border-color) solid;
+  //border-top: 1px var(--sidebar-border-color) solid;
   display: block;
 
   .app {
     position: relative;
     display: block;
     padding: 0;
-    border-bottom: 1px var(--sidebar-border-color) solid;
+    //border-bottom: 1px var(--sidebar-border-color) solid;
     font-weight: normal;
 
     .icon {
@@ -155,6 +154,7 @@
       font-weight: normal;
       text-decoration: none;
       color: inherit;
+      border-radius: var(--border-radius);
       &:hover {
         background: rgba(255, 255, 255, .15);
       }
@@ -163,9 +163,17 @@
       }
     }
 
-    &.selected > a {
-      color: var(--default-link-color);
+    &.selected {
+      //background: rgba(255, 255, 255, 0.1);
+      > a, .doc.selected > a {
+        background: rgba(255, 255, 255, 0.35);
+      }
+
     }
+  }
+
+  .docs {
+    margin-top: 2px;
   }
 
   ul {
@@ -191,6 +199,8 @@
   padding: 30px;
   //max-height: 100%;
   //overflow: auto;
+  //background: linear-gradient(135deg, var(--app-color) 0px, var(--page-background-color) 100px);
+  background: linear-gradient(135deg, var(--app-color) 50px, var(--page-background-color) 50px);
   > h1 {
     padding: 0 0 ~"calc(var(--gutter-size)/2)" 0;
     margin-top: 0;
