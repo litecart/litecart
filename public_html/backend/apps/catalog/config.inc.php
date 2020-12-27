@@ -15,6 +15,11 @@
         'params' => [],
       ],
       [
+        'title' => language::translate('title_products', 'Products'),
+        'doc' => 'products',
+        'params' => [],
+      ],
+      [
         'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
         'doc' => 'stock_transactions',
         'params' => [],
@@ -76,6 +81,7 @@
       'csv' => 'csv.inc.php',
       'category_picker' => 'category_picker.inc.php',
       'categories.json' => 'categories.json.inc.php',
+      'products' => 'products.inc.php',
       'products.json' => 'products.json.inc.php',
       'stock_transactions' => 'stock_transactions.inc.php',
       'edit_stock_transaction' => 'edit_stock_transaction.inc.php',
