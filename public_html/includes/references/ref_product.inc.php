@@ -89,6 +89,33 @@
 
           break;
 
+        case 'categories':
+
+          $this->_data['categories'] = [];
+
+          $products_to_categories_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."products_to_categories
+            where product_id = ". (int)$this->_data['id'] .";"
+          );
+
+          while ($product_to_category = database::fetch($products_to_categories_query)) {
+            $categories_info_query = database::query(
+              "select * from ". DB_TABLE_PREFIX ."categories_info
+              where category_id = ". (int)$product_to_category['category_id'] ."
+              and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+              order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+            );
+
+            while ($row = database::fetch($categories_info_query)) {
+              foreach ($row as $key => $value) {
+                if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
+                if (empty($this->_data['categories'][$product_to_category['category_id']])) $this->_data['categories'][$product_to_category['category_id']] = $value;
+              }
+            }
+          }
+
+          break;
+
         case 'name':
         case 'short_description':
         case 'description':
@@ -127,33 +154,6 @@
 
           if ($campaign = database::fetch($campaigns_query)) {
             $this->_data['campaign'] = $campaign;
-          }
-
-          break;
-
-        case 'categories':
-
-          $this->_data['categories'] = [];
-
-          $products_to_categories_query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_to_categories
-            where product_id = ". (int)$this->_data['id'] .";"
-          );
-
-          while ($product_to_category = database::fetch($products_to_categories_query)) {
-            $categories_info_query = database::query(
-              "select * from ". DB_TABLE_PREFIX ."categories_info
-              where category_id = ". (int)$product_to_category['category_id'] ."
-              and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-              order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-            );
-
-            while ($row = database::fetch($categories_info_query)) {
-              foreach ($row as $key => $value) {
-                if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
-                if (empty($this->_data['categories'][$product_to_category['category_id']])) $this->_data['categories'][$product_to_category['category_id']] = $value;
-              }
-            }
           }
 
           break;
@@ -408,7 +408,7 @@
     }
 
     public function adjust_stock($stock_item_id, $quantity) {
-      trigger_error('catalog_stock_adjust() is deprecated. Use instead $ent_product->adjust_quantity()', E_USER_DEPRECATED);
+      trigger_error('catalog_stock_adjust() is deprecated. Use $ent_product->adjust_quantity()', E_USER_DEPRECATED);
       $product = new ent_product($this->_data['id']);
       return $product->adjust_quantity($quantity, $combination);
     }

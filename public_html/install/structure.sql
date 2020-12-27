@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `code` VARCHAR(32) NULL,
   `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  PRIMARY KEY (`id`),
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
   KEY `code` (`code`)
 ) ENGINE={DATABASE_ENGINE} DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
@@ -581,22 +582,26 @@ CREATE TABLE `lc_products_info` (
   FULLTEXT KEY `description` (`description`)
 ) ENGINE={DATABASE_ENGINE} DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_products_stock` (
+CREATE TABLE `lc_products_stock_options` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) NULL,
-  `stock_item_id` INT(11) NULL,
-  `sku` VARCHAR(64) NULL,
-  `weight` DECIMAL(11,4) NULL,
-  `weight_class` VARCHAR(2) NULL,
-  `dim_x` DECIMAL(11,4) NULL,
-  `dim_y` DECIMAL(11,4) NULL,
-  `dim_z` DECIMAL(11,4) NULL,
-  `dim_class` VARCHAR(2) NULL,
-  `quantity` DECIMAL(11,4) NULL,
-  `priority` TINYINT(2) NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `stock_option` (`product_id`, `combination`),
-  KEY `product_id` (`product_id`)
+	`product_id` INT(11) NULL,
+	`combination` VARCHAR(64) NULL,
+	`sku` VARCHAR(64) NULL,
+	`gtin` VARCHAR(64) NULL,
+	`price_adjust` DECIMAL(11,4) NULL,
+	`price_operator` VARCHAR(1) NULL,
+	`weight` DECIMAL(11,4) NULL,
+	`weight_class` VARCHAR(2) NULL,
+	`dim_x` DECIMAL(11,4) NULL,
+	`dim_y` DECIMAL(11,4) NULL,
+	`dim_z` DECIMAL(11,4) NULL,
+	`dim_class` VARCHAR(2) NULL,
+	`quantity` DECIMAL(11,4) NULL,
+	`image` VARCHAR(128) NULL,
+	`priority` TINYINT(2) NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `stock_option` (`product_id`, `combination`),
+	INDEX `product_id` (`product_id`)
 ) ENGINE={DATABASE_ENGINE} DEFAULT CHARSET={DATABASE_CHARSET} COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_prices` (

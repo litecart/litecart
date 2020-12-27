@@ -31,7 +31,7 @@ RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
 -- --------------------------------------------------------
-RENAME TABLE `lc_products_options_stock` TO `lc_products_stock`;
+RENAME TABLE `lc_products_options_stock` TO `lc_products_stock_options`;
 -- --------------------------------------------------------
 INSERT INTO `lc_products_stock`
 (product_id, sku, weight, weight_class, dim_x, dim_y, dim_z, dim_class, quantity)
