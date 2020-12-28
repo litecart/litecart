@@ -154,17 +154,6 @@
               </div>
 
               <div class="form-group">
-                <label><?php echo language::translate('title_list_style', 'List Style'); ?></label>
-<?php
-  $options = [
-    [language::translate('title_columns', 'Columns'), 'columns'],
-    [language::translate('title_rows', 'Rows'), 'rows'],
-  ];
-  echo functions::form_draw_select_field('list_style', $options, true);
-?>
-              </div>
-
-              <div class="form-group">
                 <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
                 <?php echo functions::form_draw_text_field('keywords', true); ?>
               </div>

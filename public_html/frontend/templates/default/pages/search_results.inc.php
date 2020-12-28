@@ -27,8 +27,8 @@
     <h1 class="title"><?php echo $title; ?></h1>
 
     <?php if ($products) { ?>
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
+    <section class="listing products columns">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
     </section>
     <?php } else { ?>
     <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>

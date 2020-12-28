@@ -11,6 +11,9 @@ INSERT INTO `lc_newsletter_recipients`
 SELECT email, date_created FROM `lc_customers`
 WHERE status AND newsletter;
 -- --------------------------------------------------------
+ALTER TABLE `lc_categories`
+DROP COLUMN `list_style`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_customers`
 DROP COLUMN `newsletter`,
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL AFTER `num_logins`,

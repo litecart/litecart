@@ -32,9 +32,9 @@ INSERT INTO `lc_brands` (`id`, `status`, `featured`, `code`, `name`, `keywords`,
 INSERT INTO `lc_brands_info` (`id`, `brand_id`, `language_code`, `short_description`, `description`, `h1_title`, `head_title`, `meta_description`, `link`) VALUES
 (1, 1, 'en', '', '', '', '', '', '');
 -- --------------------------------------------------------
-INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `list_style`, `keywords`, `image`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 0, 1, '', 'columns', '', '', 0, NOW(), NOW()),
-(2, 1, 1, '', 'rows', '', '', 0, NOW(), NOW());
+INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `keywords`, `image`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 0, 1, '', '', '', 0, NOW(), NOW()),
+(2, 1, 1, '', '', '', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_categories_info` (`id`, `category_id`, `language_code`, `name`, `short_description`, `description`, `head_title`, `h1_title`, `meta_description`) VALUES
 (1, 1, 'en', 'Rubber Ducks', '', '', '', '', ''),

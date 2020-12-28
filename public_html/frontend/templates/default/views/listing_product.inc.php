@@ -1,4 +1,4 @@
-<article class="product-column">
+<article class="product">
   <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
     <div class="image-wrapper">
@@ -9,6 +9,7 @@
     <div class="info">
       <h4 class="name"><?php echo $name; ?></h4>
       <div class="brand-name"><?php echo !empty($brand) ? $brand['name'] : '&nbsp;'; ?></div>
+      <p class="description"><?php echo $short_description; ?></p>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
         <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>

@@ -50,8 +50,8 @@
     </section>
     <?php } ?>
 
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], ['category_id']); ?>
+    <section class="listing products <?php echo htmlspecialchars($_GET['list_style']); ?>">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['category_id']); ?>
     </section>
 
     <?php echo $pagination; ?>

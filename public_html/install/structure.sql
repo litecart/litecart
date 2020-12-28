@@ -92,7 +92,6 @@ CREATE TABLE `lc_categories` (
   `google_taxonomy_id` INT(11) NULL,
   `status` TINYINT(1) NULL,
   `code` VARCHAR(64) NULL,
-  `list_style` VARCHAR(32) NULL,
   `keywords` VARCHAR(256) NULL,
   `image` VARCHAR(256) NULL,
   `priority` TINYINT(2) NULL,
