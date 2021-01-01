@@ -559,7 +559,7 @@
 
         database::query(
           "update ". DB_TABLE_PRODUCTS ."products
-          set quantity = ". (float)array_sum(array_column($this->data['options_stock'], 'quantity')) ."
+          set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
           where id = ". (int)$this->data['id'] ."
           limit 1;"
         );
