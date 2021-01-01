@@ -34,5 +34,7 @@
 
   } catch (Exception $e) {
     http_response_code($e->getCode());
-    notices::add('errors', $e->getMessage());
+    //notices::add('errors', $e->getMessage());
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    return;
   }

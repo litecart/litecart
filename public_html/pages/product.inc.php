@@ -1,22 +1,21 @@
 <?php
 
   if (empty($_GET['product_id'])) {
-    http_response_code(400);
-    echo 'Missing product_id';
-    exit;
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    return;
   }
 
   $product = reference::product($_GET['product_id']);
 
   if (empty($product->id)) {
     http_response_code(410);
-    echo language::translate('error_410_gone', 'The requested file is no longer available');
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
     return;
   }
 
   if (empty($product->status)) {
-    echo language::translate('error_404_not_found', 'The requested file could not be found');
     http_response_code(404);
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
     return;
   }
 

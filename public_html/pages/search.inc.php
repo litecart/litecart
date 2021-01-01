@@ -7,7 +7,7 @@
 
   if (empty($_GET['query'])) {
     http_response_code(400);
-    notices::add('errors', language::translate('error_must_provide_search_query', 'You must provide a search query'));
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
     return;
   }
 

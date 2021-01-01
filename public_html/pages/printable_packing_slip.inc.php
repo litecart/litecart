@@ -6,21 +6,22 @@
 
   if (!isset($_GET['public_key']) && isset($_GET['checksum'])) $_GET['public_key'] = $_GET['checksum']; // Backwards compatible
 
-  if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
-    http_response_code(400);
-    die('Missing order or key');
-  }
-
   try {
-    $order = new ent_order($_GET['order_id']);
-  } catch (Exception $e) {
-    notices::add('errors', $e->getMessage());
-    return;
-  }
 
-  if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
-    http_response_code(401);
-    die('Invalid key');
+    if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
+      throw new Exception('Missing order_id or public_key');
+    }
+
+    $order = new ent_order($_GET['order_id']);
+
+    if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
+      throw new Exception('Not found or invalid public_key');
+    }
+
+  } catch (Exception $e) {
+    http_response_code(404);
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    return;
   }
 
   document::$snippets['title'][] = language::translate('title_order', 'Order') .' #'. (int)$order->data['id'];
