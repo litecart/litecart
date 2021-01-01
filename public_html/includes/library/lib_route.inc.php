@@ -158,7 +158,7 @@
 
       $path = parse_url($path, PHP_URL_PATH);
 
-      $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+      $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?('. implode('|', array_keys(language::$languages)) .')?(/|$)#', '', $path);
 
       return $path;
     }
@@ -229,8 +229,6 @@
 
       if (isset(self::$_links_cache[$language_code][(string)$link])) return self::$_links_cache[$language_code][(string)$link];
 
-      ###
-
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);
 
@@ -248,8 +246,6 @@
           }
         }
       }
-
-      ###
 
     // Detect URL rewrite support
       $use_rewrite = false;
