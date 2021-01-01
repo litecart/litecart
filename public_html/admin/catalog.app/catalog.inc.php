@@ -57,7 +57,6 @@
         $product->data['mpn'] = '';
         $product->data['gtin'] = '';
         $product->data['quantity'] = 0;
-        $product->data['quantity_adjust'] = -$original->data['quantity'];
         $product->data['categories'] = array($_POST['category_id']);
         $product->data['image'] = null;
         $product->data['images'] = array();
