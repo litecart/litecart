@@ -101,7 +101,7 @@
 
     <?php echo !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : ''; ?>
 
-    <?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
+    <?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
       <table class="table table-striped">
         <tbody>
