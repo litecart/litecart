@@ -4,6 +4,180 @@
 
   breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
+  if (isset($_POST['import_brands'])) {
+
+    try {
+      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
+
+      ob_clean();
+
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+
+      echo "CSV Import\r\n"
+         . "----------\r\n";
+
+      $csv = file_get_contents($_FILES['file']['tmp_name']);
+
+      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+      }
+
+      $updated = 0;
+      $inserted = 0;
+      $line = 0;
+
+      foreach ($csv as $row) {
+        $line++;
+
+      // Find brand
+        if (!empty($row['id'])) {
+          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;"))) {
+            $brand = new ent_brand($brand['id']);
+          }
+
+        } else if (!empty($row['code'])) {
+          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;"))) {
+            $brand = new ent_brand($brand['id']);
+          }
+
+        } else if (!empty($row['name']) && !empty($row['language_code'])) {
+          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;"))) {
+            $brand = new ent_brand($brand['id']);
+          }
+        }
+
+        if (!empty($brand->data['id'])) {
+          if (empty($_POST['update'])) continue;
+          echo 'Updating existing brand '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          $updated++;
+
+        } else {
+          if (empty($_POST['insert'])) continue;
+          echo 'Creating new brand: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+          $inserted++;
+
+          if (!empty($row['id'])) {
+            database::query(
+              "insert into ". DB_TABLE_PREFIX ."brands (id, date_created)
+              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+            );
+            $brand = new ent_brand($row['id']);
+          } else {
+            $panufacturer = new ent_brand();
+          }
+        }
+
+      // Set new brand data
+        $fields = [
+          'status',
+          'code',
+          'name',
+          'keywords',
+          'image',
+          'priority',
+        ];
+
+        foreach ($fields as $field) {
+          if (isset($row[$field])) $brand->data[$field] = $row[$field];
+        }
+
+      // Set brand info data
+        if (!empty($row['language_code'])) {
+          $fields = [
+            'short_description',
+            'description',
+            'head_title',
+            'h1_title',
+            'meta_description',
+          ];
+
+          foreach ($fields as $field) {
+            if (isset($row[$field])) $brand->data[$field][$row['language_code']] = $row[$field];
+          }
+        }
+
+        if (isset($row['new_image'])) {
+          $brand->save_image($row['new_image']);
+        }
+
+        $brand->save();
+
+        if (!empty($row['date_created'])) {
+          database::query(
+            "update ". DB_TABLE_PREFIX ."brands
+            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
+            where id = ". (int)$brand->data['id'] ."
+            limit 1;"
+          );
+        }
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['export_brands'])) {
+
+    try {
+      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+
+      $csv = [];
+
+      $brands_query = database::query("select id from ". DB_TABLE_PREFIX ."brands order by id;");
+      while ($brand = database::fetch($brands_query)) {
+        $brand = new ref_brand($brand['id'], $_POST['language_code']);
+
+        $csv[] = [
+          'id' => $brand->id,
+          'status' => $brand->status,
+          'code' => $brand->code,
+          'name' => $brand->name,
+          'keywords' => implode(',', $brand->keywords),
+          'short_description' => $brand->short_description,
+          'description' => $brand->description,
+          'meta_description' => $brand->meta_description,
+          'head_title' => $brand->head_title,
+          'h1_title' => $brand->h1_title,
+          'image' => $brand->image,
+          'priority' => $brand->priority,
+          'language_code' => $_POST['language_code'],
+        ];
+      }
+
+      ob_end_clean();
+
+      if ($_POST['output'] == 'screen') {
+        header('Content-Type: text/plain; charset='. $_POST['charset']);
+      } else {
+        header('Content-Type: application/csv; charset='. $_POST['charset']);
+        header('Content-Disposition: attachment; filename=brands-'. $_POST['language_code'] .'.csv');
+      }
+
+      switch($_POST['eol']) {
+        case 'Linux':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+          break;
+        case 'Mac':
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+          break;
+        case 'Win':
+        default:
+          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+          break;
+      }
+
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
   if (isset($_POST['import_categories'])) {
 
     try {
@@ -122,7 +296,6 @@
     }
   }
 
-
   if (isset($_POST['export_categories'])) {
 
     try {
@@ -152,7 +325,7 @@
         ];
       }
 
-      ob_end_clean();
+      ob_clean();
 
       if ($_POST['output'] == 'screen') {
         header('Content-Type: text/plain; charset='. $_POST['charset']);
@@ -268,6 +441,7 @@
             where name = '". database::input($row['brand_name']) ."'
             limit 1;"
           );
+
           if ($brand = database::fetch($brands_query)) {
             $row['brand_id'] = $brand['id'];
           } else {
@@ -314,6 +488,7 @@
           'dim_class',
           'purchase_price',
           'purchase_price_currency_code',
+          'recommended_price',
           'delivery_status_id',
           'sold_out_status_id',
           'date_valid_from',
@@ -325,8 +500,8 @@
           if (isset($row[$field])) $product->data[$field] = $row[$field];
         }
 
-        if (isset($row['keywords'])) $product->data['keywords'] = preg_split('#, ?#', $row['keywords']);
-        if (isset($row['categories'])) $product->data['categories'] = preg_split('#, ?#', $row['categories']);
+        if (isset($row['keywords'])) $product->data['keywords'] = preg_split('#\s*,\s*#', $row['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+        if (isset($row['categories'])) $product->data['categories'] = preg_split('#\s*,\s*#', $row['categories'], -1, PREG_SPLIT_NO_EMPTY);
 
       // Set price
         if (!empty($row['currency_code'])) {
@@ -454,188 +629,13 @@
         ];
       }
 
-      ob_end_clean();
+      ob_clean();
 
       if ($_POST['output'] == 'screen') {
         header('Content-Type: text/plain; charset='. $_POST['charset']);
       } else {
         header('Content-Type: application/csv; charset='. $_POST['charset']);
         header('Content-Disposition: attachment; filename=products-'. $_POST['language_code'] .'.csv');
-      }
-
-      switch($_POST['eol']) {
-        case 'Linux':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-          break;
-        case 'Mac':
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-          break;
-        case 'Win':
-        default:
-          echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-          break;
-      }
-
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
-
-  if (isset($_POST['import_brands'])) {
-
-    try {
-      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
-      }
-
-      ob_clean();
-
-      header('Content-Type: text/plain; charset='. language::$selected['charset']);
-
-      echo "CSV Import\r\n"
-         . "----------\r\n";
-
-      $csv = file_get_contents($_FILES['file']['tmp_name']);
-
-      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
-        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
-      }
-
-      $updated = 0;
-      $inserted = 0;
-      $line = 0;
-
-      foreach ($csv as $row) {
-        $line++;
-
-      // Find brand
-        if (!empty($row['id'])) {
-          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;"))) {
-            $brand = new ent_brand($brand['id']);
-          }
-
-        } else if (!empty($row['code'])) {
-          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $brand = new ent_brand($brand['id']);
-          }
-
-        } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;"))) {
-            $brand = new ent_brand($brand['id']);
-          }
-        }
-
-        if (!empty($brand->data['id'])) {
-          if (empty($_POST['update'])) continue;
-          echo 'Updating existing brand '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-          $updated++;
-
-        } else {
-          if (empty($_POST['insert'])) continue;
-          echo 'Creating new brand: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-          $inserted++;
-
-          if (!empty($row['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."brands (id, date_created)
-              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-            );
-            $brand = new ent_brand($row['id']);
-          } else {
-            $panufacturer = new ent_brand();
-          }
-        }
-
-      // Set new brand data
-        $fields = [
-          'status',
-          'code',
-          'name',
-          'keywords',
-          'image',
-          'priority',
-        ];
-
-        foreach ($fields as $field) {
-          if (isset($row[$field])) $brand->data[$field] = $row[$field];
-        }
-
-      // Set brand info data
-        if (!empty($row['language_code'])) {
-          $fields = [
-            'short_description',
-            'description',
-            'head_title',
-            'h1_title',
-            'meta_description',
-          ];
-
-          foreach ($fields as $field) {
-            if (isset($row[$field])) $brand->data[$field][$row['language_code']] = $row[$field];
-          }
-        }
-
-        if (isset($row['new_image'])) {
-          $brand->save_image($row['new_image']);
-        }
-
-        $brand->save();
-
-        if (!empty($row['date_created'])) {
-          database::query(
-            "update ". DB_TABLE_PREFIX ."brands
-            set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-            where id = ". (int)$brand->data['id'] ."
-            limit 1;"
-          );
-        }
-      }
-
-      exit;
-
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
-
-
-  if (isset($_POST['export_brands'])) {
-
-    try {
-      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
-
-      $csv = [];
-
-      $brands_query = database::query("select id from ". DB_TABLE_PREFIX ."brands order by id;");
-      while ($brand = database::fetch($brands_query)) {
-        $brand = new ref_brand($brand['id'], $_POST['language_code']);
-
-        $csv[] = [
-          'id' => $brand->id,
-          'status' => $brand->status,
-          'code' => $brand->code,
-          'name' => $brand->name,
-          'keywords' => implode(',', $brand->keywords),
-          'short_description' => $brand->short_description,
-          'description' => $brand->description,
-          'meta_description' => $brand->meta_description,
-          'head_title' => $brand->head_title,
-          'h1_title' => $brand->h1_title,
-          'image' => $brand->image,
-          'priority' => $brand->priority,
-          'language_code' => $_POST['language_code'],
-        ];
-      }
-
-      ob_end_clean();
-
-      if ($_POST['output'] == 'screen') {
-        header('Content-Type: text/plain; charset='. $_POST['charset']);
-      } else {
-        header('Content-Type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename=brands-'. $_POST['language_code'] .'.csv');
       }
 
       switch($_POST['eol']) {
@@ -820,10 +820,55 @@
       <div id="tab-import" class="tab-pane active">
 
         <div class="row">
-          <div class="col-md-6">
-            <h2><?php echo language::translate('title_categories', 'Categories'); ?></h2>
+          <div class="col-sm-6 col-md-3">
+            <?php echo functions::form_draw_form_begin('import_brands_form', 'post', '', true); ?>
 
-              <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
+              <fieldset>
+                <legend><?php echo language::translate('title_brands', 'Brands'); ?></legend>
+
+                <div class="form-group">
+                  <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
+                  <?php echo functions::form_draw_file_field('file'); ?>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                    <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                    <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                    <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
+                  <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', true); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
+                </div>
+
+                <?php echo functions::form_draw_button('import_brands', language::translate('title_import', 'Import'), 'submit'); ?>
+
+              </fieldset>
+            <?php echo functions::form_draw_form_end(); ?>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <?php echo functions::form_draw_form_begin('import_categories_form', 'post', '', true); ?>
+
+              <fieldset>
+                <legend><?php echo language::translate('title_categories', 'Categories'); ?></legend>
 
                 <div class="form-group">
                   <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
@@ -846,11 +891,11 @@
                     <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
                   </div>
 
-                <div class="form-group col-sm-6">
-                  <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                  <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                  </div>
                 </div>
-              </div>
 
                 <div class="form-group">
                   <div class="checkbox">
@@ -862,9 +907,9 @@
                 </div>
 
                 <?php echo functions::form_draw_button('import_categories', language::translate('title_import', 'Import'), 'submit'); ?>
+              </fieldset>
 
-              <?php echo functions::form_draw_form_end(); ?>
-            </fieldset>
+            <?php echo functions::form_draw_form_end(); ?>
           </div>
 
           <div class="col-sm-6 col-md-3">
@@ -969,55 +1014,6 @@
 
         <div class="row">
           <div class="col-sm-6 col-md-3">
-            <?php echo functions::form_draw_form_begin('export_categories_form', 'post'); ?>
-
-              <fieldset>
-                <legend><?php echo language::translate('title_categories', 'Categories'); ?></legend>
-
-                <div class="form-group">
-                  <label><?php echo language::translate('title_language', 'Language'); ?></label>
-                  <?php echo functions::form_draw_languages_list('language_code', true).' '; ?>
-                </div>
-
-                <div class="row">
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                    <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                    <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                    <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-                    <?php echo functions::form_draw_select_field('eol', [['Win'], ['Mac'], ['Linux']], true); ?>
-                  </div>
-
-                  <div class="form-group col-sm-6">
-                    <label><?php echo language::translate('title_output', 'Output'); ?></label>
-                    <?php echo functions::form_draw_select_field('output', [[language::translate('title_file', 'File'), 'file'], [language::translate('title_screen', 'Screen'), 'screen']], true); ?>
-                  </div>
-                </div>
-
-                <?php echo functions::form_draw_button('export_categories', language::translate('title_export', 'Export'), 'submit'); ?>
-              </fieldset>
-
-            <?php echo functions::form_draw_form_end(); ?>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
             <?php echo functions::form_draw_form_begin('export_brands_form', 'post'); ?>
 
               <fieldset>
@@ -1061,6 +1057,55 @@
                   </div>
 
                 <?php echo functions::form_draw_button('export_brands', language::translate('title_export', 'Export'), 'submit'); ?>
+              </fieldset>
+
+            <?php echo functions::form_draw_form_end(); ?>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <?php echo functions::form_draw_form_begin('export_categories_form', 'post'); ?>
+
+              <fieldset>
+                <legend><?php echo language::translate('title_categories', 'Categories'); ?></legend>
+
+                <div class="form-group">
+                  <label><?php echo language::translate('title_language', 'Language'); ?></label>
+                  <?php echo functions::form_draw_languages_list('language_code', true).' '; ?>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
+                    <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
+                    <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
+                    <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
+                    <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
+                    <?php echo functions::form_draw_select_field('eol', [['Win'], ['Mac'], ['Linux']], true); ?>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label><?php echo language::translate('title_output', 'Output'); ?></label>
+                    <?php echo functions::form_draw_select_field('output', [[language::translate('title_file', 'File'), 'file'], [language::translate('title_screen', 'Screen'), 'screen']], true); ?>
+                  </div>
+                </div>
+
+                <?php echo functions::form_draw_button('export_categories', language::translate('title_export', 'Export'), 'submit'); ?>
               </fieldset>
 
             <?php echo functions::form_draw_form_end(); ?>
@@ -1161,8 +1206,8 @@
                 </div>
 
                 <?php echo functions::form_draw_button('export_products', language::translate('title_export', 'Export'), 'submit'); ?>
-              </fieldset>
 
+              </fieldset>
             <?php echo functions::form_draw_form_end(); ?>
           </div>
         </div>

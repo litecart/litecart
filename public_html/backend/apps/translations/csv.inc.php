@@ -119,7 +119,7 @@
         $csv[] = $row;
       }
 
-      ob_end_clean();
+      ob_clean();
 
       if ($_POST['output'] == 'screen') {
         header('Content-Type: text/plain; charset='. $_POST['charset']);

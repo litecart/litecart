@@ -18,21 +18,6 @@
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
-      if (empty($_POST['delimiter'])) {
-        preg_match('#^([^(\r|\n)]+)#', $csv, $matches);
-        if (strpos($matches[1], ',') !== false) {
-          $_POST['delimiter'] = ',';
-        } else if (strpos($matches[1], ';') !== false) {
-          $_POST['delimiter'] = ';';
-        } else if (strpos($matches[1], "\t") !== false) {
-          $_POST['delimiter'] = "\t";
-        } else if (strpos($matches[1], '|') !== false) {
-          $_POST['delimiter'] = '|';
-        } else {
-          trigger_error('Unable to determine CSV delimiter', E_USER_ERROR);
-        }
-      }
-
       if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
         throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
       }
@@ -72,7 +57,7 @@
           }
         }
 
-        if (isset($row['dock'])) $row['dock'] = explode(',', $row['dock']);
+        $row['dock'] = preg_split('#\s*,\s*#', $row['dock'], -1, PREG_SPLIT_NO_EMPTY);
 
       // Set page data
         $fields = [
@@ -131,7 +116,7 @@
         ];
       }
 
-      ob_end_clean();
+      ob_clean();
 
       if ($_POST['output'] == 'screen') {
         header('Content-type: text/plain; charset='. $_POST['charset']);
