@@ -176,11 +176,11 @@
         "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
         left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where parent_id = ". (int)$parent_id ."
-        ". ((!empty($_GET['dock']) && $depth == 0) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
+        ". ((!empty($_GET['dock']) && empty($depth)) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
         order by p.priority, pi.title;"
       );
 
-      if ($parent_id == 0) {
+      if (empty($parent_id)) {
         if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
         $num_pages = database::num_rows($pages_query);
       }
@@ -225,7 +225,7 @@
           $iterator($page['id'], $depth + 1);
         }
 
-        if ($parent_id == 0) {
+        if (empty($parent_id)) {
           if (++$page_items == settings::get('data_table_rows_per_page')) break;
         }
       }

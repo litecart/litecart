@@ -64,7 +64,7 @@
         $image->trim();
       }
 
-      if ($options['width'] != 0 || $options['height'] != 0) {
+      if ($options['width'] > 0 || $options['height'] > 0) {
         if (!$image->resample($options['width'], $options['height'], strtoupper($options['clipping']))) return;
       }
 

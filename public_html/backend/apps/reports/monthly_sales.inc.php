@@ -59,6 +59,14 @@
     }
     $rows[] = $orders;
   }
+
+  if (isset($_GET['download'])) {
+    //header('Content-Type: text/plain; charset='. language::$selected['code']);
+    header('Content-Type: application/csv; charset='. language::$selected['code']);
+    header('Content-Disposition: filename="monthly_sales_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
+    echo functions::csv_encode($rows);
+    exit;
+  }
 ?>
 <style>
 form[name="filter_form"] li {
@@ -85,6 +93,7 @@ form[name="filter_form"] li {
           </div>
         </li>
         <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
+        <li><?php echo functions::form_draw_button('download', language::translate('title_download', 'Download')); ?></li>
       </ul>
     <?php echo functions::form_draw_form_end(); ?>
   </div>

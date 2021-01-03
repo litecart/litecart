@@ -321,7 +321,7 @@ END;
   function form_draw_number_field($name, $value=true, $parameters='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" step="1"' . (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_password_field($name, $value='', $parameters='') {
@@ -1282,7 +1282,7 @@ END;
 
       $options = [];
 
-      if ($parent_id == 0) $options[] = ['['.language::translate('title_root', 'Root').']', '0'];
+      if (empty($parent_id)) $options[] = ['['.language::translate('title_root', 'Root').']', '0'];
 
       $pages_query = database::query(
         "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p

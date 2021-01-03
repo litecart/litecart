@@ -39,7 +39,7 @@
 
     public static function get_tax_by_rate($value, $tax_class_id, $customer=null) {
 
-      if ($value == 0) return 0;
+      if ((float)$value == 0) return 0;
 
       $tax_rates = [];
 

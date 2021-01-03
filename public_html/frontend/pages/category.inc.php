@@ -17,13 +17,13 @@
 
   if (empty($category->id)) {
     http_response_code(410);
-    echo language::translate('error_410_gone', 'The requested file is no longer available');
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
     return;
   }
 
   if (empty($category->status)) {
     http_response_code(404);
-    echo language::translate('error_404_not_found', 'The requested file could not be found');
+    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
     return;
   }
 

@@ -2,7 +2,7 @@
 
   function catalog_category_trail($category_id=0, $language_code='') {
 
-    trigger_error('catalog_category_trail() is deprecated. Use instead reference::category(id)->path', E_USER_DEPRECATED);
+    trigger_error('catalog_category_trail() is deprecated. Use reference::category(id)->path', E_USER_DEPRECATED);
 
     if (empty($language_code)) $language_code = language::$selected['code'];
 
@@ -17,7 +17,7 @@
 
   function catalog_category_descendants($category_id=0, $language_code='') {
 
-    trigger_error('catalog_category_descendants() is deprecated. Use instead reference::category(id)->descendants', E_USER_DEPRECATED);
+    trigger_error('catalog_category_descendants() is deprecated. Use reference::category(id)->descendants', E_USER_DEPRECATED);
 
     $descendants = [];
 
@@ -313,7 +313,7 @@
   }
 
   function catalog_stock_adjust($product_id, $combination, $quantity) {
-    trigger_error('catalog_stock_adjust() is deprecated. Use instead $ent_product->adjust_quantity()', E_USER_DEPRECATED);
+    trigger_error('catalog_stock_adjust() is deprecated. Use $ent_product->adjust_quantity()', E_USER_DEPRECATED);
     $product = new ent_product($product_id);
     return $product->adjust_quantity($quantity, $combination);
   }

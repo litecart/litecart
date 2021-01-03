@@ -178,8 +178,7 @@
 
     <?php } else { ?>
 
-    <h3><?php echo functions::form_draw_checkbox('create_account', '1', (!empty($_POST['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled="disabled"' : false)); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
-    <?php if (settings::get('register_guests')) echo functions::form_draw_hidden_field('create_account', '1'); ?>
+    <h3><?php echo functions::form_draw_checkbox('create_account', '1', !empty($_POST['create_account']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
 
     <fieldset<?php echo (empty($_POST['create_account'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
 

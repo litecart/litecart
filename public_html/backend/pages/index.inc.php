@@ -65,7 +65,6 @@
 
   document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
 
-  // Throw some warnings
     if (file_exists(FS_DIR_APP . 'install/')) {
       notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
     }

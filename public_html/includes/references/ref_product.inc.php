@@ -234,7 +234,7 @@
               $row['sku'] = $this->sku;
             }
 
-            if (empty($row['weight']) || $row['weight'] == 0) {
+            if (empty($row['weight']) || (float)$row['weight'] == 0) {
               $row['weight'] = $this->weight;
               $row['weight_class'] = $this->weight_class;
             }
@@ -301,9 +301,10 @@
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
-          $product_price = database::fetch($products_prices_query);
 
-          if ($product_price[$this->_currency_code] != 0) {
+          if (!$product_price = database::fetch($products_prices_query)) return;
+
+          if (!empty($product_price[$this->_currency_code]) || (float)$product_price[$this->_currency_code] != 0) {
             $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
           } else {
             $this->_data['price'] = $product_price[settings::get('store_currency_code')];
@@ -407,7 +408,7 @@
       }
     }
 
-    public function adjust_stock($stock_item_id, $quantity) {
+    public function adjust_stock($combination, $quantity) {
       trigger_error('catalog_stock_adjust() is deprecated. Use $ent_product->adjust_quantity()', E_USER_DEPRECATED);
       $product = new ent_product($this->_data['id']);
       return $product->adjust_quantity($quantity, $combination);

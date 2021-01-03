@@ -40,12 +40,20 @@
     order by total_amount desc;"
   );
 
-  if ($_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  if (!isset($_GET['download']) && $_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
   $page_items = 0;
   while ($customer = database::fetch($customers_query)) {
     $customers[] = $customer;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
+    if (!isset($_GET['download']) && ++$page_items == settings::get('data_table_rows_per_page')) break;
+  }
+
+  if (isset($_GET['download'])) {
+    //header('Content-Type: text/plain; charset='. language::$selected['code']);
+    header('Content-Type: application/csv; charset='. language::$selected['code']);
+    header('Content-Disposition: filename="most_shopping_customers_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
+    echo functions::csv_encode($customers);
+    exit;
   }
 
 // Number of Rows
@@ -80,6 +88,7 @@ form[name="filter_form"] li {
           </div>
         </li>
         <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
+        <li><?php echo functions::form_draw_button('download', language::translate('title_download', 'Download')); ?></li>
       </ul>
     <?php echo functions::form_draw_form_end(); ?>
   </div>

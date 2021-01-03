@@ -168,7 +168,7 @@
           throw new Exception(language::translate('error_item_not_a_valid_product', 'The item is not a valid product'));
         }
 
-        if ($product->status == 0) {
+        if (!$product->status) {
           throw new Exception(language::translate('error_product_currently_not_available_for_purchase', 'The product is currently not available for purchase'));
         }
 

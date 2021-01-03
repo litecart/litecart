@@ -238,16 +238,6 @@
         limit 1;"
       );
 
-      if (isset($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
-        $this->adjust_quantity($this->data['quantity_adjustment']);
-        if (!empty($this->data['quantity'])) {
-          $this->data['quantity'] += (float)$this->data['quantity_adjustment'];
-        } else {
-          $this->data['quantity'] = (float)$this->data['quantity_adjustment'];
-        }
-        unset($this->data['quantity_adjustment']);
-      }
-
     // Categories
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_to_categories
@@ -443,11 +433,7 @@
             limit 1;"
           );
         } unset($stock_option);
-        if (isset($this->data['options_stock'][$key]['quantity_adjustment']) && $this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
-          $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
-          $this->data['options_stock'][$key]['quantity'] += $this->data['options_stock'][$key]['quantity_adjustment'];
-          unset($this->data['options_stock'][$key]['quantity_adjustment']);
-        }      }
+      }
 
     // Delete images
       $products_images_query = database::query(
@@ -519,6 +505,55 @@
         limit 1;"
       );
 
+    // If new total quantity is set
+      if (!empty($this->data['options_stock'])) {
+
+        foreach ($this->data['options_stock'] as $key => $stock_option) {
+          if (empty($this->data['options_stock'][$key]['quantity_adjustment']) && (empty($this->previous['options_stock'][$key]) || (float)$this->data['options_stock'][$key]['quantity'] != (float)$this->previous['options_stock'][$key]['quantity'])) {
+            if (!empty($this->previous['options_stock'][$key])) {
+              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
+            } else {
+              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'];
+            }
+          }
+        }
+
+        $this->data['quantity'] = array_sum(array_column($this->data['options_stock'], 'quantity_adjust'));
+
+      } else {
+        if (empty($this->data['quantity_adjustment']) && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
+          if (!empty($this->data['quantity'])) {
+            $this->data['quantity_adjustment'] = (float)$this->data['quantity'] - (float)$this->previous['quantity'];
+          } else {
+            $this->data['quantity_adjustment'] = (float)$this->data['quantity'];
+          }
+        }
+      }
+
+    // If stock quantity adjustent is set
+      if (!empty($this->data['options_stock'])) {
+
+        foreach (array_keys($this->data['options_stock']) as $key) {
+          if (!empty($this->data['options_stock'][$key]['quantity_adjustment']) && (float)$this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
+            $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
+            unset($this->data['options_stock'][$key]['quantity_adjustment']);
+          }
+        }
+
+        database::query(
+          "update ". DB_TABLE_PRODUCTS ."products
+          set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
+          where id = ". (int)$this->data['id'] ."
+          limit 1;"
+        );
+
+      } else {
+        if (!empty($this->data['quantity_adjustment']) && (float)$this->data['quantity_adjustment'] != 0) {
+          $this->adjust_quantity($this->data['quantity_adjustment']);
+          unset($this->data['quantity_adjustment']);
+        }
+      }
+
       $this->previous = $this->data;
 
       cache::clear_cache('category');
@@ -527,6 +562,8 @@
     }
 
     public function adjust_quantity($quantity_adjustment, $combination='') {
+
+      if ((float)$quantity_adjustment == 0) return;
 
       if (empty($this->data['id'])) $this->save();
 
@@ -542,17 +579,19 @@
         if (!database::affected_rows()) {
           trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
         }
-      }
 
-      database::query(
-        "update ". DB_TABLE_PRODUCTS ."
-        set quantity = quantity + ". (float)$quantity_adjustment ."
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
+      } else {
 
-      if (!database::affected_rows()) {
-        trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .')', E_USER_WARNING);
+        database::query(
+          "update ". DB_TABLE_PRODUCTS ."
+          set quantity = quantity + ". (float)$quantity_adjustment ."
+          where id = ". (int)$this->data['id'] ."
+          limit 1;"
+        );
+
+        if (!database::affected_rows()) {
+          trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .')', E_USER_WARNING);
+        }
       }
     }
 
