@@ -4,8 +4,8 @@
 </div>
 
 <div id="content">
-  {snippet:notices}
-  {snippet:breadcrumbs}
+  {{notices}}
+  {{breadcrumbs}}
 
   <section id="box-search-results" class="box">
 

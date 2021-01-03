@@ -6,7 +6,7 @@
 </div>
 
 <div id="content">
-  {snippet:notices}
+  {{notices}}
 
   <section id="box-edit-account" class="box">
     <h1 class="title"><?php echo language::translate('title_sign_in_and_security', 'Sign-In and Security'); ?></h1>

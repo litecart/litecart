@@ -7,8 +7,8 @@
 </style>
 
 <div id="content">
-  {snippet:notices}
-  {snippet:breadcrumbs}
+  {{notices}}
+  {{breadcrumbs}}
 
   <div class="row">
     <div class="col-md-6">

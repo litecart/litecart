@@ -11,4 +11,4 @@
 }
 </style>
 
-{snippet:doc}
+{{doc}}

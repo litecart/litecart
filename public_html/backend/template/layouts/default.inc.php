@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="{snippet:language}" dir="{snippet:text_direction}">
+<html lang="{{language}}" dir="{{text_direction}}">
 <head>
-<title>{snippet:title}</title>
-<meta charset="{snippet:charset}" />
+<title>{{title}}</title>
+<meta charset="{{charset}}" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=1600">
 <link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/variables.css'); ?>" />
 <link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>" />
 <link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>" />
-{snippet:head_tags}
-{snippet:style}
+{{head_tags}}
+{{style}}
 </head>
 <body<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
 
@@ -29,7 +29,7 @@
       <div class="results"></div>
     </div>
 
-    {snippet:box_apps_menu}
+    {{box_apps_menu}}
 
     <div id="platform" class="text-center"><?php echo PLATFORM_NAME; ?>® <?php echo PLATFORM_VERSION; ?></div>
 
@@ -49,7 +49,7 @@
       </li>
 
       <li>
-        {snippet:breadcrumbs}
+        {{breadcrumbs}}
       </li>
 
       <li style="flex-grow: 1;"></li>
@@ -119,15 +119,15 @@
     </ul>
 
     <div id="content">
-      {snippet:notices}
-      {snippet:content}
+      {{notices}}
+      {{content}}
     </div>
   </main>
 </div>
 
-{snippet:foot_tags}
+{{foot_tags}}
 <script src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>
-{snippet:javascript}
+{{javascript}}
 
 <script>
   $('input[name="dark_mode"]').click(function(){

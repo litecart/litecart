@@ -6,7 +6,7 @@
 </div>
 
 <div id="content">
-  {snippet:notices}
+  {{notices}}
 
   <section id="box-order-history" class="box">
 

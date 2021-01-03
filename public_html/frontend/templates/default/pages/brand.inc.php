@@ -4,8 +4,8 @@
 </div>
 
 <div id="content">
-  {snippet:notices}
-  {snippet:breadcrumbs}
+  {{notices}}
+  {{breadcrumbs}}
 
   <article id="box-brand" class="box">
 

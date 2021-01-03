@@ -818,7 +818,7 @@ tr.semi-transparent td {
 /* Grid - Bootstrap Compatible */
 .container {
   min-width: 320px;
-  max-width: 1440;
+  max-width: 1440px;
   margin: 0 auto;
 }
 .pull-left {

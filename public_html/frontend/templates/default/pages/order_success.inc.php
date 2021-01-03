@@ -1,5 +1,5 @@
 <div id="content">
-  {snippet:notices}
+  {{notices}}
 
   <div class="row">
     <div class="col-md-6">

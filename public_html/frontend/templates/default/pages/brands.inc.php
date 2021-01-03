@@ -1,5 +1,5 @@
 <div id="content">
-  {snippet:notices}
+  {{notices}}
 
   <section id="box-brands" class="box">
 

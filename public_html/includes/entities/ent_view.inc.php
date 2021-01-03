@@ -37,19 +37,19 @@
         $search_replace = [];
         foreach (array_keys($this->snippets) as $key) {
           if (!is_string($this->snippets[$key])) continue;
-          $search_replace['{snippet:'.$key.'}'] = &$this->snippets[$key];
+          $search_replace['#{{\s*'. preg_quote($key, '#') .'\s*}}#'] = addcslashes($this->snippets[$key], '\\$');
         }
 
         foreach (array_keys($search_replace) as $key) {
-          $search_replace[$key] = str_replace(array_keys($search_replace), array_values($search_replace), $search_replace[$key]);
+          $search_replace[$key] = preg_replace(array_keys($search_replace), array_values($search_replace), $search_replace[$key]);
         }
 
-        $this->html = str_replace(array_keys($search_replace), array_values($search_replace), $this->html, $count);
+        $this->html = preg_replace(array_keys($search_replace), array_values($search_replace), $this->html);
       }
 
     // Clean orphan snippets
       if ($cleanup) {
-        $this->html = preg_replace('#\{snippet:.*?\}#', '', $this->html);
+        $this->html = preg_replace('#\{\{.*?\}\}#', '', $this->html);
       }
 
       return $this->html;

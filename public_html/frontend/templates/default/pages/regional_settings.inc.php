@@ -11,7 +11,7 @@
 ?>
 
 <div id="content">
-  {snippet:notices}
+  {{notices}}
 
   <section id="box-regional-settings">
     <h1 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>

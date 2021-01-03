@@ -6,8 +6,8 @@
 </div>
 
 <div id="content">
-  {snippet:breadcrumbs}
-  {snippet:notices}
+  {{breadcrumbs}}
+  {{notices}}
 
   <section id="box-customer-service" class="box">
     <?php echo $content; ?>

@@ -11,7 +11,7 @@ html {
 
 body {
   display: table-row;
-  background: url({snippet:template_path}images/background.svg);
+  background: url({{template_path}}images/background.svg);
   background-size: cover;
 }
 
@@ -88,7 +88,7 @@ body {
       <div class="content">
         <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 
-        {snippet:notices}
+        {{notices}}
 
         <div class="form-group">
           <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>

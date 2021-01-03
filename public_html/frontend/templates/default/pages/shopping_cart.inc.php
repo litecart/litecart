@@ -26,7 +26,7 @@
   </aside>
 
   <div id="content">
-    {snippet:notices}
+    {{notices}}
 
     <?php echo functions::form_draw_form_begin('shopping_cart_form', 'post'); ?>
 

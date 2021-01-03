@@ -2,11 +2,13 @@
   <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_category_tree.inc.php'); ?>
 
   <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
+
+  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_newsletter_subscribe.inc.php'); ?>
 </div>
 
 <div id="content">
-  {snippet:notices}
-  {snippet:breadcrumbs}
+  {{notices}}
+  {{breadcrumbs}}
 
   <article id="box-category" class="box">
 
@@ -28,11 +30,10 @@
       </div>
     </div>
 
-    <?php if ($_GET['page'] == 1) { ?>
-    <section class="listing categories" style="margin-bottom: 15px;">
-      <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
-    </section>
-    <?php } ?>
+    <ul class="nav nav-pills">
+      <li><a href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
+      <?php foreach ($subcategories as $subcategory) { ?><li><a href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a></li><?php } ?>
+    </ul>
 
     <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_filter.inc.php'); ?>
 

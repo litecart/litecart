@@ -1,6 +1,6 @@
-{snippet:style}
-{snippet:notices}
+{{style}}
+{{notices}}
 
-{snippet:content}
+{{content}}
 
-{snippet:javascript}
+{{javascript}}

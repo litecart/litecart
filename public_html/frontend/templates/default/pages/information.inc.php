@@ -3,8 +3,8 @@
 </div>
 
 <div id="content">
-  {snippet:breadcrumbs}
-  {snippet:notices}
+  {{breadcrumbs}}
+  {{notices}}
 
   <section id="box-information" class="box">
     <?php echo $content; ?>
