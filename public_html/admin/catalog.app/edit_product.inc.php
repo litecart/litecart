@@ -55,6 +55,7 @@
         'keywords',
         'date_valid_from',
         'date_valid_to',
+        'quantity',
         'quantity_adjustment',
         'quantity_unit_id',
         'purchase_price',

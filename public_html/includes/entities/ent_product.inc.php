@@ -262,13 +262,6 @@
         limit 1;"
       );
 
-      if (empty($this->data['options_stock'])) {
-        if (!empty($this->data['quantity_adjustment']) && (float)$this->data['quantity_adjustment'] != 0) {
-          $this->adjust_quantity($this->data['quantity_adjustment']);
-          unset($this->data['quantity_adjustment']);
-        }
-      }
-
     // Categories
       database::query(
         "delete from " . DB_TABLE_PRODUCTS_TO_CATEGORIES . "
@@ -550,19 +543,7 @@
             and id = ". (int)$this->data['options_stock'][$key]['id'] ."
             limit 1;"
           );
-
-          if (!empty($this->data['options_stock'][$key]['quantity_adjustment']) && (float)$this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
-            $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
-            unset($this->data['options_stock'][$key]['quantity_adjustment']);
-          }
         }
-
-        database::query(
-          "update ". DB_TABLE_PRODUCTS ."products
-          set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
-          where id = ". (int)$this->data['id'] ."
-          limit 1;"
-        );
       }
 
     // Delete images
@@ -634,6 +615,55 @@
         where id=". (int)$this->data['id'] ."
         limit 1;"
       );
+
+    // If new total quantity is set
+      if (!empty($this->data['options_stock'])) {
+
+        foreach ($this->data['options_stock'] as $key => $stock_option) {
+          if (empty($this->data['options_stock'][$key]['quantity_adjustment']) && (empty($this->previous['options_stock'][$key]) || (float)$this->data['options_stock'][$key]['quantity'] != (float)$this->previous['options_stock'][$key]['quantity'])) {
+            if (!empty($this->previous['options_stock'][$key])) {
+              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
+            } else {
+              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'];
+            }
+          }
+        }
+
+        $this->data['quantity'] = array_sum(array_column($this->data['options_stock'], 'quantity_adjust'));
+
+      } else {
+        if (empty($this->data['quantity_adjustment']) && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
+          if (!empty($this->data['quantity'])) {
+            $this->data['quantity_adjustment'] = (float)$this->data['quantity'] - (float)$this->previous['quantity'];
+          } else {
+            $this->data['quantity_adjustment'] = (float)$this->data['quantity'];
+          }
+        }
+      }
+
+    // If stock quantity adjustent is set
+      if (!empty($this->data['options_stock'])) {
+
+        foreach (array_keys($this->data['options_stock']) as $key) {
+          if (!empty($this->data['options_stock'][$key]['quantity_adjustment']) && (float)$this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
+            $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
+            unset($this->data['options_stock'][$key]['quantity_adjustment']);
+          }
+        }
+
+        database::query(
+          "update ". DB_TABLE_PRODUCTS ."products
+          set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
+          where id = ". (int)$this->data['id'] ."
+          limit 1;"
+        );
+
+      } else {
+        if (!empty($this->data['quantity_adjustment']) && (float)$this->data['quantity_adjustment'] != 0) {
+          $this->adjust_quantity($this->data['quantity_adjustment']);
+          unset($this->data['quantity_adjustment']);
+        }
+      }
 
       $this->previous = $this->data;
 
