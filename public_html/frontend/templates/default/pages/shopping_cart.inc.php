@@ -3,20 +3,20 @@
     <section id="box-checkout-region">
 
       <div class="row">
-        <div class="form-group col-md-6">
-          <small><?php echo language::translate('title_language', 'Language'); ?></small>
+        <div class="form-group col-xs-4 col-sm-6">
+          <label><?php echo language::translate('title_language', 'Language'); ?></label>
           <div style="line-height: 200%"><?php echo language::$selected['name']; ?></div>
         </div>
 
-        <div class="form-group col-md-6">
-          <small><?php echo language::translate('title_currency', 'Currency'); ?></small>
+        <div class="form-group col-xs-4 col-sm-6">
+          <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
           <div style="line-height: 200%"><?php echo currency::$selected['code']; ?></div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <small><?php echo language::translate('title_country', 'Country'); ?></small>
-        <div style="line-height: 200%"><?php echo reference::country(customer::$data['country_code'])->name; ?></div>
+        <div class="form-group col-xs-4 col-sm-12">
+          <label><?php echo language::translate('title_country', 'Country'); ?></label>
+          <div style="line-height: 200%"><?php echo reference::country(customer::$data['country_code'])->name; ?></div>
+        </div>
       </div>
 
       <div>
@@ -43,7 +43,7 @@
                 <div class="row">
                   <div class="col-xs-4 col-md-2">
                     <a href="<?php echo htmlspecialchars($item['link']); ?>" class="thumbnail pull-left" style="max-width: 64px; margin-right: 1em;">
-                      <img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="" />
+                      <img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['image']['thumbnail']); ?>" alt="" />
                     </a>
                   </div>
 

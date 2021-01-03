@@ -175,10 +175,17 @@ html {
 }
 
 #footer {
-  padding: 0 ~"calc(var(--gutter-size)/2)" var(--gutter-size) ~"calc(var(--gutter-size)/2)";
+  padding: var(--gutter-size) ~"calc(var(--gutter-size)/2)";
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
 
   @media (min-width: (@media-breakpoint-sm)) {
-    padding: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
+    padding: ~"calc(var(--gutter-size)*2)";
+  }
+
+
+  a:hover {
+    color: var(--link-text-color);
   }
 
   .columns {
@@ -195,16 +202,11 @@ html {
     }
   }
 
-  * {
-    color: var(--default-text-color);
-  }
-  a:hover {
-    color: var(--link-text-color);
-  }
   .title {
     font-size: 1.5em;
     margin: 0 0 0.75em 0;
   }
+
   ul.list-vertical {
     li {
       padding: 0;

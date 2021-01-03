@@ -27,7 +27,7 @@
 <script>
 // Queue Handler
 
-  var updateQueue = [
+  window.updateQueue = [
     {component: 'cart',     data: null, refresh: true},
     {component: 'customer', data: null, refresh: true},
     {component: 'shipping', data: null, refresh: true},
@@ -35,7 +35,7 @@
     {component: 'summary',  data: null, refresh: true}
   ];
 
-  function queueUpdateTask(component, data, refresh) {
+  window.queueUpdateTask = function(component, data, refresh) {
 
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
       return (tasks.component == component) ? false : true;
@@ -47,11 +47,11 @@
       refresh: refresh
     });
 
-    runQueue();
+    window.runQueue();
   }
 
   var queueRunLock = false;
-  function runQueue() {
+  window.runQueue = function() {
 
     if (queueRunLock) return;
     if (!updateQueue.length) return;
@@ -76,19 +76,19 @@
     var url = '';
     switch (task.component) {
       case 'cart':
-        url = '<?php echo document::ilink('ajax/checkout_cart'); ?>';
+        url = '<?php echo document::ilink('checkout/cart'); ?>';
         break;
       case 'customer':
-        url = '<?php echo document::ilink('ajax/checkout_customer'); ?>';
+        url = '<?php echo document::ilink('checkout/customer'); ?>';
         break;
       case 'shipping':
-        url = '<?php echo document::ilink('ajax/checkout_shipping'); ?>';
+        url = '<?php echo document::ilink('checkout/shipping'); ?>';
         break;
       case 'payment':
-        url = '<?php echo document::ilink('ajax/checkout_payment'); ?>';
+        url = '<?php echo document::ilink('checkout/payment'); ?>';
         break;
       case 'summary':
-        url = '<?php echo document::ilink('ajax/checkout_summary'); ?>';
+        url = '<?php echo document::ilink('checkout/summary'); ?>';
         break;
       default:
         alert('Error: Invalid component ' + task.component);
@@ -142,199 +142,12 @@
           });
         }
         queueRunLock = false;
-        runQueue();
+        window.runQueue();
       }
     });
   }
 
-  runQueue();
-
-// Cart
-
-  $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
-    e.preventDefault();
-    var data = $(this).closest('li').find(':input').serialize()
-             + '&remove_cart_item=' + $(this).val();
-    queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', true, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', true, true);
-  });
-
-  $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
-    e.preventDefault();
-    var data = $(this).closest('li').find(':input').serialize()
-             + '&update_cart_item=' + $(this).val();
-    queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', true, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', true, true);
-  });
-
-// Customer Form: Toggles
-
-  $('#box-checkout .customer.wrapper').on('change', 'input[name="different_shipping_address"]', function(e){
-    if (this.checked == true) {
-      $('#box-checkout-customer .shipping-address fieldset').removeAttr('disabled').slideDown('fast');
-    } else {
-      $('#box-checkout-customer .shipping-address fieldset').attr('disabled', 'disabled').slideUp('fast');
-    }
-  });
-
-  $('#box-checkout .customer.wrapper').on('change', 'input[name="create_account"]', function(){
-    if (this.checked == true) {
-      $('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast');
-    } else {
-      $('#box-checkout-customer .account fieldset').attr('disabled', 'disabled').slideUp('fast');
-    }
-  });
-
-// Customer Form: Get Address
-
-  $('#box-checkout .customer.wrapper').on('change', '.billing-address :input', function() {
-    if ($(this).val() == '') return;
-    if (console) console.log('Retrieving address (Trigger: '+ $(this).attr('name') +')');
-    $.getJSON(
-      '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
-      $('.billing-address :input').serialize(),
-      function(data) {
-        if (data['alert']) alert(data['alert']);
-        $.each(data, function(key, value) {
-          $('.billing-address :input[name="'+key+'"]').val(value);
-        });
-      }
-    );
-  });
-
-// Customer Form: Fields
-
-  $('#box-checkout .customer.wrapper').on('input propertyChange', 'select[name="country_code"]', function(e) {
-
-    if ($(this).find('option:selected').data('tax-id-format')) {
-      $('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
-    } else {
-      $('input[name="tax_id"]').removeAttr('pattern');
-    }
-
-    if ($(this).find('option:selected').data('postcode-format')) {
-      $('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
-    } else {
-      $('input[name="postcode"]').removeAttr('pattern');
-    }
-
-    if ($(this).find('option:selected').data('phone-code')) {
-      $('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
-    } else {
-      $('input[name="phone"]').removeAttr('placeholder');
-    }
-
-    <?php if (settings::get('customer_field_zone')) { ?>
-    $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      success: function(data) {
-        $('select[name="zone_code"]').html('');
-        if (data.length) {
-          $('select[name="zone_code"]').prop('disabled', false);
-          $.each(data, function(i, zone) {
-            $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name="zone_code"]').prop('disabled', true);
-        }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
-    });
-    <?php } ?>
-  });
-
-  $('#box-checkout .customer.wrapper').on('input propertyChange', 'select[name="shipping_address[country_code]"]', function(e) {
-
-    if ($(this).find('option:selected').data('postcode-format')) {
-      $('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
-    } else {
-      $('input[name="shipping_address[postcode]"]').removeAttr('pattern');
-    }
-
-    if ($(this).find('option:selected').data('phone-code')) {
-      $('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
-    } else {
-      $('input[name="shipping_address[phone]"]').removeAttr('placeholder');
-    }
-
-    <?php if (settings::get('customer_field_zone')) { ?>
-    $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: false,
-      dataType: 'json',
-      success: function(data) {
-        $('select[name="shipping_address[zone_code]"]').html('');
-        if (data.length) {
-          $('select[name="shipping_address[zone_code]"]').prop('disabled', false);
-          $.each(data, function(i, zone) {
-            $('select[name="shipping_address[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name="shipping_address[zone_code]"]').prop('disabled', true);
-        }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
-    });
-    <?php } ?>
-  });
-
-// Customer Form: Checksum
-
-  window.customer_form_changed = null;
-  window.customer_form_checksum = null;
-  $('#box-checkout .customer.wrapper').on('input change', ':input', function(e) {
-    if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
-      if (window.customer_form_checksum == null) return;
-      window.customer_form_changed = true;
-      $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
-    } else {
-      window.customer_form_changed = false;
-      $('#box-checkout-customer button[name="save_customer_details"]').attr('disabled', 'disabled');
-    }
-  });
-
-// Customer Form: Auto-Save
-
-  var timerSubmitCustomer;
-  $('#box-checkout .customer.wrapper').on('focusout', '#box-checkout-customer', function() {
-    timerSubmitCustomer = setTimeout(
-      function() {
-        if (!$(this).is(':focus')) {
-          if (window.customer_form_changed) {
-            if (console) console.log('Autosaving customer details');
-            var data = $('#box-checkout-customer :input').serialize();
-            queueUpdateTask('customer', data, true);
-            queueUpdateTask('cart', null, true);
-            queueUpdateTask('shipping', true, true);
-            queueUpdateTask('payment', true, true);
-            queueUpdateTask('summary', null, true);
-          }
-        }
-      }, 50
-    );
-  });
-
-  $('body').on('focusin', '#box-checkout-customer', function() {
-    clearTimeout(timerSubmitCustomer);
-  });
+  window.runQueue();
 
 // Customer Form: Process Data
 
@@ -342,11 +155,11 @@
     e.preventDefault();
     var data = $('#box-checkout-customer :input').serialize()
              + '&save_customer_details=true';
-    queueUpdateTask('customer', data, true);
-    queueUpdateTask('cart', null, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', null, true);
+    window.queueUpdateTask('customer', data, true);
+    window.queueUpdateTask('cart', null, true);
+    window.queueUpdateTask('shipping', true, true);
+    window.queueUpdateTask('payment', true, true);
+    window.queueUpdateTask('summary', null, true);
     window.customer_form_checksum = $('#box-checkout-customer :input').serialize();
     $('#box-checkout-customer :input:first-child').trigger('change');
   });
@@ -362,9 +175,9 @@
     $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
 
     var data = $('#box-checkout-shipping .option.active :input').serialize();
-    queueUpdateTask('shipping', data, false);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', null, true);
+    window.queueUpdateTask('shipping', data, false);
+    window.queueUpdateTask('payment', true, true);
+    window.queueUpdateTask('summary', null, true);
   });
 
 // Payment Form: Process Data
@@ -378,20 +191,20 @@
     $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
 
     var data = $('#box-checkout-payment .option.active :input').serialize();
-    queueUpdateTask('payment', data, false);
-    queueUpdateTask('summary', null, true);
+    window.queueUpdateTask('payment', data, false);
+    window.queueUpdateTask('summary', null, true);
   });
 
 // Summary Form: Process Data
 
-  $('#box-checkout-summary-wrapper').on('click', 'button[name="confirm_order"]', function(e) {
+  $('form[name="checkout_form"]').submit(function(e) {
+
     if (window.customer_form_changed) {
       e.preventDefault();
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
-  });
 
-  $('body').on('submit', 'form[name="checkout_form"]', function(e) {
-    $('#box-checkout-summary button[name="confirm_order"]').css('display', 'none').before('<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::general_escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>');
+    var dummy_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::general_escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+    $('#box-checkout-summary button[name="confirm_order"]').css('display', 'none').before(dummy_button);
   });
 </script>

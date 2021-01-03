@@ -32,6 +32,6 @@
 // Set error handler
   require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
-// Jump-start some library modules
+// Jump-start some nodes
   class_exists('notices');
   class_exists('stats');

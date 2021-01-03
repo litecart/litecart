@@ -33,7 +33,7 @@
         $options[] = [
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
-          'title' => language::translate(__CLASS__.':title_option_name_zone_'.$i),
+          'title' => language::translate(__CLASS__.':title_option_zone_'.$i, $this->name),
           'description' => reference::country($customer['shipping_address']['country_code'])->name .', '. weight::format($total_weight, $this->settings['weight_class']),
           'fields' => '',
           'cost' => $cost,
@@ -49,7 +49,7 @@
           $options[] = [
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
-            'title' => language::translate(__CLASS__.':title_option_name_zone_x'),
+            'title' => language::translate(__CLASS__.':title_option_zone_x', $this->name),
             'description' => reference::country($customer['shipping_address']['country_code'])->name .', '. weight::format($total_weight, $this->settings['weight_class']),
             'fields' => '',
             'cost' => $cost + $this->settings['handling_fee'],

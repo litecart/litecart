@@ -1,5 +1,4 @@
 <?php
-  ob_end_clean();
 
   if (empty($_REQUEST['page'])) $_REQUEST['page'] = 1;
   if (empty($_GET['language_code'])) $_GET['language_code'] = language::$selected['code'];
@@ -54,6 +53,7 @@
     }
   }
 
+  ob_clean();
   header('Content-Type: application/json');
   echo json_encode($products, JSON_UNESCAPED_SLASHES);
   exit;

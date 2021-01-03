@@ -51,7 +51,7 @@
     $json = ['error' => $e->getMessage()];
   }
 
-  ob_end_clean();
+  ob_clean();
   header('Content-Type: application/json');
   echo json_encode($json, JSON_UNESCAPED_SLASHES);
   exit;

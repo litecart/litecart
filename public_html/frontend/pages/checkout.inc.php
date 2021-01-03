@@ -8,8 +8,6 @@
 
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
 
-  functions::draw_lightbox();
-
   if (!empty(session::$data['order']->data['id'])) {
     $resume_id = session::$data['order']->data['id'];
   }
@@ -57,3 +55,5 @@
 
   $_page = new ent_view();
   echo $_page->stitch('pages/checkout');
+
+  functions::draw_lightbox();
