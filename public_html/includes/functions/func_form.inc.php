@@ -251,6 +251,13 @@ END;
 
   function form_draw_decimal_field($name, $value=true, $decimals=2, $parameters='') {
 
+    if (count($args = func_get_args()) > 4) {
+      trigger_error('form_draw_decimal_field() no longer takes min and max separate parameters. Instead define min="0" max="999" in the 4th parameter', E_USER_DEPRECATED);
+      if (isset($args[5])) $parameters = $args[5];
+      if (isset($args[3])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[3] .'"';
+      if (isset($args[4])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[4] .'"';
+    }
+
     if ($value === true) $value = form_reinsert_value($name);
 
     $value = round((float)$value, $decimals);
