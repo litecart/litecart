@@ -4,10 +4,16 @@
   $box_filter->snippets = [
     'brands' => [],
     'attributes' => [],
+    'sort_alternatives' => [
+      'name' => language::translate('title_name', 'Name'),
+      'price' => language::translate('title_price', 'Price'),
+      'popularity' => language::translate('title_popularity', 'Popularity'),
+      'date' => language::translate('title_date', 'Date'),
+    ],
   ];
 
 // Brands
-  if (empty($_GET['brand_id'])) {
+  if (!empty(route::$route['page']) && route::$route['page'] == 'category' && empty($_GET['brand_id'])) {
     $brands_query = database::query(
       "select distinct b.id, b.name from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
@@ -30,33 +36,35 @@
   }
 
 // Attributes
-  $category_filters_query = database::query(
-    "select cf.attribute_group_id as id, agi.name as name, cf.select_multiple from ". DB_TABLE_PREFIX ."categories_filters cf
-    left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
-    where category_id = ". (int)$_GET['category_id'] ."
-    order by priority;"
-  );
-
-  while ($group = database::fetch($category_filters_query)) {
-    $attribute_values_query = database::query(
-      "select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value from ". DB_TABLE_PREFIX ."products_attributes cf
-      left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = cf.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
-      where product_id in (
-        select product_id from ". DB_TABLE_PREFIX ."products_to_categories
-        where category_id = ". (int)$_GET['category_id'] ."
-      )
-      and cf.group_id = ". (int)$group['id'] ."
-      order by `value`;"
+  if (!empty(route::$route['page']) && route::$route['page'] == 'category') {
+    $category_filters_query = database::query(
+      "select cf.attribute_group_id as id, agi.name as name, cf.select_multiple from ". DB_TABLE_PREFIX ."categories_filters cf
+      left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
+      where category_id = ". (int)$_GET['category_id'] ."
+      order by priority;"
     );
 
-    $group['values'] = [];
-    while ($value = database::fetch($attribute_values_query)) {
-      $group['values'][] = $value;
+    while ($group = database::fetch($category_filters_query)) {
+      $attribute_values_query = database::query(
+        "select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value from ". DB_TABLE_PREFIX ."products_attributes cf
+        left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = cf.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
+        where product_id in (
+          select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+          where category_id = ". (int)$_GET['category_id'] ."
+        )
+        and cf.group_id = ". (int)$group['id'] ."
+        order by `value`;"
+      );
+
+      $group['values'] = [];
+      while ($value = database::fetch($attribute_values_query)) {
+        $group['values'][] = $value;
+      }
+
+      if (empty($group['values'])) continue;
+
+      $box_filter->snippets['attributes'][] = $group;
     }
-
-    if (empty($group['values'])) continue;
-
-    $box_filter->snippets['attributes'][] = $group;
   }
 
   echo $box_filter->stitch('views/box_filter');

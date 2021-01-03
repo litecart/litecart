@@ -1,6 +1,8 @@
 <?php
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['sort'])) $_GET['sort'] = 'price';
+  if (empty($_GET['list_style'])) $_GET['list_style'] = 'columns';
+
   if (empty($_GET['brand_id'])) {
     header('Location: '. document::ilink('brands'));
     exit;
@@ -57,6 +59,7 @@
 
     $products_query = functions::catalog_products_query([
       'brands' => [$brand->id],
+      'product_name' => !empty($_GET['product_name']) ? $_GET['product_name'] : null,
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ]);
@@ -67,7 +70,6 @@
       $page_items = 0;
       while ($listing_item = database::fetch($products_query)) {
         $_page->snippets['products'][] = $listing_item;
-
         if (++$page_items == settings::get('items_per_page', 20)) break;
       }
     }

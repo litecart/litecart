@@ -4,11 +4,11 @@
 
 .listing {
   display: grid;
-  grid-gap: @default-gutter-size/2;
+  grid-gap: ~"calc(var(--gutter-size)/2)";
 
   @media (min-width: (@media-breakpoint-sm)) {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: @default-gutter-size;
+    grid-gap: var(--gutter-size);
   }
 
   &.products {
@@ -51,9 +51,9 @@
     position: relative;
     overflow: hidden;
 
-    background: @image-whitespace-color;
-    border: 1px solid @default-border-color;
-    border-radius: @default-border-radius;
+    background: var(--image-whitespace-color);
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--border-radius);
     transform: scale(1);
     transition: all 100ms linear;
 
@@ -62,7 +62,7 @@
 
     @media (min-width: (@media-breakpoint-sm)) {
       &:hover {
-        box-shadow: 0 @default-gutter-size/4 @default-gutter-size/2 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)" 0 rgba(0, 0, 0, 0.15);
         transform: scale(1.01);
       }
     }
@@ -71,8 +71,8 @@
   .category {
     .caption {
       background: #f2f2f2;
-      padding: @default-gutter-size/2 @default-gutter-size;
-      color: @default-text-color;
+      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+      color: var(--default-text-color);
       text-align: center;
       * {
         color: inherit;
@@ -85,14 +85,14 @@
     img {
       width: 100%;
       height: auto;
-      padding: @default-gutter-size/2;
+      padding: ~"calc(var(--gutter-size)/2)";
     }
 
     .caption {
       margin: 0;
-      padding: @default-gutter-size / 2;
+      padding: ~"calc(var(--gutter-size)/2)";
       background: #f2f2f2;
-      color: @default-text-color;
+      color: var(--default-text-color);
       text-align: center;
     }
   }
@@ -104,14 +104,14 @@
     }
 
     .image-wrapper {
-      background: @image-whitespace-color;
+      background: var(--image-whitespace-color);
 
       .sticker {
         position: absolute;
         top: 20px;
         left: -32px;
         width: 125px;
-        padding: @default-gutter-size/4 @default-gutter-size/2;
+        padding: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)";
         color: #fff;
         font-size: 12px;
         font-weight: bold;
@@ -142,12 +142,13 @@
     }
 
     .manufacturer-name {
-      color: lighten(@default-text-color, 25%);
+      color: var(--default-text-color);
       font-size: 0.9em;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       line-height: 200%;
+      opacity: .75;
     }
 
     .description {
@@ -162,7 +163,7 @@
         white-space: nowrap;
       }
       .regular-price, .recommended-price {
-        color: @default-text-color;
+        color: var(--default-text-color);
         font-size: 0.75em;
         font-weight: normal;
         white-space: nowrap;
@@ -201,7 +202,7 @@
     }
 
     .info {
-      padding: @default-gutter-size/2;
+      padding: ~"calc(var(--gutter-size)/2)";
       text-align: center;
     }
 
@@ -221,10 +222,12 @@
     .info {
       position: absolute;
       top: 0;
-      left: 100px + @default-gutter-size;
-      padding: @default-gutter-size/2;
+      left: ~"calc(100px + var(--gutter-size))";
+      right: 0;
+      bottom: 0;
+      padding: ~"calc(var(--gutter-size)/2)";
       @media (min-width: (@media-breakpoint-sm)) {
-        left: 160px + @default-gutter-size;
+        left: ~"calc(160px + var(--gutter-size))";
       }
     }
 
@@ -245,14 +248,14 @@
       right: 0;
       font-size: 1.25em;
       background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 100%);
-      padding: @default-gutter-size/2;
-      padding-left: @default-gutter-size * 2;
+      padding: ~"calc(var(--gutter-size)/2)";
+      padding-left: ~"calc(var(--gutter-size) * 2)";
     }
 
     @media (min-width: (@media-breakpoint-sm)) {
       height: auto;
       .description {
-        margin-top: @default-gutter-size;
+        margin-top: var(--gutter-size);
       }
     }
   }
