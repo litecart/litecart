@@ -21,4 +21,4 @@
     'order_success_modules_output' => $order_module->success($order),
   ];
 
-  echo $_page->stitch('pages/order_success');
+  echo $_page->stitch('pages/order_success.inc.php');

@@ -31,6 +31,6 @@
 
   $_page = new ent_view();
   $_page->snippets['order'] = $order->data;
-  echo $_page->stitch('pages/printable_order_copy');
+  echo $_page->stitch('pages/printable_order_copy.inc.php');
 
   language::set($session_language);

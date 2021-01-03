@@ -29,7 +29,7 @@
         ];
       }
 
-      echo $box_brand_logotypes->stitch('views/box_brand_logotypes');
+      echo $box_brand_logotypes->stitch('views/box_brand_logotypes.inc.php');
     }
 
     cache::end_capture($box_brand_logotypes_cache_token);

@@ -50,4 +50,4 @@
     'options' => $options,
   ];
 
-  echo $box_checkout_shipping->stitch('views/box_checkout_shipping');
+  echo $box_checkout_shipping->stitch('views/box_checkout_shipping.inc.php');

@@ -31,6 +31,6 @@
 
   $_page = new ent_view();
   $_page->snippets['order'] = $order->data;
-  echo $_page->stitch('pages/printable_packing_slip');
+  echo $_page->stitch('pages/printable_packing_slip.inc.php');
 
   language::set($session_language);

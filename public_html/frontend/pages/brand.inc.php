@@ -79,4 +79,4 @@
     cache::set($brand_cache_token, $_page->snippets);
   }
 
-  echo $_page->stitch('pages/brand');
+  echo $_page->stitch('pages/brand.inc.php');

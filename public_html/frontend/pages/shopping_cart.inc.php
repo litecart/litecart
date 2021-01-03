@@ -51,4 +51,4 @@
     ];
   }
 
-  echo $_page->stitch('pages/shopping_cart');
+  echo $_page->stitch('pages/shopping_cart.inc.php');

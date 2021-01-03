@@ -7,9 +7,11 @@
 
       if (!empty($view)) {
 
+        $view = preg_replace('#\.inc\.php$#', '', $view);
+
       // Absolute path
         if (preg_match('#^([a-zA-Z]:)?/#', $view)) {
-          $file = $view;
+          $file = $view . '.inc.php';
 
       // Relative path
         } else {

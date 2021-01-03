@@ -51,4 +51,4 @@
     $_page->snippets['content'] = ob_get_clean();
   }
 
-  echo $_page->stitch('pages/customer_service');
+  echo $_page->stitch('pages/customer_service.inc.php');

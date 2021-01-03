@@ -40,4 +40,4 @@
       break;
   }
 
-  echo $_page->stitch('pages/error_document');
+  echo $_page->stitch('pages/error_document.inc.php');

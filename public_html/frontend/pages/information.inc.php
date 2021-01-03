@@ -30,7 +30,7 @@
       'content' => $page->content,
     ];
 
-    echo $_page->stitch('pages/information');
+    echo $_page->stitch('pages/information.inc.php');
 
   } catch (Exception $e) {
     http_response_code($e->getCode());

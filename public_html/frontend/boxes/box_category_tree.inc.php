@@ -52,7 +52,7 @@
     };
 
     if ($box_category_tree->snippets['categories'] = $iterator(0, 0)) {
-      echo $box_category_tree->stitch('views/box_category_tree');
+      echo $box_category_tree->stitch('views/box_category_tree.inc.php');
     }
 
     cache::end_capture($box_category_tree_cache_token);

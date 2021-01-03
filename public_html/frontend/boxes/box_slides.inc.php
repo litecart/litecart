@@ -28,7 +28,7 @@
         ];
       }
 
-      echo $box_slides->stitch('views/box_slides');
+      echo $box_slides->stitch('views/box_slides.inc.php');
     }
 
     cache::end_capture($box_slides_cache_token);

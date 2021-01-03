@@ -3,4 +3,4 @@
 
   $box_region = new ent_view();
 
-  echo $box_region->stitch('views/box_region');
+  echo $box_region->stitch('views/box_region.inc.php');

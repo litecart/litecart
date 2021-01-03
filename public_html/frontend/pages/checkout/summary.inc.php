@@ -54,4 +54,4 @@
     '%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
   ]);
 
-  echo $box_checkout_summary->stitch('views/box_checkout_summary');
+  echo $box_checkout_summary->stitch('views/box_checkout_summary.inc.php');

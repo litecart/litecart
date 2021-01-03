@@ -26,7 +26,7 @@
       if (!empty(notices::$data)) {
         $notices = new ent_view();
         $notices->snippets['notices'] = notices::$data;
-        document::$snippets['notices'] = $notices->stitch('views/notices');
+        document::$snippets['notices'] = $notices->stitch('views/notices.inc.php');
         self::reset();
       }
     }

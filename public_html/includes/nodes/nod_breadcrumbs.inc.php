@@ -24,7 +24,7 @@
           ];
         }
 
-        document::$snippets['breadcrumbs'] = $breadcrumbs->stitch('views/breadcrumbs');
+        document::$snippets['breadcrumbs'] = $breadcrumbs->stitch('views/breadcrumbs.inc.php');
       }
     }
 

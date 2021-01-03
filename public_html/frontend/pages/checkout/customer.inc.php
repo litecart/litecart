@@ -187,4 +187,4 @@
     'account_exists' => $account_exists,
     'subscribed_to_newsletter' => $subscribed_to_newsletter,
   ];
-  echo $box_checkout_customer->stitch('views/box_checkout_customer');
+  echo $box_checkout_customer->stitch('views/box_checkout_customer.inc.php');

@@ -107,4 +107,4 @@
 
 
   $_page = new ent_view();
-  echo $_page->stitch('pages/reset_password');
+  echo $_page->stitch('pages/reset_password.inc.php');

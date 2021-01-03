@@ -67,4 +67,4 @@
     cache::set($box_site_menu_cache_token, $box_site_menu->snippets);
   }
 
-  echo $box_site_menu->stitch('views/box_site_menu');
+  echo $box_site_menu->stitch('views/box_site_menu.inc.php');

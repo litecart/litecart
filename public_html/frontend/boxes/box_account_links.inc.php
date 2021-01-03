@@ -11,11 +11,11 @@
       'email' => customer::$data['email'],
     ];
 
-    echo $box_account->stitch('views/box_account_links');
+    echo $box_account->stitch('views/box_account_links.inc.php');
 
   } else if (empty(route::$route['page']) || route::$route['page'] != 'login') {
 
     $box_account_login = new ent_view();
 
-    echo $box_account_login->stitch('views/box_account_login');
+    echo $box_account_login->stitch('views/box_account_login.inc.php');
   }

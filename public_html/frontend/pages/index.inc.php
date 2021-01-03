@@ -9,4 +9,4 @@
 
   $_page = new ent_view();
 
-  echo $_page->stitch('pages/index');
+  echo $_page->stitch('pages/index.inc.php');

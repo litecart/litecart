@@ -83,7 +83,7 @@
       'link' => 'https://www.linkedin.com/',
     ];
 
-    echo $box_site_footer->stitch('views/box_site_footer');
+    echo $box_site_footer->stitch('views/box_site_footer.inc.php');
 
     cache::end_capture($box_site_footer_cache_token);
   }

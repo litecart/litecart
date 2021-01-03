@@ -67,4 +67,4 @@
     }
   }
 
-  echo $box_filter->stitch('views/box_filter');
+  echo $box_filter->stitch('views/box_filter.inc.php');

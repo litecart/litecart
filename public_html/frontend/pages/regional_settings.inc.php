@@ -67,4 +67,4 @@
   if (!in_array(currency::$selected, $_page->snippets['currencies'])) $_page->snippets['currencies'][] = currency::$selected;
   if (!in_array(language::$selected, $_page->snippets['languages'])) $_page->snippets['languages'][] = language::$selected;
 
-  echo $_page->stitch('pages/regional_settings');
+  echo $_page->stitch('pages/regional_settings.inc.php');

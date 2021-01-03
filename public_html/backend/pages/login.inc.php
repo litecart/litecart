@@ -124,4 +124,4 @@
   }
 
   $page_login = new ent_view();
-  echo $page_login->stitch('pages/login');
+  echo $page_login->stitch('pages/login.inc.php');

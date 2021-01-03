@@ -20,4 +20,4 @@
     $box_cart->snippets['cart_total'] = currency::format(cart::$total['value']);
   }
 
-  echo $box_cart->stitch('views/box_cart');
+  echo $box_cart->stitch('views/box_cart.inc.php');

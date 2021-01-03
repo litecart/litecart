@@ -52,4 +52,4 @@
   }
 
 // Output
-  echo $box_recently_viewed_products->stitch('views/box_recently_viewed_products');
+  echo $box_recently_viewed_products->stitch('views/box_recently_viewed_products.inc.php');

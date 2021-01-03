@@ -104,4 +104,4 @@
     cache::set($box_category_cache_token, $_page->snippets);
   }
 
-  echo $_page->stitch('pages/category');
+  echo $_page->stitch('pages/category.inc.php');

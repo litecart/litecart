@@ -53,6 +53,6 @@
     $_page->snippets['comments'][] = $comment;
   }
 
-  echo $_page->stitch('pages/order');
+  echo $_page->stitch('pages/order.inc.php');
 
   language::set($session_language);

@@ -246,9 +246,9 @@
   }
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    echo $_page->stitch('pages/product.ajax');
+    echo $_page->stitch('pages/product.ajax.inc.php');
   } else {
-    echo $_page->stitch('pages/product');
+    echo $_page->stitch('pages/product.inc.php');
   }
 
   document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';

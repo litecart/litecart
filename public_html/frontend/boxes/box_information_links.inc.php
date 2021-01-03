@@ -57,7 +57,7 @@
     };
 
     if ($box_information_links->snippets['pages'] = $iterator(0, 0)) {
-      echo $box_information_links->stitch('views/box_information_links');
+      echo $box_information_links->stitch('views/box_information_links.inc.php');
     }
 
     cache::end_capture($box_information_links_cache_token);

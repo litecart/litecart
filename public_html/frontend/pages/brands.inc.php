@@ -32,7 +32,7 @@
       ];
     }
 
-    echo $_page->stitch('pages/brands');
+    echo $_page->stitch('pages/brands.inc.php');
 
     cache::end_capture($brands_cache_token);
   }

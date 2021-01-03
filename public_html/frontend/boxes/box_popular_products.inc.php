@@ -29,7 +29,7 @@
         $box_popular_products->snippets['products'][] = $listing_product;
       }
 
-      echo $box_popular_products->stitch('views/box_popular_products');
+      echo $box_popular_products->stitch('views/box_popular_products.inc.php');
     }
 
     cache::end_capture($box_popular_products_cache_token);

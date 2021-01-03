@@ -58,7 +58,7 @@
     }
   }
 
-  document::$snippets['box_apps_menu'] = $box_apps_menu->stitch('views/box_apps_menu');
+  document::$snippets['box_apps_menu'] = $box_apps_menu->stitch('views/box_apps_menu.inc.php');
 
 // Start page
   if (empty($_GET['app'])) {
@@ -87,7 +87,7 @@
       ];
     }
 
-    echo $box_widgets->stitch('views/box_widgets');
+    echo $box_widgets->stitch('views/box_widgets.inc.php');
 
 // App content
   } else {
@@ -135,7 +135,7 @@
 
 
       if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
-        echo $_page->stitch('pages/doc');
+        echo $_page->stitch('pages/doc.inc.php');
       } else {
         echo $_page->snippets['doc'];
       }

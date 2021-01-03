@@ -72,7 +72,7 @@
       'short_description' => $category['short_description'],
     ];
 
-    return $listing_category->stitch('views/listing_category');
+    return $listing_category->stitch('views/listing_category.inc.php');
   }
 
   function draw_listing_product($product, $inherit_params=[]) {
@@ -131,7 +131,7 @@
       $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
     }
 
-    return $listing_product->stitch('views/listing_product');
+    return $listing_product->stitch('views/listing_product.inc.php');
   }
 
   function draw_lightbox($selector='', $params=[]) {
@@ -254,7 +254,7 @@
       'active' => false,
     ];
 
-    $html = $pagination->stitch('views/pagination');
+    $html = $pagination->stitch('views/pagination.inc.php');
 
     return $html;
   }

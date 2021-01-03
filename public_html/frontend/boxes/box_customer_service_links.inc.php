@@ -65,7 +65,7 @@
     };
 
     if ($box_customer_service_links->snippets['pages'] = $iterator(0, 0)) {
-      echo $box_customer_service_links->stitch('views/box_customer_service_links');
+      echo $box_customer_service_links->stitch('views/box_customer_service_links.inc.php');
     }
 
     cache::end_capture($box_customer_service_links_cache_token);

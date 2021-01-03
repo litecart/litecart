@@ -30,7 +30,7 @@
       }
 
       if ($box_similar_products->snippets['products']) {
-        echo $box_similar_products->stitch('views/box_similar_products');
+        echo $box_similar_products->stitch('views/box_similar_products.inc.php');
       }
     }
 

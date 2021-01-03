@@ -25,7 +25,7 @@
         ];
       }
 
-      echo $box_brand_links->stitch('views/box_brand_links');
+      echo $box_brand_links->stitch('views/box_brand_links.inc.php');
     }
 
     cache::end_capture($box_brand_links_cache_token);

@@ -15,7 +15,7 @@
         $box_categories->snippets['categories'][] = $category;
       }
 
-      echo $box_categories->stitch('views/box_categories');
+      echo $box_categories->stitch('views/box_categories.inc.php');
     }
     cache::end_capture($box_categories_cache_token);
   }

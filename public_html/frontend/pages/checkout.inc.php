@@ -54,6 +54,6 @@
   }
 
   $_page = new ent_view();
-  echo $_page->stitch('pages/checkout');
+  echo $_page->stitch('pages/checkout.inc.php');
 
   functions::draw_lightbox();

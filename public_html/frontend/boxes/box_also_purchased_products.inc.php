@@ -28,7 +28,7 @@
           $box_also_purchased_products->snippets['products'][] = $listing_product;
         }
 
-        echo $box_also_purchased_products->stitch('views/box_also_purchased_products');
+        echo $box_also_purchased_products->stitch('views/box_also_purchased_products.inc.php');
       }
     }
 
