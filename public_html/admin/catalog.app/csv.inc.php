@@ -209,17 +209,17 @@
       // Find category
         if (!empty($row['id'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
-          $category = new ent_category($category['id']);
+            $category = new ent_category($category['id']);
           }
 
         } elseif (!empty($row['code'])) {
           if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-          $category = new ent_category($category['id']);
+            $category = new ent_category($category['id']);
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES ."_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-          $category = new ent_category($category['id']);
+            $category = new ent_category($category['id']);
           }
         }
 
@@ -228,7 +228,7 @@
           echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
 
-          } else {
+        } else {
           if (empty($_POST['insert'])) continue;
           echo 'Creating new category: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
@@ -239,7 +239,7 @@
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $page = new ent_category($row['id']);
-        } else {
+          } else {
             $page = new ent_category();
           }
         }
@@ -391,27 +391,27 @@
 
         } elseif (!empty($row['code'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-          $product = new ent_product($product['id']);
+            $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['sku'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
-          $product = new ent_product($product['id']);
+            $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['mpn'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
-          $product = new ent_product($product['id']);
+            $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['gtin'])) {
           if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
-          $product = new ent_product($product['id']);
+            $product = new ent_product($product['id']);
           }
 
         } elseif (!empty($row['name']) && !empty($row['language_code'])) {
           if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS ."_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-          $product = new ent_product($product['id']);
+            $product = new ent_product($product['id']);
           }
           }
 
