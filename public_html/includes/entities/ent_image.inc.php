@@ -176,10 +176,6 @@
       trigger_error("Setting data is prohibited ($name)", E_USER_WARNING);
     }
 
-    public function get_image() {
-      return $this->_image;
-    }
-
     public function load($file=null) {
 
       unset($this->_data['type']);
@@ -271,10 +267,12 @@
 
     public function resample($width=1024, $height=1024, $clipping='FIT_ONLY_BIGGER') {
 
+      if (!$this->_image) $this->load();
+
       if ((int)$width == 0 && (int)$height == 0) return;
 
-      if ((int)$this->width() == 0 || (int)$this->height() == 0) {
-        throw new Exception('Error getting source image dimensions ('. $this->_src .').');
+      if ((int)$this->width == 0 || (int)$this->height == 0) {
+        throw new Exception('Error getting source image dimensions ('. $this->_file .').');
       }
 
     // Convert percentage dimensions to pixels
@@ -396,8 +394,8 @@
             case 'STRETCH':
 
             // Calculate dimensions
-              $destination_width = ((int)$width == 0) ? $this->width() : $width;
-              $destination_height = ((int)$height == 0) ? $this->height() : $height;
+              $destination_width = ((int)$width == 0) ? $this->width : $width;
+              $destination_height = ((int)$height == 0) ? $this->height : $height;
 
             // Create output image container
               $_resized = ImageCreateTrueColor($destination_width, $destination_height);
@@ -754,7 +752,7 @@
           }
 
         // Shrink a large watermark
-          $_watermark->resample($this->width()/3, $this->height()/3, 'FIT_ONLY_BIGGER');
+          $_watermark->resample($this->width/3, $this->height/3, 'FIT_ONLY_BIGGER');
 
         // Align watermark and set horizontal offset
           switch (strtoupper($align_x)) {
@@ -762,11 +760,11 @@
               $offset_x = $margin;
               break;
             case 'CENTER':
-              $offset_x = round(($this->width() - $_watermark->width()) / 2);
+              $offset_x = round(($this->width - $_watermark->width) / 2);
               break;
             case 'RIGHT':
             default:
-              $offset_x = $this->width() - $_watermark->width() - $margin;
+              $offset_x = $this->width - $_watermark->width - $margin;
               break;
           }
 
@@ -776,16 +774,16 @@
               $offset_y = $margin;
               break;
             case 'MIDDLE':
-              $offset_y = round(($this->height() - $_watermark->height()) / 2);
+              $offset_y = round(($this->height - $_watermark->height) / 2);
               break;
             case 'BOTTOM':
             default:
-              $offset_y = $this->height() - $_watermark->height() - $margin;
+              $offset_y = $this->height - $_watermark->height - $margin;
               break;
           }
 
         // Create the watermarked image
-          $result = ImageCopy($this->_image, $_watermark->get_image(), $offset_x, $offset_y, 0, 0, $_watermark->width(), $_watermark->height());
+          $result = ImageCopy($this->_image, $_watermark->_image, $offset_x, $offset_y, 0, 0, $_watermark->width, $_watermark->height);
 
         // Free some RAM memory
           ImageDestroy($_watermark->_image);
