@@ -13,8 +13,7 @@
 
   function captcha_generate($width, $height, $length=6, $id='default', $set='numbers', $parameters='') {
 
-    $code = '';
-    $font = FS_DIR_STORAGE . 'data/captcha.ttf';
+    $font = FS_DIR_APP . 'assets/fonts/captcha.ttf';
 
     switch ($set) {
       case 'alphabet':
@@ -27,6 +26,7 @@
         trigger_error('Unknown captcha set.', E_USER_ERROR);
     }
 
+    $code = '';
     for ($i=0; $i<$length; $i++) {
       $code .= substr($possible, mt_rand(0, strlen($possible)-1), 1);
     }
@@ -41,12 +41,12 @@
     $noise_color = imagecolorallocate($image, 100, 120, 180);
 
   // Generate random dots in background
-    for( $i=0; $i<($width*$height)/3; $i++ ) {
+    for ($i=0; $i<($width*$height)/3; $i++) {
       imagefilledellipse($image, mt_rand(0,$width), mt_rand(0,$height), 1, 1, $noise_color);
     }
 
   // Generate random lines in background
-    for( $i=0; $i<($width*$height)/150; $i++ ) {
+    for ($i=0; $i<($width*$height)/150; $i++) {
       imageline($image, mt_rand(0,$width), mt_rand(0,$height), mt_rand(0,$width), mt_rand(0,$height), $noise_color);
     }
 
@@ -74,7 +74,7 @@
   // Set captcha value to session
     session::$data['captcha'][$id] = [
       'value' => $code,
-      'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes'))
+      'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
     ];
 
   // Output key and image
