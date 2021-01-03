@@ -171,15 +171,12 @@
       }
 
       $amount = self::format_raw($value, $currency_code, $currency_value);
+      $decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
       $prefix = !empty(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
       $suffix = !empty(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : '';
 
-      if ($auto_decimals === true && settings::get('auto_decimals')) {
+      if ($auto_decimals && settings::get('auto_decimals')) {
         if ($amount == floor($amount)) $decimals = 0;
-      } else if ($auto_decimals === false) {
-        $decimals = isset(self::$currencies[$currency_code]['decimals']) ? self::$currencies[$currency_code]['decimals'] : 0;
-      } else {
-        $decimals = $auto_decimals;
       }
 
       if ($decimals) {
@@ -194,7 +191,7 @@
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
 
-      if ($value == 0) {
+      if ((float)$value == 0) {
         return 0;
       }
 

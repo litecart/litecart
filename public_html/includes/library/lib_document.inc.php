@@ -155,7 +155,7 @@
         if (!empty($stylesheets)) {
             $stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
 
-            if (!$GLOBALS['output'] = preg_replace('#</head>#', preg_replace('#\$(\d+)#', '\\\$$1', $stylesheets . '</head>'), $GLOBALS['output'], 1)) {
+            if (!$GLOBALS['output'] = preg_replace('#</head>#', addcslashes($stylesheets . '</head>', '\\$'), $GLOBALS['output'], 1)) {
               trigger_error('Failed extracting stylesheets', E_USER_ERROR);
             }
           }
@@ -181,7 +181,7 @@
                    . '/*]]>*/-->' . PHP_EOL
                    . '</style>' . PHP_EOL;
 
-            if (!$GLOBALS['output'] = preg_replace('#</head>#', preg_replace('#\$(\d+)#', '\\\$$1', $styles . '</head>'), $GLOBALS['output'], 1)) {
+            if (!$GLOBALS['output'] = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $GLOBALS['output'], 1)) {
               trigger_error('Failed extracting styles', E_USER_ERROR);
             }
           }
@@ -204,7 +204,7 @@
           if (!empty($js_resources)) {
             $js_resources = implode(PHP_EOL, $js_resources) . PHP_EOL;
 
-            if (!$GLOBALS['output'] = preg_replace('#</body>#is', preg_replace('#\$(\d+)#', '\\\$$1', $js_resources .'</body>'), $GLOBALS['output'], 1)) {
+            if (!$GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($js_resources .'</body>', '\\$'), $GLOBALS['output'], 1)) {
               trigger_error('Failed extracting javascript resources', E_USER_ERROR);
             }
           }
@@ -231,7 +231,7 @@
                         . '/*]]>*/-->' . PHP_EOL
                         . '</script>' . PHP_EOL;
 
-            if (!$GLOBALS['output'] = preg_replace('#</body>#is', preg_replace('#\$(\d+)#', '\\\$$1', $javascript . '</body>'), $GLOBALS['output'], 1)) {
+            if (!$GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $GLOBALS['output'], 1)) {
               trigger_error('Failed extracting javascripts', E_USER_ERROR);
             }
           }

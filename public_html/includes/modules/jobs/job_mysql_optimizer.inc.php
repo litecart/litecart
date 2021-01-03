@@ -31,7 +31,7 @@
 
       $query = database::query(
         "select concat('`', table_schema, '`.`', table_name, '`') as `table` from `information_schema`.`tables`
-        where engine = 'MyISAM'
+        where engine in ('Aria', 'MyISAM')
         and table_schema = '". DB_DATABASE ."'
         and table_name like '". DB_TABLE_PREFIX ."%';"
       );

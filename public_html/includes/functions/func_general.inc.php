@@ -141,7 +141,7 @@
 
   function general_order_public_checksum($order_id) {
 
-    trigger_error(__METHOD__.'() is deprecated. Use instead reference::order(id)->public_key', E_USER_DEPRECATED);
+    trigger_error(__METHOD__.'() is deprecated. Use reference::order(id)->public_key', E_USER_DEPRECATED);
 
     $query = database::query(
       "select public_key from ". DB_TABLE_ORDERS ."

@@ -275,13 +275,13 @@
             // Price Adjust
               $value['price_adjust'] = 0;
 
-              if ((isset($value[$this->_currency_code]) && $value[$this->_currency_code] != 0) || (isset($value[settings::get('store_currency_code')]) && $value[settings::get('store_currency_code')] != 0)) {
+              if ((!empty($value[$this->_currency_code]) && (float)$value[$this->_currency_code] != 0) || (!empty($value[settings::get('store_currency_code')]) && (float)$value[settings::get('store_currency_code')] != 0)) {
 
                 switch ($value['price_operator']) {
 
                   case '+':
 
-                    if ($value[$this->_currency_code] != 0) {
+                    if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = (float)currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
                       $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
@@ -289,7 +289,7 @@
                     break;
 
                   case '%':
-                    if ($value[$this->_currency_code] != 0) {
+                    if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = $this->price * ((float)$value[$this->_currency_code] / 100);
                     } else {
                       $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')] / 100;
@@ -297,7 +297,7 @@
                     break;
 
                   case '*':
-                    if ($value[$this->_currency_code] != 0) {
+                    if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = $this->price * $value[$this->_currency_code];
                     } else {
                       $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
@@ -305,7 +305,7 @@
                     break;
 
                   case '=':
-                    if ($value[$this->_currency_code] != 0) {
+                    if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = $value[$this->_currency_code] - $this->price;
                     } else {
                       $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
@@ -355,7 +355,7 @@
               $row['sku'] = $this->sku;
             }
 
-            if (empty($row['weight']) || $row['weight'] == 0) {
+            if (empty($row['weight']) || (float)$row['weight'] == 0) {
               $row['weight'] = $this->weight;
               $row['weight_class'] = $this->weight_class;
             }
@@ -422,9 +422,10 @@
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
-          $product_price = database::fetch($products_prices_query);
 
-          if ($product_price[$this->_currency_code] != 0) {
+          if (!$product_price = database::fetch($products_prices_query)) return;
+
+          if (!empty($product_price[$this->_currency_code]) || (float)$product_price[$this->_currency_code] != 0) {
             $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
           } else {
             $this->_data['price'] = $product_price[settings::get('store_currency_code')];
@@ -529,7 +530,7 @@
     }
 
     public function adjust_stock($combination, $quantity) {
-      trigger_error('catalog_stock_adjust() is deprecated. Use instead $ent_product->adjust_quantity()', E_USER_DEPRECATED);
+      trigger_error('catalog_stock_adjust() is deprecated. Use $ent_product->adjust_quantity()', E_USER_DEPRECATED);
       $product = new ent_product($this->_data['id']);
       return $product->adjust_quantity($quantity, $combination);
     }

@@ -103,7 +103,7 @@
 
     public static function convert($value, $from, $to) {
 
-      if ($value == 0) return 0;
+      if ((float)$value == 0) return 0;
 
       if ($from == $to) return (float)$value;
 
@@ -117,7 +117,7 @@
         return;
       }
 
-      if (self::$classes[$from]['value'] == 0 || self::$classes[$to]['value'] == 0) return;
+      if ((float)self::$classes[$from]['value'] == 0 || (float)self::$classes[$to]['value'] == 0) return;
 
       return $value * (self::$classes[$to]['value'] / self::$classes[$from]['value']);
     }
@@ -130,8 +130,7 @@
       }
 
       $decimals = self::$classes[$class]['decimals'];
-      $formatted = (float)number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']);
 
-      return $formatted .' '. self::$classes[$class]['unit'];
+      return number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
     }
   }

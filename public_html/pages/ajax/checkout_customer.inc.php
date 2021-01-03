@@ -90,7 +90,7 @@
       }
 
       if (settings::get('accounts_enabled') && empty(customer::$data['id'])) {
-        if (settings::get('register_guests') || !empty($_POST['create_account'])) {
+        if (!empty($_POST['create_account'])) {
           if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
 
             $customer = new ent_customer();

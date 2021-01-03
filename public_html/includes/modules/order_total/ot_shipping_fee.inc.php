@@ -17,7 +17,7 @@
 
       if (empty($this->settings['status'])) return;
 
-      if (!isset($order->data['shipping_option']['cost']) || $order->data['shipping_option']['cost'] == 0) return;
+      if (empty($order->data['shipping_option']['cost']) || (float)$order->data['shipping_option']['cost'] == 0) return;
 
       $output = array();
 

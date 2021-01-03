@@ -44,7 +44,7 @@
   && count($options[key($options)]['options']) == 1
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['error'])
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
-  && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
+  && (float)$options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
 */
 
   $box_checkout_payment = new ent_view();

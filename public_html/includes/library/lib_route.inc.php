@@ -145,10 +145,9 @@
           file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
         }
 
-        echo '<div id="content">'
-           . '  <h1>HTTP 404 - Not Found</h1>'
-           . '  <p>Could not find a matching reference for '. $request->path .'.</p>'
-           . '</div>';
+        include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+        include vmod::check(WS_DIR_APP . 'includes/app_footer.inc.php');
+        exit;
       }
     }
 
@@ -159,6 +158,7 @@
       $path = parse_url($path, PHP_URL_PATH);
 
       $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+      //return preg_replace('#^'. WS_DIR_APP . '(index\.php/)?('. implode('|', array_keys(language::$languages)) .')?(/|$)#', '', parse_url($path, PHP_URL_PATH));
 
       return $path;
     }
@@ -229,8 +229,6 @@
 
       if (isset(self::$_links_cache[$language_code][(string)$link])) return self::$_links_cache[$language_code][(string)$link];
 
-      ###
-
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);
 
@@ -248,8 +246,6 @@
           }
         }
       }
-
-      ###
 
     // Detect URL rewrite support
       $use_rewrite = false;

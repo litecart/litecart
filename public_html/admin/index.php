@@ -68,11 +68,6 @@
 
     document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
 
-  // Throw some warnings
-    if (empty($_SERVER['REDIRECT_REMOTE_USER']) && empty($_SERVER['REMOTE_USER'])) {
-      notices::add('warnings', language::translate('warning_admin_folder_not_protected', 'Warning: Your admin folder is not .htaccess protected'), 'unprotected');
-    }
-
     if (file_exists(FS_DIR_APP . 'install/')) {
       notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
     }
