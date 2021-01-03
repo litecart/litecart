@@ -707,7 +707,7 @@
                   <th style="width: 185px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
                   <th style="width: 400px;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                   <th class="text-center" style="width: 125px;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-                  <th class="text-center" style="width: 125px;"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
+                  <th class="text-center" style="width: 150px;"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
                   <th style="width: 85px;">&nbsp;</th>
                 </tr>
               </thead>
@@ -733,11 +733,11 @@
                       </span>
                     </div>
                   </td>
-                  <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, null, null, 'data-quantity="'. (float)$product->data['quantity'] .'"'); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, null, null, 'data-quantity="'. (float)$product->data['quantity'] .'"' . (!empty($_POST['options_stock']) ? ' readonly' : '')); ?></td>
                   <td>
                     <div class="input-group">
                       <span class="input-group-addon">&plusmn;</span>
-                      <?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2, null, null, !empty($_POST['options_stock']) ? 'style="display: none;"' : ''); ?>
+                      <?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2, null, null, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>
                     </div>
                   </td>
                   <td></td>
