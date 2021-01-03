@@ -35,7 +35,7 @@
   }
 }
 
-.navbar(@gradient-from: @default-color, @gradient-to: @default-color, @color: @default-text-color) {
+.navbar(@gradient-from: var(--default-background-color), @gradient-to: var(--default-background-color), @color: var(--default-text-color)) {
   background: linear-gradient(to bottom, @gradient-from 0%, @gradient-to 100%);
   color: @color;
   li.open > a {
@@ -46,7 +46,7 @@
   }
   @media (min-width: @media-breakpoint-sm) {
     .dropdown-menu {
-      background: lighten(@gradient-from, 5%);
+      background: #fff;
       border: none;
     }
   }
@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  border-radius: @default-border-radius;
+  border-radius: var(--border-radius);
   .navbar-nav {
     > li > a {
       color: inherit;
@@ -66,15 +66,27 @@
 
   &.navbar-bordered {
     min-height: 52px;
-    border: 1px solid darken(@menu-background-gradient-from, 10%);
+    border: 1px solid #000;
     .navbar-nav {
       > li > a {
-        border-left: 1px solid darken(@menu-background-gradient-from, 10%);
+        border-left: 1px solid #000;
       }
       &:not(.navbar-right) {
-        border-right: 1px solid darken(@menu-background-gradient-from, 10%);
+        border-right: 1px solid #000;
       }
     }
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid \9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
   }
 
   .dropdown-menu {
@@ -84,7 +96,7 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     li > a {
-      padding: @default-gutter-size/2 @default-gutter-size;
+      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
     }
   }
 
@@ -107,8 +119,8 @@
     }
   }
 
-  .navbar(@menu-background-gradient-from, @menu-background-gradient-to, @menu-text-color);
-  //&.navbar-default { .navbar(@menu-background-gradient-from, @menu-background-gradient-to, @menu-text-color); }
+  .navbar(var(--navigation-background-color), var(--navigation-background-color), var(--navigation-text-color));
+  //&.navbar-default { .navbar(var(--navigation-background-color), var(--navigation-background-color), var(--navigation-text-color)); }
 }
 
 .navbar-header {
@@ -116,14 +128,14 @@
   width: 100%;
   @media (min-width: @media-breakpoint-sm) {
     float: left;
-    width: @default-sidebar-width + (@default-gutter-size/4);
+    width: ~"calc(var(--sidebar-width) + var(--gutter-size)/4)";
   }
   > * {
     flex: 1 1 auto;
   }
 
   .navbar-brand {
-    padding: @default-gutter-size;
+    padding: var(--gutter-size);
     font-size: 18px;
     &:hover, &:focus {
       text-decoration: none;
@@ -136,12 +148,12 @@
   .navbar-toggle {
     position: relative;
     flex: 0 1 auto;
-    padding: @default-gutter-size/4;
-    margin: @default-gutter-size/4 @default-gutter-size/4 @default-gutter-size/4 0;
+    padding: ~"calc(var(--gutter-size)/4)";
+    margin: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" 0;
     background-color: rgba(0, 0, 0, 0.05);
     background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
     border: none;
-    border-radius: @default-border-radius;
+    border-radius: var(--border-radius);
     &:focus {
       outline: 0;
     }
@@ -158,16 +170,16 @@
 }
 
 .navbar-form {
-  margin: @default-gutter-size/4;
+  margin: ~"calc(var(--gutter-size)/4)";
   @media (min-width: @media-breakpoint-sm) {
-    margin: ~"calc((@{default-gutter-size}/4) + 1px)";
+    margin: ~"calc((var(--default-gutter-size)/4) + 1px)";
   }
 }
 
 .navbar-toggle {
   .icon-bar {
     position: relative;
-    background-color: @menu-text-color;
+    background-color: var(--navigation-text-color);
     display: block;
     width: 22px;
     height: 2px;

@@ -1,42 +1,102 @@
-@default-color: #f9f9f9;
-@primary-color: #2e9cd4;
-@info-color: #5bc0de;
-@success-color: #98cc34;
-@warning-color: #f0ad4e;
-@danger-color: #d9534f;
+@import "framework/media.less";
 
-@site-background: #f0f0f0;
-@page-background: #fff;
-@menu-background-gradient-from: #f0f0f0;
-@menu-background-gradient-to: #f0f0f0;
-@menu-text-color: @default-text-color;
+/* Variables */
 
-@default-border-color: rgba(0,0,0,0.1);
-@default-border-radius: 4px;
-@default-gutter-size: 20px;
-@default-line-height: 1.333333;
-@default-link-color: #2e9cd4;
-@default-shadow-color: rgba(0, 0, 0, 0.3);
-@default-sidebar-width: 300px;
-@default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-@default-text-color: #333;
-@default-text-size: 15px;
+:root {
+  --site-background-color: #f0f0f0;
+  --page-background-color: #fff;
 
-@default-title-border-color: #e5e5e5;
-@default-title-color: @default-text-color;
+  --sidebar-width: 300px;
 
-@breadcrumbs-background-color: #f3f3f3;
+  --navigation-background-color: #f0f0f0;
+  --navigation-text-color: var(--default-text-color);
 
-@form-input-background: #fff;
-@form-input-padding: .5em;
+  --default-background-color: #f9f9f9;
+  --default-background-color-active: #fff;
+  --default-background-color-hover: #d8d8d8;
+  --default-border-color: rgba(0, 0, 0, .1);
+  --default-line-height: 1.3333;
+  --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --default-text-color: #333;
+  --default-text-size: 12px;
+  --default-title-color: var(--default-text-color);
+  --default-title-border-color: #e5e5e5;
+  --default-notice-background-color: #e5e5e5;
+  --default-notice-text-color: #000;
 
-@image-whitespace-color: #fff;
+  --primary-background-color: #2e9cd4;
+  --primary-hover-background-color: #ddd;
+  --primary-active-background-color: #bdbdbd;
+  --primary-text-color: #fff;
+  --primary-notice-background-color: #3ba5c6;
+  --primary-notice-text-color: #fff;
 
-@table-striped-row-background-odd: #f9f9f9;
-@table-striped-row-background-even: #fff;
-@table-row-hover-background: #ececec;
+  --success-background-color: #98cc34;
+  --success-hover-background-color: #9dcf3e;
+  --success-active-background-color: #89b82e;
+  --success-border-color: rgba(0,0,0,0.1);
+  --success-text-color: #fff;
+  --success-notice-background-color: #98cc34;
+  --success-notice-text-color: #fff;
 
-@media-breakpoint-xs: 480px;
-@media-breakpoint-sm: 768px;
-@media-breakpoint-md: 992px;
-@media-breakpoint-lg: 1200px;
+  --warning-background-color: #f0ad4e;
+  --warning-hover-background-color: #f2b866;
+  --warning-active-background-color: #f1b25a;
+  --warning-border-color: rgba(0,0,0,0.1);
+  --warning-text-color: #aa0000;
+  --warning-notice-background-color: #ffcc66;
+  --warning-notice-text-color: #aa0000;
+
+  --danger-background-color: #d9534f;
+  --danger-hover-background-color: #de6764;
+  --danger-active-background-color: #db5d59;
+  --danger-border-color: rgba(0,0,0,0.1);
+  --danger-text-color: #fff;
+  --danger-notice-background-color: #d9534f;
+  --danger-notice-text-color: #fff;
+
+  --info-background-color: #5bc0de;
+
+  --breadcrumbs-background-color: #f3f3f3;
+  --breadcrumbs-text-color: #333;
+  --breadcrumbs-border-color: transparent;
+
+  --pagination-background-color: var(--default-background-color);
+  --pagination-text-color: var(--default-text-color);
+  --pagination-border-color: var(--default-border-color);
+  --pagination-active-background-color: var(--primary-background-color);
+  --pagination-active-text-color: #fff;
+  --pagination-hover-background-color: var(--primary-background-color);
+  --pagination-hover-text-color: #fff;
+
+  --table-striped-row-background-odd: #f9f9f9;
+  --table-striped-row-background-even: #fff;
+  --table-row-hover-background: #ececec;
+
+
+  --border-radius: 4px;
+  --gutter-size: 20px;
+  --link-text-color: #2e9cd4;
+  --input-background-color: #fff;
+  --input-padding-x: 1em;
+  --input-padding-y: .5em;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --image-whitespace-color: #fff;
+
+}
+
+@media (min-width: @media-breakpoint-sm) {
+  :root {
+    --default-text-size: 13px;
+  }
+}
+@media (min-width: @media-breakpoint-md) {
+  :root {
+    --default-text-size: 14px;
+  }
+}
+@media (min-width: @media-breakpoint-lg) {
+  :root {
+    --default-text-size: 15px;
+  }
+}
