@@ -58,6 +58,8 @@
   --table-striped-row-background-odd: #f9f9f9;
   --table-striped-row-background-even: #fff;
   --table-row-hover-background: #ececec;
+  --footer-background-color: #fff;
+  --footer-text-color: #333;
   --border-radius: 4px;
   --gutter-size: 20px;
   --link-text-color: #2e9cd4;

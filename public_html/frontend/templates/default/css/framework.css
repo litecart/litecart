@@ -816,9 +816,9 @@ tr.semi-transparent td {
   box-shadow: 0 0 3px 0 var(--link-text-color);
 }
 /* Grid - Bootstrap Compatible */
-.twelve-eighty {
+.container {
   min-width: 320px;
-  max-width: 1280px;
+  max-width: 1440;
   margin: 0 auto;
 }
 .pull-left {

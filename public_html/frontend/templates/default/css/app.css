@@ -58,6 +58,8 @@
   --table-striped-row-background-odd: #f9f9f9;
   --table-striped-row-background-even: #fff;
   --table-row-hover-background: #ececec;
+  --footer-background-color: #fff;
+  --footer-text-color: #333;
   --border-radius: 4px;
   --gutter-size: 20px;
   --link-text-color: #2e9cd4;
@@ -261,12 +263,17 @@ html {
   }
 }
 #footer {
-  padding: 0 calc(var(--gutter-size)/2) var(--gutter-size) calc(var(--gutter-size)/2);
+  padding: var(--gutter-size) calc(var(--gutter-size)/2);
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
 }
 @media (min-width: 768px) {
   #footer {
-    padding: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
+    padding: calc(var(--gutter-size)*2);
   }
+}
+#footer a:hover {
+  color: var(--link-text-color);
 }
 #footer .columns {
   display: grid;
@@ -282,12 +289,6 @@ html {
   #footer .columns {
     grid-template-columns: repeat(5, 1fr);
   }
-}
-#footer * {
-  color: var(--default-text-color);
-}
-#footer a:hover {
-  color: var(--link-text-color);
 }
 #footer .title {
   font-size: 1.5em;

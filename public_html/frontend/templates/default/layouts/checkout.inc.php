@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<header id="header" class="twelve-eighty">
+<header id="header" class="container">
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
     <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
   </a>

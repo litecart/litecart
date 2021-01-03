@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<div id="page" class="twelve-eighty">
+<div id="page" class="container">
 
   <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
