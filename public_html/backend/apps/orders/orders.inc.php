@@ -107,7 +107,7 @@
       $sql_sort = "o.customer_country_code";
       break;
     default:
-      $sql_sort = "o.starred desc, o.date_created desc, o.id desc";
+      $sql_sort = "if(o.starred, 1, 0) desc, o.date_created desc, o.id desc";
       break;
   }
 
