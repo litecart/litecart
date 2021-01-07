@@ -36,7 +36,11 @@
   $countries = [];
 
   $countries_query = database::query(
-    "select * from ". DB_TABLE_PREFIX ."countries
+    "select c.*, z.num_zones from ". DB_TABLE_PREFIX ."countries c
+    left join (
+      select country_code, count(*) as num_zones from ". DB_TABLE_PREFIX ."zones
+      group by country_code
+    ) z on (z.country_code = c.iso_code_2)
     order by status desc, name asc;"
   );
 
@@ -82,7 +86,7 @@
             <td><?php echo $country['id']; ?></td>
             <td><?php echo $country['iso_code_2']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>"><?php echo $country['name']; ?></a></td>
-            <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
+            <td class="text-center"><?php echo $country['num_zones'] ? $country['num_zones'] : '-'; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
