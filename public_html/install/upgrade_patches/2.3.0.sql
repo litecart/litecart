@@ -1,7 +1,7 @@
 CREATE TABLE `lc_newsletter_recipients` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`email` VARCHAR(128) NOT NULL,
-	`date_created` DATETIME NOT NULL,
+	`email` VARCHAR(128) NOT NULL DEFAULT '',
+	`date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email`)
 );
@@ -16,9 +16,9 @@ DROP COLUMN `list_style`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
 DROP COLUMN `newsletter`,
-CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL AFTER `num_logins`,
-CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL AFTER `last_ip_address`,
-CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(256) NOT NULL AFTER `last_hostname`;
+CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '' AFTER `num_logins`,
+CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `last_ip_address`,
+CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '' AFTER `last_hostname`;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
 -- --------------------------------------------------------
@@ -67,14 +67,17 @@ RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_brands_info`
-CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL AFTER `id`,
+CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL DEFAULT '0' AFTER `id`,
 ADD UNIQUE INDEX `brand_info` (`brand_id`, `language_code`),
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_products`
-CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL AFTER `status`,
+CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL DEFAULT '0' AFTER `status`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
+-- --------------------------------------------------------
+ALTER TABLE `lc_products_images`
+CHANGE COLUMN `checksum` `checksum` VARCHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `key` = 'template', title = 'Template' WHERE `key` = 'store_template_catalog';
 -- --------------------------------------------------------
@@ -83,5 +86,5 @@ UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings
 DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings');
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
-CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL AFTER `type`,
-CHANGE COLUMN `value` `value` VARCHAR(8192) NULL DEFAULT NULL AFTER `key`;
+CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL DEFAULT '' AFTER `type`,
+CHANGE COLUMN `value` `value` VARCHAR(8192) NOT NULL DEFAULT '' AFTER `key`;

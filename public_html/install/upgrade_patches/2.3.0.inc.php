@@ -500,12 +500,6 @@
         break;
 
       case 'date_updated':
-        database::query(
-          "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
-          change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` timestamp not null default current_timestamp on update current_timestamp;"
-        );
-        break;
-
       case 'date_created':
         database::query(
           "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
