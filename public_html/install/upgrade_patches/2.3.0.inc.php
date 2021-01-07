@@ -120,6 +120,8 @@
     FS_DIR_ADMIN . 'vqmods.app/test.inc.php',
     FS_DIR_ADMIN . 'vqmods.app/view.inc.php',
     FS_DIR_ADMIN . 'vqmods.app/vqmods.inc.php',
+    FS_DIR_ADMIN . '.htaccess',
+    FS_DIR_ADMIN . '.htpasswd',
     FS_DIR_APP . 'ext/chartist/',
     FS_DIR_APP . 'ext/featherlight/',
     FS_DIR_APP . 'ext/fontawesome/',
