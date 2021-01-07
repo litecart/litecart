@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['group_id'])) {
-    $attribute_group = new ctrl_attribute_group($_GET['group_id']);
+    $attribute_group = new ent_attribute_group($_GET['group_id']);
   } else {
-    $attribute_group = new ctrl_attribute_group();
+    $attribute_group = new ent_attribute_group();
   }
 
   if (empty($_POST)) {
