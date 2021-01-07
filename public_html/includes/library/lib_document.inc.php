@@ -54,15 +54,13 @@
       self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.5.1.min.js"></script>';
 
     // Hreflang
-      if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
-        if (count(language::$languages) > 1) {
-          self::$snippets['head_tags']['hreflang'] = '';
-          foreach (array_keys(language::$languages) as $language_code) {
-            if ($language_code == language::$selected['code']) continue;
-            self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink(route::$route['page'], array(), true, array(), $language_code) .'" />' . PHP_EOL;
-          }
-          self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
+      if (settings::get('seo_links_language_prefix') && count(language::$languages) > 1) {
+        self::$snippets['head_tags']['hreflang'] = '';
+        foreach (array_keys(language::$languages) as $language_code) {
+          if ($language_code == language::$selected['code']) continue;
+          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink(!empty(route::$route['page']) ? route::$route['page'] : null, array(), true, array(), $language_code) .'" />' . PHP_EOL;
         }
+        self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
 
     // Get template settings
