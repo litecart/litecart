@@ -3,8 +3,9 @@ html {
 }
 
 #page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-
   background: @page-background;
   box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
 }
@@ -144,6 +145,7 @@ html {
 }
 
 #main {
+  flex-grow: 1;
   padding: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
   @media (min-width: (@media-breakpoint-sm)) {
     padding: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
