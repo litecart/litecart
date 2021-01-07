@@ -13,7 +13,7 @@
         'name' => 'Centimetres',
         'unit' => 'cm',
         'value' => 100,
-        'decimals' => 0,
+        'decimals' => 1,
       ),
       'dm' => array(
         'name' => 'Decimetres',
