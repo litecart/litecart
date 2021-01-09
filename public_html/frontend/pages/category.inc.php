@@ -17,13 +17,13 @@
 
   if (empty($category->id)) {
     http_response_code(410);
-    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
     return;
   }
 
   if (empty($category->status)) {
     http_response_code(404);
-    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
     return;
   }
 
