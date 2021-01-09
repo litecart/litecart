@@ -5,6 +5,7 @@
     function routes() {
       return array(
         array(
+          'endpoint' => 'frontend',
           'pattern' => '#^error_document$#',
           'page' => 'error_document',
           'params' => '',
