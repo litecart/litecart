@@ -243,7 +243,7 @@
       return $modified_file;
     }
 
-    public static function _load_file($file) {
+    public static function load($file) {
 
       try {
 
