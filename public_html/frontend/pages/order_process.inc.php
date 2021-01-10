@@ -12,6 +12,12 @@
 
   $order = &session::$data['order'];
 
+  if (empty($order->data['processable'])) {
+    notices::add('errors', 'The order is not yet processable');
+    header('Location: '. document::ilink('checkout'));
+    exit;
+  }
+
   if ($error_message = $order->validate()) {
     notices::add('errors', $error_message);
     header('Location: '. document::ilink('checkout'));
@@ -20,84 +26,6 @@
 
 // If there is an amount to pay
   if (currency::format_raw($order->data['payment_due'], $order->data['currency_code'], $order->data['currency_value']) > 0) {
-
-  // If Confirm Order button was pressed
-    if (isset($_POST['confirm_order'])) {
-
-      ob_start();
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/customer.inc.php');
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/shipping.inc.php');
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/payment.inc.php');
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/summary.inc.php');
-      ob_end_clean();
-
-      if (!empty(notices::$data['errors'])) {
-        header('Location: '. document::ilink('checkout'));
-        exit;
-      }
-
-      if (!empty($order->payment->modules) && count($order->payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
-        if (empty($order->payment->data['selected'])) {
-          notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
-          header('Location: '. document::ilink('checkout'));
-          exit;
-        }
-
-        if ($order->payment_error = $order->payment->pre_check($order)) {
-          notices::add('errors', $order->payment_error);
-          header('Location: '. document::ilink('checkout'));
-          exit;
-        }
-
-        if (!empty($_POST['comments'])) {
-          $order->data['comments']['session'] = [
-            'author' => 'customer',
-            'text' => $_POST['comments'],
-          ];
-        }
-
-        if ($gateway = $order->payment->transfer($order)) {
-
-          if (!empty($gateway['error'])) {
-            notices::add('errors', $gateway['error']);
-            header('Location: '. document::ilink('checkout'));
-            exit;
-          }
-
-          switch (@strtoupper($gateway['method'])) {
-
-            case 'POST':
-              echo '<p>'. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
-                 . '<form name="gateway_form" method="post" action="'. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')) .'">' . PHP_EOL;
-              if (is_array($gateway['fields'])) {
-                foreach ($gateway['fields'] as $key => $value) echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;
-              } else {
-                echo $gateway['fields'];
-              }
-              echo '</form>' . PHP_EOL
-                 . '<script>' . PHP_EOL;
-              if (!empty($gateway['delay'])) {
-                echo '  var t=setTimeout(function(){' . PHP_EOL
-                   . '    document.forms["gateway_form"].submit();' . PHP_EOL
-                   . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
-              } else {
-                echo '  document.forms["gateway_form"].submit();' . PHP_EOL;
-              }
-              echo '</script>';
-              exit;
-
-            case 'HTML':
-              echo $gateway['content'];
-              return;
-
-            case 'GET':
-            default:
-              header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')));
-              exit;
-          }
-        }
-      }
-    }
 
   // Refresh the order if it's in the database in case a callback might have tampered with it
     if (!empty($order->data['id'])) {
