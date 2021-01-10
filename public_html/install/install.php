@@ -46,6 +46,7 @@
 
   try {
 
+    define('FS_DIR_APP', file_realpath(__DIR__ .'/../') .'/');
     require_once FS_DIR_APP . '/includes/library/lib_event.inc.php';
     require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
 
@@ -59,8 +60,6 @@
     ### Parameters > Check ########################################
 
     echo '<p>Checking installation parameters...';
-
-    define('FS_DIR_APP', file_realpath(__DIR__ .'/../') .'/');
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
       define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));

@@ -24,24 +24,23 @@
       self::$aliases['#^pages/#'] = 'frontend/pages/';
       self::$aliases['#^includes/boxes/#'] = 'frontend/boxes/';
       self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
+      self::$aliases['#^includes/library/lib_#'] = 'includes/nodes/nod_';
       self::$aliases['#^includes/routes/#'] = 'frontend/routes/';
       self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/';
       self::$aliases['#^includes/templates/(.*?)\.catalog/#'] = 'frontend/templates/$1/';
 
       $last_modified = null;
 
-    // If no cache is requested by browser
-      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-        $last_modified = time();
-
-      } else {
-
-      // Get last modification date for modifications
-        $folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/');
-        if ($folder_last_modified > $last_modified) {
-          $last_modified = $folder_last_modified;
-        }
+    // Get last modification date for modifications
+      $folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/');
+      if ($folder_last_modified > $last_modified) {
+        $last_modified = $folder_last_modified;
       }
+
+    // If no cache is requested by browser
+      //if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
+      //  $last_modified = time();
+      //}
 
     // Load installed
       $installed_file = FS_DIR_STORAGE . 'vmods/.installed';
@@ -76,7 +75,7 @@
     // Load modifications from disk
       if (empty(self::$_modifications)) {
         foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
-          self::_load_file($file);
+          self::load($file);
         }
 
       // Store modifications to cache

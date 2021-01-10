@@ -131,6 +131,8 @@
     FS_DIR_APP . 'cache/.htaccess',
     FS_DIR_APP . 'cache/index.html',
     FS_DIR_APP . 'data/.htaccess',
+    FS_DIR_APP . 'data/bad_urls.txt',
+    FS_DIR_APP . 'data/captcha.ttf',
     FS_DIR_APP . 'data/index.html',
     FS_DIR_APP . 'ext/index.html',
     FS_DIR_APP . 'includes/boxes/box_account_links.inc.php',

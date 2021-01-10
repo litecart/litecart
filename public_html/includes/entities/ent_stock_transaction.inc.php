@@ -1,13 +1,30 @@
 <?php
 
   class ent_stock_transaction {
-    public $previous;
     public $data;
+    public $previous;
 
-    public function __construct($transaction_id=null) {
+    public function __construct($transaction_id='') {
 
-      if ($transaction_id !== null) {
+      if ($transaction_id == 'system') {
+        $this->reset();
+
+        $transactions_query = database::query(
+          "select * from ". DB_TABLE_STOCK_TRANSACTIONS ."
+          where name like 'System Generated%'
+          and date(date_created) = '". date('Y-m-d') ."'
+          limit 1;"
+        );
+
+        if ($transaction = database::fetch($transactions_query)) {
+          $this->load($transaction['id']);
+        } else {
+          $this->data['name'] = 'System Generated '. date('Y-m-d');
+        }
+
+      } else if (!empty($transaction_id)) {
         $this->load((int)$transaction_id);
+
       } else {
         $this->reset();
       }
@@ -22,34 +39,39 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = '';
+        $this->data[$field['Field']] = null;
       }
+
+      $this->data['contents'] = [];
 
       $this->previous = $this->data;
     }
 
     public function load($transaction_id) {
 
+      if (!preg_match('#^[0-9]+$#', $transaction_id)) throw new Exception('Invalid stock transaction (ID: '. $transaction_id .')');
+
       $this->reset();
 
-      $stock_transactions_query = database::query(
+      $transactions_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_transactions
         where id = ". (int)$transaction_id ."
         limit 1;"
       );
 
-      if ($stock_transaction = database::fetch($stock_transactions_query)) {
-        $this->data = array_replace($this->data, array_intersect_key($stock_transaction, $this->data));
+      if ($transaction = database::fetch($transactions_query)) {
+        $this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
       } else {
         trigger_error('Could not find stock transacction (ID: '. (int)$transaction_id .') in database.', E_USER_ERROR);
       }
 
-      $transactions_contents_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."stock_transactions_contents
-        where transaction_id = ". (int)$this->data['id'] .";"
+      $contents_query = database::query(
+        "select stc.*, ps.sku from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
+        left join ". DB_TABLE_PREFIX ."products_stock ps on (ps.product_id = stc.product_id and ps.combination = stc.combination)
+        where stc.transaction_id = ". (int)$this->data['id'] .";"
       );
 
-      while ($content = database::fetch($transactions_contents_query)) {
+      while ($content = database::fetch($contents_query)) {
 
         $content['name'] = @reference::product($content['product_id'])->id ? reference::product($content['product_id'])->name : '<em>Removed</em>';
 
@@ -130,9 +152,8 @@
         database::query(
           "update ". DB_TABLE_PREFIX ."stock_transactions_contents
           set product_id = ". (int)$content['product_id'] .",
-            combination = '". database::input($content['combination']) ."',
-            sku = '". database::input($content['sku']) ."',
-            quantity = ". (float)$content['quantity'] ."
+              combination = '". database::input($content['combination']) ."',
+              quantity = ". (float)$content['quantity'] ."
           where transaction_id = ". (int)$this->data['id'] ."
           and id = ". (int)$content['id'] ."
           limit 1;"
@@ -140,7 +161,7 @@
 
       // Commit stock changes
         reference::product($content['product_id'])->adjust_stock($content['quantity'], $content['combination']);
-      }
+      } unset($content);
 
       $this->previous = $this->data;
 
