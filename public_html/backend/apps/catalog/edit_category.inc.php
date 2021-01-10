@@ -275,44 +275,6 @@
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
-
-    <div id="tab-filters" class="tab-pane" style="max-width: 640px;">
-
-      <table class="table table-striped data-table table-dragable">
-        <thead>
-          <tr>
-            <th><?php echo language::translate('title_attribute_group', 'Attribute Group'); ?></th>
-            <th><?php echo language::translate('title_select_multiple', 'Select Multiple'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
-          <tr class="grabable">
-            <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
-            <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
-            <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-            <td><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
-            <td><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
-            <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2">
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-
-      <div class="input-group" style="max-width: 320px;">
-        <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-        <span class="input-group-btn">
-          <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
-        </span>
-      </div>
-    </div>
   </div>
 </div>
 
