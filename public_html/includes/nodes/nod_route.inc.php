@@ -151,8 +151,8 @@
           file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
         }
 
-        include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
-        include vmod::check(WS_DIR_APP . 'includes/app_footer.inc.php');
+        include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+        include vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
         exit;
 
         return;
