@@ -491,35 +491,6 @@
     ],
   ], 'abort');
 
-// Adjust tables
-  $columns_query = database::query(
-    "select * from information_schema.COLUMNS
-    where TABLE_SCHEMA = '". DB_DATABASE ."'
-    and TABLE_NAME like '". DB_TABLE_PREFIX ."%';"
-  );
-
-  while ($column = database::fetch($columns_query)) {
-    switch ($column['COLUMN_NAME']) {
-      case 'id':
-        break;
-
-      case 'date_updated':
-      case 'date_created':
-        database::query(
-          "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
-          change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` timestamp not null default current_timestamp;"
-        );
-        break;
-
-      default:
-        database::query(
-          "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
-          change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". $column['COLUMN_TYPE'] ." null". (!empty($column['COLUMN_DEFAULT']) ? ' default ' . $column['COLUMN_DEFAULT'] : '') .";"
-        );
-        break;
-    }
-  }
-
 // Remove some indexes if they exist
   if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer`;");
