@@ -91,9 +91,9 @@
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
+      <div style="min-width: 300px;"><?php echo functions::form_draw_category_field('category_id', true); ?></div>
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div style="min-width: 250px;"><?php echo functions::form_draw_brands_list('brand_id', true); ?></div>
-      <div style="min-width: 250px;"><?php echo functions::form_draw_category_field('category_id', true); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
