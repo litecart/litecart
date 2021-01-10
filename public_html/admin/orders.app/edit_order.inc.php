@@ -471,7 +471,7 @@
                 </div>
 
                 <div class="panel-body">
-                  <div class="row container-fluid">
+                  <div class="row">
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_option_id', 'Option ID'); ?></label>
                       <?php echo functions::form_draw_text_field('payment_option[id]', true); ?>
@@ -498,7 +498,7 @@
                 </div>
 
                 <div class="panel-body">
-                  <div class="row container-fluid">
+                  <div class="row">
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_option_id', 'Option ID'); ?></label>
                       <?php echo functions::form_draw_text_field('shipping_option[id]', true); ?>
