@@ -123,11 +123,11 @@ table.items tbody tr:nth-child(11) {
       foreach ($item['options'] as $key => $value) {
         if (is_array($value)) {
           echo '<br />- '.$key .': ';
-          $useComa = false;
+          $use_comma = false;
           foreach ($value as $v) {
-            if ($useComa) echo ', ';
+            if ($use_comma) echo ', ';
             echo $v;
-            $useComa = true;
+            $use_comma = true;
           }
         } else {
           echo '<br />- '.$key .': '. $value;

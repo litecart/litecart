@@ -1604,7 +1604,7 @@
     var modal = $(this).closest('#new-stock-option');
     var new_option_code = '';
     var new_option_name = '';
-    var use_coma = false;
+    var use_comma = false;
 
     $(modal).find('select[name^="new_option"][name$="[group_id]"]').each(function(i, groupElement) {
       var groupElement = $(modal).find(groupElement);
@@ -1620,14 +1620,14 @@
         return false;
       }
 
-      if (use_coma) {
+      if (use_comma) {
         new_option_code += ',';
         new_option_name += ', ';
       }
 
       new_option_code += $(groupElement).val() + '-' + $(valueElement).val();
       new_option_name += $(valueElement).find('option:selected').text();
-      use_coma = true;
+      use_comma = true;
     });
 
     if (new_option_code == '') return;

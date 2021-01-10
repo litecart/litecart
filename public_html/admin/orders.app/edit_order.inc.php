@@ -621,11 +621,11 @@
           echo '<div>' . PHP_EOL
              . ' - '. $field .': ' . PHP_EOL;
           if (is_array($_POST['items'][$key]['options'][$field])) {
-            $use_coma = false;
+            $use_comma = false;
             foreach (array_keys($_POST['items'][$key]['options'][$field]) as $k) {
               echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']['.$k.']', true) . $_POST['items'][$key]['options'][$field][$k];
-              if ($use_coma) echo ', ';
-              $use_coma = true;
+              if ($use_comma) echo ', ';
+              $use_comma = true;
             }
           } else {
             echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']', true) . $_POST['items'][$key]['options'][$field];
