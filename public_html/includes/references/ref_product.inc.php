@@ -89,6 +89,16 @@
 
           break;
 
+        case 'brand':
+
+          $this->_data['brand'] = [];
+
+          if (empty($this->_data['brand_id'])) return;
+
+          $this->_data['brand'] = reference::brand($this->brand_id, $this->_language_codes[0]);
+
+          break;
+
         case 'categories':
 
           $this->_data['categories'] = [];
@@ -203,13 +213,69 @@
 
           break;
 
-        case 'brand':
+        case 'parents':
 
-          $this->_data['brand'] = [];
+          $this->_data['parents'] = [];
 
-          if (empty($this->_data['brand_id'])) return;
+          $query = database::query(
+            "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+            where product_id = ". (int)$this->_data['id'] .";"
+          );
 
-          $this->_data['brand'] = reference::brand($this->brand_id, $this->_language_codes[0]);
+          while ($row = database::fetch($query)) {
+            $this->_data['parents'][$row['category_id']] = reference::category($row['category_id'], $this->_language_codes[0]);
+          }
+
+          break;
+
+        case 'price':
+
+          $this->_data['price'] = 0;
+
+          $products_prices_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."products_prices
+            where product_id = ". (int)$this->_data['id'] ."
+            limit 1;"
+          );
+          $product_price = database::fetch($products_prices_query);
+
+          if ($product_price[$this->_currency_code] != 0) {
+            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+          } else {
+            $this->_data['price'] = $product_price[settings::get('store_currency_code')];
+          }
+
+          break;
+
+        case 'quantity_unit':
+
+          $this->_data['quantity_unit'] = [
+            'id' => null,
+            'decimals' => 0,
+            'separate' => false,
+            'name' => '',
+          ];
+
+          $quantity_unit_query = database::query(
+            "select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
+            where id = ". (int)$this->quantity_unit_id ."
+            limit 1;"
+          );
+
+          if (!$this->_data['quantity_unit'] = database::fetch($quantity_unit_query)) return;
+
+          $query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."quantity_units_info
+            where quantity_unit_id = ". (int)$this->quantity_unit_id ."
+            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+          );
+          while ($row = database::fetch($query)) {
+            foreach ($row as $key => $value) {
+              if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
+              if (empty($this->_data['quantity_unit'][$key])) $this->_data['quantity_unit'][$key] = $value;
+            }
+          }
 
           break;
 
@@ -246,100 +312,32 @@
               $row['dim_class'] = $this->dim_class;
             }
 
+          // Name
             $row['name'] = [];
 
             foreach (explode(',', $row['combination']) as $combination) {
               list($group_id, $value_id) = explode('-', $combination);
 
-              $options_values_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."products_options_values pov
-                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
-                where pov.value_id = ". (int)$value_id ."
+              $attribute_values_info_query = database::query(
+                "select * from ". DB_TABLE_PREFIX ."attribute_values_info avi
+                where avi.value_id = ". (int)$value_id ."
                 and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
 
-              while ($option_value_info = database::fetch($options_values_query)) {
-                foreach ($option_value_info as $key => $value) {
+              while ($value_info = database::fetch($attribute_values_info_query)) {
+                foreach ($value_info as $key => $value) {
                   if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-                  if (!is_array(empty($row[$key][$option_value_info['value_id']]))) continue;
-                  if (empty($row[$key][$option_value_info['value_id']])) {
-                    $row[$key][$option_value_info['value_id']] = $value;
+                  if (!is_array(empty($row[$key][$value_info['value_id']]))) continue;
+                  if (empty($row[$key][$value_info['value_id']])) {
+                    $row[$key][$value_info['value_id']] = $value;
                   }
                 }
               }
             }
 
             $row['name'] = implode(',', $row['name']);
-
             $this->_data['stock_options'][$row['id']] = $row;
-          }
-
-          break;
-
-        case 'parents':
-
-          $this->_data['parents'] = [];
-
-          $query = database::query(
-            "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
-            where product_id = ". (int)$this->_data['id'] .";"
-          );
-
-          while ($row = database::fetch($query)) {
-            $this->_data['parents'][$row['category_id']] = reference::category($row['category_id'], $this->_language_codes[0]);
-          }
-
-          break;
-
-        case 'price':
-
-          $this->_data['price'] = 0;
-
-          $products_prices_query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_prices
-            where product_id = ". (int)$this->_data['id'] ."
-            limit 1;"
-          );
-
-          if (!$product_price = database::fetch($products_prices_query)) return;
-
-          if (!empty($product_price[$this->_currency_code]) || (float)$product_price[$this->_currency_code] != 0) {
-            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-          } else {
-            $this->_data['price'] = $product_price[settings::get('store_currency_code')];
-          }
-
-          break;
-
-        case 'quantity_unit':
-
-          $this->_data['quantity_unit'] = [
-            'id' => null,
-            'decimals' => 0,
-            'separate' => false,
-            'name' => '',
-          ];
-
-          $quantity_unit_query = database::query(
-            "select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
-            where id = ". (int)$this->quantity_unit_id ."
-            limit 1;"
-          );
-
-          if (!$this->_data['quantity_unit'] = database::fetch($quantity_unit_query)) return;
-
-          $query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."quantity_units_info
-            where quantity_unit_id = ". (int)$this->quantity_unit_id ."
-            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
-              if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
-              if (empty($this->_data['quantity_unit'][$key])) $this->_data['quantity_unit'][$key] = $value;
-            }
           }
 
           break;
