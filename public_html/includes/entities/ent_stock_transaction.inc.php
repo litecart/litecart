@@ -10,7 +10,7 @@
         $this->reset();
 
         $transactions_query = database::query(
-          "select * from ". DB_TABLE_STOCK_TRANSACTIONS ."
+          "select * from ". DB_TABLE_PREFIX ."stock_transactions
           where name like 'System Generated%'
           and date(date_created) = '". date('Y-m-d') ."'
           limit 1;"

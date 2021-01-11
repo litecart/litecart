@@ -78,7 +78,7 @@
 
       if (!empty($this->data['id']) && $this->data['is_sale'] != $this->previous['is_sale']) {
         $orders_query = database::query(
-          "select * from ". DB_TABLE_ORDERS ."
+          "select * from ". DB_TABLE_PREFIX ."orders
           where order_status_id = ". (int)$this->data['id'] .";"
         );
         if (database::num_rows($orders_query)) {

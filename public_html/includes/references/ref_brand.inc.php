@@ -71,11 +71,11 @@
           $this->_data['products'] = [];
 
           $query = database::query(
-            "select id from ". DB_TABLE_PRODUCTS ."
+            "select id from ". DB_TABLE_PREFIX ."products
             where status
             and manufacturer_id = ". (int)$this->_data['id'] ."
             and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -96,11 +96,11 @@
           }
 
           $query = database::query(
-            "select count(id) as num_products from ". DB_TABLE_PRODUCTS ."
+            "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
             where status
             and manufacturer_id = ". (int)$this->_data['id'] ."
             and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from <= '". date('Y-m-d H:i:s') ."')

@@ -58,7 +58,7 @@
     public function save() {
 
       $user_query = database::query(
-        "select id from ". DB_TABLE_USERS ."
+        "select id from ". DB_TABLE_PREFIX ."users
         where (
           lower(username) = '". database::input(strtolower($this->data['username'])) ."'
           ". (!empty($this->data['email']) ? "or lower(email) = '". database::input(strtolower($this->data['email'])) ."'" : "") ."

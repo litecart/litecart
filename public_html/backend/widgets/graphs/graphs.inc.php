@@ -10,7 +10,7 @@
 
     $orders_query = database::query(
       "select sum(payment_due - tax_total) as total_sales, date_format(date_created, '%Y') as year, date_format(date_created, '%m') as month
-      from ". DB_TABLE_ORDERS ."
+      from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
         select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
@@ -64,7 +64,7 @@
 
     $orders_query = database::query(
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday
-      from ". DB_TABLE_ORDERS ."
+      from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
         select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
@@ -80,9 +80,9 @@
 
     $orders_query = database::query(
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(payment_due - tax_total)
-      from ". DB_TABLE_ORDERS ."
+      from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
-        select id from ". DB_TABLE_ORDER_STATUSES ."
+        select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
       )
       and (date_created > '". date('Y-m-d H:i:s', strtotime('-3 months', strtotime('Monday this week'))) ."' and date_created < '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')

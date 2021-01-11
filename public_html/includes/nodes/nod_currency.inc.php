@@ -83,7 +83,7 @@
     // Get currency from country
       if (!empty(customer::$data['country_code'])) {
         $countries_query = database::query(
-          "select * from ". DB_TABLE_COUNTRIES ."
+          "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(customer::$data['country_code']) ."'
           limit 1;"
         );

@@ -1361,8 +1361,8 @@ END;
 
     if (!empty($value)) {
       $product_query = database::query(
-        "select p.id, pi.name from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        "select p.id, pi.name from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where p.id = ". (int)$value ."
         limit 1;"
       );
@@ -1496,8 +1496,8 @@ END;
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $stock_items_query = database::query(
-      "select si.*, sii.name from ". DB_TABLE_STOCK_ITEMS ." si
-      left join ". DB_TABLE_STOCK_ITEMS_INFO ." sii on (si.id = sii.product_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+      "select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
+      left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.product_id and sii.language_code = '". database::input(language::$selected['code']) ."')
       order by sii.name"
     );
 

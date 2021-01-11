@@ -22,7 +22,7 @@
       <add><![CDATA[
     // Images
       $category_images_query = database::query(
-        "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+        "select * from ". DB_TABLE_PREFIX ."categories_images
         where category_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
       );
@@ -40,7 +40,7 @@
       <add><![CDATA[
     // Delete images
       $category_images_query = database::query(
-        "select * from ". DB_TABLE_CATEGORIES_IMAGES ."
+        "select * from ". DB_TABLE_PREFIX ."categories_images
         where category_id = ". (int)$this->data['id'] ."
         and id not in ('". @implode("', '", array_column($this->data['images'], 'id')) ."');"
       );
@@ -48,7 +48,7 @@
         if (is_file(FS_DIR_APP . 'images/' . $category_image['filename'])) unlink(FS_DIR_APP . 'images/' . $category_image['filename']);
         functions::image_delete_cache(FS_DIR_APP . 'images/' . $category_image['filename']);
         database::query(
-          "delete from ". DB_TABLE_CATEGORIES_IMAGES ."
+          "delete from ". DB_TABLE_PREFIX ."categories_images
           where category_id = ". (int)$this->data['id'] ."
           and id = ". (int)$category_image['id'] ."
           limit 1;"
@@ -61,7 +61,7 @@
         foreach (array_keys($this->data['images']) as $key) {
           if (empty($this->data['images'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_CATEGORIES_IMAGES ."
+              "insert into ". DB_TABLE_PREFIX ."categories_images
               (category_id)
               values (". (int)$this->data['id'] .");"
             );
@@ -76,7 +76,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_CATEGORIES_IMAGES ." set
+            "update ". DB_TABLE_PREFIX ."categories_images set
               filename = '". database::input($this->data['images'][$key]['filename']) ."',
               priority = '". $image_priority++ ."'
             where category_id = ". (int)$this->data['id'] ."
@@ -96,7 +96,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_CATEGORIES ." set
+        "update ". DB_TABLE_PREFIX ."categories set
         image = '". database::input($this->data['image']) ."'
         where id=". (int)$this->data['id'] ."
         limit 1;"
@@ -145,7 +145,7 @@
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 
       database::query(
-        "insert into ". DB_TABLE_CATEGORIES_IMAGES ."
+        "insert into ". DB_TABLE_PREFIX ."categories_images
         (category_id, filename, checksum, priority)
         values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
       );
@@ -368,7 +368,7 @@
           $this->_data['images'] = array();
 
           $query = database::query(
-            "select * from ". DB_TABLE_CATEGORIES_IMAGES."
+            "select * from ". DB_TABLE_PREFIX ."categories_images
             where category_id = ". (int)$this->_id ."
             order by priority asc, id asc;"
           );

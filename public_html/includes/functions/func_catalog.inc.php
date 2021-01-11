@@ -124,7 +124,7 @@
       foreach ($filter['attributes'] as $group_id => $values) {
         $sql_where_attributes[] =
           "and p.id in (
-            select distinct product_id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+            select distinct product_id from ". DB_TABLE_PREFIX ."products_attributes
             where (group_id = ". (int)$group_id ." and (value_id in ('". implode("', '", database::input($values)) ."') or custom_value in ('". implode("', '", database::input($values)) ."')))
           )";
       }
@@ -170,7 +170,7 @@
 
       left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 
-      left join ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa on (p.id = pa.product_id)
+      left join ". DB_TABLE_PREFIX ."products_attributes pa on (p.id = pa.product_id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
@@ -255,9 +255,9 @@
 
       from (
         select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.brand_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
-        from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_TO_CATEGORIES ." ptc on (p.id = ptc.product_id)
-        left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
+        from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (p.id = ptc.product_id)
+        left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
         where p.status
           and (p.id
           ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
@@ -279,7 +279,7 @@
 
       left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 
-      left join ". DB_TABLE_PRODUCTS_ATTRIBUTES ." pa on (p.id = pa.product_id)
+      left join ". DB_TABLE_PREFIX ."products_attributes pa on (p.id = pa.product_id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price

@@ -5,7 +5,7 @@
     if (!isset($_GET['group_id'])) throw new Exception('Missing group_id');
 
     $attribute_group_query = database::query(
-      "select * from ". DB_TABLE_ATTRIBUTE_GROUPS ."
+      "select * from ". DB_TABLE_PREFIX ."attribute_groups
       where id = ". (int)$_GET['group_id'] ."
       limit 1;"
     );

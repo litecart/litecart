@@ -541,7 +541,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_PRODUCTS ."products
+          "update ". DB_TABLE_PREFIX ."productsproducts
           set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
           where id = ". (int)$this->data['id'] ."
           limit 1;"
@@ -569,7 +569,7 @@
 
       if (!empty($combination)) {
         database::query(
-          "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+          "update ". DB_TABLE_PREFIX ."products_options_stock
           set quantity = quantity + ". (float)$quantity_adjustment ."
           where product_id = ". (int)$this->data['id'] ."
           and combination = '". database::input($combination) ."'
@@ -583,7 +583,7 @@
       } else {
 
         database::query(
-          "update ". DB_TABLE_PRODUCTS ."
+          "update ". DB_TABLE_PREFIX ."products
           set quantity = quantity + ". (float)$quantity_adjustment ."
           where id = ". (int)$this->data['id'] ."
           limit 1;"

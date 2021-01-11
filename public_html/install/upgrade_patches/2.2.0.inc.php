@@ -176,7 +176,7 @@
 
 // Complete Order Items
   $order_items_query = database::query(
-    "select * from ". DB_TABLE_ORDERS_ITEMS .";"
+    "select * from ". DB_TABLE_PREFIX ."orders_items;"
   );
 
   while ($order_item = database::fetch($order_items_query)) {
@@ -185,7 +185,7 @@
   // Get stock option
     if (!empty($order_item['option_stock_combination'])) {
       $stock_options_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        "select * from ". DB_TABLE_PREFIX ."products_options_stock
         where combination = '". database::input($order_item['option_stock_combination']) ."'
         limit 1;"
       );
@@ -195,7 +195,7 @@
 
     if (empty($stock_option)) {
       $stock_options_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        "select * from ". DB_TABLE_PREFIX ."products_options_stock
         where sku = '". database::input($order_item['sku']) ."'
         limit 1;"
       );
@@ -205,14 +205,14 @@
 
   // Product
     $products_query = database::query(
-      "select * from ". DB_TABLE_PRODUCTS ."
+      "select * from ". DB_TABLE_PREFIX ."products
       where id = ". (!empty($stock_option['product_id']) ? $stock_option['product_id'] : (int)$order_item['product_id']) ."
       limit 1;"
     );
 
     if (!$product = database::fetch($products_query)) {
       $products_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS ."
+        "select * from ". DB_TABLE_PREFIX ."products
         where sku = '". database::input($order_item['sku']) ."'
         limit 1;"
       );
@@ -222,7 +222,7 @@
 
   // Update order item
     database::query(
-      "update ". DB_TABLE_ORDERS_ITEMS ."
+      "update ". DB_TABLE_PREFIX ."orders_items
       set
         gtin = '". database::input($product['gtin']) ."',
         taric = '". database::input($product['taric']) ."',
@@ -244,7 +244,7 @@
   );
 
   $orders_query = database::query(
-    "select * from ". DB_TABLE_ORDERS ."
+    "select * from ". DB_TABLE_PREFIX ."orders
     where public_key = '';"
   );
 
@@ -253,7 +253,7 @@
     $public_key = md5($order['id'] . $order['uid'] . $order['customer_email'] . $order['date_created']);
 
     database::query(
-      "update ". DB_TABLE_ORDERS ."
+      "update ". DB_TABLE_PREFIX ."orders
       set public_key = '". database::input($public_key) ."'
       where id = ". (int)$order['id'] .";"
     );
