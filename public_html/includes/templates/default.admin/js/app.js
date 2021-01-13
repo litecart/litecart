@@ -158,6 +158,25 @@
     window.location.search = $.param(params);
   });
 
+  var lastTickedCheckbox = null;
+  $('.data-table input[type="checkbox"]').click(function(e){
+
+    var $chkboxes = $('.data-table input[type="checkbox"]');
+
+    if (!lastTickedCheckbox) {
+      lastTickedCheckbox = this;
+      return;
+    }
+
+    if (e.shiftKey) {
+      var start = $chkboxes.index(this);
+      var end = $chkboxes.index(lastTickedCheckbox);
+      $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
+    }
+
+    lastTickedCheckbox = this;
+  });
+
 // Keep-alive
   var keepAlive = setInterval(function(){
     $.get({
