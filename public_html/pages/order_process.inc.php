@@ -55,7 +55,7 @@
           if (!empty($gateway['error'])) {
             $order->data['comments'][] = array(
               'author' => 'system',
-              'text' => 'Payment Transfer Error: '. $result['error'],
+              'text' => 'Payment Transfer Error: '. $gateway['error'],
               'hidden' => true,
             );
 
