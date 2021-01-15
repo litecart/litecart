@@ -106,13 +106,15 @@
           }
 
           if ($do_redirect) {
+
+          // Send HTTP 302 if it's the start page
             if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_APP) {
               header('Location: '. $rewritten_url, true, 302);
               exit;
-            } else {
-              header('Location: '. $rewritten_url, true, 301);
-              exit;
             }
+
+            header('Location: '. $rewritten_url, true, 301);
+            exit;
           }
         }
       }
