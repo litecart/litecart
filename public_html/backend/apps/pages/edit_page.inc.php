@@ -78,7 +78,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
-          <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
+          <?php echo functions::form_draw_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
         </div>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>

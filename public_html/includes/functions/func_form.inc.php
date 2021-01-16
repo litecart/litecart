@@ -486,7 +486,13 @@ END;
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_toggle($name, $input=true, $type='e/d', $parameters='') {
+  function form_draw_toggle($name, $type='t/f', $input=true, $parameters='') {
+
+    if (is_numeric($type) && strpos($input, '/') === true) {
+      //trigger_error('Passing type as 3rd parameter in form_draw_toggle() is deprecated. Use instead form_draw_toggle($name, $type, $input, $parameters)', E_USER_DEPRECATED);
+      list($type, $input) = [$input, $type];
+    }
+
     if ($input === true) $input = form_reinsert_value($name);
 
     $input = in_array(strtolower($input), ['1', 'active', 'enabled', 'on', 'true', 'yes']) ? '1' : '0';
@@ -758,7 +764,7 @@ END;
         return form_draw_time_field($name, $input, $parameters);
 
       case 'toggle':
-        return form_draw_toggle($name, $input, !empty($options[0]) ? $options[0] : null);
+        return form_draw_toggle($name, !empty($options[0]) ? $options[0] : null, $input);
 
       case 'sold_out_status':
         return form_draw_sold_out_statuses_list($name, $input, false, $parameters);

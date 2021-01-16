@@ -188,7 +188,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_status', 'Status'); ?></label>
-                <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '0', 'e/d'); ?>
+                <?php echo functions::form_draw_toggle('status', 'e/d', isset($_POST['status']) ? $_POST['status'] : '0'); ?>
               </div>
 
               <div class="form-group">

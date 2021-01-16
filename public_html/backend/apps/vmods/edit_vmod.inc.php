@@ -125,7 +125,7 @@ textarea {
         <div class="col-md-4">
           <div class="form-group">
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '0', 'e/d'); ?>
+            <?php echo functions::form_draw_toggle('status', 'e/d', isset($_POST['status']) ? $_POST['status'] : '0'); ?>
           </div>
 
           <div class="form-group">
@@ -235,12 +235,12 @@ textarea {
 
                     <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][regex]', true, 'y/n'); ?>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][regex]', 'y/n', true); ?>
                     </div>
 
                     <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][trim]', true, 'y/n'); ?>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][trim]', 'y/n', true); ?>
                     </div>
                   </div>
 
@@ -254,12 +254,12 @@ textarea {
                   <div class="row">
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][regex]', true, 'y/n'); ?>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][regex]', 'y/n', true); ?>
                     </div>
 
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][trim]', true, 'y/n'); ?>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][trim]', 'y/n', true); ?>
                     </div>
                   </div>
 
@@ -282,12 +282,12 @@ textarea {
 
                     <div class="form-group col-md-4">
                       <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][regex]', true, 'y/n'); ?>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][regex]', 'y/n', true); ?>
                     </div>
 
                     <div class="form-group col-md-4">
                       <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][trim]', true, 'y/n'); ?>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][trim]', 'y/n', true); ?>
                     </div>
                   </div>
 
@@ -380,12 +380,12 @@ textarea {
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][regex]', true, 'y/n'); ?>
+            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][regex]', 'y/n', true); ?>
           </div>
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][trim]', true, 'y/n'); ?>
+            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][trim]', 'y/n', true); ?>
           </div>
         </div>
 
@@ -399,12 +399,12 @@ textarea {
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][regex]', true, 'y/n'); ?>
+            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][regex]', 'y/n', true); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][trim]', true, 'y/n'); ?>
+            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][trim]', 'y/n', true); ?>
           </div>
         </div>
       </div>
@@ -425,12 +425,12 @@ textarea {
 
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][regex]', true, 'y/n'); ?>
+            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][regex]', 'y/n', true); ?>
           </div>
 
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][trim]', true, 'y/n'); ?>
+            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][trim]', 'y/n', true); ?>
           </div>
         </div>
       </div>
