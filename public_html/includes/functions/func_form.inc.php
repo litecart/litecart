@@ -188,7 +188,7 @@ END;
   function form_draw_currency_field($name, $currency_code=null, $value=true, $parameters='') {
 
     if (preg_match('#^[A-Z]{3}$#', $name)) {
-      //trigger_error('form_draw_currency_field() no longer takes currency code as 1st parameter. Instead, use form_draw_currency_field($name, $currency_code, $value, $parameters)', E_USER_DEPRECATED);
+      trigger_error('Passing currency code as 1st parameter in form_draw_currency_field() is deprecated. Instead, use form_draw_currency_field($name, $currency_code, $value, $parameters)', E_USER_DEPRECATED);
       list($name, $currency_code) = [$currency_code, $name];
     }
 
@@ -259,7 +259,7 @@ END;
   function form_draw_decimal_field($name, $value=true, $decimals=2, $parameters='') {
 
     if (count($args = func_get_args()) > 4) {
-      trigger_error('form_draw_decimal_field() no longer takes min and max separate parameters. Instead define min="0" max="999" in the 4th parameter', E_USER_DEPRECATED);
+      trigger_error('Passing min and max separate parameters in form_draw_decimal_field() is deprecated. Instead define min="0" max="999" in $parameters', E_USER_DEPRECATED);
       if (isset($args[5])) $parameters = $args[5];
       if (isset($args[3])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[3] .'"';
       if (isset($args[4])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[4] .'"';
@@ -368,14 +368,29 @@ END;
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
-  function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
+  function form_draw_regional_input_field($name, $language_code='', $value=true, $parameters='') {
+
+    if (preg_match('#^[a-z]{2}$#', $name)) {
+      trigger_error('Passing $language code as 1st parameter in form_draw_regional_input_field() is deprecated. Instead, use form_draw_regional_input_field($name, $language_code, $value, $parameters)', E_USER_DEPRECATED);
+      list($name, $language_code) = [$language_code, $name];
+    }
+
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
+
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-addon"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
 
-  function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
+  function form_draw_regional_textarea($name, $language_code='', $value=true, $parameters='') {
+
+    if (preg_match('#^[a-z]{2}$#', $name)) {
+      trigger_error('Passing language code as 1st parameter in form_draw_regional_textarea() is deprecated. Instead, use form_draw_regional_textarea($name, $language_code, $value, $parameters)', E_USER_DEPRECATED);
+      list($name, $language_code) = [$language_code, $name];
+    }
+
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
@@ -383,7 +398,14 @@ END;
          . '</div>';
   }
 
-  function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
+  function form_draw_regional_wysiwyg_field($name, $language_code='', $value=true, $parameters='') {
+
+    if (preg_match('#^[a-z]{2}$#', $name)) {
+      trigger_error('Passing language code as 1st parameter in form_draw_regional_wysiwyg_field() is deprecated. Instead, use form_draw_regional_wysiwyg_field($name, $language_code, $value, $parameters)', E_USER_DEPRECATED);
+      list($name, $language_code) = [$language_code, $name];
+    }
+
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
@@ -496,7 +518,7 @@ END;
   function form_draw_toggle($name, $type='t/f', $input=true, $parameters='') {
 
     if (is_numeric($type) && strpos($input, '/') === true) {
-      //trigger_error('Passing type as 3rd parameter in form_draw_toggle() is deprecated. Use instead form_draw_toggle($name, $type, $input, $parameters)', E_USER_DEPRECATED);
+      trigger_error('Passing type as 3rd parameter in form_draw_toggle() is deprecated. Use instead form_draw_toggle($name, $type, $input, $parameters)', E_USER_DEPRECATED);
       list($type, $input) = [$input, $type];
     }
 
@@ -588,7 +610,12 @@ END;
 
   ######################################################################
 
-  function form_draw_function($function, $name, $input=true, $parameters='') {
+  function form_draw_function($name, $function, $input=true, $parameters='') {
+
+    if (preg_match('#\)$#', $name)) {
+      trigger_error('Passing function as 1st parameter in form_draw_function() is deprecated. Instead, use form_draw_function($name, $function, $value, $parameters)', E_USER_DEPRECATED);
+      list($name, $function) = [$function, $name];
+    }
 
     preg_match('#(\w*)(?:\()(.*?)(?:\))#i', $function, $matches);
 
@@ -716,21 +743,21 @@ END;
       case 'regional_text':
         $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $html .= form_draw_regional_input_field($language_code, $name.'['. $language_code.']', $input, $parameters);
+          $html .= form_draw_regional_input_field($name.'['. $language_code.']', $language_code, $input, $parameters);
         }
         return $html;
 
       case 'regional_textarea':
         $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $html .= form_draw_regional_textarea($language_code, $name.'['. $language_code.']', $input, $parameters);
+          $html .= form_draw_regional_textarea($name.'['. $language_code.']', $language_code, $input, $parameters);
         }
         return $html;
 
       case 'regional_wysiwyg':
         $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $html .= form_draw_regional_wysiwyg_field($language_code, $name.'['. $language_code.']', $input, $parameters);
+          $html .= form_draw_regional_wysiwyg_field($name.'['. $language_code.']', $language_code, $input, $parameters);
         }
         return $html;
 
@@ -798,17 +825,17 @@ END;
         return form_draw_weight_classes_list($name, $input, true, $parameters);
 
       case 'wysiwyg':
-        return form_draw_regional_wysiwyg_field($name, $input, $parameters);
+        return form_draw_regional_wysiwyg_field($input, $name, $parameters);
 
       case 'zone':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
-        return form_draw_zones_list($option, $name, $input, false, $parameters);
+        return form_draw_zones_list($name, $option, $input, false, $parameters);
 
       case 'zones':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
-        return form_draw_zones_list($option, $name, $input, true, $parameters);
+        return form_draw_zones_list($name, $option, $input, true, $parameters);
 
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_WARNING);
@@ -840,7 +867,12 @@ END;
     }
   }
 
-  function form_draw_attribute_values_list($group_id, $name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_attribute_values_list($name, $group_id, $input=true, $multiple=false, $parameters='') {
+
+    if (is_numeric($name)) {
+      trigger_error('form_draw_attribute_values_list() no longer takes group ID as 1st parameter. Instead, use form_draw_attribute_values_list($name, $group_id, $value, $parameters)', E_USER_DEPRECATED);
+      list($name, $group_id) = [$group_id, $name];
+    }
 
     $query = database::query(
       "select av.id, avi.name from ". DB_TABLE_PREFIX ."attribute_values av
@@ -1662,12 +1694,15 @@ END;
     }
   }
 
-  function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='', $preamble='none') {
+  function form_draw_zones_list($name, $country_code='', $input=true, $multiple=false, $parameters='', $preamble='none') {
 
-    if (empty($country_code)) $country_code = settings::get('default_country_code');
+    if (preg_match('#^([A-Z]{2}|default_country_code|store_country_code)$#', $name)) {
+      trigger_error('form_draw_zones_list() no longer takes country code as 1st parameter. Instead, use form_draw_zones_list($name, $country_code, $input)', E_USER_DEPRECATED);
+      list($name, $country_code) = [$country_code, $name];
+    }
 
+    if ($country_code == '') $country_code = settings::get('store_country_code');
     if ($country_code == 'default_country_code') $country_code = settings::get('default_country_code');
-
     if ($country_code == 'store_country_code') $country_code = settings::get('store_country_code');
 
     $zones_query = database::query(

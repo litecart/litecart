@@ -380,7 +380,7 @@ body.dark-mode #box-comments {
 
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                      <?php echo form_draw_zones_list(isset($_POST['customer']['country_code']) ? $_POST['customer']['country_code'] : null, 'customer[zone_code]', true); ?>
+                      <?php echo form_draw_zones_list('customer[zone_code]', isset($_POST['customer']['country_code']) ? $_POST['customer']['country_code'] : null, true); ?>
                     </div>
                   </div>
 
@@ -455,7 +455,7 @@ body.dark-mode #box-comments {
 
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                      <?php echo form_draw_zones_list(isset($_POST['customer']['shipping_address']['country_code']) ? $_POST['customer']['shipping_address']['country_code'] : null, 'customer[shipping_address][zone_code]', true); ?>
+                      <?php echo form_draw_zones_list('customer[shipping_address][zone_code]', isset($_POST['customer']['shipping_address']['country_code']) ? $_POST['customer']['shipping_address']['country_code'] : null, true); ?>
                     </div>
                   </div>
 
@@ -1367,8 +1367,8 @@ body.dark-mode #box-comments {
                + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field('order_total[new_ot_row_index][value]', $_POST['currency_code'], currency::format_raw(0), 'style="text-align: right;"')); ?>'
                + '      </div>'
                + '    </td>'
-               + '    <td class="text-right"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format_raw(0), 'style="text-align: right;"')); ?></td>'
-               + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #cc3333;"')); ?></a></td>'
+               + '    <td class="text-right"><?php echo functions::general_escape_js(functions::form_draw_currency_field('order_total[new_ot_row_index][tax]', $_POST['currency_code'], currency::format_raw(0), 'style="text-align: right;"')); ?></td>'
+               + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a></td>'
                + '  </tr>';
   output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
   $(this).closest('tr').before(output);

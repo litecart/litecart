@@ -115,7 +115,7 @@
           <tr>
             <td><?php echo functions::form_draw_hidden_field('new_zone[id]', ''); ?></td>
             <td><?php echo functions::form_draw_countries_list('new_zone[country_code]', ''); ?></td>
-            <td><?php echo functions::form_draw_zones_list('', 'new_zone[zone_code]', '', false, '', 'all'); ?></td>
+            <td><?php echo functions::form_draw_zones_list('new_zone[zone_code]', '', '', false, '', 'all'); ?></td>
             <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
           </tr>
         </tfoot>

@@ -117,12 +117,12 @@
         <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
           <div class="form-group">
             <label><?php echo language::translate('title_caption', 'Caption'); ?></label>
-            <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'caption['. $language_code .']', true, 'style="height: 240px;"'); ?>
+            <?php echo functions::form_draw_regional_wysiwyg_field('caption['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_link', 'Link'); ?></label>
-            <?php echo functions::form_draw_regional_input_field($language_code, 'link['. $language_code .']', true, ''); ?>
+            <?php echo functions::form_draw_regional_input_field('link['. $language_code .']', $language_code, true, ''); ?>
           </div>
         </div>
         <?php } ?>

@@ -75,13 +75,13 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field('name['. $language_code .']', $language_code, true, ''); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_description', 'Description'); ?></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="height: 60px;"'); ?>
+        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 60px;"'); ?>
       </div>
 
       <div class="row">

@@ -160,7 +160,7 @@
               <u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br />
               <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
             </td>
-            <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>
+            <td><?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
             <td class="text-right">
               <div class="btn-group">
                 <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>

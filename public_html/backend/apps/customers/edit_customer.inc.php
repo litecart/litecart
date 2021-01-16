@@ -207,7 +207,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_zone', 'Zone'); ?></label>
-              <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true); ?>
+              <?php echo functions::form_draw_zones_list('zone_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', true); ?>
             </div>
           </div>
 
@@ -299,7 +299,7 @@
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo functions::form_draw_zones_list(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
+                <?php echo functions::form_draw_zones_list('shipping_address[zone_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], true); ?>
               </div>
             </div>
 

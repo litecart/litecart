@@ -141,7 +141,7 @@
     while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
     $name_fields = '';
-    foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', '');
+    foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_draw_regional_input_field('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
 ?>
     var output = '<tr>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
