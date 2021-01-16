@@ -477,7 +477,7 @@
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
-                <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'recommended_price', true, 2, 0, null); ?>
+                <?php echo functions::form_draw_currency_field('recommended_price', settings::get('store_currency_code'), true); ?>
               </div>
 
               <div class="form-group col-md-6">
@@ -495,7 +495,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
+                  <td><?php echo functions::form_draw_currency_field('prices['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'data-currency-price="" placeholder=""'); ?></td>
                 <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 'min="0"'); ?></td>
                 </tr>
 <?php
@@ -503,7 +503,7 @@
     if ($currency['code'] == settings::get('store_currency_code')) continue;
 ?>
                 <tr>
-                  <td><?php echo functions::form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder=""'); ?></td>
+                  <td><?php echo functions::form_draw_currency_field('prices['. $currency['code'] .']', $currency['code'], true, 'data-currency-price="" placeholder=""'); ?></td>
                 <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 'min="0"'); ?></td>
                 </tr>
 <?php
@@ -529,14 +529,14 @@
                     <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?>
                   </td>
                   <td><?php echo settings::get('store_currency_code'); ?><br />
-                    <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns['.$key.']['. settings::get('store_currency_code') .']', true); ?>
+                    <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true); ?>
                   </td>
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
     if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
                   <td><?php echo $currency_code; ?><br />
-                    <?php echo functions::form_draw_currency_field($currency_code, 'campaigns['.$key.']['. $currency_code. ']', isset($_POST['campaigns'][$key][$currency_code]) ? number_format((float)$_POST['campaigns'][$key][$currency_code], 4, '.', '') : ''); ?>
+                    <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. $currency_code. ']', $currency_code, isset($_POST['campaigns'][$key][$currency_code]) ? number_format((float)$_POST['campaigns'][$key][$currency_code], 4, '.', '') : ''); ?>
                   </td>
 <?php
   }
@@ -1132,14 +1132,14 @@
                + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 'min="0"')); ?>'
                + '  </td>'
                + '  <td><?php echo functions::general_escape_js(settings::get('store_currency_code')); ?><br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', '')); ?>'
+               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '')); ?>'
                + '  </td>'
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
     if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
                + '  <td><?php echo functions::general_escape_js($currency_code); ?><br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '')); ?>'
+               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. $currency_code .']', $currency_code, '')); ?>'
                + '  </td>'
 <?php
   }

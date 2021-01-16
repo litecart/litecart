@@ -631,8 +631,8 @@ body.dark-mode #box-comments {
                 <span class="dim_x"><?php echo (float)$_POST['items'][$key]['dim_x']; ?></span> x <span class="dim_y"><?php echo (float)$_POST['items'][$key]['dim_y']; ?></span> x <span class="dim_z"><?php echo (float)$_POST['items'][$key]['dim_z']; ?></span> <span class="dim_class"><?php echo $_POST['items'][$key]['dim_class']; ?></span>
               </td>
               <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
-              <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
-              <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
+              <td><?php echo functions::form_draw_currency_field('items['. $key .'][price]', $_POST['currency_code'], true); ?></td>
+              <td><?php echo functions::form_draw_currency_field('items['. $key .'][tax]', $_POST['currency_code'], true); ?></td>
               <td class="text-right">
                 <a class="edit" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
                 <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #cc3333;"'); ?></a>
@@ -692,10 +692,10 @@ body.dark-mode #box-comments {
                 <td class="text-right">
                   <div class="input-group">
                     <span class="input-group-addon"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
-                    <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="text-align: right;"'); ?>
+                    <?php echo functions::form_draw_currency_field('order_total['. $key .'][value]', $_POST['currency_code'], true, 'style="text-align: right;"'); ?>
                   </div>
                 </td>
-                <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: right;"'); ?></td>
+                <td class="text-right"><?php echo functions::form_draw_currency_field('order_total['. $key .'][tax]', $_POST['currency_code'], true, 'style="text-align: right;"'); ?></td>
                 <td>&nbsp;</td>
               </tr>
 <?php
@@ -709,10 +709,10 @@ body.dark-mode #box-comments {
                 <td class="text-right">
                   <div class="input-group">
                   <span class="input-group-addon"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
-                  <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="text-align: right;"'); ?>
+                  <?php echo functions::form_draw_currency_field('order_total['. $key .'][value]', $_POST['currency_code'], true, 'style="text-align: right;"'); ?>
                   </div>
                 </td>
-                <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: right;"'); ?></td>
+                <td class="text-right"><?php echo functions::form_draw_currency_field('order_total['. $key .'][tax]', $_POST['currency_code'], true, 'style="text-align: right;"'); ?></td>
                 <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
               </tr>
 <?php
@@ -853,12 +853,12 @@ body.dark-mode #box-comments {
 
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
-        <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'price', ''); ?>
+        <?php echo functions::form_draw_currency_field('price', $_POST['currency_code'], ''); ?>
       </div>
 
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-        <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', ''); ?>
+        <?php echo functions::form_draw_currency_field('tax', $_POST['currency_code'], ''); ?>
       </div>
     </div>
 
@@ -936,12 +936,12 @@ body.dark-mode #box-comments {
 
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
-        <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'price', ''); ?>
+        <?php echo functions::form_draw_currency_field('price', $_POST['currency_code'], ''); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-4">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-        <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', ''); ?>
+        <?php echo functions::form_draw_currency_field('tax', $_POST['currency_code'], ''); ?>
       </div>
     </div>
 
@@ -1307,8 +1307,8 @@ body.dark-mode #box-comments {
                + '      <span class="dim_x"></span> x <span class="dim_y"></span> x <span class="dim_z"></span> <span class="dim_class"></span>'
                + '    </td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
-               + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
-               + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
+               + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
+               + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>'
                + '    <td class="text-right">'
                + '      <a class="edit" href="#" title="<?php echo functions::general_escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('edit')); ?></a>'
                + '      <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #cc3333;"')); ?></a>'
@@ -1364,7 +1364,7 @@ body.dark-mode #box-comments {
                + '    <td class="text-right">'
                + '      <div class="input-group">'
                + '        <span class="input-group-addon"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
-               + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format_raw(0), 'style="text-align: right;"')); ?>'
+               + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field('order_total[new_ot_row_index][value]', $_POST['currency_code'], currency::format_raw(0), 'style="text-align: right;"')); ?>'
                + '      </div>'
                + '    </td>'
                + '    <td class="text-right"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format_raw(0), 'style="text-align: right;"')); ?></td>'

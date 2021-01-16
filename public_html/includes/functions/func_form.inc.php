@@ -185,7 +185,14 @@ END;
     return $html;
   }
 
-  function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
+  function form_draw_currency_field($name, $currency_code=null, $value=true, $parameters='') {
+
+    if (preg_match('#^[A-Z]{3}$#', $name)) {
+      //trigger_error('form_draw_currency_field() no longer takes currency code as 1st parameter. Instead, use form_draw_currency_field($name, $currency_code, $value, $parameters)', E_USER_DEPRECATED);
+      list($name, $currency_code) = [$currency_code, $name];
+    }
+
+    if ($currency_code == '') $currency_code = settings::get('store_currency_code');
     if ($value === true) $value = form_reinsert_value($name);
 
   // Format and show an additional two decimals precision if needed

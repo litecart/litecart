@@ -114,12 +114,12 @@
 
           <div class="form-group col-md-4">
           <label><?php echo language::translate('title_price', 'Price'); ?></label>
-          <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'price', true); ?>
+          <?php echo functions::form_draw_currency_field('price', $_GET['currency_code'], true); ?>
         </div>
 
           <div class="form-group col-md-4">
           <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-          <?php echo functions::form_draw_currency_field($_GET['currency_code'], 'tax', true); ?>
+          <?php echo functions::form_draw_currency_field('tax', $_GET['currency_code'], true); ?>
         </div>
       </div>
 
