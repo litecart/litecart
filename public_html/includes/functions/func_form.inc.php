@@ -623,16 +623,14 @@ END;
       list($name, $function) = [$function, $name];
     }
 
-    preg_match('#(\w*)(?:\()(.*?)(?:\))#i', $function, $matches);
-
-    if (!isset($matches[1])) trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
+    if (!preg_match('#(\w*)\((.*?)\)$#i', $function, $matches)) {
+      trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
+    }
 
     $options = [];
-    if (isset($matches[2])) {
-      $options = explode(',', $matches[2]);
-      for ($i=0; $i<count($options); $i++) {
-        $options[$i] = trim($options[$i], '\'" ');
-      }
+    if (!empty($matches[2])) {
+      $options = preg_split('#\s*,\s*#', $matches[2], -1, PREG_SPLIT_NO_EMPTY);
+      $options = array_map($options, function($a){ return trim($a, '\'" '); });
     }
 
     switch ($matches[1]) {
