@@ -37,6 +37,13 @@
         $last_modified = $folder_last_modified;
       }
 
+    // Get last modification date modifications
+      foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
+        if (filemtime($file) > $last_modified) {
+          $last_modified = filemtime($file);
+        }
+      }
+
     // If no cache is requested by browser
       //if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
       //  $last_modified = time();
