@@ -472,11 +472,17 @@ END;
     return $html;
   }
 
-  function form_draw_select_optgroup_field($name, $groups=[], $input=true, $multiple=false, $parameters='') {
+  function form_draw_select_optgroup_field($name, $groups=[], $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
+      trigger_error('Passing $multiple as 4th parameter in form_draw_select_optgroup_field() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[4])) $parameters = $args[3];
+    }
+
     if (!is_array($groups)) $groups = [$groups];
 
     $html = '<div class="'. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .'">' . PHP_EOL
-          . '  <select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+          . '  <select name="'. htmlspecialchars($name) .'"'. (preg_match('#\[\]$#', $name) ? ' multiple' : false) . (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
       $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
@@ -659,37 +665,27 @@ END;
         return form_draw_textarea($name, $input, $parameters . ' rows="10"');
 
       case 'category':
+      case 'categories':
         return form_draw_categories_list($name, $input, $parameters);
 
-      case 'categories':
-        return form_draw_categories_list($name, $input, true, $parameters);
-
       case 'customer':
-        return form_draw_customers_list($name, $input, false, $parameters);
-
       case 'customers':
-        return form_draw_customers_list($name, $input, true, $parameters);
+        return form_draw_customers_list($name, $input, $parameters);
 
       case 'country':
-        return form_draw_countries_list($name, $input, false, $parameters);
-
       case 'countries':
-        return form_draw_countries_list($name, $input, true, $parameters);
+        return form_draw_countries_list($name, $input, $parameters);
 
       case 'currency':
-        return form_draw_currencies_list($name, $input, false, $parameters);
-
       case 'currencies':
-        return form_draw_currencies_list($name, $input, true, $parameters);
+        return form_draw_currencies_list($name, $input, $parameters);
 
       case 'csv':
         return form_draw_textarea($name, $input, true, $parameters . ' data-type="csv"');
 
       case 'delivery_status':
-        return form_draw_delivery_statuses_list($name, $input, false, $parameters);
-
       case 'delivery_statuses':
-        return form_draw_delivery_statuses_list($name, $input, true, $parameters);
+        return form_draw_delivery_statuses_list($name, $input, $parameters);
 
       case 'email':
         return functions::form_draw_email_field($name, $input, $parameters);
@@ -698,46 +694,32 @@ END;
         return functions::form_draw_file_field($name);
 
       case 'geo_zone':
-        return form_draw_geo_zones_list($name, $input, false, $parameters);
-
       case 'geo_zones':
-        return form_draw_geo_zones_list($name, $input, true, $parameters);
+        return form_draw_geo_zones_list($name, $input, $parameters);
 
       case 'language':
-        return form_draw_languages_list($name, $input, false, $parameters);
-
       case 'languages':
-        return form_draw_languages_list($name, $input, true, $parameters);
+        return form_draw_languages_list($name, $input, $parameters);
 
       case 'length_class':
-        return form_draw_length_classes_list($name, $input, false, $parameters);
-
       case 'length_classes':
-        return form_draw_length_classes_list($name, $input, true, $parameters);
+        return form_draw_length_classes_list($name, $input, $parameters);
 
       case 'product':
-        return form_draw_products_list($name, $input, false, $parameters);
-
       case 'products':
-        return form_draw_products_list($name, $input, true, $parameters);
+        return form_draw_products_list($name, $input, $parameters);
 
       case 'quantity_unit':
-        return form_draw_quantity_units_list($name, $input, false, $parameters);
-
       case 'quantity_units':
-        return form_draw_quantity_units_list($name, $input, true, $parameters);
+        return form_draw_quantity_units_list($name, $input, $parameters);
 
       case 'stock_option':
-        return form_draw_stock_options_list($name, $input, false, $parameters);
-
       case 'stock_options':
-        return form_draw_stock_options_list($name, $input, true, $parameters);
+        return form_draw_stock_options_list($name, $input, $parameters);
 
       case 'order_status':
-        return form_draw_order_status_list($name, $input, false, $parameters);
-
       case 'order_statuses':
-        return form_draw_order_status_list($name, $input, true, $parameters);
+        return form_draw_order_status_list($name, $input, $parameters);
 
       case 'regional_input': //Deprecated
       case 'regional_text':
@@ -762,10 +744,8 @@ END;
         return $html;
 
       case 'page':
-        return form_draw_pages_list($name, $input, false, $parameters);
-
       case 'pages':
-        return form_draw_pages_list($name, $input, true, $parameters);
+        return form_draw_pages_list($name, $input, $parameters);
 
       case 'radio':
         $html = '';
@@ -783,16 +763,12 @@ END;
         return form_draw_select_multiple_field($name, $options, $input, $parameters);
 
       case 'timezone':
-        return form_draw_timezones_list($name, $input, false, $parameters);
-
       case 'timezones':
-        return form_draw_timezones_list($name, $input, true, $parameters);
+        return form_draw_timezones_list($name, $input, $parameters);
 
       case 'template':
-        return form_draw_templates_list($name, $input, false, $parameters);
-
       case 'templates':
-        return form_draw_templates_list($name, $input, true, $parameters);
+        return form_draw_templates_list($name, $input, $parameters);
 
       case 'time':
         return form_draw_time_field($name, $input, $parameters);
@@ -801,41 +777,29 @@ END;
         return form_draw_toggle($name, !empty($options[0]) ? $options[0] : null, $input);
 
       case 'sold_out_status':
-        return form_draw_sold_out_statuses_list($name, $input, false, $parameters);
-
       case 'sold_out_statuses':
-        return form_draw_sold_out_statuses_list($name, $input, true, $parameters);
+        return form_draw_sold_out_statuses_list($name, $input, $parameters);
 
       case 'tax_class':
-        return form_draw_tax_classes_list($name, $input, false, $parameters);
-
       case 'tax_classes':
-        return form_draw_tax_classes_list($name, $input, true, $parameters);
+        return form_draw_tax_classes_list($name, $input, $parameters);
 
       case 'user':
-        return form_draw_users_list($name, $input, false, $parameters);
-
       case 'users':
-        return form_draw_users_list($name, $input, true, $parameters);
+        return form_draw_users_list($name, $input, $parameters);
 
       case 'weight_class':
-        return form_draw_weight_classes_list($name, $input, false, $parameters);
-
       case 'weight_classes':
-        return form_draw_weight_classes_list($name, $input, true, $parameters);
+        return form_draw_weight_classes_list($name, $input, $parameters);
 
       case 'wysiwyg':
         return form_draw_regional_wysiwyg_field($input, $name, $parameters);
 
       case 'zone':
-        $option = !empty($options) ? $options[0] : '';
-        //if (empty($option)) $option = settings::get('store_country_code');
-        return form_draw_zones_list($name, $option, $input, false, $parameters);
-
       case 'zones':
         $option = !empty($options) ? $options[0] : '';
         //if (empty($option)) $option = settings::get('store_country_code');
-        return form_draw_zones_list($name, $option, $input, true, $parameters);
+        return form_draw_zones_list($name, $option, $input, $parameters);
 
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_WARNING);
@@ -844,7 +808,12 @@ END;
     }
   }
 
-  function form_draw_attribute_groups_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_attribute_groups_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_attribute_groups_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $query = database::query(
       "select ag.id, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
@@ -853,25 +822,28 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($row = database::fetch($query)) {
       $options[] = [$row['name'], $row['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_attribute_values_list($name, $group_id, $input=true, $multiple=false, $parameters='') {
+  function form_draw_attribute_values_list($name, $group_id, $input=true, $parameters='') {
 
     if (is_numeric($name)) {
       trigger_error('form_draw_attribute_values_list() no longer takes group ID as 1st parameter. Instead, use form_draw_attribute_values_list($name, $group_id, $value, $parameters)', E_USER_DEPRECATED);
       list($name, $group_id) = [$group_id, $name];
+    }
+
+    if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
+      trigger_error('Passing $multiple as 4th parameter in form_draw_attribute_values_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[4])) $parameters = $args[3];
     }
 
     $query = database::query(
@@ -882,23 +854,26 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($row = database::fetch($query)) {
       $options[] = [$row['name'], $row['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_categories_list($name, $input=true, $parameters='') {
 
-    if (!$multiple) {
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_categories_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_category_field($name, $options, $input, $parameters);
     }
 
@@ -1021,7 +996,12 @@ END;
     return $html;
   }
 
-  function form_draw_countries_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_countries_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_countries_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1035,45 +1015,48 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($country = database::fetch($countries_query)) {
       $options[] = [$country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_currencies_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_currencies_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     foreach (currency::$currencies as $currency) {
       $options[] = [$currency['name'], $currency['code'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. htmlspecialchars($currency['prefix']) .'" data-suffix="'. htmlspecialchars($currency['suffix']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_customers_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_customers_list($name, $input=true, $parameters='') {
 
     if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_draw_customers_list()', E_USER_ERROR);
 
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_customers_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
+
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     $customers_query = database::query(
       "select id, email, company, firstname, lastname from ". DB_TABLE_PREFIX ."customers
       order by email;"
@@ -1083,14 +1066,20 @@ END;
       $options[] = [$customer['email'], $customer['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_delivery_statuses_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_delivery_statuses_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1104,25 +1093,24 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($row = database::fetch($query)) {
       $options[] = [$row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_encodings_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_encodings_list($name, $input=true, $parameters='') {
 
-    $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_encodings_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $encodings = [
       'BIG-5',
@@ -1161,61 +1149,75 @@ END;
       'Windows-1254',
     ];
 
+    $options = [];
     foreach ($encodings as $encoding) {
       $options[] = [$encoding];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_geo_zones_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_geo_zones_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_geo_zones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $geo_zones_query = database::query(
       "select * from ". DB_TABLE_PREFIX ."geo_zones
       order by name asc;"
     );
 
-    $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     if (!database::num_rows($geo_zones_query)) {
       return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled');
     }
 
+    $options = [];
     while ($geo_zone = database::fetch($geo_zones_query)) {
       $options[] = [$geo_zone['name'], $geo_zone['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_languages_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_languages_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     foreach (language::$languages as $language) {
       $options[] = [$language['name'], $language['code']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_length_classes_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_length_classes_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_length_classes_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1223,21 +1225,24 @@ END;
     }
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['--', ''];
-
     foreach (length::$classes as $class) {
       $options[] = [$class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['--', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_brands_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_brands_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_brands_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $brands_query = database::query(
       "select id, name from ". DB_TABLE_PREFIX ."brands
@@ -1245,21 +1250,24 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($brand = database::fetch($brands_query)) {
       $options[] = [$brand['name'], $brand['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_mysql_collations_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_mysql_collations_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_mysql_collations_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $collations_query = database::query(
       "select * from information_schema.COLLATIONS
@@ -1268,44 +1276,50 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($row = database::fetch($collations_query)) {
       $options[] = [$row['COLLATION_NAME'], $row['COLLATION_NAME']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_mysql_engines_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_mysql_engines_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_mysql_engines_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $collations_query = database::query(
       "SHOW ENGINES;"
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($row = database::fetch($collations_query)) {
       if (!in_array(strtoupper($row['Support']), ['YES', 'DEFAULT'])) continue;
       if (!in_array($row['Engine'], ['CSV', 'InnoDB', 'MyISAM', 'Aria'])) continue;
       $options[] = [$row['Engine'] . ' -- '. $row['Comment'], $row['Engine']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_order_status_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_order_status_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_order_status_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $query = database::query(
       "select os.id, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
@@ -1314,21 +1328,24 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($row = database::fetch($query)) {
       $options[] = [$row['name'], $row['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_pages_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_pages_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_pages_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $iterator = function($parent_id, $level) use (&$iterator) {
 
@@ -1361,20 +1378,22 @@ END;
       return $options;
     };
 
-    $options = [];
+    $options = $iterator(0, 1);
 
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
-    $options = array_merge($options, $iterator(0, 1));
-
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_payment_modules_list($name, $input=true, $multiple=true, $parameters='') {
+  function form_draw_payment_modules_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_payment_modules_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $modules_query = database::query(
       "select * from ". DB_TABLE_PREFIX ."modules
@@ -1383,17 +1402,15 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($module = database::fetch($modules_query)) {
       $module = new $module();
       $options[] = [$module->name, $module->id];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
@@ -1431,11 +1448,12 @@ END;
          . '</div>';
   }
 
-  function form_draw_products_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_products_list($name, $input=true, $parameters='') {
 
-    $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_products_list() is deprecated.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $products_query = database::query(
       "select p.*, pi.name from ". DB_TABLE_PREFIX ."products p
@@ -1443,18 +1461,25 @@ END;
       order by pi.name"
     );
 
+    $options = [];
     while ($product = database::fetch($products_query)) {
       $options[] = [$product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_quantity_units_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_quantity_units_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1468,21 +1493,24 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($quantity_unit = database::fetch($quantity_units_query)) {
       $options[] = [$quantity_unit['name'], $quantity_unit['id'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. htmlspecialchars($quantity_unit['description']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_shipping_modules_list($name, $input=true, $multiple=true, $parameters='') {
+  function form_draw_shipping_modules_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_shipping_modules_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $modules_query = database::query(
       "select * from ". DB_TABLE_PREFIX ."modules
@@ -1491,22 +1519,25 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($module = database::fetch($modules_query)) {
       $module = new $module();
       $options[] = [$module->name, $module->id];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_sold_out_statuses_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_sold_out_statuses_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_sold_out_statuses_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1520,25 +1551,24 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($row = database::fetch($query)) {
       $options[] = [$row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_stock_items_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_stock_items_list($name, $input=true, $parameters='') {
 
-    $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_stock_items_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $stock_items_query = database::query(
       "select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
@@ -1546,18 +1576,25 @@ END;
       order by sii.name"
     );
 
+    $options = [];
     while ($stock_item = database::fetch($stock_items_query)) {
       $options[] = [$stock_item['name'] .' &mdash; '. $stock_item['sku'] . ' ['. (float)$stock_item['quantity'] .']', $stock_item['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_suppliers_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_suppliers_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_suppliers_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $suppliers_query = database::query(
       "select id, name, description from ". DB_TABLE_PREFIX ."suppliers
@@ -1565,21 +1602,24 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($supplier = database::fetch($suppliers_query)) {
       $options[] = [$supplier['name'], $supplier['id'], 'title="'. htmlspecialchars($supplier['description']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_tax_classes_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_tax_classes_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1592,65 +1632,72 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($tax_class = database::fetch($tax_classes_query)) {
       $options[] = [$tax_class['name'], $tax_class['id'], 'title="'. htmlspecialchars($tax_class['description']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_templates_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_templates_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_templates_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $folders = glob(FS_DIR_APP . 'frontend/templates/*', GLOB_ONLYDIR);
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     foreach ($folders as $folder) {
       $options[] = [basename($folder)];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_timezones_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_timezones_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_timezones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $options = [];
+    foreach (timezone_identifiers_list() as $timezone) {
+      $timezone = explode('/', $timezone); // 0 => Continent, 1 => City
 
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
-    $zones = timezone_identifiers_list();
-
-    foreach ($zones as $zone) {
-      $zone = explode('/', $zone); // 0 => Continent, 1 => City
-
-      if (in_array($zone[0], ['Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'])) {
-        if (!empty($zone[1])) {
-          $options[] = [implode('/', $zone)];
+      if (in_array($timezone[0], ['Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'])) {
+        if (!empty($timezone[1])) {
+          $options[] = [implode('/', $timezone)];
         }
       }
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_users_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_users_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_users_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     $users_query = database::query(
       "select id, username from ". DB_TABLE_PREFIX ."users
@@ -1658,21 +1705,24 @@ END;
     );
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
     while ($user = database::fetch($users_query)) {
       $options[] = [$user['username'], $user['id']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
+  function form_draw_weight_classes_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_weight_classes_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
@@ -1680,25 +1730,28 @@ END;
     }
 
     $options = [];
-
-    if (empty($multiple)) $options[] = ['--', ''];
-
     foreach (weight::$classes as $class) {
       $options[] = [$class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      array_unshift($options, ['--', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
 
-  function form_draw_zones_list($name, $country_code='', $input=true, $multiple=false, $parameters='', $preamble='none') {
+  function form_draw_zones_list($name, $country_code='', $input=true, $parameters='', $preamble='none') {
 
     if (preg_match('#^([A-Z]{2}|default_country_code|store_country_code)$#', $name)) {
       trigger_error('form_draw_zones_list() no longer takes country code as 1st parameter. Instead, use form_draw_zones_list($name, $country_code, $input)', E_USER_DEPRECATED);
       list($name, $country_code) = [$country_code, $name];
+    }
+
+    if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_zones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      if (isset($args[4])) $parameters = $args[3];
     }
 
     if ($country_code == '') $country_code = settings::get('store_country_code');
@@ -1732,7 +1785,7 @@ END;
       $options[] = [$zone['name'], $zone['code']];
     }
 
-    if ($multiple) {
+    if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
       return form_draw_select_field($name, $options, $input, $parameters);

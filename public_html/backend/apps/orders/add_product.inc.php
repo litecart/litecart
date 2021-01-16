@@ -87,7 +87,7 @@
           <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
-            <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?></span>
+            <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', true, 'style="width: auto;"'); ?></span>
           </div>
         </div>
 
@@ -100,7 +100,7 @@
             <span class="input-group-addon">x</span>
             <?php echo functions::form_draw_decimal_field('dim_z', true, 3, 'min="0"'); ?>
             <span class="input-group-addon">
-              <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
+              <?php echo functions::form_draw_length_classes_list('dim_class', true, 'style="width: auto;"'); ?>
             </span>
           </div>
         </div>

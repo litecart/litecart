@@ -202,7 +202,7 @@ table .fa-star:hover {
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <div><?php echo functions::form_draw_order_status_list('order_status_id', true, false); ?></div>
+      <div><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></div>
       <div><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true); ?></div>
       <div class="input-group" style="max-width: 380px;">
         <?php echo functions::form_draw_date_field('date_from', true); ?>

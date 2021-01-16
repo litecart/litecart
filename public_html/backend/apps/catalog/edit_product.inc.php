@@ -471,7 +471,7 @@
                 <div class="input-group">
                   <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
                   <span class="input-group-addon">
-                    <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
+                    <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
                   </span>
                 </div>
               </div>
@@ -560,7 +560,7 @@
           <div class="row" style="max-width: 960px;">
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
-              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
+              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
             </div>
 
             <div class="form-group col-md-4">
