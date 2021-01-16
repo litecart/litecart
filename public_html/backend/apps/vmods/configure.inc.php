@@ -90,9 +90,9 @@ pre {
 						</td>
 						<td style="width: 50%">
 							<?php if (!empty($setting->multiple)) { ?>
-							<?php echo functions::form_draw_function($setting->function, 'settings['.$setting->key.'][]', true); ?>
+							<?php echo functions::form_draw_function('settings['.$setting->key.'][]', $setting->function, true); ?>
 							<?php } else { ?>
-							<?php echo functions::form_draw_function($setting->function, 'settings['.$setting->key.']', true); ?>
+							<?php echo functions::form_draw_function('settings['.$setting->key.']', $setting->function, true); ?>
 							<?php } ?>
 						</td>
 					</tr>

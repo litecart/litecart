@@ -115,7 +115,7 @@
       $html .= '      <th>'. $column .'</th>' . PHP_EOL;
     }
 
-    $html .= '      <th><a class="add-column" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></th>' . PHP_EOL
+    $html .= '      <th><a class="add-column" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .'</a></th>' . PHP_EOL
            . '    </tr>' . PHP_EOL
            . '  </thead>' . PHP_EOL
            . '  <tbody>' . PHP_EOL;
@@ -132,7 +132,7 @@
     $html .= '  </tbody>' . PHP_EOL
            . '  <tfoot>' . PHP_EOL
            . '    <tr>' . PHP_EOL
-           . '      <td colspan="'. (count($columns)+1) .'"><a class="add-row" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"') .'</a></td>' . PHP_EOL
+           . '      <td colspan="'. (count($columns)+1) .'"><a class="add-row" href="#">'. functions::draw_fonticon('fa-plus', 'style="color: #6c6;"') .'</a></td>' . PHP_EOL
            . '    </tr>' . PHP_EOL
            . '  </tfoot>' . PHP_EOL
            . '</table>' . PHP_EOL
@@ -353,6 +353,40 @@ END;
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</div>';
+  }
+
+
+  function form_draw_product_field($name, $input=true, $parameters='') {
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    $product_name = '('. language::translate('title_no_product', 'No Product') .')';
+
+    if (!empty($input)) {
+      $product_query = database::query(
+        "select p.id, pi.name from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        where p.id = ". (int)$input ."
+        limit 1;"
+      );
+
+      if ($product = database::fetch($product_query)) {
+        $product_name = $product['name'];
+      }
+    }
+
+    functions::draw_lightbox();
+
+    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
+         . '  <div class="form-control">' . PHP_EOL
+         . '    ' . form_draw_hidden_field($name, true) . PHP_EOL
+         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
+         . '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '  <div style="align-self: center;">' . PHP_EOL
+         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'product_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  </div>' . PHP_EOL
          . '</div>';
   }
 
@@ -611,7 +645,7 @@ END;
                                         . '    semantic: false' . PHP_EOL
                                         . '  });';
 
-    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
+    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($input) .'</textarea>';
   }
 
   ######################################################################
@@ -1411,39 +1445,6 @@ END;
       array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
-  }
-
-  function form_draw_product_field($name, $input=true, $parameters='') {
-
-    if ($input === true) $input = form_reinsert_value($name);
-
-    $product_name = '('. language::translate('title_no_product', 'No Product') .')';
-
-    if (!empty($input)) {
-      $product_query = database::query(
-        "select p.id, pi.name from ". DB_TABLE_PREFIX ."products p
-        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-        where p.id = ". (int)$input ."
-        limit 1;"
-      );
-
-      if ($product = database::fetch($product_query)) {
-        $product_name = $product['name'];
-      }
-    }
-
-    functions::draw_lightbox();
-
-    return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
-         . '  <div class="form-control">' . PHP_EOL
-         . '    ' . form_draw_hidden_field($name, true) . PHP_EOL
-         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
-         . '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'product_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
-         . '  </div>' . PHP_EOL
-         . '</div>';
   }
 
   function form_draw_products_list($name, $input=true, $parameters='') {
