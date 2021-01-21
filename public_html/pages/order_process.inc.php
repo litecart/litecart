@@ -44,7 +44,7 @@
         if ($payment_error = $payment->pre_check($order)) {
           $order->data['comments'][] = array(
             'author' => 'system',
-            'text' => 'Payment Precheck Error: '. $result['error'],
+            'text' => 'Payment Precheck Error: '. $payment_error,
             'hidden' => true,
           );
           throw new Exception($payment_error);
