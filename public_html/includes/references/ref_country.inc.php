@@ -96,7 +96,7 @@
       );
 
       $output = strtr($this->address_format, $address);
-      $output = preg_replace('(\r\n?|\n)+', '\r\n', $output);
+      $output = preg_replace('#(\r\n?|\n)+#', "\r\n", $output);
 
       return trim($output);
     }
