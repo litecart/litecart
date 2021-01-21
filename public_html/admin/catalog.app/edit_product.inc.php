@@ -480,7 +480,7 @@
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
-                <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'recommended_price', true, 2, 0, null); ?>
+                <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'recommended_price', true); ?>
               </div>
 
               <div class="form-group col-md-6">

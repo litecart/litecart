@@ -139,7 +139,7 @@
     }
 
     if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
-    if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
+    if (empty($order['order_status_color'])) $order['order_status_color'] = '#ccc';
 
     $order['css_classes'] = array();
     if (empty($order['order_status_id'])) $order['css_classes'][]= 'semi-transparent';
