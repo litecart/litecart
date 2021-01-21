@@ -277,12 +277,12 @@
         shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
         shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
         shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
-        shipping_option_id = '". database::input($this->shipping->data['selected']['id']) ."',
-        shipping_option_name = '". database::input($this->shipping->data['selected']['name']) ."',
+        shipping_option_id = '". database::input($this->shipping->selected['id']) ."',
+        shipping_option_name = '". database::input($this->shipping->selected['name']) ."',
         shipping_tracking_id = '". database::input($this->data['shipping_tracking_id']) ."',
         shipping_tracking_url = '". database::input($this->data['shipping_tracking_url']) ."',
-        payment_option_id = '". database::input($this->payment->data['selected']['id']) ."',
-        payment_option_name = '". database::input($this->payment->data['selected']['name']) ."',
+        payment_option_id = '". database::input($this->payment->selected['id']) ."',
+        payment_option_name = '". database::input($this->payment->selected['name']) ."',
         payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
         reference = '". database::input($this->data['reference']) ."',
         language_code = '". database::input($this->data['language_code']) ."',
@@ -501,10 +501,10 @@
 
     public function calculate_total() {
 
-      $order->data['order_total'] = [];
+      $this->data['order_total'] = [];
 
-      foreach ($this->order_total->process($order) as $row) {
-        $order->data['order_total'][] = [
+      foreach ($this->order_total->process($this) as $row) {
+        $this->data['order_total'][] = [
           'id' => null,
           'module_id' => $row['id'],
           'title' =>  $row['title'],
@@ -653,10 +653,10 @@
 
     // Validate shipping option
       if (!empty($this->shipping->modules) && count($this->shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
-        if (empty($this->shipping->data['selected'])) {
+        if (empty($this->shipping->selected)) {
           return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
         } else {
-          list($module_id, $option_id) = explode(':', $this->shipping->data['selected']['id']);
+          list($module_id, $option_id) = explode(':', $this->shipping->selected['id']);
           if (empty($this->shipping->data['options'][$module_id]['options'][$option_id])) {
             return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
           }
@@ -668,10 +668,10 @@
 
     // Validate payment option
       if (!empty($this->payment->modules) && count($this->payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
-        if (empty($this->payment->data['selected'])) {
+        if (empty($this->payment->selected)) {
           return language::translate('error_no_payment_method_selected', 'No payment method selected');
         } else {
-          list($module_id, $option_id) = explode(':', $this->payment->data['selected']['id']);
+          list($module_id, $option_id) = explode(':', $this->payment->selected['id']);
           if (empty($this->payment->data['options'][$module_id]['options'][$option_id])) {
             return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
           }

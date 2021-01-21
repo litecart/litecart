@@ -123,8 +123,8 @@
         if (isset($_POST['customer']['shipping_address'][$field])) $order->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
       }
 
-      $order->shipping->data['selected'] = $_POST['shipping_option'];
-      $order->payment->data['selected'] = $_POST['payment_option'];
+      $order->shipping->selected = $_POST['shipping_option'];
+      $order->payment->selected = $_POST['payment_option'];
 
       $order->save();
 
