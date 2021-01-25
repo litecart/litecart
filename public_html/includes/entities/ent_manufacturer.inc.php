@@ -85,7 +85,6 @@
       }
 
       $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
