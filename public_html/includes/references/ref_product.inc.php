@@ -435,13 +435,6 @@
 
         case 'quantity_unit':
 
-          $this->_data['quantity_unit'] = array(
-            'id' => null,
-            'decimals' => 0,
-            'separate' => false,
-            'name' => '',
-          );
-
           $quantity_unit_query = database::query(
             "select id, decimals, separate from ". DB_TABLE_QUANTITY_UNITS ."
             where id = ". (int)$this->quantity_unit_id ."
@@ -513,17 +506,9 @@
 
           if (!$row = database::fetch($query)) return;
 
-          foreach ($row as $key => $value) {
-            switch($key) {
-              case 'keywords':
-                $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : array();
-                break;
+          foreach ($row as $key => $value) $this->_data[$key] = $value;
 
-              default:
-                $this->_data[$key] = $value;
-                break;
-            }
-          }
+          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
       }
