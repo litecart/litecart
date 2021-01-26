@@ -242,6 +242,8 @@ CREATE TABLE `lc_languages` (
   `name` VARCHAR(32) NOT NULL DEFAULT '',
   `locale` VARCHAR(32) NOT NULL DEFAULT '',
   `charset` VARCHAR(16) NOT NULL DEFAULT '',
+  `url_type` VARCHAR(16) NOT NULL DEFAULT '',
+  `domain_name` VARCHAR(64) NOT NULL DEFAULT '',
   `raw_date` VARCHAR(32) NOT NULL DEFAULT '',
   `raw_time` VARCHAR(32) NOT NULL DEFAULT '',
   `raw_datetime` VARCHAR(32) NOT NULL DEFAULT '',

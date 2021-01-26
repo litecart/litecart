@@ -264,10 +264,18 @@
         $use_rewrite = true;
       }
 
-    // Prepend language prefix
-      if (count(language::$languages) > 1 && settings::get('seo_links_language_prefix')) {
-        if (isset($link->query['language'])) $link->unset_query('language');
-        $link->path = $language_code .'/'. ltrim($link->path, '/');
+    // Set language to URL
+      switch (language::$languages[$language_code]['url_type']) {
+
+        case 'path':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->path = $language_code .'/'. ltrim($link->path, '/');
+          break;
+
+        case 'domain':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->domain = language::$languages[$language_code]['domain_name'];
+          break;
       }
 
     // Set base (/index.php/ or /)

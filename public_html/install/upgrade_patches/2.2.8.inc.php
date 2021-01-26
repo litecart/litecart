@@ -81,3 +81,22 @@
         break;
     }
   }
+
+// Set language url type
+  $setting_query = database::query(
+    "select `value` from ". DB_TABLE_SETTINGS ."
+    where `key` = 'seo_links_language_prefix'
+    limit 1;"
+  );
+
+  if ($setting = database::fetch($setting_query, 'value')) {
+    database::query(
+      "update ". DB_TABLE_LANGUAGES ."
+      set url_type = 'path';"
+    );
+  } else {
+    database::query(
+      "update ". DB_TABLE_LANGUAGES ."
+      set url_type = 'none';"
+    );
+  }

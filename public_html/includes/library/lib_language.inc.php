@@ -131,6 +131,14 @@
         if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
       }
 
+    // Return language by regional domain
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] != 'domain') continue;
+        if (preg_match('#'. preg_quote(self::$languages[$language_code]['url_type'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+          return $language_code;
+        }
+      }
+
     // Return language from URI query
       if (!empty($_GET['language'])) {
         if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
