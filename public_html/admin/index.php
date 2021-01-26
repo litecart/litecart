@@ -16,7 +16,7 @@
 
   foreach (functions::admin_get_apps() as $app) {
 
-    if (!empty(user::$data['permissions']) && empty(user::$data['permissions'][$app['code']]['status'])) continue;
+    if (!empty(user::$data['apps']) && empty(user::$data['apps'][$app['code']]['status'])) continue;
 
     $box_apps_menu->snippets['apps'][$app['code']] = array(
       'code' => $app['code'],
@@ -33,7 +33,7 @@
     if (!empty($app['menu'])) {
       foreach ($app['menu'] as $item) {
 
-        if (!empty(user::$data['permissions']) && (empty(user::$data['permissions'][$app['code']]['status']) || !in_array($item['doc'], user::$data['permissions'][$app['code']]['docs']))) continue;
+        if (!empty(user::$data['apps']) && (empty(user::$data['apps'][$app['code']]['status']) || !in_array($item['doc'], user::$data['apps'][$app['code']]['docs']))) continue;
 
         $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['doc']), $item['params']) : array('app' => $app['code'], 'doc' => $item['doc']);
 
@@ -81,6 +81,8 @@
     $box_widgets->snippets['widgets'] = array();
 
     foreach (functions::admin_get_widgets() as $widget) {
+      if (!empty(user::$data['widgets']) && empty(user::$data['widgets'][$widget['code']])) continue;
+
       ob_start();
       include vmod::check(FS_DIR_ADMIN . $widget['dir'] . $widget['file']);
 
@@ -95,7 +97,7 @@
 // App content
   } else {
 
-    if (empty(user::$data['permissions']) || (!empty(user::$data['permissions'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['permissions'][$_GET['app']]['docs']))) {
+    if (empty(user::$data['apps']) || (!empty(user::$data['apps'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['apps'][$_GET['app']]['docs']))) {
 
       if (!is_file(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php')) {
         http_response_code(404);

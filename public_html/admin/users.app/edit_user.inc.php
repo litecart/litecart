@@ -33,7 +33,8 @@
         'username',
         'email',
         'password',
-        'permissions',
+        'apps',
+        'widgets',
         'date_valid_from',
         'date_valid_to',
       );
@@ -149,22 +150,38 @@
 
         <div class="col-md-4">
           <div class="form-group">
-            <label><?php echo functions::form_draw_checkbox('permissions_toggle', '1', !empty($_POST['permissions']) ? '1' : '0'); ?> <?php echo language::translate('title_permissions', 'Permissions'); ?></label>
+            <label><?php echo functions::form_draw_checkbox('apps_toggle', '1', !empty($_POST['apps']) ? '1' : '0'); ?> <?php echo language::translate('title_apps', 'Apps'); ?></label>
             <div class="form-control" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
     echo '  <li>' . PHP_EOL
-       . '    <label>'. functions::form_draw_checkbox('permissions['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
+       . '    <label>'. functions::form_draw_checkbox('apps['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '    <ul class="">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '      <li><label>'. functions::form_draw_checkbox('permissions['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
+        echo '      <li><label>'. functions::form_draw_checkbox('apps['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }
       echo '    </ul>' . PHP_EOL;
     }
     echo '  </li>' . PHP_EOL;
+  }
+?>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><?php echo functions::form_draw_checkbox('widgets_toggle', '1', !empty($_POST['widgets']) ? '1' : '0'); ?> <?php echo language::translate('title_widgets', 'Widgets'); ?></label>
+            <div class="form-control" style="height: 150px; overflow-y: scroll;">
+              <ul class="list-unstyled">
+<?php
+  $widgets = functions::admin_get_widgets();
+  foreach ($widgets as $widget) {
+    echo '  <li>' . PHP_EOL
+       . '    <label>'. functions::form_draw_checkbox('widgets['.$widget['code'].']', '1', true) .' '. $widget['name'] .'</label>' . PHP_EOL
+       . '  </li>' . PHP_EOL;
   }
 ?>
               </ul>
@@ -186,11 +203,11 @@
 <script>
   $('input[name="permissions_toggle"]').change(function(){
     if ($(this).is(':checked')) {
-      $('input[name^="permissions"][name$="[status]"]').removeAttr('disabled');
-      $('input[name^="permissions"][name$="[docs][]"]').removeAttr('disabled');
+      $('input[name^="permissions"][name$="[status]"]').prop('disabled', false);
+      $('input[name^="permissions"][name$="[docs][]"]').prop('disabled', false);
     } else {
-      $('input[name^="permissions"][name$="[status]"]').attr('disabled', 'disabled');
-      $('input[name^="permissions"][name$="[docs][]"]').attr('disabled', 'disabled');
+      $('input[name^="permissions"][name$="[status]"]').prop('disabled', true);
+      $('input[name^="permissions"][name$="[docs][]"]').prop('disabled', true);
     }
   }).trigger('change');
 
@@ -201,6 +218,14 @@
       }
     } else {
       $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').prop('checked', false);
+    }
+  }).trigger('change');
+
+  $('input[name="widgets_toggle"]').change(function(){
+    if ($(this).is(':checked')) {
+      $('input[name^="widgets["]').prop('disabled', false);
+    } else {
+      $('input[name^="widgets["]').prop('disabled', true);
     }
   }).trigger('change');
 </script>

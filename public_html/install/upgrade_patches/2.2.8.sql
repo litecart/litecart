@@ -1,0 +1,3 @@
+ALTER TABLE `lc_users`
+CHANGE COLUMN `permissions` `apps` VARCHAR(4096) NOT NULL DEFAULT '';
+ADD `widgets` VARCHAR(512) NOT NULL DEFAULT '' AFTER `apps`;
