@@ -117,6 +117,8 @@
         $this->options($items, $currency_code, $customer);
       }
 
+      if (empty($this->data['options'])) return false;
+
       foreach ($this->data['options'] as $module) {
         foreach ($module['options'] as $option) {
           if (!empty($option['error'])) continue;
@@ -147,6 +149,8 @@
           }
         }
       }
+
+      if (empty($cheapest)) return false;
 
       return $cheapest;
     }
