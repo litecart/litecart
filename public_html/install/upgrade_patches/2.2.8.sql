@@ -2,6 +2,9 @@ ALTER TABLE `lc_languages`
 ADD COLUMN `url_type` VARCHAR(16) NOT NULL DEFAULT 'path' AFTER `charset`,
 ADD COLUMN `domain_name` VARCHAR(64) NOT NULL DEFAULT '' AFTER `url_type`;
 -- --------------------------------------------------------
+ALTER TABLE `lc_orders_comments`
+CHANGE COLUMN `author` `author` ENUM('system', 'staff', 'customer') NOT NULL DEFAULT 'system';
+-- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` = 'seo_links_language_prefix';
 -- --------------------------------------------------------
 ALTER TABLE `lc_users`
