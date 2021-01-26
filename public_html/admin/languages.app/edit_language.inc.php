@@ -180,9 +180,9 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_url_type', 'URL Type'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default"><?php echo functions::form_draw_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
-          <label class="btn btn-default"><?php echo functions::form_draw_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
-          <label class="btn btn-default"><?php echo functions::form_draw_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
           </div>
         </div>
 
