@@ -156,7 +156,7 @@
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 
       if (settings::get('image_downsample_size')) {
-        list($width, $height) = explode(',', settings::get('image_downsample_size'));
+        list($width, $height) = preg_split('#\s*,\s*#', settings::get('image_downsample_size'), -1, PREG_SPLIT_NO_EMPTY);
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
