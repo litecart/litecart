@@ -29,9 +29,10 @@
       if (isset($product->$field)) $_POST[$field] = $product->$field;
     }
 
-    $price = !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price;
-    $_POST['price'] = currency::format_raw($price, $_GET['currency_code'], $_GET['currency_value']);
-    $_POST['tax'] = tax::get_tax($price, $product->tax_class_id, $_GET['customer']);
+    $price = currency::format_raw(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $_GET['currency_code'], $_GET['currency_value']);
+    $tax = tax::get_tax($price, $product->tax_class_id, $_GET['customer']);
+    $_POST['price'] = $price;
+    $_POST['tax'] = $tax;
   }
 ?>
 
@@ -79,12 +80,12 @@
 
           foreach ($group['values'] as $value) {
 
-            $price_adjust_text = '';
-            $price_adjust = currency::format_raw($value['price_adjust']);
-            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+            $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
+            $price_adjust_text = '';
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format($value['price_adjust']);
+              $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
             }
 
@@ -98,12 +99,12 @@
 
           $value = array_shift($group['values']);
 
-          $price_adjust_text = '';
-          $price_adjust = currency::format_raw($value['price_adjust']);
-          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+          $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
+          $price_adjust_text = '';
           if ($value['price_adjust']) {
-            $price_adjust_text = currency::format($value['price_adjust']);
+            $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
             if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
           }
 
@@ -115,12 +116,12 @@
 
           foreach ($group['values'] as $value) {
 
-            $price_adjust_text = '';
-            $price_adjust = currency::format_raw($value['price_adjust']);
-            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+            $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
+            $price_adjust_text = '';
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format($value['price_adjust']);
+              $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
@@ -137,12 +138,12 @@
 
           foreach ($group['values'] as $value) {
 
-            $price_adjust_text = '';
-            $price_adjust = currency::format_raw($value['price_adjust']);
-            $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+            $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
 
+            $price_adjust_text = '';
             if ($value['price_adjust']) {
-              $price_adjust_text = currency::format($value['price_adjust']);
+              $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
@@ -157,14 +158,14 @@
 
           $value = array_shift($group['values']);
 
-          $price_adjust_text = '';
-          $price_adjust = currency::format_raw($value['price_adjust']);
-          $tax_adjust = currency::format(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+          $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id), $_GET['currency_code'], $_GET['currency_value']);
 
+          $price_adjust_text = '';
           if ($value['price_adjust']) {
-            $price_adjust_text = currency::format($value['price_adjust']);
+            $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
             if ($value['price_adjust'] > 0) {
-              $price_adjust_text = ' <br />+'. currency::format($value['price_adjust']);
+              $price_adjust_text = ' <br />+'. $price_adjust;
             }
           }
 
@@ -279,6 +280,32 @@
 </div>
 
 <script>
+  $('form[name=form_add_product]').on('input', function(e) {
+
+    var price = <?php echo (float)$price; ?>;
+    var tax = <?php echo (float)$tax; ?>;
+
+    $(this).find('input[name^="options"][type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+
+    $(this).find('select[name^="options"] option:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+
+    $(this).find('input[name^="options"][type!="radio"][type!="checkbox"]').each(function(){
+      if ($(this).val() != '') {
+        if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+        if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+      }
+    });
+
+    $(this).find('input[name="price"]').val(price);
+    $(this).find('input[name="tax"]').val(tax);
+  });
+
   $('form[name="form_add_product"] button[name="ok"]').unbind('click').click(function(e){
     e.preventDefault();
 
