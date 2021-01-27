@@ -13,7 +13,7 @@
       if (empty($this->modules)) return $output;
 
       foreach ($this->modules as $module_id => $module) {
-        if ($rows = $module->process($order)) {
+        if ($rows = $module->process($order, $output)) {
           foreach ($rows as $row) {
 
           // Round amounts
