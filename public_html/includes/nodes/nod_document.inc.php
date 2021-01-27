@@ -35,6 +35,7 @@
 
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/fontawesome/font-awesome.min.css') .'" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/jquery/jquery-3.5.1.min.js') .'"></script>';
+      self::$snippets['foot_tags']['jquery2'] = '<script src="http://www.jquery.com/jquery/jquery-3.5.1.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -248,21 +249,12 @@
         }
       }
 
-    // Prefetch
+    // Define some resources for preloading
       if (preg_match_all('#<(img|link|script)[^>]+>#', $GLOBALS['output'], $matches)) {
-
-        $prefetches = [];
         foreach ($matches[0] as $match) {
-          if (preg_match('#(https?:)?//(?!'. preg_quote($_SERVER['HTTP_HOST'], '#') .')[0-9a-z-\.]+#', $match, $m)) {
-            $prefetches[] = $m[0];
+          if (preg_match('#(https?:)?//(?!'. preg_quote($_SERVER['HTTP_HOST'], '#') .')[0-9a-z_=/\-\.\?]+#is', $match, $m)) {
+            header('Link: <'.$m[0].'>; rel=preload', false);
           }
-        }
-
-        if ($prefetches) {
-          header('Link: '. implode(', ', array_map(function($str){return '<'.$str.'>; rel=dns-prefetch';}, $prefetches)));
-        //  if (!$GLOBALS['output'] = preg_replace('#<head([^>]*)>#', '<head$1>' . PHP_EOL . '<link rel="dns-prefetch" href="'. implode('">'. PHP_EOL .'<link rel="dns-prefetch" href="', array_unique($prefetches)) .'">', $GLOBALS['output'], 1)) {
-        //    trigger_error('Failed extracting prefetch domains', E_USER_ERROR);
-        //  }
         }
       }
 
