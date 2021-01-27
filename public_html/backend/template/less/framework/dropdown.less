@@ -13,6 +13,12 @@
 .dropup,
 .dropdown {
   position: relative;
+  &.open > .dropdown-menu {
+    display: block;
+  }
+  &.open > a {
+    outline: 0;
+  }
 }
 
 .dropdown-toggle:focus {
@@ -102,13 +108,6 @@
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
   }
-}
-
-.open > .dropdown-menu {
-  display: block;
-}
-.open > a {
-  outline: 0;
 }
 
 .dropdown-header {

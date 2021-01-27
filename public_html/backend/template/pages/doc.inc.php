@@ -4,7 +4,7 @@
 }
 
 #content {
-  background: linear-gradient(135deg, var(--app-color) 0px, var(--page-background-color) 100px);
+  background: linear-gradient(180deg, var(--app-color) 5px, var(--page-background-color) 5px);
 }
 #content > .panel-app > .panel-heading {
   border-color: <?php echo $theme['color']; ?>;

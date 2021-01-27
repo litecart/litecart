@@ -69,7 +69,7 @@
     }
   }
 
-  $option_sort_options = [
+  $sort_options = [
     [language::translate('title_list_order', 'List Order'), 'priority'],
     [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
   ];
@@ -86,7 +86,7 @@
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
-          <?php echo functions::form_draw_select_field('sort', $option_sort_options, true); ?>
+          <?php echo functions::form_draw_select_field('sort', $sort_options, true); ?>
         </div>
       </div>
 

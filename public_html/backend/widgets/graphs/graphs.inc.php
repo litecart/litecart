@@ -105,7 +105,7 @@
 <style>
 #chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {
   font-size: 12px;
-  color: #999;
+  color: var(--default-text-color);
 }
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
   stroke: #ececec;
