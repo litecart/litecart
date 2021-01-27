@@ -19,7 +19,7 @@
 		if (empty($_POST['contents'])) $_POST['contents'] = [];
 
 		foreach (array_keys($_POST['contents']) as $key) {
-			if (empty($_POST['contents'][$key]['quantity'])) notices::add('errors', language::translate('error_quantity_cannot_be_empty', 'Quantity cannot be empty'));
+			if (empty($_POST['contents'][$key]['quantity_adjustment'])) notices::add('errors', language::translate('error_quantity_cannot_be_empty', 'Quantity cannot be empty'));
 		}
 
 		if (empty(notices::$data['errors'])) {
@@ -49,157 +49,175 @@
 		exit;
 	}
 
+  $available_stock_items = [];
+
+  $stock_items_query = database::query(
+    "select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
+    left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+    order by sku, name;"
+  );
+
+  while ($stock_item = database::fetch($stock_items_query)) {
+    $available_stock_items[] = $stock_item;
+  }
+
 	functions::draw_lightbox();
 ?>
 
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?></h1>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <div class="panel-title"><?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?></div>
+  </div>
 
-<?php echo functions::form_draw_form_begin('form_stock_transaction', 'post'); ?>
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('form_stock_transaction', 'post'); ?>
 
-	<div class="row">
-		<div class="form-group col-md-6">
-			<label><?php echo language::translate('title_name', 'Name'); ?></label>
-			<?php echo functions::form_draw_text_field('name', true, 'style="max-width: 320px;"'); ?>
-		</div>
-	</div>
+      <div class="row" style="max-width: 980px;">
+        <div class="form-group col-md-4">
+          <label><?php echo language::translate('title_name', 'Name'); ?></label>
+          <?php echo functions::form_draw_text_field('name', true); ?>
+        </div>
+      </div>
 
-	<div class="row">
-		<div class="form-group col-md-6">
-			<label><?php echo language::translate('title_notes', 'Notes'); ?></label>
-			<?php echo functions::form_draw_textarea('notes', true, 'style="max-width: 320px; height: 50px;"'); ?>
-		</div>
-	</div>
+      <div class="row">
+        <div class="form-group col-md-8">
+          <label><?php echo language::translate('title_notes', 'Notes'); ?></label>
+          <?php echo functions::form_draw_textarea('notes', true, 'style="height: 100px;"'); ?>
+        </div>
+      </div>
 
-	<h2><?php echo language::translate('title_contents', 'Contents'); ?></h2>
+      <h2><?php echo language::translate('title_contents', 'Contents'); ?></h2>
 
-	<table id="transaction-contents" class="table table-striped data-table">
-		<thead>
-			<tr>
-				<th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-				<th class="text-center" style="min-width: 50px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-				<th class="text-center" style="min-width: 150px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-				<th>&nbsp;</th>
-			</tr>
-		</thead>
-		<tbody>
-<?php
-	if (!empty($_POST['contents'])) {
-		foreach (array_keys($_POST['contents']) as $key) {
-?>
-			<tr class="item">
-				<td>
-					<?php echo functions::form_draw_hidden_field('contents['.$key.'][id]', true); ?>
-					<?php echo functions::form_draw_hidden_field('contents['.$key.'][product_id]', true); ?>
-					<?php echo functions::form_draw_hidden_field('contents['.$key.'][combination]', true); ?>
-					<?php echo functions::form_draw_hidden_field('contents['.$key.'][name]', true); ?>
-					<a href="<?php echo document::href_ilink('product', ['product_id' => $_POST['contents'][$key]['product_id']]); ?>" target="_blank"><?php echo $_POST['contents'][$key]['name']; ?></a>
-				</td>
-				<td><?php echo functions::form_draw_hidden_field('contents['. $key .'][sku]', true); ?><?php echo $_POST['contents'][$key]['sku']; ?></td>
-				<td class="text-center"><?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity]', true, 2); ?></td>
-				<td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
-			</tr>
-<?php
-		}
-	}
-?>
-		</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="5">
-					<a class="btn btn-default add-item-row" href="#box-add-item-row" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_item_row', 'Add Item Row'); ?></a>
-				</td>
-			</tr>
-		</tfoot>
-	</table>
+      <table id="transaction-contents" class="table table-striped data-table">
+        <thead>
+          <tr>
+            <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+            <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+            <th class="text-right" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (!empty($_POST['contents'])) foreach (array_keys($_POST['contents']) as $key) { ?>
+          <tr class="item">
+            <td>
+              <?php echo functions::form_draw_hidden_field('contents['.$key.'][id]', true); ?>
+              <?php echo functions::form_draw_hidden_field('contents['.$key.'][stock_item_id]', true); ?>
+              <?php echo functions::form_draw_hidden_field('contents['. $key .'][sku]', true); ?><?php echo $_POST['contents'][$key]['sku']; ?>
+            </td>
+            <td><?php echo $_POST['contents'][$key]['name']; ?></td>
+            <td class="text-center">
+              <div class="input-group">
+                <span class="input-group-addon">&plusmn;</span>
+                <?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity_adjustment]', true, 2); ?>
+              </div>
+            </td>
+            <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><?php echo functions::form_draw_text_field('new[sku]', true, 'list="available-stock-items"'); ?></td>
+            <td><?php echo functions::form_draw_text_field('new[name]', true, ''); ?></td>
+            <td>
+              <div class="input-group">
+                <span class="input-group-addon">&plusmn;</span>
+                <?php echo functions::form_draw_decimal_field('new[quantity_adjustment]', true, 2); ?>
+              </div>
+            </td>
+            <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+          </tr>
+        </tfoot>
+      </table>
 
-	<div class="btn-group">
-		<?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-		<?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-		<?php echo (isset($stock_transaction->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-	</div>
+      <datalist id="available-stock-items">
+        <?php foreach ($available_stock_items as $stock_item) { ?>
+        <option value="<?php echo htmlspecialchars($stock_item['sku']); ?>" data-name="<?php echo htmlspecialchars($stock_item['name']); ?>">
+        <?php } ?>
+      </datalist>
 
-<?php echo functions::form_draw_form_end(); ?>
+      <div class="panel-action">
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+          <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+          <?php echo (isset($stock_transaction->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        </div>
+      </div>
 
-<div id="box-add-item-row" style="display: none;">
-	<h2><?php echo language::translate('title_add_row', 'Add Row'); ?></h2>
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
 
-	<?php echo functions::form_draw_form_begin('form_add_item_row', 'post', null, false, 'style="max-width: 320px;"'); ?>
-
-		<div class="form-group">
-			<label><?php echo language::translate('title_stock_item', 'Stock Item'); ?></label>
-			<?php echo functions::form_draw_stock_options_list('stock_option_id', true); ?>
-		</div>
-
-		<div class="row">
-			<div class="form-group col-md-6">
-				<label><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></label>
-				<?php echo functions::form_draw_decimal_field('quantity', true); ?>
-			</div>
-		</div>
-
-		<div class="btn-group">
-			<?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?>
-			<?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
-		</div>
-
-	<?php echo functions::form_draw_form_end(); ?>
+  <div class="panel-footer">
+  </div>
 </div>
 
 <script>
-	var new_item_index = 0;
+  $('input[name="new[sku]"]').on('input', function(e) {
+    var row = $(this).closest('tr');
+    if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
+      $(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
+    } else {
+      $(row).find('input[name="new[name]"]').prop('readonly', false);
+    }
+  });
 
-	$('#box-add-item-row button[name="add"]').click(function(e) {
+  $('table tfoot').keypress(function(e) {
+    if (e.which == 13) {
+      e.preventDefault();
+      $('table tfoot button[name="add"]').trigger('click');
+    }
+  });
+
+	$('body').on('click', '#transaction-contents .remove', function(e) {
+		e.preventDefault();
+		$(this).closest('tr').remove();
+	});
+
+	var new_item_index = 0;
+  $('table tfoot button[name="add"]').click(function(e) {
 		e.preventDefault();
 
-		var form = $(this).closest('form');
+    var row = $(this).closest('tr');
+
+    if (!$('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]').length) {
+      alert('Uknown stock item');
+      return;
+    }
+
+    var option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first');
 
 		new_item_index++;
 		var output = '  <tr class="item">'
 							 + '    <td>'
 							 + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][id]', '')); ?>'
-							 + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][product_id]', '')); ?>'
-							 + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][combination]', '')); ?>'
-							 + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][name]', '')); ?>'
-							 + '       ' + $(form).find(':input[name="stock_option_id"] option:selected').data('name')
+							 + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][item_id]', '')); ?>'
+							 + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][sku]', '')); ?>'
+							 + '       ' + $(option).attr('value')
 							 + '    </td>'
-							 + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][sku]', '')); ?>'+ $(form).find(':input[name="stock_option_id"] option:selected').data('sku') +'</td>'
-							 + '    <td class="text-center"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][quantity]', '', 2)); ?></td>'
+							 + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
 							 + '    <td>'
-							 + '      <a class="copy" href="#" title="<?php echo htmlspecialchars(language::translate('title_copy', 'Copy')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-clone')); ?></a>'
-							 + '      <a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #cc3333;"')); ?></a>'
-							 + '    </td>'
+							 + '      <div class="input-group">'
+               + '        <span class="input-group-addon">&plusmn;</span>'
+               + '        <?php echo functions::form_draw_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>'
+               + '      </div>'
+               + '    </td>'
+							 + '    <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
 							 + '  </tr>';
 
 		output = output.replace(/new_item_index/g, 'new_' + new_item_index);
-		console.log($(form).find(':input[name="stock_option_id"] option:selected').data('name'));
 		$('#transaction-contents tbody').append(output);
 
 	// Insert values
-		var row = $('#transaction-contents tbody tr.item').last();
-		$(row).find('*[name$="[product_id]"]').val($(form).find(':input[name="stock_option_id"] option:selected').data('product-id')).change();
-		$(row).find('*[name$="[combination]"]').val($(form).find(':input[name="stock_option_id"] option:selected').data('combination')).change();
-		$(row).find('*[name$="[name]"]').val($(form).find(':input[name="stock_option_id"] option:selected').data('name')).change();
-		$(row).find('*[name$="[sku]"]').val($(form).find(':input[name="stock_option_id"] option:selected').data('sku')).change();
-		$(row).find('*[name$="[quantity]"]').val($(form).find(':input[name="quantity"]').val()).change();
-		console.log();
-		$.featherlight.close();
-	});
+		var inserted = $('#transaction-contents tbody tr.item').last();
+		$(inserted).find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id'));
+		$(inserted).find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku'));
+		$(inserted).find('[name$="[name]"]').val($('input[name="new[name]"]').val());
+		$(inserted).find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val());
 
-	$('body').on('click', '#transaction-contents .copy', function(e) {
-		e.preventDefault();
-		target = $(this).closest('tr').clone().insertAfter($(this).closest('tr'));
-
-		$(this).closest('tr').next('tr').find('*[name$="[id]"]').val('');
-		$(this).closest('tr').next('tr').find('*[name$="[quantity]"]').val(-$(this).closest('tr').next('tr').find('*[name$="[quantity]"]').val());
-
-		new_item_index++;
-		$.each($(this).closest('tr').next('tr').find(':input'), function(i){
-			$(this).attr('name', $(this).attr('name').replace(/^contents\[[^\]]+\]/, 'contents[new_' + new_item_index + ']'));
-		});
-	});
-
-	$('body').on('click', '#transaction-contents .remove', function(e) {
-		e.preventDefault();
-		$(this).closest('tr').remove();
+    $('input[name="new[sku]"]').val('');
+    $('input[name="new[name]"]').val('');
+    $('input[name="new[quantity_adjustment]"]').val('');
+    $('input[name="new[sku]"]').focus();
 	});
 </script>

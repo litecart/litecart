@@ -302,9 +302,13 @@
     // Restock previous items
       if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
-          if (empty($previous_order_item['product_id'])) continue;
-          $product = new ent_product($previous_order_item['product_id']);
-          $product->adjust_quantity($previous_order_item['quantity'], $previous_order_item['option_stock_combination']);
+          if (empty($previous_order_item['stock_item_id'])) continue;
+          database::query(
+            "update ". DB_TABLE_PREFIX ."stock_items
+            set quantity = quantity + ". (float)$previous_order_item['quantity'] ."
+            where id = ". (int)$previous_order_item['stock_item_id'] ."
+            limit 1;"
+          );
         }
       }
 
@@ -337,9 +341,13 @@
         }
 
       // Withdraw stock
-        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          $product = new ent_product($item['product_id']);
-          $product->adjust_quantity(-$item['quantity'], $item['option_stock_combination']);
+        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['stock_item_id'])) {
+          database::query(
+            "update ". DB_TABLE_PREFIX ."stock_items
+            set quantity = quantity - ". (float)$item['quantity'] ."
+            where id = ". (int)$item['stock_item_id'] ."
+            limit 1;"
+          );
         }
 
         database::query(

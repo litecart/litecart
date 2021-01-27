@@ -4,22 +4,24 @@
 // Table Rows
   $transactions = [];
 
-  if (!empty($_GET['query'])) {
-    $sql_where_query = [
-      "t.id = '". database::input($_GET['query']) ."'",
-      "t.name like '%". database::input($_GET['query']) ."%'",
-      "t.notes like '%". database::input($_GET['query']) ."%'",
-      "tc.sku like '%". database::input($_GET['query']) ."%'",
-    ];
-  }
-
   $stock_transactions_query = database::query(
     "select id, name, date_created from ". DB_TABLE_PREFIX ."stock_transactions t
-    left join (
-      select transaction_id, sku from ". DB_TABLE_PREFIX ."stock_transactions_contents
-      group by transaction_id
-    ) tc on (tc.transaction_id = t.id)
-    ". (!empty($sql_where_query) ? "where (". implode(" or ", $sql_where_query) .")" : "") ."
+    where id
+
+    ". (!empty($_GET['query']) ? "t.name like '%". database::input($_GET['query']) ."%' or t.notes like '%". database::input($_GET['query']) ."%'" : "") ."
+    ". (!empty($_GET['query']) ? "and id in (
+      select transaction_id from ". DB_TABLE_PREFIX ."stock_transactions_contents
+      where stock_item_id in (
+        select id from ". DB_TABLE_PREFIX ."stock_items si
+        left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id and language_code = '". database::input(language::$selected['code']) ."')
+        where (
+          sii.name like '%". database::input($_GET['query']) ."%'
+          or si.sku like '%". database::input($_GET['query']) ."%'
+          or si.mpn like '%". database::input($_GET['query']) ."%'
+          or si.gtin like '%". database::input($_GET['query']) ."%'
+        )
+      )
+    )" : "") ."
     ". (!empty($_GET['date_from']) ? "and t.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : null) ."
     ". (!empty($_GET['date_to']) ? "and t.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : null) ."
     order by date_created desc;"

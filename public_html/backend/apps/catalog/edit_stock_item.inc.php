@@ -1,0 +1,295 @@
+<?php
+
+	if (!empty($_GET['stock_item_id'])) {
+		$stock_item = new ent_stock_item($_GET['stock_item_id']);
+	} else {
+		$stock_item = new ent_stock_item();
+	}
+
+	if (empty($_POST)) {
+		foreach ($stock_item->data as $key => $value) {
+			$_POST[$key] = $value;
+		}
+	}
+
+	if (isset($_POST['save'])) {
+
+		try {
+
+			if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
+			if (empty($_POST['sku'])) throw new Exception(language::translate('error_name_missing', 'You must provide SKU'));
+
+			if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and code = '". database::input($_POST['code']) ."' limit 1;"))) {
+				throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+			}
+
+			if (!empty($_POST['sku']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and sku = '". database::input($_POST['sku']) ."' limit 1;"))) {
+				throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+			}
+
+			if (!empty($_POST['mpn']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and mpn = '". database::input($_POST['mpn']) ."' limit 1;"))) {
+				throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
+			}
+
+			if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) {
+				throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+			}
+
+			if (!isset($_POST['status'])) $_POST['status'] = '0';
+
+			$fields = [
+				'supplier_id',
+				'brand_id',
+				'sku',
+				'mpn',
+				'gtin',
+				'taric',
+				'name',
+				'weight',
+				'weight_class',
+				'dim_x',
+				'dim_y',
+				'dim_z',
+				'dim_class',
+				'quantity',
+				'quantity_adjustment',
+				'quantity_unit_id',
+				'purchase_price',
+				'purchase_price_currency_code',
+			];
+
+			foreach ($fields as $field) {
+				if (in_array($field, ['sku', 'mpn', 'gtin', 'taric',])) $_POST[$field] = trim($_POST[$field]);
+				if (isset($_POST[$field])) $stock_item->data[$field] = $_POST[$field];
+			}
+
+			$stock_item->save();
+
+      if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json; charset='. language::$selected['code']);
+        echo json_encode(['status' => 'ok', 'data' => $stock_item->data], JSON_UNESCAPED_SLASHES);
+        exit;
+      }
+
+			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
+			exit;
+
+		} catch (Exception $e) {
+
+      if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json; charset='. language::$selected['code']);
+        echo json_encode(['status' => 'error', 'error' =>  $e->getMessage()], JSON_UNESCAPED_SLASHES);
+        exit;
+      }
+
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
+	if (isset($_POST['delete']) && $stock_item) {
+
+		try {
+
+			$stock_item->delete();
+
+			notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
+			header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
+	breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_add_new_stock_item', 'Add New Stock Item'));
+?>
+
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo !empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+    </div>
+  </div>
+
+  <div class="panel-body">
+
+    <?php echo functions::form_draw_form_begin('stock_item_form', 'post', false, true); ?>
+
+      <div style="max-width: 640px;">
+
+        <div class="form-group">
+          <label><?php echo language::translate('title_name', 'Name'); ?></label>
+          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field('name['. $language_code .']', $language_code, true, ''); ?>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+
+            <div class="form-group">
+              <label><?php echo language::translate('title_references', 'References'); ?></label>
+              <div class="input-group">
+                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <?php echo functions::form_draw_text_field('sku', true); ?>
+              </div>
+
+              <div class="input-group">
+                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <?php echo functions::form_draw_text_field('mpn', true); ?>
+              </div>
+
+              <div class="input-group">
+                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <?php echo functions::form_draw_text_field('gtin', true); ?>
+              </div>
+
+              <div class="input-group">
+                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <?php echo functions::form_draw_text_field('taric', true); ?>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><?php echo language::translate('title_brand', 'Brand'); ?></label>
+              <?php echo functions::form_draw_brands_list('brand_id', true); ?>
+            </div>
+
+            <div class="form-group">
+              <label><?php echo language::translate('title_supplier', 'Supplier'); ?></label>
+              <?php echo functions::form_draw_suppliers_list('supplier_id', true); ?>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <?php if (!empty($item->data['file'])) { ?>
+          <label class="pull-right"><?php echo functions::form_draw_checkbox('remove_file', '1', true); ?> <?php echo language::translate('text_remove_file', 'Remove File'); ?></label>
+          <?php } ?>
+          <label><?php echo language::translate('title_digital_item', 'Digital Item'); ?></label>
+          <?php echo functions::form_draw_file_field('file', true); ?>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label><?php echo language::translate('title_ordered', 'Ordered'); ?></label>
+            <?php echo functions::form_draw_decimal_field('ordered', true, 2); ?>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></label>
+            <div class="input-group">
+              <?php echo functions::form_draw_decimal_field('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
+              <span class="input-group-addon">
+                <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></label>
+            <div class="input-group">
+              <span class="input-group-addon">&plusmn;</span>
+              <?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2); ?>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
+            <div class="input-group">
+              <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
+              <span class="input-group-addon">
+                <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
+            <div class="input-group">
+              <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
+              <span class="input-group-addon">
+                <?php echo functions::form_draw_weight_classes_list('weight_class', true, 'style="width: auto;"'); ?>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group col-md-8">
+            <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
+            <div class="input-group">
+              <?php echo functions::form_draw_decimal_field('dim_x', true, 3, 'min="0"'); ?>
+              <span class="input-group-addon">x</span>
+              <?php echo functions::form_draw_decimal_field('dim_y', true, 3, 'min="0"'); ?>
+              <span class="input-group-addon">x</span>
+              <?php echo functions::form_draw_decimal_field('dim_z', true, 3, 'min="0"'); ?>
+              <span class="input-group-addon">
+                <?php echo functions::form_draw_length_classes_list('dim_class', true, 'style="width: auto;"'); ?>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
+            <?php echo functions::form_draw_delivery_statuses_list('delivery_status_id', true); ?>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
+            <?php echo functions::form_draw_sold_out_statuses_list('sold_out_status_id', true); ?>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-action">
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+          <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+          <?php echo (isset($stock_item->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        </div>
+      </div>
+
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
+</div>
+
+<script>
+  $('form[name="stock_item_form"]').on('input', 'input[name="quantity"]', function(){
+    $('input[name="quantity_adjustment"]').val(parseFloat($(this).val()) - parseFloat($(this).data('quantity')));
+  });
+
+  $('form[name="stock_item_form"]').on('input', 'input[name="quantity_adjustment"]', function(){
+    $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat($(this).val()));
+  });
+
+  if ($.featherlight.opened) {
+    $('form[name="stock_item_form"]').submit(function(e){
+      e.preventDefault();
+      $.ajax({
+        url: '<?php echo document::link(); ?>',
+        type: 'post',
+        cache: false,
+        async: true,
+        data: $(this).serialize() + '&save=true',
+        dataType: 'json',
+        success: function(data) {
+          if (data.error) {
+            alert(data.error);
+            return;
+          }
+          <?php if (!empty($_GET['js_callback'])) { ?>
+          <?php echo 'if (window['. addcslashes($_GET['js_callback'], '\'') .']) window['. addcslashes($_GET['js_callback'], '\'') .'](data);' ?>
+          <?php } ?>
+          $.featherlight.close();
+        },
+      });
+    });
+
+    $('form[name="stock_item_form"] button[name="cancel"]').attr('onclick', '$.featherlight.close();');
+    $('form[name="stock_item_form"] button[name="delete"]').remove();
+  }
+</script>

@@ -66,39 +66,13 @@
       }
 
       $contents_query = database::query(
-        "select stc.*, ps.sku from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
-        left join ". DB_TABLE_PREFIX ."products_stock ps on (ps.product_id = stc.product_id and ps.combination = stc.combination)
+        "select stc.*, si.sku, sii.name from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
+        left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = stc.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where stc.transaction_id = ". (int)$this->data['id'] .";"
       );
 
       while ($content = database::fetch($contents_query)) {
-
-        $content['name'] = @reference::product($content['product_id'])->id ? reference::product($content['product_id'])->name : '<em>Removed</em>';
-
-        if (!empty($content['combination'])) {
-          foreach(explode(',', $content['combination']) as $combination) {
-            @list($group_id, $value_id) = explode('-', $combination);
-
-            $attribute_groups_query = database::query(
-              "select ag.id, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
-              left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
-              where ag.id = ". (int)$group_id .";"
-            );
-            $attribute_group = database::fetch($attribute_groups_query);
-
-            $attribute_values_query = database::query(
-              "select avi.id, ovi.name from ". DB_TABLE_PREFIX ."attribute_values av
-              left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (ovi.value_id = avi.id and ovi.language_code = '". database::input(language::$selected['code']) ."')
-              where avi.group_id = ". (int)$group_id ."
-              and avi.id = ". (int)$value_id .";"
-            );
-            $attribute_value = database::fetch($attribute_values_query);
-
-            $content['name'] .= (!empty($use_separator)  ? ' + ' : '') . @$attribute_group['name'] .': '. @$attribute_value['name'];
-            $use_separator = true;
-          }
-        }
-
         $this->data['contents'][] = $content;
       }
 
@@ -128,7 +102,12 @@
 
     // Revert stock changes
       foreach ($this->previous['contents'] as $content) {
-        reference::product($content['product_id'])->adjust_stock(-$content['quantity'], $content['combination']);
+        database::query(
+          "update ". DB_TABLE_PREFIX ."stock_items
+          set quantity = quantity - ". (float)$content['quantity_adjustment'] ."
+          where id = ". (int)$content['stock_item_id'] ."
+          limit 1;"
+        );
       }
 
     // Delete transaction contents
@@ -151,16 +130,21 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."stock_transactions_contents
-          set product_id = ". (int)$content['product_id'] .",
-              combination = '". database::input($content['combination']) ."',
-              quantity = ". (float)$content['quantity'] ."
+          set stock_item_id = ". (int)$content['stock_item_id'] .",
+              quantity_adjustment = ". (float)$content['quantity_adjustment'] ."
           where transaction_id = ". (int)$this->data['id'] ."
           and id = ". (int)$content['id'] ."
           limit 1;"
         );
 
       // Commit stock changes
-        reference::product($content['product_id'])->adjust_stock($content['quantity'], $content['combination']);
+        database::query(
+          "update ". DB_TABLE_PREFIX ."stock_items
+          set quantity = quantity + ". (float)$content['quantity_adjustment'] ."
+          where id = ". (int)$content['stock_item_id'] ."
+          limit 1;"
+        );
+
       } unset($content);
 
       $this->previous = $this->data;
