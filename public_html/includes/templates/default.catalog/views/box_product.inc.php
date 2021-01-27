@@ -238,7 +238,7 @@
     return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (<?php echo (settings::get('auto_decimals')) ? "(c && f)" : "c"; ?> ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
   }
 
-  $('#box-product form[name=buy_now_form]').bind('input propertyChange', function(e) {
+  $('#box-product form[name=buy_now_form]').on('input', function(e) {
 
     var regular_price = <?php echo currency::format_raw($regular_price); ?>;
     var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
@@ -258,9 +258,9 @@
 
     $(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
       if ($(this).val() != '') {
-      if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+        if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+        if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
+        if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
       }
     });
 
