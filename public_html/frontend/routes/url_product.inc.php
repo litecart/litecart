@@ -7,7 +7,7 @@
         [
           'pattern' => '#^(?:.*-c-([0-9]+)/)?(?:.*-m-([0-9]+)/)?.*-p-([0-9]+)$#',
           'page' => 'product',
-          'params' => 'category_id=$1&manufacturer_id=$2&product_id=$3',
+          'params' => 'category_id=$1&brand_id=$2&product_id=$3',
           'endpoint' => 'frontend',
           'options' => [
             'redirect' => true,
