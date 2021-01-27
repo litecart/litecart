@@ -120,6 +120,7 @@
     'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
     'attributes' => $product->attributes,
+    'stock_options' => [],
     'keywords' => $product->keywords,
     'image' => [
       'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
@@ -199,6 +200,19 @@
           'height' => 60,
         ],
       ];
+    }
+  }
+
+// Stock Options
+  if ($product->stock_options) {
+    list($width, $height) = functions::image_scale_by_width(48, settings::get('product_image_ratio'));
+    foreach ($product->stock_options as $stock_option)  {
+      $stock_option['image'] = [
+        'original' => $stock_option['image'],
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      ];
+      $_page->snippets['stock_options'][] = $stock_option;
     }
   }
 
