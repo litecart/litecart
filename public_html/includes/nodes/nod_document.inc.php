@@ -85,6 +85,14 @@
         'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
       ];
 
+      if (!empty(user::$data['id'])) {
+        self::$jsenv['user'] = [
+          'id' => user::$data['id'],
+          'name' => user::$data['username'],
+          'email' => !empty(user::$data['email']) ? user::$data['email'] : null,
+        ];
+      }
+
       self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .", config = _env;</script>";
 
     // Prepare title
