@@ -104,7 +104,7 @@ CREATE TABLE `lc_countries` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',
   `name` VARCHAR(64) NOT NULL DEFAULT '',
-  `domestic_name` VARCHAR(64) NOT NULL '',
+  `domestic_name` VARCHAR(64) NOT NULL DEFAULT '',
   `iso_code_1` VARCHAR(3) NOT NULL DEFAULT '',
   `iso_code_2` VARCHAR(2) NOT NULL DEFAULT '',
   `iso_code_3` VARCHAR(3) NOT NULL DEFAULT '',
@@ -277,7 +277,7 @@ CREATE TABLE `lc_manufacturers` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_manufacturers_info` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `mannufacturer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `manufacturer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
   `short_description` VARCHAR(256) NOT NULL DEFAULT '',
   `description` TEXT NOT NULL DEFAULT '',
@@ -286,8 +286,8 @@ CREATE TABLE `lc_manufacturers_info` (
   `meta_description` VARCHAR(512) NOT NULL DEFAULT '',
   `link` VARCHAR(256) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `brand_info` (`brand_id`, `language_code`),
-  KEY `brand_id` (`brand_id`),
+  UNIQUE KEY `brand_info` (`manufacturer_id`, `language_code`),
+  KEY `manufacturer_id` (`manufacturer_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
@@ -369,7 +369,7 @@ CREATE TABLE `lc_orders` (
 CREATE TABLE `lc_orders_comments` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `author` enum('system','staff','customer') NOT NULL DEFAULT '',
+  `author` enum('system','staff','customer') NOT NULL DEFAULT 'system',
   `text` VARCHAR(512) NOT NULL DEFAULT '',
   `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
