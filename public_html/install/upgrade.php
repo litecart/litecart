@@ -239,8 +239,20 @@
 
       #############################################
 
+      echo '<p>Deleting installation folder... ';
+
+      $files_to_delete = array(
+        FS_DIR_APP . 'install/',
+      );
+
+      foreach ($files_to_delete as $file) {
+        file_delete($file);
+      }
+
+      #############################################
+
       echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
-         . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
+         . '<p style="font-weight: bold;">Upgrade complete!</p>' . PHP_EOL . PHP_EOL;
 
       if (!empty($_REQUEST['redirect'])) {
         header('Location: '. $_REQUEST['redirect']);
