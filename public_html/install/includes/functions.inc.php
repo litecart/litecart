@@ -15,25 +15,21 @@
 
     if (!file_exists($target)) return true;
 
-    if (!is_dir($target) || is_link($target)) {
-
-      echo 'Delete '. $target . '<br />' . PHP_EOL;
-
-      $result = unlink($target);
-
-      return $result;
+    if (strpos($target, '*') !== false) {
+      foreach (glob($target, GLOB_MARK) as $file) {
+        file_delete($target.$file);
+      }
+      return true;
     }
 
-    foreach (scandir($target) as $file) {
-      if ($file == '.' || $file == '..') continue;
-      if (!file_delete($target .'/'. $file)) return false;
+    if (is_dir($target)) {
+      file_delete($target.'*');
+      echo 'Delete '. $target . PHP_EOL;
+      return rmdir($target);
     }
 
-    echo 'Delete '. $target . '<br />' . PHP_EOL;
-
-    $result = rmdir($target);
-
-    return $result;
+    echo 'Delete '. $target . PHP_EOL;
+    return unlink($target);
   }
 
 // Function to modify file
