@@ -33,20 +33,14 @@
         $line++;
 
       // Find manufacturer
-        if (!empty($row['id'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
-          }
+        if (!empty($row['id']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          $manufacturer = new ent_manufacturer($manufacturer['id']);
 
-        } else if (!empty($row['code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
-          }
+        } else if (!empty($row['code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          $manufacturer = new ent_manufacturer($manufacturer['id']);
 
-        } else if (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where name = '". database::input($row['name']) ."' limit 1;"))) {
-            $manufacturer = new ent_manufacturer($manufacturer['id']);
-          }
+        } else if (!empty($row['name']) && !empty($row['language_code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where name = '". database::input($row['name']) ."' limit 1;"))) {
+          $manufacturer = new ent_manufacturer($manufacturer['id']);
         }
 
         if (!empty($manufacturer->data['id'])) {
@@ -207,20 +201,14 @@
         $line++;
 
       // Find category
-        if (!empty($row['id'])) {
-          if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
-            $category = new ent_category($category['id']);
-          }
+        if (!empty($row['id']) && $category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          $category = new ent_category($category['id']);
 
-        } elseif (!empty($row['code'])) {
-          if ($category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $category = new ent_category($category['id']);
-          }
+        } elseif (!empty($row['code']) && $category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          $category = new ent_category($category['id']);
 
-        } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-            $category = new ent_category($category['id']);
-          }
+        } elseif (!empty($row['name']) && !empty($row['language_code']) && $category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+          $category = new ent_category($category['id']);
         }
 
         if (!empty($category->data['id'])) {
@@ -384,36 +372,24 @@
         $line++;
 
       // Find product
-        if (!empty($row['id'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where id = ". (int)$row['id'] ." limit 1;"))) {
-            $product = new ent_product($product['id']);
-          }
+        if (!empty($row['id']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          $product = new ent_product($product['id']);
 
-        } elseif (!empty($row['code'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $product = new ent_product($product['id']);
-          }
+        } elseif (!empty($row['code']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          $product = new ent_product($product['id']);
 
-        } elseif (!empty($row['sku'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
-            $product = new ent_product($product['id']);
-          }
+        } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+          $product = new ent_product($product['id']);
 
-        } elseif (!empty($row['mpn'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
-            $product = new ent_product($product['id']);
-          }
+        } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+          $product = new ent_product($product['id']);
 
-        } elseif (!empty($row['gtin'])) {
-          if ($product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
-            $product = new ent_product($product['id']);
-          }
+        } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+          $product = new ent_product($product['id']);
 
-        } elseif (!empty($row['name']) && !empty($row['language_code'])) {
-          if ($product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS ."_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-            $product = new ent_product($product['id']);
-          }
-          }
+        } elseif (!empty($row['name']) && !empty($row['language_code']) && $product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS ."_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+          $product = new ent_product($product['id']);
+        }
 
         if (!empty($product->data['id'])) {
           if (empty($_POST['update'])) continue;
@@ -688,16 +664,11 @@
         $line++;
 
       // Find supplier
-        if (!empty($row['id'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
-            $supplier = new ent_supplier($supplier['id']);
-          }
+        if (!empty($row['id']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+          $supplier = new ent_supplier($supplier['id']);
 
-        } else if (!empty($row['code'])) {
-          if ($supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
-            $supplier = new ent_supplier($supplier['id']);
-          }
-
+        } else if (!empty($row['code']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+          $supplier = new ent_supplier($supplier['id']);
         }
 
         if (!empty($supplier->data['id'])) {
