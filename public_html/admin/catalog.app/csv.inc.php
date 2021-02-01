@@ -238,9 +238,9 @@
               "insert into ". DB_TABLE_CATEGORIES ." (id, date_created)
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
-            $page = new ent_category($row['id']);
+            $category = new ent_category($row['id']);
           } else {
-            $page = new ent_category();
+            $category = new ent_category();
           }
         }
 
