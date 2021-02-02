@@ -87,6 +87,12 @@
     return false;
   });
 
+// Dropdown Select
+  $('body').on('change', '.dropdown :input', function() {
+    var title = $(this).data('title');
+    if (title) $(this).closest('.dropdown-select').find('.form-control .title').text(title);
+  }).first().trigger('change');
+
   $('.data-table tbody tr').click(function(e) {
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;

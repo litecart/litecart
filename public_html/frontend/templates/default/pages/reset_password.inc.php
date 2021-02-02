@@ -6,7 +6,7 @@
   {{notices}}
   {{breadcrumbs}}
 
-  <section id="box-reset-password" class="box">
+  <section id="box-reset-password">
 
     <h2 class="title"><?php echo language::translate('title_reset_password', 'Reset Password'); ?></h2>
 

@@ -1,4 +1,21 @@
 <style>
+#box-filter .filter {
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 1em;
+  grid-template-columns: 1fr;
+  margin-bottom: 1em;
+}
+@media (min-width: 480px) {
+  #box-filter .filter {
+    grid-auto-flow: column;
+  }
+}
+@media (min-width: 768px) {
+  #box-filter .filter {
+    grid-auto-flow: column;
+  }
+}
 #box-filter .token {
   padding: .5em 1em;
   border-radius: 4px;
@@ -25,7 +42,7 @@
 <section id="box-filter" class="box">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
-    <div style="display: grid; grid-auto-flow: column; grid-gap: 1em; grid-template-columns: 1fr; margin-bottom: 1em;">
+    <div class="filter">
 
       <div>
         <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. htmlspecialchars(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>

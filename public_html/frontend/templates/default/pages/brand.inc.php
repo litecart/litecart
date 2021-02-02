@@ -1,28 +1,30 @@
-<div id="sidebar">
-  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_brand_links.inc.php'); ?>
-  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
-</div>
+<main id="main">
+  <div id="sidebar">
+    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_brand_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
+  </div>
 
-<div id="content">
-  {{notices}}
-  {{breadcrumbs}}
+  <div id="content">
+    {{notices}}
+    {{breadcrumbs}}
 
-  <article id="box-brand" class="box">
+    <article id="box-brand" class="box">
 
-    <h1 class="title"><?php echo $title; ?></h1>
+      <h1 class="title"><?php echo $title; ?></h1>
 
-    <?php if ($_GET['page'] == 1 && $description) { ?>
-    <p class="description"><?php echo $description; ?></p>
-    <?php } ?>
+      <?php if ($_GET['page'] == 1 && $description) { ?>
+      <p class="description"><?php echo $description; ?></p>
+      <?php } ?>
 
-    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_filter.inc.php'); ?>
+      <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_filter.inc.php'); ?>
 
-    <?php if ($products) { ?>
-    <section class="listing products <?php echo htmlspecialchars($_GET['list_style']); ?>">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['brand_id']); ?>
-    </section>
-    <?php } ?>
+      <?php if ($products) { ?>
+      <section class="listing products <?php echo htmlspecialchars($_GET['list_style']); ?>">
+        <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['brand_id']); ?>
+      </section>
+      <?php } ?>
 
-    <?php echo $pagination; ?>
-  </article>
-</div>
+      <?php echo $pagination; ?>
+    </article>
+  </div>
+</main>

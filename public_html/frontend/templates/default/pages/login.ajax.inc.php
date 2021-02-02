@@ -1,4 +1,4 @@
-<section class="box-login" class="box">
+<section class="box-login">
 
   <h2 class="title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 

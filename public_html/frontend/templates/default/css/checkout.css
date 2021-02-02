@@ -60,6 +60,8 @@
   --table-row-hover-background: #ececec;
   --footer-background-color: #fff;
   --footer-text-color: #333;
+  --copyright-background-color: #fff;
+  --copyright-text-color: #333;
   --border-radius: 4px;
   --gutter-size: 20px;
   --link-text-color: #2e9cd4;
@@ -77,11 +79,6 @@
 @media (min-width: 992px) {
   :root {
     --default-text-size: 14px;
-  }
-}
-@media (min-width: 1200px) {
-  :root {
-    --default-text-size: 15px;
   }
 }
 #content {

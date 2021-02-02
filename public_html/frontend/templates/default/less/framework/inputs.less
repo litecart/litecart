@@ -51,12 +51,11 @@ input[type="checkbox"] {
   &:not([class*="col-"]) {
     margin-bottom: var(--gutter-size);
   }
-  > label {
+  > label:not(.checkbox) {
     display: inline-block;
     padding-bottom: var(--input-padding-y);
     letter-spacing: .05em;
     font-size: .8em;
-    opacity: .75;
   }
 }
 
@@ -89,6 +88,10 @@ input[type="checkbox"] {
   &[readonly] {
     color: #999;
   }
+
+  .dropdown-menu li label:hover {
+    background: var(--default-background-color);
+  }
 }
 
 select.form-control {
@@ -116,7 +119,8 @@ select.form-control {
   }
 }
 
-.form-control + .dropdown-menu {
+.form-control .dropdown-menu {
+  user-select: none;
   li > label {
     display: block;
     padding: var(--input-padding-y) var(--input-padding-x);

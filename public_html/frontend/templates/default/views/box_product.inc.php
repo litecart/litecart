@@ -108,11 +108,42 @@
       </div>
       <?php } ?>
 
-      <hr />
-
-      <div class="buy_now" style="margin: 1em 0;">
+      <div class="buy_now">
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
+
+        <?php if ($stock_options) { ?>
+        <div class="form-group">
+          <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
+          <div class="form-control dropdown caret">
+            <div data-toggle="dropdown">
+              <span class="caret pull-right"></span>
+              <span class="title">Lorem ipsum</span>
+            </div>
+            <ul class="dropdown-menu stock-options" style="width: 100%;">
+              <?php foreach ($stock_options as $stock_option) { ?>
+              <li>
+                <label style="display: block;">
+                  <div class="row">
+                    <div class="col-xs-3">
+                      <img src="<?php echo document::href_link(WS_DIR_STORAGE . $stock_option['image']['thumbnail']); ?>" class="thumbnail" alt="" />
+                    </div>
+                    <div class="col-xs-6">
+                      <input type="radio" name="stock_option_id" value="<?php echo $stock_option['id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" />
+                      <div class="name"><?php echo $stock_option['name']; ?></div>
+                      <div class="description"><?php //echo $stock_option['description']; ?></div>
+                    </div>
+                    <div class="col-xs-3 quantity text-right">
+                      <?php echo $stock_option['quantity']; ?>
+                    </div>
+                  </div>
+                </label>
+              </li>
+              <?php } ?>
+            </ul>
+          </div>
+        </div>
+        <?php } ?>
 
         <div class="price-wrapper">
           <?php if ($campaign_price) { ?>
@@ -133,7 +164,7 @@
         </div>
 
         <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 0;">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
@@ -156,8 +187,6 @@
         <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and can not be purchased.'); ?>
       </div>
       <?php } ?>
-
-      <hr />
 
       <div class="social-bookmarks text-center">
         <a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>

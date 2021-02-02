@@ -60,6 +60,8 @@
   --table-row-hover-background: #ececec;
   --footer-background-color: #fff;
   --footer-text-color: #333;
+  --copyright-background-color: #fff;
+  --copyright-text-color: #333;
   --border-radius: 4px;
   --gutter-size: 20px;
   --link-text-color: #2e9cd4;
@@ -77,11 +79,6 @@
 @media (min-width: 992px) {
   :root {
     --default-text-size: 14px;
-  }
-}
-@media (min-width: 1200px) {
-  :root {
-    --default-text-size: 15px;
   }
 }
 html {
@@ -232,8 +229,8 @@ html {
   }
 }
 #main {
-  padding: 0 calc(var(--gutter-size)/2) var(--gutter-size) calc(var(--gutter-size)/2);
   flex-grow: 1;
+  padding: 0 calc(var(--gutter-size)/2) var(--gutter-size) calc(var(--gutter-size)/2);
 }
 @media (min-width: 768px) {
   #main {
@@ -276,7 +273,7 @@ html {
   }
 }
 #footer a:hover {
-  color: var(--link-text-color);
+  color: inherit;
 }
 #footer .columns {
   display: grid;
@@ -300,8 +297,14 @@ html {
 #footer ul.list-vertical li {
   padding: 0;
 }
+#copyright {
+  background: var(--copyright-background-color);
+  color: var(--copyright-text-color);
+}
+#copyright a {
+  color: inherit;
+}
 #copyright .notice {
-  color: var(--default-text-color);
   padding: var(--gutter-size);
   text-align: center;
 }
@@ -313,25 +316,6 @@ html {
   position: fixed;
   right: 30px;
   width: 48px;
-}
-/* Boxes */
-.box {
-  margin: var(--gutter-size) 0;
-}
-.box.white {
-  margin: var(--gutter-size);
-  padding: var(--gutter-size);
-  border-radius: var(--border-radius);
-  background: #fff;
-}
-.box.border {
-  margin: var(--gutter-size);
-  padding: var(--gutter-size);
-  border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
-}
-.box > .title {
-  margin-top: 0;
 }
 #box-cookie-notice {
   background: rgba(0, 0, 0, 0.85);
@@ -389,6 +373,7 @@ html {
 }
 .listing.products.rows {
   grid-auto-flow: row;
+  grid-template-columns: initial;
 }
 .listing.categories {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -559,7 +544,6 @@ html {
   position: initial;
 }
 .listing.rows .product {
-  grid-column: span 4;
   height: 175px;
 }
 .listing.rows .product .info {
