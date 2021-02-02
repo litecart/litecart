@@ -17,13 +17,13 @@
     FS_DIR_ADMIN . 'catalog.app/edit_attribute_group.inc.php',
     FS_DIR_ADMIN . 'catalog.app/edit_category.inc.php',
     FS_DIR_ADMIN . 'catalog.app/edit_delivery_status.inc.php',
-    FS_DIR_ADMIN . 'catalog.app/edit_manufacturer.inc.php',
+    FS_DIR_ADMIN . 'catalog.app/edit_brand.inc.php',
     FS_DIR_ADMIN . 'catalog.app/edit_product.inc.php',
     FS_DIR_ADMIN . 'catalog.app/edit_quantity_unit.inc.php',
     FS_DIR_ADMIN . 'catalog.app/edit_sold_out_status.inc.php',
     FS_DIR_ADMIN . 'catalog.app/edit_supplier.inc.php',
     FS_DIR_ADMIN . 'catalog.app/index.html',
-    FS_DIR_ADMIN . 'catalog.app/manufacturers.inc.php',
+    FS_DIR_ADMIN . 'catalog.app/brands.inc.php',
     FS_DIR_ADMIN . 'catalog.app/products.json.inc.php',
     FS_DIR_ADMIN . 'catalog.app/quantity_units.inc.php',
     FS_DIR_ADMIN . 'catalog.app/sold_out_statuses.inc.php',
@@ -146,8 +146,8 @@
     FS_DIR_APP . 'includes/boxes/box_filter.inc.php',
     FS_DIR_APP . 'includes/boxes/box_information_links.inc.php',
     FS_DIR_APP . 'includes/boxes/box_latest_products.inc.php',
-    FS_DIR_APP . 'includes/boxes/box_manufacturer_links.inc.php',
-    FS_DIR_APP . 'includes/boxes/box_manufacturer_logotypes.inc.php',
+    FS_DIR_APP . 'includes/boxes/box_brand_links.inc.php',
+    FS_DIR_APP . 'includes/boxes/box_brand_logotypes.inc.php',
     FS_DIR_APP . 'includes/boxes/box_popular_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_region.inc.php',
@@ -266,8 +266,8 @@
     FS_DIR_APP . 'includes/templates/default.catalog/pages/login.ajax.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/pages/login.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/pages/maintenance_mode.inc.php',
-    FS_DIR_APP . 'includes/templates/default.catalog/pages/manufacturer.inc.php',
-    FS_DIR_APP . 'includes/templates/default.catalog/pages/manufacturers.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/pages/brand.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/pages/brands.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/pages/order.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/pages/order_history.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/pages/order_success.inc.php',
@@ -296,8 +296,8 @@
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_filter.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_information_links.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_latest_products.inc.php',
-    FS_DIR_APP . 'includes/templates/default.catalog/views/box_manufacturer_links.inc.php',
-    FS_DIR_APP . 'includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/views/box_brand_links.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/views/box_brand_logotypes.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_popular_products.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_product.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_recently_viewed_products.inc.php',
@@ -336,8 +336,8 @@
     FS_DIR_APP . 'pages/login.inc.php',
     FS_DIR_APP . 'pages/logout.inc.php',
     FS_DIR_APP . 'pages/maintenance_mode.inc.php',
-    FS_DIR_APP . 'pages/manufacturer.inc.php',
-    FS_DIR_APP . 'pages/manufacturers.inc.php',
+    FS_DIR_APP . 'pages/brand.inc.php',
+    FS_DIR_APP . 'pages/brands.inc.php',
     FS_DIR_APP . 'pages/order.inc.php',
     FS_DIR_APP . 'pages/order_history.inc.php',
     FS_DIR_APP . 'pages/order_process.inc.php',
@@ -492,12 +492,12 @@
   ], 'abort');
 
 // Remove some indexes if they exist
-  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
-    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer`;");
+  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
+    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `brand`;");
   }
 
-  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'manufacturer_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
-    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer_info`;");
+  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
+    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `brand_info`;");
   }
 
 // Separate and migrate stock options from product options
