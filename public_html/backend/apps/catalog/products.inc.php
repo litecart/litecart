@@ -25,13 +25,86 @@
     }
   }
 
+  if (isset($_POST['duplicate'])) {
+
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+      if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
+
+      foreach ($_POST['products'] as $product_id) {
+        $original = new ent_product($product_id);
+        $product = new ent_product();
+
+        $product->data = $original->data;
+        $product->data['id'] = null;
+        $product->data['status'] = 0;
+        $product->data['code'] = '';
+        $product->data['sku'] = '';
+        $product->data['mpn'] = '';
+        $product->data['gtin'] = '';
+        $product->data['categories'] = [$_POST['category_id']];
+        $product->data['quantity'] = 0;
+        $product->data['image'] = null;
+        $product->data['images'] = [];
+
+        foreach (['attributes', 'campaigns', 'stock_items'] as $field) {
+          if (empty($product->data[$field])) continue;
+          foreach (array_keys($product->data[$field]) as $key) {
+            $product->data[$field][$key]['id'] = null;
+          }
+        }
+
+        if (!empty($original->data['images'])) {
+          foreach ($original->data['images'] as $image) {
+            $product->add_image(FS_DIR_STORAGE . 'images/' . $image['filename']);
+          }
+        }
+
+        foreach (array_keys($product->data['name']) as $language_code) {
+          $product->data['name'][$language_code] .= ' (copy)';
+        }
+
+        $product->data['status'] = 0;
+        $product->save();
+      }
+
+      notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  if (isset($_POST['delete'])) {
+
+    try {
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
+      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
+
+      foreach ($_POST['products'] as $product_id) {
+        $product = new ent_product($product_id);
+        $product->delete();
+      }
+
+      notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Table Rows
   $products = [];
 
   $products_query = database::query(
     "select p.id, p.status, pi.name, p.sku, p.gtin, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
     left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
-    order by pi.name asc;"
+    order by status desc, pi.name asc;"
   );
 
   if ($_GET['page'] > 1) database::seek($products_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -111,8 +184,9 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_SKU', 'SKU'); ?></th>
             <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
+            <th>&nbsp;</th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_created', 'Created'); ?></th>
+            <th class="text-right"><?php echo language::translate('title_created', 'Created'); ?></th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -126,23 +200,35 @@
             <td><?php echo $product['id']; ?></td>
             <td><?php echo $product['sku']; ?></td>
             <td><?php echo $product['gtin']; ?></td>
-            <td><img src="<?php echo document::href_link($product['image'] ? WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_link('', ['doc' => 'edit_product', 'product_id' => $product['id']], ['app']); ?>"><?php echo $product['name']; ?></a></td>
-            <td><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
+            <td><img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_product', 'product_id' => $product['id']], ['app']); ?>"><?php echo $product['name']; ?></a></td>
+            <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
             <td class="text-right"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="9"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_rows; ?></td>
+            <td colspan="10"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_rows; ?></td>
           </tr>
         </tfoot>
       </table>
 
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+      <ul class="list-inline">
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          </div>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+        </li>
+      </ul>
+
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
