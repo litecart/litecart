@@ -91,9 +91,9 @@
     $vqmods[] = array(
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'enabled' => preg_match('#\.xml$#', $file) ? true : false,
-      'id' => $xml->id,
-      'version' => $xml->version,
-      'author' => $xml->author,
+      'id' => (string)$xml->id,
+      'version' => (string)$xml->version,
+      'author' => (string)$xml->author,
     );
   }
 
@@ -131,7 +131,7 @@
             <td><a href="<?php echo document::link(null,  array('doc' => 'view', 'vqmod' => $vqmod['filename']), true); ?>"><?php echo $vqmod['filename']; ?></a></td>
             <td><?php echo $vqmod['id']; ?></td>
             <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vqmod' => $vqmod['filename']), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-            <td><?php echo $vqmod['version']; ?></td>
+            <td><?php echo !empty($vqmod['version']) ? $vqmod['version'] : date('Y-m-d', filemtime(FS_DIR_APP . 'vqmod/xml/' . $vqmod['filename'])); ?></td>
             <td><?php echo $vqmod['author']; ?></td>
             <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => $vqmod['filename']), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download fa-lg'); ?></a></td>
           </tr>
