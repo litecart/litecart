@@ -250,13 +250,6 @@
 
         case 'quantity_unit':
 
-          $this->_data['quantity_unit'] = [
-            'id' => null,
-            'decimals' => 0,
-            'separate' => false,
-            'name' => '',
-          ];
-
           $quantity_unit_query = database::query(
             "select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
             where id = ". (int)$this->quantity_unit_id ."
