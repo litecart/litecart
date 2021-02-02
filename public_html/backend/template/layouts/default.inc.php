@@ -20,7 +20,7 @@
 
     <div id="logotype">
       <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">
-        <img class="center-block img-responsive" src="<?php echo WS_DIR_TEMPLATE; ?>images/logotype.svg" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="center-block img-responsive" src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </a>
     </div>
 
