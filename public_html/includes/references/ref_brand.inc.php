@@ -73,7 +73,7 @@
           $query = database::query(
             "select id from ". DB_TABLE_PREFIX ."products
             where status
-            and manufacturer_id = ". (int)$this->_data['id'] ."
+            and brand_id = ". (int)$this->_data['id'] ."
             and (quantity > 0 or sold_out_status_id in (
               select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)
@@ -98,7 +98,7 @@
           $query = database::query(
             "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
             where status
-            and manufacturer_id = ". (int)$this->_data['id'] ."
+            and brand_id = ". (int)$this->_data['id'] ."
             and (quantity > 0 or sold_out_status_id in (
               select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)

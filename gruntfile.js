@@ -42,6 +42,7 @@ module.exports = function(grunt) {
           'public_html/backend/template/css/variables.css' : 'public_html/backend/template/less/variables.less',
         }
       },
+
       backend_template_minified: {
         options: {
           compress: true,
@@ -57,6 +58,7 @@ module.exports = function(grunt) {
           'public_html/backend/template/css/printable.min.css' : 'public_html/backend/template/less/printable.less',
         }
       },
+
       frontend_template: {
         options: {
           compress: false,

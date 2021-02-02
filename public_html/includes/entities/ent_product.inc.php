@@ -354,7 +354,7 @@
             end_date = ". (empty($campaign['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['end_date'])) ."'") .",
             $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['campaigns'][$key]['id'] ."
+            and id = ". (int)$campaign['id'] ."
             limit 1;"
           );
         } unset($campaign);

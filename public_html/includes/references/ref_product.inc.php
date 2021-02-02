@@ -207,6 +207,7 @@
             where product_id = ". (int)$this->_data['id'] ."
             order by priority asc, id asc;"
           );
+
           while ($row = database::fetch($query)) {
             $this->_data['images'][$row['id']] = $row['filename'];
           }
@@ -270,6 +271,7 @@
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
+
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
               if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;

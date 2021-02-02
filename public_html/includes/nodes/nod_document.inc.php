@@ -35,7 +35,6 @@
 
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/fontawesome/font-awesome.min.css') .'" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/jquery/jquery-3.5.1.min.js') .'"></script>';
-      self::$snippets['foot_tags']['jquery2'] = '<script src="http://www.jquery.com/jquery/jquery-3.5.1.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page'])) {
