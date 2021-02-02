@@ -512,19 +512,9 @@
       echo PHP_EOL;
     }
 
-    ### Files > Delete Some Files #########################################
-
-    echo '<p>Delete some files...';
-
-    if (file_delete('vqmod/xml/multiple_category_images.xml')) {
-      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-    } else {
-      echo ' <span class="error">[Skipped]</span></p>' . PHP_EOL . PHP_EOL;
-    }
-
     ### Files > Development Type ##################################
 
-    echo '<p>Preparing CSS files...' . PHP_EOL;
+    echo '<p>Preparing CSS files...<br />' . PHP_EOL;
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
@@ -536,11 +526,7 @@
       ];
 
       foreach ($files_to_delete as $file) {
-        if (file_delete($file)) {
-          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-        } else {
-          echo '<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
-        }
+        file_delete($file);
       }
 
     } else {
@@ -554,16 +540,11 @@
       ];
 
       foreach ($files_to_delete as $file) {
-        echo 'Delete '. $file;
-        if (file_delete($file)) {
-          echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-        } else {
-          echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
-        }
+        file_delete($file);
       }
 
       foreach (glob('../frontend/templates/default/layouts/*.inc.php') as $file) {
-        echo 'Modify '. $file . PHP_EOL;
+        echo 'Modify '. $file .'<br />'. PHP_EOL;
         $contents = file_get_contents($file);
         $search_replace = [
           'app.min.css' => 'app.css',
@@ -612,8 +593,8 @@
     echo PHP_EOL
        . '<h2>Complete</h2>' . PHP_EOL
        . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL
-       . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'/">administration area</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
-       . '<p>Check out our <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
+       . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'/">admin panel</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
+       . '<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
 
     if (php_sapi_name() != 'cli') {
       echo '<form method="get" action="http://twitter.com/intent/tweet" target="_blank">' . PHP_EOL

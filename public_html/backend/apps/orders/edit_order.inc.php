@@ -1388,14 +1388,14 @@ body.dark-mode #box-comments {
     $('input[name^="items["][name$="[price]"]').each(function() {
       subtotal += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });
-    subtotal = Math.round(subtotal * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
+    subtotal = Number(subtotal).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
 
     var subtotal_tax = 0;
     $('input[name^="items["][name$="[tax]"]').each(function() {
       subtotal_tax += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });
-    subtotal_tax = Math.round(subtotal_tax * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
+    subtotal_tax = Number(subtotal_tax).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
 
     var order_total = subtotal + subtotal_tax;
@@ -1404,12 +1404,14 @@ body.dark-mode #box-comments {
         order_total += Number(Number($(this).val()));
       }
     });
+
     $('input[name^="order_total["][name$="[tax]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
         order_total += Number($(this).val());
       }
     });
-    order_total = Math.round(order_total * Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'))) / Math.pow(10, $('select[name="currency_code"] option:selected').data('decimals'));
+
+    order_total = Number(order_total).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
     $('#order-total .total').text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
   }
 

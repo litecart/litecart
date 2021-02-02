@@ -20,7 +20,6 @@
   );
 
   if (database::num_rows($categories_images_query)) {
-
     perform_action('modify', [
       FS_DIR_APP . 'includes/config.inc.php' => [
         [
@@ -30,6 +29,4 @@
         ],
       ],
     ], 'abort');
-
-    copy(FS_DIR_APP . 'install/data/other/multiple_category_images.xml', FS_DIR_APP . 'vqmod/xml/multiple_category_images.xml');
   }

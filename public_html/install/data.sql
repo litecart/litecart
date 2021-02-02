@@ -222,7 +222,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (220, 1, 'Ukraine', '', '804', 'UA', 'UKR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'uk', 'UAH', '380', NOW(), NOW()),
 (221, 1, 'United Arab Emirates', '', '784', 'AE', 'ARE', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'ar', 'AED', '971', NOW(), NOW()),
 (222, 1, 'United Kingdom', '', '826', 'GB', 'GBR', '^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]? ?[0-9][a-zA-Z]{2}', 1, 'en', 'GBP', '44', NOW(), NOW()),
-(223, 1, 'United States', '', '840', 'US', 'USA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}([ \\-][0-9]{4})?', 0, 'en', 'USD', '1', NOW(), NOW()),
+(223, 1, 'United States', '', '840', 'US', 'USA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%city, %zone_code %postcode\r\n%country_name', '[0-9]{5}([ \\-][0-9]{4})?', 0, 'en', 'USD', '1', NOW(), NOW()),
 (224, 1, 'United States Minor Outlying Islands', '', '581', 'UM', 'UMI', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'USD', '1', NOW(), NOW()),
 (225, 1, 'Uruguay', '', '858', 'UY', 'URY', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'es', 'UYU', '598', NOW(), NOW()),
 (226, 1, 'Uzbekistan', '', '860', 'UZ', 'UZB', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{6}', 0, 'uz', 'UZS', '998', NOW(), NOW()),
@@ -257,8 +257,8 @@ INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_c
 (1, 1, 'en', '1-3 days', ''),
 (2, 2, 'en', '3-5 days', '');
 -- --------------------------------------------------------
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
+INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'none', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `settings`, `last_log`, `date_updated`, `date_created`) VALUES
 (1, 'ot_subtotal', 'order_total', 1, 1, '{"status":"1","priority":"1"}', '', NOW(), NOW()),
@@ -372,7 +372,6 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent exceeding decimals. Turns 29.9915 to 29.99', 'round_amounts', '1', 'toggle()', 13, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '1', 'toggle()', 10, NOW(), NOW()),
 ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '0', 'toggle()', 11, NOW(), NOW()),
-('advanced', 'global', 'SEO Links Language Prefix', 'Precede links with language code, e.g. /en/....', 'seo_links_language_prefix', '1', 'toggle()', 13, NOW(), NOW()),
 ('advanced', 'global', 'GZIP Enabled', 'Compresses browser data. Increases the load on the server but decreases the bandwidth.', 'gzip_enabled', '1', 'toggle()', 15, NOW(), NOW()),
 ('advanced', 'global', 'Jobs Last Run', 'Time when background jobs were last executed.', 'jobs_last_run', NOW(), 'text()', 16, NOW(), NOW()),
 ('advanced', 'local', 'Jobs Interval', 'The amount of minutes between each execution of jobs.', 'jobs_interval', '60', 'number()', 17, NOW(), NOW()),

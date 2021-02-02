@@ -88,6 +88,8 @@ html {
   background: var(--site-background-color);
 }
 #page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: var(--page-background-color);
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
@@ -231,6 +233,7 @@ html {
 }
 #main {
   padding: 0 calc(var(--gutter-size)/2) var(--gutter-size) calc(var(--gutter-size)/2);
+  flex-grow: 1;
 }
 @media (min-width: 768px) {
   #main {

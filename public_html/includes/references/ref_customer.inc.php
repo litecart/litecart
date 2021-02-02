@@ -42,30 +42,7 @@
 
           if (!$row = database::fetch($query)) return;
 
-          $map = [
-            'id',
-            'email',
-            'password_hash',
-            'tax_id',
-            'company',
-            'firstname',
-            'lastname',
-            'address1',
-            'address2',
-            'postcode',
-            'country_code',
-            'zone_code',
-            'city',
-            'phone',
-            'different_shipping_address',
-            'newsletter',
-          ];
-
-          foreach ($map as $key) {
-            $this->_data[$key] = $row[$key];
-          }
-
-          $key_map = [
+          $remap_keys = [
             'shipping_company' => 'company',
             'shipping_firstname' => 'firstname',
             'shipping_lastname' => 'lastname',
@@ -78,7 +55,12 @@
             'shipping_phone' => 'phone',
           ];
 
-          foreach ($key_map as $skey => $tkey) {
+          foreach ($row as $key => $value) {
+            if (!in_array($key, array_keys($remap_keys))) continue;
+            $this->_data[$key] = $row[$key];
+          }
+
+          foreach ($remap_keys as $skey => $tkey) {
             $this->_data['shipping_address'][$tkey] = $row[$skey];
           }
 

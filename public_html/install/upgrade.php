@@ -31,11 +31,6 @@
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
 
-  if (preg_match('#^(off|false|0)$#i', ini_get('safe_mode'))) {
-    ignore_user_abort(true);
-    set_time_limit(300);
-  }
-
   if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
 
@@ -57,6 +52,9 @@
   require_once FS_DIR_APP . 'includes/error_handler.inc.php';
   require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
   require_once FS_DIR_APP . 'includes/library/lib_database.inc.php';
+
+  ignore_user_abort(true);
+  set_time_limit(300);
 
 // Set platform name
   preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);

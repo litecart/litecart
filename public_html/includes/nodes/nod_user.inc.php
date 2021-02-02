@@ -102,7 +102,8 @@
         session::$data['user'][$field['Field']] = null;
       }
 
-      session::$data['user']['permissions'] = [];
+      session::$data['user']['apps'] = [];
+      session::$data['user']['widgets'] = [];
     }
 
     public static function load($user_id) {
@@ -114,7 +115,8 @@
       );
 
       if ($user = database::fetch($user_query)) {
-        $user['permissions'] = $user['permissions'] ? json_decode($user['permissions'], true) : [];
+        $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : [];
+        $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : [];
       }
 
       session::$data['user'] = $user;

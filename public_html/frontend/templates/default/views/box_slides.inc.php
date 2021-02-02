@@ -9,7 +9,7 @@
       echo '<a href="'. htmlspecialchars($slide['link']) .'">' . PHP_EOL;
     }
 
-    echo '<img src="'. document::href_link($slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
+    echo '<img src="'. document::href_link($slide['image']) .'" alt="'. htmlspecialchars($slide['name']) .'" style="width: 100%;" />' . PHP_EOL;
 
     if (!empty($slide['caption'])) {
       echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;

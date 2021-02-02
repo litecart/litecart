@@ -25,7 +25,8 @@
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['permissions'] = [];
+      $this->data['apps'] = [];
+      $this->data['widgets'] = [];
 
       $this->previous = $this->data;
     }
@@ -50,7 +51,8 @@
         throw new Exception('Could not find user (ID: '. (int)$user_id .') in database.');
       }
 
-      $this->data['permissions'] = !empty($this->data['permissions']) ? json_decode($this->data['permissions'], true) : [];
+      $this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];
+      $this->data['widgets'] = !empty($this->data['widgets']) ? json_decode($this->data['widgets'], true) : [];
 
       $this->previous = $this->data;
     }
@@ -85,7 +87,8 @@
         status = '". (empty($this->data['status']) ? 0 : 1) ."',
         username = '". database::input($this->data['username']) ."',
         email = '". database::input($this->data['email']) ."',
-        permissions = '". database::input(json_encode($this->data['permissions'], JSON_UNESCAPED_SLASHES)) ."',
+        apps = '". database::input(json_encode($this->data['apps'], JSON_UNESCAPED_SLASHES)) ."',
+        widgets = '". database::input(json_encode($this->data['widgets'], JSON_UNESCAPED_SLASHES)) ."',
         date_valid_from = '". database::input($this->data['date_valid_from']) ."',
         date_valid_to = '". database::input($this->data['date_valid_to']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'

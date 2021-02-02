@@ -240,7 +240,7 @@
 
         <tfoot>
           <tr>
-            <td colspan="6"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_pages; ?></td>
+            <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_pages; ?></td>
           </tr>
         </tfoot>
       </table>

@@ -99,7 +99,7 @@
       }
 
     // Set system locale
-      if (!setlocale(LC_TIME, explode(',', self::$selected['locale']))) {
+      if (!setlocale(LC_TIME, preg_split('#\s*,\s*#', self::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
         trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['code'], E_USER_WARNING);
       }
 
@@ -123,6 +123,14 @@
       $enabled_languages = [];
       foreach (self::$languages as $language) {
         if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
+      }
+
+    // Return language by regional domain
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] != 'domain') continue;
+        if (preg_match('#'. preg_quote(self::$languages[$language_code]['url_type'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+          return $language_code;
+        }
       }
 
     // Return language from URI query

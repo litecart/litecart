@@ -167,21 +167,23 @@
   });
 
 // Data-Table Shift Check Multiple Checkboxes
-  var lastCheckedCheckbox = null;
-  $('.data-table input[type="checkbox"]').click(function(e) {
-    if (!lastCheckedCheckbox) {
-      lastCheckedCheckbox = this;
+  var lastTickedCheckbox = null;
+  $('.data-table input[type="checkbox"]').click(function(e){
+
+    var $chkboxes = $('.data-table input[type="checkbox"]');
+
+    if (!lastTickedCheckbox) {
+      lastTickedCheckbox = this;
       return;
     }
 
     if (e.shiftKey) {
-      var start = $('.data-table input[type="checkbox"]').index(this);
-      var end = $('.data-table input[type="checkbox"]').index(lastCheckedCheckbox);
-
-      $('.data-table input[type="checkbox"]').slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastCheckedCheckbox.checked);
+      var start = $chkboxes.index(this);
+      var end = $chkboxes.index(lastTickedCheckbox);
+      $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
     }
 
-    lastCheckedCheckbox = this;
+    lastTickedCheckbox = this;
   });
 
 // Keep-alive

@@ -13,7 +13,7 @@
       if (empty($this->modules)) return $output;
 
       foreach ($this->modules as $module_id => $module) {
-        if ($rows = $module->process($order)) {
+        if ($rows = $module->process($order, $output)) {
           foreach ($rows as $row) {
 
             if (!empty($row['tax_class_id'])) {
@@ -41,7 +41,7 @@
     }
 
     public function run($method_name, $module_id) {
-      if (method_exists($this->modules[$module_id], $method_name)) {
+      if (!empty($this->modules[$module_id]) && method_exists($this->modules[$module_id], $method_name)) {
         return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
       }
     }

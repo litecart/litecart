@@ -227,17 +227,9 @@
 
           if (!$row = database::fetch($query)) return;
 
-          foreach ($row as $key => $value) {
-            switch($key) {
-              case 'keywords':
-                $this->_data[$key] = explode(',', $row[$key]);
-                break;
+          foreach ($row as $key => $value) $this->_data[$key] = $value;
 
-              default:
-                $this->_data[$key] = $value;
-                break;
-            }
-          }
+          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
       }

@@ -196,7 +196,7 @@
         trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
       }
 
-      if (empty($currency_value)) {
+      if (empty($currency_value) || $currency_value == 0) {
         if (empty(self::$currencies[$currency_code]['value'])) return false;
         if (!$currency_value = self::$currencies[$currency_code]['value']) return 0;
       }

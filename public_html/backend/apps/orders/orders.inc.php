@@ -49,8 +49,12 @@
       sort($_POST['orders']);
 
       ob_start();
-      call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders']);
 
+      if ($result = call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']), $_POST['orders'])) {
+        echo $result;
+      }
+
+    // Backwards compatibility
       if ($output = ob_get_clean()) {
         echo $output;
         return;
@@ -65,18 +69,6 @@
     }
   }
 
-  $payment_options_query = database::query(
-    "select distinct payment_option_name
-    from ". DB_TABLE_PREFIX ."orders o
-    where (payment_option_name is not null and payment_option_name != '')
-    order by payment_option_name asc"
-  );
-
-  $payment_options = [['-- '. language::translate('title_payment_method', 'Payment Method') .' --', '']];
-  while ($payment_option = database::fetch($payment_options_query)) {
-    $payment_options[] = [$payment_option['payment_option_name'], $payment_option['payment_option_name']];
-  }
-
 // Table Rows
   $orders = [];
 
@@ -84,13 +76,17 @@
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
       "o.uid = '". database::input($_GET['query']) ."'",
+      "o.reference like '%". database::input($_GET['query']) ."%'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
       "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
-      "concat(o.customer_company, ' ', o.customer_firstname, ' ', o.customer_lastname, ' ', o.customer_address1, ' ', o.customer_address2, ' ', o.customer_postcode, ' ', o.customer_city) like '%". database::input($_GET['query']) ."%'",
-      "concat(o.shipping_company, ' ', o.shipping_firstname, ' ', o.shipping_lastname, ' ', o.shipping_address1, ' ', o.shipping_address2, ' ', o.shipping_postcode, ' ', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
+      "concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". database::input($_GET['query']) ."%'",
+      "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
+      "o.payment_option_id like '%". database::input($_GET['query']) ."%'",
+      "o.payment_option_name like '%". database::input($_GET['query']) ."%'",
       "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
+      "o.shipping_option_id like '%". database::input($_GET['query']) ."%'",
+      "o.shipping_option_name like '%". database::input($_GET['query']) ."%'",
       "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
-      "o.reference like '%". database::input($_GET['query']) ."%'",
       "o.id in (
         select order_id from ". DB_TABLE_PREFIX ."orders_items
         where name like '%". database::input($_GET['query']) ."%'
@@ -118,7 +114,6 @@
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
-    ". (!empty($_GET['payment_option_name']) ? "and o.payment_option_name = '". database::input($_GET['payment_option_name']) ."'" : '') ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
     order by $sql_sort;"
@@ -135,7 +130,7 @@
     }
 
     if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
-    if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
+    if (empty($order['order_status_color'])) $order['order_status_color'] = '#ccc';
 
     $order['css_classes'] = [];
     if (empty($order['order_status_id'])) $order['css_classes'][]= 'semi-transparent';
@@ -203,7 +198,6 @@ table .fa-star:hover {
     <div class="panel-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <div><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></div>
-      <div><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true); ?></div>
       <div class="input-group" style="max-width: 380px;">
         <?php echo functions::form_draw_date_field('date_from', true); ?>
         <span class="input-group-addon"> - </span>

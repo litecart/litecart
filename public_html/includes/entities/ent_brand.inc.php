@@ -84,8 +84,7 @@
         $this->data['id'] = database::insert_id();
       }
 
-      $this->data['keywords'] = explode('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
+      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
       $this->data['keywords'] = array_unique($this->data['keywords']);
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
@@ -157,7 +156,7 @@
       functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
 
       if (settings::get('image_downsample_size')) {
-        list($width, $height) = explode(',', settings::get('image_downsample_size'));
+        list($width, $height) = preg_split('#\s*,\s*#', settings::get('image_downsample_size'), -1, PREG_SPLIT_NO_EMPTY);
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 

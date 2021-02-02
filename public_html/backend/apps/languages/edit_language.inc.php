@@ -23,6 +23,16 @@
       if (empty($_POST['code'])) throw new Exception(language::translate('error_must_enter_code', 'You must enter a code'));
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
+      if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain' && empty($_POST['domain_name'])) {
+        throw new Exception(language::translate('error_must_provide_domain', 'You must provide a domain name'));
+      }
+
+      if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain' && !empty($_POST['domain_name'])) {
+        if (!empty($language->data['id']) && database::num_rows(database::query("select id from ". DB_TABLE_LANGUAGES ." where domain_name = '". database::input($_POST['domain_name']) ."' and id != ". (int)$language->data['id'] ." limit 1;"))) {
+          throw new Exception(language::translate('error_domain_in_use_by_other_language', 'The domain name is already in use by another domain name.'));
+        }
+      }
+
       if (empty($_POST['set_default']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code') && $language->data['code'] != $_POST['code']) {
         throw new Exception(language::translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
       }
@@ -46,9 +56,12 @@
       if (!setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
         throw new Exception(strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), ['%locale' => !empty($_POST['locale']) ? $_POST['locale'] : 'NULL']));
       }
+
       setlocale(LC_ALL, preg_split('#\s*,\s*#', language::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY)); // Restore
 
       ##########
+
+      if (empty($_POST['domain_name'])) $_POST['domain_name'] = '';
 
       $_POST['code'] = strtolower($_POST['code']);
       $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
@@ -61,6 +74,8 @@
         'name',
         'charset',
         'locale',
+        'url_type',
+        'domain_name',
         'raw_date',
         'raw_time',
         'raw_datetime',
@@ -158,6 +173,22 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
           <?php echo functions::form_draw_text_field('locale', true, 'placeholder="E.g. en_US.utf8,en-US.UTF-8,english"'); ?>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_url_type', 'URL Type'); ?></label>
+          <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_domain_name', 'Domain Name'); ?></label>
+          <?php echo functions::form_draw_text_field('domain_name', true); ?>
         </div>
       </div>
 
@@ -308,3 +339,13 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 </div>
+
+<script>
+$('input[name="url_type"]').change(function(){
+  if ($(this).val() == 'domain') {
+    $('input[name="domain_name"]').prop('disabled', false);
+  } else {
+    $('input[name="domain_name"]').prop('disabled', true);
+  }
+}).first().trigger('change');
+</script>

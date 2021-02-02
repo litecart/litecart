@@ -8,7 +8,7 @@
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
 // Sidebar parallax effect
-  if (window.config.template.settings.sidebar_parallax_effect == true) {
+  if (window._env.template.settings.sidebar_parallax_effect == true) {
 
     var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
     var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
@@ -111,7 +111,7 @@
 // Update cart / Keep alive
   window.updateCart = function(data) {
     $.ajax({
-      url: window.config.platform.url + 'ajax/cart.json',
+      url: window._env.platform.url + 'ajax/cart.json',
       type: data ? 'post' : 'get',
       data: data,
       cache: false,
@@ -134,13 +134,13 @@
           });
           $('#cart .items').append('<li class="divider"></li>');
         }
-        $('#cart .items').append('<li><a href="' + config.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
+        $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
         $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
         $('#cart .formatted_value').html(json['formatted_value']);
         if (json['quantity'] > 0) {
-          $('#cart img').attr('src', config.template.url + 'images/cart_filled.svg');
+          $('#cart img').attr('src', window._env.template.url + 'images/cart_filled.svg');
         } else {
-          $('#cart img').attr('src', config.template.url + 'images/cart.svg');
+          $('#cart img').attr('src', window._env.template.url + 'images/cart.svg');
         }
       }
     });

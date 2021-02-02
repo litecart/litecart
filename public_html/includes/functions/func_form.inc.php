@@ -196,7 +196,9 @@ END;
     if ($input === true) $input = form_reinsert_value($name);
 
   // Format and show an additional two decimals precision if needed
-    $input = preg_replace('#0{1,2}$#', '', number_format((float)$input, currency::$currencies[$currency_code]['decimals'] + 2));
+    if ($value != '') {
+      $value = preg_replace('#0{1,2}$#', '', number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2, '.', ''));
+    }
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
@@ -258,6 +260,7 @@ END;
 
   function form_draw_decimal_field($name, $input=true, $decimals=2, $parameters='') {
 
+
     if (count($args = func_get_args()) > 4) {
       trigger_error('Passing min and max separate parameters in form_draw_decimal_field() is deprecated. Instead define min="0" max="999" in $parameters', E_USER_DEPRECATED);
       if (isset($args[5])) $parameters = $args[5];
@@ -265,11 +268,11 @@ END;
       if (isset($args[4])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[4] .'"';
     }
 
-    if ($input === true) $input = form_reinsert_value($name);
+    if ($value != '') {
+      $value = round((float)$value, $decimals);
+    }
 
-    $input = round((float)$input, $decimals);
-
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. (($input != 0) ? $input : '') .'" data-type="decimal"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" '. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_email_field($name, $input=true, $parameters='') {
@@ -335,7 +338,11 @@ END;
   function form_draw_number_field($name, $input=true, $parameters='') {
     if ($input === true) $input = (int)form_reinsert_value($name);
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" data-type="number" step="1"' . (($parameters) ? ' '.$parameters : false) .' />';
+    if ($value != '') {
+      $value = floor($value);
+    }
+
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" step="1"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_password_field($name, $input='', $parameters='') {

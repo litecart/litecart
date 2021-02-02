@@ -78,6 +78,7 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_code', 'Code'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+            <th><?php echo language::translate('title_url_type', 'URL Type'); ?></th>
             <th><?php echo language::translate('title_default_language', 'Default Language'); ?></th>
             <th><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
             <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
@@ -93,6 +94,7 @@
             <td><?php echo $language['id']; ?></td>
             <td><?php echo $language['code']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>"><?php echo $language['name']; ?></a></td>
+            <td><?php echo $language['url_type']; ?></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo $language['priority']; ?></td>
@@ -103,7 +105,7 @@
 
         <tfoot>
           <tr>
-            <td colspan="9"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo $num_rows; ?></td>
+            <td colspan="10"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo $num_rows; ?></td>
           </tr>
         </tfoot>
       </table>

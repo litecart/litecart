@@ -14,6 +14,9 @@
     // Neutralize request path (removes logical prefixes)
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
+    // Identify the request to a route destination
+      self::identify();
+
     // Load cached links (url rewrites)
       self::$_links_cache_token = cache::token('links', ['site', 'endpoint', 'language'], 'file', 900);
       self::$_links_cache = cache::get(self::$_links_cache_token);
@@ -109,13 +112,15 @@
           }
 
           if ($do_redirect) {
+
+          // Send HTTP 302 if it's the start page
             if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_APP) {
               header('Location: '. $rewritten_url, true, 302);
               exit;
-            } else {
-              header('Location: '. $rewritten_url, true, 301);
-              exit;
             }
+
+            header('Location: '. $rewritten_url, true, 301);
+            exit;
           }
         }
       }
@@ -270,10 +275,18 @@
         $use_rewrite = true;
       }
 
-    // Prepend language prefix
-      if (count(language::$languages) > 1 && settings::get('seo_links_language_prefix')) {
-        if (isset($link->query['language'])) $link->unset_query('language');
-        $link->path = $language_code .'/'. ltrim($link->path, '/');
+    // Set language to URL
+      switch (language::$languages[$language_code]['url_type']) {
+
+        case 'path':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->path = $language_code .'/'. ltrim($link->path, '/');
+          break;
+
+        case 'domain':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->domain = language::$languages[$language_code]['domain_name'];
+          break;
       }
 
     // Set base (/index.php/ or /)

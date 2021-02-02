@@ -93,6 +93,8 @@
           name = '". database::input($this->data['name']) ."',
           charset = '". database::input($this->data['charset']) ."',
           locale = '". database::input($this->data['locale']) ."',
+          url_type = '". database::input($this->data['url_type']) ."',
+          domain_name = '". database::input($this->data['domain_name']) ."',
           raw_date = '". database::input($this->data['raw_date']) ."',
           raw_time = '". database::input($this->data['raw_time']) ."',
           raw_datetime = '". database::input($this->data['raw_datetime']) ."',

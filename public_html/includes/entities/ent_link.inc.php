@@ -182,17 +182,43 @@
     }
 
   // Workaround as overloaded array items cannot be set
-    public function set_query($name, $value) {
+    public function set_query($key, $value) {
 
-      $this->_components['query'][$name] = is_object($value) ? (string)$value : $value;
+      $this->_components['query'][$key] = is_object($value) ? (string)$value : $value;
 
       return $this;
     }
 
   // Workaround as overloaded array items cannot be unset
-    public function unset_query($name) {
+    public function unset_query($key) {
 
-      unset($this->_components['query'][$name]);
+      if (is_array($key)) {
+
+        $array_diff_recursive = function($array1, $array2) use (&$array_diff_recursive) {
+          $result = array();
+          foreach ($array1 as $key => $value) {
+            if (array_key_exists($key, $array2)) {
+              if (is_array($value)) {
+                if ($tmp = $array_diff_recursive($value, $array2[$key])) {
+                  $result[$key] = $tmp;
+                }
+              } else {
+                if ($value != $array2[$key]) {
+                  $result[$key] = $value;
+                }
+              }
+              continue;
+            }
+            $result[$key] = $value;
+          }
+          return $result;
+        };
+
+        $this->_components['query'] = $array_diff_recursive($this->_components['query'], $key);
+
+      } else {
+        unset($this->_components['query'][$key]);
+      }
 
       return $this;
     }
