@@ -73,7 +73,7 @@
           default:
             database::query(
               "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
-              change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". $column['COLUMN_TYPE'] ." not null default '". (!empty($column['COLUMN_DEFAULT'] && strtolower($column['COLUMN_DEFAULT']) != 'null') ? $column['COLUMN_DEFAULT'] : "") ."';"
+              change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". $column['COLUMN_TYPE'] ." not null default ". (!empty($column['COLUMN_DEFAULT'] && strtolower($column['COLUMN_DEFAULT']) != 'null') ? $column['COLUMN_DEFAULT'] : "''") .";"
             );
             break;
         }
