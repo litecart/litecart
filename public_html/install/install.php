@@ -69,6 +69,13 @@
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
 
+    if (preg_match('#^'. preg_quote(rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', file_realpath($_REQUEST['storage_folder']))) {
+      define(FS_DIR_STORAGE, rtrim(file_realpath($_REQUEST['storage_folder']), '/') . '/');
+      define(WS_DIR_STORAGE, preg_replace('#^'. preg_quote(rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_STORAGE);
+    } else {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' The storage folder must be under the document root.</p>' . PHP_EOL  . PHP_EOL);
+    }
+
     if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
       define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
     } else {
@@ -138,10 +145,10 @@
 
     error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
     ini_set('ignore_repeated_errors', 'On');
-    ini_set('log_errors', 'Off');
+    ini_set('log_errors', 'On');
     ini_set('display_errors', 'On');
     ini_set('html_errors', 'On');
-
+    ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
     date_default_timezone_set(!empty($_REQUEST['timezone']) ? $_REQUEST['timezone'] : ini_get('date.timezone'));
 
     ### PHP > Check Version #######################################
@@ -284,6 +291,16 @@
 
     define('DB_STORAGE_ENGINE', $_REQUEST['db_engine']);
 
+    ### Storage ###################################################
+
+    echo '<p>Set up storage folder... ';
+
+    if (file_exists($_REQUEST['storage_folder']) || mkdir($_REQUEST['storage_folder'])) {
+      echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
+    }
+
     ### Config > Write ############################################
 
     echo '<p>Writing config file... ';
@@ -306,7 +323,7 @@
 
     define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
 
-    if (file_put_contents('../includes/config.inc.php', $config) !== false) {
+    if (file_put_contents(rtrim($_REQUEST['storage_folder'], '/') . '/config.inc.php', $config) !== false) {
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
@@ -380,7 +397,13 @@
 
     echo '<p>Copying default files...</p>' . PHP_EOL;
 
-    perform_action('copy', ['data/default/public_html/' => FS_DIR_APP]);
+    if (file_exists('data/default/public_html/')) {
+      perform_action('copy', ['data/default/public_html/' => FS_DIR_APP]);
+    }
+
+    if (file_exists('data/default/storage/')) {
+      perform_action('copy', ['data/default/storage/' => FS_DIR_STORAGE]);
+    }
 
     echo PHP_EOL;
 
@@ -476,6 +499,10 @@
         if (file_exists('data/'. $dir .'/public_html/')) {
           perform_action('copy', "data/$dir/public_html/" => FS_DIR_APP);
         }
+
+        if (file_exists('data/'. $dir .'/storage/')) {
+          perform_action('copy', "data/$dir/storage/" => FS_DIR_STORAGE);
+        }
       }
 
       echo PHP_EOL;
@@ -507,7 +534,7 @@
     if (!empty($_REQUEST['demo_data'])) {
       echo '<p>Copying demo files...' . PHP_EOL;
 
-      perform_action('copy', ['data/demo/public_html/' => FS_DIR_APP]);
+      perform_action('copy', ['data/demo/storage/' => FS_DIR_STORAGE]);
 
       echo PHP_EOL;
     }

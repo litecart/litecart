@@ -422,10 +422,14 @@
   rmdir(FS_DIR_APP . 'vqmod/');
 
   perform_action('modify', [
-    FS_DIR_APP . 'includes/config.inc.php' => [
+    FS_DIR_STORAGE . 'config.inc.php' => [
       [
         'search'  => "  define('DB_CONNECTION_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1" . PHP_EOL,
         'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
+      ],
+      [
+        'search'  => "ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
+        'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
       ],
     ],
   );
@@ -433,8 +437,11 @@
   perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
       [
-        'search'  => "RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
-        'replace' => "RewriteRule ^.*$ index.php [QSA,L]",
+        'search'  => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]" . PHP_EOL,
+        'replace' => "  # Resolve some storage content" . PHP_EOL
+                   . "  RewriteRule ^(cache|images)/ /storage/%{REQUEST_URI} [L]" . PHP_EOL
+                   . PHP_EOL
+                   . "  RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
       ],
       [
         'search'  => '#AuthUserFile ".*?.htpasswd"#',
@@ -442,7 +449,7 @@
         'regexp'  => true,
       ],
     ],
-    FS_DIR_APP . 'includes/config.inc.php' => [
+    FS_DIR_STORAGE . 'config.inc.php' => [
       [
         'search'  => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
         'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8mb4');",

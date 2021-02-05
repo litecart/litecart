@@ -408,6 +408,11 @@ input[name="development_type"]:checked + div {
     <div class="form-control"><?php echo $document_root; ?></div>
   </div>
 
+  <div class="form-group">
+    <label>Storage Directory</label>
+    <input class="form-control" type="text" value="<?php echo htmlspecialchars($document_root); ?>">
+  </div>
+
   <h3>Database</h3>
 
   <div class="row">
