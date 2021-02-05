@@ -835,6 +835,10 @@ END;
       case 'weight_units':
         return form_draw_weight_units_list($name, $input, $parameters);
 
+      case 'volume_unit':
+      case 'volume_units':
+        return form_draw_volume_units_list($name, $input, $parameters);
+
       case 'wysiwyg':
         return form_draw_regional_wysiwyg_field($input, $name, $parameters);
 
@@ -1268,8 +1272,8 @@ END;
     }
 
     $options = [];
-    foreach (length::$classes as $class) {
-      $options[] = [$class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
+    foreach (length::$units as $unit) {
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1740,8 +1744,27 @@ END;
     }
 
     $options = [];
-    foreach (weight::$classes as $class) {
-      $options[] = [$class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
+    foreach (weight::$units as $unit) {
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['--', '']);
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_volume_units_list($name, $input=true, $parameters='') {
+
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+    }
+
+    $options = [];
+    foreach (volume::$units as $unit) {
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
