@@ -46,11 +46,11 @@
 				'taric',
 				'name',
 				'weight',
-				'weight_class',
-				'dim_x',
-				'dim_y',
-				'dim_z',
-				'dim_class',
+				'weight_unit',
+				'length',
+				'width',
+				'height',
+				'length_unit',
 				'quantity',
 				'quantity_adjustment',
 				'quantity_unit_id',
@@ -212,7 +212,7 @@
             <div class="input-group">
               <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
               <span class="input-group-addon">
-                <?php echo functions::form_draw_weight_classes_list('weight_class', true, 'style="width: auto;"'); ?>
+                <?php echo functions::form_draw_weight_units_list('weight_unit', true, 'style="width: auto;"'); ?>
               </span>
             </div>
           </div>
@@ -220,13 +220,13 @@
           <div class="form-group col-md-8">
             <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
             <div class="input-group">
-              <?php echo functions::form_draw_decimal_field('dim_x', true, 3, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('length', true, 3, 'min="0"'); ?>
               <span class="input-group-addon">x</span>
-              <?php echo functions::form_draw_decimal_field('dim_y', true, 3, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('width', true, 3, 'min="0"'); ?>
               <span class="input-group-addon">x</span>
-              <?php echo functions::form_draw_decimal_field('dim_z', true, 3, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('height', true, 3, 'min="0"'); ?>
               <span class="input-group-addon">
-                <?php echo functions::form_draw_length_classes_list('dim_class', true, 'style="width: auto;"'); ?>
+                <?php echo functions::form_draw_length_units_list('length_unit', true, 'style="width: auto;"'); ?>
               </span>
             </div>
           </div>

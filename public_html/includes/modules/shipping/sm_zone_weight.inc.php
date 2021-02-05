@@ -18,7 +18,7 @@
     // Calculate cart weight
       $total_weight = 0;
       foreach ($items as $item) {
-        $total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
+        $total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_unit'], $this->settings['weight_unit']);
       }
 
       $options = [];
@@ -145,11 +145,11 @@
           'function' => 'text()',
         ],
         [
-          'key' => 'weight_class',
+          'key' => 'weight_unit',
           'default_value' => '',
-          'title' => language::translate(__CLASS__.':title_weight_class', 'Weight Class'),
-          'description' => language::translate(__CLASS__.':description_weight_class', 'The weight class for the rate table.'),
-          'function' => 'weight_class()',
+          'title' => language::translate(__CLASS__.':title_weight_unit', 'Weight Unit'),
+          'description' => language::translate(__CLASS__.':description_weight_unit', 'The weight unit for the rate table.'),
+          'function' => 'weight_unit()',
         ],
         [
           'key' => 'geo_zone_id_1',

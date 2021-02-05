@@ -88,3 +88,26 @@ DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_templat
 ALTER TABLE `lc_settings`
 CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL DEFAULT '' AFTER `type`,
 CHANGE COLUMN `value` `value` VARCHAR(8192) NOT NULL DEFAULT '' AFTER `key`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products`
+CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `dim_x` `length` DECIMAL(10,4) NOT NULL DEFAULT '0' AFTER `weight_unit`,
+CHANGE COLUMN `dim_y` `width` DECIMAL(10,4) NOT NULL DEFAULT '0' AFTER `length`,
+CHANGE COLUMN `dim_z` `height` DECIMAL(10,4) NOT NULL DEFAULT '0' AFTER `width`,
+CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '';
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders`
+CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '';
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_items`
+CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `weight_unit`,
+CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `length`,
+CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `width`,
+CHANGE COLUMN `dim_class` `length_class` VARCHAR(2) NOT NULL DEFAULT '';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `key` = 'store_weight_unit', `title` = 'Store Weight Unit', `description` = 'The prefered weight unit.'  WHERE `key` = 'store_length_class' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `key` = 'store_legnth_unit', `title` = 'Store Length Unit', `description` = 'The prefered length unit.' WHERE `key` = 'store_weight_class' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;

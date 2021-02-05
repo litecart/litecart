@@ -524,7 +524,7 @@ body.dark-mode #box-comments {
 
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
-                      <span class="form-control"><?php echo weight::format($order->data['weight_total'], $order->data['weight_class']) ?></span>
+                      <span class="form-control"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></span>
                     </div>
 
                     <div class="form-group col-md-12">
@@ -620,18 +620,18 @@ body.dark-mode #box-comments {
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][gtin]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][taric]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][weight]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['. $key .'][weight_class]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_x]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_y]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_z]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['. $key .'][dim_class]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['. $key .'][weight_unit]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['. $key .'][length]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['. $key .'][width]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['. $key .'][height]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['. $key .'][length_unit]', true); ?>
               </td>
               <td class="sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
               <td>
-                <span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_class"><?php echo $_POST['items'][$key]['weight_class']; ?></span>
+                <span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['items'][$key]['weight_unit']; ?></span>
               </td>
               <td>
-                <span class="dim_x"><?php echo (float)$_POST['items'][$key]['dim_x']; ?></span> x <span class="dim_y"><?php echo (float)$_POST['items'][$key]['dim_y']; ?></span> x <span class="dim_z"><?php echo (float)$_POST['items'][$key]['dim_z']; ?></span> <span class="dim_class"><?php echo $_POST['items'][$key]['dim_class']; ?></span>
+                <span class="length"><?php echo (float)$_POST['items'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['items'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['items'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['items'][$key]['length_unit']; ?></span>
               </td>
               <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
               <td><?php echo functions::form_draw_currency_field('items['. $key .'][price]', $_POST['currency_code'], true); ?></td>
@@ -829,20 +829,20 @@ body.dark-mode #box-comments {
         <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
         <div class="input-group">
           <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
-          <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', true, 'style="width: auto;"'); ?></span>
+          <span class="input-group-addon"><?php echo functions::form_draw_weight_units_list('weight_unit', true, 'style="width: auto;"'); ?></span>
         </div>
       </div>
 
       <div class="form-group col-md-8">
         <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_draw_decimal_field('dim_x', true, 3, 'min="0"'); ?>
+          <?php echo functions::form_draw_decimal_field('length', true, 3, 'min="0"'); ?>
           <span class="input-group-addon">x</span>
-          <?php echo functions::form_draw_decimal_field('dim_y', true, 3, 'min="0"'); ?>
+          <?php echo functions::form_draw_decimal_field('width', true, 3, 'min="0"'); ?>
           <span class="input-group-addon">x</span>
-          <?php echo functions::form_draw_decimal_field('dim_z', true, 3, 'min="0"'); ?>
+          <?php echo functions::form_draw_decimal_field('height', true, 3, 'min="0"'); ?>
           <span class="input-group-addon">
-            <?php echo functions::form_draw_length_classes_list('dim_class', true, 'style="width: auto;"'); ?>
+            <?php echo functions::form_draw_length_units_list('length_unit', true, 'style="width: auto;"'); ?>
           </span>
         </div>
       </div>
@@ -912,20 +912,20 @@ body.dark-mode #box-comments {
         <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
         <div class="input-group">
           <?php echo functions::form_draw_decimal_field('weight', '', 3, 'min="0"'); ?>
-          <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', '', 'style="width: auto;"'); ?></span>
+          <span class="input-group-addon"><?php echo functions::form_draw_weight_units_list('weight_unit', '', 'style="width: auto;"'); ?></span>
         </div>
       </div>
 
       <div class="form-group col-md-8">
         <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_draw_decimal_field('dim_x', '', 3, 'min="0"'); ?>
+          <?php echo functions::form_draw_decimal_field('length', '', 3, 'min="0"'); ?>
           <span class="input-group-addon">x</span>
-          <?php echo functions::form_draw_decimal_field('dim_y', '', 3, 'min="0"'); ?>
+          <?php echo functions::form_draw_decimal_field('width', '', 3, 'min="0"'); ?>
           <span class="input-group-addon">x</span>
-          <?php echo functions::form_draw_decimal_field('dim_z', '', 3, 'min="0"'); ?>
+          <?php echo functions::form_draw_decimal_field('height', '', 3, 'min="0"'); ?>
           <span class="input-group-addon">
-            <?php echo functions::form_draw_length_classes_list('dim_class', '', 'style="width: auto;"'); ?>
+            <?php echo functions::form_draw_length_units_list('length_unit', '', 'style="width: auto;"'); ?>
           </span>
         </div>
       </div>
@@ -1224,11 +1224,11 @@ body.dark-mode #box-comments {
       'gtin',
       'taric',
       'weight',
-      'weight_class',
-      'dim_x',
-      'dim_y',
-      'dim_z',
-      'dim_class',
+      'weight_unit',
+      'length',
+      'width',
+      'height',
+      'length_unit',
       'price',
       'tax',
     ];
@@ -1263,11 +1263,11 @@ body.dark-mode #box-comments {
       'gtin',
       'taric',
       'weight',
-      'weight_class',
-      'dim_x',
-      'dim_y',
-      'dim_z',
-      'dim_class',
+      'weight_unit',
+      'length',
+      'width',
+      'height',
+      'length_unit',
       'price',
       'tax',
     ];
@@ -1296,18 +1296,18 @@ body.dark-mode #box-comments {
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][gtin]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][taric]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][weight]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][weight_class]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_x]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_y]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_z]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][dim_class]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][weight_unit]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][length]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][width]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][height]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][length_unit]', '')); ?>'
                + '    </td>'
                + '    <td>'+ item.sku +'</td>'
                + '    <td>'
-               + '      <span class="weight"></span> <span class="weight_class"></span>'
+               + '      <span class="weight"></span> <span class="weight_unit"></span>'
                + '    </td>'
                + '    <td>'
-               + '      <span class="dim_x"></span> x <span class="dim_y"></span> x <span class="dim_z"></span> <span class="dim_class"></span>'
+               + '      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>'
                + '    </td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
@@ -1329,22 +1329,22 @@ body.dark-mode #box-comments {
     $(row).find('*[name$="[gtin]"]').val(item.gtin);
     $(row).find('*[name$="[taric]"]').val(item.taric);
     $(row).find('*[name$="[weight]"]').val(item.weight);
-    $(row).find('*[name$="[weight_class]"]').val(item.weight_class);
-    $(row).find('*[name$="[dim_x]"]').val(item.dim_x);
-    $(row).find('*[name$="[dim_y]"]').val(item.dim_y);
-    $(row).find('*[name$="[dim_z]"]').val(item.dim_z);
-    $(row).find('*[name$="[dim_class]"]').val(item.dim_class);
+    $(row).find('*[name$="[weight_unit]"]').val(item.weight_unit);
+    $(row).find('*[name$="[length]"]').val(item.length);
+    $(row).find('*[name$="[width]"]').val(item.width);
+    $(row).find('*[name$="[height]"]').val(item.height);
+    $(row).find('*[name$="[length_unit]"]').val(item.length_unit);
     $(row).find('*[name$="[quantity]"]').val(item.quantity);
     $(row).find('*[name$="[price]"]').val(item.price);
     $(row).find('*[name$="[tax]"]').val(item.tax);
 
     $(row).find('[data-type="currency"]').parent().find('.input-group-addon').text($(':input[name="currency_code"]').val());
     $(row).find('.weight').text(String(item.weight).trim('.0'));
-    $(row).find('.weight_class').text(item.weight_class);
-    $(row).find('.dim_x').text(String(item.dim_x).trim('.0'));
-    $(row).find('.dim_y').text(String(item.dim_y).trim('.0'));
-    $(row).find('.dim_z').text(String(item.dim_z).trim('.0'));
-    $(row).find('.dim_class').text(item.dim_class);
+    $(row).find('.weight_unit').text(item.weight_unit);
+    $(row).find('.length').text(String(item.length).trim('.0'));
+    $(row).find('.width').text(String(item.width).trim('.0'));
+    $(row).find('.height').text(String(item.height).trim('.0'));
+    $(row).find('.length_unit').text(item.length_unit);
 
     calculate_total();
   }

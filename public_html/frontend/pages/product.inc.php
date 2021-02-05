@@ -244,11 +244,11 @@
         'tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
         'weight' => $product->weight,
-        'weight_class' => $product->weight_class,
-        'dim_x' => $product->dim_x,
-        'dim_y' => $product->dim_y,
-        'dim_z' => $product->dim_z,
-        'dim_class' => $product->dim_class,
+        'weight_unit' => $product->weight_unit,
+        'length' => $product->length,
+        'width' => $product->width,
+        'height' => $product->height,
+        'length_unit' => $product->length_unit,
       ],
     ];
 

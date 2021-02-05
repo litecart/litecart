@@ -16,11 +16,11 @@
       'gtin',
       'taric',
       'weight',
-      'weight_class',
-      'dim_x',
-      'dim_y',
-      'dim_z',
-      'dim_class',
+      'weight_unit',
+      'length',
+      'width',
+      'height',
+      'length_unit',
       'price',
       'tax',
     ];
@@ -87,20 +87,20 @@
           <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
-            <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', true, 'style="width: auto;"'); ?></span>
+            <span class="input-group-addon"><?php echo functions::form_draw_weight_units_list('weight_unit', true, 'style="width: auto;"'); ?></span>
           </div>
         </div>
 
         <div class="form-group col-md-8">
           <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('dim_x', true, 3, 'min="0"'); ?>
+            <?php echo functions::form_draw_decimal_field('length', true, 3, 'min="0"'); ?>
             <span class="input-group-addon">x</span>
-            <?php echo functions::form_draw_decimal_field('dim_y', true, 3, 'min="0"'); ?>
+            <?php echo functions::form_draw_decimal_field('width', true, 3, 'min="0"'); ?>
             <span class="input-group-addon">x</span>
-            <?php echo functions::form_draw_decimal_field('dim_z', true, 3, 'min="0"'); ?>
+            <?php echo functions::form_draw_decimal_field('height', true, 3, 'min="0"'); ?>
             <span class="input-group-addon">
-              <?php echo functions::form_draw_length_classes_list('dim_class', true, 'style="width: auto;"'); ?>
+              <?php echo functions::form_draw_length_units_list('length_unit', true, 'style="width: auto;"'); ?>
             </span>
           </div>
         </div>
@@ -178,11 +178,11 @@
       gtin: $(form).find(':input[name="gtin"]').val(),
       taric: $(form).find(':input[name="taric"]').val(),
       weight: parseFloat($(form).find(':input[name="weight"]').val()),
-      weight_class: $(form).find(':input[name="weight_class"]').val(),
-      dim_x: parseFloat($(form).find(':input[name="dim_x"]').val()),
-      dim_y: parseFloat($(form).find(':input[name="dim_y"]').val()),
-      dim_z: parseFloat($(form).find(':input[name="dim_z"]').val()),
-      dim_class: $(form).find(':input[name="dim_class"]').val(),
+      weight_unit: $(form).find(':input[name="weight_unit"]').val(),
+      length: parseFloat($(form).find(':input[name="length"]').val()),
+      width: parseFloat($(form).find(':input[name="width"]').val()),
+      height: parseFloat($(form).find(':input[name="height"]').val()),
+      length_unit: $(form).find(':input[name="length_unit"]').val(),
       quantity: parseFloat($(form).find(':input[name="quantity"]').val()),
       price: parseFloat($(form).find(':input[name="price"]').val()),
       tax: parseFloat($(form).find(':input[name="tax"]').val())

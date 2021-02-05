@@ -22,8 +22,8 @@
         $values_required_for_keys = [
           'store_language_code',
           'store_currency_code',
-          'store_weight_class',
-          'store_length_class',
+          'store_weight_unit',
+          'store_length_unit',
           'default_language_code',
           'default_currency_code',
         ];

@@ -740,9 +740,11 @@ END;
       case 'languages':
         return form_draw_languages_list($name, $input, $parameters);
 
-      case 'length_class':
-      case 'length_classes':
-        return form_draw_length_classes_list($name, $input, $parameters);
+      case 'length_class': // Deprecated
+      case 'length_classes': // Deprecated
+      case 'length_unit':
+      case 'length_units':
+        return form_draw_length_units_list($name, $input, $parameters);
 
       case 'product':
       case 'products':
@@ -827,9 +829,11 @@ END;
       case 'users':
         return form_draw_users_list($name, $input, $parameters);
 
-      case 'weight_class':
-      case 'weight_classes':
-        return form_draw_weight_classes_list($name, $input, $parameters);
+      case 'weight_class': // Deprecated
+      case 'weight_classes': // Deprecated
+      case 'weight_unit':
+      case 'weight_units':
+        return form_draw_weight_units_list($name, $input, $parameters);
 
       case 'wysiwyg':
         return form_draw_regional_wysiwyg_field($input, $name, $parameters);
@@ -1251,16 +1255,16 @@ END;
     }
   }
 
-  function form_draw_length_classes_list($name, $input=true, $parameters='') {
+  function form_draw_length_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_length_classes_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_length_units_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
-      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_class');
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_unit');
     }
 
     $options = [];
@@ -1723,16 +1727,16 @@ END;
     }
   }
 
-  function form_draw_weight_classes_list($name, $input=true, $parameters='') {
+  function form_draw_weight_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_weight_classes_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_weight_units_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
     if ($input === true) {
       $input = form_reinsert_value($name);
-      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_class');
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_unit');
     }
 
     $options = [];

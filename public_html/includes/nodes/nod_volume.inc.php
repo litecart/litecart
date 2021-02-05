@@ -1,8 +1,8 @@
 <?php
 
-  class volume {
+  unit volume {
 
-    public static $classes = [
+    public static $units = [
       'L' => [
         'name' => 'Litres',
         'unit' => 'L',
@@ -107,31 +107,31 @@
 
       if ($from == $to) return (float)$value;
 
-      if (!isset(self::$classes[$from])) {
-        trigger_error('The unit '. $from .' is not a valid volume class.', E_USER_WARNING);
+      if (!isset(self::$units[$from])) {
+        trigger_error('Invalid length unit ('. $from .')', E_USER_WARNING);
         return;
       }
 
-      if (!isset(self::$classes[$to])) {
-        trigger_error('The unit '. $to .' is not a valid volume class.', E_USER_WARNING);
+      if (!isset(self::$units[$to])) {
+        trigger_error('Invalid length unit ('. $to .')', E_USER_WARNING);
         return;
       }
 
-      if ((float)self::$classes[$from]['value'] == 0 || (float)self::$classes[$to]['value'] == 0) return;
+      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return;
 
-      return $value * (self::$classes[$to]['value'] / self::$classes[$from]['value']);
+      return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }
 
-    public static function format($value, $class) {
+    public static function format($value, $unit) {
 
-      if (!isset(self::$classes[$class])) {
-        trigger_error('Invalid volume class ('. $class .')', E_USER_WARNING);
+      if (!isset(self::$units[$unit])) {
+        trigger_error('Invalid length unit ('. $unit .')', E_USER_WARNING);
         return;
       }
 
-      $decimals = self::$classes[$class]['decimals'];
+      $decimals = self::$units[$unit]['decimals'];
 
-      $formatted_value = number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$classes[$class]['unit'];
+      $formatted_value = number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$units[$unit]['unit'];
       $formatted_value = preg_replace('#'. preg_quote(language::$selected['decimal_point'], '#') .'0+$#', '', $formatted_value);
 
       return $formatted_value;

@@ -71,7 +71,7 @@
 
       $this->data = array_merge($this->data, [
         'uid' => uniqid(),
-        'weight_class' => settings::get('store_weight_class'),
+        'weight_unit' => settings::get('store_weight_unit'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
@@ -289,7 +289,7 @@
         currency_code = '". database::input($this->data['currency_code']) ."',
         currency_value = ". (float)$this->data['currency_value'] .",
         weight_total = ". (float)$this->data['weight_total'] .",
-        weight_class = '". database::input($this->data['weight_class']) ."',
+        weight_unit = '". database::input($this->data['weight_unit']) ."',
         display_prices_including_tax = ". (int)$this->data['display_prices_including_tax'] .",
         payment_due = ". (float)$this->data['payment_due'] .",
         tax_total = ". (float)$this->data['tax_total'] .",
@@ -363,11 +363,11 @@
           price = ". (float)$item['price'] .",
           tax = ". (float)$item['tax'] .",
           weight = ". (float)$item['weight'] .",
-          weight_class = '". database::input($item['weight_class']) ."',
-          dim_x = ". (float)$item['dim_x'] .",
-          dim_y = ". (float)$item['dim_y'] .",
-          dim_z = ". (float)$item['dim_z'] .",
-          dim_class = '". database::input($item['dim_class']) ."'
+          weight_unit = '". database::input($item['weight_unit']) ."',
+          length = ". (float)$item['length'] .",
+          width = ". (float)$item['width'] .",
+          height = ". (float)$item['height'] .",
+          length_unit = '". database::input($item['length_unit']) ."'
           where order_id = ". (int)$this->data['id'] ."
           and id = ". (int)$item['id'] ."
           limit 1;"
@@ -492,7 +492,7 @@
         $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
         $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
         $this->data['tax_total'] += $item['tax'] * $item['quantity'];
-        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
       }
 
       foreach ($this->data['order_total'] as $row) {
@@ -539,11 +539,11 @@
         'tax',
         'quantity',
         'weight',
-        'weight_class',
-        'dim_x',
-        'dim_y',
-        'dim_z',
-        'dim_class',
+        'weight_unit',
+        'length',
+        'width',
+        'height',
+        'length_unit',
         'error',
       ];
 
@@ -561,7 +561,7 @@
       $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
       $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
       $this->data['tax_total'] += $item['tax'] * $item['quantity'];
-      $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+      $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
     }
 
     public function validate() {

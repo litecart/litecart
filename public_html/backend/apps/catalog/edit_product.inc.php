@@ -68,12 +68,12 @@
         'mpn',
         'gtin',
         'taric',
-        'dim_x',
-        'dim_y',
-        'dim_z',
-        'dim_class',
+        'length',
+        'width',
+        'height',
+        'length_unit',
         'weight',
-        'weight_class',
+        'weight_unit',
         'name',
         'short_description',
         'description',
@@ -609,21 +609,21 @@
                     <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][gtin]', true); ?>
                     <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][taric]', true); ?>
                     <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][weight]', true); ?>
-                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][weight_class]', true); ?>
-                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][dim_x]', true); ?>
-                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][dim_y]', true); ?>
-                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][dim_z]', true); ?>
-                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][dim_class]', true); ?>
+                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][weight_unit]', true); ?>
+                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][length]', true); ?>
+                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][width]', true); ?>
+                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][height]', true); ?>
+                    <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][length_unit]', true); ?>
                     <span class="sku"><?php echo $_POST['stock_items'][$key]['sku']; ?></span>
                   </td>
                   <td>
                     <span class="name"><?php echo $_POST['stock_items'][$key]['name']; ?></span>
                   </td>
                   <td class="text-right">
-                    <span class="weight"><?php echo (float)$_POST['stock_items'][$key]['weight']; ?></span> <span class="weight_class"><?php echo $_POST['stock_items'][$key]['weight_class']; ?></span>
+                    <span class="weight"><?php echo (float)$_POST['stock_items'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_items'][$key]['weight_unit']; ?></span>
                   </td>
                   <td class="text-right">
-                    <span class="dim_x"><?php echo (float)$_POST['stock_items'][$key]['dim_x']; ?></span> x <span class="dim_y"><?php echo (float)$_POST['stock_items'][$key]['dim_y']; ?></span> x <span class="dim_z"><?php echo (float)$_POST['stock_items'][$key]['dim_z']; ?></span> <span class="dim_class"><?php echo $_POST['stock_items'][$key]['dim_class']; ?></span>
+                    <span class="length"><?php echo (float)$_POST['stock_items'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_items'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_items'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_items'][$key]['length_unit']; ?></span>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('stock_items['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_items'][$key]['quantity']) ? (float)$product->data['stock_items'][$key]['quantity'] : '0') .'"'); ?></td>
                   <td>
@@ -1167,21 +1167,21 @@
                  + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][gtin]', '')); ?>'
                  + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][taric]', '')); ?>'
                  + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][weight]', '')); ?>'
-                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][weight_class]', '')); ?>'
-                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][dim_x]', '')); ?>'
-                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][dim_y]', '')); ?>'
-                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][dim_z]', '')); ?>'
-                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][dim_class]', '')); ?>'
+                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][weight_unit]', '')); ?>'
+                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][length]', '')); ?>'
+                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][width]', '')); ?>'
+                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][height]', '')); ?>'
+                 + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][length_unit]', '')); ?>'
                  + '    <span class="sku"></span>'
                  + '  </td>'
                  + '  <td>'
                  + '    <span class="name"></name>'
                  + '  </td>'
                  + '  <td class="text-right">'
-                 + '    <span class="weight"></span> <span class="weight_class"></span>'
+                 + '    <span class="weight"></span> <span class="weight_unit"></span>'
                  + '  </td>'
                  + '  <td class="text-right">'
-                 + '    <span class="dim_x"></span> x <span class="dim_y"></span> x <span class="dim_z"></span> <span class="dim_class"></span>'
+                 + '    <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>'
                  + '  </td>'
                  + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_option_stock_i][quantity]', '0', 2, 'data-quantity="0"')); ?></td>'
                  + '  <td>'

@@ -92,11 +92,11 @@
 				purchase_price = '". (float)$this->data['purchase_price'] ."',
 				purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
 				weight = '". (float)$this->data['weight'] ."',
-				weight_class = '". database::input($this->data['weight_class']) ."',
-				dim_x = ". (float)$this->data['dim_x'] .",
-				dim_y = ". (float)$this->data['dim_y'] .",
-				dim_z = ". (float)$this->data['dim_z'] .",
-				dim_class = '". database::input($this->data['dim_class']) ."',
+				weight_unit = '". database::input($this->data['weight_unit']) ."',
+				length = ". (float)$this->data['length'] .",
+				width = ". (float)$this->data['width'] .",
+				height = ". (float)$this->data['height'] .",
+				length_unit = '". database::input($this->data['length_unit']) ."',
 				date_updated = '". ($this->data['date_updated'] = date('c')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
