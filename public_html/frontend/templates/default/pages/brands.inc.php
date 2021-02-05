@@ -12,7 +12,7 @@
         <article class="brand hover-light">
           <a class="link" href="<?php echo htmlspecialchars($brand['link']); ?>">
             <div class="image-wrapper">
-              <img class="img-responsive" src="<?php echo htmlspecialchars($brand['image']['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($brand['image']['thumbnail']); ?> 1x, <?php echo htmlspecialchars($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" />
+              <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" />
             </div>
             <h3 class="caption"><?php echo $brand['name']; ?></h3>
           </a>
