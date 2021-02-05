@@ -39,6 +39,7 @@
       if (empty($_POST['attributes'])) $_POST['attributes'] = [];
       if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
       if (empty($_POST['stock_items'])) $_POST['stock_items'] = [];
+      if (empty($_POST['autofill_technical_data'])) $_POST['autofill_technical_data'] = '';
 
       $_POST['keywords'] = preg_split('#\s*,\s*#', $_POST['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
@@ -78,6 +79,7 @@
         'short_description',
         'description',
         'technical_data',
+        'autofill_technical_data',
         'head_title',
         'meta_description',
         'images',
@@ -399,7 +401,7 @@
               </div>
 
               <div class="form-group">
-                <label class="pull-right"><?php echo functions::form_draw_checkbox('autogenerate_technical_data', '1', true); ?> <?php echo language::translate('text_autogenerate_from_attributes', 'Generate from attributes'); ?></label>
+                <label class="pull-right"><?php echo functions::form_draw_checkbox('autofill_technical_data', '1', true); ?> <?php echo language::translate('text_autogenerate_from_attributes', 'Generate from attributes'); ?></label>
                 <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
                 <?php echo functions::form_draw_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
               </div>

@@ -147,6 +147,14 @@
             }
           }
 
+          if ($this->autofill_technical_data) {
+            $this->_data['technical_data'] = '';
+            foreach ($this->attributes as $attribute) {
+              $this->_data['technical_data'] = $attribute['group_name'] .': '. $attribute['value_name'] . PHP_EOL;
+            }
+            $this->_data['technical_data'] = rtrim($this->_data['technical_data']);
+          }
+
           break;
 
         case 'campaign':

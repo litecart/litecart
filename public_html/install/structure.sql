@@ -507,6 +507,7 @@ CREATE TABLE `lc_products` (
   `recommended_price` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `tax_class_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `image` VARCHAR(256) NOT NULL DEFAULT '',
+  `autofill_technical_data` TINYINT(1) NOT NULL DEFAULT '0',
   `views` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `purchases` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `date_valid_from` DATE NULL,

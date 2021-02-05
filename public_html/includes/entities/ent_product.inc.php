@@ -208,6 +208,7 @@
         length_unit = '". database::input($this->data['length_unit']) ."',
         weight = ". (float)$this->data['weight'] .",
         weight_unit = '". database::input($this->data['weight_unit']) ."',
+        autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",
         date_valid_from = '". database::input($this->data['date_valid_from']) ."',
         date_valid_to = '". database::input($this->data['date_valid_to']) ."',
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
