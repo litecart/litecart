@@ -1273,7 +1273,7 @@ END;
 
     $options = [];
     foreach (length::$units as $unit) {
-      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($unit['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1745,7 +1745,7 @@ END;
 
     $options = [];
     foreach (weight::$units as $unit) {
-      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($unit['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1764,7 +1764,7 @@ END;
 
     $options = [];
     foreach (volume::$units as $unit) {
-      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"'];
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($unit['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {

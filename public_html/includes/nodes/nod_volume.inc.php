@@ -1,6 +1,6 @@
 <?php
 
-  unit volume {
+  class volume {
 
     public static $units = [
       'L' => [

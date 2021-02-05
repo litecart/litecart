@@ -1,6 +1,6 @@
 <?php
 
-  unit length {
+  class length {
 
     public static $units = [
       'm' => [
