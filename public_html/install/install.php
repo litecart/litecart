@@ -545,43 +545,31 @@
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-      $files_to_delete = [
-        '../frontend/templates/default/css/app.css',
-        '../frontend/templates/default/css/checkout.css',
-        '../frontend/templates/default/css/framework.css',
-        '../frontend/templates/default/css/printable.css',
+      perform_action('delete', [
+        FS_DIR_APP . 'frontend/templates/default/css/app.css',
+        FS_DIR_APP . 'frontend/templates/default/css/checkout.css',
+        FS_DIR_APP . 'frontend/templates/default/css/framework.css',
+        FS_DIR_APP . 'frontend/templates/default/css/printable.css',
       ];
-
-      foreach ($files_to_delete as $file) {
-        file_delete($file);
-      }
 
     } else {
 
-      $files_to_delete = [
-        '../frontend/templates/default/css/*.min.css',
-        '../frontend/templates/default/css/*.min.css.map',
-        '../frontend/templates/default/js/*.min.js',
-        '../frontend/templates/default/js/*.min.js.map',
-        '../frontend/templates/default/less/',
+      perform_action('delete', [
+        FS_DIR_APP . 'frontend/templates/default/css/*.min.css',
+        FS_DIR_APP . 'frontend/templates/default/css/*.min.css.map',
+        FS_DIR_APP . 'frontend/templates/default/js/*.min.js',
+        FS_DIR_APP . 'frontend/templates/default/js/*.min.js.map',
+        FS_DIR_APP . 'frontend/templates/default/less/',
       ];
 
-      foreach ($files_to_delete as $file) {
-        file_delete($file);
-      }
-
-      foreach (glob('../frontend/templates/default/layouts/*.inc.php') as $file) {
-        echo 'Modify '. $file .'<br />'. PHP_EOL;
-        $contents = file_get_contents($file);
-        $search_replace = [
-          'app.min.css' => 'app.css',
-          'checkout.min.css'  => 'checkout.css',
-          'framework.min.css' => 'framework.css',
-          'printable.min.css' => 'printable.css',
-          'app.min.js' => 'app.js',
-        ];
-        file_put_contents($file, strtr($contents, $search_replace));
-      }
+      perform_action('modify', [
+        FS_DIR_APP . 'frontend/templates/default/layouts/*.inc.php' => [
+          ['search' => 'app.min.css',       'replace' => 'app.css'],
+          ['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
+          ['search' => 'framework.min.css', 'replace' => 'framework.css'],
+          ['search' => 'printable.min.css', 'replace' => 'printable.css'],
+        ],
+      ];
     }
 
     ### Set cache breakpoint ######################################
