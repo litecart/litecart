@@ -31,8 +31,3 @@
 
   </div>
 </section>
-
-<script>
-  $('#box-checkout-payment .option.active :input').prop('disabled', false);
-  $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
-</script>
