@@ -69,8 +69,7 @@
           $_GET = array_filter(array_merge($_GET, $params));
         }
 
-        self::$route = $route;
-        break;
+        return self::$route = $route;
       }
     }
 
@@ -123,13 +122,12 @@
         include vmod::check($page);
 
       } else {
-
         $request = new ent_link(document::link());
 
         http_response_code(404);
 
       // Don't return an error page for content with a defined extension (presumably static)
-        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html|php)$#', $request->path)) exit;
+        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
         $not_found_file = FS_DIR_APP . 'logs/not_found.log';
 
