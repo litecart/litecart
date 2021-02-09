@@ -10,7 +10,7 @@
 
           if (!$files = functions::file_search($source)) {
             if ($on_error == 'skip') continue;
-            die("<span class=\"error\">[Error] Could not copy $source</span>");
+            die("<span class=\"error\">[Error] Could not copy $source</span>" . PHP_EOL . PHP_EOL);
           }
 
           foreach ($files as $file) {
@@ -22,12 +22,12 @@
               perform_action($action, [[rtrim($file, '/') . '/*' => rtrim($target, '/') . '/' . basename($file) .'/']], $on_error);
             }
 
-            if (copy($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
-              echo ' <span class="ok">[OK]</span>' . PHP_EOL;
+            if (functions::file_copy($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
+              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span>' . PHP_EOL;
+              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else {
-              die(' <span class="error">[Error]</span>');
+              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
             }
           }
         }
@@ -39,18 +39,14 @@
         foreach ($payload as $source) {
           foreach (functions::file_search($source) as $file) {
 
-            if (is_dir($file)) {
-              perform_action($action, [rtrim($file, '/') . '/*'], $on_error);
-            }
+            echo "Delete $file";
 
-            echo "<span class=\"error\">[Error] Delete $file</span>";
-
-            if (unlink($file)) {
-              echo ' <span class="ok">[OK]</span>' . PHP_EOL;
+            if (functions::file_delete($file, $results)) {
+              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span>' . PHP_EOL;
+              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else {
-              die(' <span class="error">[Error]</span>');
+              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
             }
           }
         }
@@ -64,18 +60,18 @@
 
           if (!$files = functions::file_search($source)) {
             if ($on_error == 'skip') continue;
-            die("<span class=\"error\">[Error] Could not rename $source</span>");
+            die("<span class=\"error\">[Error] Could not move $source</span>" . PHP_EOL . PHP_EOL);
           }
 
           foreach ($files as $file) {
-            echo "Moving $source to $target";
+            echo "Move $source to $target";
 
             if (rename($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
-              echo ' <span class="ok">[OK]</span>' . PHP_EOL;
+              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span>' . PHP_EOL;
+              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else {
-              die(' <span class="error">[Error]</span>');
+              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
             }
           }
         }
@@ -93,7 +89,7 @@
 
           foreach ($files as $file) {
 
-            echo "Modifying $source";
+            echo "Modify $source";
 
             $contents = file_get_contents($file);
             $contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);
@@ -105,11 +101,11 @@
             }
 
             if (file_put_contents($file, $contents)) {
-              echo ' <span class="ok">[OK]</span>' . PHP_EOL;
+              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span>' . PHP_EOL;
+              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else {
-              die(' <span class="error">[Error]</span>');
+              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
             }
           }
         }
@@ -117,7 +113,7 @@
         break;
 
       default:
-        throw new Exception("Unknown action ($action)");
+        trigger_error("Unknown action ($action)", E_USER_ERROR);
 
     }
   }

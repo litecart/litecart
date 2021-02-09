@@ -23,11 +23,12 @@
 
   } else {
     require_once __DIR__ . '/includes/header.inc.php';
+    require_once __DIR__ . '/includes/functions.inc.php';
   }
 
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
-  ini_set('log_errors', 'Off');
+  ini_set('log_errors', 'On');
   ini_set('display_errors', 'On');
   ini_set('html_errors', 'On');
 
@@ -50,7 +51,10 @@
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
 
   require_once FS_DIR_APP . 'includes/error_handler.inc.php';
-  require_once FS_DIR_APP . 'includes/autoload.inc.php';
+  require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
+  require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
+  require_once FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
+  require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
 
   ignore_user_abort(true);
   set_time_limit(300);

@@ -11,15 +11,15 @@
     }
 
     if (!file_exists($source)) {
-      return $results[$source] = true;
+      return $results[$source] = null;
     }
 
-    if (is_file($source) || is_link($source)) {
-      return $results[$source] = unlink($source);
+    if (is_dir($source)) {
+      file_delete(rtrim($source, '/') .'/*', $results);
+      return $results[$source] = rmdir($source);
     }
 
-    file_delete($source .'/*'. $file, $results);
-    return $results[$source] = rmdir($source);
+    return $results[$source] = unlink($source);
   }
 
   function file_size($file) {
@@ -127,7 +127,7 @@
     return $files;
   }
 
-  function file_xcopy($source, $target, &$results=[]) {
+  function file_copy($source, $target, &$results=[]) {
 
     if (is_file($source) || is_link($source)) {
       return $results[$target] = copy($source, $target);
@@ -140,7 +140,7 @@
 
       foreach (scandir($source) as $file) {
         if ($file == '.' || $file == '..') continue;
-        file_xcopy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file);
+        file_copy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file);
       }
     }
 

@@ -1,5 +1,9 @@
 <?php
 
+  perform_action('copy', [
+    "data/default/storage/" => FS_DIR_STORAGE,
+  ]);
+
   perform_action('delete', [
     FS_DIR_ADMIN . 'addons.widget/addons.inc.php',
     FS_DIR_ADMIN . 'addons.widget/config.inc.php',
@@ -125,16 +129,15 @@
     FS_DIR_APP . 'ext/chartist/',
     FS_DIR_APP . 'ext/featherlight/',
     FS_DIR_APP . 'ext/fontawesome/',
-    FS_DIR_APP . 'ext/index.html',
     FS_DIR_APP . 'ext/jquery/',
     FS_DIR_APP . 'ext/trumbowyg/',
+    FS_DIR_APP . 'ext/index.html',
     FS_DIR_APP . 'cache/.htaccess',
     FS_DIR_APP . 'cache/index.html',
     FS_DIR_APP . 'data/.htaccess',
     FS_DIR_APP . 'data/bad_urls.txt',
     FS_DIR_APP . 'data/captcha.ttf',
     FS_DIR_APP . 'data/index.html',
-    FS_DIR_APP . 'ext/index.html',
     FS_DIR_APP . 'includes/boxes/box_account_links.inc.php',
     FS_DIR_APP . 'includes/boxes/box_also_purchased_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_campaign_products.inc.php',
@@ -322,6 +325,8 @@
     FS_DIR_APP . 'pages/ajax/get_address.json.inc.php',
     FS_DIR_APP . 'pages/ajax/index.html',
     FS_DIR_APP . 'pages/ajax/zones.json.inc.php',
+    FS_DIR_APP . 'pages/feeds/index.html',
+    FS_DIR_APP . 'pages/feeds/sitemap.xml.inc.php',
     FS_DIR_APP . 'pages/categories.inc.php',
     FS_DIR_APP . 'pages/category.inc.php',
     FS_DIR_APP . 'pages/checkout.inc.php',
@@ -329,7 +334,6 @@
     FS_DIR_APP . 'pages/customer_service.inc.php',
     FS_DIR_APP . 'pages/edit_account.inc.php',
     FS_DIR_APP . 'pages/error_document.inc.php',
-    FS_DIR_APP . 'pages/feeds',
     FS_DIR_APP . 'pages/index.html',
     FS_DIR_APP . 'pages/index.inc.php',
     FS_DIR_APP . 'pages/information.inc.php',
@@ -348,12 +352,6 @@
     FS_DIR_APP . 'pages/regional_settings.inc.php',
     FS_DIR_APP . 'pages/reset_password.inc.php',
     FS_DIR_APP . 'pages/search.inc.php',
-    FS_DIR_APP . 'pages/ajax/cart.json.inc.php',
-    FS_DIR_APP . 'pages/ajax/get_address.json.inc.php',
-    FS_DIR_APP . 'pages/ajax/index.html',
-    FS_DIR_APP . 'pages/ajax/zones.json.inc.php',
-    FS_DIR_APP . 'pages/feeds/index.html',
-    FS_DIR_APP . 'pages/feeds/sitemap.xml.inc.php',
   ]);
 
   perform_action('move', [
@@ -362,64 +360,66 @@
   ]);
 
   foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'backend/apps/' . preg_replace('\.app$', '', basename($file)]])]]);
+    perform_action('move', [$file => FS_DIR_APP . 'backend/apps/' . preg_replace('#\.app$#', '', basename($file))]);
   }
 
   foreach (glob(FS_DIR_ADMIN . '*.widget') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'backend/widgets/' . preg_replace('\.widget$', '', basename($file))]]);
+    perform_action('move', [$file => FS_DIR_APP . 'backend/widgets/' . preg_replace('#\.widget$#', '', basename($file))]);
   }
 
   foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'storage/cache/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file)]]);
+    perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE . 'cache/', $file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'data/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'storage/data/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file)]]);
+    perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'assets/' . basename($file)]]);
+    perform_action('move', [$file => FS_DIR_APP . 'assets/' . basename($file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'images/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'storage/images/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file)]]);
+    perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE . 'images/', $file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'logs/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'storage/logs/' . preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file)]]);
+    perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'frontend/boxes/' . basename($file)]]);
+    perform_action('move', [$file => FS_DIR_APP . 'frontend/boxes/' . basename($file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'includes/library/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'inlcudes/nodes/' . preg_replace('#^lib_#', 'nod_', basename($file))]]);
+    perform_action('move', [$file => FS_DIR_APP . 'inlcudes/nodes/' . preg_replace('#^lib_#', 'nod_', basename($file))]);
   }
 
   foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('\.catalog$', '', basename($file))]]);
+    perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('#\.catalog$#', '', basename($file))]);
   }
 
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
-    perform_action('move', [[$file =>FS_DIR_STORAGE . 'vmods/' . basename($file)]]);
+    perform_action('move', [$file => FS_DIR_STORAGE . 'vmods/' . basename($file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'pages/*') as $file) {
-    perform_action('move', [[$file => FS_DIR_APP . preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file)]]);
+    perform_action('move', [$file => FS_DIR_APP . preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file)]);
   }
 
-  rmdir(FS_DIR_ADMIN);
-  rmdir(FS_DIR_APP . 'cache/');
-  rmdir(FS_DIR_APP . 'data/');
-  rmdir(FS_DIR_APP . 'images/');
-  rmdir(FS_DIR_APP . 'includes/boxes/');
-  rmdir(FS_DIR_APP . 'includes/templates/');
-  rmdir(FS_DIR_APP . 'includes/library/');
-  rmdir(FS_DIR_APP . 'logs/');
-  rmdir(FS_DIR_APP . 'ext/');
-  rmdir(FS_DIR_APP . 'pages/');
-  rmdir(FS_DIR_APP . 'vqmod/');
+  perform_action('delete', [
+    FS_DIR_ADMIN,
+    FS_DIR_APP . 'cache/',
+    FS_DIR_APP . 'data/',
+    FS_DIR_APP . 'images/',
+    FS_DIR_APP . 'includes/boxes/',
+    FS_DIR_APP . 'includes/templates/',
+    FS_DIR_APP . 'includes/library/',
+    FS_DIR_APP . 'logs/',
+    FS_DIR_APP . 'ext/',
+    FS_DIR_APP . 'pages/',
+    FS_DIR_APP . 'vqmod/',
+  ]);
 
   perform_action('modify', [
     FS_DIR_STORAGE . 'config.inc.php' => [
@@ -432,7 +432,7 @@
         'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
       ],
     ],
-  );
+  ]);
 
   perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
@@ -464,10 +464,6 @@
                    . "  define('DB_TABLE_NEWSLETTER_RECIPIENTS',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'newsletter_recipients`');" . PHP_EOL,
       ],
       [
-        'search'  => "  define('DB_TABLE_CATEGORIES_INFO',                   '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_info`');" . PHP_EOL,
-        'replace' => "",
-      ],
-      [
         'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
         'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . 'backend/');" . PHP_EOL,
       ],
@@ -486,8 +482,8 @@
         'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],
       [
-        'pattern'  => '#'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?'. preg_quote('## Database ##########################################################', '#') .'#',
-        'replace' => '## Database ##########################################################',
+        'pattern'  => '#'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?('. preg_quote('## Database ##########################################################', '#') .')#',
+        'replace' => '$1',
         'regexp'  => true,
       ],
       [
@@ -552,6 +548,21 @@
     );
   }
 
+// Download Product Customization Add-On
+  if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products_customizations;"))) {
+
+    // ...
+
+// Remove Product Customization
+  } else {
+    database::query(
+      "drop table ". DB_TABLE_PREFIX ."products_customizations;"
+    );
+    database::query(
+      "drop table ". DB_TABLE_PREFIX ."products_customizations_values;"
+    );
+  }
+
 // Convert Table Charset and Collations
   $collations = [];
 
@@ -569,15 +580,15 @@
     "show engines;"
   );
 
-  while ($engine = database::fetch($engines_query))
-    if ($engine['Engine'] != 'Aria') {
+  while ($engine = database::fetch($engines_query)) {
+    if ($engine['Engine'] == 'Aria') {
       $found_aria = true;
       break;
     }
   }
 
   $tables_query = database::query(
-    "SELECT TABLE_NAME FROM information_schema.TABLES
+    "SELECT TABLE_NAME, TABLE_COLLATION FROM information_schema.TABLES
     WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
     AND TABLE_NAME like '". DB_TABLE_PREFIX ."%'
     order by TABLE_NAME;"
@@ -596,13 +607,13 @@
     }
 
     database::query(
-      "alter table `". DB_DATABASE ."`.`". $table ."`
+      "alter table `". DB_DATABASE ."`.`". $table['TABLE_NAME'] ."`
       convert to character set utf8mb4 collate ". database::input($new_collation) .";"
     );
 
     if (!empty($found_aria)) {
       database::query(
-        "alter table `". DB_DATABASE ."`.`". $table ."`
+        "alter table `". DB_DATABASE ."`.`". $table['TABLE_NAME'] ."`
         engine=Aria;"
       );
     }

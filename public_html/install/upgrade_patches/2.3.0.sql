@@ -1,3 +1,6 @@
+ALTER TABLE `lc_cart_items`
+CHANGE COLUMN `options` `stock_item_id` INT(11) NOT NULL DEFAULT '0' AFTER `product_id`;
+-- --------------------------------------------------------
 CREATE TABLE `lc_newsletter_recipients` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`email` VARCHAR(128) NOT NULL DEFAULT '',
@@ -36,22 +39,17 @@ RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options_stock` TO `lc_products_stock_options`;
 -- --------------------------------------------------------
-INSERT INTO `lc_products_stock`
-(product_id, sku, weight, weight_class, dim_x, dim_y, dim_z, dim_class, quantity)
-SELECT id, sku, weight, weight_class, dim_x, dim_y, dim_z, dim_class, quantity FROM `lc_products`
-WHERE id NOT IN (
-  SELECT DISTINCT product_id from `lc_products_stock`
-);
--- --------------------------------------------------------
-ALTER TABLE `lc_products_stock`
+ALTER TABLE `lc_products_stock_options`
+ADD COLUMN `gtin` VARCHAR(64) NOT NULL DEFAULT '' AFTER `sku`,
+ADD COLUMN `image` VARCHAR(128) NOT NULL DEFAULT '' AFTER `quantity`,
 DROP COLUMN `date_updated`,
 DROP COLUMN `date_created`,
 DROP INDEX `product_option_stock`,
 ADD UNIQUE INDEX `stock_option` (`product_id`, `combination`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
-ADD COLUMN `stock_option_id` INT(11) NULL DEFAULT NULL AFTER `product_id`,
-CHANGE COLUMN `options` `customizations` VARCHAR(4096) NULL DEFAULT NULL AFTER `stock_option_id`,
+ADD COLUMN `stock_option_id` INT(11) NOT NULL DEFAULT '0' AFTER `product_id`,
+CHANGE COLUMN `options` `customizations` VARCHAR(4096) NOT NULL DEFAULT '' AFTER `stock_option_id`,
 ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_option_id` (`stock_option_id`);
 -- --------------------------------------------------------
