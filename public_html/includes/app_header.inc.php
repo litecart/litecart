@@ -2,8 +2,8 @@
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '2.3');
 
-// Capture output buffer (use compression)
-  ob_start('ob_gzhandler');
+// Capture output buffer
+  if (!ob_start('ob_gzhandler')) ob_start();
 
 // Get config
   if (!defined('FS_DIR_APP')) {
