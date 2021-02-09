@@ -50,8 +50,7 @@
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
 
   require_once FS_DIR_APP . 'includes/error_handler.inc.php';
-  require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
-  require_once FS_DIR_APP . 'includes/library/lib_database.inc.php';
+  require_once FS_DIR_APP . 'includes/autoload.inc.php';
 
   ignore_user_abort(true);
   set_time_limit(300);
@@ -180,7 +179,7 @@
         ];
 
         foreach ($files_to_delete as $file) {
-          file_delete($file);
+          functions::file_delete($file);
         }
 
       } else {
@@ -194,7 +193,7 @@
         ];
 
         foreach ($files_to_delete as $file) {
-          file_delete($file);
+          functions::file_delete($file);
         }
 
         foreach (glob(FS_DIR_APP . 'frontend/templates/default/layouts/*.inc.php') as $file) {

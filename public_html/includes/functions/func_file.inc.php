@@ -11,7 +11,7 @@
     }
 
     if (!file_exists($source)) {
-      return $results[$source] = null;
+      return $results[$source] = true;
     }
 
     if (is_file($source) || is_link($source)) {

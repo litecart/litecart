@@ -46,9 +46,9 @@
 
   try {
 
-    define('FS_DIR_APP', file_realpath(__DIR__ .'/../') .'/');
-    require_once FS_DIR_APP . '/includes/library/lib_event.inc.php';
-    require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
+    define('FS_DIR_APP', functions::file_realpath(__DIR__ .'/../') .'/');
+    require_once FS_DIR_APP . 'includes/error_handler.inc.php';
+    require_once FS_DIR_APP . 'includes/autoload.inc.php';
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
@@ -62,16 +62,16 @@
     echo '<p>Checking installation parameters...';
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
+      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(functions::file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
     } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(file_realpath($_REQUEST['document_root']), '/'), '#') .'#', '', FS_DIR_APP));
+      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(functions::file_realpath($_REQUEST['document_root']), '/'), '#') .'#', '', FS_DIR_APP));
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
 
-    if (preg_match('#^'. preg_quote(rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', file_realpath($_REQUEST['storage_folder']))) {
-      define(FS_DIR_STORAGE, rtrim(file_realpath($_REQUEST['storage_folder']), '/') . '/');
-      define(WS_DIR_STORAGE, preg_replace('#^'. preg_quote(rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_STORAGE);
+    if (preg_match('#^'. preg_quote(rtrim(functions::file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', functions::file_realpath($_REQUEST['storage_folder']))) {
+      define(FS_DIR_STORAGE, rtrim(functions::file_realpath($_REQUEST['storage_folder']), '/') . '/');
+      define(WS_DIR_STORAGE, preg_replace('#^'. preg_quote(rtrim(functions::file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_STORAGE);
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' The storage folder must be under the document root.</p>' . PHP_EOL  . PHP_EOL);
     }
