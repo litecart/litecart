@@ -94,10 +94,12 @@
             $contents = file_get_contents($file);
             $contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);
 
-            if (!empty($operations['regex'])) {
-              $contents = preg_replace($operations['search'], $operations['replace'], $contents);
-            } else {
-              $contents = str_replace($operations['search'], $operations['replace'], $contents);
+            foreach ($operations as $operation) {
+              if (!empty($operations['regex'])) {
+                $contents = preg_replace($operation['search'], $operation['replace'], $contents);
+              } else {
+                $contents = str_replace($operation['search'], $operation['replace'], $contents);
+              }
             }
 
             if (file_put_contents($file, $contents)) {
