@@ -255,8 +255,8 @@
         dim_class = '". database::input($this->data['dim_class']) ."',
         weight = ". (float)$this->data['weight'] .",
         weight_class = '". database::input($this->data['weight_class']) ."',
-        date_valid_from = '". database::input($this->data['date_valid_from']) ."',
-        date_valid_to = '". database::input($this->data['date_valid_to']) ."',
+        date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
+        date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -397,8 +397,8 @@
 
           database::query(
             "update ". DB_TABLE_PRODUCTS_CAMPAIGNS ." set
-            start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
-            end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
+            start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
+            end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
             $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['campaigns'][$key]['id'] ."

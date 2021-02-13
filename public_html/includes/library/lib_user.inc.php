@@ -34,8 +34,8 @@
           "select * from ". DB_TABLE_USERS ."
           where lower(username) = lower('". database::input($username) ."')
           and status
-          and date_valid_from < '". date('Y-m-d H:i:s') ."'
-          and (date_valid_to < '1971-01-01' or date_valid_to > '". date('Y-m-d H:i:s') ."')
+          and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
+          and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
           limit 1;"
         );
 
