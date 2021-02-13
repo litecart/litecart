@@ -52,14 +52,14 @@
 
     public function load($product_id) {
 
-      if (!preg_match('#^[0-9]+$#', $product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
+      if (empty($product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
 
       $this->reset();
 
     // Product
       $products_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS ."
-        where id = ". (int)$product_id ."
+        where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "sku = '". database::input($product_id) ."'") ."
         limit 1;"
       );
 
