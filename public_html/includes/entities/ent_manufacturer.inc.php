@@ -48,7 +48,7 @@
 
       $manufacturers_query = database::query(
         "select * from ". DB_TABLE_MANUFACTURERS ."
-        where id=". (int)$manufacturer_id ."
+        where id = ". (int)$manufacturer_id ."
         limit 1;"
       );
 
