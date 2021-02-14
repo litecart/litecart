@@ -24,6 +24,7 @@
         );
         break;
 
+      case 'date_accessed':
       case 'date_active':
       case 'date_login':
       case 'date_scheduled':
