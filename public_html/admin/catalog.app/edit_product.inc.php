@@ -480,7 +480,7 @@
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
-                <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'recommended_price', true, 2, 0, null); ?>
+                <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'recommended_price', true); ?>
               </div>
 
               <div class="form-group col-md-6">
@@ -499,7 +499,7 @@
               <tbody>
                 <tr>
                   <td><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-                <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 0, null, 'placeholder=""'); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 0, null, 'placeholder=""'); ?></td>
                 </tr>
 <?php
   foreach (currency::$currencies as $currency) {
@@ -507,7 +507,7 @@
 ?>
                 <tr>
                   <td><?php echo functions::form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-                <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 0, null, 'placeholder=""'); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 0, null, 'placeholder=""'); ?></td>
                 </tr>
 <?php
   }
@@ -583,7 +583,7 @@
               <div class="row">
                 <div class="form-group col-sm-4 col-md-2">
                   <label><?php echo language::translate('title_function', 'Function'); ?></label>
-                  <?php echo functions::form_draw_select_field('options['.$group_id.'][function]', in_array($option['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['input', 'textarea'], true); ?>
+                  <?php echo functions::form_draw_select_field('options['.$group_id.'][function]', in_array($option['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
                 </div>
 
                 <?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
@@ -606,7 +606,7 @@
                 <table id="table-options" class="table table-striped table-hover table-dragable data-table">
                   <thead>
                     <tr>
-                      <th><?php echo language::translate('title_option', 'Option'); ?></th>
+                      <th class="main"><?php echo language::translate('title_option', 'Option'); ?></th>
                       <th style="width: 150px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>
                       <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>
                       <th style="width: 85px;">&nbsp;</th>
@@ -618,7 +618,7 @@
                     <tr>
                       <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
                       <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', array('+','%','*','='), true); ?></td>
-                      <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', number_format((float)$_POST['options'][$group_id]['values'][$value_id][$currency_code], 4, '.', '')) .'</td>'; ?>
+                      <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
                       <td class="text-right"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
                     </tr>
                   <?php } ?>
@@ -1116,7 +1116,7 @@
 
   $('#price-incl-tax-tooltip').click(function(e) {
     e.preventDefault;
-    alert('<?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate net price based on the store region tax. All prices input to database are always excluding tax.')); ?>');
+    alert('<?php echo str_replace(array("\r", "\n", "'"), array("", "", "\\'"), language::translate('tooltip_field_price_incl_tax', 'This field helps you calculate gross price based on the store region tax. All prices input to database are always excluding tax.')); ?>');
   });
 
 // Campaigns
@@ -1426,7 +1426,7 @@
                + '  <div class="row">'
                + '    <div class="form-group col-sm-4 col-md-2">'
                + '      <label><?php echo language::translate('title_function', 'Function'); ?></label>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', array('input', 'textarea'), 'input')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', array('text', 'textarea'), 'text')); ?>'
                + '    </div>'
                + '    <div class="form-group col-sm-4 col-md-2">'
                + '      <label><?php echo language::translate('title_required', 'Required'); ?></label>'
@@ -1604,7 +1604,7 @@
     var modal = $(this).closest('#new-stock-option');
     var new_option_code = '';
     var new_option_name = '';
-    var use_coma = false;
+    var use_comma = false;
 
     $(modal).find('select[name^="new_option"][name$="[group_id]"]').each(function(i, groupElement) {
       var groupElement = $(modal).find(groupElement);
@@ -1620,14 +1620,14 @@
         return false;
       }
 
-      if (use_coma) {
+      if (use_comma) {
         new_option_code += ',';
         new_option_name += ', ';
       }
 
       new_option_code += $(groupElement).val() + '-' + $(valueElement).val();
       new_option_name += $(valueElement).find('option:selected').text();
-      use_coma = true;
+      use_comma = true;
     });
 
     if (new_option_code == '') return;

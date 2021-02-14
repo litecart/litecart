@@ -106,8 +106,8 @@
               select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
               where (hidden is null or hidden = 0)
             ))
-            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
-            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+            and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
 
           while ($row = database::fetch($query)) {
@@ -152,8 +152,8 @@
               select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
               where (hidden is null or hidden = 0)
             ))
-            and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
-            and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+            and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+            and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
 
           $this->_data['num_products'] = (int)database::fetch($query, 'num_products');
@@ -227,17 +227,9 @@
 
           if (!$row = database::fetch($query)) return;
 
-          foreach ($row as $key => $value) {
-            switch($key) {
-              case 'keywords':
-                $this->_data[$key] = explode(',', $row[$key]);
-                break;
+          foreach ($row as $key => $value) $this->_data[$key] = $value;
 
-              default:
-                $this->_data[$key] = $value;
-                break;
-            }
-          }
+          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
       }

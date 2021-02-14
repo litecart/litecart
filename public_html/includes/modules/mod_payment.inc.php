@@ -117,6 +117,8 @@
         $this->options($items, $currency_code, $customer);
       }
 
+      if (empty($this->data['options'])) return false;
+
       foreach ($this->data['options'] as $module) {
         foreach ($module['options'] as $option) {
           if (!empty($option['error'])) continue;
@@ -147,6 +149,8 @@
           }
         }
       }
+
+      if (empty($cheapest)) return false;
 
       return $cheapest;
     }
@@ -213,7 +217,7 @@
         list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
       }
 
-      if (method_exists($this->modules[$module_id], $method_name)) {
+      if (!empty($this->modules[$module_id]) && method_exists($this->modules[$module_id], $method_name)) {
         return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
       }
     }

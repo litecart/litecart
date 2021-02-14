@@ -52,14 +52,14 @@
 
     public function load($product_id) {
 
-      if (!preg_match('#^[0-9]+$#', $product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
+      if (empty($product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
 
       $this->reset();
 
     // Product
       $products_query = database::query(
         "select * from ". DB_TABLE_PRODUCTS ."
-        where id = ". (int)$product_id ."
+        where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "sku = '". database::input($product_id) ."'") ."
         limit 1;"
       );
 
@@ -255,8 +255,8 @@
         dim_class = '". database::input($this->data['dim_class']) ."',
         weight = ". (float)$this->data['weight'] .",
         weight_class = '". database::input($this->data['weight_class']) ."',
-        date_valid_from = '". database::input($this->data['date_valid_from']) ."',
-        date_valid_to = '". database::input($this->data['date_valid_to']) ."',
+        date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
+        date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -397,8 +397,8 @@
 
           database::query(
             "update ". DB_TABLE_PRODUCTS_CAMPAIGNS ." set
-            start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
-            end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
+            start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
+            end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
             $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['campaigns'][$key]['id'] ."
@@ -621,11 +621,7 @@
 
         foreach ($this->data['options_stock'] as $key => $stock_option) {
           if (empty($this->data['options_stock'][$key]['quantity_adjustment']) && (empty($this->previous['options_stock'][$key]) || (float)$this->data['options_stock'][$key]['quantity'] != (float)$this->previous['options_stock'][$key]['quantity'])) {
-            if (!empty($this->previous['options_stock'][$key])) {
-              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
-            } else {
-              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'];
-            }
+            $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
           }
         }
 
@@ -633,11 +629,7 @@
 
       } else {
         if (empty($this->data['quantity_adjustment']) && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
-          if (!empty($this->data['quantity'])) {
-            $this->data['quantity_adjustment'] = (float)$this->data['quantity'] - (float)$this->previous['quantity'];
-          } else {
-            $this->data['quantity_adjustment'] = (float)$this->data['quantity'];
-          }
+          $this->data['quantity_adjustment'] = (float)$this->data['quantity'] - (float)$this->previous['quantity'];
         }
       }
 

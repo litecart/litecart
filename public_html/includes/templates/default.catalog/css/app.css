@@ -2,6 +2,8 @@ html {
   background: #f0f0f0;
 }
 #page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: #fff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
@@ -144,6 +146,7 @@ html {
   }
 }
 #main {
+  flex-grow: 1;
   padding: 0 10px 20px 10px;
 }
 @media (min-width: 768px) {

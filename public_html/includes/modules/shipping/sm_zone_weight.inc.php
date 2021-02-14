@@ -27,7 +27,7 @@
       for ($i=1; $i <= 3; $i++) {
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
 
-        $name = language::translate(__CLASS__.':title_option_name_zone_'.$i);
+        $name = language::translate(__CLASS__.':title_option_name_zone_'.$i, '');
 
         if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($customer['shipping_address']['zone_code'], $this->settings['geo_zone_id_'.$i])) continue;
 
@@ -37,7 +37,7 @@
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
           'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
-          'description' => weight::format($total_weight, $this->settings['weight_class']),
+          'description' => language::translate(__CLASS__.':title_option_description_zone_'.$i, ''),
           'fields' => '',
           'cost' => $cost,
           'tax_class_id' => $this->settings['tax_class_id'],
@@ -45,7 +45,7 @@
         );
       }
 
-      $name = language::translate(__CLASS__.':title_option_name_zone_x');
+      $name = language::translate(__CLASS__.':title_option_name_zone_x', '');
 
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
@@ -55,7 +55,7 @@
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
             'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
-            'description' => weight::format($total_weight, $this->settings['weight_class']),
+            'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
             'fields' => '',
             'cost' => $cost + $this->settings['handling_fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
@@ -215,7 +215,7 @@
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_handling_fee', 'Handling Fee'),
           'description' => language::translate(__CLASS__.':description_handling_fee', 'Enter your handling fee for the shipment.'),
-          'function' => 'float()',
+          'function' => 'decimal()',
         ),
         array(
           'key' => 'tax_class_id',

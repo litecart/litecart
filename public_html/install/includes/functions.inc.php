@@ -13,27 +13,24 @@
 // Function to delete recursive data
   function file_delete($target) {
 
+    if (strpos($target, '*') !== false) {
+      foreach (glob($target, GLOB_BRACE) as $file) {
+        if (preg_match('#(\\\\|/)\.{1,2}$#', $file)) continue;
+        file_delete($file);
+      }
+      return true;
+    }
+
     if (!file_exists($target)) return true;
 
-    if (!is_dir($target) || is_link($target)) {
-
-      echo 'Delete '. $target . '<br />' . PHP_EOL;
-
-      $result = unlink($target);
-
-      return $result;
+    if (is_dir($target)) {
+      file_delete(rtrim($target, '\\/').'/{,.}*');
+      echo 'Delete ' . $target . '<br />' . PHP_EOL;
+      return rmdir($target);
     }
 
-    foreach (scandir($target) as $file) {
-      if ($file == '.' || $file == '..') continue;
-      if (!file_delete($target .'/'. $file)) return false;
-    }
-
-    echo 'Delete '. $target . '<br />' . PHP_EOL;
-
-    $result = rmdir($target);
-
-    return $result;
+    echo 'Delete ' . $target . '<br />' . PHP_EOL;
+    return unlink($target);
   }
 
 // Function to modify file

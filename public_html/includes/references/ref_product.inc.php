@@ -120,8 +120,8 @@
             "select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as price
             from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
             where product_id = ". (int)$this->_data['id'] ."
-            and (year(start_date) < '1971' or start_date <= '". date('Y-m-d H:i:s') ."')
-            and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+            and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
+            and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
             limit 1;"
           );
 
@@ -425,7 +425,7 @@
 
           if (!$product_price = database::fetch($products_prices_query)) return;
 
-          if (!empty($product_price[$this->_currency_code]) || (float)$product_price[$this->_currency_code] != 0) {
+          if (!empty($product_price[$this->_currency_code]) && (float)$product_price[$this->_currency_code] != 0) {
             $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
           } else {
             $this->_data['price'] = $product_price[settings::get('store_currency_code')];
@@ -434,13 +434,6 @@
           break;
 
         case 'quantity_unit':
-
-          $this->_data['quantity_unit'] = array(
-            'id' => null,
-            'decimals' => 0,
-            'separate' => false,
-            'name' => '',
-          );
 
           $quantity_unit_query = database::query(
             "select id, decimals, separate from ". DB_TABLE_QUANTITY_UNITS ."
@@ -507,23 +500,15 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS ."
-            where id = ". (int)$this->_data['id'] ."
+            where ". (preg_match('#^[0-9]+$#', $this->_data['id']) ? "id = ". (int)$this->_data['id'] : "sku = '". database::input($this->_data['id']) ."'") ."
             limit 1;"
           );
 
           if (!$row = database::fetch($query)) return;
 
-          foreach ($row as $key => $value) {
-            switch($key) {
-              case 'keywords':
-                $this->_data[$key] = !empty($row[$key]) ? explode(',', $row[$key]) : array();
-                break;
+          foreach ($row as $key => $value) $this->_data[$key] = $value;
 
-              default:
-                $this->_data[$key] = $value;
-                break;
-            }
-          }
+          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
           break;
       }

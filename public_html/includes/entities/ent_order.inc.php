@@ -679,7 +679,7 @@
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
 
-      $order_status = reference::order_status($this->data['order_status_id'], $language_code);
+      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : null;
 
       $aliases = array(
         '%order_id' => $this->data['id'],

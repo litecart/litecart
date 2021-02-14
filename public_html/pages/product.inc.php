@@ -19,11 +19,11 @@
     return;
   }
 
-  if ($product->date_valid_from > date('Y-m-d H:i:s')) {
+  if (!empty($product->date_valid_from) && $product->date_valid_from > date('Y-m-d H:i:s')) {
     notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
   }
 
-  if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && substr($product->date_valid_to, 0, 4) > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
+  if (!empty($product->date_valid_to) && $product->date_valid_to > 1970 && $product->date_valid_to < date('Y-m-d H:i:s')) {
     notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
   }
 
@@ -172,7 +172,7 @@
   }
 
 // Stickers
-  if (!empty($product->campaign['price'])) {
+  if (!empty($product->campaign['price']) && $product->campaign['price'] > 0) {
     $percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
     $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />-'. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
@@ -266,7 +266,7 @@
             }
 
             $values .= '<div class="checkbox">' . PHP_EOL
-                     . '  <label>' . functions::form_draw_checkbox('options['.$group['name'].'][]', $value['name'], true, 'data-group-id="'. (int)$value['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '  <label>' . functions::form_draw_checkbox('options['.$group['name'].'][]', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                      . '</div>';
           }
           break;
@@ -285,7 +285,7 @@
             }
 
             $values .= '<div class="radio">' . PHP_EOL
-                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$value['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                      . '</div>';
           }
           break;
@@ -307,17 +307,18 @@
             $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
           }
 
-          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$value['group_id'] .'"'. (!empty($group['required']) ? ' required="required"' : ''));
+          $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required="required"' : ''));
           break;
 
+        case 'input': // Deprecated
         case 'text':
 
-          $values .= functions::form_draw_text_field('options['.$group['name'].']', true, 'data-group-id="'. (int)$value['group_id'] .'"' . (!empty($group['required']) ? ' required="required"' : '')) . PHP_EOL;
+          $values .= functions::form_draw_text_field('options['.$group['name'].']', true, 'data-group-id="'. (int)$group['group_id'] .'"' . (!empty($group['required']) ? ' required="required"' : '')) . PHP_EOL;
           break;
 
         case 'textarea':
 
-          $values .= functions::form_draw_textarea('options['.$group['name'].']', true, !empty($group['required']) ? 'data-group-id="'. (int)$value['group_id'] .'" required="required"' : '') . PHP_EOL;
+          $values .= functions::form_draw_textarea('options['.$group['name'].']', true, !empty($group['required']) ? 'data-group-id="'. (int)$group['group_id'] .'" required="required"' : '') . PHP_EOL;
           break;
       }
 

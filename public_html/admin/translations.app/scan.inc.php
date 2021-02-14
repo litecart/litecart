@@ -21,7 +21,6 @@
 
     foreach ($iterator as $file) {
       if (!preg_match('#\.php$#', $file)) continue;
-      //if (preg_match('#^'. preg_quote(FS_DIR_APP, '#') .'vqmods/#', $file)) continue;
 
       $found_files++;
       $contents = file_get_contents($file);

@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.2.7
+ * LiteCart® 2.2.8
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -34,7 +34,7 @@
   route::load(FS_DIR_APP . 'includes/routes/url_*.inc.php');
 
 // Append default route
-  route::add('#^([0-9a-zA-Z_\-/\.]+)(?:\.php)?$#', '$1');
+  route::add('#^([0-9a-zA-Z_\-/\.]+?)(?:\.php)?/?$#', '$1');
 
 // Go
   route::process();

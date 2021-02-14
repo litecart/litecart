@@ -10,7 +10,7 @@
       $client->timeout = 10;
       $response = $client->call('GET', $url);
 
-      if ($response) throw new Exception('No response');
+      if (!$response) throw new Exception('No response');
 
       libxml_use_internal_errors(true);
       $rss = simplexml_load_string($response);
@@ -26,18 +26,13 @@
         }
 ?>
 <style>
-#widget-discussions .row [class^="col-"] > * {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 #widget-discussions .row [class^="col-"] .description {
   opacity: 0.85;
 }
 </style>
 
 <div id="widget-discussions" class="widget panel panel-default">
-  <div class="panel-heading"><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></div>
+  <h3 class="panel-heading"><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></h3>
   <div class="panel-body">
       <div class="row">
       <?php foreach ($discussions as $item) { ?>

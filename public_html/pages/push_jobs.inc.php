@@ -1,15 +1,13 @@
 <?php
+  ignore_user_abort(true);
+  set_time_limit(60*5);
+
   header('X-Robots-Tag: noindex');
   header('Content-type: text/plain; charset='. language::$selected['code']);
 
   if (strtotime(settings::get('jobs_last_run')) > strtotime('-'. settings::get('jobs_interval') .' minutes')) die('Already did my duty!');
 
   session::close();
-
-  if (preg_match('#^(off|false|0)$#i', ini_get('safe_mode'))) {
-    ignore_user_abort(true);
-    set_time_limit(60*5);
-  }
 
   database::query(
     "update ". DB_TABLE_SETTINGS ."

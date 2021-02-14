@@ -13,6 +13,9 @@
     // Neutralize request path (removes logical prefixes)
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
+    // Identify the request to a route destination
+      self::identify();
+
     // Load cached links (url rewrites)
       self::$_links_cache_token = cache::token('links', array('site', 'language'), 'memory');
       self::$_links_cache = cache::get(self::$_links_cache_token);
@@ -66,8 +69,7 @@
           $_GET = array_filter(array_merge($_GET, $params));
         }
 
-        self::$route = $route;
-        break;
+        return self::$route = $route;
       }
     }
 
@@ -103,13 +105,15 @@
           }
 
           if ($do_redirect) {
+
+          // Send HTTP 302 if it's the start page
             if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_APP) {
               header('Location: '. $rewritten_url, true, 302);
               exit;
-            } else {
-              header('Location: '. $rewritten_url, true, 301);
-              exit;
             }
+
+            header('Location: '. $rewritten_url, true, 301);
+            exit;
           }
         }
       }
@@ -118,13 +122,12 @@
         include vmod::check($page);
 
       } else {
-
         $request = new ent_link(document::link());
 
         http_response_code(404);
 
       // Don't return an error page for content with a defined extension (presumably static)
-        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html|php)$#', $request->path)) exit;
+        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
         $not_found_file = FS_DIR_APP . 'logs/not_found.log';
 
@@ -146,7 +149,7 @@
         }
 
         include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
-        include vmod::check(WS_DIR_APP . 'includes/app_footer.inc.php');
+        include vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
         exit;
       }
     }
@@ -259,10 +262,18 @@
         $use_rewrite = true;
       }
 
-    // Prepend language prefix
-      if (count(language::$languages) > 1 && settings::get('seo_links_language_prefix')) {
-        if (isset($link->query['language'])) $link->unset_query('language');
-        $link->path = $language_code .'/'. ltrim($link->path, '/');
+    // Set language to URL
+      switch (language::$languages[$language_code]['url_type']) {
+
+        case 'path':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->path = $language_code .'/'. ltrim($link->path, '/');
+          break;
+
+        case 'domain':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->domain = language::$languages[$language_code]['domain_name'];
+          break;
       }
 
     // Set base (/index.php/ or /)

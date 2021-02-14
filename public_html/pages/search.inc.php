@@ -59,8 +59,8 @@
       select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, recommended_price, tax_class_id, quantity, sold_out_status_id, views, purchases, date_updated, date_created
       from ". DB_TABLE_PRODUCTS ."
       where status
-      and (date_valid_from <= '". date('Y-m-d H:i:s') ."')
-      and (year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+      and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+      and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
     ) p
 
     left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -75,8 +75,8 @@
     left join (
       select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price
       from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
-      where (start_date <= '". date('Y-m-d H:i:s') ."')
-      and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+      where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
+      and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
       group by product_id
     ) pc on (pc.product_id = p.id)
 

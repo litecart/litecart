@@ -62,7 +62,8 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
     padding: 4px @form-input-padding/2;
   }
   &[disabled] {
-    text: lighter(@default-text-color, 50%);
+    opacity: .5;
+    cursor: not-allowed;
   }
   &[readonly] {
     color: #999;

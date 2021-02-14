@@ -5,7 +5,7 @@
     public static $languages = array();
     private static $_cache = array();
     private static $_cache_token;
-    private static $_loaded_translations = array();
+    private static $_accessed_translations = array();
 
     public static function init() {
 
@@ -61,8 +61,9 @@
 
       database::query(
         "update ". DB_TABLE_TRANSLATIONS ."
-        set ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1")  ."
-        where code in ('". implode("', '", database::input(self::$_loaded_translations)) ."');"
+        set ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") .",
+          date_accessed = '". date('Y-m-d H:i:s') ."'
+        where code in ('". implode("', '", database::input(self::$_accessed_translations)) ."');"
       );
 
       cache::set(self::$_cache_token, self::$_cache['translations']);
@@ -105,7 +106,7 @@
       }
 
     // Set system locale
-      if (!setlocale(LC_TIME, explode(',', self::$selected['locale']))) {
+      if (!setlocale(LC_TIME, preg_split('#\s*,\s*#', self::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
         trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['code'], E_USER_WARNING);
       }
 
@@ -129,6 +130,14 @@
       $enabled_languages = array();
       foreach (self::$languages as $language) {
         if (!empty(user::$data['id']) || $language['status'] == 1) $enabled_languages[] = $language['code'];
+      }
+
+    // Return language by regional domain
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] != 'domain') continue;
+        if (preg_match('#'. preg_quote(self::$languages[$language_code]['url_type'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+          return $language_code;
+        }
       }
 
     // Return language from URI query
@@ -185,6 +194,8 @@
 
       $code = strtolower($code);
 
+      self::$_accessed_translations[] = $code;
+
       if (empty($language_code)) {
         $language_code = self::$selected['code'];
       }
@@ -196,7 +207,6 @@
 
     // Return from cache
       if (isset(self::$_cache['translations'][$language_code][$code])) {
-        self::$_loaded_translations[] = $code;
         return self::$_cache['translations'][$language_code][$code];
       }
 
@@ -218,7 +228,6 @@
 
     // Return translation
       if (!empty($translation['text_'.$language_code])) {
-        self::$_loaded_translations[] = $code;
         return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
       }
 
@@ -243,17 +252,14 @@
             and text_". self::$selected['code'] ." = '';"
           );
 
-          self::$_loaded_translations[] = $code;
           return self::$_cache['translations'][$language_code][$code] = $secondary_translation['text_'.$language_code];
         }
 
       // Return english translation
-        self::$_loaded_translations[] = $code;
         return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
       }
 
     // Return default translation
-      self::$_loaded_translations[] = $code;
       return self::$_cache['translations'][$language_code][$code] = $default;
     }
 
