@@ -310,6 +310,7 @@
           $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required="required"' : ''));
           break;
 
+        case 'input': // Deprecated
         case 'text':
 
           $values .= functions::form_draw_text_field('options['.$group['name'].']', true, 'data-group-id="'. (int)$group['group_id'] .'"' . (!empty($group['required']) ? ' required="required"' : '')) . PHP_EOL;

@@ -583,7 +583,7 @@
               <div class="row">
                 <div class="form-group col-sm-4 col-md-2">
                   <label><?php echo language::translate('title_function', 'Function'); ?></label>
-                  <?php echo functions::form_draw_select_field('options['.$group_id.'][function]', in_array($option['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['input', 'textarea'], true); ?>
+                  <?php echo functions::form_draw_select_field('options['.$group_id.'][function]', in_array($option['function'], ['select', 'radio', 'checkbox']) ? ['select', 'radio', 'checkbox'] : ['text', 'textarea'], true); ?>
                 </div>
 
                 <?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
@@ -1426,7 +1426,7 @@
                + '  <div class="row">'
                + '    <div class="form-group col-sm-4 col-md-2">'
                + '      <label><?php echo language::translate('title_function', 'Function'); ?></label>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', array('input', 'textarea'), 'input')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', array('text', 'textarea'), 'text')); ?>'
                + '    </div>'
                + '    <div class="form-group col-sm-4 col-md-2">'
                + '      <label><?php echo language::translate('title_required', 'Required'); ?></label>'
