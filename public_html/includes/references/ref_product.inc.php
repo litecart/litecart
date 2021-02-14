@@ -500,7 +500,7 @@
 
           $query = database::query(
             "select * from ". DB_TABLE_PRODUCTS ."
-            where id = ". (int)$this->_data['id'] ."
+            where ". (preg_match('#^[0-9]+$#', $this->_data['id']) ? "id = ". (int)$this->_data['id'] : "sku = '". database::input($this->_data['id']) ."'") ."
             limit 1;"
           );
 
