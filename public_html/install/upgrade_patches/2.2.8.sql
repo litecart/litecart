@@ -37,6 +37,9 @@ ALTER TABLE `lc_settings_groups` CHANGE `priority` `priority` INT(11) NOT NULL D
 -- --------------------------------------------------------
 ALTER TABLE `lc_slides` CHANGE `priority` `priority` INT(11) NOT NULL DEFAULT '0';
 -- --------------------------------------------------------
+ALTER TABLE `lc_translations`
+ADD COLUMN `date_accessed` TIMESTAMP NULL AFTER `backend`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_users`
 CHANGE COLUMN `permissions` `apps` VARCHAR(4096) NOT NULL DEFAULT '',
 ADD `widgets` VARCHAR(512) NOT NULL DEFAULT '' AFTER `apps`;
