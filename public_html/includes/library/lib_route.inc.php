@@ -60,7 +60,7 @@
     // Find a target route for requested URL
       foreach (self::$_routes as $route) {
 
-        if (!preg_match($route['pattern'], self::$request, $route['matches'])) continue;
+        if (!preg_match($route['pattern'], self::$request)) continue;
 
         $route['page'] = preg_replace($route['pattern'], $route['page'], self::$request);
 
