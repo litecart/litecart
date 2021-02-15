@@ -272,7 +272,7 @@
 
         case 'domain':
           if (isset($link->query['language'])) $link->unset_query('language');
-          $link->domain = language::$languages[$language_code]['domain_name'];
+          $link->host = language::$languages[$language_code]['domain_name'];
           break;
       }
 
