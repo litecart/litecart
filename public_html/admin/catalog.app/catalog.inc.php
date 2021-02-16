@@ -286,6 +286,8 @@
           select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
+        + if(m.name like '%". database::input($_GET['query']) ."%', 3, 0)
+        + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
       ) as relevance
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
