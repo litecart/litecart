@@ -266,7 +266,7 @@
       '{DB_PASSWORD}' => $_REQUEST['db_password'],
       '{DB_DATABASE}' => $_REQUEST['db_database'],
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
-      '{DB_DATABASE_CHARSET}' => 'utf8',
+      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{DB_PERSISTENT_CONNECTIONS}' => 'false',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
       '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
@@ -304,7 +304,8 @@
 
     $map = array(
       '`lc_' => '`'.$_REQUEST['db_table_prefix'],
-      '{DATABASE_COLLATION}' => $_REQUEST['db_collation'],
+      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
+      '{DB_DATABASE_COLLATION}' => $_REQUEST['db_collation'],
     );
 
     foreach ($map as $search => $replace) {
