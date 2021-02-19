@@ -81,7 +81,7 @@
   }
 
   usort($supported_versions, function($a, $b) {
-    return version_compare($a, $b, '>');
+    return version_compare($a, $b, '>') ? 1 : -1;
   });
 
   if (!empty($_REQUEST['upgrade'])) {
