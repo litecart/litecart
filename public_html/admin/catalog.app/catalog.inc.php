@@ -445,7 +445,7 @@
         }
 
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 
