@@ -160,7 +160,9 @@
     $order_process = new mod_order();
     $order_process->after_process($order);
 
-    header('Location: '. document::ilink('order_success'));
+    unset(session::$data['order']);
+
+    header('Location: '. document::ilink('order_success', array('order_id' => $order->data['id'], 'public_key' => $order->data['public_key'])));
     exit;
 
   } catch (Exception $e) {
