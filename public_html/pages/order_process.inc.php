@@ -1,4 +1,5 @@
 <?php
+
   header('X-Robots-Tag: noindex');
   document::$layout = 'checkout';
 
@@ -36,7 +37,7 @@
         );
       }
 
-      if (!empty($payment->modules) && count($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
+      if ($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
         if (empty($payment->data['selected'])) {
           throw new Exception(language::translate('error_no_payment_method_selected', 'No payment method selected'));
         }
@@ -111,7 +112,7 @@
     }
 
   // Verify transaction
-    if (!empty($payment->modules) && count($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
+    if ($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
       $result = $payment->verify($order);
 
     // If payment error
@@ -125,11 +126,9 @@
         throw new Exception($result['error']);
       }
 
-    // Set order status id
-      if (isset($result['order_status_id'])) $order->data['order_status_id'] = $result['order_status_id'];
-
-    // Set transaction id
-      if (isset($result['transaction_id'])) $order->data['payment_transaction_id'] = $result['transaction_id'];
+    // Update order
+      $order->data['order_status_id'] = isset($result['order_status_id']) ? $result['order_status_id'] : '';
+      $order->data['payment_transaction_id'] = isset($result['transaction_id']) ? $result['transaction_id'] : '';
     }
 
   // Save order
@@ -160,9 +159,8 @@
     $order_process = new mod_order();
     $order_process->after_process($order);
 
-    unset(session::$data['order']);
-
     header('Location: '. document::ilink('order_success', array('order_id' => $order->data['id'], 'public_key' => $order->data['public_key'])));
+    unset(session::$data['order']);
     exit;
 
   } catch (Exception $e) {

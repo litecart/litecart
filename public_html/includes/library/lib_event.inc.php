@@ -2,8 +2,8 @@
 
   class event {
 
-    public static $_callbacks = array();
-    public static $_fired_events = array();
+    private static $_callbacks = array();
+    private static $_fired_events = array();
 
     public static function register($event, $callback) {
 
@@ -15,11 +15,7 @@
       }
 
       if (in_array($event, self::$_fired_events)) {
-        if (is_callable($callback)) {
-          $callback();
-        } else {
-          call_user_func($callback);
-        }
+        call_user_func_array($callback, array_slice(func_get_args(), 2));
         return;
       }
 
@@ -38,12 +34,7 @@
       $args = array_slice(func_get_args(), 1);
 
       foreach (self::$_callbacks[$event] as $callback) {
-
-        if (is_callable($callback)) {
-          $callback($args);
-        } else {
-          call_user_func($callback, $args);
-        }
+        call_user_func_array($callback, $args);
       }
 
       self::$_fired_events[] = $event;
