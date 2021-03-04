@@ -51,6 +51,11 @@
           throw new Exception($payment_error);
         }
 
+      // Update the order draft if it's already saved to database
+        if (!empty($order->data['id'])) {
+          $order->save();
+        }
+
         if ($gateway = $payment->transfer($order)) {
 
           if (!empty($gateway['error'])) {
@@ -164,6 +169,12 @@
     exit;
 
   } catch (Exception $e) {
+
+  // Update the order draft if it's already saved to database
+    if (!empty($order->data['id'])) {
+      $order->save();
+    }
+
     notices::add('errors', $e->getMessage());
     header('Location: '. document::ilink('checkout'));
     exit;
