@@ -158,6 +158,7 @@
     window.location.search = $.param(params);
   });
 
+// Data-Table Shift Check Multiple Checkboxes
   var lastTickedCheckbox = null;
   $('.data-table input[type="checkbox"]').click(function(e){
 
