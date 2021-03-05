@@ -48,14 +48,14 @@
     }
 
     if (in_array(strtolower(ini_get('display_errors')), array('1', 'on', 'true'))) {
-      if (in_array(strtolower(ini_get('html_errors')), array(0, 'off', 'false')) || PHP_SAPI == 'cli') {
+      if (in_array(strtolower(ini_get('html_errors')), array('0', 'off', 'false')) || PHP_SAPI == 'cli') {
         echo strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
       } else {
         echo $output . (isset($_GET['debug']) ? $backtrace_output : '');
       }
     }
 
-    if (ini_get('log_errors')) {
+    if (in_array(strtolower(ini_get('log_errors')), array('1', 'on', 'true'))) {
       error_log(
         strip_tags($output . $backtrace_output) .
         "Request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']} {$_SERVER['SERVER_PROTOCOL']}" . PHP_EOL .
