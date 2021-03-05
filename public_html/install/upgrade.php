@@ -25,12 +25,6 @@
     require_once(__DIR__ . '/includes/header.inc.php');
   }
 
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
-  ini_set('ignore_repeated_errors', 'On');
-  ini_set('log_errors', 'Off');
-  ini_set('display_errors', 'On');
-  ini_set('html_errors', 'On');
-
   if (!is_file(__DIR__ . '/../includes/config.inc.php')) {
     echo '<h2>No Installation Detected</h2>' . PHP_EOL
        . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
@@ -43,6 +37,12 @@
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
   if (!defined('WS_DIR_APP')) define('WS_DIR_APP', WS_DIR_HTTP_HOME);
+
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+  ini_set('ignore_repeated_errors', 'On');
+  ini_set('log_errors', 'Off');
+  ini_set('display_errors', 'On');
+  ini_set('html_errors', 'On');
 
   require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
   require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');

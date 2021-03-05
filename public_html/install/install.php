@@ -129,7 +129,7 @@
     ### Environment > Set #########################################
 
     error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
-    ini_set('ignore_repeated_errors', 'On');
+    ini_set('ignore_repeated_errors', 'Off');
     ini_set('log_errors', 'Off');
     ini_set('display_errors', 'On');
     ini_set('html_errors', 'On');
