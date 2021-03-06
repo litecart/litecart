@@ -58,16 +58,7 @@
     $category_name = language::translate('title_root', 'Root');
 
     if (!empty($input)) {
-      $category_query = database::query(
-        "select c.id, c.code, ci.name, c.date_created from ". DB_TABLE_PREFIX ."categories c
-        left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code)
-        where c.id = ". (int)$input ."
-        limit 1;"
-      );
-
-      if ($category = database::fetch($category_query)) {
-        $category_name = $category['name'];
-      }
+      $category_name = reference::category($input)->name;
     }
 
     functions::draw_lightbox();
@@ -259,7 +250,6 @@ END;
   }
 
   function form_draw_decimal_field($name, $input=true, $decimals=2, $parameters='') {
-
 
     if (count($args = func_get_args()) > 4) {
       trigger_error('Passing min and max separate parameters in form_draw_decimal_field() is deprecated. Instead define min="0" max="999" in $parameters', E_USER_DEPRECATED);
