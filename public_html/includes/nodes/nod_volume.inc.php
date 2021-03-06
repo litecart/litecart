@@ -108,16 +108,16 @@
       if ($from == $to) return (float)$value;
 
       if (!isset(self::$units[$from])) {
-        trigger_error('Invalid length unit ('. $from .')', E_USER_WARNING);
+        trigger_error('Invalid volume unit ('. $from .')', E_USER_WARNING);
         return;
       }
 
       if (!isset(self::$units[$to])) {
-        trigger_error('Invalid length unit ('. $to .')', E_USER_WARNING);
+        trigger_error('Invalid volume unit ('. $to .')', E_USER_WARNING);
         return;
       }
 
-      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return;
+      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return 0;
 
       return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }
@@ -125,7 +125,7 @@
     public static function format($value, $unit) {
 
       if (!isset(self::$units[$unit])) {
-        trigger_error('Invalid length unit ('. $unit .')', E_USER_WARNING);
+        trigger_error('Invalid volume unit ('. $unit .')', E_USER_WARNING);
         return;
       }
 
