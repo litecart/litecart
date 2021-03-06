@@ -196,8 +196,8 @@ END;
     if ($input === true) $input = form_reinsert_value($name);
 
   // Format and show an additional two decimals precision if needed
-    if ($value != '') {
-      $value = preg_replace('#0{1,2}$#', '', number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2, '.', ''));
+    if ($input != '') {
+      $input = preg_replace('#0{1,2}$#', '', number_format((float)$input, currency::$currencies[$currency_code]['decimals'] + 2, '.', ''));
     }
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
