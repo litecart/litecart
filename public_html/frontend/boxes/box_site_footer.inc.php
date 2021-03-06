@@ -7,7 +7,7 @@
     $box_site_footer->snippets = [
       'pages' => [],
       'modules' => [],
-      'social' => [],
+      'social_bookmarks' => [],
     ];
 
     $pages_query = database::query(
@@ -62,26 +62,24 @@
       ];
     }
 
-    $box_site_footer->snippets['social']['facebook'] = [
-      'type' => 'facebook',
-      'title' => 'Facebook',
-      'icon' => 'fa-facebook',
-      'link' => 'https://www.facebook.com/',
+    $social_media = [
+      'facebook',
+      'instagram',
+      'linkedin',
+      'pinterest',
+      'twitter',
+      'youtube',
     ];
 
-    $box_site_footer->snippets['social']['twitter'] = [
-      'type' => 'twitter',
-      'title' => 'Twitter',
-      'icon' => 'fa-twitter',
-      'link' => 'https://www.twitter.com/',
-    ];
-
-    $box_site_footer->snippets['social']['linkedin'] = [
-      'type' => 'linkedin',
-      'title' => 'LinkedIn',
-      'icon' => 'fa-linkedin',
-      'link' => 'https://www.linkedin.com/',
-    ];
+    foreach ($social_media as $platform) {
+      if (!$link = settings::get($platform.'_link')) continue;
+      $box_site_footer->snippets['social_bookmarks'][$platform] = [
+        'type' => $platform,
+        'title' => ucfirst($platform),
+        'icon' => 'fa-'.$platform,
+        'link' => $link,
+      ];
+    }
 
     echo $box_site_footer->stitch('views/box_site_footer.inc.php');
 

@@ -464,8 +464,7 @@
 
         <div id="tab-prices" class="tab-pane">
 
-          <div id="prices" style="max-width: 640px;">
-            <h2><?php echo language::translate('title_prices', 'Prices'); ?></h2>
+          <div style="max-width: 640px;">
 
             <div class="row">
               <div class="form-group col-md-6">

@@ -39,10 +39,13 @@
     }
     breadcrumbs::add($page->title);
 
-    $_page->snippets += [
+    $_box = new ent_view();
+    $_box->snippets = [
       'title' => $page->title,
       'content' => $page->content,
     ];
+
+    $_page->snippets['content'] = $_box->stitch(FS_DIR_TEMPLATE . 'views/box_information.inc.php');
 
   } else {
 

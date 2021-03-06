@@ -9,9 +9,6 @@
     }
 
     $box_customer_service_links = new ent_view();
-
-    $box_customer_service_links->snippets['pages'] = [];
-
     $box_customer_service_links->snippets = [
       'title' =>  language::translate('title_customer_service', 'Customer Service'),
       'pages' => [],

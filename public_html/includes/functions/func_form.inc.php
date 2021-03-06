@@ -815,6 +815,9 @@ END;
       case 'tax_classes':
         return form_draw_tax_classes_list($name, $input, $parameters);
 
+      case 'url':
+        return form_draw_url_field($name, $input, $parameters);
+
       case 'user':
       case 'users':
         return form_draw_users_list($name, $input, $parameters);
@@ -1504,7 +1507,7 @@ END;
     if (preg_match('#\[\]$#', $name)) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
-      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
+      array_unshift($options, ['--', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }

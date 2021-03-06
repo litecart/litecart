@@ -9,6 +9,7 @@
   $box_checkout_summary = new ent_view();
 
   $box_checkout_summary->snippets = [
+    'order' => $order,
     'order_total' => $order->data['order_total'],
     'tax_total' => $order->data['tax_total'],
     'payment_due' => $order->data['payment_due'],

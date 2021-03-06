@@ -42,14 +42,6 @@
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
 
-<?php if (!empty(user::$data['id'])) { ?>
-<div id="box-admin-toolbar" class="btn-group-vertical">
-  <a class="btn btn-default btn-block" href="<?php echo document::href_link(BACKEND_ALIAS.'/'); ?>" title="<?php echo htmlspecialchars(language::translate('title_backend', 'Backend')); ?>"><?php echo functions::draw_fonticon('fa-dashboard'); ?></a>
-  <button class="btn btn-default btn-block" id="editor-toggle" type="button" title="<?php echo htmlspecialchars(language::translate('title_toggle_editable', 'Toggle Editable')); ?>"><?php echo functions::draw_fonticon('fa-edit'); ?></button>
-  <a class="btn btn-default btn-block" href="<?php echo document::href_link(BACKEND_ALIAS.'/logout'); ?>" title="<?php echo htmlspecialchars(language::translate('title_sign_out', 'Sign Out')); ?>"><?php echo functions::draw_fonticon('fa-sign-out'); ?></a>
-</ul>
-<?php } ?>
-
 {{foot_tags}}
 <script src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>
 {{javascript}}

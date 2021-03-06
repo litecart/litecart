@@ -37,7 +37,7 @@
 
 ?>
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_test_vmod', 'Test vMod'); ?></h1>
-<h2><?php echo $_GET['vmod']; ?></h2>
+<h2><?php echo htmlspecialchars($_GET['vmod']); ?></h2>
 
 <table class="table table-striped table-hover data-table">
   <thead>

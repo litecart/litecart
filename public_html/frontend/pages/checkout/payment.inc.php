@@ -50,4 +50,4 @@
     'options' => $options,
   ];
 
-  echo $box_checkout_payment->stitch('views/box_checkout_payment.inc.php');
+  echo $box_checkout_payment->stitch(FS_DIR_TEMPLATE . 'views/box_checkout_payment.inc.php');

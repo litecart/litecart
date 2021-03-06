@@ -8,7 +8,7 @@
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
 // Sidebar parallax effect
-  if (window._env.template.settings.sidebar_parallax_effect == true) {
+  if (window._env.template.settings.sidebar_parallax_effect) {
 
     var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
     var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
