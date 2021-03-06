@@ -31,7 +31,7 @@
 
       $last_modified = null;
 
-    // Get last modification date for modifications
+    // Get last modification date for folder
       $folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/');
       if ($folder_last_modified > $last_modified) {
         $last_modified = $folder_last_modified;
@@ -72,9 +72,9 @@
       $checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($short_file, $modified_file, $checksum) = explode(';', $line);
-          self::$_checked[$short_file] = $modified_file;
-          self::$_checksums[$short_file] = $checksum;
+          list($original_file, $modified_file, $checksum) = explode(';', $line);
+          self::$_checked[$original_file] = FS_DIR_STORAGE . $modified_file;
+          self::$_checksums[$original_file] = $checksum;
         }
       } else {
         file_put_contents($checked_file, '', LOCK_EX);
@@ -82,7 +82,7 @@
 
     // Load modifications from disk
       if (empty(self::$_modifications)) {
-        foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
+        foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml') as $file) {
           self::load($file);
         }
 
@@ -148,22 +148,22 @@
 
       $checksum = md5(implode('', $digest));
 
-    // Return original if nothing to modify
+    // Return original file if nothing to modify
       if (empty($queue)) {
-        if (is_file($modified_file)) unset($modified_file);
+        if (is_file($modified_file)) unlink($modified_file);
         self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file] = $file;
       }
 
     // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$short_file]) && self::$_checksums[$short_file] == $checksum) {
+      if (!empty(self::$_checksums[$short_file]) && file_exists(self::$_checked[$short_file]) && self::$_checksums[$short_file] == $checksum) {
         self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file] = $modified_file;
       }
 
     // Modify file
       if (is_file($file)) {
-        $original = $buffer = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($file));
+        $original = $buffer = file_get_contents($file);
       } else {
         $original = $buffer = null;
       }
@@ -244,7 +244,7 @@
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
-      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_short_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
 
