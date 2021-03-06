@@ -44,6 +44,11 @@
           </div>
 
           <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+            <div style="line-height: 200%"><?php echo functions::form_draw_text_field('postcode', customer::$data['postcode']); ?></div>
+          </div>
+
+          <div class="form-group col-md-6">
             <label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
             <?php echo functions::form_draw_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax']); ?>
           </div>
