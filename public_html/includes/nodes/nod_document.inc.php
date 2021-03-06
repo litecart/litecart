@@ -48,7 +48,9 @@
       }
 
     // Get template settings
-      $template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('template') .'/config.inc.php');
+      if (!$template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('template') .'/config.inc.php')) {
+        $template_config = [];
+      }
 
       self::$settings = settings::get('template_settings') ? json_decode(settings::get('template_settings'), true) : [];
 
