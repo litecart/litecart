@@ -1,27 +1,58 @@
+<?php
+  $currency_options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
+  foreach ($currencies as $currency) {
+    $currency_options[] = [$currency['name'], $currency['code']];
+  }
+
+  $language_options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
+  foreach ($languages as $language) {
+    $language_options[] = [$language['name'], $language['code']];
+  }
+?>
 <main id="main" class="container">
   <aside id="sidebar">
     <section id="box-checkout-region">
 
-      <div class="row">
-        <div class="form-group col-xs-4 col-sm-6">
+      <h2 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h2>
+      <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink('regional_settings', ['redirect_url' => document::link()]), false, 'style="max-width: 480px;"'); ?>
+
+        <?php if (count($languages) > 1) { ?>
+        <div class="form-group">
           <label><?php echo language::translate('title_language', 'Language'); ?></label>
-          <div style="line-height: 200%"><?php echo language::$selected['name']; ?></div>
+          <?php echo functions::form_draw_select_field('language_code', $language_options, language::$selected['code']); ?>
         </div>
+        <?php } ?>
 
-        <div class="form-group col-xs-4 col-sm-6">
+        <?php if (count($currencies) > 1) { ?>
+        <div class="form-group">
           <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-          <div style="line-height: 200%"><?php echo currency::$selected['code']; ?></div>
+          <?php echo functions::form_draw_select_field('currency_code', $currency_options, currency::$selected['code']); ?>
         </div>
+        <?php } ?>
 
-        <div class="form-group col-xs-4 col-sm-12">
+        <div class="form-group">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
-          <div style="line-height: 200%"><?php echo reference::country(customer::$data['country_code'])->name; ?></div>
+          <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?>
         </div>
-      </div>
 
-      <div>
-        <a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>" data-toggle="lightbox"><?php echo language::translate('title_change', 'Change'); ?></a>
-      </div>
+        <div class="form-group">
+          <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
+          <?php echo functions::form_draw_zones_list('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
+        </div>
+
+        <div class="form-group">
+          <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+          <?php echo functions::form_draw_text_field('postcode', customer::$data['postcode']); ?>
+        </div>
+
+        <div class="form-group">
+          <label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
+          <?php echo functions::form_draw_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax']); ?>
+        </div>
+
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-default btn-block"'); ?>
+
+      <?php echo functions::form_draw_form_end(); ?>
     </section>
   </aside>
 
@@ -85,7 +116,7 @@
           <?php } ?>
         </ul>
 
-        <div class="subtotal">
+        <div class="subtotal text-right">
           <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
         </div>
 
