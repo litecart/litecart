@@ -34,6 +34,56 @@
 
         switch ($_POST['type']) {
 
+          case 'campaigns':
+
+          // Find campaign
+            if (!empty($row['id'])) {
+              $campaign_query = database::query(
+                "select id from ". DB_TABLE_PREFIX ."products_campaigns
+                where id = ". (int)$row['id'] ."
+                limit 1;"
+              );
+              $campaign = database::fetch($campaign_query);
+            }
+
+            if (!empty($campaign['id'])) {
+              if (empty($_POST['overwrite'])) continue 2;
+              echo "Updating existing group price on line $line" . PHP_EOL;
+              $updated++;
+
+            } else {
+              if (empty($_POST['insert'])) continue 2;
+              echo "Creating new group price on line $line" . PHP_EOL;
+              $inserted++;
+
+              if (!empty($row['id'])) {
+                database::query(
+                  "insert into ". DB_TABLE_PREFIX ."products_campaigns
+                  (id, product_id)
+                  values (". (int)$row['id'] .", '". $row['product_id'] ."');"
+                );
+              }
+            }
+
+            $prices = array_intersect_key($row, currency::$currencies);
+
+            $sql_update_prices = '';
+            foreach ($prices as $currency_code => $price) {
+              $sql_update_prices .= database::input($currency_code) ." = ". (float)$price . "," . PHP_EOL;
+            }
+
+            database::query(
+              "update ". DB_TABLE_PREFIX ."products_campaigns
+              set product_id = ". (int)$row['product_id'] .",
+                  ". $sql_update_prices ."
+                  start_date = ". (empty($row['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['start_date'])) ."'") .",
+                  end_date = ". (empty($row['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['end_date'])) ."'") ."
+              where id = ". (int)$row['id'] ."
+              limit 1;"
+            );
+
+            break;
+
           case 'categories':
 
           // Find category
@@ -448,6 +498,30 @@
 
         switch ($_POST['type']) {
 
+          case 'campaigns':
+
+            $campaign_query = database::query(
+              "select * from ". DB_TABLE_PREFIX ."products_campaigns
+              order by product_id;"
+            );
+
+            if (!database::num_rows($campaign_query)) {
+
+              $fields_query = database::query(
+                "show fields from ". DB_TABLE_PREFIX ."products_campaigns;"
+              );
+
+              $csv[] = database::fetch($fields_query);
+
+              break;
+            }
+
+            while ($campaign = database::fetch($campaign_query)) {
+              $csv[] = $campaign;
+            }
+
+            break;
+
           case 'categories':
 
             if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
@@ -631,6 +705,7 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
+                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'campaigns', true); ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'products', true); ?> <?php echo language::translate('title_products', 'Products'); ?></label></div>
@@ -685,6 +760,7 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
+                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'campaigns', true); ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'products', true, 'data-dependencies="currency,language"'); ?> <?php echo language::translate('title_products', 'Products'); ?></label></div>
