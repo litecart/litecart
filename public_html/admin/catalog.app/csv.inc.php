@@ -34,10 +34,6 @@
 
         switch ($_POST['type']) {
 
-          /*
-           * Categories
-           */
-
           case 'categories':
 
           // Find category
@@ -119,11 +115,6 @@
 
             break;
 
-
-          /*
-           * Manufacturers
-           */
-
           case 'manufacturers':
 
           // Find manufacturer
@@ -203,10 +194,6 @@
             }
 
             break;
-
-          /*
-           * Products
-           */
 
           case 'products':
 
@@ -382,11 +369,6 @@
 
             break;
 
-
-          /*
-           * Suppliers
-           */
-
           case 'suppliers':
 
           // Find supplier
@@ -467,9 +449,54 @@
 
         switch ($_POST['type']) {
 
-          /*
-           * Products
-           */
+          case 'categories':
+
+            $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
+            while ($category = database::fetch($categories_query)) {
+              $category = new ref_category($category['id'], $_POST['language_code']);
+
+              $csv[] = array(
+                'id' => $category->id,
+                'status' => $category->status,
+                'parent_id' => $category->parent_id,
+                'code' => $category->code,
+                'name' => $category->name,
+                'keywords' => implode(',', $category->keywords),
+                'short_description' => $category->short_description,
+                'description' => $category->description,
+                'meta_description' => $category->meta_description,
+                'head_title' => $category->head_title,
+                'h1_title' => $category->h1_title,
+                'image' => $category->image,
+                'priority' => $category->priority,
+                'language_code' => $_POST['language_code'],
+              );
+            }
+
+            break;
+
+          case 'manufacturers':
+
+            $manufacturers_query = database::query("select id from ". DB_TABLE_MANUFACTURERS ." order by id;");
+            while ($manufacturer = database::fetch($manufacturers_query)) {
+              $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
+
+              $csv[] = array(
+                'id' => $manufacturer->id,
+                'status' => $manufacturer->status,
+                'code' => $manufacturer->code,
+                'name' => $manufacturer->name,
+                'keywords' => implode(',', $manufacturer->keywords),
+                'short_description' => $manufacturer->short_description,
+                'description' => $manufacturer->description,
+                'meta_description' => $manufacturer->meta_description,
+                'head_title' => $manufacturer->head_title,
+                'h1_title' => $manufacturer->h1_title,
+                'image' => $manufacturer->image,
+                'priority' => $manufacturer->priority,
+                'language_code' => $_POST['language_code'],
+              );
+            }
 
           case 'products':
 
@@ -525,69 +552,6 @@
 
             break;
 
-          /*
-           * Manufacturers
-           */
-
-          case 'manufacturers':
-
-            $manufacturers_query = database::query("select id from ". DB_TABLE_MANUFACTURERS ." order by id;");
-            while ($manufacturer = database::fetch($manufacturers_query)) {
-              $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
-
-              $csv[] = array(
-                'id' => $manufacturer->id,
-                'status' => $manufacturer->status,
-                'code' => $manufacturer->code,
-                'name' => $manufacturer->name,
-                'keywords' => implode(',', $manufacturer->keywords),
-                'short_description' => $manufacturer->short_description,
-                'description' => $manufacturer->description,
-                'meta_description' => $manufacturer->meta_description,
-                'head_title' => $manufacturer->head_title,
-                'h1_title' => $manufacturer->h1_title,
-                'image' => $manufacturer->image,
-                'priority' => $manufacturer->priority,
-                'language_code' => $_POST['language_code'],
-              );
-            }
-
-            break;
-
-          /*
-           * Categories
-           */
-
-          case 'categories':
-
-            $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
-            while ($category = database::fetch($categories_query)) {
-              $category = new ref_category($category['id'], $_POST['language_code']);
-
-              $csv[] = array(
-                'id' => $category->id,
-                'status' => $category->status,
-                'parent_id' => $category->parent_id,
-                'code' => $category->code,
-                'name' => $category->name,
-                'keywords' => implode(',', $category->keywords),
-                'short_description' => $category->short_description,
-                'description' => $category->description,
-                'meta_description' => $category->meta_description,
-                'head_title' => $category->head_title,
-                'h1_title' => $category->h1_title,
-                'image' => $category->image,
-                'priority' => $category->priority,
-                'language_code' => $_POST['language_code'],
-              );
-            }
-
-            break;
-
-          /*
-           * Suppliers
-           */
-
           case 'suppliers':
 
             $suppliers_query = database::query("select id from ". DB_TABLE_SUPPLIERS ." order by id;");
@@ -607,6 +571,7 @@
               );
             }
 
+            break;
             break;
 
           default:
