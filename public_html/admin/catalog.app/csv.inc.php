@@ -443,13 +443,14 @@
   if (isset($_POST['export'])) {
 
     try {
-      if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
       $csv = array();
 
         switch ($_POST['type']) {
 
           case 'categories':
+
+            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
             $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
             while ($category = database::fetch($categories_query)) {
@@ -477,6 +478,8 @@
 
           case 'manufacturers':
 
+            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+
             $manufacturers_query = database::query("select id from ". DB_TABLE_MANUFACTURERS ." order by id;");
             while ($manufacturer = database::fetch($manufacturers_query)) {
               $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
@@ -499,6 +502,9 @@
             }
 
           case 'products':
+
+            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+            if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
 
             $products_query = database::query(
               "select p.id from ". DB_TABLE_PRODUCTS ." p
@@ -583,7 +589,7 @@
         header('Content-Type: text/plain; charset='. $_POST['charset']);
       } else {
         header('Content-Type: application/csv; charset='. $_POST['charset']);
-        header('Content-Disposition: attachment; filename='. $_POST['type'] .'-'. $_POST['language_code'] .'.csv');
+        header('Content-Disposition: attachment; filename='. $_POST['type'] . (!empty($_POST['language_code']) ? '-'. $_POST['language_code'] : '') . (!empty($_POST['currency_code']) ? '-'. $_POST['currency_code'] : '') .'.csv');
       }
 
       switch($_POST['eol']) {
@@ -625,8 +631,8 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
+                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'products', true); ?> <?php echo language::translate('title_products', 'Products'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'suppliers', true); ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?></label></div>
               </div>
@@ -679,8 +685,8 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
+                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'products', true, 'data-dependencies="currency,language"'); ?> <?php echo language::translate('title_products', 'Products'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'suppliers', true); ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?></label></div>
               </div>
