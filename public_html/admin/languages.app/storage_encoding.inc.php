@@ -67,7 +67,8 @@
 
   $tables_query = database::query(
     "select * from `information_schema`.`TABLES`
-    where TABLE_SCHEMA = '". DB_DATABASE ."';"
+    where TABLE_SCHEMA = '". DB_DATABASE ."'
+    order by TABLE_NAME;"
   );
 
   while ($table = database::fetch($tables_query)) {
