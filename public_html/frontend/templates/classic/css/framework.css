@@ -293,6 +293,7 @@ ul.breadcrumb li a {
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  line-height: 2em;
   text-align: center;
 }
 .btn.btn-default {
@@ -737,17 +738,23 @@ ul.breadcrumb li a {
   overflow: hidden;
   background-color: #e5e5e5;
 }
-.dropdown .dropdown-menu > li > a {
+.dropdown .dropdown-menu > li > a,
+.dropdown .dropdown-menu > li > span,
+.dropdown .dropdown-menu > li > label {
   display: block;
   padding: calc(var(--gutter-size)/4) var(--gutter-size);
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #333333;
+  color: #333;
   white-space: nowrap;
 }
 .dropdown .dropdown-menu > li > aa:hover,
-.dropdown .dropdown-menu > li > aa:focus {
+.dropdown .dropdown-menu > li > spana:hover,
+.dropdown .dropdown-menu > li > labela:hover,
+.dropdown .dropdown-menu > li > aa:focus,
+.dropdown .dropdown-menu > li > spana:focus,
+.dropdown .dropdown-menu > li > labela:focus {
   text-decoration: none;
   color: #262626;
   background-color: #f5f5f5;
@@ -842,10 +849,10 @@ tr.semi-transparent td {
   flex-direction: column;
 }
 .flex .col-compact {
-  flex: 1 0 auto;
+  flex: 0 1 auto;
 }
 .flex .column {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
 }
 .flex .col-expand {
   flex: 1 0 auto;
@@ -1211,6 +1218,7 @@ input[type="checkbox"]:checked:after {
   width: 100%;
   min-width: 1px;
   padding: var(--input-padding-y) var(--input-padding-x);
+  line-height: 2em;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: all 50ms;
 }
@@ -1292,12 +1300,10 @@ select.form-control.multiple option {
   box-shadow: none;
   border-radius: 0;
   border: none;
-  margin-left: -1px;
 }
 .input-group .input-group-addon {
   flex: 1 0 auto;
   margin: 0 -1px;
-  padding: var(--input-padding-y) var(--input-padding-x);
   background-color: var(--default-background-color);
   border-left: 1px solid var(--default-border-color);
   border-right: 1px solid var(--default-border-color);
@@ -1322,6 +1328,7 @@ select.form-control.multiple option {
   flex: 1 0 auto;
   padding: var(--input-padding-y) var(--input-padding-x);
   margin-right: -12px;
+  align-self: center;
 }
 .input-group .input-group-btn {
   flex: 1 0 auto;
@@ -1425,6 +1432,7 @@ ul.list-inline li {
   margin: 0;
   padding: 0;
   list-style: none;
+  line-height: 2em;
 }
 .nav li {
   position: relative;

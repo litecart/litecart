@@ -253,6 +253,9 @@ html {
     margin-top: 0;
   }
 }
+#main {
+  width: 100%;
+}
 #content {
   grid-area: content;
   grid-gap: calc(var(--gutter-size)/2);
@@ -351,7 +354,7 @@ html {
   overflow-y: auto;
 }
 #box-recently-viewed-products .listing {
-  grid-template-columns: repeat(auto-fit, minmax(48px, 0.5fr));
+  grid-template-columns: repeat(auto-fill, minmax(48px, 0.5fr));
 }
 .listing {
   display: grid;
