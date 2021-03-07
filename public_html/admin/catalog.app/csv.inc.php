@@ -48,7 +48,7 @@
             }
 
             if (!empty($category->data['id'])) {
-              if (empty($_POST['update'])) continue 2;
+              if (empty($_POST['overwrite'])) continue 2;
               echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
@@ -129,7 +129,7 @@
             }
 
             if (!empty($manufacturer->data['id'])) {
-              if (empty($_POST['update'])) continue 2;
+              if (empty($_POST['overwrite'])) continue 2;
               echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
@@ -218,7 +218,7 @@
             }
 
             if (!empty($product->data['id'])) {
-              if (empty($_POST['update'])) continue 2;
+              if (empty($_POST['overwrite'])) continue 2;
               echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
@@ -380,7 +380,7 @@
             }
 
             if (!empty($supplier->data['id'])) {
-              if (empty($_POST['update'])) continue 2;
+              if (empty($_POST['overwrite'])) continue 2;
               echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
