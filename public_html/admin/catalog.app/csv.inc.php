@@ -556,14 +556,14 @@
 
             $suppliers_query = database::query("select id from ". DB_TABLE_SUPPLIERS ." order by id;");
             while ($supplier = database::fetch($suppliers_query)) {
-              $supplier = new ref_supplier($supplier['id']);
+              $supplier = reference::supplier($supplier['id']);
 
               $csv[] = array(
                 'id' => $supplier->id,
                 'status' => $supplier->status,
                 'code' => $supplier->code,
                 'name' => $supplier->name,
-                'keywords' => implode(',', $supplier->keywords),
+                'keywords' => $supplier->keywords,
                 'description' => $supplier->description,
                 'email' => $supplier->email,
                 'phone' => $supplier->phone,
@@ -571,7 +571,6 @@
               );
             }
 
-            break;
             break;
 
           default:
