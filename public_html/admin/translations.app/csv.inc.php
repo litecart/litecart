@@ -154,19 +154,14 @@
     <?php echo $app_icon; ?> <?php echo language::translate('title_csv_import_export', 'CSV Import/Export'); ?>
   </div>
 
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#tab-import"><?php echo language::translate('title_import_from_csv', 'Import From CSV'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-export"><?php echo language::translate('title_export_to_csv', 'Export To CSV'); ?></a></li>
-  </ul>
-
   <div class="panel-body">
-    <div class="tab-content" style="max-width: 640px;">
+    <div class="row">
 
-      <div id="tab-import" class="tab-pane active">
+      <div class="col-sm-6 col-lg-4">
         <?php echo functions::form_draw_form_begin('import_form', 'post', '', true); ?>
 
           <fieldset>
-            <legend><?php echo language::translate('title_translations', 'Translations'); ?></legend>
+            <legend><?php echo language::translate('title_import', 'Import'); ?></legend>
 
             <div class="form-group">
               <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
@@ -215,11 +210,11 @@
         <?php echo functions::form_draw_form_end(); ?>
       </div>
 
-      <div id="tab-export" class="tab-pane">
+      <div class="col-sm-6 col-lg-4">
         <?php echo functions::form_draw_form_begin('export_form', 'post'); ?>
 
           <fieldset>
-            <legend><?php echo language::translate('title_translations', 'Translations'); ?></legend>
+            <legend><?php echo language::translate('title_export', 'Export'); ?></legend>
 
             <div class="form-group">
               <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
