@@ -575,6 +575,8 @@
               );
             }
 
+            break;
+
           case 'products':
 
             if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
