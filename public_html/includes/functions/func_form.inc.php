@@ -143,7 +143,9 @@
 
   // Format and show an additional two decimals precision if needed
     if ($value != '') {
-      $value = preg_replace('#0{1,2}$#', '', number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2, '.', ''));
+      $value = number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2, '.', '');
+      $value = preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $value);
+      $value = rtrim($value, '.');
     }
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
