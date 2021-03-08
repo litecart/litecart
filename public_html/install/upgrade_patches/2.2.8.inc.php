@@ -31,6 +31,7 @@
       case 'date_processed':
       case 'date_published':
       case 'date_pushed':
+      case 'date_redirected':
       case 'date_scheduled':
       case 'date_sent':
       case 'date_valid_from':
