@@ -1153,6 +1153,10 @@
 
 // Comments
 
+  $('#box-comments').on('input', 'textarea[name^="comments"][name$="[text]"]', function(){
+    $(this).height('auto').height('calc(' + $(this).prop('scrollHeight') + 'px + 1em) ');
+  }).trigger('input');
+
   $("#comments").animate({scrollTop: $('#comments').prop('scrollHeight')}, 2000);
 
   var new_comment_index = 0;
