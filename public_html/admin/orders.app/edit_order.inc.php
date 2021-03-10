@@ -1414,34 +1414,35 @@
   });
 
   function calculate_total() {
+
     var subtotal = 0;
     $('input[name^="items["][name$="[price]"]').each(function() {
-      subtotal += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
+      subtotal += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });
-    subtotal = Number(subtotal).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
+    subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
 
     var subtotal_tax = 0;
     $('input[name^="items["][name$="[tax]"]').each(function() {
-      subtotal_tax += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
+      subtotal_tax += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });
-    subtotal_tax = Number(subtotal_tax).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
+    subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
 
     var order_total = subtotal + subtotal_tax;
     $('input[name^="order_total["][name$="[value]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += Number(Number($(this).val()));
+        order_total += parseFloat(parseFloat($(this).val()));
       }
     });
 
     $('input[name^="order_total["][name$="[tax]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += Number($(this).val());
+        order_total += parseFloat($(this).val());
       }
     });
 
-    order_total = Number(order_total).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
+    order_total = parseFloat(order_total.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
     $('#order-total .total').text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
   }
 
