@@ -110,7 +110,7 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th class="main"><?php echo language::translate('title_title', 'Title'); ?></th>
             <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
-            <th><?php echo language::translate('title_information', 'Dock'); ?></th>
+            <th><?php echo language::translate('title_information', 'Information'); ?></th>
             <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
             <th>&nbsp;</th>
           </tr>
