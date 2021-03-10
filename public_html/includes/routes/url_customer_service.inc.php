@@ -43,7 +43,7 @@
         }
 
       } else {
-        $link->path = language::translate('title_customer_service', 'Customer Service', $language_code);
+        $link->path = functions::general_path_friendly(language::translate('title_customer_service', 'Customer Service', $language_code));
       }
 
       if (isset($link->query['page_id'])) $link->unset_query('page_id');
