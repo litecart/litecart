@@ -560,7 +560,7 @@
 
   function form_draw_function($function, $name, $input=true, $parameters='') {
 
-    preg_match('#(\w*)(?:\()(.*?)(?:\))#i', $function, $matches);
+    preg_match('#^(\w+)(?:\((.*?)\))?$#', $function, $matches);
 
     if (!isset($matches[1])) trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
 

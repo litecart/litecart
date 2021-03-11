@@ -193,21 +193,21 @@
 
     // Update/Insert values
       $i = 0;
-      foreach ($this->data['values'] as $value) {
+      foreach ($this->data['values'] as $key => $value) {
 
         if (empty($value['id'])) {
           database::query(
             "insert into ". DB_TABLE_ATTRIBUTE_VALUES ."
             (group_id, date_created)
-            values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
+            values (". (int)$this->data['id'] .", '". ($this->data['values'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
           );
-          $value['id'] = database::insert_id();
+          $value['id'] = $this->data['values'][$key]['id'] = database::insert_id();
         }
 
         database::query(
           "update ". DB_TABLE_ATTRIBUTE_VALUES ." set
             priority = ". (int)$i++ .",
-            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+            date_updated = '". ($this->data['values'][$key]['date_updated'] = date('Y-m-d H:i:s')) ."'
           where id = ". (int)$value['id'] ."
           limit 1;"
         );
