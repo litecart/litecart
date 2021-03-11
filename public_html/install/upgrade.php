@@ -47,7 +47,7 @@
   ini_set('html_errors', 'On');
 
   ignore_user_abort(true);
-  set_time_limit(300);
+  set_time_limit(600);
 
   require_once(FS_DIR_APP . 'includes/error_handler.inc.php');
   require_once(FS_DIR_APP . 'includes/library/lib_database.inc.php');
