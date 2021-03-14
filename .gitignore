@@ -2,13 +2,12 @@
 # Application Files #
 #####################
 
-public_html/storage/*
-
 !public_html/**/index.html
 !public_html/**/.htaccess
 
 public_html/admin/.htaccess
 public_html/admin/.htpasswd
+public_html/storage/*
 public_html/.htaccess
 public_html/.user.ini
 public_html/favicon.ico

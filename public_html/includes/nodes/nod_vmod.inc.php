@@ -60,7 +60,6 @@
     // Get modifications from cache
       $cache_file = FS_DIR_STORAGE . 'vmods/.cache/.modifications';
       if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
-
         if ($cache = file_get_contents($cache_file)) {
           if ($cache = json_decode($cache, true)) {
             self::$_modifications = $cache['modifications'];
@@ -163,6 +162,7 @@
 
     // Modify file
       if (is_file($file)) {
+        //$original = $buffer = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($file));
         $original = $buffer = file_get_contents($file);
       } else {
         $original = $buffer = null;
