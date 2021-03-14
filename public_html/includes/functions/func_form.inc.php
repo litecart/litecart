@@ -563,36 +563,67 @@ END;
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    $input = in_array(strtolower($input), ['1', 'active', 'enabled', 'on', 'true', 'yes']) ? '1' : '0';
+    $input = preg_match('#^(1|active|enabled|on|true|yes)$#i', $input) ? '1' : '0';
 
     switch ($type) {
       case 'a/i':
-        $true_text = language::translate('title_active', 'Active');
-        $false_text = language::translate('title_inactive', 'Inactive');
+        $options = [
+          '1' => language::translate('title_active', 'Active'),
+          '0' => language::translate('title_inactive', 'Inactive'),
+        ];
         break;
+
       case 'e/d':
-        $true_text = language::translate('title_enabled', 'Enabled');
-        $false_text = language::translate('title_disabled', 'Disabled');
+        $options = [
+          '1' => language::translate('title_enabled', 'Enabled'),
+          '0' => language::translate('title_disabled', 'Disabled'),
+        ];
         break;
+
       case 'y/n':
-        $true_text = language::translate('title_yes', 'Yes');
-        $false_text = language::translate('title_no', 'No');
+        $options = [
+          '1' => language::translate('title_yes', 'Yes'),
+          '0' => language::translate('title_no', 'No'),
+        ];
         break;
+
       case 'o/o':
-        $true_text = language::translate('title_on', 'On');
-        $false_text = language::translate('title_off', 'Off');
+        $options = [
+          '1' => language::translate('title_on', 'On'),
+          '0' => language::translate('title_off', 'Off'),
+        ];
         break;
+
       case 't/f':
       default:
-        $true_text = language::translate('title_true', 'True');
-        $false_text = language::translate('title_false', 'False');
+        $options = [
+          '1' => language::translate('title_true', 'True'),
+          '0' => language::translate('title_false', 'False'),
+        ];
         break;
     }
 
-    return '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" '. (($input == '1') ? 'checked' : '') .' /> '. $true_text .'</label>'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked' : '') .' /> '. $false_text .'</label>' . PHP_EOL
-         . '</div>';
+    return form_draw_toggle_buttons($name, $options, $input, $parameters);
+  }
+
+  function form_draw_toggle_buttons($name, $options, $input=true, $parameters='') {
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    $output = '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL;
+
+    $is_associative = (array_keys($options) === range(0, count($options) - 1));
+
+    foreach ($options as $value => $title) {
+      if (!$is_associative) $value = $title;
+      $output .= '  <label class="btn btn-default'. ($input == $value ? ' active' : '') .'">' . PHP_EOL
+               . '    <input type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($input == $value) ? ' checked' : '') .' />'. $title
+               . '  </label>'. PHP_EOL;
+    }
+
+    $output .= '</div>';
+
+    return $output;
   }
 
   function form_draw_url_field($name, $input=true, $parameters='') {
