@@ -41,7 +41,7 @@
 
   notices::reset();
 
-  ob_clean();
+  ob_end_clean();
   header('Content-type: application/json; charset='. language::$selected['charset']);
   echo json_encode($json, JSON_UNESCAPED_SLASHES);
   exit;

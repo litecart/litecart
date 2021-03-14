@@ -258,8 +258,10 @@ END;
       if (isset($args[4])) $parameters .= ($parameters ? ' ' : '') . 'min="'. (int)$args[4] .'"';
     }
 
-    if ($value != '') {
-      $value = round((float)$value, $decimals);
+    if ($input === true) $input = form_reinsert_value($name);
+
+    if ($input != '') {
+      $input = round((float)$input, $decimals);
     }
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" '. (($parameters) ? ' '.$parameters : false) .' />';
@@ -328,11 +330,11 @@ END;
   function form_draw_number_field($name, $input=true, $parameters='') {
     if ($input === true) $input = (int)form_reinsert_value($name);
 
-    if ($value != '') {
-      $value = floor($value);
+    if ($input != '') {
+      $input = round($input);
     }
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" step="1"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" data-type="number" step="1"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_password_field($name, $input='', $parameters='') {
@@ -1252,6 +1254,11 @@ END;
     }
   }
 
+  function form_draw_length_classes_list($name, $input=true, $multiple=false, $parameters='') {
+    trigger_error('form_draw_length_classes_list() is deprecated. Instead, use form_draw_length_units_list()', E_USER_DEPRECATED);
+    return form_draw_length_units_list($name, $input, $parameters);
+  }
+
   function form_draw_length_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
@@ -1722,6 +1729,11 @@ END;
       array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
+  }
+
+  function form_draw_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
+    trigger_error('form_draw_weight_classes_list() is deprecated. Instead, use form_draw_weight_units_list()', E_USER_DEPRECATED);
+    return form_draw_weight_units_list($name, $input, $parameters);
   }
 
   function form_draw_weight_units_list($name, $input=true, $parameters='') {

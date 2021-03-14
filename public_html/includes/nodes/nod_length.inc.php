@@ -66,16 +66,14 @@
       if ($from == $to) return (float)$value;
 
       if (!isset(self::$units[$from])) {
-        trigger_error('Invalid length unit ('. $from .')', E_USER_WARNING);
-        return;
+        $from = settings::get('store_length_unit');
       }
 
       if (!isset(self::$units[$to])) {
-        trigger_error('Invalid length unit ('. $to .')', E_USER_WARNING);
-        return;
+        $to = settings::get('store_length_unit');
       }
 
-      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return;
+      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return 0;
 
       return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }

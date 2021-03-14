@@ -41,23 +41,21 @@
       ],
     ];
 
-    public static function convert($value, $from, $to) {
+    public static function convert($value, $from=null, $to=null) {
 
       if ((float)$value == 0) return 0;
 
       if ($from == $to) return (float)$value;
 
       if (!isset(self::$units[$from])) {
-        trigger_error('Invalid length unit ('. $from .')', E_USER_WARNING);
-        return;
+        $from = settings::get('store_weight_unit');
       }
 
       if (!isset(self::$units[$to])) {
-        trigger_error('Invalid length unit ('. $to .').', E_USER_WARNING);
-        return;
+        $to = settings::get('store_weight_unit');
       }
 
-      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return;
+      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return 0;
 
       return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }
@@ -65,7 +63,7 @@
     public static function format($value, $class) {
 
       if (!isset(self::$units[$class])) {
-        trigger_error('Invalid length unit ('. $unit .')', E_USER_WARNING);
+        trigger_error('Invalid weight unit ('. $unit .')', E_USER_WARNING);
         return;
       }
 
