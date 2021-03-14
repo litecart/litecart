@@ -47,7 +47,8 @@
       // Set settings to object
         $object->settings = [];
         foreach ($object->settings() as $setting) {
-          $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
+          $setting['key'] = rtrim($setting['key'], '[]');
+          $object->settings[] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
         $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) ? 1 : 0;
         $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
