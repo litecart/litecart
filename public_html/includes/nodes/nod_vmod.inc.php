@@ -244,7 +244,7 @@
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
-      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_short_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
 
