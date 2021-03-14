@@ -225,6 +225,37 @@ END;
          . '</div>';
   }
 
+  function form_draw_dropdown($name, $options=[], $input=true, $parameters='') {
+
+    $html = '<div class="form-control dropdown caret'. (($parameters) ? ' ' . $parameters : false) .'">' . PHP_EOL
+          . '  <div class="title" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>' . PHP_EOL
+          . '  <div class="dropdown-menu">' . PHP_EOL;
+
+    foreach ($options as $option) {
+
+      if (!is_array($option)) $option = [$option, $option];
+
+      if ($input === true) {
+        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+      } else {
+        $option_input = $input;
+      }
+
+      if (!is_array($option)) $option = [$option, $option];
+
+      if (substr($name, -2) == '[]') {
+        $html .= '<label class="option">' . functions::form_draw_checkbox($name, isset($option[1]) ? $option[1] : $option[0], $option_input) .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></label>' . PHP_EOL;
+      } else {
+        $html .= '<label class="option">' . functions::form_draw_radio_button($name, isset($option[1]) ? $option[1] : $option[0], $option_input) .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></label>' . PHP_EOL;
+      }
+    }
+
+    $html .= '  </div>' . PHP_EOL
+           . '</div>';
+
+    return $html;
+  }
+
   function form_draw_date_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
@@ -956,16 +987,32 @@ END;
       return form_draw_category_field($name, $options, $input, $parameters);
     }
 
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+    }
+
     $html = '<div class="input-group" style="flex-direction: column;"' . (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
-          . '  <div class="form-control" style="overflow-y: auto; min-height: 200px;">' . PHP_EOL
-          . '    ' . PHP_EOL
-          . '  </div>' . PHP_EOL
-          . '  <div class="dropdown">' . PHP_EOL
-          . '  '. functions::form_draw_text_field('category_query', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_category', 'Search category')) .' &hellip;"') . PHP_EOL
-          . '    <ul class="dropdown-menu" style="right: 0;">' . PHP_EOL
-          . '    </ul>' . PHP_EOL
-          . '  </div>' . PHP_EOL
-          . '</div>';
+          . '  <div class="form-control" style="overflow-y: auto; min-height: 100px;">' . PHP_EOL
+          . '    <ul class="list-unstyled">' . PHP_EOL;
+
+    $categories_query = database::query(
+      "select c.id, ci.name from ". DB_PREFIX ."categories c
+      left join ". DB_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
+      where c.id in ('". implode("', '", database::input($input)) ."');"
+    );
+
+    while ($category = database::fetch($categories_query)) {
+      $html .= '<li>'. form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . functions::draw_fonticon('folder') .' '. $category['name'] .'</li>';
+    }
+
+    $html .= '    </ul>' . PHP_EOL
+           . '  </div>' . PHP_EOL
+           . '  <div class="dropdown">' . PHP_EOL
+           . '  '. functions::form_draw_text_field('category_query', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_category', 'Search category')) .' &hellip;"') . PHP_EOL
+           . '    <ul class="dropdown-menu" style="right: 0;">' . PHP_EOL
+           . '    </ul>' . PHP_EOL
+           . '  </div>' . PHP_EOL
+           . '</div>';
 
     $javascript =
 <<<END
@@ -973,12 +1020,10 @@ END;
     $(this).closest('.dropdown').addClass('open');
   });
 
-  $('input[name="category_query"]').closest('dropdown').click('focus', function(e){
-    e.stopPropagation();
-  });
-
-  $('body').click(function(e){
-    $(this).closest('.dropdown').removeClass('open');
+  $('body').on('mousedown', function(e){
+    if ($('.dropdown.open').has(e.target).length === 0) {
+      $('.dropdown.open').removeClass('open');
+    }
   });
 
   var xhr_category_search = null;
@@ -994,9 +1039,9 @@ END;
 
       $.getJSON('%link&parent_id=0', function(result) {
 
-        $(dropdown).find('.dropdown-menu').html('');
+        $(dropdown).find('.dropdown-menu').html('<li><strong class="list-item">'+ result.name +'</strong></li>');
 
-        $.each(result, function(i, category) {
+        $.each(result.subcategories, function(i, category) {
           $(dropdown).find('.dropdown-menu').append(
             '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
             '  <a href="%link&parent_id='+ category.id +'">' +
@@ -1007,18 +1052,27 @@ END;
           );
         });
 
-        $(dropdown).find('.dropdown-menu a').on('click', function(e){
-          alert('x');
+        $(dropdown).find('.dropdown-menu').on('click', 'a', function(e){
           e.preventDefault();
 
           $.getJSON($(this).attr('href'), function(result) {
 
-            $(dropdown).find('.dropdown-menu').html('');
+            $(dropdown).find('.dropdown-menu').html('<li class="list-item"><strong>'+ result.name +'</strong></li>');
 
-            $.each(result, function(i, category) {
+            if (result.id) {
+              $(dropdown).find('.dropdown-menu').append(
+                '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'">' +
+                '    <a href="%link&parent_id='+ result.parent.id +'">' +
+                '    %back_icon '+ result.parent.name +
+                '  </a>' +
+                '</li>'
+              );
+            }
+
+            $.each(result.subcategories, function(i, category) {
               $(dropdown).find('.dropdown-menu').append(
                 '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
-                '  <a>' +
+                '  <a href="%link&parent_id='+ category.id +'">' +
                 '    <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
                 '    %folder_icon '+ category.name +
                 '  </a>' +
@@ -1026,6 +1080,17 @@ END;
               );
             });
           });
+        });
+
+        $(dropdown).find('.dropdown-menu').on('click', 'button', function(e){
+          e.preventDefault();
+          var category = $(this).closest('li');
+          $(this).closest('.input-group').find('.form-control ul').append(
+            '<li><input type="hidden" name="%field_name" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'"> %folder_icon '+ $(category).data('name') +'</li>'
+          );
+          $(this).closest('.input-group').children('.form-control').trigger('change');
+          $('.dropdown.open').removeClass('open');
+          return false;
         });
       });
 
@@ -1044,32 +1109,41 @@ END;
       },
 
       error: function(jqXHR, textStatus, errorThrown) {
+        if (errorThrown == 'abort') return;
         alert(errorThrown);
       },
 
-      success: function(json) {
+      success: function(result) {
 
-        if (!json) {
+        if (!result.subcategories.length) {
           $(dropdown).find('dropdown-menu').html('<li class="text-center no-results"><em>:(</em></li>');
+          return;
         }
 
-        $.each(json, function(i, result) {
+        $(dropdown).find('.dropdown-menu').html('<li class="list-item"><strong>%title_search_results</strong></li>');
+
+        $.each(result.subcategories, function(i, category) {
           $(dropdown).find('.dropdown-menu').append(
-            '<li class="list-item" data-id="'+ result.id +'" data-name="'+ result.name +'"><a>' +
-            '  <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
-            '  %folder_icon '+ result.name +
-            '</a></li>'
+            '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
+            '  <a href="%link&parent_id='+ category.id +'">' +
+            '    <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
+            '    %folder_icon '+ category.name +
+            '  </a>' +
+            '</li>'
           );
         });
       },
     });
-  });
+  }).trigger('input');
 END;
 
     document::$snippets['javascript'][] = strtr($javascript, [
+      '%title_search_results' => language::translate('title_search_results'),
+      '%title_root' => language::translate('title_search_results'),
       '%link' => document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'categories.json']),
       '%add' => language::translate('title_add', 'Add'),
       '%folder_icon' => functions::draw_fonticon('folder'),
+      '%back_icon' => functions::draw_fonticon('fa-arrow-left'),
     ]);
 
     return $html;
