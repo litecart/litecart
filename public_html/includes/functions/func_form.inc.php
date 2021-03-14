@@ -536,6 +536,12 @@ END;
     return $html;
   }
 
+  function form_draw_switch($name, $value, $label, $input=true, $parameters='') {
+    if ($input === true) $input = form_reinsert_value($name);
+
+    return '<label><input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-switch"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($label) .'</label>';
+  }
+
   function form_draw_textarea($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
