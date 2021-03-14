@@ -264,7 +264,7 @@ END;
       $input = round((float)$input, $decimals);
     }
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" '. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" data-type="decimal" '. (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_email_field($name, $input=true, $parameters='') {
