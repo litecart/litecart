@@ -3,7 +3,21 @@
   class url_customer_service {
 
     function routes() {
+
+      $titles = [];
+      foreach (language::$languages as $language) {
+        $titles[] = preg_quote(functions::general_path_friendly(language::translate('title_customer_service', 'Customer Service', $language['code'])), '#');
+      }
+
       return [
+        [
+          'pattern' => '#^'. implode('|', $titles) .'$#',
+          'page' => 'customer_service',
+          'params' => '',
+          'options' => array(
+            'redirect' => true,
+          ],
+        ],
         [
           'pattern' => '#^.*-s-([0-9]+)/?$#',
           'page' => 'customer_service',
@@ -30,9 +44,7 @@
         }
 
       } else {
-
-        $title = language::translate('title_customer_service', 'Customer Service', $language_code);
-        $link->path = functions::general_path_friendly($title, $language_code) .'-s-0';
+        $link->path = functions::general_path_friendly(language::translate('title_customer_service', 'Customer Service', $language_code));
       }
 
       if (isset($link->query['page_id'])) $link->unset_query('page_id');

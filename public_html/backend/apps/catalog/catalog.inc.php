@@ -286,6 +286,8 @@
           select product_id from ". DB_TABLE_PREFIX ."stock_items
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
+        + if(m.name like '%". database::input($_GET['query']) ."%', 3, 0)
+        + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
       ) as relevance
       from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -372,7 +374,7 @@
             throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
           }
 
-          if ($product['date_valid_to'] > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
+          if ($product['date_valid_to'] > 1970 && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
             throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
           }
 
@@ -444,7 +446,8 @@
         }
 
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
-                 . '  <td class="text-right"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('edit').'</a></td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td class="text-right"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 
         if (in_array($category['id'], $category_trail)) {

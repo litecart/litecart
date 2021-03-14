@@ -34,8 +34,8 @@
           "select * from ". DB_TABLE_PREFIX ."users
           where lower(username) = lower('". database::input($username) ."')
           and status
-          and date_valid_from < '". date('Y-m-d H:i:s') ."'
-          and (date_valid_to < '1971-01-01' or date_valid_to > '". date('Y-m-d H:i:s') ."')
+          and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
+          and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
           limit 1;"
         );
 
@@ -108,16 +108,20 @@
 
     public static function load($user_id) {
 
+      self::reset();
+
       $user_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
         where id = ". (int)$user_id ."
         limit 1;"
       );
 
-      if ($user = database::fetch($user_query)) {
-        $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : [];
-        $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : [];
+      if (!$user = database::fetch($user_query)) {
+        throw new Exception('No user found');
       }
+
+      $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : [];
+      $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : [];
 
       session::$data['user'] = $user;
     }

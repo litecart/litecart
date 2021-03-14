@@ -333,8 +333,8 @@
     $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
     $(this).addClass('active');
 
-    $('#box-checkout-shipping .option.active :input').prop('disabled', false);
-    $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
+    $('#box-checkout-shipping .option.active .fields :input').prop('disabled', false);
+    $('#box-checkout-shipping .option:not(.active) .fields :input').prop('disabled', true);
 
     var data = 'token=' + $(':input[name="token"]').val()
              + '&' + $('#box-checkout-shipping .option.active :input').serialize();
@@ -350,8 +350,8 @@
     $(this).find('input[name="payment[option_id]"]').prop('checked', true);
     $(this).addClass('active');
 
-    $('#box-checkout-payment .option.active :input').prop('disabled', false);
-    $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
+    $('#box-checkout-payment .option.active .fields :input').prop('disabled', false);
+    $('#box-checkout-payment .option:not(.active) .fields :input').prop('disabled', true);
 
     var data = 'token=' + $(':input[name="token"]').val()
              + '&' + $('#box-checkout-payment .option.active :input').serialize();

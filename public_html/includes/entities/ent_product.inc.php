@@ -51,14 +51,14 @@
 
     public function load($product_id) {
 
-      if (!preg_match('#^[0-9]+$#', $product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
+      if (empty($product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
 
       $this->reset();
 
     // Product
       $products_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."products
-        where id = ". (int)$product_id ."
+        where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "sku = '". database::input($product_id) ."'") ."
         limit 1;"
       );
 
@@ -209,8 +209,8 @@
         weight = ". (float)$this->data['weight'] .",
         weight_unit = '". database::input($this->data['weight_unit']) ."',
         autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",
-        date_valid_from = '". database::input($this->data['date_valid_from']) ."',
-        date_valid_to = '". database::input($this->data['date_valid_to']) ."',
+        date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
+        date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -333,7 +333,7 @@
 
     // Update campaigns
       if (!empty($this->data['campaigns'])) {
-        foreach ($this->data['campaigns'] as &$campaign) {
+        foreach ($this->data['campaigns'] as $key => $campaign) {
           if (empty($campaign['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_campaigns
@@ -358,7 +358,7 @@
             and id = ". (int)$campaign['id'] ."
             limit 1;"
           );
-        } unset($campaign);
+        }
       }
 
     // Delete stock options

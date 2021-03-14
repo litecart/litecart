@@ -404,5 +404,5 @@ INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_cre
 -- --------------------------------------------------------
 INSERT INTO `lc_sold_out_statuses_info` (`id`, `sold_out_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Sold Out', ''),
-(2, 2, 'en', 'Temporary Sold Out', ''),
+(2, 2, 'en', 'Temporarily Sold Out', ''),
 (3, 3, 'en', 'Backorder Item', '');

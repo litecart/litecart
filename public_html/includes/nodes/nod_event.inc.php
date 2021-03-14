@@ -34,12 +34,7 @@
       $args = array_slice(func_get_args(), 1);
 
       foreach (self::$_callbacks[$event] as $callback) {
-
-        if (is_callable($callback)) {
-          $callback($args);
-        } else {
-          call_user_func($callback, $args);
-        }
+        call_user_func_array($callback, $args);
       }
 
       self::$_fired_events[] = $event;

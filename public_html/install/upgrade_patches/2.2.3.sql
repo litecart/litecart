@@ -1,3 +1,7 @@
+UPDATE `lc_countries` set iso_code_1 = '626' WHERE iso_code_2 = 'TP' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE `lc_countries` set iso_code_1 = '530' WHERE iso_code_2 = 'AN' LIMIT 1;
+-- --------------------------------------------------------
 ALTER TABLE `lc_attribute_values`
 ADD COLUMN `priority` INT(11) NOT NULL AFTER `group_id`;
 -- --------------------------------------------------------

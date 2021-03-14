@@ -157,8 +157,8 @@
         ". (!empty($filter['brands']) ? "and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
         ". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         and (p.quantity > 0 or ss.hidden != 1)
-        and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
-        and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
+        and (p.date_valid_from is null or p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
+        and (p.date_valid_to is null or year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
 
@@ -180,8 +180,8 @@
       left join (
         select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
-        where (start_date <= '". date('Y-m-d H:i:s') ."')
-        and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+        where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
+        and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
         group by product_id
       ) pc on (pc.product_id = p.id)
 
@@ -267,8 +267,8 @@
           ". (!empty($filter['keywords']) ? "or (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         )
         and (p.quantity > 0 or ss.hidden != 1)
-        and (p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
-        and (year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
+        and (p.date_valid_from is null or p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
+        and (p.date_valid_to is null or year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
         group by ptc.product_id
@@ -289,8 +289,8 @@
       left join (
         select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
-        where start_date <= '". date('Y-m-d H:i:s') ."'
-        and (year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+        where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
+        and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
         group by product_id
       ) pc on (pc.product_id = p.id)
 

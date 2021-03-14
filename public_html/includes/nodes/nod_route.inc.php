@@ -62,7 +62,7 @@
     // Find a target route for requested URL
       foreach (self::$_routes as $route) {
 
-        if (!preg_match($route['pattern'], self::$request, $route['matches'])) continue;
+        if (!preg_match($route['pattern'], self::$request)) continue;
 
         $route['page'] = preg_replace($route['pattern'], $route['page'], self::$request);
 
@@ -71,8 +71,7 @@
           $_GET = array_filter(array_merge($_GET, $params));
         }
 
-        self::$route = $route;
-        break;
+        return self::$route = $route;
       }
     }
 
@@ -129,13 +128,12 @@
         include vmod::check($page);
 
       } else {
-
         $request = new ent_link(document::link());
 
         http_response_code(404);
 
       // Don't return an error page for content with a defined extension (presumably static)
-        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html|php)$#', $request->path)) exit;
+        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
         $not_found_file = FS_DIR_STORAGE . 'logs/not_found.log';
 
@@ -285,7 +283,7 @@
 
         case 'domain':
           if (isset($link->query['language'])) $link->unset_query('language');
-          $link->domain = language::$languages[$language_code]['domain_name'];
+          $link->host = language::$languages[$language_code]['domain_name'];
           break;
       }
 

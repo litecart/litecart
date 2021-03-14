@@ -15,6 +15,8 @@
 
     public static function before_capture() {
 
+      header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
+      header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Default to AJAX layout on AJAX request

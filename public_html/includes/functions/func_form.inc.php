@@ -188,7 +188,9 @@ END;
 
   // Format and show an additional two decimals precision if needed
     if ($input != '') {
-      $input = preg_replace('#0{1,2}$#', '', number_format((float)$input, currency::$currencies[$currency_code]['decimals'] + 2, '.', ''));
+      $input = number_format((float)$input, currency::$currencies[$currency_code]['decimals'] + 2, '.', '');
+      $input = preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $input);
+      $input = rtrim($input, '.');
     }
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
@@ -724,6 +726,8 @@ END;
       list($name, $function) = [$function, $name];
     }
 
+    preg_match('#^(\w+)(?:\((.*?)\))?$#', $function, $matches);
+
     if (!preg_match('#(\w*)\((.*?)\)$#i', $function, $matches)) {
       trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
     }
@@ -735,6 +739,12 @@ END;
     }
 
     switch ($matches[1]) {
+
+      case 'date':
+        return form_draw_date_field($name, $input, $parameters);
+
+      case 'datetime':
+        return form_draw_date_field($name, $input, $parameters);
 
       case 'decimal':
       case 'float':

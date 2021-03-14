@@ -52,7 +52,7 @@
 
         $reset_token = [
           'token' => substr(str_shuffle(str_repeat('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10)), 0, 8),
-          'expires' => date('Y-m-d H:i:s', strtotime('+30 minutes')),
+          'expires' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
         ];
 
         database::query(

@@ -34,6 +34,7 @@
   if (!empty($_POST['order_action'])) {
 
     try {
+
       if (empty($_POST['orders'])) throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
 
       list($module_id, $action_id) = explode(':', $_POST['order_action']);
@@ -60,9 +61,8 @@
         return;
       }
 
-      if (empty(notices::$data['errors'])) {
-        header('Location: '. $_SERVER['REQUEST_URI']);
-      }
+      header('Location: '. $_SERVER['REQUEST_URI']);
+      exit;
 
     } catch (Exception $e) {
       notices::add('errors', $e->getMessage());

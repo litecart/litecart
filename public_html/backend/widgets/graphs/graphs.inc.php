@@ -35,8 +35,6 @@
       if (!isset($monthly_sales[$year][$month]['total_sales'])) $monthly_sales[$year][$month]['total_sales'] = 0;
     }
 
-    $monthly_sales[date('Y')][date('m')]['label'] = '★'.$monthly_sales[date('Y')][date('m')]['label'];
-
     ksort($monthly_sales);
     foreach (array_keys($monthly_sales) as $year) {
       ksort($monthly_sales[$year]);
@@ -99,8 +97,6 @@
       if (!isset($daily_sales[date('N', $timestamp)]['total_sales'])) $daily_sales[date('N', $timestamp)]['total_sales'] = 0;
       if (!isset($daily_sales[date('N', $timestamp)]['average_sales'])) $daily_sales[date('N', $timestamp)]['average_sales'] = 0;
     }
-
-    $daily_sales[date('N')]['label'] = '★'.$daily_sales[date('N')]['label'];
 ?>
 <style>
 #chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {

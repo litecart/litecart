@@ -144,7 +144,7 @@
     ### Environment > Set #########################################
 
     error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
-    ini_set('ignore_repeated_errors', 'On');
+    ini_set('ignore_repeated_errors', 'Off');
     ini_set('log_errors', 'On');
     ini_set('display_errors', 'On');
     ini_set('html_errors', 'On');
@@ -316,6 +316,8 @@
       '{DB_PASSWORD}' => $_REQUEST['db_password'],
       '{DB_DATABASE}' => $_REQUEST['db_database'],
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
+      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
+      '{DB_PERSISTENT_CONNECTIONS}' => 'false',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
     ];
 
@@ -351,8 +353,9 @@
 
     $map = [
       '`lc_' => '`'.$_REQUEST['db_table_prefix'],
-      '{DATABASE_COLLATION}' => $_REQUEST['db_collation'],
-      '{DATABASE_ENGINE}' => $_REQUEST['db_engine'],
+      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
+      '{DB_DATABASE_COLLATION}' => $_REQUEST['db_collation'],
+      '{DB_ENGINE}' => $_REQUEST['db_engine'],
     ];
 
     foreach ($map as $search => $replace) {

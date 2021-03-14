@@ -257,12 +257,10 @@ body.dark-mode #box-comments {
               <div class="panel-title"><?php echo language::translate('title_order_information', 'Order Information'); ?></div>
             </div>
 
-            <div class="panel-body">
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label><?php echo language::translate('title_date', 'Date'); ?></label>
-                  <div class="form-control-static"><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
-                </div>
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
+              <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
+            </div>
 
                 <div class="form-group col-md-3">
                   <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
@@ -1388,34 +1386,35 @@ body.dark-mode #box-comments {
   });
 
   function calculate_total() {
+
     var subtotal = 0;
     $('input[name^="items["][name$="[price]"]').each(function() {
-      subtotal += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
+      subtotal += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });
-    subtotal = Number(subtotal).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
+    subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
 
     var subtotal_tax = 0;
     $('input[name^="items["][name$="[tax]"]').each(function() {
-      subtotal_tax += Number($(this).val()) * Number($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
+      subtotal_tax += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });
-    subtotal_tax = Number(subtotal_tax).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
+    subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
 
     var order_total = subtotal + subtotal_tax;
     $('input[name^="order_total["][name$="[value]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += Number(Number($(this).val()));
+        order_total += parseFloat(parseFloat($(this).val()));
       }
     });
 
     $('input[name^="order_total["][name$="[tax]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += Number($(this).val());
+        order_total += parseFloat($(this).val());
       }
     });
 
-    order_total = Number(order_total).toFixed($('select[name="currency_code"] option:selected').data('decimals'));
+    order_total = parseFloat(order_total.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
     $('#order-total .total').text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
   }
 

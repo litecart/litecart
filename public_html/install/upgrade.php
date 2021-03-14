@@ -26,12 +26,6 @@
     require_once __DIR__ . '/includes/functions.inc.php';
   }
 
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
-  ini_set('ignore_repeated_errors', 'On');
-  ini_set('log_errors', 'On');
-  ini_set('display_errors', 'On');
-  ini_set('html_errors', 'On');
-
   if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
 
@@ -46,18 +40,28 @@
     return;
   }
 
+// Include config
+  require_once(__DIR__ . '/../includes/config.inc.php');
+
+  if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8'); // Prior to 1.2.x
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME);
   if (!defined('FS_DIR_ADMIN')) define('FS_DIR_ADMIN', FS_DIR_HTTP_ROOT . WS_DIR_ADMIN);
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
+
+  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+  ini_set('ignore_repeated_errors', 'On');
+  ini_set('log_errors', 'Off');
+  ini_set('display_errors', 'On');
+  ini_set('html_errors', 'On');
+
+  ignore_user_abort(true);
+  set_time_limit(600);
 
   require_once FS_DIR_APP . 'includes/error_handler.inc.php';
   require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
   require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
   require_once FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
   require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
-
-  ignore_user_abort(true);
-  set_time_limit(300);
 
 // Set platform name
   preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);
@@ -89,7 +93,7 @@
   }
 
   usort($supported_versions, function($a, $b) {
-    return version_compare($a, $b, '>');
+    return version_compare($a, $b, '>') ? 1 : -1;
   });
 
   if (!empty($_REQUEST['upgrade'])) {

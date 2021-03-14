@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS `lc_addresses`;
 CREATE TABLE IF NOT EXISTS `lc_attribute_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(32) NOT NULL,
+  `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical',
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),

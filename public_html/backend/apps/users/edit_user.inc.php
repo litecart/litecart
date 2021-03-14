@@ -201,23 +201,23 @@
 </div>
 
 <script>
-  $('input[name="permissions_toggle"]').change(function(){
+  $('input[name="apps_toggle"]').change(function(){
     if ($(this).is(':checked')) {
-      $('input[name^="permissions"][name$="[status]"]').prop('disabled', false);
-      $('input[name^="permissions"][name$="[docs][]"]').prop('disabled', false);
+      $('input[name^="apps"][name$="[status]"]').prop('disabled', false);
+      $('input[name^="apps"][name$="[docs][]"]').prop('disabled', false);
     } else {
-      $('input[name^="permissions"][name$="[status]"]').prop('disabled', true);
-      $('input[name^="permissions"][name$="[docs][]"]').prop('disabled', true);
+      $('input[name^="apps"][name$="[status]"]').prop('disabled', true);
+      $('input[name^="apps"][name$="[docs][]"]').prop('disabled', true);
     }
   }).trigger('change');
 
-  $('input[name^="permissions"][name$="[status]"]').change(function(){
+  $('input[name^="apps"][name$="[status]"]').change(function(){
     if ($(this).is(':checked')) {
-      if (!$(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]:checked').length) {
-        $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').prop('checked', true);
+      if (!$(this).closest('li').find('input[name^="apps"][name$="[docs][]"]:checked').length) {
+        $(this).closest('li').find('input[name^="apps"][name$="[docs][]"]').prop('checked', true);
       }
     } else {
-      $(this).closest('li').find('input[name^="permissions"][name$="[docs][]"]').prop('checked', false);
+      $(this).closest('li').find('input[name^="apps"][name$="[docs][]"]').prop('checked', false);
     }
   }).trigger('change');
 

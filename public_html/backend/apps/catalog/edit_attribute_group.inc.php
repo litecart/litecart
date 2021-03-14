@@ -56,7 +56,7 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($option_group->data['id'])) throw new Exception(language::translate('error_must_provide_attribute', 'You must provide a attribute'));
+      if (empty($attribute_group->data['id'])) throw new Exception(language::translate('error_must_provide_attribute', 'You must provide an attribute'));
 
       $attribute_group->delete();
 
@@ -119,7 +119,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_group', 'Add Group Value'); ?></a></td>
+              <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_group_value', 'Add Group Value'); ?></a></td>
             </tr>
           </tfoot>
         </table>

@@ -30,8 +30,3 @@
 
   </div>
 </section>
-
-<script>
-  $('#box-checkout-shipping .option.active :input').prop('disabled', false);
-  $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
-</script>

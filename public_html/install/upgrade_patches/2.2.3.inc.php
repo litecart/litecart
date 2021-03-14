@@ -59,29 +59,33 @@
     "UPDATE `". DB_TABLE_PREFIX ."products_options` SET sort = 'custom' WHERE sort = 'product';"
   );
 
+  if (!database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '". DB_DATABASE ."' AND TABLE_NAME = '". DB_TABLE_PREFIX ."attribute_groups' AND COLUMN_NAME = 'sort';"))) {
+    database::query("ALTER TABLE ". DB_TABLE_PREFIX ."attribute_groups ADD COLUMN `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical' AFTER `code`;");
+  }
+
 // Copy option groups into attribute groups
   if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups limit 1;"))) {
 
     database::query(
-      "insert into ". DB_TABLE_PREFIX ."attribute_groups
+      "insert ignore  into ". DB_TABLE_PREFIX ."attribute_groups
       (id, sort, date_updated, date_created)
       select id, sort, date_updated, date_created from ". DB_TABLE_PREFIX ."option_groups"
     );
 
     database::query(
-      "insert into ". DB_TABLE_PREFIX ."attribute_groups_info
+      "insert ignore  into ". DB_TABLE_PREFIX ."attribute_groups_info
       (id, group_id, language_code, name)
       select id, group_id, language_code, name from ". DB_TABLE_PREFIX ."option_groups_info"
     );
 
     database::query(
-      "insert into ". DB_TABLE_PREFIX ."attribute_values
+      "insert ignore  into ". DB_TABLE_PREFIX ."attribute_values
       (id, group_id, priority)
       select id, group_id, priority from ". DB_TABLE_PREFIX ."option_values"
     );
 
     database::query(
-      "insert into ". DB_TABLE_PREFIX ."attribute_values_info
+      "insert ignore  into ". DB_TABLE_PREFIX ."attribute_values_info
       (id, value_id, language_code, name)
       select id, value_id, language_code, name from ". DB_TABLE_PREFIX ."option_values_info"
     );
@@ -151,13 +155,13 @@
       } else if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$option_group['id'] ." limit 1;"))) {
 
         database::query(
-          "insert into ". DB_TABLE_PREFIX ."attribute_groups
+          "insert ignore into ". DB_TABLE_PREFIX ."attribute_groups
           (id, date_updated, date_created)
           values (". (int)$option_group['id'] .", '". database::input($option_group['date_updated']) ."', '". database::input($option_group['date_created']) ."');"
         );
 
         database::query(
-          "insert into ". DB_TABLE_PREFIX ."attribute_groups_info
+          "insert ignore into ". DB_TABLE_PREFIX ."attribute_groups_info
           (group_id, language_code, name)
           select group_id, language_code, name from ". DB_TABLE_PREFIX ."option_groups_info
           where group_id = ". (int)$option_group['id'] .";"
@@ -169,7 +173,7 @@
       } else {
 
         database::query(
-          "insert into ". DB_TABLE_PREFIX ."attribute_groups
+          "insert ignore into ". DB_TABLE_PREFIX ."attribute_groups
           (code, date_created) values ('option_". (int)$option_group['id'] ."', '". date('Y-m-d H:i:s') ."');"
         );
 
@@ -195,7 +199,7 @@
         }
 
         database::query(
-          "insert into ". DB_TABLE_PREFIX ."attribute_groups_info
+          "insert ignore into ". DB_TABLE_PREFIX ."attribute_groups_info
           (group_id, language_code, name)
           select '". $attribute_group_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_groups_info
           where group_id = ". (int)$option_group['id'] .";"
@@ -236,13 +240,13 @@
         } else if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$option_value['id'] ." limit 1;"))) {
 
           database::query(
-            "insert into ". DB_TABLE_PREFIX ."attribute_values
+            "insert ignore into ". DB_TABLE_PREFIX ."attribute_values
             (id, group_id, priority, date_updated, date_created)
             values (". (int)$option_value['id'] .", ". (int)$attribute_group_id .", ". (int)$option_value['priority'] .", '". database::input($option_group['date_updated']) ."', '". database::input($option_group['date_created']) ."');"
           );
 
           database::query(
-            "insert into ". DB_TABLE_PREFIX ."attribute_values_info
+            "insert ignore into ". DB_TABLE_PREFIX ."attribute_values_info
             (value_id, language_code, name)
             select value_id, language_code, name from ". DB_TABLE_PREFIX ."option_values_info
             where value_id = ". (int)$option_value['id'] .";"
@@ -253,7 +257,7 @@
         } else {
 
           database::query(
-            "insert into ". DB_TABLE_PREFIX ."attribute_values
+            "insert ignore into ". DB_TABLE_PREFIX ."attribute_values
             (group_id, date_created) values (". (int)$attribute_group_id .", '". date('Y-m-d H:i:s') ."');"
           );
 
@@ -279,7 +283,7 @@
           }
 
           database::query(
-            "insert into ". DB_TABLE_PREFIX ."attribute_values_info (value_id, language_code, name)
+            "insert ignore into ". DB_TABLE_PREFIX ."attribute_values_info (value_id, language_code, name)
             select '". (int)$attribute_value_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_values_info
             where value_id = ". (int)$option_value['id'] .";"
           );
@@ -334,26 +338,6 @@
       CHANGE COLUMN `attribute_value_id` `value_id` INT(11) NOT NULL AFTER `group_id`;"
     );
   }
-
-// Remove duplicate options
-  database::query(
-    "DELETE FROM `lc_products_options_values` WHERE id IN (
-      SELECT all_duplicates.id FROM (
-        SELECT id FROM `lc_products_options_values` WHERE (product_id, group_id, value_id, custom_value) IN (
-          SELECT product_id, group_id, value_id, custom_value FROM `lc_products_options_values`
-          GROUP BY product_id, group_id, value_id, custom_value
-          HAVING count(*) > 1
-        )
-      ) AS all_duplicates
-      LEFT JOIN (
-        SELECT id FROM `lc_products_options_values`
-        GROUP BY product_id, group_id, value_id, custom_value
-        HAVING count(*) > 1
-      ) AS grouped_duplicates
-      ON all_duplicates.id = grouped_duplicates.id
-      WHERE grouped_duplicates.id IS NULL
-    );"
-  );
 
   database::query(
     "ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values

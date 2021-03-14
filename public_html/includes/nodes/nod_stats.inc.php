@@ -40,7 +40,7 @@
       self::set('page_capture_time', $page_parse_time);
 
       if (self::get('page_parse_time') > 5) {
-        notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
+        notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporarily overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
         error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. $_SERVER['REQUEST_URI']);
       }
     }

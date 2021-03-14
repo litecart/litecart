@@ -132,6 +132,7 @@
 
       $product = reference::product($product_id);
       $stock_item = reference::stock_item($stock_item_id);
+      $quantity = round((float)$quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
 
     // Set item key
       if (empty($item_key)) {
@@ -157,7 +158,7 @@
         'extras' => 0,
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
-        'quantity' => !empty($product->quantity_unit['decimals']) ? round((float)$quantity, (int)$product->quantity_unit['decimals'], PHP_ROUND_HALF_UP) : $quantity,
+        'quantity' => $quantity,
         'quantity_unit' => [
           'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
           'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',
@@ -181,11 +182,11 @@
           throw new Exception(language::translate('error_product_currently_not_available_for_purchase', 'The product is currently not available for purchase'));
         }
 
-        if ($product->date_valid_from > date('Y-m-d H:i:s')) {
+        if (!empty($product->date_valid_from) && $product->date_valid_from > date('Y-m-d H:i:s')) {
           throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))]));
         }
 
-        if ($product->date_valid_to > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
+        if (!empty($product->date_valid_to) && $product->date_valid_to > 1970 && $product->date_valid_to < date('Y-m-d H:i:s')) {
           throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to))]));
         }
 

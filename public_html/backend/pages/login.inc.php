@@ -37,12 +37,12 @@
 
       if (empty($user['status'])) throw new Exception(language::translate('error_account_suspended', 'The account is suspended'));
 
-      if (date('Y', strtotime($user['date_valid_to'])) > '1970' && date('Y-m-d H:i:s') > $user['date_valid_to']) {
-        throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))));
+      if (!empty($user['date_valid_from']) && date('Y-m-d H:i:s') < $user['date_valid_from']) {
+        throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))));
       }
 
-      if (date('Y-m-d H:i:s') < $user['date_valid_from']) {
-        throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))));
+      if (!empty($user['date_valid_to']) && date('Y', strtotime($user['date_valid_to'])) > '1970' && date('Y-m-d H:i:s') > $user['date_valid_to']) {
+        throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))));
       }
 
       if (!password_verify($_POST['password'], $user['password_hash'])) {
@@ -68,7 +68,7 @@
             limit 1;"
           );
 
-          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'This account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
         }
       }
 

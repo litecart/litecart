@@ -175,9 +175,9 @@
 
   Scripts that output something other than HTML should be named by their output format extension like the following:
 
-    .json.php  >>  .json.inc.php
+    myjsonoutput.json.php
 
-  Included files should be named:
+  Included files should be named .inc.php:
 
     .php  >>  .inc.php
 
@@ -508,7 +508,7 @@
     echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>" />
 
 
-## No Sloppy Coding HTML
+## No Sloppy HTML
 
   No sloppy coding for single HTML tags. We use the strict standard:
 

@@ -3,7 +3,8 @@ ALTER TABLE `lc_categories` CHANGE `priority` `priority` INT(11) NOT NULL DEFAUL
 ALTER TABLE `lc_currencies` CHANGE `priority` `priority` INT(11) NOT NULL DEFAULT '0';
 -- --------------------------------------------------------
 ALTER TABLE `lc_languages`
-CHANGE `priority` `priority` INT(11) NOT NULL DEFAULT '0',
+CHANGE COLUMN `priority` `priority` INT(11) NOT NULL DEFAULT '0',
+CHANGE COLUMN `locale` `locale` VARCHAR(64) NOT NULL DEFAULT '',
 ADD COLUMN `url_type` VARCHAR(16) NOT NULL DEFAULT 'path' AFTER `charset`,
 ADD COLUMN `domain_name` VARCHAR(64) NOT NULL DEFAULT '' AFTER `url_type`;
 -- --------------------------------------------------------
@@ -35,6 +36,9 @@ ALTER TABLE `lc_settings` CHANGE `priority` `priority` INT(11) NOT NULL DEFAULT 
 ALTER TABLE `lc_settings_groups` CHANGE `priority` `priority` INT(11) NOT NULL DEFAULT '0';
 -- --------------------------------------------------------
 ALTER TABLE `lc_slides` CHANGE `priority` `priority` INT(11) NOT NULL DEFAULT '0';
+-- --------------------------------------------------------
+ALTER TABLE `lc_translations`
+ADD COLUMN `date_accessed` TIMESTAMP NULL AFTER `backend`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_users`
 CHANGE COLUMN `permissions` `apps` VARCHAR(4096) NOT NULL DEFAULT '',

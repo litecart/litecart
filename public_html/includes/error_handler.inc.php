@@ -55,7 +55,7 @@
       }
     }
 
-    if (ini_get('log_errors')) {
+    if (in_array(strtolower(ini_get('log_errors')), array('1', 'on', 'true'))) {
       error_log(
         strip_tags($output . $backtrace_output) .
         "Request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']} {$_SERVER['SERVER_PROTOCOL']}" . PHP_EOL .

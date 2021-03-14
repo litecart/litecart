@@ -27,10 +27,9 @@
     while ($category = database::fetch($categories_query)) {
 
       $hreflangs = '';
-      if (settings::get('seo_links_language_prefix')) {
-        foreach (array_keys(language::$languages) as $language_code) {
-          $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('category', ['category_id' => $category['id']], false, [], $language_code) .'" />' . PHP_EOL;
-        }
+      foreach (language::$languages as $language) {
+        if ($language['url_type'] == 'none') continue;
+        $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('category', ['category_id' => $category['id']], false, [], $language_code) .'" />' . PHP_EOL;
       }
 
       $images = '';
@@ -66,10 +65,9 @@
   while ($product = database::fetch($products_query)) {
 
     $hreflangs = '';
-    if (settings::get('seo_links_language_prefix')) {
-      foreach (array_keys(language::$languages) as $language_code) {
-        $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('product', ['product_id' => $product['id']], false, [], $language_code) .'" />' . PHP_EOL;
-      }
+    foreach (language::$languages as $language) {
+      if ($language['url_type'] == 'none') continue;
+      $hreflangs .= '    <xhtml:link rel="alternate" hreflang="'. $language_code .'" href="'. document::href_ilink('product', ['product_id' => $product['id']], false, [], $language_code) .'" />' . PHP_EOL;
     }
 
       $images = '';

@@ -55,11 +55,11 @@
       default:
 
         if (is_file(vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php'))) {
-          require_once vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php');
+          require vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php');
         }
 
         if (is_file(vmod::check(FS_DIR_APP . 'includes/nodes/nod_' . $class . '.inc.php'))) {
-          require_once vmod::check(FS_DIR_APP . 'includes/nodes/nod_' . $class . '.inc.php');
+          require vmod::check(FS_DIR_APP . 'includes/nodes/nod_' . $class . '.inc.php');
         }
 
         if (method_exists($class, 'init')) {

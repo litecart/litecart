@@ -48,7 +48,7 @@
 
       $brands_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."brands
-        where id=". (int)$brand_id ."
+        where id = ". (int)$brand_id ."
         limit 1;"
       );
 

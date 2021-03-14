@@ -179,7 +179,7 @@
         $fractions = 0;
       }
 
-      return '<span class="currency-amount"><small class="currency">'. $currency_code . '</small> ' . $prefix . number_format((int)$integers, 0, '', language::$selected['thousands_sep']) . ($fractions ? '<span class="decimals">'. language::$selected['decimal_point'] . $fractions .'</span>' : '') . $suffix . '</span>';
+      return '<span class="currency-amount"><small class="currency">'. $currency_code . '</small> ' . $prefix . number_format((int)$integers, 0, '', language::$selected['thousands_sep']) . ($fractions ? language::$selected['decimal_point'] . '<span class="decimals">'. $fractions .'</span>' : '') . $suffix . '</span>';
     }
 
     public static function format_raw($value, $currency_code=null, $currency_value=null) {
@@ -192,6 +192,12 @@
         $currency_code = self::$selected['code'];
       }
 
+      if (!empty(self::$currencies[$currency_code])) {
+        $decimals = self::$currencies[$currency_code]['decimals'];
+      } else {
+        $decimals = 2;
+      }
+
       if (empty(self::$currencies[$currency_code]) && empty($currency_value)) {
         trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
       }
@@ -201,7 +207,7 @@
         if (!$currency_value = self::$currencies[$currency_code]['value']) return 0;
       }
 
-      return number_format($value / $currency_value, (int)self::$currencies[$currency_code]['decimals'], '.', '');
+      return number_format($value / $currency_value, $decimals, '.', '');
     }
 
   // Round a store currency amount in a remote currency
