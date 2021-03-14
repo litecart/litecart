@@ -1,0 +1,89 @@
+#view-full-page {
+  float: right;
+  display: inline-block;
+  padding: .5rem 1rem;
+}
+
+#box-product {
+
+  .images {
+    margin-bottom: 2rem;
+  }
+
+  .main-image {
+    position: relative;
+    overflow: hidden;
+    .sticker {
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      top: 17px;
+      left: -34px;
+      padding: .25rem .5rem;
+      position: absolute;
+      text-align: center;
+      text-transform: uppercase;
+      transform: rotate(-45deg);
+      width: 140px;
+      &.new {
+        background: rgba(251, 184, 41, 0.85);
+      }
+      &.sale {
+        background: rgba(237, 60, 50, 0.85);
+      }
+    }
+  }
+
+  .price-wrapper {
+    font-size: 1.75em;
+  }
+  .regular-price {
+    font-size: 0.75em;
+  }
+  .campaign-price {
+    color: #cc0000;
+  }
+  .tax {
+    color: #999999;
+  }
+  .stock-available {
+    .value {
+      color: #009900;
+    }
+  }
+  .stock-partly-available {
+    .value {
+      color: #ff9900;
+    }
+  }
+  .stock-unavailable {
+    .value {
+      color: #cc0000;
+    }
+  }
+  .social-bookmarks {
+    font-size: 1.75em;
+    margin: 1rem 0;
+  }
+  .description {
+    p:first-child {
+      margin-top: 0;
+    }
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .technical-data {
+    table {
+      -webkit-column-break-inside: avoid;
+      -moz-column-break-inside: avoid;
+      break-inside: avoid-column;
+      td:first-child {
+        width: 50%;
+      }
+    }
+    @media(min-width: @media-breakpoint-sm) {
+      columns: auto 2;
+    }
+  }
+}

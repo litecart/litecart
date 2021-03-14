@@ -1,0 +1,6 @@
+{{style}}
+{{notices}}
+
+{{content}}
+
+{{javascript}}

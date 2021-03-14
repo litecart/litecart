@@ -1,0 +1,24 @@
+/* Breadcrumbs - Bootstrap Compatible */
+
+ul.breadcrumb {
+  margin: 0 0 var(--gutter-size) 0;
+  padding: .5em 1em;
+  list-style: none;
+  background-color: var(--breadcrumbs-background-color);
+  border: 1px solid var(--breadcrumbs-border-color);
+  border-radius: var(--border-radius);
+  li {
+    display: inline-block;
+    &::before {
+      content: "/\00a0";
+      padding: 0 5px;
+      color: var(--breadcrumbs-text-color);
+    }
+    a {
+      color: inherit;
+    }
+  }
+  @media(min-width: @media-breakpoint-md) {
+    margin: 0 0 ~"calc(var(--gutter-size) *2)" 0;
+  }
+}

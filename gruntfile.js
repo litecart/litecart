@@ -66,6 +66,12 @@ module.exports = function(grunt) {
           relativeUrls: true
         },
         files: {
+          'public_html/frontend/templates/classic/css/app.css'       : 'public_html/frontend/templates/classic/less/app.less',
+          'public_html/frontend/templates/classic/css/checkout.css'  : 'public_html/frontend/templates/classic/less/checkout.less',
+          'public_html/frontend/templates/classic/css/framework.css' : 'public_html/frontend/templates/classic/less/framework.less',
+          'public_html/frontend/templates/classic/css/printable.css' : 'public_html/frontend/templates/classic/less/printable.less',
+          'public_html/frontend/templates/classic/css/variables.css' : 'public_html/frontend/templates/classic/less/variables.less',
+
           'public_html/frontend/templates/default/css/app.css'       : 'public_html/frontend/templates/default/less/app.less',
           'public_html/frontend/templates/default/css/checkout.css'  : 'public_html/frontend/templates/default/less/checkout.less',
           'public_html/frontend/templates/default/css/framework.css' : 'public_html/frontend/templates/default/less/framework.less',
@@ -73,6 +79,7 @@ module.exports = function(grunt) {
           'public_html/frontend/templates/default/css/variables.css' : 'public_html/frontend/templates/default/less/variables.less',
         }
       },
+
       frontend_template_minified: {
         options: {
           compress: true,
@@ -87,8 +94,14 @@ module.exports = function(grunt) {
           'public_html/frontend/templates/default/css/checkout.min.css'  : 'public_html/frontend/templates/default/less/checkout.less',
           'public_html/frontend/templates/default/css/framework.min.css' : 'public_html/frontend/templates/default/less/framework.less',
           'public_html/frontend/templates/default/css/printable.min.css' : 'public_html/frontend/templates/default/less/printable.less',
+
+          'public_html/frontend/templates/default/css/app.min.css'       : 'public_html/frontend/templates/default/less/app.less',
+          'public_html/frontend/templates/default/css/checkout.min.css'  : 'public_html/frontend/templates/default/less/checkout.less',
+          'public_html/frontend/templates/default/css/framework.min.css' : 'public_html/frontend/templates/default/less/framework.less',
+          'public_html/frontend/templates/default/css/printable.min.css' : 'public_html/frontend/templates/default/less/printable.less',
         }
       },
+
       featherlight_minified: {
         options: {
           compress: true,
@@ -133,6 +146,7 @@ module.exports = function(grunt) {
         },
         files: {
           'public_html/backend/template/js/app.min.js'   : ['public_html/backend/template/js/app.js'],
+          'public_html/frontend/templates/classic/js/app.min.js' : ['public_html/frontend/templates/classic/js/app.js'],
           'public_html/frontend/templates/default/js/app.min.js' : ['public_html/frontend/templates/default/js/app.js'],
         }
       },
