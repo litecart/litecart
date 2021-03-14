@@ -1,6 +1,6 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '2.3');
+  define('PLATFORM_VERSION', '3.0.0');
 
 // Capture output buffer
   if (!ob_start('ob_gzhandler')) ob_start();
