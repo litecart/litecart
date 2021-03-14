@@ -41,7 +41,7 @@
       self::load();
 
       if (!empty($_POST['add_cart_product'])) {
-        self::add_product($_POST['product_id'], isset($_POST['quantity']) ? $_POST['quantity'] : 1);
+        self::add_product($_POST['product_id'], isset($_POST['stock_item_id']) ? $_POST['stock_item_id'] : '', isset($_POST['quantity']) ? $_POST['quantity'] : 1);
         if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
           header('Location: '. $_SERVER['REQUEST_URI']);
           exit;
@@ -123,14 +123,15 @@
           );
         }
 
-        self::add_product($item['product_id'], $item['quantity'], true, $item['key']);
+        self::add_product($item['product_id'], $item['stock_item_id'], $item['quantity'], true, $item['key']);
         if (isset(self::$items[$item['key']])) self::$items[$item['key']]['id'] = $item['id'];
       }
     }
 
-    public static function add_product($product_id, $quantity=1, $force=false, $item_key=null) {
+    public static function add_product($product_id, $stock_item_id='', $quantity=1, $force=false, $item_key=null) {
 
       $product = reference::product($product_id);
+      $stock_item = reference::stock_item($stock_item_id);
 
     // Set item key
       if (empty($item_key)) {
@@ -143,8 +144,8 @@
 
       $item = [
         'id' => null,
-        'product_id' => (int)$product->id,
-        'combination' => '',
+        'product_id' => (int)$product_id,
+        'stock_item_id' => (int)$stock_item_id,
         'image' => $product->image,
         'name' => $product->name,
         'code' => $product->code,
@@ -192,42 +193,33 @@
           throw new Exception(language::translate('error_invalid_item_quantity', 'Invalid item quantity'));
         }
 
-        //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
           throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round((float)$product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
         }
 
-      // Options stock
-        foreach ($product->stock_options as $stock_option) {
+      // Stock Option
+        if ($product->stock_options) {
 
-          $option_match = true;
-          foreach (explode(',', $stock_option['combination']) as $pair) {
-            if (!in_array($pair, array_column($sanitized_options, 'combination'))) {
-              $option_match = false;
-              break;
+          if (empty($stock_item_id) || !in_array($stock_item_id, array_column($product->stock_options, 'stock_item_id'))) {
+            throw new Exception(language::translate('error_missing_or_invalid_stock_option', 'Missing or invalid stock option'));
+          }
+
+          if (!empty($stock_item->sold_out_status) && empty($stock_item->sold_out_status['orderable'])) {
+            if (($stock_item->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0) {
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option'));
             }
           }
 
-          if ($option_match) {
-            //if (($stock_option['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
-            if (($stock_option['quantity'] - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') . ' ('. round((float)$stock_option['quantity'], isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0) .')');
-            }
-
-            $item['combination'] = $stock_option['combination'];
-            if (!empty($stock_option['sku'])) $item['sku'] = $stock_option['sku'];
-            if (!empty($stock_option['weight'])) $item['weight'] = $stock_option['weight'];
-            if (!empty($stock_option['weight_class'])) $item['weight_class'] = $stock_option['weight_class'];
-            if (!empty($stock_option['dim_x'])) $item['dim_x'] = $stock_option['dim_x'];
-            if (!empty($stock_option['dim_y'])) $item['dim_y'] = $stock_option['dim_y'];
-            if (!empty($stock_option['dim_z'])) $item['dim_z'] = $stock_option['dim_z'];
-            if (!empty($stock_option['dim_class'])) $item['dim_class'] = $stock_option['dim_class'];
-
-            break;
-          }
+          if (!empty($stock_item->sku)) $item['sku'] = $stock_item->sku;
+          if (!empty($stock_item->weight)) $item['weight'] = (float)$stock_item->weight;
+          if (!empty($stock_item->weight_unit)) $item['weight_unit'] = $stock_item->weight_unit;
+          if (!empty($stock_item->length)) $item['length'] = (float)$stock_item->length;
+          if (!empty($stock_item->width)) $item['width'] = (float)$stock_item->width;
+          if (!empty($stock_item->height)) $item['height'] = (float)$stock_item->height;
+          if (!empty($stock_item->length_unit)) $item['length_unit'] = $stock_item->length_unit;
         }
 
-      } catch(Exception $e) {
+      } catch (Exception $e) {
         $item['error'] = $e->getMessage();
         if (!$force) {
           notices::add('errors', $e->getMessage());
@@ -265,8 +257,8 @@
         if (!$force) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."cart_items
-            (customer_id, cart_uid, `key`, product_id, quantity, date_updated, date_created)
-            values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+            (customer_id, cart_uid, `key`, product_id, stock_item_id, quantity, date_updated, date_created)
+            values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", ". (int)$item['stock_item_id'] .", ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
           );
           self::$items[$item_key]['id'] = database::insert_id();
         }

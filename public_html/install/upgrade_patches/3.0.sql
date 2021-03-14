@@ -1,5 +1,6 @@
 ALTER TABLE `lc_cart_items`
-CHANGE COLUMN `options` `stock_item_id` INT(11) NOT NULL DEFAULT '0' AFTER `product_id`;
+CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `key`,
+ADD COLUMN `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`;
 -- --------------------------------------------------------
 CREATE TABLE `lc_newsletter_recipients` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,

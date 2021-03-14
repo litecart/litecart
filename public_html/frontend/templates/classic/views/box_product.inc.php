@@ -118,23 +118,20 @@
           <div class="form-control dropdown caret">
             <div data-toggle="dropdown">
               <span class="caret pull-right"></span>
-              <span class="title">Lorem ipsum</span>
+              <span class="title">-- <?php echo language::translate('title_select', 'Select'); ?> --</span>
             </div>
             <ul class="dropdown-menu stock-options" style="width: 100%;">
               <?php foreach ($stock_options as $stock_option) { ?>
               <li>
                 <label style="display: block;">
+                  <input type="radio" name="stock_item_id" value="<?php echo $stock_option['stock_item_id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" style="display: none;" required />
                   <div class="row">
-                    <div class="col-xs-3">
+                    <div class="col-xs-2">
                       <img src="<?php echo document::href_link(WS_DIR_STORAGE . $stock_option['image']['thumbnail']); ?>" class="thumbnail" alt="" />
                     </div>
-                    <div class="col-xs-6">
-                      <input type="radio" name="stock_option_id" value="<?php echo $stock_option['id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" />
+                    <div class="col-xs-10">
                       <div class="name"><?php echo $stock_option['name']; ?></div>
-                      <div class="description"><?php //echo $stock_option['description']; ?></div>
-                    </div>
-                    <div class="col-xs-3 quantity text-right">
-                      <?php echo $stock_option['quantity']; ?>
+                      <div class="stock-status"><?php echo $stock_option['quantity']; ?></div>
                     </div>
                   </div>
                 </label>
@@ -257,7 +254,26 @@
     return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (<?php echo (settings::get('auto_decimals')) ? "(c && f)" : "c"; ?> ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
   }
 
-  $('#box-product form[name=buy_now_form]').on('input', function(e) {
+  $('#box-product[data-id="<?php echo $product_id; ?>"] .form-control.dropdown :input').on('input', function(e){
+    var dropdown = $(this).closest('.dropdown');
+    var option = $(this).closest('label');
+    if ($(dropdown).find('.name').length) {
+      $(dropdown).find('.title').text( $(option).find('.name').text() );
+    }
+    $(dropdown).trigger('click.bs.dropdown');
+  });
+
+  $('#box-product[data-id="<?php echo $product_id; ?>"] button[name="add_cart_product"]').click(function(e) {
+    if ($('input[name="stock_option_id"]').length) {
+      if (!$('input[name="stock_option_id"]:checked').length) {
+        e.preventDefault();
+        $(this).closest('form').find('.dropdown [data-toggle="dropdown"]').click();
+        return false;
+      }
+    }
+  });
+
+  $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form]').on('input', function(e) {
 
     var regular_price = <?php echo currency::format_raw($regular_price); ?>;
     var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;

@@ -287,59 +287,20 @@
           $this->_data['stock_options'] = [];
 
           $query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_stock_options
+            "select * from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
+            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
             where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
-            order by priority asc;"
+            order by p2si.priority asc;"
           );
 
           while ($row = database::fetch($query)) {
-
-            if (empty($row['tax_class_id'])) {
-              $row['tax_class_id'] = $this->tax_class_id;
-            }
-
-            if (empty($row['sku'])) {
-              $row['sku'] = $this->sku;
-            }
-
-            if (empty($row['weight']) || (float)$row['weight'] == 0) {
-              $row['weight'] = $this->weight;
-              $row['weight_class'] = $this->weight_class;
-            }
-
-            if (empty($row['dim_x'])) {
-              $row['dim_x'] = $this->dim_x;
-              $row['dim_y'] = $this->dim_y;
-              $row['dim_z'] = $this->dim_z;
-              $row['dim_class'] = $this->dim_class;
-            }
-
-          // Name
-            $row['name'] = [];
-
-            foreach (explode(',', $row['combination']) as $combination) {
-              list($group_id, $value_id) = explode('-', $combination);
-
-              $attribute_values_info_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."attribute_values_info avi
-                where avi.value_id = ". (int)$value_id ."
-                and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
-
-              while ($value_info = database::fetch($attribute_values_info_query)) {
-                foreach ($value_info as $key => $value) {
-                  if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-                  if (!is_array(empty($row[$key][$value_info['value_id']]))) continue;
-                  if (empty($row[$key][$value_info['value_id']])) {
-                    $row[$key][$value_info['value_id']] = $value;
-                  }
-                }
-              }
-            }
-
-            $row['name'] = implode(',', $row['name']);
+            settype($row['quantity'], 'float');
+            settype($row['weight'], 'float');
+            settype($row['length'], 'float');
+            settype($row['width'], 'float');
+            settype($row['height'], 'float');
             $this->_data['stock_options'][$row['id']] = $row;
           }
 
@@ -459,11 +420,5 @@
 
           break;
       }
-    }
-
-    public function adjust_stock($combination, $quantity) {
-      trigger_error('catalog_stock_adjust() is deprecated. Use $ent_product->adjust_quantity()', E_USER_DEPRECATED);
-      $product = new ent_product($this->_data['id']);
-      return $product->adjust_quantity($quantity, $combination);
     }
   }

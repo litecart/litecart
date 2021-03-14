@@ -172,12 +172,7 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-md-4">
-            <label><?php echo language::translate('title_ordered', 'Ordered'); ?></label>
-            <?php echo functions::form_draw_decimal_field('ordered', true, 2); ?>
-          </div>
-
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-6">
             <label><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_decimal_field('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
@@ -187,7 +182,7 @@
             </div>
           </div>
 
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-3">
             <label><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></label>
             <div class="input-group">
               <span class="input-group-addon">&plusmn;</span>
@@ -195,6 +190,18 @@
             </div>
           </div>
 
+          <div class="form-group col-md-3">
+            <label><?php echo language::translate('title_ordered', 'Ordered'); ?></label>
+            <div class="input-group">
+              <span class="input-group-btn">
+                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+              </span>
+              <?php echo functions::form_draw_decimal_field('ordered', true, 2); ?>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
             <div class="input-group">
@@ -264,6 +271,13 @@
 
   $('form[name="stock_item_form"]').on('input', 'input[name="quantity_adjustment"]', function(){
     $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat($(this).val()));
+  });
+
+  $('button[name="transfer"]').click(function(){
+    var quantity_field = $(this).closest('form').find('input[name="quantity_adjustment"]');
+    var ordered_field = $(this).closest('form').find('input[name="ordered"]');
+    $(quantity_field).val( Number($(quantity_field).val()) + Number($(ordered_field).val()) ).trigger('input');
+    $(ordered_field).val(0);
   });
 
   if ($.featherlight.opened) {

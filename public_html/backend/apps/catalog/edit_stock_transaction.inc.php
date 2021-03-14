@@ -88,12 +88,13 @@
 
       <h2><?php echo language::translate('title_contents', 'Contents'); ?></h2>
 
-      <table id="transaction-contents" class="table table-striped data-table">
+      <table id="transaction-contents" class="table table-striped table-hover data-table">
         <thead>
           <tr>
             <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
             <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
             <th class="text-right" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
+            <th class="text-right" style="min-width: 150px;"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -112,6 +113,14 @@
                 <?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity_adjustment]', true, 2); ?>
               </div>
             </td>
+            <td class="text-center">
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                </span>
+                <?php echo functions::form_draw_decimal_field('contents['. $key .'][ordered]', true, 2); ?>
+              </div>
+            </td>
             <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
           </tr>
           <?php } ?>
@@ -119,12 +128,15 @@
         <tfoot>
           <tr>
             <td><?php echo functions::form_draw_text_field('new[sku]', true, 'list="available-stock-items"'); ?></td>
-            <td><?php echo functions::form_draw_text_field('new[name]', true, ''); ?></td>
+            <td><?php echo functions::form_draw_text_field('new[name]', true, 'tabindex="-1"'); ?></td>
             <td>
               <div class="input-group">
                 <span class="input-group-addon">&plusmn;</span>
                 <?php echo functions::form_draw_decimal_field('new[quantity_adjustment]', true, 2); ?>
               </div>
+            </td>
+            <td class="text-center">
+              <?php echo functions::form_draw_decimal_field('new[ordered]', true, 2); ?>
             </td>
             <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
           </tr>
@@ -160,6 +172,13 @@
     } else {
       $(row).find('input[name="new[name]"]').prop('readonly', false);
     }
+  });
+
+  $('body').on('click', 'button[name="transfer"]', function(){
+    var quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
+    var ordered_field = $(this).closest('tr').find('input[name$="[ordered]"]');
+    $(quantity_field).val( Number($(quantity_field).val()) + Number($(ordered_field).val()) );
+    $(ordered_field).val(0);
   });
 
   $('table tfoot').keypress(function(e) {
@@ -202,6 +221,14 @@
                + '        <?php echo functions::form_draw_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>'
                + '      </div>'
                + '    </td>'
+               + '    <td class="text-center">'
+               + '      <div class="input-group">'
+               + '        <span class="input-group-btn">'
+               + '          <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
+               + '        </span>'
+               + '        <?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][ordered]', true, 2)); ?>'
+               + '      </div>'
+               + '    </td>'
 							 + '    <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
 							 + '  </tr>';
 
@@ -214,6 +241,7 @@
 		$(inserted).find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku'));
 		$(inserted).find('[name$="[name]"]').val($('input[name="new[name]"]').val());
 		$(inserted).find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val());
+		$(inserted).find('[name$="[ordered]"]').val($('input[name="new[ordered]"]').val());
 
     $('input[name="new[sku]"]').val('');
     $('input[name="new[name]"]').val('');
