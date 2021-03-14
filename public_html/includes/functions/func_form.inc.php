@@ -578,7 +578,7 @@
         return form_draw_date_field($name, $input, $parameters);
 
       case 'datetime':
-        return form_draw_date_field($name, $input, $parameters);
+        return form_draw_datetime_field($name, $input, $parameters);
 
       case 'decimal':
       case 'float':
