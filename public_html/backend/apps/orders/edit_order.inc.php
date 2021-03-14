@@ -197,6 +197,9 @@ body.dark-mode #box-comments {
   background: #283144;
 }
 
+#box-comments {
+  height: 100%;
+}
 #box-comments .bubbles .private {
   position: absolute;
   top: 0.5em;
@@ -212,7 +215,6 @@ body.dark-mode #box-comments {
 #box-comments .bubbles .private input[name$="[hidden]"]:checked + .fa {
   opacity: 1;
 }
-
 #box-comments .bubbles .notify  {
   position: absolute;
   top: 0.5em;
@@ -1142,7 +1144,9 @@ body.dark-mode #box-comments {
 
 // Comments
 
-  $("#comments").animate({scrollTop: $('#comments').prop('scrollHeight')}, 2000);
+  $('#box-comments').on('input', 'textarea[name^="comments"][name$="[text]"]', function(){
+    $(this).height('auto').height('calc(' + $(this).prop('scrollHeight') + 'px + 1em) ');
+  }).trigger('input');
 
   var new_comment_index = 0;
   $('#box-comments .add').click(function(e) {

@@ -110,13 +110,14 @@
     }
 
     $translations_query = database::query(
-      "select * from ". DB_TABLE_PREFIX ."translations;"
+      "select * from ". DB_TABLE_PREFIX ."translations
+      where code not in ('". implode("', '", database::input($translation_keys)) ."')
+      order by date_accessed desc;"
     );
 
     while ($translation = database::fetch($translations_query)) {
-      if (!in_array($translation['code'], $translation_keys)) {
-        $orphan[] = $translation;
-      }
+      if (strtotime($translation['date_accessed']) > strtotime('-12 months')) continue;
+      $orphan[] = $translation;
     }
 
     $log = ob_get_clean();
@@ -154,8 +155,8 @@
 pre {
   white-space: pre-line;
 }
-table.data-table {
-  white-space: wrap;
+table.data-table td {
+  white-space: normal;
 }
 </style>
 
@@ -204,7 +205,7 @@ table.data-table {
               <tr>
                 <td><?php echo functions::form_draw_checkbox('translations[]', $row['code'], true); ?></td>
                 <td><?php echo $row['code']; ?></td>
-                <td><?php echo $row['text_'.language::$selected['code']]; ?></td>
+                <td><?php echo (mb_strlen($row['text_'.language::$selected['code']]) > 100) ? mb_substr($row['text_'.language::$selected['code']], 0, 100) . '...' : $row['text_'.language::$selected['code']]; ?></td>
               </tr>
               <?php } ?>
             </tbody>

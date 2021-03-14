@@ -82,67 +82,55 @@
     <?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand'); ?>
   </div>
 
-  <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-    <li role="presentation"><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-  </ul>
-
   <div class="panel-body">
     <?php echo functions::form_draw_form_begin('brand_form', 'post', false, true); ?>
 
-      <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 640px;">
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label><?php echo language::translate('title_status', 'Status'); ?></label>
-                <?php echo functions::form_draw_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
-              </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label><?php echo language::translate('title_status', 'Status'); ?></label>
+            <?php echo functions::form_draw_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+          </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_featured', 'Featured'); ?></label>
-                <?php echo functions::form_draw_toggle('featured', 'y/n', isset($_POST['featured']) ? $_POST['featured'] : '1'); ?>
-              </div>
+          <div class="form-group">
+            <label><?php echo language::translate('title_featured', 'Featured'); ?></label>
+            <?php echo functions::form_draw_toggle('featured', 'y/n', isset($_POST['featured']) ? $_POST['featured'] : '1'); ?>
+          </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                <?php echo functions::form_draw_text_field('code', true); ?>
-              </div>
+          <div class="form-group">
+            <label><?php echo language::translate('title_code', 'Code'); ?></label>
+            <?php echo functions::form_draw_text_field('code', true); ?>
+          </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php echo functions::form_draw_text_field('name', true); ?>
-              </div>
+          <div class="form-group">
+            <label><?php echo language::translate('title_name', 'Name'); ?></label>
+            <?php echo functions::form_draw_text_field('name', true); ?>
+          </div>
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-                <?php echo functions::form_draw_text_field('keywords', true); ?>
-              </div>
+          <div id="image">
+            <div class="thumbnail" style="margin-bottom: 15px;">
+              <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->data['image'], 400, 100)); ?>" alt="" />
             </div>
 
-            <div class="col-md-6">
-              <div id="image">
-                <div class="thumbnail" style="margin-bottom: 15px;">
-                  <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->data['image'], 400, 100)); ?>" alt="" />
-                </div>
-
-                <div class="form-group">
-                  <label><?php echo ((isset($brand->data['image']) && $brand->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
-                  <?php echo functions::form_draw_file_field('image', ''); ?>
-                  <?php if (!empty($brand->data['image'])) { ?>
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></label>
-                  </div>
-                  <?php } ?>
-                </div>
+            <div class="form-group">
+              <label><?php echo ((isset($brand->data['image']) && $brand->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
+              <?php echo functions::form_draw_file_field('image', ''); ?>
+              <?php if (!empty($brand->data['image'])) { ?>
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></label>
               </div>
+              <?php } ?>
             </div>
+          </div>
+
+          <div class="form-group">
+            <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
+            <?php echo functions::form_draw_text_field('keywords', true); ?>
           </div>
         </div>
 
-        <div id="tab-information" class="tab-pane" style="max-width: 640px;">
-
+        <div class="col-md-6">
           <ul class="nav nav-tabs">
             <?php foreach (language::$languages as $language) { ?>
               <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
@@ -187,8 +175,8 @@
               </div>
             </div>
             <?php } ?>
-
           </div>
+
         </div>
       </div>
 
