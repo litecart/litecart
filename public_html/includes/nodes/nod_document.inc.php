@@ -113,7 +113,9 @@
     // Prepare javascript
       if (!empty(self::$snippets['javascript'])) {
         self::$snippets['javascript'] = '<script>' . PHP_EOL
+                                      . '$(document).ready(function(){' . PHP_EOL
                                       . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
+                                      . '});' . PHP_EOL
                                       . '</script>' . PHP_EOL;
       }
 
