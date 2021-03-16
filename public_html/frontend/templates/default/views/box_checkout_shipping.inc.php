@@ -38,4 +38,22 @@
 <script>
   $('#box-checkout-shipping .option.active :input').prop('disabled', false);
   $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
+
+// Shipping Form: Process Data
+
+  $('#box-checkout-shipping .option:not(.active):not(.disabled)').click(function(e){
+
+    $('#box-checkout-shipping .option').removeClass('active');
+    $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
+    $(this).addClass('active');
+
+    $('#box-checkout-shipping .option.active .fields :input').prop('disabled', false);
+    $('#box-checkout-shipping .option:not(.active) .fields :input').prop('disabled', true);
+
+    var formdata = $('#box-checkout-shipping .option.active :input').serialize();
+
+    $('#box-checkout').trigger('update', [{component: 'shipping', data: formdata, refresh: false}])
+                      .trigger('update', [{component: 'payment', refresh: true}])
+                      .trigger('update', [{component: 'summary'}]);
+  });
 </script>

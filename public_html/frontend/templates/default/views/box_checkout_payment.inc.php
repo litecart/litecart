@@ -38,4 +38,21 @@
 <script>
   $('#box-checkout-payment .option.active :input').prop('disabled', false);
   $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
+
+// Payment Form: Process Data
+
+  $('#box-checkout-payment .option:not(.active):not(.disabled)').click(function(e){
+
+    $('#box-checkout-payment .option').removeClass('active');
+    $(this).find('input[name="payment[option_id]"]').prop('checked', true);
+    $(this).addClass('active');
+
+    $('#box-checkout-payment .option.active .fields :input').prop('disabled', false);
+    $('#box-checkout-payment .option:not(.active) .fields :input').prop('disabled', true);
+
+    var formdata = $('#box-checkout-payment .option.active :input').serialize();
+
+    $('#box-checkout').trigger('update', [{component: 'payment', data: formdata, refresh: false}])
+                      .trigger('update', [{component: 'summary'}]);
+  });
 </script>

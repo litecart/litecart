@@ -6,7 +6,9 @@
 
   if (empty($order->data['items'])) return;
 
-  $options = $order->payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer']);
+  if (!$options = $order->payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
+    return;
+  }
 
   if (file_get_contents('php://input') != '' && !empty($_POST['payment_option_id'])) {
     list($module_id, $option_id) = explode(':', $_POST['payment_option_id']);
@@ -27,21 +29,11 @@
     }
   }
 
-  if (empty($options)) return;
-
   if (empty($order->payment->selected)) {
     if ($cheapest = $order->payment->cheapest($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
       $order->payment->select($cheapest['module_id'], $cheapest['option_id']);
     }
   }
-
-/*
-// Hide
-  if (count($options) == 1
-  && empty($options[key($options)]['error'])
-  && empty($options[key($options)]['fields'])
-  && $options[key($options)]['cost'] == 0) return;
-*/
 
   $box_checkout_payment = new ent_view();
 

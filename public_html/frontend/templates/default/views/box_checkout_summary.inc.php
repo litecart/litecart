@@ -3,26 +3,26 @@
 
   <table class="table table-striped table-bordered data-table">
     <tbody>
-      <?php foreach ($order->data['items'] as $item) { ?>
+      <?php foreach ($order['items'] as $item) { ?>
       <tr>
         <td class="text-left"><?php echo $item['quantity']; ?></td>
         <td class="text-left"><?php echo $item['name']; ?></td>
-        <td class="text-right"><?php echo currency::format(!empty($order->data['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-        <td class="text-right"><?php echo currency::format((!empty($order->data['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price']) * $item['quantity'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+        <td class="text-right"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td class="text-right"><?php echo currency::format((!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price']) * $item['quantity'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
 
-      <?php foreach ($order->data['order_total'] as $row) { ?>
+      <?php foreach ($order['order_total'] as $row) { ?>
       <tr>
         <td colspan="3" class="text-right"><strong><?php echo $row['title']; ?>:</strong></td>
-        <td class="text-right"><?php echo currency::format(!empty($order->data['display_prices_including_tax']) ? $row['value'] + $row['tax'] : $row['value'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+        <td class="text-right"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $row['value'] + $row['tax'] : $row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
 
-      <?php if ($order->data['tax_total']) { ?>
+      <?php if ($order['tax_total']) { ?>
       <tr>
         <td colspan="3" class="text-right" style="color: #999999;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-        <td class="text-right" style="color: #999999;"><?php echo currency::format($order->data['tax_total'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+        <td class="text-right" style="color: #999999;"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
     </tbody>
@@ -30,7 +30,7 @@
     <tfoot>
       <tr>
         <td colspan="3" class="text-right"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
-        <td class="text-right" style="width: 25%;"><strong><?php echo currency::format_html($order->data['payment_due'], false, $order->data['currency_code'], $order->data['currency_value']); ?></strong></td>
+        <td class="text-right" style="width: 25%;"><strong><?php echo currency::format_html($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
       </tr>
     </tfoot>
   </table>
@@ -58,3 +58,18 @@
     </div>
   </div>
 </section>
+
+<script>
+// Summary Form: Process Data
+
+  $('#box-checkout-summary button[name="confirm_order"]').click(function(e) {
+    if ($('box-checkout-customer').prop('changed')) {
+      e.preventDefault();
+      alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
+    }
+  });
+
+  $('form[name="checkout_form"]').submit(function(e) {
+    $('#box-checkout-summary button[name="confirm_order"]').css('display', 'none').before('<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::general_escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>');
+  });
+</script>

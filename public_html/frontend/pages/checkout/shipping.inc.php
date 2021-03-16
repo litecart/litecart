@@ -6,7 +6,9 @@
 
   if (empty($order->data['items'])) return;
 
-  $options = $order->shipping->options($order->data['items'], $order->data['currency_code'], $order->data['customer']);
+  if (!$options = $order->shipping->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
+    return;
+  }
 
   if (file_get_contents('php://input') != '' && !empty($_POST['shipping_option_id'])) {
     list($module_id, $option_id) = explode(':', $_POST['shipping_option_id']);
@@ -27,21 +29,11 @@
     }
   }
 
-  if (empty($options)) return;
-
   if (empty($order->shipping->selected)) {
     if ($cheapest = $order->shipping->cheapest($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
       $order->shipping->select($cheapest['module_id'], $cheapest['option_id'], $_POST);
     }
   }
-
-/*
-// Hide
-  if (count($options) == 1
-  && empty($options[key($options)]['error'])
-  && empty($options[key($options)]['fields'])
-  && $options[key($options)]['cost'] == 0) return;
-*/
 
   $box_checkout_shipping = new ent_view();
 
