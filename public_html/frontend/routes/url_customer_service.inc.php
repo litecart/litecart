@@ -14,7 +14,8 @@
           'pattern' => '#^'. implode('|', $titles) .'$#',
           'page' => 'customer_service',
           'params' => '',
-          'options' => array(
+          'endpoint' => 'frontend',
+          'options' => [
             'redirect' => true,
           ],
         ],

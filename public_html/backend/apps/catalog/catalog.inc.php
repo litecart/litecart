@@ -286,7 +286,7 @@
           select product_id from ". DB_TABLE_PREFIX ."stock_items
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
-        + if(m.name like '%". database::input($_GET['query']) ."%', 3, 0)
+        + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
         + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
       ) as relevance
       from ". DB_TABLE_PREFIX ."products p
@@ -445,8 +445,7 @@
           $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cc6; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
-        $output .= '  <td>&nbsp;</td>' . PHP_EOL
-                 . '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+        $output .= '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-right"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 

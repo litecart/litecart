@@ -16,7 +16,7 @@
 
       foreach (explode('&', http_build_query($superglobal, '', '&')) as $pair) {
 
-        @list($key, $value) = explode('=', $pair);
+        list($key, $value) = explode('=', $pair);
         $key = urldecode($key);
         $value = urldecode($value);
 
@@ -24,8 +24,7 @@
 
         if (preg_replace('#^(.*)\[[^\]]*\]$#', '$1', $key) == preg_replace('#^(.*)\[[^\]]*\]$#', '$1', $name)) {
           if (preg_match('#\[[0-9]*\]$#', $key)) {
-            if ($value != $array_value) continue;
-            return $value;
+            if ($value == $array_value) return $value;
           }
         }
       }
@@ -735,7 +734,7 @@ END;
     $options = [];
     if (!empty($matches[2])) {
       $options = preg_split('#\s*,\s*#', $matches[2], -1, PREG_SPLIT_NO_EMPTY);
-      $options = array_map($options, function($a){ return trim($a, '\'" '); });
+      $options = array_map(function($s){ return trim($s, '\'" '); }, $options);
     }
 
     switch ($matches[1]) {
