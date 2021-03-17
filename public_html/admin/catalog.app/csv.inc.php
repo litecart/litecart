@@ -12,12 +12,8 @@
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }
 
-      ob_clean();
-
-      header('Content-Type: text/plain; charset='. language::$selected['charset']);
-
-      echo "CSV Import\r\n"
-         . "----------\r\n";
+      echo 'CSV Import' . PHP_EOL
+         . '----------' . PHP_EOL;
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
@@ -481,6 +477,10 @@
           default:
             throw new Exception('Unknown type');
         }
+
+        header('Content-Type: text/plain; charset='. language::$selected['charset']);
+        echo ob_get_clean();
+        exit;
       }
 
       exit;
