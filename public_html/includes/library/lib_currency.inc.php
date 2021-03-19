@@ -199,6 +199,12 @@
         $currency_code = self::$selected['code'];
       }
 
+      if (!empty(self::$currencies[$currency_code])) {
+        $decimals = self::$currencies[$currency_code]['decimals'];
+      } else {
+        $decimals = 2;
+      }
+
       if (empty(self::$currencies[$currency_code]) && empty($currency_value)) {
         trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
       }
@@ -208,7 +214,7 @@
         if (!$currency_value = self::$currencies[$currency_code]['value']) return 0;
       }
 
-      return number_format($value / $currency_value, (int)self::$currencies[$currency_code]['decimals'], '.', '');
+      return number_format($value / $currency_value, $decimals, '.', '');
     }
 
   // Round a store currency amount in a remote currency

@@ -347,5 +347,5 @@ $('input[name="url_type"]').change(function(){
   } else {
     $('input[name="domain_name"]').prop('disabled', true);
   }
-}).first().trigger('change');
+}).trigger('change');
 </script>

@@ -13,7 +13,7 @@
 
         if (is_file($file = FS_DIR_APP . 'includes/controllers/' . $class . '.inc.php')) {
           trigger_error("Controllers ($class) are deprecated in favour of Entities ($new_class)", E_USER_DEPRECATED);
-          require_once vmod::check($file);
+          require vmod::check($file);
           if (!class_exists($new_class, false)) {
             class_alias($class, $new_class);
           }
@@ -21,7 +21,7 @@
 
         else if (is_file($file = FS_DIR_APP . 'includes/entities/' . $new_class . '.inc.php')) {
           trigger_error("Class $class is deprecated. Use $new_class", E_USER_DEPRECATED);
-          require_once vmod::check($file);
+          require vmod::check($file);
           if (!class_exists($class, false)) {
             class_alias($new_class, $class);
           }
@@ -96,11 +96,11 @@
       default:
 
         if (is_file(vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php'))) {
-          require_once vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php');
+          require vmod::check(FS_DIR_APP . 'includes/classes/' . $class . '.inc.php');
         }
 
         if (is_file(vmod::check(FS_DIR_APP . 'includes/library/lib_' . $class . '.inc.php'))) {
-          require_once vmod::check(FS_DIR_APP . 'includes/library/lib_' . $class . '.inc.php');
+          require vmod::check(FS_DIR_APP . 'includes/library/lib_' . $class . '.inc.php');
         }
 
         if (method_exists($class, 'init')) {

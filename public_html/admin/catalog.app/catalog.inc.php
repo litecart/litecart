@@ -286,6 +286,8 @@
           select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
           where sku regexp '". database::input($code_regex) ."'
         ), 5, 0)
+        + if(m.name like '%". database::input($_GET['query']) ."%', 3, 0)
+        + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
       ) as relevance
       from ". DB_TABLE_PRODUCTS ." p
       left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -443,7 +445,7 @@
         }
 
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
-                 . '  <td></td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 

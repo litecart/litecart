@@ -28,5 +28,6 @@
       <?php if ($payment_receipt) echo $payment_receipt; ?>
 
       <?php if ($order_success_modules_output) echo $order_success_modules_output; ?>
+    </div>
   </div>
 </div>

@@ -73,7 +73,7 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), 3 - $user['login_attempts']));
+          notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), 3 - $user['login_attempts']));
 
         } else {
 
@@ -85,7 +85,7 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), 15));
+          notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'This account has been temporarily blocked for %d minutes.'), 15));
         }
 
         throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));

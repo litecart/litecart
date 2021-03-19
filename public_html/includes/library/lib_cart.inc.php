@@ -131,6 +131,7 @@
     public static function add_product($product_id, $options, $quantity=1, $force=false, $item_key=null) {
 
       $product = reference::product($product_id);
+      $quantity = round((float)$quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
 
     // Set item key
       if (empty($item_key)) {
@@ -157,7 +158,7 @@
         'extras' => 0,
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
-        'quantity' => !empty($product->quantity_unit['decimals']) ? round((float)$quantity, (int)$product->quantity_unit['decimals'], PHP_ROUND_HALF_UP) : $quantity,
+        'quantity' => $quantity,
         'quantity_unit' => array(
           'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
           'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',

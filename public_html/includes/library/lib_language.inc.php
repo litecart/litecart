@@ -134,9 +134,10 @@
 
     // Return language by regional domain
       foreach ($enabled_languages as $language_code) {
-        if (self::$languages[$language_code]['url_type'] != 'domain') continue;
-        if (preg_match('#'. preg_quote(self::$languages[$language_code]['url_type'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
-          return $language_code;
+        if (!empty(self::$languages[$language_code]) && self::$languages[$language_code]['url_type'] == 'domain') {
+          if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+            return $language_code;
+          }
         }
       }
 

@@ -116,15 +116,5 @@
 ?>
       </div>
     </div>
-
-    <ul id="service-providers" class="list-inline">
-      <li>
-        <a href="http://eepurl.com/JAeav" target="_blank" class="btn btn-default">
-          <img src="<?php echo WS_DIR_ADMIN . 'customers.app/mailchimp.png'; ?>" alt="" />
-          <div class="name">MailChimp</div>
-          <div class="offer">LiteCart gives you $30 free credits</div>
-        </a>
-      </li>
-    </ul>
   </div>
 </div>

@@ -236,6 +236,12 @@
   $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
 // Emulate some $_SERVER variables
+  if (php_sapi_name() === 'cli') {
+    $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+    $_SERVER['SERVER_NAME'] = 'localhost';
+    $_SERVER['SERVER_PORT'] = '80';
+  }
+
   if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
   if (empty($_SERVER['HTTP_HTTPS'])) $_SERVER['HTTP_HTTPS'] = 'off';
 

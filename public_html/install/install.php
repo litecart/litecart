@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.2.8\n"
+      echo "\nLiteCart® 2.2.9\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php install.php [options]\n\n"
@@ -129,7 +129,7 @@
     ### Environment > Set #########################################
 
     error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
-    ini_set('ignore_repeated_errors', 'On');
+    ini_set('ignore_repeated_errors', 'Off');
     ini_set('log_errors', 'Off');
     ini_set('display_errors', 'On');
     ini_set('html_errors', 'On');
@@ -266,7 +266,7 @@
       '{DB_PASSWORD}' => $_REQUEST['db_password'],
       '{DB_DATABASE}' => $_REQUEST['db_database'],
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
-      '{DB_DATABASE_CHARSET}' => 'utf8',
+      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{DB_PERSISTENT_CONNECTIONS}' => 'false',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
       '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
@@ -304,7 +304,8 @@
 
     $map = array(
       '`lc_' => '`'.$_REQUEST['db_table_prefix'],
-      '{DATABASE_COLLATION}' => $_REQUEST['db_collation'],
+      '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
+      '{DB_DATABASE_COLLATION}' => $_REQUEST['db_collation'],
     );
 
     foreach ($map as $search => $replace) {

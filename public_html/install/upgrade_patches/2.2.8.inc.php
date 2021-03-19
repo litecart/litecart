@@ -26,12 +26,14 @@
 
       case 'date_accessed':
       case 'date_active':
+      case 'date_expires':
       case 'date_login':
+      case 'date_processed':
+      case 'date_published':
+      case 'date_pushed':
+      case 'date_redirected':
       case 'date_scheduled':
       case 'date_sent':
-      case 'date_pushed':
-      case 'date_pushed':
-      case 'date_processed':
       case 'date_valid_from':
       case 'date_valid_to':
       case 'start_date':
@@ -67,7 +69,7 @@
           case 'datetime':
             database::query(
               "alter table ". $column['TABLE_SCHEMA'] .".". $column['TABLE_NAME'] ."
-              change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` decimal(11,4) not null default ". (!empty($column['COLUMN_DEFAULT'] && strtolower($column['COLUMN_DEFAULT']) != 'null') ? $column['COLUMN_DEFAULT'] : "'0'") .";"
+              change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` timestamp null default ". (!empty($column['COLUMN_DEFAULT'] && strtolower($column['COLUMN_DEFAULT']) != 'null') ? $column['COLUMN_DEFAULT'] : "null") .";"
             );
             break;
 

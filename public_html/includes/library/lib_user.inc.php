@@ -107,16 +107,20 @@
 
     public static function load($user_id) {
 
+      self::reset();
+
       $user_query = database::query(
         "select * from ". DB_TABLE_USERS ."
         where id = ". (int)$user_id ."
         limit 1;"
       );
 
-      if ($user = database::fetch($user_query)) {
-        $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : array();
-        $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : array();
+      if (!$user = database::fetch($user_query)) {
+        throw new Exception('No user found');
       }
+
+      $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : array();
+      $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : array();
 
       session::$data['user'] = $user;
     }

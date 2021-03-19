@@ -143,7 +143,9 @@
 
   // Format and show an additional two decimals precision if needed
     if ($value != '') {
-      $value = preg_replace('#0{1,2}$#', '', number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2, '.', ''));
+      $value = number_format((float)$value, currency::$currencies[$currency_code]['decimals'] + 2, '.', '');
+      $value = preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $value);
+      $value = rtrim($value, '.');
     }
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
@@ -306,7 +308,7 @@
       $value = floor($value);
     }
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (int)$min .'"' : false) . (($max !== null) ? ' max="'. (int)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
 
   function form_draw_password_field($name, $value='', $parameters='') {
@@ -558,7 +560,7 @@
 
   function form_draw_function($function, $name, $input=true, $parameters='') {
 
-    preg_match('#(\w*)(?:\()(.*?)(?:\))#i', $function, $matches);
+    preg_match('#^(\w+)(?:\((.*?)\))?$#', $function, $matches);
 
     if (!isset($matches[1])) trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
 
@@ -571,6 +573,12 @@
     }
 
     switch ($matches[1]) {
+
+      case 'date':
+        return form_draw_date_field($name, $input, $parameters);
+
+      case 'datetime':
+        return form_draw_datetime_field($name, $input, $parameters);
 
       case 'decimal':
       case 'float':

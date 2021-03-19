@@ -60,7 +60,7 @@
     // Find a target route for requested URL
       foreach (self::$_routes as $route) {
 
-        if (!preg_match($route['pattern'], self::$request, $route['matches'])) continue;
+        if (!preg_match($route['pattern'], self::$request)) continue;
 
         $route['page'] = preg_replace($route['pattern'], $route['page'], self::$request);
 
@@ -272,7 +272,7 @@
 
         case 'domain':
           if (isset($link->query['language'])) $link->unset_query('language');
-          $link->domain = language::$languages[$language_code]['domain_name'];
+          $link->host = language::$languages[$language_code]['domain_name'];
           break;
       }
 
