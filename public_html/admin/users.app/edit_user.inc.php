@@ -20,13 +20,14 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['status'])) $_POST['status'] = 0;
-      if (empty($_POST['permissions'])) $_POST['permissions'] = array();
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_username', 'You must enter a username'));
       if (empty($user->data['id']) && empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_password', 'You must enter a password'));
       if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
       if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
+
+      if (empty($_POST['apps'])) $_POST['apps'] = array();
+      if (empty($_POST['widgets'])) $_POST['widgets'] = array();
 
       $fields = array(
         'status',
