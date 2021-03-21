@@ -8,6 +8,9 @@
   if (isset($_POST['import'])) {
 
     try {
+
+      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+
       if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }
@@ -43,13 +46,23 @@
             }
 
             if (!empty($campaign['id'])) {
-              if (empty($_POST['overwrite'])) continue 2;
-              echo "Updating existing group price on line $line" . PHP_EOL;
+
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing campaign on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo "Updating existing campaign on line $line" . PHP_EOL;
               $updated++;
 
             } else {
-              if (empty($_POST['insert'])) continue 2;
-              echo "Creating new group price on line $line" . PHP_EOL;
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new campaign on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo "Creating new campaign on line $line" . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {
@@ -94,12 +107,22 @@
             }
 
             if (!empty($category->data['id'])) {
-              if (empty($_POST['overwrite'])) continue 2;
+
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing category on line $line" . PHP_EOL;
+                continue 2;
+              }
+
               echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
             } else {
-              if (empty($_POST['insert'])) continue 2;
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new category on line $line" . PHP_EOL;
+                continue 2;
+              }
+
               echo 'Creating new category: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
@@ -175,12 +198,22 @@
             }
 
             if (!empty($manufacturer->data['id'])) {
-              if (empty($_POST['overwrite'])) continue 2;
+
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing manufacturer on line $line" . PHP_EOL;
+                continue 2;
+              }
+
               echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
             } else {
-              if (empty($_POST['insert'])) continue 2;
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new manufacturer on line $line" . PHP_EOL;
+                continue 2;
+              }
+
               echo 'Creating new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
@@ -264,12 +297,22 @@
             }
 
             if (!empty($product->data['id'])) {
-              if (empty($_POST['overwrite'])) continue 2;
+
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing product on line $line" . PHP_EOL;
+                continue 2;
+              }
+
               echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
             } else {
-              if (empty($_POST['insert'])) continue 2;
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new product on line $line" . PHP_EOL;
+                continue 2;
+              }
+
               echo 'Creating new product: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
@@ -442,12 +485,20 @@
             }
 
             if (!empty($supplier->data['id'])) {
-              if (empty($_POST['overwrite'])) continue 2;
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing supplier on line $line" . PHP_EOL;
+                continue 2;
+              }
               echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $updated++;
 
             } else {
-              if (empty($_POST['insert'])) continue 2;
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new supplier on line $line" . PHP_EOL;
+                continue 2;
+              }
+
               echo 'Creating new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
@@ -493,12 +544,10 @@
           default:
             throw new Exception('Unknown type');
         }
-
-        header('Content-Type: text/plain; charset='. language::$selected['charset']);
-        echo ob_get_clean();
-        exit;
       }
 
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+      echo ob_get_clean();
       exit;
 
     } catch (Exception $e) {
@@ -509,6 +558,8 @@
   if (isset($_POST['export'])) {
 
     try {
+
+      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
 
       $csv = array();
 
