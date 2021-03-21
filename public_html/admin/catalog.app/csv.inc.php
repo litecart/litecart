@@ -62,7 +62,7 @@
                 continue 2;
               }
 
-              echo "Creating new campaign on line $line" . PHP_EOL;
+              echo "Inserting new campaign on line $line" . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {
@@ -123,7 +123,7 @@
                 continue 2;
               }
 
-              echo 'Creating new category: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+              echo 'Inserting new category: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {
@@ -214,7 +214,7 @@
                 continue 2;
               }
 
-              echo 'Creating new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+              echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {
@@ -313,7 +313,7 @@
                 continue 2;
               }
 
-              echo 'Creating new product: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+              echo 'Inserting new product: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {
@@ -499,7 +499,7 @@
                 continue 2;
               }
 
-              echo 'Creating new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+              echo 'Inserting new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {

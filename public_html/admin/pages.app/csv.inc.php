@@ -38,13 +38,23 @@
         }
 
         if (!empty($page->data['id'])) {
-          if (empty($_POST['update'])) continue;
+
+          if (empty($_POST['update'])) {
+            echo "Skip updating existing page on line $line" . PHP_EOL;
+            continue;
+          }
+
           echo 'Updating existing page '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $updated++;
 
         } else {
-          if (empty($_POST['insert'])) continue;
-          echo 'Creating new page: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+
+          if (empty($_POST['insert'])) {
+            echo "Skip inserting new page on line $line" . PHP_EOL;
+            continue;
+          }
+
+          echo 'Inserting new page: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
           $inserted++;
 
           if (!empty($row['id'])) {
