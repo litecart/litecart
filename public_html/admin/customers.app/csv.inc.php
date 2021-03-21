@@ -20,7 +20,7 @@
 
       $updated = 0;
       $inserted = 0;
-      $line = 0;
+      $line = 1;
 
       foreach ($csv as $row) {
         $line++;
