@@ -11,7 +11,7 @@
 
       return array(
         array(
-          'pattern' => '#^'. implode('|', array_filter($titles)) .'$#',
+          'pattern' => '#^('. implode('|', array_filter($titles)) .')$#',
           'page' => 'customer_service',
           'params' => '',
           'options' => array(
