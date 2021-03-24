@@ -75,9 +75,9 @@
             database::query(
               "update ". DB_TABLE_PREFIX ."products_campaigns
               set product_id = ". (int)$row['product_id'] .",
-                  ". $sql_update_prices ."
-                  start_date = ". (empty($row['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['start_date'])) ."'") .",
-                  end_date = ". (empty($row['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['end_date'])) ."'") ."
+                ". $sql_update_prices ."
+                start_date = ". (empty($row['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['start_date'])) ."'") .",
+                end_date = ". (empty($row['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['end_date'])) ."'") ."
               where id = ". (int)$row['id'] ."
               limit 1;"
             );

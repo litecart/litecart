@@ -62,8 +62,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."tax_rates
-        set
-          tax_class_id = ". (int)$this->data['tax_class_id'] .",
+        set tax_class_id = ". (int)$this->data['tax_class_id'] .",
           geo_zone_id = ". (int)$this->data['geo_zone_id'] .",
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',

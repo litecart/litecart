@@ -94,8 +94,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."currencies
-        set
-          status = ". (int)$this->data['status'] .",
+        set status = ". (int)$this->data['status'] .",
           code = '". database::input($this->data['code']) ."',
           number = '". database::input($this->data['number']) ."',
           name = '". database::input($this->data['name']) ."',

@@ -98,8 +98,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."countries
-        set
-          status = ". (int)$this->data['status'] .",
+        set status = ". (int)$this->data['status'] .",
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."',
           iso_code_2 = '". database::input($this->data['iso_code_2']) ."',
           iso_code_3 = '". database::input($this->data['iso_code_3']) ."',

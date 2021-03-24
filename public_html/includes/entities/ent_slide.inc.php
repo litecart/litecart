@@ -91,8 +91,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."slides
-        set
-          status = ". (int)$this->data['status'] .",
+        set status = ". (int)$this->data['status'] .",
           languages = '". database::input(implode(',', database::input($this->data['languages']))) ."',
           name = '". database::input($this->data['name']) ."',
           image = '" . database::input($this->data['image']) . "',

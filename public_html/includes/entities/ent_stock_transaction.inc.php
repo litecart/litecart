@@ -131,7 +131,7 @@
         database::query(
           "update ". DB_TABLE_PREFIX ."stock_transactions_contents
           set stock_item_id = ". (int)$content['stock_item_id'] .",
-              quantity_adjustment = ". (float)$content['quantity_adjustment'] ."
+            quantity_adjustment = ". (float)$content['quantity_adjustment'] ."
           where transaction_id = ". (int)$this->data['id'] ."
           and id = ". (int)$content['id'] ."
           limit 1;"

@@ -89,13 +89,14 @@
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."brands set
-        status = ". (int)$this->data['status'] .",
-        featured = ". (int)$this->data['featured'] .",
-        code = '". database::input($this->data['code']) ."',
-        name = '". database::input($this->data['name']) ."',
-        image = '". database::input($this->data['image']) ."',
-        keywords = '". database::input($this->data['keywords']) ."'
+        "update ". DB_TABLE_PREFIX ."brands
+        set
+          status = ". (int)$this->data['status'] .",
+          featured = ". (int)$this->data['featured'] .",
+          code = '". database::input($this->data['code']) ."',
+          name = '". database::input($this->data['name']) ."',
+          image = '". database::input($this->data['image']) ."',
+          keywords = '". database::input($this->data['keywords']) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

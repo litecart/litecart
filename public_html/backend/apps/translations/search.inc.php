@@ -23,8 +23,7 @@
       }
       database::query(
         "update ". DB_TABLE_PREFIX ."translations
-        set
-        html = ". (!empty($translation['html']) ? 1 : 0) .",
+        set html = ". (!empty($translation['html']) ? 1 : 0) .",
           ". $sql_update_fields ."
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$translation['id'] ."

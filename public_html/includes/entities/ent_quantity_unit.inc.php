@@ -88,9 +88,9 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."quantity_units
         set decimals = ". (int)$this->data['decimals'] .",
-            separate = ". (int)$this->data['separate'] .",
-            priority = ". (int)$this->data['priority'] .",
-            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+          separate = ". (int)$this->data['separate'] .",
+          priority = ". (int)$this->data['priority'] .",
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

@@ -184,34 +184,34 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."products set
-        status = ". (int)$this->data['status'] .",
-        brand_id = ". (int)$this->data['brand_id'] .",
-        supplier_id = ". (int)$this->data['supplier_id'] .",
-        delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
-        sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
-        default_category_id = ". (int)$this->data['default_category_id'] .",
-        keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
-        quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
-        purchase_price = ". (float)$this->data['purchase_price'] .",
-        purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
-        recommended_price = ". (float)$this->data['recommended_price'] .",
-        tax_class_id = ". (int)$this->data['tax_class_id'] .",
-        code = '". database::input($this->data['code']) ."',
-        sku = '". database::input($this->data['sku']) ."',
-        mpn = '". database::input($this->data['mpn']) ."',
-        gtin = '". database::input($this->data['gtin']) ."',
-        taric = '". database::input($this->data['taric']) ."',
-        length = ". (float)$this->data['length'] .",
-        width = ". (float)$this->data['width'] .",
-        height = ". (float)$this->data['height'] .",
-        length_unit = '". database::input($this->data['length_unit']) ."',
-        weight = ". (float)$this->data['weight'] .",
-        weight_unit = '". database::input($this->data['weight_unit']) ."',
-        autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",
-        date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
-        date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
-        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        "update ". DB_TABLE_PREFIX ."products
+        set status = ". (int)$this->data['status'] .",
+          brand_id = ". (int)$this->data['brand_id'] .",
+          supplier_id = ". (int)$this->data['supplier_id'] .",
+          delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
+          sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
+          default_category_id = ". (int)$this->data['default_category_id'] .",
+          keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
+          quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
+          purchase_price = ". (float)$this->data['purchase_price'] .",
+          purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
+          recommended_price = ". (float)$this->data['recommended_price'] .",
+          tax_class_id = ". (int)$this->data['tax_class_id'] .",
+          code = '". database::input($this->data['code']) ."',
+          sku = '". database::input($this->data['sku']) ."',
+          mpn = '". database::input($this->data['mpn']) ."',
+          gtin = '". database::input($this->data['gtin']) ."',
+          taric = '". database::input($this->data['taric']) ."',
+          length = ". (float)$this->data['length'] .",
+          width = ". (float)$this->data['width'] .",
+          height = ". (float)$this->data['height'] .",
+          length_unit = '". database::input($this->data['length_unit']) ."',
+          weight = ". (float)$this->data['weight'] .",
+          weight_unit = '". database::input($this->data['weight_unit']) ."',
+          autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",
+          date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
+          date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -282,8 +282,8 @@
           }
 
           database::query(
-            "update ". DB_TABLE_PREFIX ."products_attributes set
-              group_id = ". (int)$attribute['group_id'] .",
+            "update ". DB_TABLE_PREFIX ."products_attributes
+            set group_id = ". (int)$attribute['group_id'] .",
               value_id = ". (int)$attribute['value_id'] .",
               custom_value = '". database::input($attribute['custom_value']) ."'
             where product_id = ". (int)$this->data['id'] ."
