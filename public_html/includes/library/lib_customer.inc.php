@@ -122,8 +122,8 @@
 
     // Get country from browser locale
       if (empty(self::$data['country_code'])) {
-        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#(^[a-z]{2}-([A-Z]{2}))#', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
-          if (!empty($matches[2]) && in_array($matches[2], $countries)) self::$data['country_code'] = $matches[2];
+        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('#(^[a-z]{2}-([a-z]{2}))#i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches)) {
+          if (!empty($matches[2]) && in_array(strtoupper($matches[2]), $countries)) self::$data['country_code'] = strtoupper($matches[2]);
         }
       }
 
