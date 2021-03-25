@@ -149,6 +149,8 @@
         'stock_item_id' => (int)$stock_item_id,
         'image' => $product->image,
         'name' => $product->name,
+        'description' => '',
+        'data' => '',
         'code' => $product->code,
         'sku' => $product->sku,
         'mpn' => $product->mpn,

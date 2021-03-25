@@ -538,11 +538,11 @@
   );
 
   while ($item = database::fetch($order_items_query)) {
-    $item['customizations'] = unserialize($item['customizations']);
+    $item['data'] = unserialize($item['data']);
 
     database::query(
       "update ". DB_TABLE_PREFIX ."orders_items
-      set customizations = '". (!empty($item['customizations']) ? json_encode($item['customizations'], JSON_UNESCAPED_SLASHES) : '') ."'
+      set data = '". (!empty($item['data']) ? json_encode($item['data'], JSON_UNESCAPED_SLASHES) : '') ."'
       where id = ". (int)$item['id'] ."
       limit 1;"
     );

@@ -391,6 +391,8 @@ CREATE TABLE `lc_orders_items` (
   `option_stock_combination` VARCHAR(32) NOT NULL DEFAULT '',
   `options` VARCHAR(4096) NOT NULL DEFAULT '',
   `name` VARCHAR(128) NOT NULL DEFAULT '',
+  `description` VARCHAR(256) NOT NULL DEFAULT '',
+  `data` VARCHAR(1024) NOT NULL DEFAULT '',
   `sku` VARCHAR(32) NOT NULL DEFAULT '',
   `gtin` VARCHAR(32) NOT NULL DEFAULT '',
   `taric` VARCHAR(32) NOT NULL DEFAULT '',

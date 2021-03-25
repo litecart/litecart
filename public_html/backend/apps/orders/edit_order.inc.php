@@ -616,6 +616,8 @@ body.dark-mode #box-comments {
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][stock_item_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['.$key.'][description]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['.$key.'][data]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][gtin]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][taric]', true); ?>
@@ -1294,6 +1296,8 @@ body.dark-mode #box-comments {
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][stock_item_id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][description]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][data]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][gtin]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][taric]', '')); ?>'
