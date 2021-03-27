@@ -94,7 +94,7 @@
           <div class="row">
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_username', 'Username'); ?></label>
-              <?php echo functions::form_draw_text_field('username', true, 'required="required"'); ?>
+              <?php echo functions::form_draw_text_field('username', true, 'required'); ?>
             </div>
 
             <div class="form-group col-sm-6">
@@ -131,19 +131,19 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_ip', 'Last IP'); ?></label>
-              <?php echo functions::form_draw_text_field('last_ip', true, 'readonly="readonly"'); ?>
+              <?php echo functions::form_draw_text_field('last_ip', true, 'readonly'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_host', 'Last Host'); ?></label>
-              <?php echo functions::form_draw_text_field('last_host', true, 'readonly="readonly"'); ?>
+              <?php echo functions::form_draw_text_field('last_host', true, 'readonly'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-              <?php echo functions::form_draw_text_field('date_login', true, 'readonly="readonly"'); ?>
+              <?php echo functions::form_draw_text_field('date_login', true, 'readonly'); ?>
             </div>
           </div>
           <?php } ?>

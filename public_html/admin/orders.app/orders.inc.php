@@ -297,9 +297,9 @@ table .fa-star:hover {
 
   $('.data-table input[name^="orders["]').change(function() {
     if ($('.data-table input[name^="orders["]:checked').length > 0) {
-      $('#order-actions button').removeAttr('disabled');
+      $('#order-actions button').prop('disabled', false);
     } else {
-      $('#order-actions button').attr('disabled', 'disabled');
+      $('#order-actions button').prop('disabled', true);
     }
   }).trigger('change');
 

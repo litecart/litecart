@@ -155,19 +155,19 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_draw_text_field('code', true, 'required="required" pattern="[a-z]{2}"'); ?>
+          <?php echo functions::form_draw_text_field('code', true, 'required pattern="[a-z]{2}"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_draw_text_field('code2', true, 'required="required" pattern="[a-z]{3}"'); ?>
+          <?php echo functions::form_draw_text_field('code2', true, 'required pattern="[a-z]{3}"'); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-          <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8"'); ?>
+          <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required placeholder="UTF-8"'); ?>
         </div>
 
         <div class="form-group col-md-6">
@@ -232,7 +232,7 @@
 <?php
   $options = array(
     array(
-      'label' => 'Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled="disabled"',
+      'label' => 'Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled',
       'options' => array(
         array(date('Y-m-d'), 'Y-m-d'),
         array(date('Y.m.d'), 'Y.m.d'),
@@ -240,7 +240,7 @@
       ),
     ),
     array(
-      'label' => 'Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled="disabled"',
+      'label' => 'Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled',
       'options' => array(
         array(date('d-m-Y'), 'd-m-Y'),
         array(date('d.m.Y'), 'd.m.Y'),
@@ -248,7 +248,7 @@
       ),
     ),
     array(
-      'label' => 'Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled="disabled"',
+      'label' => 'Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled',
       'options' => array(
         array(date('m/d/y'), 'm/d/y'),
       ),

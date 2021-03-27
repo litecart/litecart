@@ -647,7 +647,7 @@
 
                 <div class="form-group col-md-3">
                   <label><?php echo language::translate('title_value', 'Value'); ?></label>
-                  <?php echo functions::form_draw_select_field('new_predefined_option[value_id]', array(array('','')), '', 'disabled="disabled"'); ?>
+                  <?php echo functions::form_draw_select_field('new_predefined_option[value_id]', array(array('','')), '', 'disabled'); ?>
                 </div>
 
                 <div class="form-group col-md-3">
@@ -798,7 +798,7 @@
               <tbody>
                 <tr>
                   <td><?php echo functions::form_draw_attribute_groups_list('new_option[new_1][group_id]', ''); ?></td>
-                  <td><?php echo functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', 'disabled="disabled"'); ?></td>
+                  <td><?php echo functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', 'disabled'); ?></td>
                   <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
                 </tr>
               </tbody>
@@ -955,14 +955,14 @@
       },
       success: function(data) {
         $('select[name="new_attribute[value_id]"').html('');
-        if ($('select[name="new_attribute[value_id]"').attr('disabled')) $('select[name="attribute[value_id]"]').removeAttr('disabled');
+        if ($('select[name="new_attribute[value_id]"').attr('disabled')) $('select[name="attribute[value_id]"]').prop('disabled', false);
         if (data) {
           $('select[name="new_attribute[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_attribute[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="new_attribute[value_id]"').attr('disabled', 'disabled');
+          $('select[name="new_attribute[value_id]"').prop('disabled', true);
         }
       },
       complete: function() {
@@ -1241,14 +1241,14 @@
       },
       success: function(data) {
         $('select[name="new_predefined_option[value_id]"').html('');
-        if ($('select[name="new_predefined_option[value_id]"').attr('disabled')) $('select[name="new_predefined_option[value_id]"]').removeAttr('disabled');
+        if ($('select[name="new_predefined_option[value_id]"').attr('disabled')) $('select[name="new_predefined_option[value_id]"]').prop('disabled', false);
         if (data) {
           $('select[name="new_predefined_option[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_predefined_option[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="new_predefined_option[value_id]"').attr('disabled', 'disabled');
+          $('select[name="new_predefined_option[value_id]"').prop('disabled', true);
         }
       },
       complete: function() {
@@ -1270,14 +1270,14 @@
       },
       success: function(data) {
         $('select[name="new_user_input_option[value_id]"').html('');
-        if ($('select[name="new_user_input_option[value_id]"').attr('disabled')) $('select[name="new_user_input_option[value_id]"]').removeAttr('disabled');
+        if ($('select[name="new_user_input_option[value_id]"').attr('disabled')) $('select[name="new_user_input_option[value_id]"]').prop('disabled', false);
         if (data) {
           $('select[name="new_user_input_option[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_user_input_option[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="new_user_input_option[value_id]"').attr('disabled', 'disabled');
+          $('select[name="new_user_input_option[value_id]"').prop('disabled', true);
         }
       },
       complete: function() {
@@ -1554,7 +1554,7 @@
     e.preventDefault();
     var output = '<tr>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_attribute_groups_list('new_option[option_index][group_id]', '')); ?></td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', 'disabled="disabled"')); ?></td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('new_option[option_index][value_id]', array(array('','')), '', 'disabled')); ?></td>'
                + '  <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     output = output.replace(/option_index/g, 'new_' + option_index);
@@ -1582,13 +1582,13 @@
       },
       success: function(data) {
         $(modal).find('select[name="'+ valueField +'"]').html('');
-        if ($(modal).find('select[name="'+ valueField +'"]').attr('disabled')) $(modal).find('select[name="'+ valueField +'"]').removeAttr('disabled');
+        if ($(modal).find('select[name="'+ valueField +'"]').attr('disabled')) $(modal).find('select[name="'+ valueField +'"]').prop('disabled', false);
         if (data) {
           $.each(data, function(i, zone) {
             $(modal).find('select[name="'+ valueField +'"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
         } else {
-          $(modal).find('select[name="'+ valueField +'"]').attr('disabled', 'disabled');
+          $(modal).find('select[name="'+ valueField +'"]').prop('disabled', true);
         }
       },
       complete: function() {

@@ -129,7 +129,7 @@
   function form_draw_checkbox($name, $value, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+    return '<input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
   }
 
   function form_draw_color_field($name, $value=true, $parameters='') {
@@ -332,7 +332,7 @@
   function form_draw_radio_button($name, $value, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked="checked"' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+    return '<input type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input === $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
   }
 
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='') {
@@ -505,8 +505,8 @@
     }
 
     return '<div class="btn-group btn-block btn-group-inline" data-toggle="buttons">'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. ($input ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" '. (($input == '1') ? 'checked="checked"' : '') .' />'. $true_text .'</label>'. PHP_EOL
-         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (!$input ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked="checked"' : '') .' />'. $false_text .'</label>' . PHP_EOL
+         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. ($input ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" '. (($input == '1') ? 'checked' : '') .' />'. $true_text .'</label>'. PHP_EOL
+         . '  <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (!$input ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" '. (($input == '0') ? 'checked' : '') .' />'. $false_text .'</label>' . PHP_EOL
          . '</div>';
   }
 
@@ -582,11 +582,11 @@
 
       case 'decimal':
       case 'float':
-        return form_draw_decimal_field($name, $input, 2, $parameters);
+        return form_draw_decimal_field($name, $input, 2, null, null, $parameters);
 
       case 'number':
       case 'int':
-        return form_draw_number_field($name, $input, $parameters);
+        return form_draw_number_field($name, $input, null, null, $parameters);
 
       case 'color':
         return form_draw_color_field($name, $input, $parameters);
@@ -1043,7 +1043,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     if (!database::num_rows($geo_zones_query)) {
-      return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
+      return form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {
@@ -1557,7 +1557,7 @@
     }
 
     if (!database::num_rows($zones_query)) {
-      $parameters .= ' disabled="disabled"';
+      $parameters .= ' disabled';
     }
 
     while ($zone = database::fetch($zones_query)) {

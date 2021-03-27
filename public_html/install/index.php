@@ -413,7 +413,7 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
     <label>Type</label>
-      <select class="form-control" name="db_type" required="required">
+      <select class="form-control" name="db_type" required>
         <option value="mysql">MySQL / MariaDB</option>
       </select>
     </div>
@@ -425,12 +425,12 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Database</label>
-      <input class="form-control" type="text" name="db_database" required="required" />
+      <input class="form-control" type="text" name="db_database" required />
     </div>
 
     <div class="form-group col-md-6">
       <label>Collation</label>
-      <select class="form-control" name="db_collation" required="required">
+      <select class="form-control" name="db_collation" required>
         <option>utf8_bin</option>
         <option>utf8_general_ci</option>
         <option>utf8_unicode_ci</option>
@@ -458,7 +458,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-control" type="text" name="db_username" required="required" />
+      <input class="form-control" type="text" name="db_username" required />
     </div>
 
     <div class="form-group col-md-6">
@@ -474,7 +474,7 @@ input[name="development_type"]:checked + div {
     <div class="form-group col-md-6">
       <label>Demo Data</label>
       <div class="checkbox">
-        <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled="disabled"' : ''; ?> /> Install demo data</label>
+        <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled' : ''; ?> /> Install demo data</label>
       </div>
     </div>
   </div>
@@ -484,19 +484,19 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Store Name</label>
-      <input class="form-control" name="store_name" type="text" value="My Store" required="required" />
+      <input class="form-control" name="store_name" type="text" value="My Store" required />
     </div>
 
     <div class="form-group col-md-6">
       <label>Store Email</label>
-      <input class="form-control" name="store_email" type="text" value="store@email.com" required="required" />
+      <input class="form-control" name="store_email" type="text" value="store@email.com" required />
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label>Country</label>
-      <select class="form-control" name="country_code" required="required">
+      <select class="form-control" name="country_code" required>
         <option value="">-- Select --</option>
         <?php foreach ($countries as $code => $name) echo '<option value="'. $code .'">'. $name .'</option>' . PHP_EOL; ?>
       </select>
@@ -504,7 +504,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Time Zone</label>
-      <select class="form-control" name="store_time_zone" required="required">
+      <select class="form-control" name="store_time_zone" required>
 <?php
   foreach (timezone_identifiers_list() as $timezone) {
     $timezone = explode('/', $timezone);
@@ -521,7 +521,7 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group" style="display: flex;">
     <label>
-      <input name="development_type" value="standard" type="radio" checked="checked" />
+      <input name="development_type" value="standard" type="radio" checked />
       <div>
         <div class="type">Standard</div>
         <div class="title">
@@ -554,7 +554,7 @@ input[name="development_type"]:checked + div {
       <label>Folder Name</label>
       <div class="input-group">
         <span class="input-group-addon">/</span>
-        <input class="form-control" name="admin_folder" type="text" value="admin" required="required" />
+        <input class="form-control" name="admin_folder" type="text" value="admin" required />
       </div>
     </div>
   </div>
@@ -562,12 +562,12 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-control" name="username" type="text" id="username" value="admin" required="required" />
+      <input class="form-control" name="username" type="text" id="username" value="admin" required />
     </div>
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-control" name="password" type="text" id="password" required="required" />
+      <input class="form-control" name="password" type="text" id="password" required />
     </div>
   </div>
 
@@ -578,7 +578,7 @@ input[name="development_type"]:checked + div {
   </p>
 
   <div class="form-group text-center">
-    <label><input name="accept_terms" value="1" type="checkbox" required="required" /> I agree to the terms and conditions.</label>
+    <label><input name="accept_terms" value="1" type="checkbox" required /> I agree to the terms and conditions.</label>
   </div>
 
   <input class="btn btn-success btn-block" type="submit" name="install" value="Install Now" onclick="if (document.getElementByName('accept_terms').value != 1) return false; if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />

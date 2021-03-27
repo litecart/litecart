@@ -98,19 +98,19 @@
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_number', 'Number'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_draw_text_field('iso_code_1', true, 'required="required" pattern="[0-9]{3}"'); ?>
+          <?php echo functions::form_draw_text_field('iso_code_1', true, 'required pattern="[0-9]{3}"'); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_draw_text_field('iso_code_2', true, 'required="required" pattern="[A-Z]{2}"'); ?>
+          <?php echo functions::form_draw_text_field('iso_code_2', true, 'required pattern="[A-Z]{2}"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-          <?php echo functions::form_draw_text_field('iso_code_3', true, 'required="required" pattern="[A-Z]{3}"'); ?>
+          <?php echo functions::form_draw_text_field('iso_code_3', true, 'required pattern="[A-Z]{3}"'); ?>
         </div>
       </div>
 

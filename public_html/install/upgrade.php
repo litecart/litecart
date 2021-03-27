@@ -334,7 +334,7 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group" style="display: flex;">
     <label>
-      <input name="development_type" value="standard" type="radio" checked="checked" />
+      <input name="development_type" value="standard" type="radio" checked />
       <div>
         <div class="type">Standard</div>
         <div class="title">

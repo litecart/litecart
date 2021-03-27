@@ -269,8 +269,8 @@
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
               <div class="btn-group btn-block" data-toggle="buttons">
-                <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked="checked"' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-                <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked="checked"' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+                <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
+                <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
               </div>
             </div>
           </div>
@@ -380,7 +380,7 @@
                   <div class="row">
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-                      <?php echo functions::form_draw_email_field('customer[email]', true, 'required="required"'); ?>
+                      <?php echo functions::form_draw_email_field('customer[email]', true, 'required'); ?>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -701,11 +701,11 @@
 ?>
               <tr>
                 <td class="text-right">&nbsp;</td>
-                <td class="text-right"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'readonly="readonly"'); ?></td>
+                <td class="text-right"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'readonly'); ?></td>
                 <td class="text-right"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'class="form-control text-right"'); ?></td>
                 <td class="text-right">
                   <div class="input-group">
-                    <span class="input-group-addon"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled="disabled" title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
+                    <span class="input-group-addon"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
                     <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="text-align: right;"'); ?>
                   </div>
                 </td>
@@ -1034,13 +1034,13 @@
       },
       success: function(data) {
         $('select[name="customer[zone_code]"]').html('');
-        if ($('select[name="customer[zone_code]"]').attr('disabled')) $('select[name="customer[zone_code]"]').removeAttr('disabled');
+        if ($('select[name="customer[zone_code]"]').attr('disabled')) $('select[name="customer[zone_code]"]').prop('disabled', false);
         if (data) {
           $.each(data, function(i, zone) {
             $('select[name="customer[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="customer[zone_code]"]').attr('disabled', 'disabled');
+          $('select[name="customer[zone_code]"]').prop('disabled', true);
         }
       },
       complete: function() {
@@ -1082,13 +1082,13 @@
       },
       success: function(data) {
         $('select[name="customer[shipping_address][zone_code]"]').html('');
-        if ($('select[name="customer[shipping_address][zone_code]"]').attr('disabled')) $('select[name="customer[shipping_address][zone_code]"]').removeAttr('disabled');
+        if ($('select[name="customer[shipping_address][zone_code]"]').attr('disabled')) $('select[name="customer[shipping_address][zone_code]"]').prop('disabled', false);
         if (data) {
           $.each(data, function(i, zone) {
             $('select[name="customer[shipping_address][zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name="customer[shipping_address][zone_code]]"]').attr('disabled', 'disabled');
+          $('select[name="customer[shipping_address][zone_code]]"]').prop('disabled', true);
         }
       },
       complete: function() {

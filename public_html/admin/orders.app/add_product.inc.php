@@ -62,7 +62,7 @@
 
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_product_id', 'Product ID'); ?></label>
-          <?php echo functions::form_draw_number_field('product_id', true, 'readonly="readonly"'); ?>
+          <?php echo functions::form_draw_number_field('product_id', true, 'readonly'); ?>
         </div>
       </div>
 
@@ -90,7 +90,7 @@
             }
 
             echo '<div class="checkbox">' . PHP_EOL
-               . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                . '</div>';
           }
           break;
@@ -108,7 +108,7 @@
             if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
           }
 
-          echo functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text . PHP_EOL;
+          echo functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) . $price_adjust_text . PHP_EOL;
 
           break;
 
@@ -126,7 +126,7 @@
             }
 
             echo '<div class="radio">' . PHP_EOL
-               . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                . '</div>';
           }
 
@@ -150,7 +150,7 @@
             $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
           }
 
-          echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required="required"' : ''));
+          echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required' : ''));
 
           break;
 
@@ -169,7 +169,7 @@
             }
           }
 
-          echo functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text. PHP_EOL;
+          echo functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) . $price_adjust_text. PHP_EOL;
 
           break;
       }

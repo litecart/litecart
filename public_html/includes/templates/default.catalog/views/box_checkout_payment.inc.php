@@ -5,7 +5,7 @@
 
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
     <label class="option btn btn-default btn-block<?php echo (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
-      <?php echo functions::form_draw_radio_button('payment[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
+      <?php echo functions::form_draw_radio_button('payment[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-xs-3 thumbnail" style="margin: 0;">
           <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . $option['icon'], 140, 60, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />

@@ -177,17 +177,17 @@
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="different_shipping_address"]', function(e){
     if (this.checked == true) {
-      $('#box-checkout-customer .shipping-address fieldset').removeAttr('disabled').slideDown('fast');
+      $('#box-checkout-customer .shipping-address fieldset').prop('disabled', false).slideDown('fast');
     } else {
-      $('#box-checkout-customer .shipping-address fieldset').attr('disabled', 'disabled').slideUp('fast');
+      $('#box-checkout-customer .shipping-address fieldset').prop('disabled', true).slideUp('fast');
     }
   });
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="create_account"]', function(){
     if (this.checked == true) {
-      $('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast');
+      $('#box-checkout-customer .account fieldset').prop('disabled', false).slideDown('fast');
     } else {
-      $('#box-checkout-customer .account fieldset').attr('disabled', 'disabled').slideUp('fast');
+      $('#box-checkout-customer .account fieldset').prop('disabled', true).slideUp('fast');
     }
   });
 
@@ -304,10 +304,10 @@
     if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
       if (window.customer_form_checksum == null) return;
       window.customer_form_changed = true;
-      $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
+      $('#box-checkout-customer button[name="save_customer_details"]').prop('disabled', false);
     } else {
       window.customer_form_changed = false;
-      $('#box-checkout-customer button[name="save_customer_details"]').attr('disabled', 'disabled');
+      $('#box-checkout-customer button[name="save_customer_details"]').prop('disabled', true);
     }
   });
 
