@@ -180,7 +180,7 @@
   }
 
 // Manufacturer
-  if (!empty($product->manufacturer)) {
+  if (!empty($product->manufacturer) && $product->manufacturer->status) {
     $schema_json['brand']['name'] = $product->manufacturer->name;
 
     $_page->snippets['manufacturer'] = array(
