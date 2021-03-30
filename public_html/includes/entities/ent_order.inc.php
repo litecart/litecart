@@ -516,7 +516,7 @@
       foreach ($this->order_total->process($this) as $row) {
         $this->data['order_total'][] = [
           'id' => null,
-          'module_id' => $row['id'],
+          'module_id' => $row['module_id'],
           'title' =>  $row['title'],
           'value' => $row['value'],
           'tax' => $row['tax'],

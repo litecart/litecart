@@ -27,7 +27,7 @@
             }
 
             $output[] = [
-              'id' => $module_id,
+              'module_id' => $module_id,
               'title' => $row['title'],
               'value' => $row['value'],
               'tax' => $row['tax'],
