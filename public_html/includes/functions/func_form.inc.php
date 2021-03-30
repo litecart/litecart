@@ -16,9 +16,12 @@
 
       foreach (explode('&', http_build_query($superglobal, '', '&')) as $pair) {
 
-        list($key, $value) = explode('=', $pair);
-        $key = urldecode($key);
-        $value = urldecode($value);
+        if (!preg_match('#^(.*)=(.*)$#', $pair, $matches)) {
+          continue;
+        }
+
+        $key = urldecode($matches[1]);
+        $value = urldecode($matches[2]);
 
         if ($key == $name) return $value;
 
