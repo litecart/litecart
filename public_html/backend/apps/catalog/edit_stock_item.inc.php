@@ -16,8 +16,8 @@
 
 		try {
 
-			if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
-			if (empty($_POST['sku'])) throw new Exception(language::translate('error_name_missing', 'You must provide SKU'));
+			if (empty($_POST['name'][settings::get('store_language_code')])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
+			if (empty($_POST['sku'])) throw new Exception(language::translate('error_missing_sku', 'You must provide SKU'));
 
 			if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and code = '". database::input($_POST['code']) ."' limit 1;"))) {
 				throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
@@ -34,8 +34,6 @@
 			if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) {
 				throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 			}
-
-			if (!isset($_POST['status'])) $_POST['status'] = '0';
 
 			$fields = [
 				'supplier_id',
@@ -64,6 +62,12 @@
 			}
 
 			$stock_item->save();
+
+      if (!empty($_POST['delete_file'])) $stock_item->delete_file();
+
+      if (is_uploaded_file($_FILES['file']['tmp_name'])) {
+        $stock_item->save_file($_FILES['file']['tmp_name'], $_FILES['file']['name'], $_FILES['file']['type']);
+      }
 
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         header('Content-Type: application/json; charset='. language::$selected['code']);
@@ -164,8 +168,8 @@
         </div>
 
         <div class="form-group">
-          <?php if (!empty($item->data['file'])) { ?>
-          <label class="pull-right"><?php echo functions::form_draw_checkbox('remove_file', '1', true); ?> <?php echo language::translate('text_remove_file', 'Remove File'); ?></label>
+          <?php if (!empty($stock_item->data['file'])) { ?>
+          <label class="pull-right"><?php echo functions::form_draw_checkbox('delete', '1', true); ?> <?php echo language::translate('text_delete', 'Delete'); ?> <?php echo $stock_item->data['filename']; ?></label>
           <?php } ?>
           <label><?php echo language::translate('title_digital_item', 'Digital Item'); ?></label>
           <?php echo functions::form_draw_file_field('file', true); ?>
@@ -280,7 +284,7 @@
     $(ordered_field).val(0);
   });
 
-  if ($.featherlight.opened) {
+  if ($.featherlight && $.featherlight.opened) {
     $('form[name="stock_item_form"]').submit(function(e){
       e.preventDefault();
       $.ajax({

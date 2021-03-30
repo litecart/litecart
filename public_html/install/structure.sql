@@ -721,6 +721,60 @@ CREATE TABLE `lc_sold_out_statuses_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_stock_items` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`supplier_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`code` VARCHAR(32) NOT NULL DEFAULT '',
+	`sku` VARCHAR(32) NOT NULL DEFAULT '',
+	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
+	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
+	`taric` VARCHAR(16) NOT NULL DEFAULT '',
+	`image` VARCHAR(512) NOT NULL DEFAULT '',
+	`file` VARCHAR(128) NOT NULL DEFAULT '',
+	`filename` VARCHAR(128) NOT NULL DEFAULT '',
+	`mime_type` VARCHAR(32) NOT NULL DEFAULT '',
+	`downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`quantity` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+	`quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT ''
+	`ordered` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`weight` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`weight_unit` VARCHAR(2) NOT NULL DEFAULT ''
+	`length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`purchase_price` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `sku` (`sku`),
+	INDEX `brand_id` (`brand_id`),
+	INDEX `supplier_id` (`supplier_id`),
+	INDEX `mpn` (`mpn`),
+	INDEX `gtin` (`gtin`),
+	INDEX `code` (`code`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_transactions` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
+	`notes` MEDIUMTEXT NOT NULL DEFAULT '',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_transactions_contents` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+	PRIMARY KEY (`id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_suppliers` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(64) NOT NULL DEFAULT '',

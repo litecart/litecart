@@ -421,6 +421,10 @@
     FS_DIR_APP . 'vqmod/',
   ]);
 
+  perform_action('copy', [
+    FS_DIR_APP . 'install/data/default/storage/files' => FS_DIR_STORAGE,
+  ]);
+
   perform_action('modify', [
     FS_DIR_STORAGE . 'config.inc.php' => [
       [

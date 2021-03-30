@@ -161,6 +161,53 @@
 			cache::clear_cache('stock_item');
 		}
 
+    public function save_file($source, $filename, $mime_type) {
+
+      if (empty($source)) return;
+
+      if (empty($this->data['id'])) {
+        $this->save();
+      }
+
+      if (!is_dir(FS_DIR_STORAGE . 'files/')) mkdir(FS_DIR_STORAGE . 'files/', 0777);
+
+      if (is_file(FS_DIR_STORAGE . $this->data['file'])) {
+        unlink(FS_DIR_STORAGE . $this->data['file']);
+      }
+
+      $file = 'files/' . $this->data['id'] .'-'. $filename;
+      copy($source, FS_DIR_STORAGE . $file);
+
+      $this->previous['file'] = $this->data['file'] = $file;
+      $this->previous['filename'] = $this->data['filename'] = $filename;
+      $this->previous['mime_type'] = $this->data['mime_type'] = $mime_type;
+
+      database::query(
+        "update ". DB_TABLE_PREFIX ."stock_items
+        set file = '". database::input($this->data['file']) ."',
+          filename = '". database::input($this->data['filename']) ."',
+          mime_type = '". database::input($this->data['mime_type']) ."'
+        where id = ". (int)$this->data['id'] .";"
+      );
+    }
+
+    public function delete_file() {
+
+      if (empty($this->data['id'])) return;
+
+      if (is_file(FS_DIR_STORAGE . $this->data['file'])) {
+        unlink(FS_DIR_STORAGE . $this->data['file']);
+      }
+
+      database::query(
+        "update ". DB_TABLE_PREFIX ."stock_items
+        set file = ''
+        where id = ". (int)$this->data['id'] .";"
+      );
+
+      $this->previous['file'] = $this->data['file'] = '';
+    }
+
 		public function delete() {
 
 			database::query(
