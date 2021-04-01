@@ -1,20 +1,19 @@
 /* Boxes */
 
-#sidebar > .box > h2 {
-  margin-top: 0;
+#sidebar > .box > :first-child {
+  //margin-top: 0;
 }
 
 .box {
 
+  margin-bottom: calc(var(--gutter-size) *2);
+
   &.white {
     padding: var(--gutter-size);
-    border-radius: var(--border-radius);
     background: #fff;
     box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+    border-radius: var(--border-radius);
     > :first-child {
-      margin-top: 0;
-    }
-    h1, h2, h3 {
       margin-top: 0;
     }
   }

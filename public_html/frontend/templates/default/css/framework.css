@@ -213,10 +213,8 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: normal;
+  font-weight: 500;
   color: var(--default-title-color);
-  border-bottom: 1px solid var(--default-border-color);
-  padding-bottom: 0.5rem;
 }
 a:link,
 a:visited {
@@ -238,21 +236,16 @@ hr {
   border-top: 1px solid var(--default-border-color);
 }
 /* Boxes */
-#sidebar > .box > h2 {
-  margin-top: 0;
+.box {
+  margin-bottom: calc(var(--gutter-size) * 2);
 }
 .box.white {
   padding: var(--gutter-size);
-  border-radius: var(--border-radius);
   background: #fff;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  border-radius: var(--border-radius);
 }
 .box.white > :first-child {
-  margin-top: 0;
-}
-.box.white h1,
-.box.white h2,
-.box.white h3 {
   margin-top: 0;
 }
 .box + .box.white {

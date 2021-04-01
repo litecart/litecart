@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
+
 @import "framework/media.less";
 
 /* Variables */
 
 :root {
-  --top-background-color: #efefef;
+  --top-background-color: var(--panel-background-color);
+  --top-text-color: var(--panel-text-color);
+
   --page-background-color: #f6f6f6;
 
   --sidebar-background-color: #dadce0;
@@ -18,7 +22,7 @@
   --default-background-color-hover: #d8d8d8;
   --default-border-color: #d0d0d0;
   --default-line-height: 1.5em;
-  --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --default-text-font: Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #222;
   --default-text-size: 12px;
   --default-title-color: #222;
@@ -90,7 +94,7 @@
 
   --border-radius: 5px;
   --gutter-size: 2rem;
-  --input-background-color: #fff;
+  --input-background-color: #f9f9f9;
   --input-text-color: #000;
   --input-border-color: var(--default-border-color);
   --input-padding-x: 15px;

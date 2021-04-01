@@ -1,3 +1,24 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/firasans/v10/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnZKvuQQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnSKzuQQ.ttf) format('truetype');
+}
 /* Media Breakpoints */
 /* Variables */
 :root {
@@ -12,7 +33,7 @@
   --default-background-color-active: #ccc;
   --default-border-color: transparent;
   --default-line-height: 150%;
-  --default-text-font: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #000;
   --default-text-size: 12px;
   --default-title-color: #333;

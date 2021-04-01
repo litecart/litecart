@@ -1,6 +1,21 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAw.ttf) format('truetype');
+}
 /* Variables */
 :root {
-  --top-background-color: #efefef;
+  --top-background-color: var(--panel-background-color);
+  --top-text-color: var(--panel-text-color);
   --page-background-color: #f6f6f6;
   --sidebar-background-color: #dadce0;
   --sidebar-border-color: var(--default-border-color);
@@ -73,7 +88,7 @@
   --copyright-text-color: #666;
   --border-radius: 5px;
   --gutter-size: 2rem;
-  --input-background-color: #fff;
+  --input-background-color: #f9f9f9;
   --input-text-color: #000;
   --input-border-color: var(--default-border-color);
   --input-padding-x: 15px;
