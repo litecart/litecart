@@ -19,7 +19,7 @@
 
       $updated = 0;
       $inserted = 0;
-      $line = 0;
+      $line = 1;
 
       foreach ($csv as $row) {
         $line++;
@@ -36,13 +36,23 @@
         }
 
         if (!empty($customer->data['id'])) {
-          if (empty($_POST['update'])) continue;
+
+          if (empty($_POST['update'])) {
+            echo "Skip updating existing customer on line $line" . PHP_EOL;
+            continue;
+          }
+
           echo 'Updating existing customer '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
           $updated++;
 
         } else {
-          if (empty($_POST['insert'])) continue;
-          echo 'Creating new customer: '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
+
+          if (empty($_POST['insert'])) {
+            echo "Skip inserting new customer on line $line" . PHP_EOL;
+            continue;
+          }
+
+          echo 'Inserting new customer: '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
           $inserted++;
 
           if (!empty($row['id'])) {

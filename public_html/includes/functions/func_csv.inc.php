@@ -44,6 +44,9 @@
 
     $output = [];
 
+  // Remove Byte Order Mark (BOM) if any
+    $string = preg_replace("#^(\xEF\xBB\xBF)+#", '', $string);
+
   // Override line endings
     $ini_eol = ini_get('auto_detect_line_endings');
     ini_set('auto_detect_line_endings', true);

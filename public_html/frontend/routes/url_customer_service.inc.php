@@ -11,7 +11,7 @@
 
       return [
         [
-          'pattern' => '#^'. implode('|', $titles) .'$#',
+          'pattern' => '#^('. implode('|', array_filter($titles)) .')$#',
           'page' => 'customer_service',
           'params' => '',
           'endpoint' => 'frontend',

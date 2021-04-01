@@ -32,19 +32,19 @@
     <div class="row">
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-        <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?>
+        <?php echo functions::form_draw_text_field('firstname', true, 'required'); ?>
       </div>
 
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-        <?php echo functions::form_draw_text_field('lastname', true, 'required="required"'); ?>
+        <?php echo functions::form_draw_text_field('lastname', true, 'required'); ?>
       </div>
     </div>
 
     <div class="row">
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-        <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?>
+        <?php echo functions::form_draw_text_field('address1', true, 'required'); ?>
       </div>
 
       <div class="form-group col-xs-6">
@@ -82,12 +82,12 @@
     <div class="row">
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-        <?php echo functions::form_draw_email_field('email', true, 'required="required"'. (!empty(customer::$data['id']) ? ' readonly="readonly"' : '')); ?>
+        <?php echo functions::form_draw_email_field('email', true, 'required'. (!empty(customer::$data['id']) ? ' readonly' : '')); ?>
       </div>
 
       <div class="form-group col-xs-6">
         <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-        <?php echo functions::form_draw_phone_field('phone', true, 'required="required"'); ?>
+        <?php echo functions::form_draw_phone_field('phone', true, 'required'); ?>
       </div>
     </div>
   </div>
@@ -96,7 +96,7 @@
 
     <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
 
-    <fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
+    <fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
 
       <?php if (settings::get('customer_field_company')) { ?>
       <div class="row">
@@ -180,7 +180,7 @@
 
     <h3><?php echo functions::form_draw_checkbox('create_account', '1', !empty($_POST['create_account']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
 
-    <fieldset<?php echo (empty($_POST['create_account'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
+    <fieldset<?php echo (empty($_POST['create_account'])) ? ' style="display: none;" disabled' : false; ?>>
 
       <div class="row">
         <div class="col-sm-6">
@@ -204,7 +204,7 @@
   <?php } ?>
 
   <div>
-    <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
+    <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
   </div>
 
 </section>

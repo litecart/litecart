@@ -246,7 +246,7 @@
 
           <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
 
-          <fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled="disabled"' : false; ?>>
+          <fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
 
             <div class="row">
               <div class="form-group col-sm-6">
@@ -356,11 +356,11 @@
 
   if ($('select[name="country_code"]').find('option:selected').data('postcode-format') != '') {
     $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('postcode-format'));
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').attr('required', 'required');
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').prop('required', true);
     $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').show();
   } else {
     $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('pattern');
-    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').removeAttr('required');
+    $('select[name="country_code"]').closest('table').find('input[name="postcode"]').prop('required', false);
     $('select[name="country_code"]').closest('table').find('input[name="postcode"]').closest('td').find('.required').hide();
   }
 
@@ -376,9 +376,9 @@
 
   $('input[name="different_shipping_address"]').change(function(e){
     if (this.checked == true) {
-      $('fieldset.shipping-address').removeAttr('disabled').slideDown('fast');
+      $('fieldset.shipping-address').prop('disabled', false).slideDown('fast');
     } else {
-      $('fieldset.shipping-address').attr('disabled', 'disabled').slideUp('fast');
+      $('fieldset.shipping-address').prop('disabled', true).slideUp('fast');
     }
   }).trigger('change');
 
@@ -390,11 +390,11 @@
 
   if ($('select[name="shipping_address[country_code]"]').find('option:selected').data('postcode-format') != '') {
     $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').attr('pattern', $('select[name="shipping_address[country_code]"]').find('option:selected').data('postcode-format'));
-    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').attr('required', 'required');
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').prop('required', true);
     $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').closest('td').find('.required').show();
   } else {
     $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').removeAttr('pattern');
-    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').removeAttr('required');
+    $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').prop('required', false);
     $('select[name="shipping_address[country_code]"]').closest('table').find('input[name="shipping_address[postcode]"]').closest('td').find('.required').hide();
   }
 

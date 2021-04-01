@@ -746,15 +746,15 @@ END;
         return form_draw_date_field($name, $input, $parameters);
 
       case 'datetime':
-        return form_draw_date_field($name, $input, $parameters);
+        return form_draw_datetime_field($name, $input, $parameters);
 
       case 'decimal':
       case 'float':
-        return form_draw_decimal_field($name, $input, 2, $parameters);
+        return form_draw_decimal_field($name, $input, 2, null, null, $parameters);
 
       case 'number':
       case 'int':
-        return form_draw_number_field($name, $input, $parameters);
+        return form_draw_number_field($name, $input, null, null, $parameters);
 
       case 'color':
         return form_draw_color_field($name, $input, $parameters);
