@@ -1,71 +1,72 @@
 <?php
 
-	if (!empty($_GET['stock_item_id'])) {
-		$stock_item = new ent_stock_item($_GET['stock_item_id']);
-	} else {
-		$stock_item = new ent_stock_item();
-	}
+  if (!empty($_GET['stock_item_id'])) {
+    $stock_item = new ent_stock_item($_GET['stock_item_id']);
+  } else {
+    $stock_item = new ent_stock_item();
+  }
 
-	if (empty($_POST)) {
-		foreach ($stock_item->data as $key => $value) {
-			$_POST[$key] = $value;
-		}
-	}
+  if (empty($_POST)) {
+    foreach ($stock_item->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
 
-	if (isset($_POST['save'])) {
+  if (isset($_POST['save'])) {
 
-		try {
+    try {
 
-			if (empty($_POST['name'][settings::get('store_language_code')])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
-			if (empty($_POST['sku'])) throw new Exception(language::translate('error_missing_sku', 'You must provide SKU'));
+      if (empty($_POST['name'][settings::get('store_language_code')])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
+      if (empty($_POST['sku'])) throw new Exception(language::translate('error_missing_sku', 'You must provide SKU'));
 
-			if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and code = '". database::input($_POST['code']) ."' limit 1;"))) {
-				throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
-			}
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and code = '". database::input($_POST['code']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      }
 
-			if (!empty($_POST['sku']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and sku = '". database::input($_POST['sku']) ."' limit 1;"))) {
-				throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
-			}
+      if (!empty($_POST['sku']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and sku = '". database::input($_POST['sku']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+      }
 
-			if (!empty($_POST['mpn']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and mpn = '". database::input($_POST['mpn']) ."' limit 1;"))) {
-				throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
-			}
+      if (!empty($_POST['mpn']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and mpn = '". database::input($_POST['mpn']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
+      }
 
-			if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) {
-				throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
-			}
+      if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+      }
 
-			$fields = [
-				'supplier_id',
-				'brand_id',
-				'sku',
-				'mpn',
-				'gtin',
-				'taric',
-				'name',
-				'weight',
-				'weight_unit',
-				'length',
-				'width',
-				'height',
-				'length_unit',
-				'quantity',
-				'quantity_adjustment',
-				'quantity_unit_id',
-				'purchase_price',
-				'purchase_price_currency_code',
-			];
+      $fields = [
+        'supplier_id',
+        'brand_id',
+        'sku',
+        'mpn',
+        'gtin',
+        'taric',
+        'name',
+        'weight',
+        'weight_unit',
+        'length',
+        'width',
+        'height',
+        'length_unit',
+        'quantity',
+        'quantity_adjustment',
+        'ordered',
+        'quantity_unit_id',
+        'purchase_price',
+        'purchase_price_currency_code',
+      ];
 
-			foreach ($fields as $field) {
-				if (in_array($field, ['sku', 'mpn', 'gtin', 'taric',])) $_POST[$field] = trim($_POST[$field]);
-				if (isset($_POST[$field])) $stock_item->data[$field] = $_POST[$field];
-			}
+      foreach ($fields as $field) {
+        if (in_array($field, ['sku', 'mpn', 'gtin', 'taric',])) $_POST[$field] = trim($_POST[$field]);
+        if (isset($_POST[$field])) $stock_item->data[$field] = $_POST[$field];
+      }
 
-			$stock_item->save();
+      $stock_item->save();
 
       if (!empty($_POST['delete_file'])) $stock_item->delete_file();
 
-      if (is_uploaded_file($_FILES['file']['tmp_name'])) {
+      if (!empty($_FILES['file']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
         $stock_item->save_file($_FILES['file']['tmp_name'], $_FILES['file']['name'], $_FILES['file']['type']);
       }
 
@@ -75,11 +76,11 @@
         exit;
       }
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
-			exit;
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
+      exit;
 
-		} catch (Exception $e) {
+    } catch (Exception $e) {
 
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         header('Content-Type: application/json; charset='. language::$selected['code']);
@@ -87,26 +88,26 @@
         exit;
       }
 
-			notices::add('errors', $e->getMessage());
-		}
-	}
+      notices::add('errors', $e->getMessage());
+    }
+  }
 
-	if (isset($_POST['delete']) && $stock_item) {
+  if (isset($_POST['delete']) && $stock_item) {
 
-		try {
+    try {
 
-			$stock_item->delete();
+      $stock_item->delete();
 
-			notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-			header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
-			exit;
+      notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
+      header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
+      exit;
 
-		} catch (Exception $e) {
-			notices::add('errors', $e->getMessage());
-		}
-	}
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
 
-	breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_add_new_stock_item', 'Add New Stock Item'));
+  breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_add_new_stock_item', 'Add New Stock Item'));
 ?>
 
 <div class="panel panel-app">
@@ -138,13 +139,13 @@
               </div>
 
               <div class="input-group">
-                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                <?php echo functions::form_draw_text_field('mpn', true); ?>
+                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <?php echo functions::form_draw_text_field('gtin', true); ?>
               </div>
 
               <div class="input-group">
-                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                <?php echo functions::form_draw_text_field('gtin', true); ?>
+                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <?php echo functions::form_draw_text_field('mpn', true); ?>
               </div>
 
               <div class="input-group">
@@ -306,13 +307,14 @@
         async: true,
         data: $(this).serialize() + '&save=true',
         dataType: 'json',
-        success: function(data) {
-          if (data.error) {
-            alert(data.error);
+        success: function(result) {
+          if (result.error) {
+            alert(result.error);
             return;
           }
           <?php if (!empty($_GET['js_callback'])) { ?>
-          <?php echo 'if (window['. addcslashes($_GET['js_callback'], '\'') .']) window['. addcslashes($_GET['js_callback'], '\'') .'](data);' ?>
+          <?php echo 'if (window.'. addcslashes($_GET['js_callback'], '\'') .') window.'. addcslashes($_GET['js_callback'], '\'') .'(result.data);' ?>
+          <?php echo 'else alert("Unknown callback function'. addcslashes($_GET['js_callback'], "\"\r\n") .'");' ?>
           <?php } ?>
           $.featherlight.close();
         },

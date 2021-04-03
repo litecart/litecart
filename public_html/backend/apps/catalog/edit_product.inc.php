@@ -594,8 +594,8 @@
                   <th style="width: 100px;" class="text-right"><?php echo language::translate('title_weight', 'Weight'); ?></th>
                   <th style="width: 150px;" class="text-right"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                   <th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-                  <th style="width: 150px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
-                  <th style="width: 150px;" class="text-center"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
+                  <th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
+                  <th style="width: 175px;" class="text-center"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
                   <th style="width: 85px;">&nbsp;</th>
                   <th style="width: 50px;">&nbsp;</th>
                 </tr>
@@ -1157,7 +1157,6 @@
 
   window.upsert_stock_item = function(stock_item) {
     if (!$('input[name^="stock_items"][name$="[sku]"][value="'+ stock_item.sku +'"]').length) {
-
       var output = '<tr>'
                  + '  <td class="grabable">'
                  + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('stock_items[new_stock_item_i][id]', '')); ?>'
