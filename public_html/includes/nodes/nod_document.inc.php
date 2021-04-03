@@ -140,6 +140,12 @@
         $GLOBALS['output'] = preg_replace('#(<html(?:[^>]+)?>).*(</html>)#is', '$1'. addcslashes(preg_replace('#<!--.*?-->#ms', '', $matches[1]), '\\$') .'$2', $GLOBALS['output']);
       }
 
+    // Static Domain
+      if ($static_domain = settings::get('static_domain')) {
+        $GLOBALS['output'] = preg_replace('# (src|href)="(/[^"]+\.(css|eot|gif|ico|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?[^"]+)?)"#', ' $1="'. rtrim($static_domain, '/') .'$2"', $GLOBALS['output']);
+        $GLOBALS['output'] = preg_replace('# (src|href)="(https?://'. preg_quote($_SERVER['HTTP_HOST'], '#') .')(/[^"]+\.(css|eot|gif|ico|jpe?g|js|otf|png|svg|ttf|woff2?)(\?[^"]+)?)"#', ' $1="'. rtrim($static_domain, '/') .'$3"', $GLOBALS['output']);
+      }
+
     // Extract and group in content stylesheets
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];

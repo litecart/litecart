@@ -441,6 +441,34 @@
   perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
       [
+        'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.', '#') . PHP_EOL,
+        'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL,
+                  .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+        'regexp'  => true,
+      ],
+      [
+        'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$', '#') . PHP_EOL,
+        'replace' => '  $1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL,
+                  .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+        'regexp'  => true,
+      ],
+      [
+        'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.mydomain\.com', '#') . PHP_EOL,
+        'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL,
+                  .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+        'regexp'  => true,
+      ],
+      [
+        'search'  => '  # Web path to catalog root' . PHP_EOL,
+        'replace' => '  # Deny access to non-static content on static domain' . PHP_EOL
+                   . '  RewriteCond %{HTTP_HOST} ^static\.' . PHP_EOL
+                   . '  RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]' . PHP_EOL
+                   . '  RewriteCond %{REQUEST_URI} !/handlers/ [NC]' . PHP_EOL
+                   . '  RewriteRule ^ - [R=403,L]' . PHP_EOL
+                   . PHP_EOL
+                   . '  # Web path to catalog root' . PHP_EOL,
+      ],
+      [
         'search'  => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]" . PHP_EOL,
         'replace' => "  # Resolve some storage content" . PHP_EOL
                    . "  RewriteRule ^(cache|images)/ /storage/%{REQUEST_URI} [L]" . PHP_EOL
