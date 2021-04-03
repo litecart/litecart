@@ -11,7 +11,7 @@
         throw new Exception(language::translate('error_invalid_template', 'Not a valid template'));
       }
 
-      if ($_POST['template'] != settings::get('template')) {
+      if ($_POST['template'] != settings::get('store_template')) {
         database::query(
           "update ". DB_TABLE_PREFIX ."settings
           set
@@ -72,7 +72,7 @@
       <div class="form-group">
         <label><?php echo language::translate('title_template', 'Template'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_draw_templates_list('template', empty($_POST['template']) ? settings::get('template') : true); ?>
+            <?php echo functions::form_draw_templates_list('template', empty($_POST['template']) ? settings::get('store_template') : true); ?>
             <span class="input-group-btn">
               <a class="btn btn-default" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
             </span>

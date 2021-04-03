@@ -1,8 +1,8 @@
 <?php
 
 // Set template
-  define('FS_DIR_TEMPLATE', FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/');
-  define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/');
+  define('FS_DIR_TEMPLATE', FS_DIR_APP . 'frontend/templates/'. settings::get('store_template') .'/');
+  define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. settings::get('store_template') .'/');
 
 // Maintenance Mode
   if (settings::get('maintenance_mode')) {

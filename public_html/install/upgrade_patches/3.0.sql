@@ -26,7 +26,7 @@ CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '' AF
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'store_template' WHERE `key` = 'store_template_catalog' LIMIT 1;
+UPDATE `lc_settings` SET `key` = 'store_template', title = 'Store Template', `function` = 'template()' WHERE `key` = 'store_template_catalog' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'store_template' LIMIT 1;
 -- --------------------------------------------------------

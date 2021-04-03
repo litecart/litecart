@@ -7,7 +7,7 @@
   breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
 
 // Get template settings structure
-  $settings = include vmod::check(FS_DIR_APP . 'frontend/templates/' . settings::get('template') .'/config.inc.php');
+  $settings = include vmod::check(FS_DIR_APP . 'frontend/templates/' . settings::get('store_template') .'/config.inc.php');
 
   if (empty($settings)) $settings = [];
 
@@ -136,8 +136,8 @@
           <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
           <tr>
             <td style="white-space: normal;">
-              <u><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br />
-              <?php echo language::translate(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
+              <u><?php echo language::translate(settings::get('store_template').':title_'.$setting['key'], $setting['title']); ?></u><br />
+              <?php echo language::translate(settings::get('store_template').':description_'.$setting['key'], $setting['description']); ?>
             </td>
             <td><?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
             <td class="text-right">
@@ -149,7 +149,7 @@
           </tr>
           <?php } else { ?>
           <tr>
-            <td><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></td>
+            <td><?php echo language::translate(settings::get('store_template').':title_'.$setting['key'], $setting['title']); ?></td>
             <td>
               <div style="max-height: 200px; overflow-y: auto;">
                 <?php echo nl2br($setting['value']); ?>
