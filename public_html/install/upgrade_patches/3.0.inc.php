@@ -435,7 +435,7 @@
         'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
       ],
       [
-        'search'  => "ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
+        'search'  => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
         'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
       ],
     ],
@@ -500,7 +500,8 @@
       ],
       [
         'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
-        'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . 'backend/');" . PHP_EOL,
+        'replace' => "  define('FS_DIR_ADMIN',       FS_DIR_APP . 'backend/');" . PHP_EOL
+                   . "  define('FS_DIR_STORAGE',     FS_DIR_APP . 'storage/');",
       ],
       [
         'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
