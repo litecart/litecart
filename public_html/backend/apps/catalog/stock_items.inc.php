@@ -20,12 +20,11 @@
 	}
 
 	$stock_items_query = database::query(
-		"select si.*, sii.name, b.name as brand_name from ". DB_TABLE_PREFIX ."stock_items si
+		"select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
 		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
-		left join ". DB_TABLE_PREFIX ."brands b on (b.id = si.id)
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-		order by si.sku, b.name, sii.name;"
+		order by si.sku, sii.name;"
 	);
 
   if ($_GET['page'] > 1) database::seek($stock_items_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -71,10 +70,10 @@
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw'); ?></th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-            <th><?php echo language::translate('title_brand', 'Brand'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
             <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
+            <th><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
             <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
             <th>&nbsp;</th>
           </tr>
@@ -85,10 +84,10 @@
             <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
             <td><?php echo $stock_item['id']; ?></td>
             <td><?php echo $stock_item['sku']; ?></td>
-            <td><?php echo $stock_item['brand_name']; ?></td>
             <td><a href="<?php echo document::link(null, ['doc' => 'edit_stock_item', 'stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
             <td><?php echo $stock_item['mpn']; ?></td>
             <td><?php echo $stock_item['gtin']; ?></td>
+            <td class="text-right"><?php echo (float)$stock_item['ordered']; ?></td>
             <td class="text-right"><?php echo (float)$stock_item['quantity']; ?></td>
             <td><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_item', 'stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
@@ -96,7 +95,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="9"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
+            <td colspan="10"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
           </tr>
         </tfoot>
       </table>

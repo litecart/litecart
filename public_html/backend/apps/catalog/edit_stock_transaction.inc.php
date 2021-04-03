@@ -136,7 +136,12 @@
               </div>
             </td>
             <td class="text-center">
-              <?php echo functions::form_draw_decimal_field('new[ordered]', true, 2); ?>
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                </span>
+                <?php echo functions::form_draw_decimal_field('new[ordered]', true, 2); ?>
+              </div>
             </td>
             <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
           </tr>
@@ -145,7 +150,7 @@
 
       <datalist id="available-stock-items">
         <?php foreach ($available_stock_items as $stock_item) { ?>
-        <option value="<?php echo htmlspecialchars($stock_item['sku']); ?>" data-name="<?php echo htmlspecialchars($stock_item['name']); ?>">
+        <option value="<?php echo htmlspecialchars($stock_item['sku']); ?>" data-name="<?php echo htmlspecialchars($stock_item['name']); ?>" data-ordered="<?php echo $stock_item['ordered']; ?>">
         <?php } ?>
       </datalist>
 
@@ -169,6 +174,7 @@
     var row = $(this).closest('tr');
     if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
       $(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
+      $(row).find('input[name="new[ordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('ordered'));
     } else {
       $(row).find('input[name="new[name]"]').prop('readonly', false);
     }

@@ -184,8 +184,6 @@
             <th>&nbsp;</th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-            <th><?php echo language::translate('title_SKU', 'SKU'); ?></th>
             <th class="text-right"><?php echo language::translate('title_created', 'Created'); ?></th>
             <th>&nbsp;</th>
           </tr>
@@ -200,8 +198,6 @@
             <td><img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
             <td><?php echo $product['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_product', 'product_id' => $product['id']], ['app']); ?>"><?php echo $product['name']; ?></a></td>
-            <td><?php echo $product['gtin']; ?></td>
-            <td><?php echo $product['sku']; ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
             <td class="text-right"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>

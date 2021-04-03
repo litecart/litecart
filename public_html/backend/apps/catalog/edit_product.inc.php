@@ -595,6 +595,7 @@
                   <th style="width: 150px;" class="text-right"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                   <th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
                   <th style="width: 150px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
+                  <th style="width: 150px;" class="text-center"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
                   <th style="width: 85px;">&nbsp;</th>
                   <th style="width: 50px;">&nbsp;</th>
                 </tr>
@@ -633,6 +634,14 @@
                       <?php echo functions::form_draw_decimal_field('stock_items['. $key .'][quantity_adjustment]', true); ?>
                     </div>
                   </td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-btn">
+                        <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                      </span>
+                      <?php echo functions::form_draw_decimal_field('stock_items[new_stock_item_i][ordered]', true, 2, 'min="0"'); ?>
+                    </div>
+                  </td>
                   <td class="text-right">
                     <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #39c;"'); ?></a>
                     <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #39c;"'); ?></a>
@@ -646,7 +655,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="8">
+                  <td colspan="9">
                     <a href="<?php echo document::href_link('', ['doc' => 'stock_item_picker', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
                     <a href="<?php echo document::href_link('', ['doc' => 'edit_stock_item', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
                   </td>
@@ -1097,6 +1106,14 @@
     $(qty_field).val(parseFloat($(qty_field).data('quantity')) + parseFloat($(this).val()));
   });
 
+  $('#stock-items button[name="transfer"]').click(function(){
+    var quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
+    var ordered_field = $(this).closest('tr').find('input[name$="[ordered]"]');
+    console.log($(quantity_field).length);
+    $(quantity_field).val(Number($(quantity_field).val()) + Number($(ordered_field).val())).trigger('input');
+    $(ordered_field).val(0);
+  });
+
   $('#stock-items').on('click', '.move-up, .move-down', function(e) {
     e.preventDefault();
     var row = $(this).closest('tr');
@@ -1133,30 +1150,12 @@
 
       $('input[name="quantity_adjustment"]').val(0);
       $('input[name^="stock_items"][name$="[quantity_adjustment]"]').each(function() {
-        console.log(parseFloat($('input[name="quantity_adjustment"]').val()), parseFloat($(this).val()));
         $('input[name="quantity_adjustment"]').val(parseFloat($('input[name="quantity_adjustment"]').val()) + parseFloat($(this).val()));
       });
     }
   });
 
-  $('#stock-items').on('click', '.edit', function(){
-    $.featherlight('#modal-add-stock-option');
-
-    var modal = $('.featherlight.active'),
-        row = $(this).closest('tr');
-
-    $(modal).data('row', row);
-
-    $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
-      var value = $(row).find(':input[name$="['+field+']"]').val();
-      if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value);
-      $(modal).find(':input[name="'+field+'"]').val(value);
-    });
-  });
-
   window.upsert_stock_item = function(stock_item) {
-    console.log(stock_item);
     if (!$('input[name^="stock_items"][name$="[sku]"][value="'+ stock_item.sku +'"]').length) {
 
       var output = '<tr>'
@@ -1189,6 +1188,14 @@
                  + '    <div class="input-group">'
                  + '      <span class="input-group-addon">&plusmn;</span>'
                  + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_option_stock_i][quantity_adjustment]', '0')); ?>'
+                 + '    </div>'
+                 + '  </td>'
+                 + '  <td>'
+                 + '    <div class="input-group">'
+                 + '      <span class="input-group-btn">'
+                 + '        <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
+                 + '      </span>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][ordered]', '', 2, 'min="0"')); ?>'
                  + '    </div>'
                  + '  </td>'
                  + '  <td class="text-right">'

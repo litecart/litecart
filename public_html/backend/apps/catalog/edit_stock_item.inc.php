@@ -200,7 +200,7 @@
               <span class="input-group-btn">
                 <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
               </span>
-              <?php echo functions::form_draw_decimal_field('ordered', true, 2); ?>
+              <?php echo functions::form_draw_decimal_field('ordered', true, 2, 'min="0"'); ?>
             </div>
           </div>
         </div>
@@ -269,12 +269,24 @@
 </div>
 
 <script>
-  $('form[name="stock_item_form"]').on('input', 'input[name="quantity"]', function(){
-    $('input[name="quantity_adjustment"]').val(parseFloat($(this).val()) - parseFloat($(this).data('quantity')));
+  $('form[name="stock_item_form"] input[name="quantity"], form[name="stock_item_form"] input[name="quantity_adjustment"], form[name="stock_item_form"] input[name="ordered"]').on('blur', function(){
+    $(this).val(parseFloat($(this).val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
   });
 
-  $('form[name="stock_item_form"]').on('input', 'input[name="quantity_adjustment"]', function(){
-    $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat($(this).val()));
+  $('form[name="stock_item_form"] input[name="quantity"]').on('input', function(){
+    var quantity = parseFloat(parseFloat($(this).val()) - parseFloat($(this).data('quantity'))).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals'));
+    $('input[name="quantity_adjustment"]').val(quantity);
+  });
+
+  $('form[name="stock_item_form"] input[name="quantity_adjustment"]').on('input', function(){
+    var quantity = parseFloat(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat($(this).val())).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals'));
+    $('input[name="quantity"]').val(quantity);
+  });
+
+  $('form[name="stock_item_form"] select[name="quantity_unit_id"]').on('change', function(){
+    if ($('input[name="quantity"]').val() != '') $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').val()).toFixed($(this).find('option:selected').data('decimals')));
+    if ($('input[name="quantity_adjustment"]').val() != '') $('input[name="quantity_adjustment"]').val(parseFloat($('input[name="quantity_adjustment"]').val()).toFixed($(this).find('option:selected').data('decimals')));
+    if ($('input[name="ordered"]').val() != '') $('input[name="ordered"]').val(parseFloat($('input[name="ordered"]').val()).toFixed($(this).find('option:selected').data('decimals')));
   });
 
   $('button[name="transfer"]').click(function(){

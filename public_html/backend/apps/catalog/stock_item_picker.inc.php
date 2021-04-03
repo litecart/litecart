@@ -7,7 +7,7 @@
 }
 </style>
 
-<div id="modal-stock-item-picker" class="modal fade" style="max-width: 980px; display: none;">
+<div id="modal-stock-item-picker" class="modal fade" style="max-width: 980px;">
 
 	<h2><?php echo language::translate('title_stock_items', 'Stock Items'); ?></h2>
 

@@ -115,7 +115,6 @@
           <?php echo functions::draw_fonticon('fa-sign-out'); ?> <?php echo language::translate('title_sign_out', 'Sign Out'); ?>
         </a>
       </li>
-
     </ul>
 
     <div id="content">

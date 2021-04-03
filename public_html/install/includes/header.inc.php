@@ -51,5 +51,5 @@ span.warning {
 <div class="glass-edges">
   <main id="content">
     <header class="text-center">
-      <img src="../backend/template/images/logotype.svg" alt="LiteCart" style="max-height: 100px" />
+      <img src="../backend/template/images/logotype.svg" alt="LiteCart" style="max-height: 70px" />
     </header>
