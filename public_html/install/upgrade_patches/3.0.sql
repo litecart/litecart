@@ -117,7 +117,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('social_media', 'Social Media', 'Social media related settings.', 30);
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 12, NOW(), NOW())
+('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 12, NOW(), NOW()),
 ('social_media', 'global', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 10, NOW(), NOW()),
 ('social_media', 'global', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 20, NOW(), NOW()),
 ('social_media', 'global', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 30, NOW(), NOW()),
@@ -140,10 +140,10 @@ CREATE TABLE `lc_stock_items` (
 	`mime_type` VARCHAR(32) NOT NULL DEFAULT '',
 	`downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 	`quantity` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
-	`quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT ''
+	`quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 	`ordered` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 	`weight` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
-	`weight_unit` VARCHAR(2) NOT NULL DEFAULT ''
+	`weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 	`length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 	`width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
 	`height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
@@ -159,7 +159,7 @@ CREATE TABLE `lc_stock_items` (
 	INDEX `mpn` (`mpn`),
 	INDEX `gtin` (`gtin`),
 	INDEX `code` (`code`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+);
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -168,7 +168,7 @@ CREATE TABLE `lc_stock_transactions` (
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+);
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions_contents` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -177,4 +177,4 @@ CREATE TABLE `lc_stock_transactions_contents` (
 	`warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 	`quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 	PRIMARY KEY (`id`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+);

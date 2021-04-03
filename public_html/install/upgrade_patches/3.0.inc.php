@@ -149,8 +149,8 @@
     FS_DIR_APP . 'includes/boxes/box_filter.inc.php',
     FS_DIR_APP . 'includes/boxes/box_information_links.inc.php',
     FS_DIR_APP . 'includes/boxes/box_latest_products.inc.php',
-    FS_DIR_APP . 'includes/boxes/box_brand_links.inc.php',
-    FS_DIR_APP . 'includes/boxes/box_brand_logotypes.inc.php',
+    FS_DIR_APP . 'includes/boxes/box_manufacturer_links.inc.php',
+    FS_DIR_APP . 'includes/boxes/box_manufacturer_logotypes.inc.php',
     FS_DIR_APP . 'includes/boxes/box_popular_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_region.inc.php',
@@ -316,6 +316,7 @@
     FS_DIR_APP . 'includes/templates/default.catalog/views/listing_product_row.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/notices.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/pagination.inc.php',
+    FS_DIR_APP . 'logs/.htaccess',
     FS_DIR_APP . 'pages/ajax/cart.json.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_cart.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_customer.inc.php',
@@ -340,18 +341,20 @@
     FS_DIR_APP . 'pages/login.inc.php',
     FS_DIR_APP . 'pages/logout.inc.php',
     FS_DIR_APP . 'pages/maintenance_mode.inc.php',
-    FS_DIR_APP . 'pages/brand.inc.php',
-    FS_DIR_APP . 'pages/brands.inc.php',
+    FS_DIR_APP . 'pages/manufacturer.inc.php',
+    FS_DIR_APP . 'pages/manufacturers.inc.php',
     FS_DIR_APP . 'pages/order.inc.php',
     FS_DIR_APP . 'pages/order_history.inc.php',
     FS_DIR_APP . 'pages/order_process.inc.php',
     FS_DIR_APP . 'pages/order_success.inc.php',
     FS_DIR_APP . 'pages/printable_order_copy.inc.php',
+    FS_DIR_APP . 'pages/printable_packing_slip.inc.php',
     FS_DIR_APP . 'pages/product.inc.php',
     FS_DIR_APP . 'pages/push_jobs.inc.php',
     FS_DIR_APP . 'pages/regional_settings.inc.php',
     FS_DIR_APP . 'pages/reset_password.inc.php',
     FS_DIR_APP . 'pages/search.inc.php',
+    FS_DIR_APP . 'vqmods/.htaccess',
   ]);
 
   perform_action('move', [
@@ -442,19 +445,19 @@
     FS_DIR_APP . '.htaccess' => [
       [
         'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.', '#') . PHP_EOL,
-        'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL,
+        'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL
                   .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
       [
         'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$', '#') . PHP_EOL,
-        'replace' => '  $1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL,
+        'replace' => '  $1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL
                   .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
       [
         'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.mydomain\.com', '#') . PHP_EOL,
-        'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL,
+        'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL
                   .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
@@ -514,12 +517,12 @@
         'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],
       [
-        'pattern'  => '#'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?('. preg_quote('## Database ##########################################################', '#') .')#',
+        'search'  => '#'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?('. preg_quote('## Database ##########################################################', '#') .')#',
         'replace' => '$1',
         'regexp'  => true,
       ],
       [
-        'pattern'  => '#'. preg_quote(PHP_EOL, '#') .'// Password Encryption Salt.*?\);'. preg_quote(PHP_EOL, '#') .'#m',
+        'search'  => '#'. preg_quote(PHP_EOL, '#') .'// Password Encryption Salt.*?\);'. preg_quote(PHP_EOL, '#') .'#m',
         'replace' => '',
         'regexp'  => true,
       ],

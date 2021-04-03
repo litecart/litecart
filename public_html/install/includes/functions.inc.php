@@ -15,7 +15,7 @@
 
           foreach ($files as $file) {
 
-            echo "Writing $target";
+            echo 'Writing ' . preg_replace('^('. FS_DIR_APP .')', '', $target);
 
             if (is_dir($file)) {
               if (!is_dir($target)) mkdir($target);
@@ -39,9 +39,9 @@
         foreach ($payload as $source) {
           foreach (functions::file_search($source) as $file) {
 
-            echo "Delete $file";
+            echo 'Delete ' . preg_replace('^('. FS_DIR_APP .')', '', $file);
 
-            if (functions::file_delete($file, $results)) {
+            if (functions::file_delete($file)) {
               echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else if ($on_error == 'skip') {
               echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -64,7 +64,7 @@
           }
 
           foreach ($files as $file) {
-            echo "Move $source to $target";
+            echo 'Move '. preg_replace('^('. FS_DIR_APP .')', '', $source) ." to ". preg_replace('^('. FS_DIR_APP .')', '', $target);
 
             if (rename($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
               echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -89,7 +89,7 @@
 
           foreach ($files as $file) {
 
-            echo "Modify $source";
+            echo 'Modify ' . preg_replace('^('. FS_DIR_APP .')', '', $file);
 
             $contents = file_get_contents($file);
             $contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);
