@@ -462,7 +462,7 @@
         'search'  => '  # Web path to catalog root' . PHP_EOL,
         'replace' => '  # Deny access to non-static content on static domain' . PHP_EOL
                    . '  RewriteCond %{HTTP_HOST} ^static\.' . PHP_EOL
-                   . '  RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]' . PHP_EOL
+                   . '  RewriteCond %{REQUEST_URI} !\.(css|eot|gif|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]' . PHP_EOL
                    . '  RewriteCond %{REQUEST_URI} !/handlers/ [NC]' . PHP_EOL
                    . '  RewriteRule ^ - [R=403,L]' . PHP_EOL
                    . PHP_EOL
