@@ -6,10 +6,8 @@
     $language = new ent_language();
   }
 
-  if (empty($_POST)) {
-    foreach ($language->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $language->data;
   }
 
   document::$snippets['title'][] = !empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language');

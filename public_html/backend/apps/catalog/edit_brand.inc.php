@@ -6,10 +6,8 @@
     $brand = new ent_brand();
   }
 
-  if (empty($_POST)) {
-    foreach ($brand->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $brand->data;
   }
 
   document::$snippets['title'][] = !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand');

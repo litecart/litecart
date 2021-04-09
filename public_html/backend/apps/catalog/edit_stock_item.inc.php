@@ -6,10 +6,8 @@
     $stock_item = new ent_stock_item();
   }
 
-  if (empty($_POST)) {
-    foreach ($stock_item->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $stock_item->data;
   }
 
   if (isset($_POST['save'])) {

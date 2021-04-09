@@ -6,10 +6,8 @@
     $customer = new ent_customer();
   }
 
-  if (empty($_POST)) {
-    foreach ($customer->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $customer->data;
   }
 
   document::$snippets['title'][] = !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer');

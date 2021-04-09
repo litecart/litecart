@@ -6,10 +6,8 @@
     $attribute_group = new ent_attribute_group();
   }
 
-  if (empty($_POST)) {
-    foreach ($attribute_group->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $attribute_group->data;
   }
 
   document::$snippets['title'][] = !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group');

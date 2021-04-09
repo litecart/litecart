@@ -6,10 +6,8 @@
     $delivery_status = new ent_delivery_status();
   }
 
-  if (empty($_POST)) {
-    foreach ($delivery_status->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $delivery_status->data;
   }
 
   document::$snippets['title'][] = !empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status');

@@ -6,10 +6,8 @@
     $tax_class = new ent_tax_class();
   }
 
-  if (empty($_POST)) {
-    foreach ($tax_class->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $tax_class->data;
   }
 
   document::$snippets['title'][] = !empty($tax_class->data['id']) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class');

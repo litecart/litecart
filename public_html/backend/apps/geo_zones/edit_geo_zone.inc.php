@@ -6,10 +6,8 @@
     $geo_zone = new ent_geo_zone();
   }
 
-  if (empty($_POST)) {
-    foreach ($geo_zone->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $geo_zone->data;
   }
 
   document::$snippets['title'][] = !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone');

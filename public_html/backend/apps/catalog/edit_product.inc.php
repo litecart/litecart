@@ -6,10 +6,8 @@
     $product = new ent_product();
   }
 
-  if (empty($_POST)) {
-    foreach ($product->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $product->data;
 
     $_POST['keywords'] = implode(',', $_POST['keywords']);
 

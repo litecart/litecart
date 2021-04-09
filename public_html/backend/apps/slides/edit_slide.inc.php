@@ -6,10 +6,8 @@
     $slide = new ent_slide();
   }
 
-  if (empty($_POST)) {
-    foreach ($slide->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $slide->data;
   }
 
   document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');

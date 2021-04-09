@@ -6,7 +6,7 @@
 		$stock_transaction = new ent_stock_transaction();
 	}
 
-	if (empty($_POST)) {
+	if (!$_POST) {
 		foreach ($stock_transaction->data as $key => $value) {
 			$_POST[$key] = $value;
 		}

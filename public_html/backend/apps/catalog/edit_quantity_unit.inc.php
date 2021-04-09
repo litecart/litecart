@@ -6,10 +6,8 @@
     $quantity_unit = new ent_quantity_unit();
   }
 
-  if (empty($_POST)) {
-    foreach ($quantity_unit->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $quantity_unit->data;
   }
 
   document::$snippets['title'][] = !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit');

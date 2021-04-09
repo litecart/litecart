@@ -22,7 +22,7 @@
     }
   }
 
-  if (empty($_POST)) {
+  if (!$_POST) {
     $_POST['tables'] = $defined_tables;
   }
 

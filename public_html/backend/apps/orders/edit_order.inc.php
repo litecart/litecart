@@ -9,11 +9,9 @@
     $order->data['date_created'] = date('Y-m-d H:i:s');
   }
 
-  if (empty($_POST)) {
+  if (!$_POST) {
 
-    foreach ($order->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $order->data;
 
   // Convert to local currency
     foreach (array_keys($_POST['items']) as $key) {

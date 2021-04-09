@@ -6,10 +6,8 @@
     $tax_rate = new ent_tax_rate();
   }
 
-  if (empty($_POST)) {
-    foreach ($tax_rate->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $tax_rate->data;
 
     if (empty($tax_rate->data['id'])) {
       $_POST['address_type'] = 'shipping';

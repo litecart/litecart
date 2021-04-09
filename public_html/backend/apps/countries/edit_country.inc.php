@@ -6,10 +6,8 @@
     $country = new ent_country();
   }
 
-  if (empty($_POST)) {
-    foreach ($country->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $country->data;
   }
 
   document::$snippets['title'][] = !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country');

@@ -8,7 +8,7 @@
   $product = reference::product($_GET['product_id'], $_GET['language_code'], $_GET['currency_code'], $_GET['customer']['id']);
   if (empty($product->id)) return;
 
-  if (empty($_POST)) {
+  if (!$_POST) {
 
     $fields = [
       'name',

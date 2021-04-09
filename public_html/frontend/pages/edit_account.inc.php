@@ -17,10 +17,8 @@
 
   $customer = new ent_customer(customer::$data['id']);
 
-  if (empty($_POST)) {
-    foreach ($customer->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $customer->data;
   }
 
   if (isset($_POST['save_account'])) {

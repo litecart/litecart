@@ -6,10 +6,8 @@
     $sold_out_status = new ent_sold_out_status();
   }
 
-  if (empty($_POST)) {
-    foreach ($sold_out_status->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $sold_out_status->data;
   }
 
   document::$snippets['title'][] = !empty($sold_out_status->data['id']) ? language::translate('title_edit_sold_out_status', 'Edit Sold Out Status') : language::translate('title_create_new_sold_out_status', 'Create New Sold Out Status');

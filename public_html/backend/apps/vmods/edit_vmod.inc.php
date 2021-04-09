@@ -6,10 +6,8 @@
     $vmod = new ent_vmod();
   }
 
-  if (empty($_POST)) {
-    foreach ($vmod->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $vmod->data;
 
     if (!empty($_GET['parent_id'])) $_POST['parent_id'] = $_GET['parent_id'];
   }

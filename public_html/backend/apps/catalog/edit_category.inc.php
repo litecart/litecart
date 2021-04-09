@@ -6,10 +6,8 @@
     $category = new ent_category();
   }
 
-  if (empty($_POST)) {
-    foreach ($category->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $category->data;
 
     if (empty($category->data['id']) && !empty($_GET['parent_id'])) {
       $_POST['parent_id'] = $_GET['parent_id'];
