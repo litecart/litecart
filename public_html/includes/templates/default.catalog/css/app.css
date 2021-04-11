@@ -127,24 +127,6 @@ html {
     font-size: 1.25em;
   }
 }
-#cookies-acceptance {
-  /*position: sticky;*/
-  top: 0;
-  z-index: 999;
-  margin: 0 10px 0 10px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px rgba(0, 0, 0, 0.1) solid;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  padding: 10px;
-  text-align: center;
-}
-@media (min-width: 768px) {
-  #cookies-acceptance {
-    margin: 0 20px 0 20px;
-    padding: 10px 20px;
-  }
-}
 #main {
   flex-grow: 1;
   padding: 0 10px 20px 10px;
