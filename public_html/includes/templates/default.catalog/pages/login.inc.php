@@ -20,7 +20,7 @@
           <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 
           <div class="form-group">
-            <?php echo functions::form_draw_email_field('email', true, 'placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
+            <?php echo functions::form_draw_email_field('email', true, 'autofocus placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
           </div>
 
           <div class="form-group">
