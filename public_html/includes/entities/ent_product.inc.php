@@ -438,7 +438,7 @@
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS ." set
               group_id = ". (int)$option['group_id'] .",
-              function = '". database::input($option['function']) ."',
+              `function` = '". database::input($option['function']) ."',
               required = ". (!empty($option['required']) ? 1 : 0) .",
               sort = '". @database::input($option['sort']) ."',
               priority = ". ++$i ."
