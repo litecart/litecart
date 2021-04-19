@@ -27,6 +27,7 @@
       case 'date_accessed':
       case 'date_active':
       case 'date_expires':
+      case 'date_hit':
       case 'date_login':
       case 'date_processed':
       case 'date_published':
