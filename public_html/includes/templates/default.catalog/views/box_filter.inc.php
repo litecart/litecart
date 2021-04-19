@@ -45,7 +45,7 @@
 <script>
   $('form[name="filter_form"]').change(function(){
     var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize() + '&sort=<?php echo isset($_GET['sort']) ? $_GET['sort'] : ''; ?>');
-    //window.location = url.href;
-    $("#content").load(url.href + ' #content');
+    history.replaceState(null, null, url);
+    $('#content').load(url.href + ' #content');
   });
 </script>
