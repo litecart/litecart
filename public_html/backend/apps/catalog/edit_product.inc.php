@@ -4,6 +4,9 @@
     $product = new ent_product($_GET['product_id']);
   } else {
     $product = new ent_product();
+    $product->data['quantity_min'] = 1;
+    $product->data['quantity_max'] = 0;
+    $product->data['quantity_step'] = 0;
   }
 
   if (!$_POST) {
@@ -55,6 +58,9 @@
         'date_valid_to',
         'quantity',
         'quantity_adjustment',
+        'quantity_min',
+        'quantity_max',
+        'quantity_step',
         'quantity_unit_id',
         'purchase_price',
         'purchase_price_currency_code',
@@ -557,6 +563,21 @@
         <div id="tab-stock" class="tab-pane">
 
           <div class="row" style="max-width: 960px;">
+            <div class="form-group col-md-4">
+              <label><?php echo language::translate('title_quantity_min', 'Quantity Minimum'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_min', true); ?>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label><?php echo language::translate('title_quantity_maximum', 'Quantity Maximum'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_max', true); ?>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_step', true); ?>
+            </div>
+
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
               <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>

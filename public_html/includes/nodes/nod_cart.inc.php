@@ -161,6 +161,9 @@
         'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
         'quantity' => $quantity,
+        'quantity_min' => $product->quantity_min,
+        'quantity_max' => $product->quantity_max,
+        'quantity_step' => $product->quantity_step,
         'quantity_unit' => [
           'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
           'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',
