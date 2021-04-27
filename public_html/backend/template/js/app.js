@@ -80,6 +80,7 @@
 // Bootstrap Compatible (data-toggle="tab")
   $('body').on('click', '[data-toggle="tab"]', function(e) {
     e.preventDefault();
+    history.replaceState(null, null, this.hash);
     $(this).closest('ul').find('li').removeClass('active');
     $(this).closest('li').addClass('active');
     $($(this).attr('href')).show().siblings().hide();

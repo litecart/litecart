@@ -4,8 +4,6 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
-  if (!isset($_GET['public_key']) && isset($_GET['checksum'])) $_GET['public_key'] = $_GET['checksum']; // Backwards compatible
-
   try {
 
     if (empty($_GET['order_id']) || empty($_GET['public_key'])) {

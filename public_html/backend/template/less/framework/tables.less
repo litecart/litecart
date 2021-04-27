@@ -9,8 +9,8 @@
   border-collapse: collapse;
 
   thead th {
-    background: var(--default-background-color);
-    border-bottom: 2px solid #cccc;
+    background: var(--table-header-background-color);
+    border-bottom: 2px solid var(--default-border-color);
     color: inherit;
   }
 
@@ -91,10 +91,10 @@
 
   &.table-striped {
     > tbody > tr:nth-of-type(odd) {
-      background: var(--table-striped-row-background-odd);
+      background: var(--table-row-odd-background-color);
     }
     > tbody > tr:nth-of-type(even) {
-      background: var(--table-striped-row-background-even);
+      background: var(--table-row-even-background-color);
     }
     @media print {
       > tbody > tr {
@@ -107,7 +107,7 @@
     > tbody > tr {
       transition: background 125ms linear;
       &:hover {
-        background: var(--table-row-hover-background);
+        background: var(--table-row-hover-background-color);
       }
     }
   }

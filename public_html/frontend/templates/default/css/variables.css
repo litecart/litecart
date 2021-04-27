@@ -3,21 +3,14 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firasans/v10/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/firasans/v11/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Fira Sans';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnZKvuQQ.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Fira Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firasans/v10/va9B4kDNxMZdWfMOD5VnSKzuQQ.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/firasans/v11/va9B4kDNxMZdWfMOD5VnLK3uQQ.ttf) format('truetype');
 }
 /* Media Breakpoints */
 /* Variables */
@@ -35,7 +28,7 @@
   --default-line-height: 150%;
   --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #000;
-  --default-text-size: 12px;
+  --default-text-size: 14px;
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
   --default-notice-background-color: #f0f0f0;
@@ -100,6 +93,6 @@
 }
 @media (min-width: 768px) {
   :root {
-    --default-text-size: calc(var(--default-text-size) + 1px);
+    --default-text-size: calc(var(--default-text-size) + 2px);
   }
 }

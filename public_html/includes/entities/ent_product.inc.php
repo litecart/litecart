@@ -275,14 +275,14 @@
       );
 
       if (!empty($this->data['attributes'])) {
-        foreach ($this->data['attributes'] as &$attribute) {
+        foreach ($this->data['attributes'] as $key => $attribute) {
           if (empty($attribute['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_attributes
               (product_id, group_id, value_id, custom_value)
               values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
             );
-            $attribute['id'] = database::insert_id();
+            $this->data['attributes'][$key]['id'] = $attribute['id'] = database::insert_id();
           }
 
           database::query(
@@ -295,7 +295,7 @@
             limit 1;"
           );
         }
-      } unset($attribute);
+      }
 
     // Prices
       foreach (array_keys(currency::$currencies) as $currency_code) {
@@ -421,14 +421,14 @@
       if (!empty($this->data['images'])) {
         $image_priority = 1;
 
-        foreach ($this->data['images'] as &$image) {
+        foreach ($this->data['images'] as $key => $image) {
           if (empty($image['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_images
               (product_id)
               values (". (int)$this->data['id'] .");"
             );
-            $image['id'] = database::insert_id();
+            $this->data['images'][$key]['id'] = $image['id'] = database::insert_id();
           }
 
           if (!empty($image['new_filename']) && !is_file(FS_DIR_STORAGE . 'images/' . $image['new_filename'])) {
@@ -446,7 +446,7 @@
             and id = ". (int)$image['id'] ."
             limit 1;"
           );
-        } unset($image);
+        }
       }
 
     // Update product image

@@ -25,7 +25,6 @@ body main {
 }
 #header .container > * {
   flex: 1 0 auto;
-  padding: var(--gutter-size);
 }
 @media (min-width: 576px) {
   #header .container {

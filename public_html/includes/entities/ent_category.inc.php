@@ -169,14 +169,14 @@
     // Update filters
       if (!empty($this->data['filters'])) {
         $filter_priority = 1;
-        foreach ($this->data['filters'] as &$filter) {
+        foreach ($this->data['filters'] as $key => $filter) {
           if (empty($filter['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."categories_filters
               (category_id, attribute_group_id)
               values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
             );
-            $filter['id'] = database::insert_id();
+            $this->data['filters'][$key]['id'] = $filter['id'] = database::insert_id();
           }
 
           database::query(
@@ -188,7 +188,7 @@
             and id = ". (int)$filter['id'] ."
             limit 1;"
           );
-        } unset($filter);
+        }
       }
 
       $this->previous = $this->data;

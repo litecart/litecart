@@ -1,6 +1,7 @@
 #backend-wrapper {
   display: flex;
   min-height: 100vh;
+  width: 100%;
 }
 
 #sidebar {
@@ -24,7 +25,7 @@
 #sidebar-compressed:checked {
   //~ #sidebar:not(:hover) {
   ~ #sidebar {
-    flex-basis: 0;
+    flex-basis: auto;
     .name, .docs {
       display: none;
     }
@@ -167,7 +168,7 @@
       border-color: var(--app-color);
       //background: rgba(255, 255, 255, 0.1);
       > a, .doc.selected > a {
-        background: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.15);
         box-shadow: 0 2px 0 0 rgba(0,0,0,0.05);
       }
 
@@ -199,10 +200,6 @@
 #content {
   flex: 1 1 auto;
   padding: 30px;
-  //max-height: 100%;
-  //overflow: auto;
-  //background: linear-gradient(135deg, var(--app-color) 0px, var(--page-background-color) 100px);
-  background: linear-gradient(135deg, var(--app-color) 50px, var(--page-background-color) 50px);
   > h1 {
     padding: 0 0 ~"calc(var(--gutter-size)/2)" 0;
     margin-top: 0;
@@ -235,7 +232,7 @@
   font-size: 1.2em;
   text-align: center;
   margin: 10px 0;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 #copyright {

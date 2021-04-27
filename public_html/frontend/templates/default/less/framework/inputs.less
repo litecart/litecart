@@ -1,5 +1,20 @@
 /* Input Fields & Input Groups - Bootstrap Compatible */
 
+.input-field() {
+  position: relative;
+  padding: .5em 1em;
+
+  background-color: var(--input-background-color);
+
+  line-height: 100%;
+  color: var(--input-text-color);
+
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
+
+  box-shadow: -1px -1px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
 input, button, select, textarea {
   font-family: inherit;
   font-size: inherit;
@@ -11,7 +26,7 @@ input[type="number"] {
   text-align: right;
 }
 
-input[type="checkbox"]:not(.form-switch) {
+input[type="checkbox"] {
   display: inline-block;
   position: relative;
   -webkit-appearance: none;
@@ -64,35 +79,11 @@ input[type="radio"] {
   }
 }
 
-.form-group {
-  &.required label::after {
-    content: ' *';
-    color: #f00;
-  }
-  &:not([class*=col-]) {
-    margin-bottom: var(--gutter-size);
-  }
-  > label {
-    display: inline-block;
-    padding-bottom: .5em;
-  }
-}
-
-.input-field() {
-  position: relative;
-  color: var(--input-text-color);
-  background: var(--input-background-color);
-  border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
-  box-shadow: -1px -1px 0px 0px rgba(0, 0, 0, 0.1);
-}
-
 .form-control {
   .input-field();
   display: block;
   width: 100%;
   min-width: 1px; // Firefox fix
-  padding: .5em 1em;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   //transition: all 50ms;
 
@@ -156,15 +147,28 @@ input[type="radio"] {
   }
 }
 
-select.form-control {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding-right: ~"calc(var(--default-gutter-size) * 2)";
+select.form-control, .form-select {
+  .input-field();
+
+  padding-right: 2.5em;
+
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 1em center;
-  background-size: 16px 12px
+  background-size: 16px 12px;
+
+  cursor: default;
+
+  //-webkit-appearance: none;
+  //-moz-appearance: none;
+  appearance: none;
+  user-select: none;
+}
+
+.dropdown .form-select + .dropdown-menu {
+  > .active {
+    font-weight: bold;
+  }
 }
 
 .input-unstyled {
@@ -187,9 +191,24 @@ select.form-control {
   top: 35px;
 }
 
+.form-group {
+  &.required label::after {
+    content: ' *';
+    color: #f00;
+  }
+  &:not([class*=col-]) {
+    margin-bottom: var(--gutter-size);
+  }
+  > label {
+    display: inline-block;
+    padding-bottom: .5em;
+  }
+}
+
 .input-group {
   .input-field();
   display: flex;
+  padding: 0;
   .form-control {
     background: none;
     box-shadow: none;
@@ -208,6 +227,7 @@ select.form-control {
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
+    box-shadow: 0 0 2px 0px rgba(0, 0, 0, .5);
     .select-wrapper {
       background: none;
       margin: -1em -2em;

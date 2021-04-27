@@ -10,20 +10,24 @@
       case E_STRICT:
         $output = "<strong>Strict:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
+
       case E_NOTICE:
       case E_USER_NOTICE:
         $output = "<strong>Notice:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
+
       case E_WARNING:
       case E_USER_WARNING:
       case E_COMPILE_WARNING:
       case E_RECOVERABLE_ERROR:
         $output = "<strong>Warning:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
+
       case E_DEPRECATED:
       case E_USER_DEPRECATED:
         $output = "<strong>Deprecated:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
+
       case E_PARSE:
       case E_ERROR:
       case E_CORE_ERROR:
@@ -31,6 +35,7 @@
       case E_USER_ERROR:
         $output = "<strong>Fatal error:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
+
       default:
         $output = "<strong>Fatal error:</strong> $errstr in <strong>$errfile</strong> on line <strong>$errline</strong><br />" . PHP_EOL;
         break;
@@ -55,7 +60,7 @@
       }
     }
 
-    if (in_array(strtolower(ini_get('log_errors')), array('1', 'on', 'true'))) {
+    if (preg_match('#^(1|on|true)$#i', ini_get('log_errors'))) {
       error_log(
         strip_tags($output . $backtrace_output) .
         "Request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']} {$_SERVER['SERVER_PROTOCOL']}" . PHP_EOL .

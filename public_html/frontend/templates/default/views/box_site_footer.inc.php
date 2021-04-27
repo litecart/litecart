@@ -2,11 +2,11 @@
   <div class="container">
     <div class="row">
 
-      <div class="col-md-8">
+      <div class="col-lg-8">
         <div class="row">
 
           <?php if (settings::get('accounts_enabled')) { ?>
-          <section class="account col-md-3">
+          <section class="account col-xs-6 col-md-4 col-lg-3">
             <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
             <ul class="list-unstyled">
               <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
@@ -23,14 +23,14 @@
           </section>
           <?php } ?>
 
-          <section class="information col-xs-6 col-sm-3">
+          <section class="information col-xs-6 col-md-4 col-lg-3">
             <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
             <ul class="list-unstyled">
               <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
             </ul>
           </section>
 
-          <section class="store-info col-sm-4">
+          <section class="store-info col-xs-6 col-md-4 col-lg-3">
             <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
 
             <p class="address">
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <section class="hidden-xs hidden-sm col-md-4 text-center" style="align-self: center;">
+      <section class="col-lg-4 text-center" style="align-self: center;">
         <div class="logotype">
           <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" class="img-responsive" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
         </div>

@@ -51,7 +51,7 @@
       <?php if ($brands) { ?>
       <div>
         <div class="dropdown">
-          <div class="form-control caret" data-toggle="dropdown"><?php echo language::translate('title_brands', 'Brands'); ?></div>
+          <div class="form-select" data-toggle="dropdown"><?php echo language::translate('title_brands', 'Brands'); ?></div>
           <ul class="dropdown-menu">
             <?php foreach ($brands as $brand) { ?>
             <li>
@@ -68,7 +68,7 @@
       <?php if ($attributes) foreach ($attributes as $group) { ?>
       <div>
         <div class="dropdown">
-          <div class="form-control caret" data-toggle="dropdown"><?php echo $group['name']; ?></div>
+          <div class="form-select" data-toggle="dropdown"><?php echo $group['name']; ?></div>
           <ul class="dropdown-menu">
             <?php foreach ($group['values'] as $value) { ?>
             <li>
@@ -84,7 +84,7 @@
 
       <div>
         <div class="dropdown">
-          <div class="form-control caret" data-toggle="dropdown"><?php echo language::translate('title_sort_by', 'Sort By'); ?></div>
+          <div class="form-select" data-toggle="dropdown"><?php echo language::translate('title_sort_by', 'Sort By'); ?></div>
           <ul class="dropdown-menu">
             <?php foreach ($sort_alternatives as $key => $title) { ?>
             <li>
@@ -131,6 +131,7 @@
   $('#box-filter form[name="filter_form"]').on('input', function(){
     if (xhr_filter) xhr_filter.abort();
     var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
+    history.replaceState(null, null, url);
     $('section.listing.products').hide();
     xhr_filter = $.ajax({
       type: 'get',
@@ -138,7 +139,6 @@
       dataType: 'html',
       success: function(response){
         var html = $('section.listing.products', response)[0].outerHTML;
-        console.log(html);
         $('section.listing.products').replaceWith(html).fadeIn('fast');
       }
     });

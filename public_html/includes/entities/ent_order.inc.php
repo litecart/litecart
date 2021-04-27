@@ -320,14 +320,15 @@
       );
 
     // Insert/update order items
-      foreach ($this->data['items'] as &$item) {
+      foreach ($this->data['items'] as $key => $item) {
         if (empty($item['id'])) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."orders_items
             (order_id)
             values (". (int)$this->data['id'] .");"
           );
-          $item['id'] = database::insert_id();
+
+          $this->data['items'][$key]['id'] = $item['id'] = database::insert_id();
 
         // Update purchase count
           if (!empty($item['product_id'])) {
@@ -374,7 +375,7 @@
           and id = ". (int)$item['id'] ."
           limit 1;"
         );
-      } unset($item);
+      };
 
     // Delete order total items
       database::query(
@@ -385,14 +386,14 @@
 
     // Insert/update order total
       $i = 0;
-      foreach ($this->data['order_total'] as &$row) {
+      foreach ($this->data['order_total'] as $key => $row) {
         if (empty($row['id'])) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."orders_totals
             (order_id)
             values (". (int)$this->data['id'] .");"
           );
-          $row['id'] = database::insert_id();
+          $this->data['order_total'][$key]['id'] = $row['id'] = database::insert_id();
         }
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_totals
@@ -406,7 +407,7 @@
           and id = ". (int)$row['id'] ."
           limit 1;"
         );
-      } unset($row);
+      }
 
     // Delete comments
       database::query(
@@ -420,7 +421,7 @@
 
         $notify_comments = [];
 
-        foreach ($this->data['comments'] as &$comment) {
+        foreach ($this->data['comments'] as $key => $comment) {
 
           if (empty($comment['author'])) $comment['author'] = 'system';
 
@@ -430,7 +431,8 @@
               (order_id, date_created)
               values (". (int)$this->data['id'] .", '". ($comment['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
-            $comment['id'] = database::insert_id();
+
+            $this->data['comments'][$key]['id'] = $comment['id'] = database::insert_id();
 
             if ($this->data['comments'][$key]['author'] == 'staff' && !empty($this->data['comments'][$key]['notify']) && empty($this->data['comments'][$key]['hidden'])) {
               $notify_comments[] = $this->data['comments'][$key];
@@ -446,7 +448,7 @@
             and id = ". (int)$comment['id'] ."
             limit 1;"
           );
-        } unset($comment);
+        }
 
         if (!empty($notify_comments)) {
 

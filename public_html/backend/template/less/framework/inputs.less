@@ -130,7 +130,7 @@ input[type="radio"] {
   > label:not(.checkbox) {
     display: inline-block;
     font-size: .8em;
-    font-weight: 600;
+    font-weight: bold;
     //letter-spacing: .05em;
     opacity: .8;
   }
@@ -201,10 +201,10 @@ select.form-control {
     }
   }
   .input-group-addon {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     margin: 0 -1px;
     padding: var(--input-padding-y) var(--input-padding-x);
-    background-color: var(--default-color);
+    background-color: var(--input-addon-background-color);
     border-left: 1px solid var(--input-border-color);
     border-right: 1px solid var(--input-border-color);
     color: var(--input-text-color);
@@ -218,12 +218,12 @@ select.form-control {
     }
   }
   .input-group-icon {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     padding: .5em 1em;
     margin-right: -12px;
   }
   .input-group-btn {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     .btn {
       border-top: none;
       border-bottom: none;
@@ -235,6 +235,7 @@ select.form-control {
   .input-group-btn:first-child > .btn,
   .input-group-btn:first-child > .btn-group > .btn,
   .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+    border-left: none;
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
   .form-control:last-child,
@@ -242,6 +243,7 @@ select.form-control {
   .input-group-btn:last-child > .btn,
   .input-group-btn:last-child > .btn-group > .btn,
   .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+    border-right: none;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
   + .input-group {

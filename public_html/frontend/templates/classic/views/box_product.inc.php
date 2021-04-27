@@ -264,8 +264,8 @@
   });
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] button[name="add_cart_product"]').click(function(e) {
-    if ($('input[name="stock_option_id"]').length) {
-      if (!$('input[name="stock_option_id"]:checked').length) {
+    if ($('input[name="stock_item_id"]').length) {
+      if (!$('input[name="stock_item_id"]:checked').length) {
         e.preventDefault();
         $(this).closest('form').find('.dropdown [data-toggle="dropdown"]').click();
         return false;

@@ -20,16 +20,6 @@
         'params' => [],
       ],
       [
-        'title' => language::translate('title_stock_items', 'Stock Items'),
-        'doc' => 'stock_items',
-        'params' => [],
-      ],
-      [
-        'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
-        'doc' => 'stock_transactions',
-        'params' => [],
-      ],
-      [
         'title' => language::translate('title_attributes', 'Attributes'),
         'doc' => 'attribute_groups',
         'params' => [],
@@ -52,6 +42,16 @@
       [
         'title' => language::translate('title_sold_out_statuses', 'Sold Out Statuses'),
         'doc' => 'sold_out_statuses',
+        'params' => [],
+      ],
+      [
+        'title' => language::translate('title_stock_items', 'Stock Items'),
+        'doc' => 'stock_items',
+        'params' => [],
+      ],
+      [
+        'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
+        'doc' => 'stock_transactions',
         'params' => [],
       ],
       [

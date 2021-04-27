@@ -65,7 +65,7 @@
         default:
 
           $query = database::query(
-            "select from ". DB_TABLE_PREFIX ."order_statuses
+            "select * from ". DB_TABLE_PREFIX ."order_statuses
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

@@ -14,10 +14,6 @@
     background: rgba(0, 0, 0, .05);
   }
 
-  @media (min-width: @media-breakpoint-sm) {
-    //flex-direction: row;
-  }
-
   .navbar-nav {
     display: flex;
     flex-direction: column;
@@ -27,9 +23,6 @@
     > li > a {
       color: inherit;
       transition: all 125ms linear;
-    }
-    @media (min-width: @media-breakpoint-sm) {
-      float: left;
     }
   }
 
@@ -55,14 +48,15 @@
     li > a {
       padding: .5em 1em;
     }
-    @media (min-width: @media-breakpoint-sm) {
+    @media (min-width: @media-breakpoint-lg) {
       background: #fff;
       border: none;
     }
   }
 
-  @media (min-width: @media-breakpoint-sm) {
+  @media (min-width: @media-breakpoint-lg) {
     flex-direction: row;
+    flex-wrap: wrap;
     .navbar-nav {
       flex-direction: row;
       align-self: flex-start;
@@ -73,7 +67,9 @@
     }
   }
 
-  @media (max-width: (@media-breakpoint-sm - 1px)) {
+  @media (max-width: (@media-breakpoint-lg - 1px)) {
+    max-height: 100vh;
+    overflow-y: auto;
     .open .dropdown-menu {
       position: static;
       float: none;
@@ -104,7 +100,7 @@
     display: block;
     overflow-y: auto;
   }
-  @media (min-width: @media-breakpoint-sm) {
+  @media (min-width: @media-breakpoint-lg) {
     justify-content: space-between;
     width: auto;
     border-top: 0;
@@ -144,7 +140,7 @@
 
 .navbar-form {
   margin: .25rem;
-  @media (min-width: @media-breakpoint-sm) {
+  @media (min-width: @media-breakpoint-lg) {
     margin: ~"calc(.25rem + 1px)";
   }
 }
@@ -161,7 +157,7 @@
   &:focus {
     outline: 0;
   }
-  @media (min-width: @media-breakpoint-sm) {
+  @media (min-width: @media-breakpoint-lg) {
     display: none;
   }
   .icon-bar {

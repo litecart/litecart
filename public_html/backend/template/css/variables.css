@@ -1,23 +1,23 @@
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Me5Q.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAw.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlvAw.ttf) format('truetype');
 }
 /* Variables */
 :root {
   --top-background-color: var(--panel-background-color);
   --top-text-color: var(--panel-text-color);
   --page-background-color: #f6f6f6;
-  --sidebar-background-color: #dadce0;
+  --sidebar-background-color: #e6e8ec;
   --sidebar-border-color: var(--default-border-color);
   --sidebar-width: 275px;
   --navigation-background-color: #3e3e3e;
@@ -27,7 +27,7 @@
   --default-background-color-hover: #d8d8d8;
   --default-border-color: #d0d0d0;
   --default-line-height: 1.5em;
-  --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --default-text-font: Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #222;
   --default-text-size: 12px;
   --default-title-color: #222;
@@ -65,7 +65,7 @@
   --breadcrumbs-text-color: #3c3c3c;
   --breadcrumbs-border-color: transparent;
   --panel-background-color: #fff;
-  --panel-heading-background-color: #dadada;
+  --panel-heading-background-color: #e6e8ec;
   --panel-heading-text-color: var(--panel-text-color);
   --panel-text-color: #000;
   --panel-border-color: var(--default-border-color);
@@ -73,11 +73,13 @@
   --tab-nav-text-color: var(--default-text-color);
   --tab-border-color: transparent;
   --tab-active-background-color: var(--tab-content-background-color);
-  --tab-content-background-color: #fff;
+  --tab-content-background-color: transparent;
   --tab-content-text-color: var(--default-text-color);
-  --table-striped-row-background-odd: #f9f9f9;
-  --table-striped-row-background-even: #fff;
-  --table-row-hover-background: #ececec;
+  --table-header-background-color: var(--default-background-color);
+  --table-row-odd-background-color: #f9f9f9;
+  --table-row-even-background-color: #fff;
+  --table-row-hover-background-color: #ececec;
+  --table-footer-background-color: var(--default-background-color);
   --pagination-background-color: var(--default-background-color);
   --pagination-text-color: var(--default-text-color);
   --pagination-border-color: var(--default-border-color);
@@ -89,6 +91,7 @@
   --border-radius: 5px;
   --gutter-size: 2rem;
   --input-background-color: #f9f9f9;
+  --input-addon-background-color: #f1f1f1;
   --input-text-color: #000;
   --input-border-color: var(--default-border-color);
   --input-padding-x: 15px;
@@ -114,9 +117,13 @@ body.dark-mode {
   --panel-background-color: #283144;
   --panel-heading-background-color: #35415a;
   --panel-heading-text-color: #fff;
-  --table-striped-row-background-odd: #2d374c;
-  --table-striped-row-background-even: #283246;
-  --table-row-hover-background: #3c4861;
+  --tab-nav-background-color: #1c243a;
+  --tab-nav-text-color: #acb6c2;
+  --table-header-background-color: #1c243a;
+  --table-row-odd-background-color: #2d374c;
+  --table-row-even-background-color: #283246;
+  --table-row-hover-background-color: #3c4861;
+  --table-footer-background-color: #1c243a;
   --pagination-background-color: var(--default-background-color);
   --pagination-text-color: var(--default-text-color);
   --pagination-border-color: var(--default-border-color);
@@ -126,8 +133,9 @@ body.dark-mode {
   --pagination-hover-text-color: #fff;
   --breadcrumbs-text-color: var(--default-text-color);
   --copyright-text-color: #acb6c2;
-  --input-background-color: #0f1525;
-  --input-border-color: #e2e2e2;
+  --input-background-color: #1c243a;
+  --input-border-color: #0f1525;
+  --input-addon-background-color: #182035;
   --input-text-color: #fff;
   --link-text-color: #acb6c7;
   --whitespace-color: #0f1525;

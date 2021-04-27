@@ -2,7 +2,7 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
-        <section id="box-checkout-region">
+        <section id="box-regional-settings">
 
           <div class="row">
             <div class="form-group col-md-6">
@@ -34,7 +34,7 @@
 
         <?php echo functions::form_draw_form_begin('shopping_cart_form', 'post'); ?>
 
-          <section id="box-checkout-cart" class="box white">
+          <section id="box-shopping-cart" class="box white">
 
             <h2 class="title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
 

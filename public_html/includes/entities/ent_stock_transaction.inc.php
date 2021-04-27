@@ -118,14 +118,14 @@
       );
 
     // Insert/update transaction contents
-      foreach ($this->data['contents'] as &$content) {
+      foreach ($this->data['contents'] as $key => $content) {
         if (empty($content['id'])) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."stock_transactions_contents
             (transaction_id)
             values (". (int)$this->data['id'] .");"
           );
-          $content['id'] = database::insert_id();
+          $this->data['contents'][$key]['id'] = $content['id'] = database::insert_id();
         }
 
         database::query(
@@ -145,7 +145,7 @@
           limit 1;"
         );
 
-      } unset($content);
+      }
 
       $this->previous = $this->data;
 
