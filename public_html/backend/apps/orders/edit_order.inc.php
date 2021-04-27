@@ -592,7 +592,7 @@ body.dark-mode #box-comments {
         </div>
 
         <div class="panel-body table-responsive">
-          <table class="table table-striped table-hover table-input">
+          <table class="table table-striped table-hover table-input table-dragable">
             <thead>
               <tr>
                 <th><?php echo language::translate('title_item', 'Item'); ?></th>
@@ -608,7 +608,7 @@ body.dark-mode #box-comments {
             <tbody>
               <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
               <tr class="item">
-                <td>
+                <td class="grabable">
                   <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
@@ -626,11 +626,11 @@ body.dark-mode #box-comments {
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][height]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][length_unit]', true); ?>
               </td>
-              <td class="sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
-              <td>
+              <td class="grabable sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
+              <td class="grabable">
                 <span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['items'][$key]['weight_unit']; ?></span>
               </td>
-              <td>
+              <td class="grabable">
                 <span class="length"><?php echo (float)$_POST['items'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['items'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['items'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['items'][$key]['length_unit']; ?></span>
               </td>
               <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
@@ -1289,7 +1289,7 @@ body.dark-mode #box-comments {
     new_item_index++;
 
     var output = '  <tr class="item">'
-               + '    <td>' + item.name
+               + '    <td class="grabable">' + item.name
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][stock_item_id]', '')); ?>'
@@ -1306,11 +1306,11 @@ body.dark-mode #box-comments {
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][height]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][length_unit]', '')); ?>'
                + '    </td>'
-               + '    <td>'+ item.sku +'</td>'
-               + '    <td>'
+               + '    <td class="grabable sku">'+ item.sku +'</td>'
+               + '    <td class="grabable">'
                + '      <span class="weight"></span> <span class="weight_unit"></span>'
                + '    </td>'
-               + '    <td>'
+               + '    <td class="grabable">'
                + '      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>'
                + '    </td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'

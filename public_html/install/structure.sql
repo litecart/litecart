@@ -405,6 +405,7 @@ CREATE TABLE `lc_orders_items` (
   `width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `length_class` VARCHAR(2) NOT NULL DEFAULT '',
+  `priority` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `product_id` (`product_id`),

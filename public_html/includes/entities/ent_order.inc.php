@@ -159,7 +159,7 @@
       $order_items_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."orders_items
         where order_id = ". (int)$order_id ."
-        order by id;"
+        order by priority, id;"
       );
 
       while ($item = database::fetch($order_items_query)) {
@@ -320,6 +320,7 @@
       );
 
     // Insert/update order items
+      $i = 0;
       foreach ($this->data['items'] as $key => $item) {
         if (empty($item['id'])) {
           database::query(
@@ -370,7 +371,8 @@
             length = ". (float)$item['length'] .",
             width = ". (float)$item['width'] .",
             height = ". (float)$item['height'] .",
-            length_unit = '". database::input($item['length_unit']) ."'
+            length_unit = '". database::input($item['length_unit']) ."',
+            priority = ". ++$i ."
           where order_id = ". (int)$this->data['id'] ."
           and id = ". (int)$item['id'] ."
           limit 1;"
