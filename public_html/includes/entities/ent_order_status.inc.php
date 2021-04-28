@@ -81,6 +81,7 @@
           "select * from ". DB_TABLE_PREFIX ."orders
           where order_status_id = ". (int)$this->data['id'] .";"
         );
+
         if (database::num_rows($orders_query)) {
           throw new Exception(language::translate('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" as the order status is already in use by orders'));
         }
@@ -92,20 +93,15 @@
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
-
-      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
-      $this->data['keywords'] = array_unique($this->data['keywords']);
-      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
         "update ". DB_TABLE_PREFIX ."order_statuses
         set
           icon = '". database::input($this->data['icon']) ."',
           color = '". database::input($this->data['color']) ."',
-          keywords = '". database::input($this->data['keywords']) ."',
           is_sale = '". (empty($this->data['is_sale']) ? '0' : '1') ."',
           is_archived = '". (empty($this->data['is_archived']) ? '0' : '1') ."',
           notify = '". (empty($this->data['notify']) ? '0' : '1') ."',

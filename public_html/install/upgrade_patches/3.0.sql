@@ -63,6 +63,9 @@ SET stock_option_id = pso.id;
 ALTER TABLE `lc_orders_items`
 DROP COLUMN `option_stock_combination`;
 -- --------------------------------------------------------
+ALTER TABLE `lc_order_statuses`
+DROP COLUMN `keywords`;
+-- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
