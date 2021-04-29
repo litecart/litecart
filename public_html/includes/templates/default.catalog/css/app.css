@@ -249,16 +249,6 @@ html {
     top: 0;
   }
 }
-#box-information li a {
-  color: inherit;
-  line-height: 175%;
-}
-#box-information li a.active {
-  color: #2e9cd4;
-}
-#box-information li a:hover {
-  color: #2e9cd4;
-}
 #box-filter .manufacturers ul {
   max-height: 200px;
   overflow-y: auto;
