@@ -32,13 +32,13 @@
 
     public function load($geo_zone_id) {
 
-      if (!preg_match('#^[0-9]+$#', $geo_zone_id)) throw new Exception('Invalid geo zone (ID: '. $geo_zone_id .')');
+      if (empty($geo_zone_id)) throw new Exception('Invalid geo zone (ID: n/a)');
 
       $this->reset();
 
       $geo_zone_query = database::query(
         "select * from ". DB_TABLE_GEO_ZONES ."
-        where id = ". (int)$geo_zone_id ."
+        where ". (preg_match('#^[0-9]+$#', $geo_zone_id) ? "id = ". (int)$geo_zone_id : "code = '". database::input($geo_zone_id) ."'") ."
         limit 1;"
       );
 
