@@ -133,9 +133,9 @@
         $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
       }
 
-    // Stock Options
+    // Stock Items
       $products_stock_items_query = database::query(
-        "select si.*, p2si.id, p2si.stock_item_id, sii.name from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+        "select p2si.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.ordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
         left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where p2si.product_id = ". (int)$this->data['id'] ."
@@ -191,6 +191,7 @@
           delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
           sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
           default_category_id = ". (int)$this->data['default_category_id'] .",
+          type = '". database::input($this->data['type']) ."',
           keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
           quantity = ". (float)array_sum(array_column($this->data['stock_items'], 'quantity')) .",
           quantity_min = ". (float)$this->data['quantity_min'] .",
@@ -365,33 +366,40 @@
         }
       }
 
-    // Delete stock options
+    // Delete stock items
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_to_stock_items
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['stock_items'], 'id')) ."');"
       );
 
-    // Update stock options
+    // Update stock items
       if (!empty($this->data['stock_items'])) {
+
         $i = 0;
-        foreach (array_keys($this->data['stock_items']) as $key) {
-          if (empty($this->data['stock_items'][$key]['id'])) {
+        foreach ($this->data['stock_items'] as $key => $stock_item) {
+
+          if (empty($stock_item['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_to_stock_items
               (product_id, stock_item_id)
-              values (". (int)$this->data['id'] .", ". (int)$this->data['stock_items'][$key]['stock_item_id'] .");"
+              values (". (int)$this->data['id'] .", ". (int)$stock_item['stock_item_id'] .");"
             );
-            $this->data['stock_items'][$key]['id'] = database::insert_id();
+            $this->data['stock_items'][$key]['id'] = $stock_item['id'] = database::insert_id();
           }
 
           database::query(
             "update ". DB_TABLE_PREFIX ."products_to_stock_items
-            set image = '". database::input($this->data['stock_items'][$key]['image']) ."'
+            set priority = ". (int)$i++ ."
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['stock_items'][$key]['id'] ."
+            and id = ". (int)$stock_item['id'] ."
             limit 1;"
           );
+
+          $ent_stock_item = new ent_stock_item($stock_item['stock_item_id']);
+          $ent_stock_item->data['quantity_adjust'] = $stock_item['quantity_adjustment'];
+          $ent_stock_item->data['ordered'] = $stock_item['ordered'];
+          $ent_stock_item->save();
         }
       }
 

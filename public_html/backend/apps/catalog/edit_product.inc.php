@@ -45,6 +45,7 @@
       $_POST['keywords'] = preg_split('#\s*,\s*#', $_POST['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
       $fields = [
+        'type',
         'status',
         'brand_id',
         'supplier_id',
@@ -206,7 +207,7 @@
     $output = '';
 
     if (empty($category_id)) {
-      $output .= '<div class="checkbox" id="category-id-0"><label>'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cc6;"') .' ['. language::translate('title_root', 'Root') .']</label></div>' . PHP_EOL;
+      $output .= '<div class="checkbox" id="category-id-0"><label>'. functions::form_draw_checkbox('categories[]', '0', true, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cc6;"') .' ['. language::translate('title_root', 'Root') .']</label></div>' . PHP_EOL;
     }
 
   // Output categories
@@ -563,32 +564,32 @@
         <div id="tab-stock" class="tab-pane">
 
           <div class="row" style="max-width: 960px;">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_quantity_min', 'Quantity Minimum'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_min', true); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_quantity_maximum', 'Quantity Maximum'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_max', true); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_step', true); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_step', true, null, 'min="0"'); ?>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
               <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
               <?php echo functions::form_draw_delivery_statuses_list('delivery_status_id', true); ?>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
               <?php echo functions::form_draw_sold_out_statuses_list('sold_out_status_id', true); ?>
             </div>
@@ -597,10 +598,10 @@
           <div class="form-group">
             <label><?php echo language::translate('title_type', 'Type'); ?></label>
             <div class="checkbox">
-              <label><?php echo functions::form_draw_radio_button('type', 'regular', true); ?> One of the following</label>
+              <label><?php echo functions::form_draw_radio_button('type', 'single', true); ?> <strong><?php echo language::translate('title_single', 'Single'); ?></strong> &ndash; <?php echo language::translate('text_let_the_customer_choose_one_of_the_stock_items', 'Let the customer choose one of the stock items'); ?></label>
             </div>
             <div class="checkbox">
-              <label><?php echo functions::form_draw_radio_button('type', 'bundle', true); ?> All of the following</label>
+              <label><?php echo functions::form_draw_radio_button('type', 'bundle', true); ?> <strong><?php echo language::translate('title_bundle', 'Bundle'); ?></strong> &ndash; <?php echo language::translate('text_all_stock_items_are_included', 'All stock items are included'); ?></label>
             </div>
           </div>
 
@@ -637,16 +638,16 @@
                     <?php echo functions::form_draw_hidden_field('stock_items['. $key .'][length_unit]', true); ?>
                     <span class="sku"><?php echo $_POST['stock_items'][$key]['sku']; ?></span>
                   </td>
-                  <td>
+                  <td class="grabable">
                     <span class="name"><?php echo $_POST['stock_items'][$key]['name']; ?></span>
                   </td>
-                  <td class="text-right">
+                  <td class="grabable text-right">
                     <span class="weight"><?php echo (float)$_POST['stock_items'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_items'][$key]['weight_unit']; ?></span>
                   </td>
-                  <td class="text-right">
+                  <td class="grabable text-right">
                     <span class="length"><?php echo (float)$_POST['stock_items'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_items'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_items'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_items'][$key]['length_unit']; ?></span>
                   </td>
-                  <td><?php echo functions::form_draw_decimal_field('stock_items['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_items'][$key]['quantity']) ? (float)$product->data['stock_items'][$key]['quantity'] : '0') .'"'); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('stock_items['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_items'][$key]) ? (float)$product->data['stock_items'][$key]['quantity'] : '0') .'"'); ?></td>
                   <td>
                     <div class="input-group">
                       <span class="input-group-addon">&plusmn;</span>
@@ -658,7 +659,7 @@
                       <span class="input-group-btn">
                         <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
                       </span>
-                      <?php echo functions::form_draw_decimal_field('stock_items[new_stock_item_i][ordered]', true, 2, 'min="0"'); ?>
+                      <?php echo functions::form_draw_decimal_field('stock_items['. $key .'][ordered]', true, 2, 'min="0"'); ?>
                     </div>
                   </td>
                   <td class="text-right">
@@ -1099,17 +1100,17 @@
 
     var decimals = $('option:selected', this).data('decimals');
 
-    var value = parseFloat($('input[name="quantity"]').val()).toFixed(decimals);
-    $('input[name="quantity"]').val(value);
+    $('input[name="quantity_min"]').val( parseFloat($('input[name="quantity_min"]').val()).toFixed(decimals) );
+    $('input[name="quantity_max"]').val( parseFloat($('input[name="quantity_max"]').val()).toFixed(decimals) );
+    $('input[name="quantity_step"]').val( parseFloat($('input[name="quantity_step"]').val()).toFixed(decimals) );
+    $('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val()).toFixed(decimals) );
 
     $('input[name^="stock_item"][name$="[quantity]"]').each(function(){
-      var value = parseFloat($(this).val()).toFixed(decimals);
-      $(this).val(value);
+      $(this).val( parseFloat($(this).val()).toFixed(decimals) );
     });
 
     $('input[name^="option_stock"][name$="[quantity_adjustment]"]').each(function(){
-      var value = parseFloat($(this).val()).toFixed(decimals);
-      $(this).val(value);
+      $(this).val( parseFloat($(this).val()).toFixed(decimals) );
     });
   }).trigger('change');
 
@@ -1175,6 +1176,7 @@
   });
 
   window.upsert_stock_item = function(stock_item) {
+
     if (!$('input[name^="stock_items"][name$="[sku]"][value="'+ stock_item.sku +'"]').length) {
       var output = '<tr>'
                  + '  <td class="grabable">'
@@ -1201,11 +1203,11 @@
                  + '  <td class="text-right">'
                  + '    <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>'
                  + '  </td>'
-                 + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_option_stock_i][quantity]', '0', 2, 'data-quantity="0"')); ?></td>'
+                 + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][quantity]', '0', 2, 'data-quantity="0"')); ?></td>'
                  + '  <td>'
                  + '    <div class="input-group">'
                  + '      <span class="input-group-addon">&plusmn;</span>'
-                 + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_option_stock_i][quantity_adjustment]', '0')); ?>'
+                 + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][quantity_adjustment]', '0')); ?>'
                  + '    </div>'
                  + '  </td>'
                  + '  <td>'
@@ -1232,7 +1234,6 @@
       output = output.replace(/new_stock_item_i/g, 'new_'+new_stock_item_i);
 
       $('#stock-items').find('tbody').append(output);
-
       var row = $('#stock-items tbody tr:last');
     } else {
       var row = $('input[name^="stock_items"][name$="[sku]"][value="'+ stock_item.sku +'"]').closest('tr');
@@ -1240,18 +1241,20 @@
 
     if (!$(row).length) console.error('Could not find row');
 
-    $.each(stock_item, function(key, value){
-
+    $.each(Object.keys(stock_item), function(i, key){ // Iterate Object.keys() because jQuery.each() doesn't support a property named length
       switch (key) {
         case 'id':
+          var value = stock_item[key];
           key = 'stock_item_id';
           break;
         case 'name':
-          value = value[window._env.session.language_code];
+          var value = stock_item[key][window._env.session.language_code];
+          break;
+        default:
+          var value = stock_item[key];
           break;
       }
-
-      $(row).find('*[name$="['+key+']"]').val(value);
+      $(row).find(':input[name$="['+key+']"]').val(value);
       $(row).find('.'+key).text(value);
     });
   }

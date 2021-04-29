@@ -85,7 +85,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."stock_items set
-        sku = '". database::input($this->data['sku']) ."',
+        sku = '". database::input(strtoupper($this->data['sku'])) ."',
         mpn = '". database::input($this->data['mpn']) ."',
         gtin = '". database::input($this->data['gtin']) ."',
         ordered = ". (float)$this->data['ordered'] .",

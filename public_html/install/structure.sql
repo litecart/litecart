@@ -409,7 +409,7 @@ CREATE TABLE `lc_orders_items` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `product_id` (`product_id`),
-  KEY `stock_option_id` (`stock_option_id`),
+  KEY `stock_item_id` (`stock_item_id`),
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses` (

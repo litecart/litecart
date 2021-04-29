@@ -40,9 +40,9 @@
 
 <script>
 	var xhr_stock_item_picker = null;
-	$('#modal-stock-item-picker input[name="query"]').bind('propertyChange input', function(){
+	$('#modal-stock-item-picker input[name="query"]').bind('input', function(){
 		if ($(this).val() == '') {
-			$('#modal-stock-item-picker .results tbody').html('');
+			$('#modal-stock-item-picker tbody').html('');
 			xhr_stock_item_picker = null;
 			return;
 		}
@@ -58,33 +58,39 @@
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.error(textStatus + ': ' + errorThrown);
 			},
-			success: function(json) {
-				$('#modal-stock-item-picker .results tbody').html('');
-				$.each(json, function(i, row){
-          $('#modal-stock-item-picker .results tbody').append(
-            '<tr>' +
-            '  <td class="id">' + row.id + '</td>' +
-            '  <td class="sku">' + row.sku + '</td>' +
-            '  <td class="brand">' + row.brand_name + '</td>' +
-            '  <td class="name">' + row.name + '</td>' +
-            '  <td class="gtin">' + row.gtin + '</td>' +
-            '  <td class="mpn">' + row.mpn + '</td>' +
-            '  <td class="quantity text-right">' + row.quantity + '</td>' +
-            '  <td class="date-created">' + row.date_created + '</td>' +
+			success: function(result) {
+				$('#modal-stock-item-picker tbody').html('');
+				$.each(result, function(i, item) {
+
+          $row = $('<tr>' +
+            '  <td class="id">' + item.id + '</td>' +
+            '  <td class="sku">' + item.sku + '</td>' +
+            '  <td class="brand">' + item.brand_name + '</td>' +
+            '  <td class="name">' + item.name + '</td>' +
+            '  <td class="gtin">' + item.gtin + '</td>' +
+            '  <td class="mpn">' + item.mpn + '</td>' +
+            '  <td class="quantity text-right">' + item.quantity + '</td>' +
+            '  <td class="date-created">' + item.date_created + '</td>' +
             '</tr>'
           );
-          $.each(row, function(key, value){
-            $('#modal-stock-item-picker .results tbody tr:last').data(key, value);
+
+          $.each(Object.keys(item), function(j, key) {  // Iterate Object.keys() because jQuery.each() doesn't support a property named length
+            $row.data(key, item[key]);
           });
+
+          $row.appendTo('#modal-stock-item-picker tbody');
 				});
-				if ($('#modal-stock-item-picker .results tbody').html() == '') {
-					$('#modal-stock-item-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+
+				if ($('#modal-stock-item-picker tbody').html() == '') {
+					$('#modal-stock-item-picker tbody').html('<tr><td colspan="6"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
 				}
-			},
+			}
 		});
 	}).focus();
 
 	$('#modal-stock-item-picker tbody').on('click', 'td', function() {
+
+    <?php if (!empty($_GET['js_callback'])) { ?>
 		var row = $(this).closest('tr');
 
 		var id = $(row).find('.id').text();
@@ -92,8 +98,7 @@
 
     var data = $(row).data();
 
-    <?php if (!empty($_GET['js_callback'])) { ?>
-    <?php echo 'if (window[\''. addcslashes($_GET['js_callback'], '\'') .'\']) window[\''. addcslashes($_GET['js_callback'], '\'') .'\'](data);' ?>
+    if (window['<?php echo addcslashes($_GET['js_callback'], '\''); ?>']) window['<?php echo addcslashes($_GET['js_callback'], '\''); ?>'](data);
     <?php } ?>
 
     if ($.featherlight.opened) {

@@ -20,6 +20,7 @@
               <thead>
               <tr>
                 <th class="main"><?php echo language::translate('title_order', 'Order'); ?></th>
+                <th class="text-right"></th>
                 <th class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
                 <th class="text-right"><?php echo language::translate('title_amount', 'Amount'); ?></th>
                 <th class="text-right"><?php echo language::translate('title_date', 'Date'); ?></th>
@@ -30,6 +31,7 @@
               <?php if ($orders) foreach ($orders as $order) { ?>
               <tr>
                 <td><a href="<?php echo htmlspecialchars($order['link']); ?>" class="lightbox-iframe"><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
+                <td class="text-center"><?php echo $order['num_downloads'] ? '<a href="'. document::href_ilink('downloads') .'">'. language::translate('title_downloads', 'Downloads') .'</a>' : ''; ?></td>
                 <td class="text-center"><?php echo $order['order_status']; ?></td>
                 <td class="text-right"><?php echo $order['payment_due']; ?></td>
                 <td class="text-right"><?php echo $order['date_created']; ?></td>

@@ -49,16 +49,16 @@ DROP INDEX `product_option_stock`,
 ADD UNIQUE INDEX `stock_option` (`product_id`, `combination`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
-ADD COLUMN `stock_option_id` INT(11) NOT NULL DEFAULT '0' AFTER `product_id`,
+ADD COLUMN `stock_item_id` INT(11) NOT NULL DEFAULT '0' AFTER `product_id`,
 ADD COLUMN `description` VARCHAR(256) NOT NULL DEFAULT '' AFTER `name`,
 CHANGE COLUMN `options` `data` VARCHAR(1024) NOT NULL DEFAULT '' AFTER `description`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `length_unit`,
 ADD INDEX `product_id` (`product_id`),
-ADD INDEX `stock_option_id` (`stock_option_id`);
+ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
 UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.combination = oi.option_stock_combination)
-SET stock_option_id = pso.id;
+SET stock_item_id = pso.id;
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 DROP COLUMN `option_stock_combination`;

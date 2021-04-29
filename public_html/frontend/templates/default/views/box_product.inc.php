@@ -117,16 +117,15 @@
         <?php if ($stock_options) { ?>
         <div class="form-group">
           <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
-          <div class="form-control dropdown caret">
-            <div data-toggle="dropdown">
-              <span class="caret pull-right"></span>
+          <div class="dropdown">
+            <div class="form-select" data-toggle="dropdown">
               <span class="title">-- <?php echo language::translate('title_select', 'Select'); ?> --</span>
             </div>
             <ul class="dropdown-menu stock-options" style="width: 100%;">
               <?php foreach ($stock_options as $stock_option) { ?>
               <li>
-                <label style="display: block;">
-                  <input type="radio" name="stock_item_id" value="<?php echo $stock_option['stock_item_id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" style="display: none;" required />
+                <label style="display: flex;">
+                  <input type="radio" name="stock_item_id" value="<?php echo $stock_option['stock_item_id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" data-set-title="<?php echo htmlspecialchars($stock_option['name']); ?>" required />
                   <div class="row">
                     <div class="col-xs-2">
                       <img src="<?php echo document::href_link(WS_DIR_STORAGE . $stock_option['image']['thumbnail']); ?>" class="thumbnail" alt="" />
@@ -236,18 +235,9 @@
 </article>
 
 <script>
-  $('#box-product[data-id="<?php echo $product_id; ?>"] .form-control.dropdown :input').on('input', function(e){
-    var dropdown = $(this).closest('.dropdown');
-    var option = $(this).closest('label');
-    if ($(dropdown).find('.name').length) {
-      $(dropdown).find('.title').text( $(option).find('.name').text() );
-    }
-    $(dropdown).trigger('click.bs.dropdown');
-  });
-
   $('#box-product[data-id="<?php echo $product_id; ?>"] button[name="add_cart_product"]').click(function(e) {
-    if ($('input[name="stock_option_id"]').length) {
-      if (!$('input[name="stock_option_id"]:checked').length) {
+    if ($('input[name="stock_item_id"]').length) {
+      if (!$('input[name="stock_item_id"]:checked').length) {
         e.preventDefault();
         $(this).closest('form').find('.dropdown [data-toggle="dropdown"]').click();
         return false;

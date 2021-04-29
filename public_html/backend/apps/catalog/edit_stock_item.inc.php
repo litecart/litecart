@@ -133,7 +133,7 @@
               <label><?php echo language::translate('title_references', 'References'); ?></label>
               <div class="input-group">
                 <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                <?php echo functions::form_draw_text_field('sku', true); ?>
+                <?php echo functions::form_draw_text_field('sku', true, 'style="text-transform: uppercase;"'); ?>
               </div>
 
               <div class="input-group">

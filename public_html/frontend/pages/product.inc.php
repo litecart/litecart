@@ -207,7 +207,7 @@
   }
 
 // Stock Options
-  if ($product->stock_options) {
+  if ($product->type == 'single' && $product->stock_options) {
     list($width, $height) = functions::image_scale_by_width(48, settings::get('product_image_ratio'));
     foreach ($product->stock_options as $stock_option)  {
       $stock_option['image'] = [
