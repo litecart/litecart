@@ -57,6 +57,7 @@
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
 

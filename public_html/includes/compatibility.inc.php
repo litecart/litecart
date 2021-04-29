@@ -252,7 +252,7 @@
 
 /*
 // Redefine $_SERVER['REMOTE_ADDR'] (Can easily be spoofed by clients - Do not enable unless necessary)
-  foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'HTTP_X_REAL_IP', 'HTTP_CF_CONNECTING_IP') as $key) {
+  foreach (['HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'HTTP_CF_CONNECTING_IP'] as $key) {
     if (!empty($_SERVER[$key])) {
       foreach (array_reverse(explode(',', $_SERVER[$key])) as $ip) {
         $ip = trim($ip);

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 @import "framework/media.less";
 
@@ -75,12 +75,14 @@
   --tab-nav-text-color: var(--default-text-color);
   --tab-border-color: transparent;
   --tab-active-background-color: var(--tab-content-background-color);
-  --tab-content-background-color: #fff;
+  --tab-content-background-color: transparent;
   --tab-content-text-color: var(--default-text-color);
 
-  --table-striped-row-background-odd: #f9f9f9;
-  --table-striped-row-background-even: #fff;
-  --table-row-hover-background: #ececec;
+  --table-header-background-color: var(--default-background-color);
+  --table-row-odd-background-color: #f9f9f9;
+  --table-row-even-background-color: #fff;
+  --table-row-hover-background-color: #ececec;
+  --table-footer-background-color: var(--default-background-color);
 
   --pagination-background-color: var(--default-background-color);
   --pagination-text-color: var(--default-text-color);
@@ -95,6 +97,7 @@
   --border-radius: 5px;
   --gutter-size: 2rem;
   --input-background-color: #f9f9f9;
+  --input-addon-background-color: #f1f1f1;
   --input-text-color: #000;
   --input-border-color: var(--default-border-color);
   --input-padding-x: 15px;
@@ -124,9 +127,14 @@ body.dark-mode {
   --panel-heading-background-color: #35415a;
   --panel-heading-text-color: #fff;
 
-  --table-striped-row-background-odd: #2d374c;
-  --table-striped-row-background-even: #283246;
-  --table-row-hover-background: #3c4861;
+  --tab-nav-background-color: #1c243a;
+  --tab-nav-text-color: #acb6c2;
+
+  --table-header-background-color: #1c243a;
+  --table-row-odd-background-color: #2d374c;
+  --table-row-even-background-color: #283246;
+  --table-row-hover-background-color: #3c4861;
+  --table-footer-background-color: #1c243a;
 
   --pagination-background-color: var(--default-background-color);
   --pagination-text-color: var(--default-text-color);

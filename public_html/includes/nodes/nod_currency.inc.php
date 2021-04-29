@@ -95,6 +95,19 @@
         }
       }
 
+    // Get currency from country (via TLD)
+      if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+        $countries_query = database::query(
+          "select * from ". DB_TABLE_PREFIX ."countries
+          where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
+          limit 1;"
+        );
+
+        if ($country = database::fetch($countries_query) && in_array($country['currency_code'], $enabled_currencies)) {
+          return $country['currency_code'];
+        }
+      }
+
     // Return default currency
       if (in_array(settings::get('default_currency_code'), $all_currencies)) return settings::get('default_currency_code');
 
@@ -127,6 +140,7 @@
       if (empty($currency_code)) {
         $currency_code = self::$selected['code'];
       }
+
       if (empty(self::$currencies[$currency_code]) && empty($currency_value)) {
         trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
       }

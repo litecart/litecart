@@ -79,6 +79,7 @@
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
+
         $this->data['id'] = database::insert_id();
       }
 
@@ -95,22 +96,6 @@
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
-
-      $htpasswd = file_get_contents(FS_DIR_APP . '.htpasswd');
-
-    // Rename .htpasswd user
-      if (empty($this->previous) && $this->data['username'] != $this->previous['username']) {
-        $htpasswd = preg_replace('#(?<=^|\r\n|\r|\n)(\#*'. preg_quote($this->previous['username'], '#') .'):([^\r|\n]+)(\r\n?|\n)*#', '$1:$2' . PHP_EOL, $htpasswd);
-      }
-
-    // Set .htpasswd user status
-      if (!empty($this->data['status'])) {
-        $htpasswd = preg_replace('#(?<=^|\r\n|\r|\n)\#*('. preg_quote($this->data['username'], '#') .'):([^\r|\n]+)(\r\n?|\n)*#', '$1:$2' . PHP_EOL, $htpasswd);
-      } else {
-        $htpasswd = preg_replace('#(?<=^|\r\n|\r|\n)\#*('. preg_quote($this->data['username'], '#') .'):([^\r|\n]+)(\r\n?|\n)*#', '#$1:$2' . PHP_EOL, $htpasswd);
-      }
-
-      file_put_contents(FS_DIR_APP . '.htpasswd', $htpasswd);
 
       $this->previous = $this->data;
 
@@ -130,24 +115,10 @@
         limit 1;"
       );
 
-      $htpasswd = file_get_contents(FS_DIR_ADMIN . '.htpasswd');
-
-      if (preg_match('#(?<=^|\r\n|\r|\n)\#*('. preg_quote($this->data['username'], '#') .'):.*?#', $htpasswd)) {
-        $htpasswd = preg_replace('#(?<=^|\r\n|\r|\n)(\#*'. preg_quote($this->data['username'], '#') .'):[^\r|\n]+(\r\n?|\n)*#', '$1:{SHA}'.base64_encode(sha1($password, true)) . PHP_EOL, $htpasswd);
-      } else {
-        $htpasswd .= $this->data['username'] .':{SHA}'. base64_encode(sha1($password, true)) . PHP_EOL;
-      }
-
-      file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
-
       $this->previous['password_hash'] = $this->data['password_hash'];
     }
 
     public function delete() {
-
-      $htpasswd = file_get_contents(FS_DIR_ADMIN . '.htpasswd');
-      $htpasswd = preg_replace('#(?<=^|\r\n|\r|\n)\#*'. preg_quote($this->data['username'], '#') .':[^\r|\n]+(\r\n?|\n)*#', '', $htpasswd);
-      file_put_contents(FS_DIR_ADMIN . '.htpasswd', $htpasswd);
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."users

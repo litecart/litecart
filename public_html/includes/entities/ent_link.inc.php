@@ -23,6 +23,7 @@
         }
       } else {
         $components = is_array($link) ? $link : parse_url($link);
+
         foreach ($components as $component => $value) {
           $this->$component = $value;
         }
