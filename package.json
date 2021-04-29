@@ -27,7 +27,7 @@
 		"grunt-sass": "^3.1.0",
 		"grunt-text-replace": "^0.4.0",
 		"less-plugin-clean-css": "^1.5.1",
-		"node-sass": "^4.14.1",
+		"node-sass": "^5.0.0",
 		"phplint": "^2.0.3"
 	},
 	"scripts": {
