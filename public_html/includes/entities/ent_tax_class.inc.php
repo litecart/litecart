@@ -30,13 +30,13 @@
 
     public function load($tax_class_id) {
 
-      if (!preg_match('#^[0-9]+$#', $tax_class_id)) throw new Exception('Invalid tax class (ID: '. $tax_class_id .')');
+      if (empty($tax_class_id)) throw new Exception('Invalid tax class (ID: n/a)');
 
       $this->reset();
 
       $tax_class_query = database::query(
         "select * from ". DB_TABLE_TAX_CLASSES ."
-        where id = ". (int)$tax_class_id ."
+        where ". (preg_match('#^[0-9]+$#', $tax_class_id) ? "id = ". (int)$tax_class_id : "code = '". database::input($tax_class_id) ."'") ."
         limit 1;"
       );
 

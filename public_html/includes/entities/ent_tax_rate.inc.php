@@ -30,13 +30,13 @@
 
     public function load($tax_rate_id) {
 
-      if (!preg_match('#^[0-9]+$#', $tax_rate_id)) throw new Exception('Invalid tax rate (ID: '. $tax_rate_id .')');
+      if (empty($tax_rate_id)) throw new Exception('Invalid tax rate (ID: n/a)');
 
       $this->reset();
 
       $tax_rate_query = database::query(
         "select * from ". DB_TABLE_TAX_RATES ."
-        where id = ". (int)$tax_rate_id ."
+        where ". (preg_match('#^[0-9]+$#', $tax_rate_id) ? "id = ". (int)$tax_rate_id : "code = '". database::input($tax_rate_id) ."'") ."
         limit 1;"
       );
 
