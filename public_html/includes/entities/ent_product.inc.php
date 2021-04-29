@@ -52,7 +52,7 @@
 
     public function load($product_id) {
 
-      if (empty($product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
+      if (empty($product_id)) throw new Exception('Invalid product (ID: n/a)');
 
       $this->reset();
 

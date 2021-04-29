@@ -248,12 +248,12 @@
             </thead>
             <tbody>
               <?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
-              <tr class="grabable">
+              <tr>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-                <td><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
-                <td><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
+                <td class="grabable"><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
+                <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-right">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                   <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
@@ -262,12 +262,6 @@
               </tr>
               <?php } ?>
             </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="2">
-                </td>
-              </tr>
-            </tfoot>
           </table>
 
           <div class="input-group" style="max-width: 320px;">

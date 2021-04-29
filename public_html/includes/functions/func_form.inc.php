@@ -1531,11 +1531,19 @@
 
   function form_draw_zones_list($country_code, $name, $input=true, $multiple=false, $parameters='', $preamble='none') {
 
-    if (empty($country_code)) $country_code = settings::get('default_country_code');
+    if (empty($country_code)) $country_code = 'default_country_code';
 
-    if ($country_code == 'default_country_code') $country_code = settings::get('default_country_code');
-
-    if ($country_code == 'store_country_code') $country_code = settings::get('store_country_code');
+    switch ($country_code) {
+      case 'customer_country_code':
+        $country_code = customer::$data['country_code'];
+        break;
+      case 'default_country_code':
+        $country_code = settings::get('default_country_code');
+        break;
+      case 'store_country_code':
+        $country_code = settings::get('store_country_code');
+        break;
+    }
 
     $zones_query = database::query(
       "select * from ". DB_TABLE_ZONES ."
