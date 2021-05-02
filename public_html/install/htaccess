@@ -94,6 +94,11 @@ ErrorDocument 500 "Internal Server Error"
   </FilesMatch>
 </IfModule>
 
+# Prevent robots from indexing this site
+#<IfModule mod_headers.c>
+#  Header set X-Robots-Tag "noindex, nofollow"
+#</IfModule>
+
 # Protect catalog using admin .htpasswd, handy for development platforms
 #<IfModule mod_auth.c>
 #  AuthType Basic
