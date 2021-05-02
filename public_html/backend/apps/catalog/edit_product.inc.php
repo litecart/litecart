@@ -200,14 +200,14 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <div id="categories" class="form-control">
+                <div id="categories" class="form-input">
 <?php
   $catalog_tree_iterator = function($category_id=0, $depth=1, $count=0) use (&$catalog_tree_iterator) {
 
     $output = '';
 
     if (empty($category_id)) {
-      $output .= '<div class="checkbox" id="category-id-0"><label>'. functions::form_draw_checkbox('categories[]', '0', true, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cc6;"') .' ['. language::translate('title_root', 'Root') .']</label></div>' . PHP_EOL;
+      $output .= '  <div>' . functions::form_draw_checkbox('categories[]', '0', true, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cc6;"') .' ['. language::translate('title_root', 'Root') .']</div>' . PHP_EOL;
     }
 
   // Output categories
@@ -222,7 +222,7 @@
     while ($category = database::fetch($categories_query)) {
       $count++;
 
-      $output .= '  <div class="checkbox"><label>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cc6; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label></div>' . PHP_EOL;
+      $output .= '  <div>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cc6; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label>' . PHP_EOL;
 
       if (database::num_rows(database::query("select * from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0) {
         $output .= $catalog_tree_iterator($category['id'], $depth+1, $count);
@@ -597,10 +597,8 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_type', 'Type'); ?></label>
-            <div class="checkbox">
+            <div>
               <label><?php echo functions::form_draw_radio_button('type', 'single', true); ?> <strong><?php echo language::translate('title_single', 'Single'); ?></strong> &ndash; <?php echo language::translate('text_let_the_customer_choose_one_of_the_stock_items', 'Let the customer choose one of the stock items'); ?></label>
-            </div>
-            <div class="checkbox">
               <label><?php echo functions::form_draw_radio_button('type', 'bundle', true); ?> <strong><?php echo language::translate('title_bundle', 'Bundle'); ?></strong> &ndash; <?php echo language::translate('text_all_stock_items_are_included', 'All stock items are included'); ?></label>
             </div>
           </div>
@@ -713,7 +711,7 @@
 
 // Default Category
 
-  $('input[name="category_query"]').closest('.input-group').children('.form-control').change(function(){
+  $('input[name="category_query"]').closest('.input-group').children('.form-input').change(function(){
     var default_category = $('select[name="default_category_id"] option:selected').val();
 
     $('select[name="default_category_id"]').html('');

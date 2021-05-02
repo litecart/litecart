@@ -399,18 +399,18 @@ input[name="development_type"]:checked + div {
 
 <form name="installation_form" method="post" action="install.php">
 
-  <input class="form-control" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+  <input class="form-input" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
 
   <h3>File System</h3>
 
   <div class="form-group">
     <label>Installation Path</label>
-    <div class="form-control"><?php echo $document_root; ?></div>
+    <div class="form-input"><?php echo $document_root; ?></div>
   </div>
 
   <div class="form-group">
     <label>Storage Directory</label>
-    <input class="form-control" type="text" value="<?php echo htmlspecialchars($document_root); ?>">
+    <input class="form-input" type="text" value="<?php echo htmlspecialchars($document_root); ?>">
   </div>
 
   <h3>Database</h3>
@@ -418,24 +418,24 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
     <label>Type</label>
-      <select class="form-control" name="db_type" required>
+      <select class="form-select" name="db_type" required>
         <option value="mysql">MySQL / MariaDB</option>
       </select>
     </div>
 
     <div class="form-group col-md-6">
       <label>Hostname</label>
-      <input class="form-control" name="db_server" type="text" placeholder="localhost" />
+      <input class="form-input" name="db_server" type="text" placeholder="localhost" />
     </div>
 
     <div class="form-group col-md-6">
       <label>Database</label>
-      <input class="form-control" type="text" name="db_database" required />
+      <input class="form-input" type="text" name="db_database" required />
     </div>
 
     <div class="form-group col-md-6">
       <label>Collation</label>
-      <select class="form-control" name="db_collation" required>
+      <select class="form-select" name="db_collation" required>
         <option>utf8mb4_bin</option>
         <option>utf8mb4_general_ci</option>
         <option>utf8mb4_unicode_ci</option>
@@ -463,24 +463,24 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-control" type="text" name="db_username" required />
+      <input class="form-input" type="text" name="db_username" required />
     </div>
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-control" type="password" name="db_password" />
+      <input class="form-input" type="password" name="db_password" />
     </div>
 
     <div class="form-group col-md-6">
       <label>Table Prefix</label>
-      <input class="form-control" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;" />
+      <input class="form-input" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;" />
     </div>
 
     <div class="form-group col-md-6">
       <label>Demo Data</label>
-      <div class="checkbox">
-        <label><input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled' : ''; ?> /> Install demo data</label>
-      </div>
+      <label class="form-check">
+        <input name="demo_data" type="checkbox" value="true" <?php echo !file_exists('data/demo/data.sql') ? 'disabled' : ''; ?> /> Install demo data
+      </label>
     </div>
   </div>
 
@@ -489,19 +489,19 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Store Name</label>
-      <input class="form-control" name="store_name" type="text" value="My Store" required />
+      <input class="form-input" name="store_name" type="text" value="My Store" required />
     </div>
 
     <div class="form-group col-md-6">
       <label>Store Email</label>
-      <input class="form-control" name="store_email" type="text" value="store@email.com" required />
+      <input class="form-input" name="store_email" type="text" value="store@email.com" required />
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label>Country</label>
-      <select class="form-control" name="country_code" required>
+      <select class="form-input" name="country_code" required>
         <option value="">-- Select --</option>
         <?php foreach ($countries as $code => $name) echo '<option value="'. $code .'">'. $name .'</option>' . PHP_EOL; ?>
       </select>
@@ -509,7 +509,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Time Zone</label>
-      <select class="form-control" name="store_time_zone" required>
+      <select class="form-input" name="store_time_zone" required>
 <?php
   foreach (timezone_identifiers_list() as $timezone) {
     $timezone = explode('/', $timezone);
@@ -559,7 +559,7 @@ input[name="development_type"]:checked + div {
       <label>Folder Name</label>
       <div class="input-group">
         <span class="input-group-addon">/</span>
-        <input class="form-control" name="admin_folder" type="text" value="admin" required />
+        <input class="form-input" name="admin_folder" type="text" value="admin" required />
       </div>
     </div>
   </div>
@@ -567,12 +567,12 @@ input[name="development_type"]:checked + div {
   <div class="row">
     <div class="form-group col-md-6">
       <label>Username</label>
-      <input class="form-control" name="username" type="text" id="username" value="admin" required />
+      <input class="form-input" name="username" type="text" id="username" value="admin" required />
     </div>
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-control" name="password" type="text" id="password" required />
+      <input class="form-input" name="password" type="text" id="password" required />
     </div>
   </div>
 

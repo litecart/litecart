@@ -257,12 +257,16 @@ body.dark-mode #box-comments {
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
-              <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
+              <div class="form-input">
+                <?php echo $order->data['client_ip']; ?> <a href="https://ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+              </div>
             </div>
 
                 <div class="form-group col-md-3">
                   <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
-                  <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
+                  <div class="form-input">
+                    <?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+                  </div>
                 </div>
 
                 <div class="form-group col-md-3">
@@ -315,7 +319,7 @@ body.dark-mode #box-comments {
 
                   <div class="form-group">
                     <div class="input-group">
-                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+                      <div class="selected-account form-input"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                       <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                       <span class="input-group-btn">
                         <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
@@ -522,7 +526,7 @@ body.dark-mode #box-comments {
 
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
-                      <span class="form-control"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></span>
+                      <span class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></span>
                     </div>
 
                     <div class="form-group col-md-12">
@@ -691,7 +695,7 @@ body.dark-mode #box-comments {
               <tr>
                 <td class="text-right">&nbsp;</td>
                 <td class="text-right"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true, 'readonly'); ?></td>
-                <td class="text-right"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'class="form-control text-right"'); ?></td>
+                <td class="text-right"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'class="form-input text-right"'); ?></td>
                 <td class="text-right">
                   <div class="input-group">
                     <span class="input-group-addon"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
@@ -739,14 +743,10 @@ body.dark-mode #box-comments {
       <div class="panel-action">
         <ul class="list-inline">
           <li>
-            <div class="checkbox">
-              <label><?php echo functions::form_draw_checkbox('email_order_copy', '1', true); ?> <?php echo language::translate('text_send_order_copy_email', 'Send order copy email'); ?></label>
-            </div>
+            <?php echo functions::form_draw_checkbox('email_order_copy', ['1', language::translate('text_send_order_copy_email', 'Send order copy email')], true); ?>
           </li>
           <li>
-            <div class="checkbox">
-              <label><?php echo functions::form_draw_checkbox('unread', '1', false); ?> <?php echo language::translate('title_mark_as_unread', 'Mark as unread'); ?></label>
-            </div>
+            <?php echo functions::form_draw_checkbox('unread', ['1', language::translate('title_mark_as_unread', 'Mark as unread')], false); ?>
           </li>
           <li>
             <div class="btn-group">

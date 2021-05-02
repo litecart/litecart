@@ -203,13 +203,13 @@ th:not(:last-child) {
       </div>
       <div class="form-group">
         <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
-        <textarea class="form-control" name="source" style="height: 320px;" readonly></textarea>
+        <textarea class="form-input" name="source" style="height: 320px;" readonly></textarea>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
-        <textarea class="form-control" name="result" style="height: 455px;"></textarea>
+        <textarea class="form-input" name="result" style="height: 455px;"></textarea>
       </div>
     </div>
   </div>

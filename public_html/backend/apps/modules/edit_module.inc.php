@@ -144,7 +144,7 @@
     <?php if (!empty($module->data['last_log'])) { ?>
     <div id="box-last-log">
       <h2><?php echo language::translate('title_last_log', 'Last Log'); ?></h2>
-      <pre class="form-control"><?php echo $module->data['last_log']; ?></pre>
+      <pre class="form-input"><?php echo $module->data['last_log']; ?></pre>
     </div>
     <?php } ?>
   </div>

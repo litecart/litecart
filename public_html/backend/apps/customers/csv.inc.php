@@ -209,12 +209,8 @@
             </div>
 
             <div class="form-group">
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('update', 'true', true); ?> <?php echo language::translate('title_update_existing', 'Update Existing'); ?></label>
-              </div>
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('insert', 'true', true); ?> <?php echo language::translate('title_insert_new', 'Insert New'); ?></label>
-              </div>
+              <?php echo functions::form_draw_checkbox('update', ['1', language::translate('title_update_existing', 'Update Existing')], true); ?>
+              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('title_insert_new', 'Insert New')], true); ?>
             </div>
 
             <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>

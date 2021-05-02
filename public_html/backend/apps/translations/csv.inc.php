@@ -191,15 +191,9 @@
             </div>
 
             <div class="form-group">
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('update', '1', true); ?> <?php echo language::translate('title_update_existing', 'Update Existing'); ?></label>
-              </div>
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new', 'Insert New'); ?></label>
-              </div>
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('append', '1', isset($_POST['append']) ? true : '1'); ?> <?php echo language::translate('text_append_missing', 'Append Missing'); ?></label>
-              </div>
+              <?php echo functions::form_draw_checkbox('update', ['1', language::translate('title_update_existing', 'Update Existing')], true); ?>
+              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new', 'Insert New')], true); ?>
+              <?php echo functions::form_draw_checkbox('append', ['1', language::translate('text_append_missing', 'Append Missing')], true); ?>
             </div>
 
             <p><?php echo language::translate('description_scan_before_importing_translations', 'It is recommended to always scan your installation for unregistered translations before performing an import or export.'); ?></p>

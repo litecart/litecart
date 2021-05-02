@@ -115,7 +115,7 @@
         <?php if ($stock_options) { ?>
         <div class="form-group">
           <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
-          <div class="form-control dropdown caret">
+          <div class="form-input dropdown caret">
             <div data-toggle="dropdown">
               <span class="caret pull-right"></span>
               <span class="title">-- <?php echo language::translate('title_select', 'Select'); ?> --</span>
@@ -254,7 +254,7 @@
     return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (<?php echo (settings::get('auto_decimals')) ? "(c && f)" : "c"; ?> ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
   }
 
-  $('#box-product[data-id="<?php echo $product_id; ?>"] .form-control.dropdown :input').on('input', function(e){
+  $('#box-product[data-id="<?php echo $product_id; ?>"] .form-input.dropdown :input').on('input', function(e){
     var dropdown = $(this).closest('.dropdown');
     var option = $(this).closest('label');
     if ($(dropdown).find('.name').length) {

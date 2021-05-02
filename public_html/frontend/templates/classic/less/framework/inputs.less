@@ -67,7 +67,7 @@ input[type="checkbox"] {
   border-radius: var(--border-radius);
 }
 
-.form-control {
+.form-input {
   .input-field();
   display: block;
   width: 100%;
@@ -95,7 +95,7 @@ input[type="checkbox"] {
   }
 }
 
-select.form-control {
+select.form-input {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -108,7 +108,7 @@ select.form-control {
   }
 }
 
-.form-control {
+.form-input {
   cursor: default;
 
   &.caret {
@@ -120,7 +120,7 @@ select.form-control {
   }
 }
 
-.form-control .dropdown-menu {
+.form-input .dropdown-menu {
   user-select: none;
   li > label {
     display: block;
@@ -147,14 +147,14 @@ select.form-control {
 .checkbox, .radio {
   padding: var(--input-padding-y) var(--input-padding-x);
 }
-.form-control .checkbox {
+.form-input .checkbox {
   padding: var(--input-padding-y) 0;
 }
 
 .input-group {
   .input-field();
   display: flex;
-  .form-control {
+  .form-input {
     background: none;
     box-shadow: none;
     border-radius: 0;
@@ -197,14 +197,14 @@ select.form-control {
       padding: 7px 12px;
     }
   }
-  .form-control:first-child,
+  .form-input:first-child,
   .input-group-addon:first-child,
   .input-group-btn:first-child > .btn,
   .input-group-btn:first-child > .btn-group > .btn,
   .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
-  .form-control:last-child,
+  .form-input:last-child,
   .input-group-addon:last-child,
   .input-group-btn:last-child > .btn,
   .input-group-btn:last-child > .btn-group > .btn,

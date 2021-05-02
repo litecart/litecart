@@ -79,7 +79,7 @@ input[type="radio"] {
   }
 }
 
-.form-control {
+.form-input {
   .input-field();
   display: block;
   width: 100%;
@@ -147,7 +147,7 @@ input[type="radio"] {
   }
 }
 
-select.form-control, .form-select {
+.form-select {
   .input-field();
 
   padding-right: 2.5em;
@@ -182,10 +182,10 @@ select.form-control, .form-select {
 .checkbox, .radio {
   padding: .5em 0;
 }
-.form-control .checkbox {
+.form-input .checkbox {
   padding: 1em 0;
 }
-.form-control-feedback {
+.form-input-feedback {
   position: absolute;
   right: 24px;
   top: 35px;
@@ -209,7 +209,7 @@ select.form-control, .form-select {
   .input-field();
   display: flex;
   padding: 0;
-  .form-control {
+  .form-input {
     background: none;
     box-shadow: none;
     border-radius: 0;
@@ -244,7 +244,7 @@ select.form-control, .form-select {
   .input-group-icon {
     flex: 1 0 auto;
     padding: .5em 1em;
-    + .form-control {
+    + .form-input {
       padding-left: 0;
     }
   }
@@ -257,14 +257,14 @@ select.form-control, .form-select {
       box-shadow: none;
     }
   }
-  .form-control:first-child,
+  .form-input:first-child,
   .input-group-addon:first-child,
   .input-group-btn:first-child > .btn,
   .input-group-btn:first-child > .btn-group > .btn,
   .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
-  .form-control:last-child,
+  .form-input:last-child,
   .input-group-addon:last-child,
   .input-group-btn:last-child > .btn,
   .input-group-btn:last-child > .btn-group > .btn,

@@ -619,7 +619,7 @@
          . '  <input type="hidden" value="https://www.litecart.net/" />' . PHP_EOL
          . '  <div class="form-group">' . PHP_EOL
          . '    <div class="input-group">' . PHP_EOL
-         . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
+         . '      <input type="text" class="form-input" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
          . '      <span class="input-group-btn">' . PHP_EOL
          . '        <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
          . '      </span>' . PHP_EOL

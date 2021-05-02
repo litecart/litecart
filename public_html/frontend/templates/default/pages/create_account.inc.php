@@ -110,15 +110,13 @@
             </div>
 
             <div class="form-group">
-              <label class="checkbox">
-                <?php echo functions::form_draw_checkbox('newsletter', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?>
-              </label>
+              <?php echo functions::form_draw_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
             </div>
 
             <?php if ($consent) { ?>
             <p class="consent">
               <div class="checkbox">
-                <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required') .' '. $consent .'</label>'; ?>
+                <?php echo functions::form_draw_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
               </div>
             </p>
             <?php } ?>

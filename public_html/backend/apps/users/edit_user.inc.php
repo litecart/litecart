@@ -150,7 +150,7 @@
         <div class="col-md-4">
           <div class="form-group">
             <label><?php echo functions::form_draw_checkbox('apps_toggle', '1', !empty($_POST['apps']) ? '1' : '0'); ?> <?php echo language::translate('title_apps', 'Apps'); ?></label>
-            <div class="form-control" style="height: 400px; overflow-y: scroll;">
+            <div class="form-input" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
@@ -173,7 +173,7 @@
 
           <div class="form-group">
             <label><?php echo functions::form_draw_checkbox('widgets_toggle', '1', !empty($_POST['widgets']) ? '1' : '0'); ?> <?php echo language::translate('title_widgets', 'Widgets'); ?></label>
-            <div class="form-control" style="height: 150px; overflow-y: scroll;">
+            <div class="form-input" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $widgets = functions::admin_get_widgets();

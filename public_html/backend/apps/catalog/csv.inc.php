@@ -774,11 +774,11 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'campaigns', true); ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'products', true); ?> <?php echo language::translate('title_products', 'Products'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'suppliers', true); ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?></label></div>
+                <?php echo functions::form_draw_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['manufacturers', language::translate('title_manufacturers', 'Manufacturers')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>
 
@@ -810,8 +810,8 @@
             </div>
 
             <div class="form-group">
-              <div class="checkbox"><label><?php echo functions::form_draw_checkbox('insert', '1', true); ?> <?php echo language::translate('text_insert_new_entries', 'Insert new entries'); ?></label></div>
-              <div class="checkbox"><label><?php echo functions::form_draw_checkbox('overwrite', '1', true); ?> <?php echo language::translate('text_overwrite_existing_entries', 'Overwrite existing entries'); ?></label></div>
+              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
+              <?php echo functions::form_draw_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
             </div>
 
             <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
@@ -829,11 +829,11 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'campaigns', true); ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'products', true, 'data-dependencies="currency,language"'); ?> <?php echo language::translate('title_products', 'Products'); ?></label></div>
-                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'suppliers', true); ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?></label></div>
+                <?php echo functions::form_draw_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_draw_radio_button('type', ['manufacturers', language::translate('title_manufacturers', 'Manufacturers')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_draw_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
+                <?php echo functions::form_draw_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>
 

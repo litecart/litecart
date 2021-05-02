@@ -87,10 +87,10 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
-          <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', true); ?> <?php echo language::translate('text_dock_in_site_menu', 'Dock in site menu'); ?></label><br />
-            <label><?php echo functions::form_draw_checkbox('dock[]', 'customer_service', true); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label><br />
-            <label><?php echo functions::form_draw_checkbox('dock[]', 'information', true); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>
+          <div>
+            <?php echo functions::form_draw_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
+            <?php echo functions::form_draw_checkbox('dock[]', ['customer_service', language::translate('text_dock_in_customer_service', 'Dock in customer service')], true); ?>
+            <?php echo functions::form_draw_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
           </div>
         </div>
 

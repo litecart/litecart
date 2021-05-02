@@ -80,9 +80,7 @@
                 </div>
 
                 <div class="form-group">
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
-                  </div>
+                  <?php echo functions::form_draw_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
                 </div>
 
                 <div class="btn-group btn-block">

@@ -99,9 +99,7 @@ body {
         </div>
 
         <div class="form-group">
-          <label class="checkbox">
-            <?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?>
-          </label>
+          <?php echo functions::form_draw_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
         </div>
       </div>
 

@@ -1208,7 +1208,7 @@ input[type="checkbox"]:checked:after {
   letter-spacing: 0.05em;
   font-size: 0.8em;
 }
-.form-control {
+.form-input {
   position: relative;
   color: #555;
   background: var(--input-background-color);
@@ -1222,55 +1222,55 @@ input[type="checkbox"]:checked:after {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: all 50ms;
 }
-.form-control[type="color"] {
+.form-input[type="color"] {
   height: 37px;
 }
-.form-control[type="file"] {
+.form-input[type="file"] {
   font-size: 12px;
 }
-.form-control[disabled] {
+.form-input[disabled] {
   opacity: 0.5;
 }
-.form-control[readonly] {
+.form-input[readonly] {
   color: #999;
 }
-.form-control .dropdown-menu li label:hover {
+.form-input .dropdown-menu li label:hover {
   background: var(--default-background-color);
 }
-select.form-control {
+select.form-input {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }
-select.form-control.multiple {
+select.form-input.multiple {
   padding: 0;
 }
-select.form-control.multiple option {
+select.form-input.multiple option {
   padding: var(--input-padding-y) var(--input-padding-x);
 }
-.form-control {
+.form-input {
   cursor: default;
 }
-.form-control.caret {
+.form-input.caret {
   padding-right: 2.5em;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right var(--input-padding-x) center;
   background-size: 16px 12px;
 }
-.form-control .dropdown-menu {
+.form-input .dropdown-menu {
   user-select: none;
 }
-.form-control .dropdown-menu li > label {
+.form-input .dropdown-menu li > label {
   display: block;
   padding: var(--input-padding-y) var(--input-padding-x);
   cursor: pointer;
 }
-.form-control .dropdown-menu li > label:hover {
+.form-input .dropdown-menu li > label:hover {
   background: rgba(0, 0, 0, 0.15);
 }
-.form-control .dropdown-menu [type="radio"]:checked + *,
-.form-control .dropdown-menu [type="checkbox"]:checked + * {
+.form-input .dropdown-menu [type="radio"]:checked + *,
+.form-input .dropdown-menu [type="checkbox"]:checked + * {
   font-weight: bold;
 }
 .input-unstyled {
@@ -1284,7 +1284,7 @@ select.form-control.multiple option {
 .radio {
   padding: var(--input-padding-y) var(--input-padding-x);
 }
-.form-control .checkbox {
+.form-input .checkbox {
   padding: var(--input-padding-y) 0;
 }
 .input-group {
@@ -1295,7 +1295,7 @@ select.form-control.multiple option {
   border-radius: var(--border-radius);
   display: flex;
 }
-.input-group .form-control {
+.input-group .form-input {
   background: none;
   box-shadow: none;
   border-radius: 0;
@@ -1338,14 +1338,14 @@ select.form-control.multiple option {
   border-bottom: none;
   padding: 7px 12px;
 }
-.input-group .form-control:first-child,
+.input-group .form-input:first-child,
 .input-group .input-group-addon:first-child,
 .input-group .input-group-btn:first-child > .btn,
 .input-group .input-group-btn:first-child > .btn-group > .btn,
 .input-group .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
-.input-group .form-control:last-child,
+.input-group .form-input:last-child,
 .input-group .input-group-addon:last-child,
 .input-group .input-group-btn:last-child > .btn,
 .input-group .input-group-btn:last-child > .btn-group > .btn,

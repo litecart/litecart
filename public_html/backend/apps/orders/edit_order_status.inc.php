@@ -105,14 +105,13 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
-                <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
+              <div>
+                <?php echo functions::form_draw_checkbox('is_sale', ['1', language::translate('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo ; ?>
+                <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?>
               </div>
-
-              <div class="checkbox">
-                <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
-                <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
+              <div>
+                <?php echo functions::form_draw_checkbox('is_archived', ['1', language::translate('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?>
+                <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?>
               </div>
             </div>
           </div>

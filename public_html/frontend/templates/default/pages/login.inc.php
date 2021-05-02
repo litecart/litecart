@@ -20,13 +20,13 @@
               <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
             </div>
 
-            <div class="checkbox">
-              <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
+            <div class="form-group">
+              <?php echo functions::form_draw_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
             </div>
 
-            <p class="btn-group btn-block">
+            <div class="btn-group btn-block">
               <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
-            </p>
+            </div>
 
             <p class="text-center">
               <a href="<?php echo document::ilink('reset_password', ['email' => !empty($_POST['email']) ? $_POST['email'] : '']); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>

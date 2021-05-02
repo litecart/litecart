@@ -346,21 +346,6 @@ ul.breadcrumb li a {
   background: var(--danger-background-color-active);
   border-color: var(--danger-border-color);
 }
-.btn.btn-outline {
-  background: none;
-  border: 1px solid #333;
-  color: #333;
-  text-decoration: none;
-  box-shadow: none;
-}
-.btn.btn-outline:hover:not(.active):not(.disabled):not([disabled]) {
-  border-color: #4d4d4d;
-  text-color: #4d4d4d;
-}
-.btn.btn-outline.active {
-  border-color: #404040;
-  text-color: #404040;
-}
 .btn.btn-sm {
   font-size: 11px;
 }
@@ -1225,7 +1210,7 @@ input[type="radio"]:hover {
 input[type="radio"]:disabled {
   opcaity: 0.5;
 }
-.form-control {
+.form-input {
   position: relative;
   padding: 0.5em 1em;
   background-color: var(--input-background-color);
@@ -1239,17 +1224,17 @@ input[type="radio"]:disabled {
   min-width: 1px;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
-.form-control[type="color"] {
+.form-input[type="color"] {
   height: 42px;
 }
-.form-control[type="file"] {
+.form-input[type="file"] {
   font-size: 12px;
   padding: 5px;
 }
-.form-control[disabled] {
+.form-input[disabled] {
   opacity: 0.5;
 }
-.form-control[readonly] {
+.form-input[readonly] {
   color: #999;
 }
 .form-switch {
@@ -1294,7 +1279,6 @@ input[type="radio"]:disabled {
 .form-switch input[type="checkbox"]:checked + .switch:before {
   left: 11px;
 }
-select.form-control,
 .form-select {
   position: relative;
   padding: 0.5em 1em;
@@ -1327,10 +1311,10 @@ select.form-control,
 .radio {
   padding: 0.5em 0;
 }
-.form-control .checkbox {
+.form-input .checkbox {
   padding: 1em 0;
 }
-.form-control-feedback {
+.form-input-feedback {
   position: absolute;
   right: 24px;
   top: 35px;
@@ -1358,7 +1342,7 @@ select.form-control,
   display: flex;
   padding: 0;
 }
-.input-group .form-control {
+.input-group .form-input {
   background: none;
   box-shadow: none;
   border-radius: 0;
@@ -1394,7 +1378,7 @@ select.form-control,
   flex: 1 0 auto;
   padding: 0.5em 1em;
 }
-.input-group .input-group-icon + .form-control {
+.input-group .input-group-icon + .form-input {
   padding-left: 0;
 }
 .input-group .input-group-btn {
@@ -1406,14 +1390,14 @@ select.form-control,
   padding: 0.5em 1em;
   box-shadow: none;
 }
-.input-group .form-control:first-child,
+.input-group .form-input:first-child,
 .input-group .input-group-addon:first-child,
 .input-group .input-group-btn:first-child > .btn,
 .input-group .input-group-btn:first-child > .btn-group > .btn,
 .input-group .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
-.input-group .form-control:last-child,
+.input-group .form-input:last-child,
 .input-group .input-group-addon:last-child,
 .input-group .input-group-btn:last-child > .btn,
 .input-group .input-group-btn:last-child > .btn-group > .btn,

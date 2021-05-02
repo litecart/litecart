@@ -126,7 +126,7 @@
 
         <div class="form-group">
           <div class="checkbox">
-            <label><?php echo functions::form_draw_checkbox('set_database_default', 'true'); ?> <?php echo language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)'); ?></label>
+            <?php echo functions::form_draw_checkbox('set_database_default', ['1', language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
           </div>
         </div>
 
