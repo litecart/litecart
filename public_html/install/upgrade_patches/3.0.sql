@@ -30,9 +30,7 @@ UPDATE `lc_settings` SET `key` = 'store_template', title = 'Store Template', `fu
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'store_template' LIMIT 1;
 -- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` = 'store_template_admin' LIMIT 1;
--- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` = 'gzip_enabled' LIMIT 1;
+DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'gzip_enabled', 'round_amounts');
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
 -- --------------------------------------------------------

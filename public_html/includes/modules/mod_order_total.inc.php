@@ -20,11 +20,9 @@
               $row['tax'] = tax::get_tax($row['value'], $row['tax_class_id'], $order->data['customer']);
             }
 
-          // Round amounts
-            if (settings::get('round_amounts')) {
-              $row['value'] = currency::round($row['value'], $order->data['currency_code']);
-              $row['tax'] = currency::round($row['tax'], $order->data['currency_code']);
-            }
+          // Round currency amount (Gets rid of hidden decimals)
+            $row['value'] = currency::round($row['value'], $order->data['currency_code']);
+            $row['tax'] = currency::round($row['tax'], $order->data['currency_code']);
 
             $output[] = [
               'module_id' => $module_id,

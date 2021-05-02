@@ -237,11 +237,9 @@
       $item['price'] += $item['extras'];
       $item['tax'] += tax::get_tax($item['extras'], $product->tax_class_id);
 
-    // Round amounts (Gets rid of hidden decimals)
-      if (settings::get('round_amounts')) {
-        $item['price'] = currency::round($item['price'], currency::$selected['code']);
-        $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
-      }
+    // Round currency amount (Gets rid of hidden decimals)
+      $item['price'] = currency::round($item['price'], currency::$selected['code']);
+      $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
 
     // Add item or append to existing
       if (isset(self::$items[$item_key])) {
