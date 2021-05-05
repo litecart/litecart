@@ -160,6 +160,6 @@
   $order->calculate_total();
 
   $_page = new ent_view();
-  echo $_page->stitch('pages/checkout.inc.php');
+  echo $_page->stitch(FS_DIR_TEMPLATE . 'pages/checkout.inc.php');
 
   functions::draw_lightbox();

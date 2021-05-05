@@ -151,6 +151,6 @@
 
 <script>
   $('#default-menu .search').click(function(){
-    $(this).find('input').focus();
+    $(this).find('input[name="query"]').focus();
   });
 </script>

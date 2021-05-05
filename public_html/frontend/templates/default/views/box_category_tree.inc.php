@@ -17,7 +17,7 @@
   <h2 class="title">{{title}}</h2>
 
   <ul class="nav nav-stacked nav-pills">
-    <li><a href="<?php echo document::href_ilink('index'); ?>"><?php echo functions::draw_fonticon('fa-angle-left fa-fw'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
+    <li><a href="<?php echo document::href_ilink('categories'); ?>"><?php echo functions::draw_fonticon('fa-angle-left fa-fw'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
     <?php foreach ($categories as $category) $draw_branch($category, $category_path); ?>
   </ul>
 </section>
