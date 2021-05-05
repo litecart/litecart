@@ -336,11 +336,8 @@
       ];
 
       foreach (self::$items as $item) {
-        $num_items = $item['quantity'];
 
-        if (!empty($item['quantity_unit']['separate'])) {
-          $num_items = 1;
-        }
+        $num_items = !empty($item['quantity_unit']['separate']) ? 1 : $item['quantity'];
 
         self::$total['value'] += $item['price'] * $item['quantity'];
         self::$total['tax'] += $item['tax'] * $item['quantity'];

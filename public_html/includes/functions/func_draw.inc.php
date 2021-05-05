@@ -35,7 +35,7 @@
     }
 
     switch($class) {
-      case 'add':         return draw_fonticon('fa-plus');
+      case 'add':         return draw_fonticon('fa-plus', 'style="color: #6c6;"');
       case 'cancel':      return draw_fonticon('fa-times');
       case 'edit':        return draw_fonticon('fa-pencil');
       case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
