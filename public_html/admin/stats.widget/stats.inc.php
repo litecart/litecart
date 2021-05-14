@@ -1,6 +1,6 @@
 <?php
 
-  $widget_stats_cache_token = cache::token('widget_stats', array('site'), 'file', 300);
+  $widget_stats_cache_token = cache::token('widget_stats', array('site', 'language'), 'file', 300);
   if (cache::capture($widget_stats_cache_token)) {
 
     $order_statuses = array();
