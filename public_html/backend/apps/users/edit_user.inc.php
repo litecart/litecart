@@ -158,7 +158,7 @@
     echo '  <li>' . PHP_EOL
        . '    <label>'. functions::form_draw_checkbox('apps['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
     if (!empty($app['docs'])) {
-      echo '    <ul class="">' . PHP_EOL;
+      echo '    <ul>' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
         echo '      <li><label>'. functions::form_draw_checkbox('apps['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }

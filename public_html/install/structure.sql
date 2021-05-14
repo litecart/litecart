@@ -368,6 +368,7 @@ CREATE TABLE `lc_orders` (
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+	KEY `uid` (`uid`),
   KEY `order_status_id` (`order_status_id`),
   KEY `starred` (`starred`),
   KEY `unread` (`unread`)

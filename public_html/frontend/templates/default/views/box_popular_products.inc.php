@@ -32,7 +32,7 @@
   </ul>
   -->
 
-  <ul class="" data-toggle="slider">
+  <ul data-toggle="slider">
     <?php foreach ($products as $product) echo '<li>' . functions::draw_listing_product($product) .'</li>'; ?>
     <?php foreach ($products as $product) echo '<li>' . functions::draw_listing_product($product) .'</li>'; ?>
     <?php foreach ($products as $product) echo '<li>' . functions::draw_listing_product($product) .'</li>'; ?>

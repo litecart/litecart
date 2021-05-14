@@ -97,18 +97,18 @@ form[name="filter_form"] li {
       <thead>
         <tr>
           <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
-          <th style="text-align: center;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-          <th style="text-align: center;"><?php echo language::translate('title_sales', 'Sales'); ?></th>
-          <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_sales', 'Sales'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($rows as $row) { ?>
         <tr>
           <td><?php echo $row['name']; ?></td>
-          <td style="text-align: center;" class="border-left"><?php echo (float)$row['total_quantity']; ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
+          <td class="text-center border-left"><?php echo (float)$row['total_quantity']; ?></td>
+          <td class="text-right border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
+          <td class="text-right border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
         </tr>
         <?php } ?>
       </tbody>

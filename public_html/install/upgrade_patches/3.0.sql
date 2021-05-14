@@ -46,6 +46,9 @@ DROP COLUMN `date_created`,
 DROP INDEX `product_option_stock`,
 ADD UNIQUE INDEX `stock_option` (`product_id`, `combination`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_orders`
+ADD INDEX `uid` (`uid`);
+-- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 ADD COLUMN `stock_item_id` INT(11) NOT NULL DEFAULT '0' AFTER `product_id`,
 ADD COLUMN `description` VARCHAR(256) NOT NULL DEFAULT '' AFTER `name`,

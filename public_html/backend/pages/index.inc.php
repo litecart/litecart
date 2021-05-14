@@ -1,7 +1,5 @@
 <?php
 
-  route::load(FS_DIR_APP . 'includes/routes/url_*.inc.php'); // Needed for url rewriting
-
   user::require_login();
 
   breadcrumbs::reset();
@@ -63,7 +61,7 @@
 // Start page
   if (empty($_GET['app'])) {
 
-  document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
+    document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
 
     if (file_exists(FS_DIR_APP . 'install/')) {
       notices::add('warnings', language::translate('warning_install_folder_exists', 'Warning: The installation directory is still available and should be deleted.'), 'install_folder');
@@ -98,7 +96,7 @@
 
       if (empty($_GET['doc'])) $_GET['doc'] = $app_config['default'];
 
-      require vmod::check(FS_DIR_ADMIN .'apps/'. $_GET['app'] .'/config.inc.php');
+      $app_config = require vmod::check(FS_DIR_ADMIN .'apps/'. $_GET['app'] .'/config.inc.php');
 
       if (empty($app_config['docs'][$_GET['doc']])) {
         http_response_code(404);
@@ -118,8 +116,6 @@
           'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
         ],
       ];
-
-      document::$snippets['help_link'] = document::link('https://wiki.litecart.net/');
 
       $app_icon = '<span class="app-icon">' . PHP_EOL
                 . '  ' . functions::draw_fonticon($_page->snippets['theme']['icon'] .' fa-fw') . PHP_EOL

@@ -99,7 +99,7 @@ form[name="filter_form"] li {
         <tr>
           <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
           <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
-          <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
         </tr>
       </thead>
 
@@ -108,7 +108,7 @@ form[name="filter_form"] li {
         <tr>
           <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
           <td><?php echo $customer['email']; ?></td>
-          <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
+          <td class="text-right"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
         </tr>
         <?php } ?>
       </tbody>

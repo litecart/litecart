@@ -159,12 +159,12 @@
             <td></td>
             <td></td>
             <td><?php echo $module['name']; ?></td>
-            <td style="text-align: center;"></td>
-            <td style="text-align: right;"><?php echo $module['version']; ?></td>
+            <td class="text-center"></td>
+            <td class="text-right"><?php echo $module['version']; ?></td>
             <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
             <td><?php echo $module['id']; ?></td>
-            <td style="text-align: center;">-</td>
-            <td style="text-align: right;"><a href="<?php echo document::href_link('', ['doc' => 'edit_'.$type, 'module_id' => $module['id']], true); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
+            <td class="text-center">-</td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_'.$type, 'module_id' => $module['id']], true); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
           </tr>
           <?php } ?>
           <?php } ?>
