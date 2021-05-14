@@ -220,8 +220,8 @@ table .fa-star:hover {
             <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
             <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
             <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
             <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+            <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
             <th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
             <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
             <th>&nbsp;</th>
@@ -238,8 +238,8 @@ table .fa-star:hover {
             <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI'])); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
             <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
             <td><?php echo $order['payment_option_name']; ?></td>
-            <td class="text-right"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
             <td class="text-right"><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-right"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
             <td class="text-center"><?php echo !empty($order['order_status_id']) ? $order['order_status_name'] : language::translate('title_unprocessed', 'Unprocessed'); ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
             <td>
