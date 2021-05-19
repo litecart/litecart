@@ -56,7 +56,7 @@
           );
 
           foreach ($row as $key => $value) {
-            if (!in_array($key, array_keys($remap_keys))) continue;
+            if (in_array($key, array_keys($remap_keys))) continue;
             $this->_data[$key] = $row[$key];
           }
 
