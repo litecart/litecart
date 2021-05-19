@@ -41,7 +41,7 @@
 
               <div class="name"><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></div>
 
-              <?php if (!empty($item['options'])) echo '<div class="options">'. implode('<br />', $item['options']) .'</div>'; ?>
+              <?php if (!empty($item['options'])) echo '<small class="options">'. implode('<br />', $item['options']) .'</small>'; ?>
               <?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
             </div>
 

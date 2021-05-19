@@ -13,7 +13,7 @@
         $apps[$code] = array_merge(array('code' => $code, 'dir' => $dir), $app_config);
       }
 
-      usort($apps, function($a, $b) use ($apps) {
+      usort($apps, function($a, $b) {
 
         if (!isset($a['priority'])) $a['priority'] = 0;
         if (!isset($b['priority'])) $b['priority'] = 0;
@@ -44,7 +44,7 @@
         $widgets[$code] = array_merge(array('code' => $code, 'dir' => $dir), $widget_config);
       }
 
-      usort($widgets, function($a, $b) use ($widgets) {
+      usort($widgets, function($a, $b) {
 
         if (!isset($a['priority'])) $a['priority'] = 0;
         if (!isset($b['priority'])) $b['priority'] = 0;

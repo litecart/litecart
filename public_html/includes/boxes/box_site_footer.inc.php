@@ -26,13 +26,13 @@
         $box_site_footer->snippets['categories'][$category['id']] = array(
           'id' => $category['id'],
           'name' => $category['name'],
-          'link' => document::href_ilink('category', array('category_id' => $category['id'])),
+          'link' => document::ilink('category', array('category_id' => $category['id'])),
         );
       } else {
         $box_site_footer->snippets['categories'][] = array(
           'id' => 0,
           'name' => language::translate('title_more', 'More') . '…',
-          'link' => document::href_ilink('categories'),
+          'link' => document::ilink('categories'),
         );
         break;
       }
@@ -53,13 +53,13 @@
         $box_site_footer->snippets['manufacturers'][$manufacturer['id']] = array(
           'id' => $manufacturer['id'],
           'name' => $manufacturer['name'],
-          'link' => document::href_ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
+          'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
         );
       } else {
         $box_site_footer->snippets['manufacturers'][] = array(
           'id' => 0,
           'name' => language::translate('title_more', 'More') . '…',
-          'link' => document::href_ilink('manufacturers'),
+          'link' => document::ilink('manufacturers'),
         );
         break;
       }
@@ -76,7 +76,7 @@
       $box_site_footer->snippets['pages'][$page['id']] = array(
         'id' => $page['id'],
         'title' => $page['title'],
-        'link' => document::href_ilink('information', array('page_id' => $page['id'])),
+        'link' => document::ilink('information', array('page_id' => $page['id'])),
       );
     }
 
@@ -91,7 +91,7 @@
       $box_site_footer->snippets['customer_service_pages'][$page['id']] = array(
         'id' => $page['id'],
         'title' => $page['title'],
-        'link' => document::href_ilink('customer_service', array('page_id' => $page['id'])),
+        'link' => document::ilink('customer_service', array('page_id' => $page['id'])),
       );
     }
 

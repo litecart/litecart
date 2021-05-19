@@ -151,8 +151,8 @@
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
-         . '  <strong class="input-group-addon" style="opacity: 0.75;">'. $currency_code .'</strong>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <strong class="input-group-addon" style="opacity: 0.75;">'. htmlspecialchars($currency_code) .'</strong>' . PHP_EOL
          . '</div>';
   }
 
@@ -885,6 +885,18 @@
     if ($input === true) {
       $input = form_reinsert_value($name);
       if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_country_code');
+    }
+
+    switch ($input) {
+      case 'customer_country_code':
+        $input = customer::$data['country_code'];
+        break;
+      case 'default_country_code':
+        $input = settings::get('default_country_code');
+        break;
+      case 'store_country_code':
+        $input = settings::get('store_country_code');
+        break;
     }
 
     $countries_query = database::query(
