@@ -33,6 +33,88 @@
 
         switch ($_POST['type']) {
 
+          case 'attributes':
+
+          // Find attribute group
+            if (!empty($row['group_id']) && ($attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$row['group_id'] ." limit 1;")))) {
+              $attribute_group = new ent_attribute_group($attribute_group['id']);
+
+            } elseif (!empty($row['code']) && $attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where code = '". database::input($row['code']) ."' limit 1;"))) {
+              $attribute_group = new ent_attribute_group($attribute_group['id']);
+
+            } elseif (!empty($row['group_name']) && $attribute_group = database::fetch(database::query("select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info where name = '". database::input($row['group_name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+              $attribute_group = new ent_attribute_group($attribute_group['id']);
+            }
+
+            if (!empty($attribute_group->data['id'])) {
+
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing attribute group on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo "Updating existing attribute group on line $line" . PHP_EOL;
+              $updated++;
+
+            } else {
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new attribute group on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo "Inserting new attribute group on line $line" . PHP_EOL;
+              $inserted++;
+
+              if (!empty($row['group_id'])) {
+                database::query(
+                  "insert into ". DB_TABLE_PREFIX ."attribute_groups
+                  (id)
+                  values (". (int)$row['group_id'] .");"
+                );
+              }
+            }
+
+          // Set attribute data
+            if (isset($row['group_code'])) $attribute_group->data['code'] = $row['group_code'];
+            if (isset($row['group_name'])) $attribute_group->data['name'][$row['language_code']] = $row['group_name'];
+            if (isset($row['sort'])) $attribute_group->data['sort'] = $row['sort'];
+
+            if (!empty($row['value_id'])) {
+              $value_key = array_search($row['value_id'], array_column($attribute_group->data['values'], 'id', 'id'));
+
+            } else if (!empty($row['value_name'])) {
+              foreach ($attribute_group->data['values'] as $key => $value) {
+                if ($value['name'][$row['language_code']] == $row['value_name']) {
+                  $value_key = $row['value_id'];
+                  break;
+                }
+              }
+            }
+
+            if (!empty($value_key)) {
+              $attribute_group->data['values'][$value_key]['name'][$row['language_code']] = $row['value_name'];
+            } else {
+              $attribute_group->data['values'][] = array(
+                'name' => array(
+                  $row['language_code'] => $row['value_name'],
+                ),
+              );
+            }
+
+          // Sort values
+            uasort($attribute_group->data['values'], function($a, $b){
+              if ($a['priority'] == $b['priority']) {
+                return ($a['name'] < $b['name']) ? -1 : 1;
+              }
+
+              return ($a['priority'] < $b['priority']) ? -1 : 1;
+            });
+
+            $attribute_group->save();
+
+            break;
+
           case 'campaigns':
 
           // Find campaign
@@ -417,6 +499,7 @@
               }
             }
 
+          // Set images
             if (isset($row['images'])) {
               $row['images'] = explode(';', $row['images']);
 
@@ -439,6 +522,7 @@
               $product->data['images'] = $product_images;
             }
 
+          // Import new images
             if (isset($row['new_images'])) {
               foreach (explode(';', $row['new_images']) as $new_image) {
 
@@ -458,6 +542,40 @@
                 }
 
                 $product->add_image($new_image);
+              }
+            }
+
+          // Set attributes
+            if (isset($row['attributes'])) {
+              $product->data['attributes'] = array();
+
+              foreach (preg_split('#\R+#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $attribute_row) {
+
+                if (preg_match('#^([0-9]+):([0-9]+)$#', $attribute_row, $matches)) {
+                  $attribute = array(
+                    'group_id' => $matches[1],
+                    'value_id' => $matches[2],
+                    'custom_value' => '',
+                  );
+
+                } else if (preg_match('#^([0-9]+):"([^"]*)"#', $attribute_row, $matches)) {
+                  $attribute = array(
+                    'group_id' => $matches[1],
+                    'value_id' => 0,
+                    'custom_value' => $matches[2],
+                  );
+
+                } else {
+                  echo " - Skipping unknown attribute $attribute_row" . PHP_EOL;
+                  continue;
+                }
+
+                $product->data['attributes'][] = array(
+                  'id' => isset($product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]) ? $product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]['id'] : null,
+                  'group_id' => $attribute['group_id'],
+                  'value_id' => $attribute['value_id'],
+                  'custom_value' => $attribute['custom_value'],
+                );
               }
             }
 
@@ -565,6 +683,24 @@
 
         switch ($_POST['type']) {
 
+          case 'attributes':
+
+            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+
+            $attributes_query = database::query(
+                "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_ATTRIBUTE_VALUES ." av
+                left join ". DB_TABLE_ATTRIBUTE_GROUPS ." ag on (ag.id = av.group_id)
+                left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
+                left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
+                order by agi.name, av.priority;"
+            );
+
+            while ($attribute = database::fetch($attributes_query)) {
+              $csv[] = $attribute;
+            }
+
+            break;
+
           case 'campaigns':
 
             $campaign_query = database::query(
@@ -658,6 +794,14 @@
             while ($product = database::fetch($products_query)) {
               $product = new ref_product($product['id'], $_POST['language_code'], $_POST['currency_code']);
 
+              $attribute_map = function($attribute) {
+                if (!empty($attribute['custom_value'])) {
+                  return $attribute['group_id'] .':"'. $attribute['custom_value'] .'"';
+                } else {
+                  return $attribute['group_id'] .':'. $attribute['value_id'];
+                }
+              };
+
               $csv[] = array(
                 'id' => $product->id,
                 'status' => $product->status,
@@ -677,6 +821,7 @@
                 'head_title' => $product->head_title,
                 'meta_description' => $product->meta_description,
                 'images' => implode(';', $product->images),
+                'attributes' => implode("\r\n", array_map($attribute_map, $product->attributes)),
                 'purchase_price' => $product->purchase_price,
                 'purchase_price_currency_code' => $product->purchase_price_currency_code,
                 'recommended_price' => $product->recommended_price,
@@ -774,6 +919,7 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
+                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'attributes', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_attributes', 'Attributes'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'campaigns', true); ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
@@ -829,6 +975,7 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
+                <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'attributes', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_attributes', 'Attributes'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'campaigns', true); ?> <?php echo language::translate('title_campaigns', 'Campaigns'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'categories', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_categories', 'Categories'); ?></label></div>
                 <div class="checkbox"><label><?php echo functions::form_draw_radio_button('type', 'manufacturers', true, 'data-dependencies="language"'); ?> <?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></label></div>
