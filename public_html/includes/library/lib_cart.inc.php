@@ -43,9 +43,17 @@
       if (!empty($_POST['add_cart_product'])) {
 
         $options = !empty($_POST['options']) ? $_POST['options'] : array();
+
         if (!empty($options)) {
           foreach (array_keys($options) as $key) {
-            if (is_array($options[$key])) $options[$key] = implode(', ', $options[$key]);
+            if (empty($options[$key])) {
+              unset($options[$key]);
+              continue;
+            }
+
+            if (is_array($options[$key])) {
+              $options[$key] = implode(', ', $options[$key]);
+            }
           }
         }
 
