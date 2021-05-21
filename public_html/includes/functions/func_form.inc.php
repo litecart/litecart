@@ -236,7 +236,7 @@ END;
 
   function form_draw_dropdown($name, $options=[], $input=true, $parameters='') {
 
-    $html = '<div class="form-input dropdown caret"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+    $html = '<div class="form-input dropdown"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
           . '  <div class="title" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>' . PHP_EOL
           . '  <div class="dropdown-menu">' . PHP_EOL;
 

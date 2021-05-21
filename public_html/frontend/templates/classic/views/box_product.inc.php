@@ -115,9 +115,8 @@
         <?php if ($stock_options) { ?>
         <div class="form-group">
           <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
-          <div class="form-input dropdown caret">
+          <div class="form-input dropdown">
             <div data-toggle="dropdown">
-              <span class="caret pull-right"></span>
               <span class="title">-- <?php echo language::translate('title_select', 'Select'); ?> --</span>
             </div>
             <ul class="dropdown-menu stock-options" style="width: 100%;">
@@ -166,7 +165,7 @@
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
               <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. (1 / intval('1'.str_repeat('0', $quantity_unit['decimals']))) .'"') : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 'min="1"'); ?>
-              <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
+              <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
             </div>
 
             <div style="padding-left: 1em;">
