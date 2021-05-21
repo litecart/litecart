@@ -140,12 +140,12 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-                <?php echo functions::form_draw_regional_input_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
+                <?php echo functions::form_draw_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_draw_regional_input_field('short_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_draw_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
@@ -155,18 +155,18 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_link', 'Link'); ?></label>
-                <?php echo functions::form_draw_regional_input_field('link['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_draw_regional_text_field('link['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field('head_title['. $language_code .']', $language_code, true, ''); ?>
+                  <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true, ''); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field('meta_description['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
                 </div>
               </div>
             </div>

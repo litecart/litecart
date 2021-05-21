@@ -200,7 +200,7 @@ table .fa-star:hover {
       <div><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></div>
       <div class="input-group" style="max-width: 380px;">
         <?php echo functions::form_draw_date_field('date_from', true); ?>
-        <span class="input-group-addon"> - </span>
+        <span class="input-group-text"> - </span>
         <?php echo functions::form_draw_date_field('date_to', true); ?>
       </div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>

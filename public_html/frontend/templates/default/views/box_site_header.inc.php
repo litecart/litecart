@@ -12,13 +12,11 @@
       <?php //include vmod::check(FS_DIR_APP . 'frontend/boxes/box_region.inc.php'); ?>
       <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
         <div class="input-group">
-          <span class="input-group-addon">
+          <span class="input-group-text">
             <?php echo functions::draw_fonticon('fa-search'); ?>
           </span>
           <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-          <span class="input-group-btn">
           <?php echo functions::form_draw_button('search', language::translate('title_search', 'Search'), 'class="btn btn-success"'); ?>
-          </span>
         </div>
       <?php echo functions::form_draw_form_end(); ?>
     </div>

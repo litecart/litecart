@@ -120,7 +120,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_link', 'Link'); ?></label>
-            <?php echo functions::form_draw_regional_input_field('link['. $language_code .']', $language_code, true, ''); ?>
+            <?php echo functions::form_draw_regional_text_field('link['. $language_code .']', $language_code, true, ''); ?>
           </div>
         </div>
         <?php } ?>

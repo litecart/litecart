@@ -200,41 +200,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <div id="categories" class="form-input">
-<?php
-  $catalog_tree_iterator = function($category_id=0, $depth=1, $count=0) use (&$catalog_tree_iterator) {
-
-    $output = '';
-
-    if (empty($category_id)) {
-      $output .= '  <div>' . functions::form_draw_checkbox('categories[]', '0', true, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cc6;"') .' ['. language::translate('title_root', 'Root') .']</div>' . PHP_EOL;
-    }
-
-  // Output categories
-    $categories_query = database::query(
-      "select c.id, ci.name
-      from ". DB_TABLE_PREFIX ."categories c
-      left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-      where c.parent_id = ". (int)$category_id ."
-      order by c.priority asc, ci.name asc;"
-    );
-
-    while ($category = database::fetch($categories_query)) {
-      $count++;
-
-      $output .= '  <div>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cc6; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label>' . PHP_EOL;
-
-      if (database::num_rows(database::query("select * from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0) {
-        $output .= $catalog_tree_iterator($category['id'], $depth+1, $count);
-      }
-    }
-
-    return $output;
-  };
-
-  echo $catalog_tree_iterator(0, 1, 0);
-?>
-                </div>
+                <?php echo functions::form_draw_categories_list('categories[]', true, 'style="max-height: 480px;"'); ?>
               </div>
 
               <div class="form-group">
@@ -271,7 +237,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                 <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field('name['. $language_code .']', $language_code, true); ?>
+                 <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
@@ -281,22 +247,22 @@
 
               <div class="form-group">
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('sku', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('mpn', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('gtin', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('taric', true); ?>
                 </div>
               </div>
@@ -347,7 +313,7 @@
 
                     <div class="input-group">
                       <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
-                      <div class="input-group-addon">
+                      <div class="input-group-text">
                         <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                         <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
@@ -365,7 +331,7 @@
 
                     <div class="input-group">
                       <?php echo functions::form_draw_file_field('new_images[]'); ?>
-                      <div class="input-group-addon">
+                      <div class="input-group-text">
                         <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                         <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
@@ -397,7 +363,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_draw_regional_input_field('short_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_draw_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
@@ -414,12 +380,12 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field('head_title['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field('meta_description['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
                 </div>
               </div>
 
@@ -458,7 +424,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute[group_id]', [], ''); ?></td>
+                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute[group_id]', []); ?></td>
                 <td><?php echo functions::form_draw_select_field('new_attribute[value_id]', [], ''); ?></td>
                 <td><?php echo functions::form_draw_text_field('new_attribute[custom_value]', ''); ?></td>
                 <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
@@ -476,9 +442,7 @@
                 <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
                 <div class="input-group">
                   <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
-                  <span class="input-group-addon">
-                    <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
-                  </span>
+                  <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
                 </div>
               </div>
 
@@ -648,15 +612,13 @@
                   <td><?php echo functions::form_draw_decimal_field('stock_items['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_items'][$key]) ? (float)$product->data['stock_items'][$key]['quantity'] : '0') .'"'); ?></td>
                   <td>
                     <div class="input-group">
-                      <span class="input-group-addon">&plusmn;</span>
+                      <span class="input-group-text">&plusmn;</span>
                       <?php echo functions::form_draw_decimal_field('stock_items['. $key .'][quantity_adjustment]', true); ?>
                     </div>
                   </td>
                   <td>
                     <div class="input-group">
-                      <span class="input-group-btn">
-                        <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                      </span>
+                      <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
                       <?php echo functions::form_draw_decimal_field('stock_items['. $key .'][ordered]', true, 2, 'min="0"'); ?>
                     </div>
                   </td>
@@ -787,7 +749,7 @@
                + '  '
                + '  <div class="input-group">'
                + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
-               + '    <div class="input-group-addon">'
+               + '    <div class="input-group-text">'
                + '      <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
                + '      <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'
                + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>'
@@ -1204,15 +1166,13 @@
                  + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][quantity]', '0', 2, 'data-quantity="0"')); ?></td>'
                  + '  <td>'
                  + '    <div class="input-group">'
-                 + '      <span class="input-group-addon">&plusmn;</span>'
+                 + '      <span class="input-group-text">&plusmn;</span>'
                  + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][quantity_adjustment]', '0')); ?>'
                  + '    </div>'
                  + '  </td>'
                  + '  <td>'
                  + '    <div class="input-group">'
-                 + '      <span class="input-group-btn">'
-                 + '        <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-                 + '      </span>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
                  + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][ordered]', '', 2, 'min="0"')); ?>'
                  + '    </div>'
                  + '  </td>'

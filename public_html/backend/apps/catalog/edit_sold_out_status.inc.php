@@ -73,7 +73,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field('name['. $language_code .']', $language_code, true, ''); ?>
+          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true, ''); ?>
         </div>
       </div>
 

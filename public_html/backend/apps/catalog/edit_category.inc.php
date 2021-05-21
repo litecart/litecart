@@ -143,7 +143,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field('name['. $language_code .']', $language_code, true, ''); ?>
+                <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
@@ -192,12 +192,12 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-                <?php echo functions::form_draw_regional_input_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
+                <?php echo functions::form_draw_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_draw_regional_input_field('short_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_draw_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
@@ -208,12 +208,12 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field('head_title['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field('meta_description['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
                 </div>
               </div>
 
@@ -259,9 +259,7 @@
 
           <div class="input-group" style="max-width: 320px;">
             <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-            <span class="input-group-btn">
-              <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
-            </span>
+            <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
           </div>
         </div>
       </div>

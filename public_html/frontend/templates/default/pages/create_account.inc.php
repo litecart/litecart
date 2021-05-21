@@ -80,7 +80,7 @@
               <?php if (settings::get('customer_field_zone')) { ?>
               <div class="form-group col-xs-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, false, 'required'); ?>
+                <?php echo functions::form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, 'required'); ?>
               </div>
               <?php } ?>
             </div>
@@ -114,11 +114,9 @@
             </div>
 
             <?php if ($consent) { ?>
-            <p class="consent">
-              <div class="checkbox">
-                <?php echo functions::form_draw_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
-              </div>
-            </p>
+            <div class="form-group">
+              <?php echo functions::form_draw_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
+            </div>
             <?php } ?>
 
             <?php if (settings::get('captcha_enabled')) { ?>

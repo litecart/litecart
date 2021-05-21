@@ -109,15 +109,13 @@
             <td><?php echo $_POST['contents'][$key]['name']; ?></td>
             <td class="text-center">
               <div class="input-group">
-                <span class="input-group-addon">&plusmn;</span>
+                <span class="input-group-text">&plusmn;</span>
                 <?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity_adjustment]', true, 2); ?>
               </div>
             </td>
             <td class="text-center">
               <div class="input-group">
-                <span class="input-group-btn">
-                  <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                </span>
+                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
                 <?php echo functions::form_draw_decimal_field('contents['. $key .'][ordered]', true, 2); ?>
               </div>
             </td>
@@ -131,15 +129,13 @@
             <td><?php echo functions::form_draw_text_field('new[name]', true, 'tabindex="-1"'); ?></td>
             <td>
               <div class="input-group">
-                <span class="input-group-addon">&plusmn;</span>
+                <span class="input-group-text">&plusmn;</span>
                 <?php echo functions::form_draw_decimal_field('new[quantity_adjustment]', true, 2); ?>
               </div>
             </td>
             <td class="text-center">
               <div class="input-group">
-                <span class="input-group-btn">
-                  <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                </span>
+                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
                 <?php echo functions::form_draw_decimal_field('new[ordered]', true, 2); ?>
               </div>
             </td>
@@ -223,15 +219,13 @@
 							 + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
 							 + '    <td>'
 							 + '      <div class="input-group">'
-               + '        <span class="input-group-addon">&plusmn;</span>'
+               + '        <span class="input-group-text">&plusmn;</span>'
                + '        <?php echo functions::form_draw_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>'
                + '      </div>'
                + '    </td>'
                + '    <td class="text-center">'
                + '      <div class="input-group">'
-               + '        <span class="input-group-btn">'
-               + '          <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-               + '        </span>'
+               + '        <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
                + '        <?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][ordered]', true, 2)); ?>'
                + '      </div>'
                + '    </td>'

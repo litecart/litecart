@@ -107,12 +107,12 @@
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                <?php echo functions::form_draw_countries_list('country_code', true, false, 'required'); ?>
+                <?php echo functions::form_draw_countries_list('country_code', true, 'required'); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, false, 'required'); ?>
+                <?php echo form_draw_zones_list(isset($_POST['country_code']) ? $_POST['country_code'] : '', 'zone_code', true, 'required'); ?>
               </div>
             </div>
 

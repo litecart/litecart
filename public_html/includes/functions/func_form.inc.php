@@ -48,7 +48,7 @@
   function form_draw_captcha_field($name, $id, $parameters='') {
 
    return '<div class="input-group">' . PHP_EOL
-        . '  <span class="input-group-addon" style="padding: 0;">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
+        . '  <span class="input-group-text" style="padding: 0;">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
         . '  ' . form_draw_text_field('captcha', '', $parameters . ' autocomplete="off" style="font-size: 24px; padding: 0; text-align: center;"') . PHP_EOL
         . '</div>';
   }
@@ -204,7 +204,7 @@ END;
 
     return '<div class="input-group">' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-input"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. (($input != 0) ? $input : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : '') .' />' . PHP_EOL
-         . '  <strong class="input-group-addon" style="opacity: 0.75; font-family: monospace;">'. $currency_code .'</strong>' . PHP_EOL
+         . '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. $currency_code .'</strong>' . PHP_EOL
          . '</div>';
   }
 
@@ -236,7 +236,7 @@ END;
 
   function form_draw_dropdown($name, $options=[], $input=true, $parameters='') {
 
-    $html = '<div class="form-input dropdown caret'. (($parameters) ? ' ' . $parameters : '') .'">' . PHP_EOL
+    $html = '<div class="form-input dropdown caret"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
           . '  <div class="title" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>' . PHP_EOL
           . '  <div class="dropdown-menu">' . PHP_EOL;
 
@@ -435,7 +435,7 @@ END;
 
     if ($input === true) $input = form_reinsert_value($name, $value[0]);
 
-    return '<label class="form-radio">' . PHP_EOL
+    return '<label class="form-check">' . PHP_EOL
          . '  <input type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value[0]) .'" '. ($input == $value[0] ? ' checked' : false) . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
          . '  ' . htmlspecialchars(isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
          . '</label>';
@@ -447,7 +447,7 @@ END;
     return '<input class="form-range" '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-input"' : '') .' type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
-  function form_draw_regional_input_field($name, $language_code='', $input=true, $parameters='') {
+  function form_draw_regional_input_field($name, $language_code='', $input=true, $type='text', $parameters='') {
 
     if (preg_match('#^[a-z]{2}$#', $name)) {
       trigger_error('Passing $language code as 1st parameter in form_draw_regional_input_field() is deprecated. Instead, use form_draw_regional_input_field($name, $language_code, $input, $parameters)', E_USER_DEPRECATED);
@@ -456,8 +456,20 @@ END;
 
     if (empty($language_code)) $language_code = settings::get('store_language_code');
 
+    if ($input === true) $input = form_reinsert_value($name);
+
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <input class="form-input" type="'. htmlspecialchars($type) .'" value="'. htmlspecialchars($input) .' />' . PHP_EOL
+         . '</div>';
+  }
+
+  function form_draw_regional_text_field($name, $language_code='', $input=true, $parameters='') {
+
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
+
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-text"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -472,7 +484,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_textarea($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -487,7 +499,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_wysiwyg_field($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -735,8 +747,6 @@ END;
       list($name, $function) = [$function, $name];
     }
 
-    preg_match('#^(\w+)(?:\((.*?)\))?$#', $function, $matches);
-
     if (!preg_match('#(\w*)\((.*?)\)$#i', $function, $matches)) {
       trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
     }
@@ -848,7 +858,7 @@ END;
       case 'regional_text':
         $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
-          $html .= form_draw_regional_input_field($name.'['. $language_code.']', $language_code, $input, $parameters);
+          $html .= form_draw_regional_text_field($name.'['. $language_code.']', $language_code, $input, $parameters);
         }
         return $html;
 
@@ -1005,7 +1015,7 @@ END;
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    if (preg_match('#\[\]$#', $name)) {
+    if (!preg_match('#\[\]$#', $name)) {
       return form_draw_category_field($name, $options, $input, $parameters);
     }
 
@@ -1376,7 +1386,7 @@ END;
     $options = [];
 
     foreach (language::$languages as $language) {
-      $options[] = [$language['name'], $language['code']];
+      $options[] = [$language['name'], $language['code'], 'data-decimal-point="'. $language['decimal_point'] .'" data-thousands-sep="'. $language['thousands_sep'] .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1921,7 +1931,7 @@ END;
     }
 
     if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_zones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 4th parameter in form_draw_zones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
       if (isset($args[4])) $parameters = $args[3];
     }
 

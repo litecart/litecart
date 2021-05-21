@@ -123,7 +123,7 @@
 
         <div class="form-group">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field('name['. $language_code .']', $language_code, true, ''); ?>
+          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true, ''); ?>
         </div>
 
         <div class="row">
@@ -132,22 +132,22 @@
             <div class="form-group">
               <label><?php echo language::translate('title_references', 'References'); ?></label>
               <div class="input-group">
-                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('sku', true, 'style="text-transform: uppercase;"'); ?>
               </div>
 
               <div class="input-group">
-                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('gtin', true); ?>
               </div>
 
               <div class="input-group">
-                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('mpn', true); ?>
               </div>
 
               <div class="input-group">
-                <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('taric', true); ?>
               </div>
             </div>
@@ -179,16 +179,14 @@
             <label><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_decimal_field('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
-              <span class="input-group-addon">
-                <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
-              </span>
+              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
             </div>
           </div>
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></label>
             <div class="input-group">
-              <span class="input-group-addon">&plusmn;</span>
+              <span class="input-group-text">&plusmn;</span>
               <?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2); ?>
             </div>
           </div>
@@ -196,9 +194,7 @@
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_ordered', 'Ordered'); ?></label>
             <div class="input-group">
-              <span class="input-group-btn">
-                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-              </span>
+              <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
               <?php echo functions::form_draw_decimal_field('ordered', true, 2, 'min="0"'); ?>
             </div>
           </div>
@@ -209,9 +205,7 @@
             <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
-              <span class="input-group-addon">
-                <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
-              </span>
+              <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
             </div>
           </div>
         </div>
@@ -221,9 +215,7 @@
             <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
-              <span class="input-group-addon">
-                <?php echo functions::form_draw_weight_units_list('weight_unit', true, 'style="width: auto;"'); ?>
-              </span>
+              <?php echo functions::form_draw_weight_units_list('weight_unit', true); ?>
             </div>
           </div>
 
@@ -231,13 +223,11 @@
             <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_decimal_field('length', true, 3, 'min="0"'); ?>
-              <span class="input-group-addon">x</span>
+              <span class="input-group-text">x</span>
               <?php echo functions::form_draw_decimal_field('width', true, 3, 'min="0"'); ?>
-              <span class="input-group-addon">x</span>
+              <span class="input-group-text">x</span>
               <?php echo functions::form_draw_decimal_field('height', true, 3, 'min="0"'); ?>
-              <span class="input-group-addon">
-                <?php echo functions::form_draw_length_units_list('length_unit', true, 'style="width: auto;"'); ?>
-              </span>
+              <?php echo functions::form_draw_length_units_list('length_unit', true); ?>
             </div>
           </div>
         </div>

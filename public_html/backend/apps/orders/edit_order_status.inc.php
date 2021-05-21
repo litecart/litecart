@@ -81,7 +81,7 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_name', 'Name'); ?></label>
-              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field('name['. $language_code .']', $language_code, true); ?>
+              <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
             </div>
           </div>
 
@@ -141,7 +141,7 @@
               <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
                 <div class="form-group">
                   <label><?php echo language::translate('title_subject', 'Subject'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field('email_subject['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_draw_regional_text_field('email_subject['. $language_code .']', $language_code, true); ?>
                 </div>
 
                 <div class="form-group">

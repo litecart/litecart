@@ -840,12 +840,12 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_language', 'Language'); ?></label>
-                <?php echo functions::form_draw_languages_list('language_code', true, false, 'required'); ?>
+                <?php echo functions::form_draw_languages_list('language_code', true, 'required'); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-                <?php echo functions::form_draw_currencies_list('currency_code', true, false, 'required'); ?>
+                <?php echo functions::form_draw_currencies_list('currency_code', true, 'required'); ?>
               </div>
             </div>
 
