@@ -155,14 +155,10 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."order_statuses_info
-        where order_status_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."order_statuses
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete os, osi
+        from ". DB_TABLE_PREFIX ."order_statuses os
+        left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id)
+        where o.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

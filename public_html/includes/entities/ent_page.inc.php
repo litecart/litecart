@@ -149,13 +149,10 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."pages_info
-        where page_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."pages
-        where id = ". (int)$this->data['id'] .";"
+        "delete p, pi
+        from ". DB_TABLE_PREFIX ."pages p
+        left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id)
+        where p.id = ". (int)$this->data['id'] .";"
       );
 
       database::query(

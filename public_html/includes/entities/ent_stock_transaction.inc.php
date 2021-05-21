@@ -157,15 +157,11 @@
 
       if (empty($this->data['id'])) return;
 
-    // Empty transaction first..
-      $this->data['contents'] = [];
-      $this->save();
-
-    // ..then delete
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."stock_transactions
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete st, stc
+        from ". DB_TABLE_PREFIX ."stock_transactions st
+        left join ". DB_TABLE_PREFIX ."stock_transactions_contents stc on (stc.transaction_id = st.id)
+        where st.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

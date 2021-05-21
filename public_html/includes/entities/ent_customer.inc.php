@@ -189,15 +189,10 @@
       );
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."customers
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-        where email = '". database::input($this->data['email']) ."'
-        limit 1;"
+        "delete c, nr
+        from ". DB_TABLE_PREFIX ."customers c
+        left join ". DB_TABLE_PREFIX ."newsletter_recipients nr on (nr.email = c.email)
+        where c.id = ". (int)$this->data['id'] .";"
       );
 
       $customer_modules = new mod_customer();

@@ -282,19 +282,13 @@
         exit;
       }
 
-      $this->data['filters'] = [];
-
-      $this->save();
-
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."categories
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."categories_info
-        where category_id = ". (int)$this->data['id'] .";"
+        "delete c, ci, cf, ptc
+        from ". DB_TABLE_PREFIX ."categories c
+        left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id)
+        left join ". DB_TABLE_PREFIX ."categories_filters cf on (cf.category_id = c.id)
+        left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = c.id)
+        where c.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

@@ -160,14 +160,10 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."zones
-        where code = '". database::input($this->data['iso_code_2']) ."';"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."countries
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete c, z
+        from ". DB_TABLE_PREFIX ."countries c
+        left join ". DB_TABLE_PREFIX ."zones z on (z.country_code = c.iso_code_2)
+        where c.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

@@ -183,14 +183,15 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."slides_info
+        "delete from
         where slide_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."slides
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete s, si
+        from ". DB_TABLE_PREFIX ."slides s
+        left join ". DB_TABLE_PREFIX ."slides_info si on (si.slide_id = s.id)
+        where s.id = ". (int)$this->data['id'] .";"
       );
 
       if (!empty($this->data['image']) && file_exists(FS_DIR_STORAGE . 'images/' . $this->data['image'])) {

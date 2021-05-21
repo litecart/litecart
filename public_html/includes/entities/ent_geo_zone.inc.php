@@ -126,14 +126,10 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."zones_to_geo_zones
-        where geo_zone_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."geo_zones
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete gz, ztgz
+        from ". DB_TABLE_PREFIX ."geo_zones gz
+        left join ". DB_TABLE_PREFIX ."zones_to_geo_zones ztgz on (ztgz.geo_zone_id = gz.id)
+        where gz.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

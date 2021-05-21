@@ -535,33 +535,21 @@
 
       if (empty($this->data['id'])) return;
 
+    // Delete images
       $this->data['images'] = [];
-      $this->data['campaigns'] = [];
-      $this->data['stock_items'] = [];
       $this->save();
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."products
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_info
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_to_categories
-         where product_id = ". (int)$this->data['id'] .";"
-      );
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_prices
-        where product_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_campaigns
-        where product_id = ". (int)$this->data['id'] .";"
+        "delete p, pi, pa, pp, pc, pso, ptc, ptsi
+        from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_campaigns pc on (pc.product_id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.product_id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_to_stock_items ptsi on (ptsi.product_id = p.id)
+        where p.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

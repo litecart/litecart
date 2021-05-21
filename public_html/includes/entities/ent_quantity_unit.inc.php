@@ -137,14 +137,15 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."quantity_units_info
+        "delete from
         where quantity_unit_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."quantity_units
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete qu, qui
+        from ". DB_TABLE_PREFIX ."quantity_units qu
+        left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.quantity_unit_id = qu.id)
+        where qu.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

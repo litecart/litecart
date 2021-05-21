@@ -210,14 +210,10 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."brands
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."brands_info
-        where brand_id = ". (int)$this->data['id'] .";"
+        "delete b, bi
+        from ". DB_TABLE_PREFIX ."brands b
+        left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.brand_id = b.id)
+        where b.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

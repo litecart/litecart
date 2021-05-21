@@ -134,14 +134,10 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."delivery_statuses_info
-        where delivery_status_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."delivery_statuses
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete ds, dsi
+        from ". DB_TABLE_PREFIX ."delivery_statuses ds
+        left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (dsi.delivery_status_id = ds.id)
+        where ds.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

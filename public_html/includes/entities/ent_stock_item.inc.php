@@ -208,9 +208,10 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."stock_items
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete si, sii
+        from ". DB_TABLE_PREFIX ."stock_items si
+        left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id)
+        where si.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

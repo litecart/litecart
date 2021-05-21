@@ -842,17 +842,13 @@
       $order_modules = new mod_order();
       $order_modules->delete($this->previous);
 
-    // Empty order first..
-      $this->data['items'] = [];
-      $this->data['order_total'] = [];
-      $this->refresh_total();
-      $this->save();
-
-    // ..then delete
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."orders
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
+        "delete o, oi, ot, oc
+        from ". DB_TABLE_PREFIX ."orders o
+        left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.order_id = o.id)
+        left join ". DB_TABLE_PREFIX ."orders_totals ot on (ot.order_id = o.id)
+        left join ". DB_TABLE_PREFIX ."orders_comments oc on (oc.order_id = o.id)
+        where o.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

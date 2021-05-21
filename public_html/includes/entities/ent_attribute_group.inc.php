@@ -245,16 +245,13 @@
       $this->data['values'] = [];
       $this->save();
 
-    // Delete attribute
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."attribute_groups
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."attribute_groups_info
-        where group_id = ". (int)$this->data['id'] .";"
+        "delete ag, agi, av, avi
+        from ". DB_TABLE_PREFIX ."attribute_groups ag
+        left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id)
+        left join ". DB_TABLE_PREFIX ."attribute_values av on (av.group_id = ag.id)
+        left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id)
+        where ag.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();
