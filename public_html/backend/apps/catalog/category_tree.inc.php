@@ -354,7 +354,10 @@
         "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PREFIX ."products_to_categories p2c on (p2c.product_id = p.id)
-        where ". (!empty($category_id) ? "p2c.category_id = ". (int)$category_id : "(p2c.category_id is null or p2c.category_id = 0)") ."
+        where ". (!empty($category_id) ? "p.id in (
+          select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
+          where category_id = ". (int)$category_id ."
+        )" : "p2c.category_id = 0") ."
         group by p.id
         order by pi.name asc;"
       );

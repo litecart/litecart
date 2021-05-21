@@ -2,7 +2,7 @@
 
   return $app_config = [
     'name' => language::translate('title_catalog', 'Catalog'),
-    'default' => 'catalog',
+    'default' => 'category_tree',
     'priority' => 0,
     'theme' => [
       'color' => '#d0cb2b',
@@ -10,8 +10,8 @@
     ],
     'menu' => [
       [
-        'title' => language::translate('title_catalog', 'Catalog'),
-        'doc' => 'catalog',
+        'title' => language::translate('title_category_tree', 'Category Tree'),
+        'doc' => 'category_tree',
         'params' => [],
       ],
       [
@@ -68,7 +68,7 @@
     'docs' => [
       'attribute_groups' => 'attribute_groups.inc.php',
       'attribute_values.json' => 'attribute_values.json.inc.php',
-      'catalog' => 'catalog.inc.php',
+      'category_tree' => 'category_tree.inc.php',
       'edit_attribute_group' => 'edit_attribute_group.inc.php',
       'edit_product' => 'edit_product.inc.php',
       'edit_category' => 'edit_category.inc.php',
