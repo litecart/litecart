@@ -92,7 +92,7 @@
         }
 
         $product_option_values_query = database::query(
-          "select id from ". DB_TABLE_PREFIX ."products_options_values
+          "select id from ". DB_TABLE_PREFIX ."products_customizations_values
           where value_id = ". (int)$value['id'] ."
           limit 1;"
         );

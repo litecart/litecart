@@ -77,58 +77,58 @@
     $products = database::fetch($products_query);
     $stats['num_products'] = $products['num_products'];
 ?>
-<div class="widget">
-  <div class="panel panel-default">
-    <div class="panel-heading">
+<div id="widget-stats" class="panel panel-widget">
+  <div class="panel-heading">
+    <div class="panel-title">
       <?php echo language::translate('title_statistics', 'Statistics'); ?>
     </div>
+  </div>
 
-    <div class="panel-body table-responsive">
-      <div class="row">
-        <div class="col-md-6">
-          <table class="table table-striped table-hover data-table">
-            <tbody>
-              <tr>
-                <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
-                <td class="text-right"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
-              </tr>
-              <tr>
-                <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
-                <td class="text-right"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
-              </tr>
-              <tr>
-                <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
-                <td class="text-right"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
-              </tr>
-              <tr>
-                <td><?php echo language::translate('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>
-                <td class="text-right"><?php echo (int)$stats['num_customers']; ?></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-md-6">
-          <table class="table table-striped table-hover data-table">
-            <tbody>
-              <tr>
-                <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
-                <td class="text-right"><?php echo (int)$stats['num_orders']; ?></td>
-              </tr>
-              <tr>
-                <td><?php echo language::translate('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders'); ?>:</td>
-                <td class="text-right"><?php echo $stats['average_order_count']; ?></td>
-              </tr>
-              <tr>
-                <td><?php echo language::translate('title_average_order_amount', 'Average Order Amount'); ?>:</td>
-                <td class="text-right"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
-              </tr>
-              <tr>
-                <td><?php echo language::translate('title_highest_order_amount', 'Highest Order Amount'); ?>:</td>
-                <td class="text-right"><?php echo currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')); ?></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  <div class="panel-body table-responsive">
+    <div class="row">
+      <div class="col-md-6">
+        <table class="table table-striped table-hover data-table">
+          <tbody>
+            <tr>
+              <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
+              <td class="text-right"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
+            </tr>
+            <tr>
+              <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
+              <td class="text-right"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
+            </tr>
+            <tr>
+              <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
+              <td class="text-right"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
+            </tr>
+            <tr>
+              <td><?php echo language::translate('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>
+              <td class="text-right"><?php echo (int)$stats['num_customers']; ?></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table class="table table-striped table-hover data-table">
+          <tbody>
+            <tr>
+              <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
+              <td class="text-right"><?php echo (int)$stats['num_orders']; ?></td>
+            </tr>
+            <tr>
+              <td><?php echo language::translate('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders'); ?>:</td>
+              <td class="text-right"><?php echo $stats['average_order_count']; ?></td>
+            </tr>
+            <tr>
+              <td><?php echo language::translate('title_average_order_amount', 'Average Order Amount'); ?>:</td>
+              <td class="text-right"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
+            </tr>
+            <tr>
+              <td><?php echo language::translate('title_highest_order_amount', 'Highest Order Amount'); ?>:</td>
+              <td class="text-right"><?php echo currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')); ?></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

@@ -114,14 +114,10 @@
         </tfoot>
       </table>
 
-      <ul class="list-inline">
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-          </div>
-        </li>
-      </ul>
+      <div class="btn-group">
+        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+      </div>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>

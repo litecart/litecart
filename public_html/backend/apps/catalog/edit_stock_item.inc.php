@@ -130,25 +130,25 @@
         <div class="row">
           <div class="col-md-6">
 
-            <div class="form-group">
+            <div class="form-group references">
               <label><?php echo language::translate('title_references', 'References'); ?></label>
               <div class="input-group">
-                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('sku', true, 'style="text-transform: uppercase;"'); ?>
               </div>
 
               <div class="input-group">
-                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('gtin', true); ?>
               </div>
 
               <div class="input-group">
-                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('mpn', true); ?>
               </div>
 
               <div class="input-group">
-                <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                 <?php echo functions::form_draw_text_field('taric', true); ?>
               </div>
             </div>
@@ -169,14 +169,14 @@
 
         <div class="form-group">
           <?php if (!empty($stock_item->data['file'])) { ?>
-          <label class="pull-right"><?php echo functions::form_draw_checkbox('delete', '1', true); ?> <?php echo language::translate('text_delete', 'Delete'); ?> <?php echo $stock_item->data['filename']; ?></label>
+          <small class="pull-right"><?php echo functions::form_draw_checkbox('delete', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></small>
           <?php } ?>
           <label><?php echo language::translate('title_digital_item', 'Digital Item'); ?></label>
           <?php echo functions::form_draw_file_field('file', true); ?>
         </div>
 
         <div class="row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_decimal_field('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
@@ -184,7 +184,7 @@
             </div>
           </div>
 
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-4">
             <label><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></label>
             <div class="input-group">
               <span class="input-group-text">&plusmn;</span>
@@ -192,7 +192,7 @@
             </div>
           </div>
 
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-4">
             <label><?php echo language::translate('title_ordered', 'Ordered'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>

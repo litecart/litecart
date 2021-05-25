@@ -110,7 +110,7 @@
   stroke: #d2d2d2;
 }
 #chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
-  stroke: #3ba5c6;
+  stroke: url(#gradient);
 }
 #chart-sales-monthly .ct-bar{
   stroke-width: 20px;
@@ -127,31 +127,29 @@
 }
 </style>
 
-<div id="widget-graphs" class="widget">
-  <div class="row" style="margin-bottom: 0;">
-    <div class="col-md-9">
+<div id="widget-graphs" class="row">
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>
-        </div>
-
-        <div class="panel-body">
-          <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
-        </div>
+  <div class="col-md-9 panel panel-widget">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>
       </div>
     </div>
 
-    <div class="widget col-md-3">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>
-        </div>
+    <div class="panel-body">
+      <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+    </div>
+  </div>
 
-        <div class="panel-body">
-          <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
-        </div>
+  <div class="col-md-3 panel panel-widget">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>
       </div>
+    </div>
+
+    <div class="panel-body">
+      <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
     </div>
   </div>
 </div>
@@ -180,7 +178,26 @@
     }]
   ];
 
-  new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+  var chart1 = new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+
+  // Offset x1 a tiny amount so that the straight stroke gets a bounding box
+  // Straight lines don't get a bounding box
+  // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
+  chart1.on('draw', function(ctx) {
+    if(ctx.type === 'bar') {
+      ctx.element.attr({
+        x1: ctx.x1 + 0.001
+      });
+    }
+  });
+
+  // Create the gradient definition on created event (always after chart re-render)
+  chart1.on('created', function(ctx) {
+    var defs = ctx.svg.elem('defs');
+    defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
+  });
 
 // Daily Sales
 
@@ -204,7 +221,27 @@
     }]
   ];
 
-  new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+  var chart2 = new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+
+  // Offset x1 a tiny amount so that the straight stroke gets a bounding box
+  // Straight lines don't get a bounding box
+  // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
+  chart2.on('draw', function(ctx) {
+    if(ctx.type === 'bar') {
+      ctx.element.attr({
+        x1: ctx.x1 + 0.001
+      });
+    }
+  });
+
+  // Create the gradient definition on created event (always after chart re-render)
+  chart2.on('created', function(ctx) {
+    var defs = ctx.svg.elem('defs');
+    defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
+    .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
+    .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
+  });
+
 </script>
 <?php
     cache::end_capture($widget_graphs_cache_token);

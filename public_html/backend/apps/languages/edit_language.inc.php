@@ -221,7 +221,7 @@
       ],
     ],
   ];
-  echo functions::form_draw_select_optgroup_field('format_time', $options, true, false);
+  echo functions::form_draw_select_optgroup_field('format_time', $options, true);
 ?>
         </div>
       </div>
@@ -254,7 +254,7 @@
       ],
     ],
   ];
-  echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false);
+  echo functions::form_draw_select_optgroup_field('raw_date', $options, true);
 ?>
         </div>
 
@@ -275,7 +275,7 @@
       ]
     ],
   ];
-  echo functions::form_draw_select_optgroup_field('raw_time', $options, true, false);
+  echo functions::form_draw_select_optgroup_field('raw_time', $options, true);
 ?>
         </div>
       </div>

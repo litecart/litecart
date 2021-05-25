@@ -36,17 +36,24 @@
   }
 
 ?>
-<h1><?php echo $app_icon; ?> <?php echo language::translate('title_test_vmod', 'Test vMod'); ?></h1>
-<h2><?php echo htmlspecialchars($_GET['vmod']); ?></h2>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_test_vmod', 'Test vMod'); ?>
+    </div>
+  </div>
 
-<table class="table table-striped table-hover data-table">
-  <thead>
-    <tr>
-      <th class="main"><?php echo language::translate('title_file', 'File'); ?></th>
-      <th><?php echo language::translate('title_result', 'Result'); ?></th>
-    </tr>
-  </thead>
-  <tbody>
+  <div class="panel-body">
+    <h2><?php echo htmlspecialchars($_GET['vmod']); ?></h2>
+
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th class="main"><?php echo language::translate('title_file', 'File'); ?></th>
+          <th><?php echo language::translate('title_result', 'Result'); ?></th>
+        </tr>
+      </thead>
+      <tbody>
 <?php
   foreach (array_keys($vmod['files']) as $key) {
     $patterns = explode(',', $vmod['files'][$key]['name']);
@@ -59,9 +66,9 @@
         $path_and_file = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $path_and_file);
       }
 ?>
-    <tr>
-      <td>
-        <h3><?php echo $path_and_file; ?></h3>
+        <tr>
+          <td>
+            <h3><?php echo $path_and_file; ?></h3>
 <?php
       $error = null;
 
@@ -120,14 +127,16 @@
         $error = true;
       }
 ?>
-      </td>
-      <td style="font-size: 3em;">
-        <?php echo empty($error) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"'); ?>
-      </td>
-    </tr>
+          </td>
+          <td style="font-size: 3em;">
+            <?php echo empty($error) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"'); ?>
+          </td>
+        </tr>
 <?php
     }
   }
 ?>
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+</div>

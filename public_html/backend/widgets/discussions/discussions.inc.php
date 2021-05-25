@@ -43,7 +43,7 @@
 }
 </style>
 
-<div id="widget-discussions" class="widget panel panel-default">
+<div id="widget-discussions" class="panel panel-widget">
   <div class="panel-heading">
     <div class="panel-title">
       <?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>

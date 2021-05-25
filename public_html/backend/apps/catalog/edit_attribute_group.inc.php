@@ -72,25 +72,69 @@
     [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
   ];
 ?>
-<h1><?php echo $app_icon; ?> <?php echo !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'); ?></h1>
+<div class="panel panel-app">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'); ?>
+    </div>
+  </div>
 
-<?php echo functions::form_draw_form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+  <div class="panel-action">
+  </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_text_field('code', true); ?>
-        </div>
+  <?php echo functions::form_draw_form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
-          <?php echo functions::form_draw_select_field('sort', $sort_options, true); ?>
-        </div>
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label><?php echo language::translate('title_code', 'Code'); ?></label>
+        <?php echo functions::form_draw_text_field('code', true); ?>
       </div>
 
-  <div class="form-group">
-    <label><?php echo language::translate('title_name', 'Name'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+      <div class="form-group col-md-6">
+        <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
+        <?php echo functions::form_draw_select_field('sort', $sort_options, true); ?>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+    </div>
+
+    <div id="product-values">
+
+      <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
+
+      <table class="table table-striped table-hover table-dragable data-table">
+        <thead>
+          <tr>
+            <th><?php echo language::translate('title_id', 'ID'); ?></th>
+            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+            <th><?php echo language::translate('title_in_use', 'In Use'); ?></th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
+          <tr>
+            <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
+            <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
+            <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
+            <td class="text-right"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>' : false; ?></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_group_value', 'Add Group Value'); ?></a></td>
+          </tr>
+        </tfoot>
+      </table>
+
+    </div>
+
     <div class="panel-action">
       <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
       <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
@@ -98,38 +142,12 @@
     </div>
   </div>
 
-  <div id="product-values">
-    <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
+  <?php echo functions::form_draw_form_end(); ?>
 
-        <table class="table table-striped table-hover table-dragable data-table">
-          <thead>
-            <tr>
-              <th><?php echo language::translate('title_id', 'ID'); ?></th>
-              <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-              <th><?php echo language::translate('title_in_use', 'In Use'); ?></th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
-            <tr>
-              <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
-              <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
-              <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
-              <td class="text-right"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>' : false; ?></td>
-            </tr>
-            <?php } ?>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_group_value', 'Add Group Value'); ?></a></td>
-            </tr>
-          </tfoot>
-        </table>
-
+  <div class="panel-footer">
   </div>
+</div>
 
-<?php echo functions::form_draw_form_end(); ?>
 
 <script>
   var new_value_index = 1;

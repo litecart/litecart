@@ -101,11 +101,64 @@
 // Table Rows
   $products = [];
 
-  $products_query = database::query(
-    "select p.id, p.status, pi.name, p.sku, p.gtin, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
-    left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
-    order by status desc, pi.name asc;"
-  );
+  if (!empty($_GET['query'])) {
+
+    $products_query = database::query(
+      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name,
+      (
+        if(p.id = '". database::input($_GET['query']) ."', 10, 0)
+        + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
+        + (match(pi.short_description) against ('*". database::input($_GET['query']) ."*') / 2)
+        + (match(pi.description) against ('*". database::input($_GET['query']) ."*') / 3)
+        + (match(pi.name) against ('". database::input($_GET['query']) ."' in boolean mode))
+        + (match(pi.short_description) against ('". database::input($_GET['query']) ."' in boolean mode) / 2)
+        + (match(pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) / 3)
+        + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
+        + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
+        + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
+        + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
+        + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
+        + if (p.id in (
+          select product_id from ". DB_TABLE_PREFIX ."stock_items
+          where sku regexp '". database::input($code_regex) ."'
+        ), 5, 0)
+        + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
+        + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
+      ) as relevance
+      from ". DB_TABLE_PREFIX ."products p
+      left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      left join ". DB_TABLE_PREFIX ."brands b on (p.brand_id = b.id)
+      left join ". DB_TABLE_PREFIX ."suppliers s on (p.supplier_id = s.id)
+      having relevance > 0
+      order by relevance desc;"
+    );
+
+    if (!empty($_GET['category_id'])) {
+      unset($_GET['category_id']);
+    }
+
+  } else if (!empty($_GET['category_id'])) {
+
+    $products_query = database::query(
+      "select p.id, p.status, pi.name, p.sku, p.gtin, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
+      left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
+      where p.id in (
+        select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
+        where category_id = ". (int)$_GET['category_id'] ."
+      )
+      order by status desc, pi.name asc;"
+    );
+
+  } else {
+
+    $products_query = database::query(
+      "select p.id, p.status, pi.name, p.sku, p.gtin, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
+      left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
+      order by status desc, pi.name asc;"
+    );
+  }
 
   if ($_GET['page'] > 1) database::seek($products_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
@@ -151,7 +204,9 @@
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_products', 'Products'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_products', 'Products'); ?>
+    </div>
   </div>
 
   <div class="panel-action">
@@ -233,3 +288,9 @@
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
 </div>
+
+<script>
+$('input[name="category_id"]').change(function(e){
+  $(this).closest('form').submit();
+});
+</script>
