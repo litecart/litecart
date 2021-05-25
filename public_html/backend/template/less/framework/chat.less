@@ -6,8 +6,8 @@
 
   .bubble {
     position: relative;
-    margin: 0 10% var(--gutter-size) 10%;
-    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+    margin: 0 1em var(--gutter-size) 1em;
+    padding: ~"calc(var(--gutter-size)/2)";
     background: #e5e5ea;
     border-radius: var(--gutter-size);
     color: #000;
@@ -16,14 +16,14 @@
       &:before {
         content: '';
         position: absolute;
-        bottom: -2px;
+        bottom: 2px;
         height: 20px;
         transform: translate(0, -2px);
       }
       &:after {
         content: '';
         position: absolute;
-        bottom: -2px;
+        bottom: 2px;
         width: 26px;
         height: 20px;
         background: #fcfcfc;
@@ -32,7 +32,7 @@
     }
 
     &.remote {
-      margin: 0 10% var(--gutter-size) 0;
+      margin: 0 1em var(--gutter-size) 0;
       &:before {
         left: -7px;
         border-left: 20px solid #e5e5ea;
@@ -40,14 +40,14 @@
         border-bottom-right-radius: 16px 14px;
       }
       &:after {
-        bottom: -2px;
+        bottom: 2px;
         left: 4px;
         border-bottom-right-radius: 10px;
       }
     }
 
     &.local {
-      margin: 0 0 var(--gutter-size) 10%;
+      margin: 0 12px var(--gutter-size) 1em;
       background: #0b93f6;
       color: #fff;
       &:before {

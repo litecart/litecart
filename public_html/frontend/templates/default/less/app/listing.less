@@ -52,7 +52,7 @@
     text-decoration: none;
   }
 
-  .category, .brand, .product, .product {
+  .category, .brand, .product {
     position: relative;
     overflow: hidden;
 
@@ -68,7 +68,7 @@
     @media (min-width: (@media-breakpoint-sm)) {
       &:hover {
         box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.15);
-        transform: scale(1.01);
+        transform: scale(1.1);
       }
     }
   }
@@ -139,6 +139,7 @@
       display: flex;
       justify-content: center;
       align-content: center;
+      text-align: center;
       flex-direction: column;
       height: 40px;
       line-height: 125%;
@@ -147,10 +148,11 @@
     .brand-name {
       color: var(--default-text-color);
       font-size: 0.9em;
-      overflow: hidden;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      text-align: center;
       line-height: 200%;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .description {

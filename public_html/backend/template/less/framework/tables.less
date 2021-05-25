@@ -1,7 +1,6 @@
 /* Tables - Bootstrap Compatible */
 
 .table {
-  margin: var(--gutter-size) 0;
   width: 100%;
   max-width: 100%;
   background: #fff;
@@ -9,43 +8,30 @@
   border-collapse: collapse;
 
   thead th {
-    background: var(--table-header-background-color);
+    background: #fff;
     border-bottom: 2px solid var(--default-border-color);
-    color: inherit;
   }
 
   td, th {
-    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
-  }
-
-  > * > tr > td,
-  > * > tr > th {
-    padding: 6px 12px;
+    padding: ~"calc(var(--gutter-size)/4)";
     line-height: var(--default-line-height);
     vertical-align: top;
 
-    &.border-top {
-      border-top: 1px solid var(--default-border-color);
-    }
     &.border-left {
       border-left: 1px solid var(--default-border-color);
     }
     &.border-right {
       border-right: 1px solid var(--default-border-color);
     }
-    &.border-bottom {
-      border-bottom: 1px solid var(--default-border-color);
-    }
 
     @media print {
-      &.border-top, &.border-left, &.border-right, &.border-bottom {
+      &.border-top, &.border-left {
         border-color: #000 !important;
       }
     }
   }
 
   > thead > tr > th {
-    padding: 12px;
     text-align: left;
     vertical-align: bottom;
 
@@ -57,10 +43,6 @@
     }
   }
 
-  > tfoot > tr > td {
-    padding: 12px;
-  }
-
   &:not(.table-striped) {
     > tbody > tr:not(:last-child) > td {
       border-bottom: 1px solid var(--default-border-color);
@@ -68,13 +50,12 @@
   }
 
   > tfoot {
-    background: var(--default-background-color);
+    border-top: 1px solid var(--default-border-color);
     padding: 6px 12px;
     text-align: left;
   }
 
   &.table-bordered {
-    border: 1px solid var(--default-border-color);
     > thead {
       border-bottom: 2px solid var(--default-border-color);
     }

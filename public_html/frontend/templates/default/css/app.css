@@ -148,6 +148,7 @@ body.cart-open #cart .dropdown-menu {
   position: sticky;
   top: 0;
   z-index: 999;
+  backdrop-filter: saturate(180%) blur(20px);
 }
 #site-menu a {
   color: inherit;
@@ -315,7 +316,6 @@ body.cart-open #cart .dropdown-menu {
 }
 .listing .category,
 .listing .brand,
-.listing .product,
 .listing .product {
   position: relative;
   overflow: hidden;
@@ -329,10 +329,9 @@ body.cart-open #cart .dropdown-menu {
 @media (min-width: 576px) {
   .listing .category:hover,
   .listing .brand:hover,
-  .listing .product:hover,
   .listing .product:hover {
     box-shadow: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.15);
-    transform: scale(1.01);
+    transform: scale(1.1);
   }
 }
 .listing .category .caption {
@@ -391,6 +390,7 @@ body.cart-open #cart .dropdown-menu {
   display: flex;
   justify-content: center;
   align-content: center;
+  text-align: center;
   flex-direction: column;
   height: 40px;
   line-height: 125%;
@@ -398,10 +398,11 @@ body.cart-open #cart .dropdown-menu {
 .listing .product .brand-name {
   color: var(--default-text-color);
   font-size: 0.9em;
-  overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  text-align: center;
   line-height: 200%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .listing .product .description {
   margin-top: 1rem;

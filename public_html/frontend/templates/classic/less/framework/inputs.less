@@ -110,14 +110,6 @@ select.form-input {
 
 .form-input {
   cursor: default;
-
-  &.caret {
-    padding-right: 2.5em;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right var(--input-padding-x) center;
-    background-size: 16px 12px;
-  }
 }
 
 .form-input .dropdown-menu {
@@ -160,7 +152,12 @@ select.form-input {
     border-radius: 0;
     border: none;
   }
-  .input-group-addon {
+  .form-select {
+    width: auto;
+    background: none;
+    border: none;
+  }
+  .input-group-text {
     flex: 1 0 auto;
     margin: 0 -1px;
     background-color: var(--default-background-color);
@@ -170,18 +167,6 @@ select.form-input {
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
-    .select-wrapper {
-      background: none;
-      margin: var(--input-padding-y) var(--input-padding-x);
-      &:before {
-        right: -var(--input-padding-x);
-      }
-    }
-    select {
-      width: auto;
-      background: none;
-      border: none;
-    }
   }
   .input-group-icon {
     flex: 1 0 auto;
@@ -189,26 +174,12 @@ select.form-input {
     margin-right: -12px;
     align-self: center;
   }
-  .input-group-btn {
-    flex: 1 0 auto;
-    .btn {
-      border-top: none;
-      border-bottom: none;
-      padding: 7px 12px;
-    }
-  }
   .form-input:first-child,
-  .input-group-addon:first-child,
-  .input-group-btn:first-child > .btn,
-  .input-group-btn:first-child > .btn-group > .btn,
-  .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+  .input-group-text:first-child {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
   .form-input:last-child,
-  .input-group-addon:last-child,
-  .input-group-btn:last-child > .btn,
-  .input-group-btn:last-child > .btn-group > .btn,
-  .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+  .input-group-text:last-child {
     margin-right: -1px;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }

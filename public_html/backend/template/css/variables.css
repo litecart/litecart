@@ -12,6 +12,7 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlvAw.ttf) format('truetype');
 }
+/* Media Breakpoints */
 /* Variables */
 :root {
   --top-background-color: var(--panel-background-color);
@@ -25,12 +26,12 @@
   --default-background-color: #efefef;
   --default-background-color-active: #e6e6e6;
   --default-background-color-hover: #d8d8d8;
-  --default-border-color: #d0d0d0;
+  --default-border-color: #e4e4e4;
   --default-line-height: 1.5em;
   --default-text-font: Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  --default-text-color: #222;
+  --default-text-color: #444;
   --default-text-size: 12px;
-  --default-title-color: #222;
+  --default-title-color: #444;
   --default-title-border-color: #e5e5e5;
   --default-notice-background-color: #e5e5e5;
   --default-notice-text-color: #000;
@@ -65,15 +66,15 @@
   --breadcrumbs-text-color: #3c3c3c;
   --breadcrumbs-border-color: transparent;
   --panel-background-color: #fff;
-  --panel-heading-background-color: #e6e8ec;
+  --panel-heading-background-color: transparent;
   --panel-heading-text-color: var(--panel-text-color);
-  --panel-text-color: #000;
-  --panel-border-color: var(--default-border-color);
+  --panel-text-color: #444;
+  --panel-border-color: transparent;
   --tab-nav-background-color: var(--default-background-color);
   --tab-nav-text-color: var(--default-text-color);
   --tab-border-color: transparent;
   --tab-active-background-color: var(--tab-content-background-color);
-  --tab-content-background-color: transparent;
+  --tab-content-background-color: #fff;
   --tab-content-text-color: var(--default-text-color);
   --table-header-background-color: var(--default-background-color);
   --table-row-odd-background-color: #f9f9f9;
@@ -96,7 +97,7 @@
   --input-border-color: var(--default-border-color);
   --input-padding-x: 15px;
   --input-padding-y: 7.5px;
-  --link-text-color: #0087b1;
+  --link-text-color: #0066bb;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --whitespace-color: #fff;
 }
@@ -140,12 +141,12 @@ body.dark-mode {
   --link-text-color: #acb6c7;
   --whitespace-color: #0f1525;
 }
-@media (min-width: 768px) {
+@media (min-width: 576px) {
   :root {
     --default-text-size: 13px;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   :root {
     --default-text-size: 14px;
   }

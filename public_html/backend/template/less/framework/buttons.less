@@ -3,7 +3,6 @@
 .btn(@type) {
   background: ~"var(--@{type}-background-color)";
   color: ~"var(--@{type}-text-color)";
-  //color: #fff;
   text-decoration: none;
   &:hover:not(.active):not(.disabled):not([disabled]) {
     background: ~"var(--@{type}-background-color-hover)";
@@ -14,6 +13,19 @@
   }
 }
 
+.btn-outline(@type) {
+  background: transparent;
+  border: 1px solid ~"var(--@{type}-background-color)";
+  color: ~"var(--@{type}-background-color)";
+  text-decoration: none;
+  &:hover:not(.active):not(.disabled):not([disabled]) {
+    border-color: ~"var(--@{type}-background-color-hover)";
+  }
+  &.active {
+    border-color: ~"var(--@{type}-background-color-active)";
+  }
+}
+
 .btn {
   cursor: pointer;
   display: inline-block;
@@ -21,12 +33,12 @@
   text-decoration:  none;
   font-weight: normal;
   line-height: 250%;
-  //border: 1px solid var(--default-border-color);
   border: none;
   border-radius: var(--border-radius);
   box-shadow: 0 1px 1px var(--shadow-color);
   text-align: center;
   vertical-align: middle;
+  white-space: nowrap;
 
   touch-action: manipulation;
 
@@ -36,13 +48,14 @@
   //&.btn-warning { .btn("warning"); }
   &.btn-danger { .btn("danger"); }
 
-  &.btn-sm {
-    font-size: 11px;
-    line-height: 200%;
-  }
-  &.btn-lg {
-    font-size: 18px;
-  }
+  &.btn-outline-default { .btn-outline("default"); }
+  &.btn-outline-primary { .btn-outline("primary"); }
+  &.btn-outline-success { .btn-outline("success"); }
+  //&.btn-outline-warning { .btn-outline("warning"); }
+  &.btn-outline-danger { .btn-outline("danger"); }
+
+  &.btn-sm { font-size: .8em; }
+  &.btn-lg { font-size: 1.2em; }
 
   &.active, &:active { box-shadow: inset 2px 2px 0px 0 rgba(0, 0, 0, .15); }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
@@ -61,8 +74,8 @@
     flex: 1 0 auto;
     margin-left: -1px;
   }
-  >.btn:not(:first-child) {
-    border-left: 1px solid rgba(0, 0, 0, .15);
+  &:not(.btn-group-vertical) > .btn:not(:first-child) {
+    border-left: 1px solid var(--default-border-color);
   }
   >.btn:first-child:not(:last-child):not(.dropdown-toggle) {
     border-top-right-radius: 0;
