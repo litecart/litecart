@@ -107,11 +107,12 @@
 
   breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_add_new_stock_item', 'Add New Stock Item'));
 ?>
-
 <div class="panel panel-app">
   <div class="panel-heading">
     <div class="panel-title">
-      <?php echo $app_icon; ?> <?php echo !empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+      <div class="panel-title">
+        <?php echo $app_icon; ?> <?php echo !empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?>
+      </div>
     </div>
   </div>
 

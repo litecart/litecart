@@ -66,7 +66,9 @@
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <div class="panel-title"><?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?></div>
+    <div class="panel-title">
+      <div class="panel-title"><?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?>
+    </div></div>
   </div>
 
   <div class="panel-body">

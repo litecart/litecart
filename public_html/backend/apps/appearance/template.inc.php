@@ -63,7 +63,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading" style="margin-bottom: var(--gutter-size);">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_template', 'Template'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_template', 'Template'); ?>
+    </div>
   </div>
 
   <div class="panel-body">

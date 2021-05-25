@@ -52,7 +52,9 @@ pre {
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_view_modification', 'View Modification'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_view_modification', 'View Modification'); ?>
+    </div>
   </div>
 
   <div class="panel-body">

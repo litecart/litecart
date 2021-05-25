@@ -61,7 +61,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?>
+    </div>
   </div>
 
   <div class="panel-body">

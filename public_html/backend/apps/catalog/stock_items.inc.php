@@ -44,7 +44,9 @@
 <div class="panel panel-app">
   <div class="panel-heading">
     <div class="panel-title">
-      <?php echo $app_icon; ?> <?php echo language::translate('title_stock_items', 'Stock Items'); ?>
+      <div class="panel-title">
+        <?php echo $app_icon; ?> <?php echo language::translate('title_stock_items', 'Stock Items'); ?>
+      </div>
     </div>
   </div>
 

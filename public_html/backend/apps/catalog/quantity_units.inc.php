@@ -31,7 +31,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_quantity_units', 'Quantity Units'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_quantity_units', 'Quantity Units'); ?>
+    </div>
   </div>
 
   <div class="panel-action">

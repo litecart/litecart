@@ -29,7 +29,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>
+    </div>
   </div>
 
   <div class="panel-action">

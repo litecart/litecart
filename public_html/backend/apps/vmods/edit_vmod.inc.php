@@ -113,7 +113,9 @@ textarea {
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') .': '. $vmod->data['id'] : language::translate('title_create_new_vmod', 'Create New vMod'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo !empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') .': '. $vmod->data['id'] : language::translate('title_create_new_vmod', 'Create New vMod'); ?>
+    </div>
   </div>
 
   <div class="panel-body">

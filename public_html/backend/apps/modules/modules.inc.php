@@ -110,7 +110,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo $title; ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo $title; ?>
+    </div>
   </div>
 
   <div class="panel-action">

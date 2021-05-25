@@ -77,7 +77,9 @@
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_add_new_brand', 'Add New Brand'); ?>
+    </div>
   </div>
 
   <div class="panel-body">

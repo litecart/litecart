@@ -71,7 +71,7 @@ pre {
 
 <div class="panel panel-app">
 	<div class="panel-heading">
-		<?php echo $app_icon; ?> <?php echo language::translate('title_configure_vmod', 'Configure vMod'); ?>
+		<div class="panel-title"><?php echo $app_icon; ?> <?php echo language::translate('title_configure_vmod', 'Configure vMod'); ?></div>
 	</div>
 
 	<div class="panel-body">
