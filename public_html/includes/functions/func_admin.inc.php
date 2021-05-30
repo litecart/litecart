@@ -2,9 +2,6 @@
 
   function admin_get_apps() {
 
-    $apps_cache_token = cache::token('admin_apps', ['language']);
-    if (!$apps = cache::get($apps_cache_token)) {
-
       $apps = [];
 
       foreach (glob(FS_DIR_APP . 'backend/apps/*', GLOB_ONLYDIR) as $directory) {
@@ -26,16 +23,10 @@
         return ($a['priority'] < $b['priority']) ? -1 : 1;
       });
 
-      cache::set($apps_cache_token, $apps);
-    }
-
     return $apps;
   }
 
   function admin_get_widgets() {
-
-    $widgets_cache_token = cache::token('admin_widgets', ['language']);
-    if (!$widgets = cache::get($widgets_cache_token)) {
 
       $widgets = [];
 
@@ -57,9 +48,6 @@
 
         return ($a['priority'] < $b['priority']) ? -1 : 1;
       });
-
-      cache::set($widgets_cache_token, $widgets);
-    }
 
     return $widgets;
   }

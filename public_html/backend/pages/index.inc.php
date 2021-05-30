@@ -5,11 +5,18 @@
   breadcrumbs::reset();
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
 
-// Build apps list menu
+// Apps
+
   $box_apps_menu = new ent_view();
   $box_apps_menu->snippets['apps'] = [];
 
-  foreach (functions::admin_get_apps() as $app) {
+  $apps_cache_token = cache::token('backend_apps', ['language']);
+  if (!$apps = cache::get($apps_cache_token)) {
+    $apps = functions::admin_get_apps();
+    cache::set($apps_cache_token, $apps);
+  }
+
+  foreach ($apps as $app) {
 
     if (!empty(user::$data['apps']) && empty(user::$data['apps'][$app['code']]['status'])) continue;
 
@@ -59,6 +66,7 @@
   document::$snippets['box_apps_menu'] = $box_apps_menu->stitch('views/box_apps_menu.inc.php');
 
 // Start page
+
   if (empty($_GET['app'])) {
 
     document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
@@ -72,10 +80,17 @@
     }
 
   // Widgets
+
+    $widgets_cache_token = cache::token('backend_widgets', ['language']);
+    if (!$widgets = cache::get($widgets_cache_token)) {
+      $widgets = functions::admin_get_widgets();
+      cache::set($widgets_cache_token, $widgets);
+    }
+
     $box_widgets = new ent_view();
     $box_widgets->snippets['widgets'] = [];
 
-    foreach (functions::admin_get_widgets() as $widget) {
+    foreach ($widgets as $widget) {
       if (!empty(user::$data['widgets']) && empty(user::$data['widgets'][$widget['code']])) continue;
 
       ob_start();
@@ -90,6 +105,7 @@
     echo $box_widgets->stitch('views/box_widgets.inc.php');
 
 // App content
+
   } else {
 
     if (empty(user::$data['apps']) || (!empty(user::$data['apps'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['apps'][$_GET['app']]['docs']))) {
