@@ -69,12 +69,12 @@
           <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
           <td><?php echo $order_status['id']; ?></td>
           <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
-          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>"><?php echo $order_status['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>"><?php echo $order_status['name']; ?></a></td>
           <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo $order_status['priority']; ?></td>
-          <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

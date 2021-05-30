@@ -289,11 +289,22 @@
 
     public static function ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
-      if ($route === null) {
+      if ($route !== null) {
+        switch (true) {
+          case (preg_match('#^b(ackend)?:(.*)$#', $route, $matches)):
+            $route = WS_DIR_APP . BACKEND_ALIAS .'/'. $matches[2];
+            break;
+
+          case (preg_match('#^f(rontend)?:(.*)$#', $route, $matches)):
+            $route = WS_DIR_APP . $matches[2];
+            break;
+
+          default:
+            $route = WS_DIR_APP . $route;
+        }
+      } else {
         $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         if ($inherit_params === null) $inherit_params = true;
-      } else {
-        $route = WS_DIR_APP . $route;
       }
 
       return (string)route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);

@@ -19,7 +19,7 @@
   <div id="sidebar" class="hidden-print">
 
     <div id="logotype">
-      <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">
+      <a href="<?php echo document::href_ilink('b:'); ?>">
         <img class="center-block img-responsive" src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </a>
     </div>
@@ -66,7 +66,7 @@
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>
-            <a href="<?php echo document::href_link(null, ['language' => $language['code']], true); ?>">
+            <a href="<?php echo document::href_ilink('b:', ['language' => $language['code']], true); ?>">
               <img src="<?php echo document::href_link(WS_DIR_APP . 'assets/languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" style="max-height: 1em;" /> <?php echo $language['name']; ?>
             </a>
           </li>
@@ -111,7 +111,7 @@
       </li>
 
       <li>
-        <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout'); ?>" title="<?php echo language::translate('title_sign_out', 'Sign Out'); ?>">
+        <a href="<?php echo document::href_ilink('b:logout'); ?>" title="<?php echo language::translate('title_sign_out', 'Sign Out'); ?>">
           <?php echo functions::draw_fonticon('fa-sign-out'); ?> <?php echo language::translate('title_sign_out', 'Sign Out'); ?>
         </a>
       </li>

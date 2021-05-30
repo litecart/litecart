@@ -61,9 +61,9 @@
           <tr>
             <td><?php echo functions::form_draw_checkbox('quantity_units['. $quantity_unit['id'] .']', $quantity_unit['id']); ?></td>
             <td><?php echo $quantity_unit['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>"><?php echo $quantity_unit['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>"><?php echo $quantity_unit['name']; ?></a></td>
             <td><?php echo $quantity_unit['description']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

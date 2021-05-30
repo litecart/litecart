@@ -64,9 +64,9 @@
             <td><?php echo functions::form_draw_checkbox('attributes['. $attribute_group['id'] .']', $attribute_group['id']); ?></td>
             <td class="text-center"><?php echo $attribute_group['id']; ?></td>
             <td><?php echo $attribute_group['code']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], ['app']); ?>"><?php echo $attribute_group['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], ['app']); ?>"><?php echo $attribute_group['name']; ?></a></td>
             <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where group_id = ". (int)$attribute_group['id'] .";")); ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

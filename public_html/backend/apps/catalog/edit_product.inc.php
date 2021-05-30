@@ -630,7 +630,7 @@
                     <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
                   </td>
                   <td class="text-right">
-                    <a class="edit" href="<?php echo document::href_link('', ['doc' => 'edit_stock_item', 'stock_item_id' => $_POST['stock_items'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
+                    <a class="edit" href="<?php echo document::href_ilink('b:', ['doc' => 'edit_stock_item', 'stock_item_id' => $_POST['stock_items'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
                   </td>
                 </tr>
               <?php } ?>
@@ -638,8 +638,8 @@
               <tfoot>
                 <tr>
                   <td colspan="9">
-                    <a href="<?php echo document::href_link('', ['doc' => 'stock_item_picker', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
-                    <a href="<?php echo document::href_link('', ['doc' => 'edit_stock_item', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
+                    <a href="<?php echo document::href_ilink('b:', ['doc' => 'stock_item_picker', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
+                    <a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_stock_item', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
                   </td>
                 </tr>
               </tfoot>
@@ -1184,7 +1184,7 @@
                  + '    <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a>'
                  + '  </td>'
                  + '  <td class="text-right">'
-                 + '    <a class="edit" href="<?php echo document::href_link('', ['doc' => 'edit_stock_item', 'stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>'
+                 + '    <a class="edit" href="<?php echo document::href_ilink('b:', ['doc' => 'edit_stock_item', 'stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>'
                  + '  </td>'
                  + '</tr>';
 

@@ -91,7 +91,7 @@
             <td><?php echo $stock_item['gtin']; ?></td>
             <td class="text-right"><?php echo (float)$stock_item['ordered']; ?></td>
             <td class="text-right"><?php echo (float)$stock_item['quantity']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_item', 'stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_stock_item', 'stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

@@ -252,9 +252,9 @@
             <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
             <td><img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
             <td><?php echo $product['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_product', 'product_id' => $product['id']], ['app']); ?>"><?php echo $product['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_product', 'product_id' => $product['id']], ['app']); ?>"><?php echo $product['name']; ?></a></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

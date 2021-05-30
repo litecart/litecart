@@ -1,7 +1,7 @@
 <?php
   $_GET['vmod'] = basename($_GET['vmod']);
 
-  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_ilink('b:', ['doc' => 'vmods'], ['app']));
   breadcrumbs::add(language::translate('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']));
 
   document::$snippets['title'][] = language::translate('title_view_vmod', 'View vMod');

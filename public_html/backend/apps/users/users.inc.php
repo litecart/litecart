@@ -80,8 +80,8 @@
           <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : ''; ?>">
             <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
             <td><?php echo functions::draw_fonticon($user['status'] ? 'on' : 'off'); ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php }?>
         </tbody>

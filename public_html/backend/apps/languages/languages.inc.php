@@ -95,12 +95,12 @@
             <td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
             <td><?php echo $language['id']; ?></td>
             <td><?php echo $language['code']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>"><?php echo $language['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>"><?php echo $language['name']; ?></a></td>
             <td><?php echo $language['url_type']; ?></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo $language['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

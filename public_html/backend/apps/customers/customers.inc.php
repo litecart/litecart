@@ -124,11 +124,11 @@
             <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
             <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $customer['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>"><?php echo $customer['email']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>"><?php echo $customer['email']; ?></a></td>
             <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
             <td><?php echo $customer['company']; ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

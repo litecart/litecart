@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User');
 
-  breadcrumbs::add(language::translate('title_users', 'Users'), document::href_link(WS_DIR_ADMIN, ['doc' => 'users'], ['app']));
+  breadcrumbs::add(language::translate('title_users', 'Users'), document::href_ilink('b:', ['doc' => 'users'], ['app']));
   breadcrumbs::add(!empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'));
 
   if (isset($_POST['save'])) {

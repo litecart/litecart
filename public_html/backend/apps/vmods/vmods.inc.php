@@ -139,11 +139,11 @@
             <td><?php echo $vmod['title']; ?></td>
             <td><?php echo $vmod['version']; ?></td>
             <td><?php echo $vmod['author']; ?></td>
-            <td><a href="<?php echo document::href_link(null, ['doc' => 'test', 'vmod' => $vmod['filename']], true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-            <td><a href="<?php echo document::href_link(null, ['doc' => 'view', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
-            <td><a href="<?php echo document::href_link(null, ['doc' => 'download', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'configure', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'test', 'vmod' => $vmod['filename']], true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'view', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'download', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'configure', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

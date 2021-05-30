@@ -87,9 +87,9 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('stock_transactions['. $transaction['id'] .']', $transaction['id']); ?></td>
           <td><?php echo $transaction['id']; ?></td>
-          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_stock_transaction', 'transaction_id' => $transaction['id']], ['app']); ?>"><?php echo $transaction['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_stock_transaction', 'transaction_id' => $transaction['id']], ['app']); ?>"><?php echo $transaction['name']; ?></a></td>
           <td><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>
-          <td><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_transaction', 'transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_stock_transaction', 'transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
         </tbody>

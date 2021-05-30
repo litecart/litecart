@@ -87,9 +87,9 @@
             <td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $country['id']; ?></td>
             <td><?php echo $country['iso_code_2']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>"><?php echo $country['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>"><?php echo $country['name']; ?></a></td>
             <td class="text-center"><?php echo $country['num_zones'] ? $country['num_zones'] : '-'; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

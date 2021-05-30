@@ -307,7 +307,7 @@ body.dark-mode #box-comments {
 
                 <div class="form-group">
                   <div class="input-group">
-                    <div class="selected-account form-input"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+                    <div class="selected-account form-input"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_ilink('b:', ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                     <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
                     <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
                   </div>
@@ -617,7 +617,7 @@ body.dark-mode #box-comments {
             <tfoot>
               <tr>
                 <td colspan="8">
-                  <a class="btn btn-default add-product" href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_link('', ['doc' => 'product_picker'], ['app'], []); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                  <a class="btn btn-default add-product" href="<?php echo document::href_ilink('b:', ['doc' => 'product_picker'], ['app'], []); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_ilink('b:', ['doc' => 'product_picker'], ['app'], []); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
                 </td>
               </tr>
