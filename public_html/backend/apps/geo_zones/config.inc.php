@@ -5,7 +5,7 @@
     'default' => 'geo_zones',
     'priority' => 0,
     'theme' => [
-      'color' => '#4398e7',
+      'color' => '#3090e8',
       'icon' => 'fa-globe',
     ],
     'menu' => [],

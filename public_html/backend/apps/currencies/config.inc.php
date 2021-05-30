@@ -5,7 +5,7 @@
     'default' => 'currencies',
     'priority' => 0,
     'theme' => [
-      'color' => '#f3b91c',
+      'color' => '#ecae06',
       'icon' => 'fa-money',
     ],
 

@@ -5,7 +5,7 @@
     'default' => 'category_tree',
     'priority' => 0,
     'theme' => [
-      'color' => '#d0cb2b',
+      'color' => '#d4ce12',
       'icon' => 'fa-th',
     ],
     'menu' => [

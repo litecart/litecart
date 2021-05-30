@@ -5,7 +5,7 @@
     'default' => 'countries',
     'priority' => 0,
     'theme' => [
-      'color' => '#43bbe7',
+      'color' => '#21a9d2',
       'icon' => 'fa-flag',
     ],
     'menu' => [],

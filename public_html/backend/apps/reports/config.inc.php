@@ -5,7 +5,7 @@
     'default' => 'monthly_sales',
     'priority' => 0,
     'theme' => [
-      'color' => '#a17b54',
+      'color' => '#b97631',
       'icon' => 'fa-pie-chart',
     ],
     'menu' => [

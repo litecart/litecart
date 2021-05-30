@@ -5,7 +5,7 @@
     'default' => 'store_info',
     'priority' => 0,
     'theme' => [
-      'color' => '#959595',
+      'color' => '#757575',
       'icon' => 'fa-cogs',
     ],
     'menu' => [],

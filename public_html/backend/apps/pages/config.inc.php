@@ -5,7 +5,7 @@
     'default' => 'pages',
     'priority' => 0,
     'theme' => [
-      'color' => '#adb4a3',
+      'color' => '#99a785',
       'icon' => 'fa-file-text',
     ],
     'menu' => [

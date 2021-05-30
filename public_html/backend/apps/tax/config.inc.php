@@ -5,7 +5,7 @@
     'default' => 'tax_rates',
     'priority' => 0,
     'theme' => [
-      'color' => '#c0cc82',
+      'color' => '#a8bf2e',
       'icon' => 'fa-university',
     ],
     'menu' => [

@@ -5,7 +5,7 @@
     'default' => 'vmods',
     'priority' => 0,
     'theme' => [
-      'color' => '#77d2cd',
+      'color' => '#4dcac3',
       'icon' => 'fa-plug',
     ],
     'menu' => [],

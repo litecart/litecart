@@ -5,7 +5,7 @@
     'default' => 'customer',
     'priority' => 0,
     'theme' => [
-      'color' => '#c469c5',
+      'color' => '#c449c5',
       'icon' => 'fa-cube',
     ],
     'menu' => [

@@ -5,7 +5,7 @@
     'default' => 'languages',
     'priority' => 0,
     'theme' => [
-      'color' => '#4475a4',
+      'color' => '#2b6ca2',
       'icon' => 'fa-comments',
     ],
     'menu' => [

@@ -5,7 +5,7 @@
     'default' => 'slides',
     'priority' => 0,
     'theme' => [
-      'color' => '#a880d8',
+      'color' => '#8c56ce',
       'icon' => 'fa-picture-o',
     ],
     'menu' => [

@@ -5,7 +5,7 @@
     'default' => 'search',
     'priority' => 0,
     'theme' => [
-      'color' => '#cc7d7d',
+      'color' => '#c14a4a',
       'icon' => 'fa-book',
     ],
     'menu' => [
