@@ -123,9 +123,9 @@ body {
   $('form[name="login_form"]').submit(function(e) {
     e.preventDefault();
     var form = this;
-    $('#box-login-wrapper .content').slideUp(250, function(){
-      $('#box-login-wrapper').fadeOut(500, function(){
-        $('.loader-wrapper').fadeIn(250, function(){
+    $('#box-login-wrapper .content').slideUp(100, function(){
+      $('#box-login-wrapper').fadeOut(250, function(){
+        $('.loader-wrapper').fadeIn(100, function(){
           form.submit();
         });
       });

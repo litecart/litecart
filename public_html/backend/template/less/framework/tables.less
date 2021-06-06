@@ -3,12 +3,12 @@
 .table {
   width: 100%;
   max-width: 100%;
-  background: #fff;
+  background: var(--table-body-background-color);
   border-spacing: 0;
   border-collapse: collapse;
 
   thead th {
-    background: #fff;
+    background: var(--table-header-background-color);
     border-bottom: 2px solid var(--default-border-color);
   }
 
@@ -16,6 +16,7 @@
     padding: ~"calc(var(--gutter-size)/4)";
     line-height: var(--default-line-height);
     vertical-align: top;
+    color: var(--default-text-color);
 
     &.border-left {
       border-left: 1px solid var(--default-border-color);
@@ -50,6 +51,7 @@
   }
 
   > tfoot {
+    background: var(--table-footer-background-color);
     border-top: 1px solid var(--default-border-color);
     padding: 6px 12px;
     text-align: left;

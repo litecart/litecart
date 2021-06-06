@@ -139,16 +139,16 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_conditions', 'Conditions'); ?></label>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_companies_with_tax_id', '1', true); ?> <?php echo language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID'); ?></label>
+            <label><?php echo functions::form_draw_checkbox('rule_companies_with_tax_id', ['1', language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_companies_without_tax_id', '1', true); ?> <?php echo language::translate('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID'); ?></label>
+            <label><?php echo functions::form_draw_checkbox('rule_companies_without_tax_id', ['1', language::translate('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_individuals_with_tax_id', '1', true); ?> <?php echo language::translate('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID'); ?></label>
+            <label><?php echo functions::form_draw_checkbox('rule_individuals_with_tax_id', ['1', language::translate('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_individuals_without_tax_id', '1', true); ?> <?php echo language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID'); ?></label>
+            <label><?php echo functions::form_draw_checkbox('rule_individuals_without_tax_id', ['1', language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
           </div>
         </div>
       </div>

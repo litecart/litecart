@@ -25,7 +25,7 @@ body {
 
 #header .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   padding: .5rem;
 
@@ -35,6 +35,7 @@ body {
 
   @media (min-width: @media-breakpoint-sm) {
     padding: 1rem;
+    flex-direction: row;
   }
 
   .logotype img {
@@ -160,12 +161,12 @@ body.cart-open #cart .dropdown-menu {
 }
 
 #site-menu {
-  background: var(--navigation-background-color);
+  background-color: var(--navigation-background-color);
   margin-bottom: ~"calc(var(--gutter-size) *2)";
   color: ~"var(--navigation-text-color)";
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1;
   backdrop-filter: saturate(180%) blur(20px);
   a {
     color: inherit;

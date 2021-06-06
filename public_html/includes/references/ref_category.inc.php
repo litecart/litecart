@@ -82,7 +82,6 @@
 
           $current = $this;
           while ($current->parent_id) {
-
             $this->_data['path'][$current->parent_id] = $current->parent;
             $current = $current->parent;
           }

@@ -124,8 +124,8 @@ th:not(:last-child) {
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
       <div><?php echo functions::form_draw_select_field('endpoint', [['-- '. language::translate('title_all', 'All') .' --', ''], [language::translate('title_frontend', 'Frontend'), 'frontend'], [language::translate('title_backend', 'Backend'), 'backend']]); ?></div>
       <div>
-        <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br />
-        <label><?php echo functions::form_draw_checkbox('untranslated', 'true'); ?> <?php echo language::translate('text_only_untranslated', 'Only untranslated'); ?></label>
+        <label><?php echo functions::form_draw_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?></label><br />
+        <label><?php echo functions::form_draw_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?></label>
       </div>
       <div>
         <label><?php echo language::translate('title_languages', 'Languages'); ?></label>

@@ -15,11 +15,12 @@
 /* Media Breakpoints */
 /* Variables */
 :root {
-  --top-background-color: var(--panel-background-color);
-  --top-text-color: var(--panel-text-color);
+  --top-background-color: var(--card-background-color);
+  --top-text-color: var(--card-text-color);
   --page-background-color: #f6f6f6;
   --sidebar-background-color: #e6e8ec;
   --sidebar-border-color: var(--default-border-color);
+  --sidebar-text-color: #222;
   --sidebar-width: 275px;
   --navigation-background-color: #3e3e3e;
   --navigation-text-color: #fff;
@@ -65,18 +66,19 @@
   --breadcrumbs-background-color: transparent;
   --breadcrumbs-text-color: #3c3c3c;
   --breadcrumbs-border-color: transparent;
-  --panel-background-color: #fff;
-  --panel-heading-background-color: transparent;
-  --panel-heading-text-color: var(--panel-text-color);
-  --panel-text-color: #444;
-  --panel-border-color: transparent;
+  --card-background-color: #fff;
+  --card-heading-background-color: transparent;
+  --card-heading-text-color: var(--card-text-color);
+  --card-text-color: #444;
+  --card-border-color: transparent;
   --tab-nav-background-color: var(--default-background-color);
   --tab-nav-text-color: var(--default-text-color);
   --tab-border-color: transparent;
   --tab-active-background-color: var(--tab-content-background-color);
   --tab-content-background-color: #fff;
   --tab-content-text-color: var(--default-text-color);
-  --table-header-background-color: var(--default-background-color);
+  --table-header-background-color: #fff;
+  --table-body-background-color: #fff;
   --table-row-odd-background-color: #f9f9f9;
   --table-row-even-background-color: #fff;
   --table-row-hover-background-color: #ececec;
@@ -103,28 +105,32 @@
 }
 body.dark-mode {
   --top-background-color: #283144;
+  --top-text-color: var(--card-text-color);
   --page-background-color: #0f1525;
   --sidebar-background-color: #283144;
   --sidebar-border-color: #1d2431;
+  --sidebar-text-color: #acb6c2;
   --default-background-color: #0f1525;
   --default-background-color: #283144;
   --default-background-color-hover: #434e67;
   --default-background-color-active: #161b25;
-  --default-border-color: #283144;
+  --default-border-color: #1c243a;
   --default-title-color: #acb6c2;
   --default-text-color: #acb6c2;
   --default-input-color: #fff;
-  --default-border-color: #000;
-  --panel-background-color: #283144;
-  --panel-heading-background-color: #35415a;
-  --panel-heading-text-color: #fff;
+  --card-background-color: #283144;
+  --card-heading-background-color: transparent;
+  --card-heading-text-color: #fff;
+  --card-text-color: #acb6c2;
+  --card-border-color: #253046;
   --tab-nav-background-color: #1c243a;
   --tab-nav-text-color: #acb6c2;
-  --table-header-background-color: #1c243a;
+  --table-header-background-color: #283144;
+  --table-body-background-color: #283144;
   --table-row-odd-background-color: #2d374c;
   --table-row-even-background-color: #283246;
   --table-row-hover-background-color: #3c4861;
-  --table-footer-background-color: #1c243a;
+  --table-footer-background-color: #35415a;
   --pagination-background-color: var(--default-background-color);
   --pagination-text-color: var(--default-text-color);
   --pagination-border-color: var(--default-border-color);

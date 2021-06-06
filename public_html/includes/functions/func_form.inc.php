@@ -14,22 +14,32 @@
     foreach ([$_POST, $_GET] as $superglobal) {
       if (empty($superglobal)) continue;
 
-      foreach (explode('&', http_build_query($superglobal, '', '&')) as $pair) {
+    // Extract name parts
+      $parts = preg_split('#[\]\[]+#', preg_replace('#\[\]$#', '', $name), -1, PREG_SPLIT_NO_EMPTY);
 
-        if (!preg_match('#^(.*)=(.*)$#', $pair, $matches)) {
-          continue;
+    // Get array node
+      $node = $superglobal;
+      foreach ($parts as $part) {
+        if (!isset($node[$part])) continue 2;
+        $node = $node[$part];
+      }
+
+      if ($array_value !== null) {
+
+      // Attempt reinserting a numerical indexed array value
+        if (preg_match('#\[\]$#', $name)) {
+          if (!is_array($node) || !in_array($array_value, $node)) continue;
+          return $array_value;
+
+      // Reinsert a defined key array value
+        } else {
+          if ($array_value != $node) continue;
+          return $array_value;
         }
 
-        $key = urldecode($matches[1]);
-        $value = urldecode($matches[2]);
-
-        if ($key == $name) return $value;
-
-        if (preg_replace('#^(.*)\[[^\]]*\]$#', '$1', $key) == preg_replace('#^(.*)\[[^\]]*\]$#', '$1', $name)) {
-          if (preg_match('#\[[0-9]*\]$#', $key)) {
-            if ($value == $array_value) return $value;
-          }
-        }
+    // Reinsert node value
+      } else {
+        return $node;
       }
     }
   }
@@ -244,18 +254,10 @@ END;
 
       if (!is_array($option)) $option = [$option, $option];
 
-      if ($input === true) {
-        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-      } else {
-        $option_input = $input;
-      }
-
-      if (!is_array($option)) $option = [$option, $option];
-
       if (substr($name, -2) == '[]') {
-        $html .= '<div class="option">' . functions::form_draw_checkbox($name, $option, $option_input, isset($option[2]) ? $option[2] : '') .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></div>' . PHP_EOL;
+        $html .= '<div class="option">' . functions::form_draw_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></div>' . PHP_EOL;
       } else {
-        $html .= '<div class="option">' . functions::form_draw_radio_button($name, $option, $option_input, isset($option[2]) ? $option[2] : '') .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></div>' . PHP_EOL;
+        $html .= '<div class="option">' . functions::form_draw_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></div>' . PHP_EOL;
       }
     }
 
@@ -545,13 +547,7 @@ END;
 
       if (!is_array($option)) $option = [$option, $option];
 
-      if ($input === true) {
-        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-      } else {
-        $option_input = $input;
-      }
-
-      $html .= form_draw_checkbox($name, $option, $option_input, isset($option[2]) ? $option[2] : null);
+      $html .= form_draw_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : null);
     }
 
     $html .= '</div>';
@@ -562,7 +558,7 @@ END;
   function form_draw_select_optgroup_field($name, $groups=[], $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
-      trigger_error('Passing $multiple as 4th parameter in form_draw_select_optgroup_field() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 4th parameter in form_draw_select_optgroup_field() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[4])) $parameters = $args[3];
     }
 
@@ -601,7 +597,7 @@ END;
   }
 
   function form_draw_text_field($name, $input=true, $parameters='') {
-    if ($input === true) $input = form_reinsert_value($name, $input);
+    if ($input === true) $input = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-input"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
@@ -955,7 +951,7 @@ END;
   function form_draw_attribute_groups_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_attribute_groups_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_attribute_groups_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -986,7 +982,7 @@ END;
     }
 
     if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
-      trigger_error('Passing $multiple as 4th parameter in form_draw_attribute_values_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 4th parameter in form_draw_attribute_values_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[4])) $parameters = $args[3];
     }
 
@@ -1013,7 +1009,7 @@ END;
   function form_draw_categories_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_categories_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_categories_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1186,7 +1182,7 @@ END;
   function form_draw_countries_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_countries_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_countries_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1217,7 +1213,7 @@ END;
   function form_draw_currencies_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_currencies_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_currencies_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1239,7 +1235,7 @@ END;
     if (empty(user::$data['id'])) trigger_error('Must be logged in to use form_draw_customers_list()', E_USER_ERROR);
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_customers_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_customers_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1264,7 +1260,7 @@ END;
   function form_draw_delivery_statuses_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_delivery_statuses_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_delivery_statuses_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1295,7 +1291,7 @@ END;
   function form_draw_encodings_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_encodings_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_encodings_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1352,7 +1348,7 @@ END;
   function form_draw_geo_zones_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_geo_zones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_geo_zones_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1381,7 +1377,7 @@ END;
   function form_draw_languages_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_languages_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_languages_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1407,7 +1403,7 @@ END;
   function form_draw_length_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_length_units_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_length_units_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1432,7 +1428,7 @@ END;
   function form_draw_brands_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_brands_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_brands_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1457,7 +1453,7 @@ END;
   function form_draw_mysql_collations_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_mysql_collations_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_mysql_collations_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1483,7 +1479,7 @@ END;
   function form_draw_mysql_engines_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_mysql_engines_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_mysql_engines_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1509,7 +1505,7 @@ END;
   function form_draw_order_status_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_order_status_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_order_status_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1535,7 +1531,7 @@ END;
   function form_draw_pages_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_pages_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_pages_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1583,7 +1579,7 @@ END;
   function form_draw_payment_modules_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_payment_modules_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_payment_modules_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1636,7 +1632,7 @@ END;
   function form_draw_quantity_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_quantity_units_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_quantity_units_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1667,7 +1663,7 @@ END;
   function form_draw_shipping_modules_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_shipping_modules_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_shipping_modules_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1694,7 +1690,7 @@ END;
   function form_draw_sold_out_statuses_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_sold_out_statuses_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_sold_out_statuses_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1725,7 +1721,7 @@ END;
   function form_draw_stock_items_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_stock_items_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_stock_items_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1751,7 +1747,7 @@ END;
   function form_draw_suppliers_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_suppliers_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_suppliers_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1776,7 +1772,7 @@ END;
   function form_draw_tax_classes_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_tax_classes_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_tax_classes_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1806,7 +1802,7 @@ END;
   function form_draw_templates_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_templates_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_templates_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1828,7 +1824,7 @@ END;
   function form_draw_timezones_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_timezones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_timezones_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1854,7 +1850,7 @@ END;
   function form_draw_users_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_users_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_users_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1884,7 +1880,7 @@ END;
   function form_draw_weight_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_weight_units_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_weight_units_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[3])) $parameters = $args[2];
     }
 
@@ -1933,7 +1929,7 @@ END;
     }
 
     if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
-      trigger_error('Passing $multiple as 4th parameter in form_draw_zones_list() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 4th parameter in form_draw_zones_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
       if (isset($args[4])) $parameters = $args[3];
     }
 
