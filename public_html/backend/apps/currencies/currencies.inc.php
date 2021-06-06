@@ -26,7 +26,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -61,7 +61,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['doc' => 'edit_currency']), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('currencies/edit_currency'), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -94,7 +94,7 @@
             <td><?php echo functions::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
             <td><?php echo $currency['id']; ?></td>
             <td><?php echo $currency['code']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_currency', 'currency_code' => $currency['code']], true); ?>"><?php echo $currency['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('currencies/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
             <td class="text-right"><?php echo $currency['value']; ?></td>
             <td class="text-center"><?php echo $currency['decimals']; ?></td>
             <td class="text-center"><?php echo $currency['prefix']; ?></td>
@@ -102,7 +102,7 @@
             <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo $currency['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_currency', 'currency_code' => $currency['code']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('currencies/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

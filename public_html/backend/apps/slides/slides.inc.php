@@ -17,7 +17,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -57,7 +57,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['doc' => 'edit_slide']), language::translate('title_add_new_slide', 'Add New Slide'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('slides/edit_slide'), language::translate('title_add_new_slide', 'Add New Slide'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -85,12 +85,12 @@
             <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
             <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $slide['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>"><?php echo $slide['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('slides/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>
             <td class="text-right"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
             <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
             <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
             <td class="text-right"><?php echo $slide['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('slides/edit_slide', ['slide_id' => $slide['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

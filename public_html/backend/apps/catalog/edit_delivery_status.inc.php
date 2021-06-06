@@ -13,7 +13,7 @@
   document::$snippets['title'][] = !empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::link(WS_DIR_ADMIN, ['doc' => 'delivery_statuses'], ['app']));
+  breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::ilink('catalog/delivery_statuses'));
   breadcrumbs::add(!empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status'));
 
   if (isset($_POST['save'])) {
@@ -33,7 +33,7 @@
       $delivery_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'delivery_statuses'], true, ['delivery_status_id']));
+      header('Location: '. document::ilink('catalog/delivery_statuses'));
       exit;
 
     } catch (Exception $e) {
@@ -49,7 +49,7 @@
       $delivery_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'delivery_statuses'], true, ['delivery_status_id']));
+      header('Location: '. document::ilink('catalog/delivery_statuses'));
       exit;
 
     } catch (Exception $e) {

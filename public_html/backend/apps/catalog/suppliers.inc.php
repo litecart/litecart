@@ -37,7 +37,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink($_GET['app'].'/edit_supplier', []), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_supplier'), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -57,8 +57,8 @@
           <?php foreach ($suppliers as $supplier) { ?>
           <tr>
             <td><?php echo functions::form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']); ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_supplier', 'supplier_id' => $supplier['id']], ['app']); ?>"><?php echo $supplier['name']; ?></a></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_supplier', 'supplier_id' => $supplier['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('catalog/edit_supplier', ['supplier_id' => $supplier['id']]); ?>"><?php echo $supplier['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('catalog/edit_supplier', ['supplier_id' => $supplier['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

@@ -17,7 +17,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -70,7 +70,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
+      header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 
     } catch (Exception $e) {
@@ -90,7 +90,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -211,7 +211,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'edit_product']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_product'), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -219,8 +219,8 @@
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="card-filter">
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div style="min-width: 300px;"><?php echo functions::form_draw_category_field('category_id', true); ?></div>
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div style="min-width: 250px;"><?php echo functions::form_draw_brands_list('brand_id', true); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
@@ -252,9 +252,9 @@
             <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
             <td><img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
             <td><?php echo $product['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_product', 'product_id' => $product['id']], ['app']); ?>"><?php echo $product['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

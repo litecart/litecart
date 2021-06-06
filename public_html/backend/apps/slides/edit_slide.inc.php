@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');
 
-  breadcrumbs::add(language::translate('title_slides', 'Slides'), document::link(WS_DIR_ADMIN, ['doc' => 'slides'], ['app']));
+  breadcrumbs::add(language::translate('title_slides', 'Slides'), document::ilink('slides/slides'));
   breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
 
   if (isset($_POST['save'])) {
@@ -43,7 +43,7 @@
       $slide->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'slides'], true, ['action', 'slide_id']));
+      header('Location: '. document::ilink('slides/slides'));
       exit;
 
     } catch (Exception $e) {
@@ -59,7 +59,7 @@
       $slide->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'slides'], true, ['action', 'slide_id']));
+      header('Location: '. document::ilink('slides/slides'));
       exit;
 
     } catch (Exception $e) {
@@ -87,7 +87,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-          <div><?php echo functions::form_draw_languages_list('languages[]', true, true); ?></div>
+          <div><?php echo functions::form_draw_languages_list('languages[]', true); ?></div>
         </div>
       </div>
 

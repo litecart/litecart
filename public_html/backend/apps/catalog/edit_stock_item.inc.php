@@ -75,7 +75,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
+      header('Location: '. document::link('catalog/stock_items'));
       exit;
 
     } catch (Exception $e) {
@@ -97,7 +97,7 @@
       $stock_item->delete();
 
       notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-      header('Location: '. document::link('', ['doc' => 'stock_items'], ['app']));
+      header('Location: '. document::ilink('catalog/stock_items'));
       exit;
 
     } catch (Exception $e) {

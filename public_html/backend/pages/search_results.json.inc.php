@@ -55,7 +55,7 @@
         'id' => $product['id'],
         'title' => $product['name'],
         'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
-        'url' => document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $product['id']]),
+        'url' => document::ilink('catalog/edit_product', ['product_id' => $product['id']]),
       ];
     }
 
@@ -86,7 +86,7 @@
         'id' => $customer['id'],
         'title' => $customer['name'],
         'description' => $customer['email'],
-        'url' => document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]),
+        'url' => document::ilink('customers/edit_customer', ['customer_id' => $customer['id']]),
       ];
     }
 
@@ -121,7 +121,7 @@
         'id' => $order['id'],
         'title' => language::translate('title_order', 'Order') .' '. $order['id'],
         'description' => $order['customer_name'],
-        'url' => document::link(WS_DIR_ADMIN, ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']]),
+        'url' => document::ilink('orders/edit_order', ['order_id' => $order['id']]),
       ];
     }
 

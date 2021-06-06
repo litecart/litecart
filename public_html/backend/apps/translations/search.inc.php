@@ -35,7 +35,7 @@
 
     notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
-    header('Location: '. document::link(WS_DIR_ADMIN, [], true));
+    header('Location: '. document::ilink());
     exit;
   }
 
@@ -129,7 +129,7 @@ th:not(:last-child) {
       </div>
       <div>
         <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
-        <div><?php foreach (array_keys(language::$languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', $language_code) .' '. $language_code .'</span>'; ?></div>
+        <div><?php foreach (array_keys(language::$languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', [$language_code, $language_code]) .'</span>'; ?></div>
       </div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>

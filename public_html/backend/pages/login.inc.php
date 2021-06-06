@@ -110,7 +110,7 @@
       }
 
       if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
-        $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
+        $_POST['redirect_url'] = document::ilink('');
       }
 
       notices::add('success', str_replace(['%username'], [user::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));

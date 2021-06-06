@@ -2,7 +2,7 @@
 
   document::$snippets['title'][] = language::translate('title_storage_encoding', 'Storage Encoding');
 
-  breadcrumbs::add(language::translate('title_languages', 'Languages'), document::link(WS_DIR_ADMIN, ['doc' => 'languages'], ['app']));
+  breadcrumbs::add(language::translate('title_languages', 'Languages'), document::ilink('languages/languages'));
   breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));
 
 // Table Rows
@@ -66,7 +66,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {

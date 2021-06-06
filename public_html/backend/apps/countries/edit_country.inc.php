@@ -56,7 +56,7 @@
       $country->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'countries'], true, ['country_id']));
+      header('Location: '. document::ilink('countries/countries'));
       exit;
 
     } catch (Exception $e) {
@@ -72,7 +72,7 @@
       $country->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'countries'], true, ['country_id']));
+      header('Location: '. document::ilink('countries/countries'));
       exit;
 
     } catch (Exception $e) {

@@ -16,7 +16,7 @@
 
   document::$snippets['title'][] = !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate');
 
-  breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::link(WS_DIR_ADMIN, ['doc' => 'tax_rates'], ['app']));
+  breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::ilink('tax/tax_rates'));
   breadcrumbs::add(!empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'));
 
   if (isset($_POST['save'])) {
@@ -54,7 +54,7 @@
       $tax_rate->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'tax_rates'], true, ['tax_rate_id']));
+      header('Location: '. document::ilink('tax/tax_rates'));
       exit;
 
     } catch (Exception $e) {
@@ -70,7 +70,7 @@
       $tax_rate->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'tax_rates'], true, ['tax_rate_id']));
+      header('Location: '. document::ilink('tax/tax_rates'));
       exit;
 
     } catch (Exception $e) {

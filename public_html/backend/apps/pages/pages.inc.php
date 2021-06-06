@@ -19,7 +19,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -43,7 +43,7 @@
         notices::add('success', sprintf(language::translate('success_moved_d_pages', 'Moved %d pages'), count($_POST['pages'])));
       }
 
-      header('Location: '. document::link(WS_DIR_ADMIN, ['page_id' => $_POST['page_id']], true));
+      header('Location: '. document::ilink(null, ['page_id' => $_POST['page_id']]));
       exit;
 
     } catch (Exception $e) {
@@ -62,7 +62,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_deleted_d_pages', 'Deleted %d pages'), count($_POST['pages'])));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -87,7 +87,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['doc' => 'edit_page']), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('pages/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -157,11 +157,11 @@
             <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $page['id']; ?></td>
-            <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
+            <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_ilink('pages/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
             <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('pages/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -201,11 +201,11 @@
         if (database::num_rows($subpages_query) > 0) {
           if (!in_array($page['id'], $_GET['expanded'])) {
             $expanded = array_merge($_GET['expanded'], [$page['id']]);
-            $icon = '<a href="'. document::href_ilink('b:', ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
+            $icon = '<a href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
 
           } else {
             $expanded = array_diff($_GET['expanded'], [$page['id']]);
-            $icon = '<a href="'. document::href_ilink('b:', ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
+            $icon = '<a href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
           }
 
         } else {
@@ -216,11 +216,11 @@
             <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $page['id']; ?></td>
-            <td style="padding-left: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
+            <td style="padding-left: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_ilink('pages/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
             <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('pages/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
 <?php
         if (in_array($page['id'], $_GET['expanded'])) {

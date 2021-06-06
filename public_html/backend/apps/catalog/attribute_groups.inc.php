@@ -4,7 +4,7 @@
   document::$snippets['title'][] = language::translate('title_attribute_groups', 'Attribute Groups');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
+  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::ilink('catalog/attribute_groups'));
 
 // Table Rows
   $attribute_groups = [];
@@ -64,9 +64,9 @@
             <td><?php echo functions::form_draw_checkbox('attributes['. $attribute_group['id'] .']', $attribute_group['id']); ?></td>
             <td class="text-center"><?php echo $attribute_group['id']; ?></td>
             <td><?php echo $attribute_group['code']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], ['app']); ?>"><?php echo $attribute_group['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('catalog/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>"><?php echo $attribute_group['name']; ?></a></td>
             <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where group_id = ". (int)$attribute_group['id'] .";")); ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('catalog/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

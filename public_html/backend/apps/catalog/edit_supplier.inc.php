@@ -13,7 +13,7 @@
   document::$snippets['title'][] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'), document::link(WS_DIR_ADMIN, ['doc' => 'suppliers'], ['app']));
+  breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'), document::ilink('catalog/suppliers'));
   breadcrumbs::add(!empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier'));
 
   if (isset($_POST['save'])) {
@@ -39,7 +39,7 @@
       $supplier->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'suppliers'], ['app']));
+      header('Location: '. document::ilink('catalog/suppliers'));
       exit;
 
     } catch (Exception $e) {
@@ -55,7 +55,7 @@
       $supplier->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'suppliers'], ['app']));
+      header('Location: '. document::ilink('catalog/suppliers'));
       exit;
 
     } catch (Exception $e) {

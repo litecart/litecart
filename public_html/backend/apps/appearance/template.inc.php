@@ -47,7 +47,7 @@
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
       if (!empty($redirect_to_settings)) {
-        $redirect_url = document::link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']);
+        $redirect_url = document::ilink('appearance/template_settings');
       } else {
         $redirect_url = document::link();
       }
@@ -75,7 +75,7 @@
         <label><?php echo language::translate('title_template', 'Template'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_templates_list('template', empty($_POST['template']) ? settings::get('store_template') : true); ?>
-            <a class="btn btn-default" href="<?php echo document::href_ilink('b:', ['doc' => 'template_settings'], ['app']); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
+            <a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
           </div>
       </div>
 

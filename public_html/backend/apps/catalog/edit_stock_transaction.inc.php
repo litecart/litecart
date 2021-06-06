@@ -37,7 +37,7 @@
 			$stock_transaction->save();
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link('', ['app' => $_GET['app'], 'doc' => 'stock_transactions']));
+			header('Location: '. document::link('catalog/stock_transactions'));
 			exit;
 		}
 	}
@@ -45,7 +45,7 @@
 	if (isset($_POST['delete']) && !empty($stock_transaction->data['id'])) {
 		$stock_transaction->delete();
 		notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
-		header('Location: '. document::link('', ['app' => $_GET['app'], 'doc' => 'stock_transactions']));
+		header('Location: '. document::link('catalog/stock_transactions'));
 		exit;
 	}
 

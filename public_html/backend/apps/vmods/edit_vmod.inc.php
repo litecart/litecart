@@ -49,7 +49,7 @@
       $vmod->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+      header('Location: '. document::ilink('vmods/vmods'));
       exit;
 
     } catch (Exception $e) {
@@ -65,7 +65,7 @@
       $vmod->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+      header('Location: '. document::ilink('vmods/vmods'));
       exit;
 
     } catch (Exception $e) {

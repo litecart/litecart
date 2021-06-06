@@ -52,7 +52,7 @@
   </div>
 
   <div class="card-action">
-      <?php echo functions::form_draw_link_button(document::link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_transaction']), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
+      <?php echo functions::form_draw_link_button(document::link('catalog/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
   </div>
 
     <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
@@ -87,9 +87,9 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('stock_transactions['. $transaction['id'] .']', $transaction['id']); ?></td>
           <td><?php echo $transaction['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_stock_transaction', 'transaction_id' => $transaction['id']], ['app']); ?>"><?php echo $transaction['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
           <td><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>
-          <td><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_stock_transaction', 'transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
         </tbody>

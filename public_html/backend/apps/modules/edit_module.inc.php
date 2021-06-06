@@ -55,7 +55,7 @@
       $module->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => $return_doc], ['app']));
+      header('Location: '. document::ilink('modules/'.$return_doc));
       exit;
 
     } catch (Exception $e) {
@@ -69,7 +69,7 @@
       $module->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => $return_doc], ['app']));
+      header('Location: '. document::ilink('modules/'.$return_doc));
       exit;
 
     } catch (Exception $e) {
@@ -127,7 +127,7 @@
               <label><?php echo language::translate('title_translations', 'Translations'); ?></label>
             </td>
             <td>
-              <a href="<?php echo document::href_ilink('b:', ['app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true']); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
+              <a href="<?php echo document::href_ilink('translations/search', ['query' => $module_id . ':', 'modules' => 'true']); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
             </td>
           </tr>
         </tbody>

@@ -13,7 +13,7 @@
   document::$snippets['title'][] = !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
+  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::ilink('catalog/attribute_groups'));
   breadcrumbs::add(!empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'));
 
   if (isset($_POST['save'])) {
@@ -43,7 +43,7 @@
       $attribute_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
-      header('Location: '. document::link('', ['doc' => 'attribute_groups'], ['app']));
+      header('Location: '. document::link('catalog/attribute_groups'));
       exit;
 
     } catch (Exception $e) {
@@ -59,7 +59,7 @@
       $attribute_group->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
-      header('Location: '. document::link('', ['doc' => 'attribute_groups'], ['app']));
+      header('Location: '. document::ilink('catalog/attribute_groups'));
       exit;
 
     } catch (Exception $e) {

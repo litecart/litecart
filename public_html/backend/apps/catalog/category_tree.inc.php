@@ -30,7 +30,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -83,7 +83,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
+      header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 
     } catch (Exception $e) {
@@ -105,7 +105,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
+      header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 
     } catch (Exception $e) {
@@ -147,7 +147,7 @@
         notices::add('success', sprintf(language::translate('success_moved_d_categories', 'Moved %d categories'), count($_POST['categories'])));
       }
 
-      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
+      header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 
     } catch (Exception $e) {
@@ -187,7 +187,7 @@
 
       if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
 
-      header('Location: '. document::link(WS_DIR_ADMIN, [], true));
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -207,7 +207,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -230,16 +230,16 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id']]), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_product'], ['category_id']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_category', ['parent_id' => $_GET['category_id']]), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_product', [], ['category_id']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
     <div class="card-filter">
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
@@ -326,9 +326,9 @@
             <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
             <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
             <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
-            <td><?php echo '<img src="'. document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
-            <td><a href="<?php echo document::href_ilink('product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><?php echo '<img src="'. document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('frontend:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
 <?php
       }
@@ -397,13 +397,13 @@
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : '') .'</td>' . PHP_EOL;
 
         if ($display_images) {
-          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_ilink('catalog/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+          $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_ilink('catalog/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
 
-        $output .= '  <td><a href="'. document::href_ilink('product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-right"><a href="'. document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+        $output .= '  <td><a href="'. document::href_ilink('frontend:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td class="text-right"><a href="'. document::href_ilink('catalog/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
 
@@ -419,7 +419,7 @@
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('folder-open') .' <strong><a href="'. document::href_ilink('b:', ['category_id' => '0'], true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('folder-open') .' <strong><a href="'. document::href_ilink(null, ['category_id' => '0']) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
@@ -443,15 +443,15 @@
                  . '  <td></td>' . PHP_EOL;
 
         if ($category['id'] == $_GET['category_id']) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cc6; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_ilink('b:', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cc6; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else if (in_array($category['id'], $category_trail)) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cc6; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink('b:', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cc6; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cc6; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink('b:', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cc6; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
-        $output .= '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-right"><a href="'. document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+        $output .= '  <td><a href="'. document::href_ilink('frontend:category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td class="text-right"><a href="'. document::href_ilink('catalog/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 
         if (in_array($category['id'], $category_trail)) {

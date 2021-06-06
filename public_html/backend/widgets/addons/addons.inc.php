@@ -13,7 +13,7 @@
         'email' => settings::get('store_email'),
         'language_code' => settings::get('store_language_code'),
         'country_code' => settings::get('store_country_code'),
-        'url' => document::ilink(''),
+        'url' => document::ilink('frontend:'),
       ];
 
       $client = new wrap_http();

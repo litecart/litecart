@@ -20,7 +20,7 @@
       }
 
       notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -39,7 +39,7 @@
       );
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -137,7 +137,7 @@
             <td><?php echo $recipient['id']; ?></td>
             <td><?php echo $recipient['email']; ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_recipient', 'recipient_id' => $recipient['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_recipient', ['recipient_id' => $recipient['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

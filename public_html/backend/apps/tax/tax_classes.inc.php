@@ -36,7 +36,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['doc' => 'edit_tax_class']), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('tax/edit_tax_class'), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -59,9 +59,9 @@
           <tr>
             <td><?php echo functions::form_draw_checkbox('tax_classes['. $tax_class['id'] .']', $tax_class['id']); ?></td>
             <td><?php echo $tax_class['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>"><?php echo $tax_class['name']; ?></a></td>
             <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

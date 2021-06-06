@@ -30,7 +30,7 @@
       }
 
       notices::add('success', language::translate('success_logotype_saved', 'Changes saved successfully. Your browser may still show the old logotype due to cache.'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {

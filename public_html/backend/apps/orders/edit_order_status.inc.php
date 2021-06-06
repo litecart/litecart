@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status');
 
-  breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], ['app']));
+  breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink('orders/order_statuses'));
   breadcrumbs::add(!empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'));
 
   if (isset($_POST['save'])) {
@@ -44,7 +44,7 @@
       $order_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], true, ['order_status_id']));
+      header('Location: '. document::ilink('orders/order_statuses'));
       exit;
 
     } catch (Exception $e) {
@@ -60,7 +60,7 @@
       $order_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], true, ['order_status_id']));
+      header('Location: '. document::ilink('orders/order_statuses'));
       exit;
 
     } catch (Exception $e) {
@@ -108,11 +108,11 @@
             <div class="form-group col-md-12">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
               <div>
-                <?php echo functions::form_draw_checkbox('is_sale', ['1', language::translate('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo ; ?>
+                <strong><?php echo functions::form_draw_checkbox('is_sale', ['1', language::translate('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>
                 <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?>
               </div>
               <div>
-                <?php echo functions::form_draw_checkbox('is_archived', ['1', language::translate('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?>
+                <strong><?php echo functions::form_draw_checkbox('is_archived', ['1', language::translate('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?></strong>
                 <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?>
               </div>
             </div>

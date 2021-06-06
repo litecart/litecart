@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone');
 
-  breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'), document::link(WS_DIR_ADMIN, ['doc' => 'geo_zones'], ['app']));
+  breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'), document::ilink('geo_zones/geo_zones'));
   breadcrumbs::add(!empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'));
 
   if (isset($_POST['save'])) {
@@ -35,7 +35,7 @@
       $geo_zone->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'geo_zones'], true, ['geo_zone_id']));
+      header('Location: '. document::ilink('geo_zones/geo_zones'));
       exit;
 
     } catch (Exception $e) {
@@ -51,7 +51,7 @@
       $geo_zone->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'geo_zones'], true, ['geo_zone_id']));
+      header('Location: '. document::ilink('geo_zones/geo_zones'));
       exit;
 
     } catch (Exception $e) {

@@ -26,7 +26,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -65,7 +65,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('', ['doc' => 'edit_geo_zone'], true, ['geo_zone_id']), language::translate('title_add_new_geo_zone', 'Add New Geo Zone'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('geo_zones/edit_geo_zone'), language::translate('title_add_new_geo_zone', 'Add New Geo Zone'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -88,9 +88,9 @@
           <tr>
             <td><?php echo functions::form_draw_checkbox('geo_zones['. $geo_zone['id'] .']', $geo_zone['id']); ?></td>
             <td><?php echo $geo_zone['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>"><?php echo $geo_zone['name']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('customers/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
             <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

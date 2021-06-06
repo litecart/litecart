@@ -3,7 +3,7 @@
   document::$snippets['title'][] = language::translate('title_template_settings', 'Template Settings');
 
   breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-  breadcrumbs::add(language::translate('title_template', 'Template'), document::link(WS_DIR_ADMIN, ['doc' => 'template'], ['app']));
+  breadcrumbs::add(language::translate('title_template', 'Template'), document::ilink('appearance/template'));
   breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
 
 // Get template settings structure
@@ -72,8 +72,9 @@
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
-      header('Location: '. document::link(WS_DIR_ADMIN, [], true, ['action']));
+      header('Location: '. document::ilink(null, [], true, ['action']));
       exit;
+
     } catch (Exception $e) {
       notices::add('errors', $e->getMessage());
     }
@@ -157,7 +158,7 @@
                 <?php echo nl2br($setting['value']); ?>
               </div>
             </td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('appearance/template_settings', ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
           <?php } ?>

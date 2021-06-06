@@ -17,7 +17,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -64,7 +64,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'edit_brand']), language::translate('title_add_new_brand', 'Add New Brand'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_brand'), language::translate('title_add_new_brand', 'Add New Brand'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -89,9 +89,9 @@
             <td><?php echo functions::form_draw_checkbox('brands['. $brand['id'] .']', $brand['id']); ?></td>
             <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $brand['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
-            <td><img src="<?php echo document::href_link($brand['image'] ? WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_brand', 'brand_id' => $brand['id']], ['app']); ?>"><?php echo $brand['name']; ?></a></td>
+            <td><img src="<?php echo document::href_link($brand['image'] ? WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_ilink('catalog/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
             <td class="text-center"><?php echo (int)$brand['num_products']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_brand', 'brand_id' => $brand['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_brand', ['brand_id' => $brand['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

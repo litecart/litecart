@@ -42,7 +42,7 @@
 			file_put_contents(FS_DIR_STORAGE . 'vmods/' . '.settings', json_encode($settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
+			header('Location: '. document::ilink('vmods/vmods'));
 			exit;
 
 		} catch (Exception $e) {

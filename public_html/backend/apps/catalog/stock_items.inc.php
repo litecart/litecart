@@ -51,7 +51,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_item']), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
+    <?php echo functions::form_draw_link_button(document::ilink('catalog/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
   </div>
 
   <div class="card-filter">
@@ -86,12 +86,12 @@
             <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
             <td><?php echo $stock_item['id']; ?></td>
             <td><?php echo $stock_item['sku']; ?></td>
-            <td><a href="<?php echo document::link(null, ['doc' => 'edit_stock_item', 'stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
+            <td><a href="<?php echo document::link('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
             <td><?php echo $stock_item['mpn']; ?></td>
             <td><?php echo $stock_item['gtin']; ?></td>
             <td class="text-right"><?php echo (float)$stock_item['ordered']; ?></td>
             <td class="text-right"><?php echo (float)$stock_item['quantity']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['app' => $_GET['app'], 'doc' => 'edit_stock_item', 'stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

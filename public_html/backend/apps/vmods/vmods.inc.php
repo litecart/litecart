@@ -17,7 +17,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -35,7 +35,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -106,7 +106,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['doc' => 'edit_vmod']), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('vmods/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -135,15 +135,15 @@
           <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
             <td><?php echo functions::form_draw_checkbox('vmods['. $vmod['filename'] .']', $vmod['filename']); ?></td>
             <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
-            <td><a href="<?php echo document::link(null,  ['doc' => 'view', 'vmod' => $vmod['filename']], true); ?>"><?php echo $vmod['filename']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('vmods/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['filename']; ?></a></td>
             <td><?php echo $vmod['title']; ?></td>
             <td><?php echo $vmod['version']; ?></td>
             <td><?php echo $vmod['author']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'test', 'vmod' => $vmod['filename']], true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'view', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'download', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'configure', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('vmods/test', ['vmod' => $vmod['filename']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+            <td><a href="<?php echo document::href_ilink('vmods/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('vmods/download', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('vmods/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('vmods/edit_vmod', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

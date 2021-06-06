@@ -18,7 +18,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link());
+      header('Location: '. document::ilink());
       exit;
 
     } catch (Exception $e) {
@@ -88,7 +88,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['doc' => 'edit_customer']), language::translate('title_add_new_customer', 'Add New Customer'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('customers/edit_customer'), language::translate('title_add_new_customer', 'Add New Customer'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -124,11 +124,11 @@
             <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
             <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
             <td><?php echo $customer['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>"><?php echo $customer['email']; ?></a></td>
+            <td><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
             <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
             <td><?php echo $customer['company']; ?></td>
             <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('b:', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

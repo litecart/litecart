@@ -23,7 +23,7 @@
     $box_apps_menu->snippets['apps'][$app['code']] = [
       'code' => $app['code'],
       'name' => $app['name'],
-      'link' => document::link(WS_DIR_ADMIN, ['app' => $app['code'], 'doc' => $app['default']]),
+      'link' => document::ilink($app['code'] .'/'. $app['default']),
       'theme' => [
         'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'fa-plus',
         'color' => !(empty($app['theme']['color'])) ? $app['theme']['color'] : '#97a3b5',
@@ -56,7 +56,7 @@
         $box_apps_menu->snippets['apps'][$app['code']]['menu'][] = [
           'title' => $item['title'],
           'doc' => $item['doc'],
-          'link' => document::link(WS_DIR_ADMIN, ['app' => $app['code'], 'doc' => $item['doc']] + (!empty($item['params']) ? $item['params'] : [])),
+          'link' => document::ilink($app['code'] .'/'. $item['doc'], !empty($item['params']) ? $item['params'] : []),
           'active' => $selected ? true : false,
         ];
       }
@@ -121,7 +121,7 @@
 
       if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
 
-      breadcrumbs::add($app_config['name'], document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => $app_config['default']]));
+      breadcrumbs::add($app_config['name'], document::ilink($_GET['app'], ['doc' => $app_config['default']]));
 
       $_page = new ent_view();
       $_page->snippets = [
