@@ -44,19 +44,19 @@
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>
     </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
       <?php echo functions::form_draw_link_button(document::link('', ['app' => $_GET['app'], 'doc' => 'edit_stock_transaction']), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
   </div>
 
     <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
-  <div class="panel-filter">
+  <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <div class="input-group">
         <?php echo functions::form_draw_date_field('date_from', true, 'style="width: 50%;"'); ?>
@@ -69,7 +69,7 @@
   </div>
     <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('stock_transactions_form', 'post'); ?>
 
       <table class="table table-striped data-table">
@@ -103,7 +103,7 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="panel-footer">
+  <div class="card-footer">
     <?php echo functions::draw_pagination(ceil(database::num_rows($stock_transactions_query)/settings::get('data_table_rows_per_page'))); ?>
   </div>
 </div>

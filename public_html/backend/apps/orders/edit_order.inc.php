@@ -239,14 +239,14 @@ body.dark-mode #box-comments {
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('form_order', 'post'); ?>
 
       <div class="row">
@@ -705,7 +705,7 @@ body.dark-mode #box-comments {
         </div>
       </div>
 
-      <div class="panel-action">
+      <div class="card-action">
         <ul class="list-inline">
           <li>
             <?php echo functions::form_draw_checkbox('email_order_copy', ['1', language::translate('text_send_order_copy_email', 'Send order copy email')], true); ?>

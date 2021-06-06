@@ -64,14 +64,14 @@
 	functions::draw_lightbox();
 ?>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
-      <div class="panel-title"><?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?>
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
+      <div class="card-title"><?php echo $app_icon; ?> <?php echo !empty($stock_transaction->data['id']) ? language::translate('title_edit_stock_transaction', 'Edit Stock Transaction') : language::translate('title_create_new_stock_transaction', 'Create New Stock Transaction'); ?>
     </div></div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('form_stock_transaction', 'post'); ?>
 
       <div class="row" style="max-width: 980px;">
@@ -152,7 +152,7 @@
         <?php } ?>
       </datalist>
 
-      <div class="panel-action">
+      <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
         <?php echo (isset($stock_transaction->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
@@ -161,7 +161,7 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="panel-footer">
+  <div class="card-footer">
   </div>
 </div>
 

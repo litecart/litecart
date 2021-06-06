@@ -202,14 +202,14 @@
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_products', 'Products'); ?>
     </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'edit_product']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
     </ul>
@@ -218,7 +218,7 @@
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
-    <div class="panel-filter">
+    <div class="card-filter">
       <div style="min-width: 300px;"><?php echo functions::form_draw_category_field('category_id', true); ?></div>
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div style="min-width: 250px;"><?php echo functions::form_draw_brands_list('brand_id', true); ?></div>
@@ -226,7 +226,7 @@
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('products_form', 'post'); ?>
 
 
@@ -284,7 +284,7 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="panel-footer">
+  <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
 </div>

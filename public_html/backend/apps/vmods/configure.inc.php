@@ -69,12 +69,12 @@ pre {
 }
 </style>
 
-<div class="panel panel-app">
-	<div class="panel-heading">
-		<div class="panel-title"><?php echo $app_icon; ?> <?php echo language::translate('title_configure_vmod', 'Configure vMod'); ?></div>
+<div class="card card-app">
+	<div class="card-heading">
+		<div class="card-title"><?php echo $app_icon; ?> <?php echo language::translate('title_configure_vmod', 'Configure vMod'); ?></div>
 	</div>
 
-	<div class="panel-body">
+	<div class="card-body">
 
 		<h1><?php echo $id; ?></h1>
 
@@ -100,7 +100,7 @@ pre {
 				</tbody>
 			</table>
 
-      <div class="panel-action">
+      <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
         <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>

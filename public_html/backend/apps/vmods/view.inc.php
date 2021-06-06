@@ -50,14 +50,14 @@ pre {
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_view_modification', 'View Modification'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
 
     <h1><?php echo $xml->id; ?></h1>
 

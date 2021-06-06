@@ -97,20 +97,20 @@
   $num_rows = count($vmods);
 ?>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>
     </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod'], true), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['doc' => 'edit_vmod']), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
     </ul>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('vmods_form', 'post'); ?>
 
       <table class="table table-striped table-hover data-table">

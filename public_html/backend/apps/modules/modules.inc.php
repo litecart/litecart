@@ -108,20 +108,20 @@
 // Number of Rows
   $num_rows = count($modules);
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo $title; ?>
     </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_link_button('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'add'); ?></li>
     </ul>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
       <table class="table table-striped table-hover data-table">
         <thead>

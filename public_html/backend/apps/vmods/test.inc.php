@@ -36,14 +36,14 @@
   }
 
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_test_vmod', 'Test vMod'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <h2><?php echo htmlspecialchars($_GET['vmod']); ?></h2>
 
     <table class="table table-striped table-hover data-table">
