@@ -2,27 +2,18 @@
 
   try {
 
-    if (empty($_REQUEST['page'])) $_REQUEST['page'] = 1;
+    if (empty($_GET['parent_id'])) $_GET['parent_id'] = 0;
+    if (empty($_GET['page'])) $_GET['page'] = 1;
     if (empty($_GET['language_code'])) $_GET['language_code'] = language::$selected['code'];
 
-    if (!empty($_REQUEST['query'])) {
+    if (!empty($_GET['query'])) {
       $sql_find = [
-        "c.id = '". database::input($_REQUEST['query']) ."'",
-        "ci.name like '%". database::input($_REQUEST['query']) ."%'",
+        "c.id = '". database::input($_GET['query']) ."'",
+        "ci.name like '%". database::input($_GET['query']) ."%'",
       ];
     }
 
     $category = reference::category($_GET['parent_id']);
-
-    $categories_query = database::query(
-      "select c.id, c.parent_id, ci.name, c.date_created from ". DB_TABLE_PREFIX ."categories c
-      left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_GET['language_code']) ."')
-      where c.id
-      ". (isset($_GET['parent_id']) ? "and c.parent_id = '". (int)$_GET['parent_id'] ."'" : "") ."
-      ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
-      order by c.priority, ci.name
-      limit 20;"
-    );
 
     $json = [
       'status' => 'ok',
@@ -32,15 +23,33 @@
         'id' => $category->parent ? $category->parent->id : 0,
         'name' => $category->parent ? $category->parent->name : '['. language::translate('title_root', 'Root') .']',
       ],
-      'categories' => [],
+      'subcategories' => [],
     ];
 
-    if (database::num_rows($categories_query) > 0) {
+    $categories_query = database::query(
+      "select c.id, c.parent_id, ci.name, c.date_created from ". DB_TABLE_PREFIX ."categories c
+      left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_GET['language_code']) ."')
+      where c.id
+      ". (isset($_GET['parent_id']) ? "and c.parent_id = ". (int)$_GET['parent_id'] : "") ."
+      ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
+      order by c.priority, ci.name
+      limit 20;"
+    );
 
-      if ($_REQUEST['page'] > 1) database::seek($categories_query, (settings::get('data_table_rows_per_page') * ($_REQUEST['page']-1)));
+    if (database::num_rows($categories_query)) {
+
+      if ($_GET['page'] > 1) database::seek($categories_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
 
       $page_items = 0;
       while ($subcategory = database::fetch($categories_query)) {
+
+        $subcategory['path'] = [];
+        if (!empty(reference::category($subcategory['id'])->path)) {
+          foreach (reference::category($subcategory['id'])->path as $ancestor) {
+            $subcategory['path'][] = $ancestor->name;
+          }
+        }
+
         $json['subcategories'][] = $subcategory;
 
         if (++$page_items == settings::get('data_table_rows_per_page')) break;

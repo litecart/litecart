@@ -1021,160 +1021,58 @@ END;
       $input = form_reinsert_value($name);
     }
 
-    $html = '<div class="input-group" style="flex-direction: column;"' . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-          . '  <div class="form-input" style="overflow-y: auto; min-height: 100px;">' . PHP_EOL
-          . '    <ul class="list-unstyled">' . PHP_EOL;
+    $html = '<div class="input-group" style="flex-direction: column;"' . (($parameters) ? ' ' . $parameters : '') .' data-toggle="category-picker">' . PHP_EOL
+          . '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
+          . '    <ul class="categories list-unstyled">' . PHP_EOL;
 
-    $categories_query = database::query(
-      "select c.id, ci.name from ". DB_PREFIX ."categories c
-      left join ". DB_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
-      where c.id in ('". implode("', '", database::input($input)) ."');"
-    );
+    if (!empty($input)) {
 
-    while ($category = database::fetch($categories_query)) {
-      $html .= '<li>'. form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . functions::draw_fonticon('folder') .' '. $category['name'] .'</li>';
+      $categories_query = database::query(
+        "select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
+        left join ". DB_TABLE_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
+        where c.id in ('". implode("', '", database::input($input)) ."');"
+      );
+
+      while ($category = database::fetch($categories_query)) {
+
+        $path = [];
+        if (!empty(reference::category($category['id'])->path)) {
+          foreach (reference::category($category['id'])->path as $ancestor) {
+            $path[] = $ancestor->name;
+          }
+        }
+
+        $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
+               . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . PHP_EOL
+               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
+               . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
+               .'</li>';
+      }
     }
 
     $html .= '    </ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
-           . '  '. functions::form_draw_text_field('category_query', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_category', 'Search category')) .' &hellip;"') . PHP_EOL
-           . '    <ul class="dropdown-menu" style="right: 0;">' . PHP_EOL
-           . '    </ul>' . PHP_EOL
+           . '  '. functions::form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
+           . '    <ul class="dropdown-menu" style="right: 0;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';
 
-    $javascript =
-<<<END
-  $('input[name="category_query"]').on('focus', function(e){
-    $(this).closest('.dropdown').addClass('open');
-  });
-
-  $('body').on('mousedown', function(e){
-    if ($('.dropdown.open').has(e.target).length === 0) {
-      $('.dropdown.open').removeClass('open');
-    }
-  });
-
-  var xhr_category_search = null;
-  $('input[name="category_query"]').on('input', function(e){
-
-    var dropdown = $(this).closest('.dropdown');
-
-    $(dropdown).find('.dropdown-menu').html('');
-
-    if (xhr_category_search) xhr_category_search.abort();
-
-    if ($(this).val() == '') {
-
-      $.getJSON('%link&parent_id=0', function(result) {
-
-        $(dropdown).find('.dropdown-menu').html('<li><strong class="list-item">'+ result.name +'</strong></li>');
-
-        $.each(result.subcategories, function(i, category) {
-          $(dropdown).find('.dropdown-menu').append(
-            '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
-            '  <a href="%link&parent_id='+ category.id +'">' +
-            '    <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
-            '    %folder_icon '+ category.name +
-            '  </a>' +
-            '</li>'
-          );
-        });
-
-        $(dropdown).find('.dropdown-menu').on('click', 'a', function(e){
-          e.preventDefault();
-
-          $.getJSON($(this).attr('href'), function(result) {
-
-            $(dropdown).find('.dropdown-menu').html('<li class="list-item"><strong>'+ result.name +'</strong></li>');
-
-            if (result.id) {
-              $(dropdown).find('.dropdown-menu').append(
-                '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'">' +
-                '    <a href="%link&parent_id='+ result.parent.id +'">' +
-                '    %back_icon '+ result.parent.name +
-                '  </a>' +
-                '</li>'
-              );
-            }
-
-            $.each(result.subcategories, function(i, category) {
-              $(dropdown).find('.dropdown-menu').append(
-                '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
-                '  <a href="%link&parent_id='+ category.id +'">' +
-                '    <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
-                '    %folder_icon '+ category.name +
-                '  </a>' +
-                '</li>'
-              );
-            });
-          });
-        });
-
-        $(dropdown).find('.dropdown-menu').on('click', 'button', function(e){
-          e.preventDefault();
-          var category = $(this).closest('li');
-          $(this).closest('.input-group').find('.form-input ul').append(
-            '<li><input type="hidden" name="%field_name" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'"> %folder_icon '+ $(category).data('name') +'</li>'
-          );
-          $(this).closest('.input-group').children('.form-input').trigger('change');
-          $('.dropdown.open').removeClass('open');
-          return false;
-        });
-      });
-
-      return;
-    }
-
-    xhr_category_search = $.ajax({
-      type: 'get',
-      async: true,
-      cache: true,
-      url: '%link&query=' + $(this).val(),
-      dataType: 'json',
-
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
-      },
-
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (errorThrown == 'abort') return;
-        alert(errorThrown);
-      },
-
-      success: function(result) {
-
-        if (!result.subcategories.length) {
-          $(dropdown).find('dropdown-menu').html('<li class="text-center no-results"><em>:(</em></li>');
-          return;
-        }
-
-        $(dropdown).find('.dropdown-menu').html('<li class="list-item"><strong>%title_search_results</strong></li>');
-
-        $.each(result.subcategories, function(i, category) {
-          $(dropdown).find('.dropdown-menu').append(
-            '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.name +'">' +
-            '  <a href="%link&parent_id='+ category.id +'">' +
-            '    <button class="btn btn-default btn-sm pull-right" type="button">%add</button>' +
-            '    %folder_icon '+ category.name +
-            '  </a>' +
-            '</li>'
-          );
-        });
-      },
-    });
-  }).trigger('input');
-END;
-
-    document::$snippets['javascript'][] = strtr($javascript, [
-      '%title_search_results' => language::translate('title_search_results'),
-      '%title_root' => language::translate('title_search_results'),
-      '%link' => document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'categories.json']),
-      '%add' => language::translate('title_add', 'Add'),
-      '%folder_icon' => functions::draw_fonticon('folder'),
-      '%back_icon' => functions::draw_fonticon('fa-arrow-left'),
-    ]);
+    document::$snippets['javascript']['category-picker'] = '$(\'[data-toggle="category-picker"]\').categoryPicker({' . PHP_EOL
+                                                         . '  inputName: "'. $name .'",' . PHP_EOL
+                                                         . '  link: "'. document::ilink('catalog/categories.json') .'",' . PHP_EOL
+                                                         . '  icons: {' . PHP_EOL
+                                                         . '    folder: \''. functions::draw_fonticon('folder') .'\',' . PHP_EOL
+                                                         . '    back: \''. functions::draw_fonticon('fa-arrow-left') .'\'' . PHP_EOL
+                                                         . '  },' . PHP_EOL
+                                                         . '  translations: {' . PHP_EOL
+                                                         . '    search_results: "'. language::translate('title_search_results', 'Search Results') .'",' . PHP_EOL
+                                                         . '    root: "'. language::translate('title_root', 'Root') .'",' . PHP_EOL
+                                                         . '    add: "'. language::translate('title_add', 'Add') .'",' . PHP_EOL
+                                                         . '    remove: "'. language::translate('title_remove', 'Remove') .'",' . PHP_EOL
+                                                         . '    root: "'. language::translate('title_root', 'Root') .'"' . PHP_EOL
+                                                         . '  }' . PHP_EOL
+                                                         . '})';
 
     return $html;
   }

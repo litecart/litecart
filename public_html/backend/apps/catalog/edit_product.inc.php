@@ -675,46 +675,22 @@
 
 // Default Category
 
-  $('input[name="category_query"]').closest('.input-group').children('.form-input').change(function(){
-    var default_category = $('select[name="default_category_id"] option:selected').val();
+  $('[data-toggle="category-picker"]').change(function(){
+    var default_category_id = $('select[name="default_category_id"] option:selected').val();
 
     $('select[name="default_category_id"]').html('');
-    $.each($(this).find(':input'), function(category){
-      $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ unescape($(this).data('name')) +'</option');
+    $.each($(this).find(':input[name="categories[]"]'), function(category){
+      $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ unescape($(this).data('name')) +'</option>');
     });
 
-    if (default_category) {
-      $('select[name="default_category_id"]').val(default_category);
+    if (default_category_id) {
+      $('select[name="default_category_id"]').val(default_category_id);
     }
 
-    if ($('select[name="default_category_id"]').val() == '') {
+    if (!$('select[name="default_category_id"]').val()) {
       $('select[name="default_category_id"]').val($('select[name="default_category_id"] option:first').val());
     }
   }).trigger('change');
-
-/*
-  $('input[name="categories[]"]').change(function() {
-    if ($(this).is(':checked')) {
-      if ($(this).val() == '<?php echo $product->data['default_category_id']; ?>') {
-        $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'" selected="selected">'+ $(this).data('name') +'</option>');
-      } else {
-        $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ $(this).data('name') +'</option>');
-      }
-    } else {
-      $('select[name="default_category_id"] option[value="'+ $(this).val() +'"]').remove();
-    }
-    var default_category = $('select[name="default_category_id"] option:selected').val();
-    $('select[name="default_category_id"]').html($('select[name="default_category_id"] option').sort(function(a,b){
-        a = $('input[name="categories[]"][value="'+ a.value +'"]').data('priority');
-        b = $('input[name="categories[]"][value="'+ b.value +'"]').data('priority');
-        return a-b;
-    }));
-    $('select[name="default_category_id"] option').prop('selected', '');
-    $('select[name="default_category_id"] option[value="'+ default_category +'"]').prop('selected', 'selected');
-  });
-
-  $('input[name="categories[]"]:checked').trigger('change');
-*/
 
 // SKU
 
