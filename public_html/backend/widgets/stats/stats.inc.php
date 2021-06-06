@@ -77,14 +77,14 @@
     $products = database::fetch($products_query);
     $stats['num_products'] = $products['num_products'];
 ?>
-<div id="widget-stats" class="panel panel-widget">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div id="widget-stats" class="card card-widget">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo language::translate('title_statistics', 'Statistics'); ?>
     </div>
   </div>
 
-  <div class="panel-body table-responsive">
+  <div class="card-body table-responsive">
     <div class="row">
       <div class="col-md-6">
         <table class="table table-striped table-hover data-table">

@@ -54,14 +54,14 @@
 }
 </style>
 
-<div id="widget-addons" class="panel panel-widget">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div id="widget-addons" class="card card-widget">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <div class="addons">
       <?php foreach ($addons as $item) { ?>
       <div class="addon">

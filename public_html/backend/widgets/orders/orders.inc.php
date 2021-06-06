@@ -27,14 +27,14 @@
 // Number of Rows
   $num_rows = database::num_rows($orders_query);
 ?>
-<div id="widget-orders" class="panel panel-widget">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div id="widget-orders" class="card card-widget">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo language::translate('title_orders', 'Orders'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <table class="table table-striped table-hover data-table">
       <thead>
         <tr>

@@ -43,14 +43,14 @@
 }
 </style>
 
-<div id="widget-discussions" class="panel panel-widget">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div id="widget-discussions" class="card card-widget">
+  <div class="card-heading">
+    <div class="card-title">
       <?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
       <div class="threads">
       <?php foreach ($discussions as $item) { ?>
       <div class="thread">
