@@ -3,6 +3,7 @@
 .btn(@type) {
   background: ~"var(--@{type}-background-color)";
   color: ~"var(--@{type}-text-color)";
+  border: 1px solid ~"var(--@{type}-border-color)";
   text-decoration: none;
   &:hover:not(.active):not(.disabled):not([disabled]) {
     background: ~"var(--@{type}-background-color-hover)";

@@ -39,9 +39,9 @@
           foreach ($language_codes as $language_code) {
 
             if (empty($row[$language_code])) continue;
-            if (empty($_POST['update']) && empty($_POST['append'])) continue;
+            if (empty($_POST['overwrite']) && empty($_POST['append'])) continue;
             if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
-            if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
+            if (!empty($translation['text_'.$language_code]) && empty($_POST['overwrite'])) continue;
 
             if (!in_array($language_code, array_keys(language::$languages))) continue;
 
@@ -193,9 +193,9 @@
             </div>
 
             <div class="form-group">
-              <?php echo functions::form_draw_checkbox('update', ['1', language::translate('title_update_existing', 'Update Existing')], true); ?>
-              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new', 'Insert New')], true); ?>
-              <?php echo functions::form_draw_checkbox('append', ['1', language::translate('text_append_missing', 'Append Missing')], true); ?>
+              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
+              <?php echo functions::form_draw_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
+              <?php echo functions::form_draw_checkbox('append', ['1', language::translate('text_append_missing_entries', 'Append missing entries')], true); ?>
             </div>
 
             <p><?php echo language::translate('description_scan_before_importing_translations', 'It is recommended to always scan your installation for unregistered translations before performing an import or export.'); ?></p>

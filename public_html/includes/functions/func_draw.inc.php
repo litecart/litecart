@@ -159,15 +159,19 @@
 
     foreach ($params as $key => $value) {
       switch (gettype($params[$key])) {
+
         case 'NULL':
           $js .= '    '. $key .': null,' . PHP_EOL;
           break;
+
         case 'boolean':
           $js .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
           break;
+
         case 'integer':
           $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           break;
+
         case 'string':
           if (preg_match('#^function\s?\(#', $value)) {
             $js .= '    '. $key .': '. $value .',' . PHP_EOL;
@@ -177,6 +181,7 @@
             $js .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
           }
           break;
+
         case 'array':
           $js .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
           break;

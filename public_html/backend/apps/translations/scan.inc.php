@@ -174,7 +174,7 @@ table.data-table td {
 
           <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
 
-          <p><label><?php echo functions::form_draw_checkbox('update', '1'); ?> <?php echo language::translate('text_update_empty_translations', 'Update empty translations if applicable'); ?></label></p>
+          <p><label><?php echo functions::form_draw_checkbox('update', ['1', language::translate('text_update_empty_translations', 'Update empty translations if applicable')]); ?></label></p>
 
           <p><?php echo functions::form_draw_button('scan', language::translate('title_scan', 'Scan'), 'submit'); ?></p>
 

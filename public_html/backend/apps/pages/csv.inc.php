@@ -36,7 +36,7 @@
 
         if (!empty($page->data['id'])) {
 
-          if (empty($_POST['update'])) {
+          if (empty($_POST['overwrite'])) {
             echo "Skip updating existing page on line $line" . PHP_EOL;
             continue;
           }
@@ -197,8 +197,8 @@
             </div>
 
             <div class="form-group">
-              <?php echo functions::form_draw_checkbox('update', ['1', language::translate('title_update_existing', 'Update Existing')], true); ?>
-              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('title_insert_new', 'Insert New')], true); ?>
+              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
+              <?php echo functions::form_draw_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
             </div>
 
             <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
