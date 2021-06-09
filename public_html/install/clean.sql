@@ -98,6 +98,14 @@ DROP TABLE IF EXISTS `lc_sold_out_statuses`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_sold_out_statuses_info`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_stock_items`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_stock_items_info`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_stock_transactions`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_stock_transactions_items`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_suppliers`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_tax_classes`;
