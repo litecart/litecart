@@ -1,6 +1,6 @@
 <?php
 
-  language::set(settings::get('store_language_code'));
+  language::set(settings::get('site_language_code'));
 
   $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
           . '<urlset xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . PHP_EOL;

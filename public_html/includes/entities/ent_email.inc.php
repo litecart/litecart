@@ -28,8 +28,8 @@
       }
 
       $this->data['sender'] = [
-        'email' => settings::get('store_email'),
-        'name' => settings::get('store_name'),
+        'email' => settings::get('site_email'),
+        'name' => settings::get('site_name'),
       ];
 
       $this->data['recipients'] = [];
@@ -268,9 +268,9 @@
     // Prepare headers
       $headers = [
         'Date' => date('r'),
-        'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
+        'From' => $this->format_contact(['name' => settings::get('site_name'), 'email' => settings::get('site_email')]),
         'Reply-To' => $this->format_contact($this->data['sender']),
-        'Return-Path' => settings::get('store_email'),
+        'Return-Path' => settings::get('site_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
       ];
@@ -352,7 +352,7 @@
           $data = $headers . "\r\n"
                 . $body;
 
-          $result = $smtp->send(settings::get('store_email'), $recipients, $data);
+          $result = $smtp->send(settings::get('site_email'), $recipients, $data);
 
         } catch(Exception $e) {
           trigger_error('Failed sending email "'. $this->data['subject'] .'": '. $e->getMessage(), E_USER_WARNING);

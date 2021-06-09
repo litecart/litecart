@@ -179,7 +179,7 @@
       if (in_array(settings::get('default_language_code'), $all_languages)) return settings::get('default_language_code');
 
     // Return system language
-      if (in_array(settings::get('store_language_code'), $all_languages)) return settings::get('store_language_code');
+      if (in_array(settings::get('site_language_code'), $all_languages)) return settings::get('site_language_code');
 
     // Return first language
       return (!empty($enabled_languages)) ? $enabled_languages[0] : $all_languages[0];

@@ -19,7 +19,7 @@ body main {
 }
 #header .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   padding: 0.5rem;
 }
@@ -29,6 +29,7 @@ body main {
 @media (min-width: 576px) {
   #header .container {
     padding: 1rem;
+    flex-direction: row;
   }
 }
 #header .container .logotype img {
@@ -142,12 +143,12 @@ body.cart-open #cart .dropdown-menu {
   }
 }
 #site-menu {
-  background: var(--navigation-background-color);
+  background-color: var(--navigation-background-color);
   margin-bottom: calc(var(--gutter-size) *2);
   color: var(--navigation-text-color);
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1;
   backdrop-filter: saturate(180%) blur(20px);
 }
 #site-menu a {

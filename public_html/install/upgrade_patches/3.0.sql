@@ -24,14 +24,6 @@ CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '' AFTER 
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `last_ip_address`,
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '' AFTER `last_hostname`;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
--- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'store_template', title = 'Store Template', `function` = 'template()' WHERE `key` = 'store_template_catalog' LIMIT 1;
--- --------------------------------------------------------
-UPDATE `lc_settings` SET `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'store_template' LIMIT 1;
--- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'gzip_enabled', 'round_amounts');
--- --------------------------------------------------------
 RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
@@ -88,11 +80,28 @@ ADD INDEX `brand_id` (`brand_id`);
 ALTER TABLE `lc_products_images`
 CHANGE COLUMN `checksum` `checksum` VARCHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'template', title = 'Template' WHERE `key` = 'store_template_catalog';
+UPDATE lc_settings
+SET `key` = REGEXP_REPLACE(`key`, '^store_', 'site_'),
+  title = REPLACE(title, 'Store', 'Site'),
+  description = REPLACE(description, 'store', 'site')
+WHERE `key` REGEXP '^store_';
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'store_template_catalog_settings';
+UPDATE lc_settings_groups
+SET `key` = 'site_info',
+  title = 'Site Info',
+  description = 'Site information'
+WHERE `key` = 'store_info'
+LIMIT 1;
 -- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings', 'gzip_enabled');
+UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'site_template' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `key` = 'template', title = 'Template' WHERE `key` = 'site_template_catalog';
+-- --------------------------------------------------------
+UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'site_template_catalog_settings';
+-- --------------------------------------------------------
+DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts');
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
 CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL DEFAULT '' AFTER `type`,
@@ -115,9 +124,17 @@ CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `length`,
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `width`,
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'store_weight_unit', `title` = 'Store Weight Unit', `description` = 'The prefered weight unit.'  WHERE `key` = 'store_length_class' LIMIT 1;
+UPDATE `lc_settings`
+SET `key` = 'site_weight_unit',
+  `title` = 'Site Weight Unit',
+  `description` = 'The prefered weight unit.'
+WHERE `key` = 'site_length_class' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'store_length_unit', `title` = 'Store Length Unit', `description` = 'The prefered length unit.' WHERE `key` = 'store_weight_class' LIMIT 1;
+UPDATE `lc_settings`
+SET `key` = 'site_length_unit',
+  `title` = 'Site Length Unit',
+  `description` = 'The prefered length unit.'
+WHERE `key` = 'site_weight_class' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
 -- --------------------------------------------------------

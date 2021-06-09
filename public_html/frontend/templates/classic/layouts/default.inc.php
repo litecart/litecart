@@ -19,7 +19,7 @@
 
   <header id="header" class="hidden-print">
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-      <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+      <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
     </a>
 
     <div class="text-center hidden-xs">

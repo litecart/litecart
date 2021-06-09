@@ -20,10 +20,10 @@
         }
 
         $values_required_for_keys = [
-          'store_language_code',
-          'store_currency_code',
-          'store_weight_unit',
-          'store_length_unit',
+          'site_language_code',
+          'site_currency_code',
+          'site_weight_unit',
+          'site_length_unit',
           'default_language_code',
           'default_currency_code',
         ];

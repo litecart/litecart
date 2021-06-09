@@ -125,7 +125,7 @@
             $customer->save();
 
             $aliases = [
-              '%store_name' => settings::get('store_name'),
+              '%store_name' => settings::get('site_name'),
               '%store_link' => document::ilink(''),
               '%customer_firstname' => $_POST['firstname'],
               '%customer_lastname' => $_POST['lastname'],

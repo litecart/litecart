@@ -68,14 +68,14 @@
       }
 
       if (empty($this->settings['email_recipient'])) {
-        $this->settings['email_recipient'] = settings::get('store_email');
+        $this->settings['email_recipient'] = settings::get('site_email');
       }
 
       echo 'Sending report to '. $this->settings['email_recipient'];
 
       $email = new ent_email();
       $email->add_recipient($this->settings['email_recipient'])
-            ->set_subject('[Error Report] '. settings::get('store_name'))
+            ->set_subject('[Error Report] '. settings::get('site_name'))
             ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $buffer);
 
       if ($email->send() !== true) {
@@ -112,7 +112,7 @@
         ],
         [
           'key' => 'email_recipient',
-          'default_value' => settings::get('store_email'),
+          'default_value' => settings::get('site_email'),
           'title' => language::translate(__CLASS__.':title_email_recipient', 'Email Recipient'),
           'description' => language::translate(__CLASS__.':description_email_recipient', 'The email address where reports will be sent.'),
           'function' => 'text()',

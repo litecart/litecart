@@ -500,7 +500,7 @@
     // 456-Fancy-product-title-N.jpg
       $i=1;
       while (empty($filename) || is_file(FS_DIR_STORAGE . 'images/' . $filename)) {
-        $filename = 'products/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type;
+        $filename = 'products/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('site_language_code')], settings::get('site_language_code')) .'-'. $i++ .'.'. $image->type;
       }
 
       $priority = count($this->data['images'])+1;

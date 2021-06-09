@@ -80,7 +80,7 @@ body {
   <div id="box-login">
 
     <div class="header">
-      <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></a>
+      <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('site_name'); ?>" /></a>
     </div>
 
     <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>

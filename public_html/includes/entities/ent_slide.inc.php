@@ -155,7 +155,7 @@
 
     // SVG
       if (preg_match('#^<svg#m', file_get_contents($file))) {
-        $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.svg';
+        $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('site_language_code')) .'.svg';
 
         if (file_exists(FS_DIR_STORAGE . 'images/' . $filename)) unlink(FS_DIR_STORAGE . 'images/' . $filename);
         copy($file, FS_DIR_STORAGE . 'images/' . $filename);
@@ -164,7 +164,7 @@
       } else {
         $image = new ent_image($file);
 
-        $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.'. $image->type;
+        $filename = 'slides/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('site_language_code')) .'.'. $image->type;
 
         if (file_exists(FS_DIR_STORAGE . 'images/' . $filename)) unlink(FS_DIR_STORAGE . 'images/' . $filename);
         $image->write(FS_DIR_STORAGE . 'images/' . $filename);

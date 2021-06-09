@@ -2,7 +2,7 @@
   <div class="container">
     <div class="logotype">
       <a href="<?php echo document::href_ilink(''); ?>">
-        <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+        <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
       </a>
     </div>
 
@@ -34,13 +34,13 @@
     <div class="customer-service">
       <?php echo functions::draw_fonticon('fa-envelope fa-3x pull-left'); ?>
       <div><strong>{translate "title_customer_service", "Customer Service"}</strong></div>
-      <div><a href="mailto://<?php echo settings::get('store_email'); ?>">{setting "store_email"}</a></div>
+      <div><a href="mailto://<?php echo settings::get('site_email'); ?>">{setting "store_email"}</a></div>
     </div>
 
     <div class="customer-service">
       <?php echo functions::draw_fonticon('fa-phone fa-3x pull-left'); ?>
       <div><strong><?php echo language::translate('title_customer_service', 'Customer Service'); ?></strong></div>
-      <div><a href="tel://<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></div>
+      <div><a href="tel://<?php echo settings::get('site_phone'); ?>"><?php echo settings::get('site_phone'); ?></a></div>
     </div>
   </div>
 </header>

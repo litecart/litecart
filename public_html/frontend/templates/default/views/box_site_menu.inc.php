@@ -3,7 +3,7 @@
 
     <div class="navbar-header">
       <div class="navbar-brand">
-        <a href="<?php echo document::href_ilink(''); ?>"><?php echo settings::get('store_name'); ?></a>
+        <a href="<?php echo document::href_ilink(''); ?>"><?php echo settings::get('site_name'); ?></a>
       </div>
 
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-menu">

@@ -17,7 +17,7 @@
       $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
-        settings::get('store_language_code'),
+        settings::get('site_language_code'),
       ]);
       $this->_currency_code = $currency_code;
       $this->_customer_id = $customer_id;
@@ -162,7 +162,7 @@
           $this->_data['campaign'] = [];
 
           $campaigns_query = database::query(
-            "select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as price
+            "select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('site_currency_code')) ."`)) as price
             from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
@@ -249,9 +249,9 @@
           $product_price = database::fetch($products_prices_query);
 
           if ($product_price[$this->_currency_code] != 0) {
-            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('site_currency_code'));
           } else {
-            $this->_data['price'] = $product_price[settings::get('store_currency_code')];
+            $this->_data['price'] = $product_price[settings::get('site_currency_code')];
           }
 
           break;
@@ -334,9 +334,9 @@
           if (!$product_price = database::fetch($products_prices_query)) return;
 
           if (!empty($product_price[$this->_currency_code]) && (float)$product_price[$this->_currency_code] != 0) {
-            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('site_currency_code'));
           } else {
-            $this->_data['price'] = $product_price[settings::get('store_currency_code')];
+            $this->_data['price'] = $product_price[settings::get('site_currency_code')];
           }
 
           break;

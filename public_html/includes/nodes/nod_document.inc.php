@@ -31,7 +31,7 @@
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
 
-      self::$snippets['title'] = [settings::get('store_name')];
+      self::$snippets['title'] = [settings::get('site_name')];
 
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_APP . 'favicon.ico">';
 
@@ -50,7 +50,7 @@
       }
 
     // Get template settings
-      if (!$template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('store_template') .'/config.inc.php')) {
+      if (!$template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('template') .'/config.inc.php')) {
         $template_config = [];
       }
 

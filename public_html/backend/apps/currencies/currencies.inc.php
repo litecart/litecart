@@ -16,7 +16,7 @@
           throw new Exception(language::translate('error_cannot_disable_default_currency', 'You cannot disable the default currency'));
         }
 
-        if (!empty($_POST['disable']) && $currency_code == settings::get('store_currency_code')) {
+        if (!empty($_POST['disable']) && $currency_code == settings::get('site_currency_code')) {
           throw new Exception(language::translate('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
         }
 
@@ -100,7 +100,7 @@
             <td class="text-center"><?php echo $currency['prefix']; ?></td>
             <td class="text-center"><?php echo $currency['suffix']; ?></td>
             <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+            <td class="text-center"><?php echo ($currency['code'] == settings::get('site_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo $currency['priority']; ?></td>
             <td class="text-right"><a href="<?php echo document::href_ilink('currencies/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>

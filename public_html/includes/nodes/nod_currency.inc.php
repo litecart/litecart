@@ -112,7 +112,7 @@
       if (in_array(settings::get('default_currency_code'), $all_currencies)) return settings::get('default_currency_code');
 
     // Return store currency
-      if (in_array(settings::get('store_currency_code'), $all_currencies)) return settings::get('store_currency_code');
+      if (in_array(settings::get('site_currency_code'), $all_currencies)) return settings::get('site_currency_code');
 
     // Return first currency
       return (!empty($enabled_currencies)) ? $enabled_currencies[0] : $all_currencies[0];
@@ -120,7 +120,7 @@
 
     public static function calculate($value, $to, $from=null) {
 
-      if (empty($from)) $from = settings::get('store_currency_code');
+      if (empty($from)) $from = settings::get('site_currency_code');
 
       if (!isset(self::$currencies[$from])) trigger_error("Cannot convert from currency $from as the currency does not exist", E_USER_WARNING);
       if (!isset(self::$currencies[$to])) trigger_error("Cannot convert to currency $to as the currency does not exist", E_USER_WARNING);
@@ -130,7 +130,7 @@
 
     public static function convert($value, $from, $to=null) {
 
-      if (empty($to)) $to = settings::get('store_currency_code');
+      if (empty($to)) $to = settings::get('site_currency_code');
 
       return self::calculate($value, $to, $from);
     }
@@ -230,9 +230,9 @@
       if (empty($currency_code)) $currency_code = self::$selected['code'];
       if (!isset(self::$currencies[$currency_code])) trigger_error("Cannot format amount as currency $currency_code does not exist", E_USER_WARNING);
 
-      $value = self::convert($value, settings::get('store_currency_code'), $currency_code);
+      $value = self::convert($value, settings::get('site_currency_code'), $currency_code);
       $value = round($value, (int)self::$currencies[$currency_code]['decimals']);
-      $value = self::convert($value, $currency_code, settings::get('store_currency_code'));
+      $value = self::convert($value, $currency_code, settings::get('site_currency_code'));
 
       return $value;
     }

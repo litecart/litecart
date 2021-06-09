@@ -138,7 +138,7 @@
 
 // Build Order
   $order->data['processable'] = false; // Whether or not it is allowed to be processed in order_process
-  $order->data['weight_unit'] = settings::get('store_weight_unit');
+  $order->data['weight_unit'] = settings::get('site_weight_unit');
   $order->data['currency_code'] = currency::$selected['code'];
   $order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
   $order->data['language_code'] = language::$selected['code'];

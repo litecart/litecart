@@ -450,7 +450,7 @@
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
-                <?php echo functions::form_draw_currency_field('recommended_price', settings::get('store_currency_code'), true); ?>
+                <?php echo functions::form_draw_currency_field('recommended_price', settings::get('site_currency_code'), true); ?>
               </div>
 
               <div class="form-group col-md-6">
@@ -468,12 +468,12 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><?php echo functions::form_draw_currency_field('prices['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'data-currency-price="" placeholder=""'); ?></td>
-                <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 'min="0"'); ?></td>
+                  <td><?php echo functions::form_draw_currency_field('prices['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), true, 'data-currency-price="" placeholder=""'); ?></td>
+                <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('site_currency_code') .']', '', currency::$currencies[settings::get('site_currency_code')]['decimals'], 'min="0"'); ?></td>
                 </tr>
 <?php
   foreach (currency::$currencies as $currency) {
-    if ($currency['code'] == settings::get('store_currency_code')) continue;
+    if ($currency['code'] == settings::get('site_currency_code')) continue;
 ?>
                 <tr>
                   <td><?php echo functions::form_draw_currency_field('prices['. $currency['code'] .']', $currency['code'], true, 'data-currency-price="" placeholder=""'); ?></td>
@@ -501,12 +501,12 @@
                   <td>- %<br />
                     <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?>
                   </td>
-                  <td><?php echo settings::get('store_currency_code'); ?><br />
-                    <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true); ?>
+                  <td><?php echo settings::get('site_currency_code'); ?><br />
+                    <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), true); ?>
                   </td>
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
-    if ($currency_code == settings::get('store_currency_code')) continue;
+    if ($currency_code == settings::get('site_currency_code')) continue;
 ?>
                   <td><?php echo $currency_code; ?><br />
                     <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. $currency_code. ']', $currency_code, isset($_POST['campaigns'][$key][$currency_code]) ? number_format((float)$_POST['campaigns'][$key][$currency_code], 4, '.', '') : ''); ?>
@@ -926,16 +926,16 @@
 
 // Update price placeholders
   function update_currency_prices() {
-    var store_currency_code = '<?php echo settings::get('store_currency_code'); ?>',
+    var store_currency_code = '<?php echo settings::get('site_currency_code'); ?>',
         currencies = ['<?php echo implode("','", array_keys(currency::$currencies)); ?>'],
-        net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val(),
-        gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
+        net_price = $('input[name^="prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val(),
+        gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val();
 
-    if (!net_price) net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
-    if (!gross_price) gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
+    if (!net_price) net_price = $('input[name^="prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').attr('placeholder');
+    if (!gross_price) gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').attr('placeholder');
 
     $.each(currencies, function(i,currency_code){
-      if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
+      if (currency_code == '<?php echo settings::get('site_currency_code'); ?>') return;
 
       var currency_decimals = get_currency_decimals(currency_code),
           currency_net_price = net_price / get_currency_value(currency_code);
@@ -969,20 +969,20 @@
     <?php } ?>
 
     <?php foreach (currency::$currencies as $currency) { ?>
-    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
     <?php } ?>
   });
 
-  $('#table-campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
+  $('#table-campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]', function() {
     var parent = $(this).closest('tr');
-    var percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
+    var percentage = ($('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').val() * 100;
     percentage = percentage.toFixed(2);
     $(parent).find('input[name$="[percentage]"]').val(percentage);
 
     <?php foreach (currency::$currencies as $currency) { ?>
     var value = 0;
-    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
+    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = value.toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
     if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
@@ -990,7 +990,7 @@
     }
     <?php } ?>
   });
-  $('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
+  $('input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').trigger('input');
 
   $('#table-campaigns').on('click', '.remove', function(e) {
     e.preventDefault();
@@ -1010,12 +1010,12 @@
                + '  <td>- %<br />'
                + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 'min="0"')); ?>'
                + '  </td>'
-               + '  <td><?php echo functions::general_escape_js(settings::get('store_currency_code')); ?><br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '')); ?>'
+               + '  <td><?php echo functions::general_escape_js(settings::get('site_currency_code')); ?><br />'
+               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), '')); ?>'
                + '  </td>'
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
-    if ($currency_code == settings::get('store_currency_code')) continue;
+    if ($currency_code == settings::get('site_currency_code')) continue;
 ?>
                + '  <td><?php echo functions::general_escape_js($currency_code); ?><br />'
                + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. $currency_code .']', $currency_code, '')); ?>'

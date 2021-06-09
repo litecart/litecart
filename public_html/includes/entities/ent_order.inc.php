@@ -71,7 +71,7 @@
 
       $this->data = array_merge($this->data, [
         'uid' => uniqid(),
-        'weight_unit' => settings::get('store_weight_unit'),
+        'weight_unit' => settings::get('site_weight_unit'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
@@ -728,7 +728,7 @@
         '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
-        '%store_name' => settings::get('store_name'),
+        '%store_name' => settings::get('site_name'),
         '%store_url' => document::ilink('', [], false, [], $language_code),
       ];
 
@@ -799,7 +799,7 @@
         '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
         '%order_status' => $order_status->name,
-        '%store_name' => settings::get('store_name'),
+        '%store_name' => settings::get('site_name'),
         '%store_url' => document::ilink('', [], false, [], $this->data['language_code']),
       ];
 

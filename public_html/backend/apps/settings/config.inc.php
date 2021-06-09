@@ -2,7 +2,7 @@
 
   $app_config = [
     'name' => language::translate('title_settings', 'Settings'),
-    'default' => 'store_info',
+    'default' => 'site_info',
     'priority' => 0,
     'theme' => [
       'color' => '#757575',
