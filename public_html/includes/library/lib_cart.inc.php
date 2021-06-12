@@ -228,15 +228,15 @@
 
         // Check group
           $possible_groups = array_filter(array_unique(reference::attribute_group($option['group_id'])->name));
-          $matched_groups = array_intersect(array_keys($options), array_values($possible_groups));
+          $matched_groups = array_intersect(array_keys($options), $possible_groups);
           $matched_group = array_shift($matched_groups);
 
-          if (empty($matched_group)) {
-            if (!empty($option['required'])) {
-              throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
-            } else {
-              continue;
-            }
+          if (empty($matched_group) && empty($option['required'])) {
+            continue;
+          }
+
+          if (empty($options[$matched_group]) && !empty($option['required'])) {
+            throw new Exception(language::translate('error_set_product_options', 'Please set your product options'));
           }
 
         // Check values
@@ -248,6 +248,7 @@
 
               $matched_values = array();
               foreach ($option['values'] as $value) {
+
                 $possible_values = array_unique(
                   array_merge(
                     array($value['name']),
@@ -255,17 +256,28 @@
                   )
                 );
 
+                if (empty($option['required'])) {
+                  array_unshift($possible_values, '');
+                }
+
                 if ($matched_value = array_intersect($selected_values, $possible_values)) {
                   $matched_values[] = $matched_value;
                   $item['extras'] += $value['price_adjust'];
+                  $found_match = true;
                 }
               }
+
+              if (empty($found_match)) {
+                throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+              }
+
               break;
 
             case 'radio':
             case 'select':
 
               foreach ($option['values'] as $value) {
+
                 $possible_values = array_unique(
                   array_merge(
                     array($value['name']),
@@ -273,20 +285,34 @@
                   )
                 );
 
+                if (empty($option['required'])) {
+                  array_unshift($possible_values, '');
+                }
+
                 if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
-                  $matched_value = $matched_value[0];
+                  $matched_value = array_shift($matched_value);
                   $item['extras'] += $value['price_adjust'];
+                  $found_match = true;
                   break;
                 }
               }
+
+              if (empty($found_match)) {
+                throw new Exception(strtr(language::translate('error_must_select_valid_option_for_group', 'You must select a valid option for %group'), ['%group' => $matched_group]));
+              }
+
+              break;
+
+            case 'text':
+            case 'textarea':
+              $matched_value = $options[$matched_group];
+
+              if (empty($matched_value) && !empty($option['required'])) {
+                throw new Exception(strtr(language::translate('error_must_provide_valid_input_for_group', 'You must provide a valid input for %group'), ['%group' => $matched_group]));
+              }
+
               break;
           }
-
-          if (!empty($option['required']) && (!isset($matched_value) || $matched_value == '')) {
-            throw new Exception(language::translate('error_product_options_contains_errors', 'The product options contains errors'));
-          }
-
-          if (empty($matched_group) || (empty($matched_values) && empty($matched_value))) continue;
 
           $sanitized_options[] = array(
             'group_id' => $option['id'],
@@ -296,6 +322,7 @@
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           );
         }
+
       // Options stock
         foreach ($product->options_stock as $option_stock) {
 
