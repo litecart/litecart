@@ -1,4 +1,5 @@
 #content {
+  width: 100%;
   padding: 10px;
 }
 @media (min-width: 768px) {
@@ -78,6 +79,10 @@
   font-weight: bold;
   color: #ff0000;
   animation: flasher 1s linear infinite;
+}
+#box-checkout-shipping .thumbnail,
+#box-checkout-payment .thumbnail {
+  padding: 0.5em;
 }
 #box-checkout-shipping .option,
 #box-checkout-payment .option {

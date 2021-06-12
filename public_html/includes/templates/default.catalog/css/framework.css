@@ -1065,7 +1065,7 @@ input[type="number"] {
 input[type="number"]::-webkit-inner-spin-button {
   margin-left: 0.5em;
 }
-.form-group.required label::after {
+.form-group.required > label::after {
   content: ' *';
   color: #f00;
 }
