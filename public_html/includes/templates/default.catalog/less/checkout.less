@@ -2,6 +2,7 @@
 @import "variables.less";
 
 #content {
+  width: 100%;
   padding: @default-gutter-size/2;
   @media(min-width: @media-breakpoint-sm) {
     padding: @default-gutter-size;
@@ -90,6 +91,9 @@
 }
 
 #box-checkout-shipping, #box-checkout-payment {
+  .thumbnail {
+    padding: .5em;
+  }
   .option {
     position: relative;
     &.btn {
