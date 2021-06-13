@@ -1449,6 +1449,30 @@ ul.list-inline li {
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
+[data-toggle*="momentum-scroll"] {
+  overflow-x: auto;
+  overflow-y: visible;
+  touch-action: pan-x;
+  grid-auto-flow: column;
+  user-select: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-snap-align: center;
+  cursor: grab;
+}
+[data-toggle*="momentum-scroll"]::-webkit-scrollbar {
+  height: 7.5px;
+}
+[data-toggle*="momentum-scroll"]::-webkit-scrollbar * {
+  background: transparent;
+}
+[data-toggle*="momentum-scroll"]::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-radius: 6px;
+}
+[data-toggle*="momentum-scroll"] a {
+  cursor: inherit;
+}
 /* Nav (Tabs, Pills) - Bootstrap Compatible */
 .nav {
   display: flex;
