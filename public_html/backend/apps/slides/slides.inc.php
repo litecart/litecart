@@ -61,54 +61,52 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('slides_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('slides_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_languages', 'Languages'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-            <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_languages', 'Languages'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+          <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($slides as $slide) { ?>
-          <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : ''; ?>">
-            <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
-            <td><?php echo $slide['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('slides/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>
-            <td class="text-right"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
-            <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
-            <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
-            <td class="text-right"><?php echo $slide['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('slides/edit_slide', ['slide_id' => $slide['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($slides as $slide) { ?>
+        <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
+          <td><?php echo $slide['id']; ?></td>
+          <td><a href="<?php echo document::href_ilink('slides/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>
+          <td class="text-right"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
+          <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
+          <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
+          <td class="text-right"><?php echo $slide['priority']; ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('slides/edit_slide', ['slide_id' => $slide['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+    <div class="btn-group">
+      <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+      <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

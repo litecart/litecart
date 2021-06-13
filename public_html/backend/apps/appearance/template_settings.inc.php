@@ -122,55 +122,57 @@
     </div>
   </div>
 
+  <?php echo functions::form_draw_form_begin('template_settings_form', 'post'); ?>
+
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th style="width: 50%;"><?php echo language::translate('title_key', 'Key'); ?></th>
+          <th><?php echo language::translate('title_value', 'Value'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <?php foreach ($settings as $setting) { ?>
+        <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
+        <tr>
+          <td style="white-space: normal;">
+            <u><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br />
+            <?php echo language::translate(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
+          </td>
+          <td><?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
+          <td class="text-right">
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+              <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+            </div>
+          </td>
+        </tr>
+        <?php } else { ?>
+        <tr>
+          <td><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></td>
+          <td>
+            <div style="max-height: 200px; overflow-y: auto;">
+              <?php echo nl2br($setting['value']); ?>
+            </div>
+          </td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('appearance/template_settings', ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+        <?php } ?>
+
+        <?php if (!$settings) { ?>
+        <tr>
+          <td colspan="3"><?php echo language::translate('text_no_template_settings', 'There are no settings available for this template.'); ?></td>
+        </tr>
+        <?php } ?>
+      </tbody>
+    </table>
+
+  <?php echo functions::form_draw_form_end(); ?>
+
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('template_settings_form', 'post', null, false, 'style="max-width: 960px;"'); ?>
-
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th style="width: 250px;"><?php echo language::translate('title_key', 'Key'); ?></th>
-            <th><?php echo language::translate('title_value', 'Value'); ?></th>
-            <th style="width: 50px;">&nbsp;</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <?php foreach ($settings as $setting) { ?>
-          <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
-          <tr>
-            <td style="white-space: normal;">
-              <u><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br />
-              <?php echo language::translate(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
-            </td>
-            <td><?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
-            <td class="text-right">
-              <div class="btn-group">
-                <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-                <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-              </div>
-            </td>
-          </tr>
-          <?php } else { ?>
-          <tr>
-            <td><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></td>
-            <td>
-              <div style="max-height: 200px; overflow-y: auto;">
-                <?php echo nl2br($setting['value']); ?>
-              </div>
-            </td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('appearance/template_settings', ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-          <?php } ?>
-
-          <?php if (!$settings) { ?>
-          <tr>
-            <td colspan="3"><?php echo language::translate('text_no_template_settings', 'There are no settings available for this template.'); ?></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-      </table>
-
-    <?php echo functions::form_draw_form_end(); ?>
   </div>
+
 </div>

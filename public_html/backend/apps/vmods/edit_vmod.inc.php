@@ -141,7 +141,7 @@ textarea {
 
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_version', 'Version'); ?></label>
-              <?php echo functions::form_draw_text_field('version', true); ?>
+              <?php echo functions::form_draw_text_field('version', true, 'placeholder="'. date('Y-m-d') .'"'); ?>
             </div>
           </div>
 

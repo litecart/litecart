@@ -41,38 +41,36 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('delivery_statuses_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('delivery_statuses_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <?php foreach ($delivery_statuses as $delivery_status) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $delivery_status['id'] .']', $delivery_status['id']); ?></td>
-            <td><?php echo $delivery_status['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>"><?php echo $delivery_status['name']; ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-
-        <tfoot>
-          <tr>
-          <td colspan="4"><?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?>: <?php echo $num_rows; ?></td>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th>&nbsp;</th>
         </tr>
-      </table>
+      </thead>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+      <tbody>
+        <?php foreach ($delivery_statuses as $delivery_status) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $delivery_status['id'] .']', $delivery_status['id']); ?></td>
+          <td><?php echo $delivery_status['id']; ?></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>"><?php echo $delivery_status['name']; ?></a></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
+
+      <tfoot>
+        <tr>
+        <td colspan="4"><?php echo language::translate('title_delivery_statuses', 'Delivery Statuses'); ?>: <?php echo $num_rows; ?></td>
+      </tr>
+    </table>
+
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

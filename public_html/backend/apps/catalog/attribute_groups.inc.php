@@ -42,44 +42,41 @@
     </ul>
   </div>
 
-  <div class="card-body">
+  <?php echo functions::form_draw_form_begin('attributes_form', 'post'); ?>
 
-    <?php echo functions::form_draw_form_begin('attributes_form', 'post'); ?>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_code', 'Code'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_values', 'Values'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_code', 'Code'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_values', 'Values'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+      <tbody>
+        <?php foreach ($attribute_groups as $attribute_group) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('attributes['. $attribute_group['id'] .']', $attribute_group['id']); ?></td>
+          <td class="text-center"><?php echo $attribute_group['id']; ?></td>
+          <td><?php echo $attribute_group['code']; ?></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>"><?php echo $attribute_group['name']; ?></a></td>
+          <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where group_id = ". (int)$attribute_group['id'] .";")); ?></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tbody>
-          <?php foreach ($attribute_groups as $attribute_group) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('attributes['. $attribute_group['id'] .']', $attribute_group['id']); ?></td>
-            <td class="text-center"><?php echo $attribute_group['id']; ?></td>
-            <td><?php echo $attribute_group['code']; ?></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>"><?php echo $attribute_group['name']; ?></a></td>
-            <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where group_id = ". (int)$attribute_group['id'] .";")); ?></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6"><?php echo language::translate('title_attributes', 'Attributes'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-        <tfoot>
-          <tr>
-            <td colspan="6"><?php echo language::translate('title_attributes', 'Attributes'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
-
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

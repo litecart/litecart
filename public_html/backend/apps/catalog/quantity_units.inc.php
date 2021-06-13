@@ -42,41 +42,39 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('quantity_units_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('quantity_units_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($quantity_units as $quantity_unit) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('quantity_units['. $quantity_unit['id'] .']', $quantity_unit['id']); ?></td>
-            <td><?php echo $quantity_unit['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>"><?php echo $quantity_unit['name']; ?></a></td>
-            <td><?php echo $quantity_unit['description']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($quantity_units as $quantity_unit) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('quantity_units['. $quantity_unit['id'] .']', $quantity_unit['id']); ?></td>
+          <td><?php echo $quantity_unit['id']; ?></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>"><?php echo $quantity_unit['name']; ?></a></td>
+          <td><?php echo $quantity_unit['description']; ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="5"><?php echo language::translate('title_quantity_units', 'Quantity Units'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="5"><?php echo language::translate('title_quantity_units', 'Quantity Units'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

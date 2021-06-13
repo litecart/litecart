@@ -41,37 +41,35 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('suppliers_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('suppliers_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($suppliers as $supplier) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']); ?></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_supplier', ['supplier_id' => $supplier['id']]); ?>"><?php echo $supplier['name']; ?></a></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_supplier', ['supplier_id' => $supplier['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($suppliers as $supplier) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('suppliers['. $supplier['id'] .']', $supplier['id']); ?></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_supplier', ['supplier_id' => $supplier['id']]); ?>"><?php echo $supplier['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_supplier', ['supplier_id' => $supplier['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="3"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="3"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

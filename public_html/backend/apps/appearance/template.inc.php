@@ -62,7 +62,7 @@
 
 ?>
 <div class="card card-app">
-  <div class="card-heading" style="margin-bottom: var(--gutter-size);">
+  <div class="card-heading">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_template', 'Template'); ?>
     </div>

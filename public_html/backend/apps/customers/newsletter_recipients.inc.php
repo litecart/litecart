@@ -116,45 +116,45 @@
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($recipients as $recipient) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('recipients['.$recipient['id'].']', $recipient['id']); ?></td>
-            <td><?php echo $recipient['id']; ?></td>
-            <td><?php echo $recipient['email']; ?></td>
-            <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_recipient', ['recipient_id' => $recipient['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($recipients as $recipient) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('recipients['.$recipient['id'].']', $recipient['id']); ?></td>
+          <td><?php echo $recipient['id']; ?></td>
+          <td><?php echo $recipient['email']; ?></td>
+          <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_recipient', ['recipient_id' => $recipient['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="5"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="5"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
+    <div class="card-body">
       <div class="btn-group">
         <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', '', 'delete'); ?>
       </div>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

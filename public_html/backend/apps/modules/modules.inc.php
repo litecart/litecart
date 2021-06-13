@@ -121,64 +121,63 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th>&nbsp;</th>
-            <th><?php echo language::translate('title_version', 'Version'); ?></th>
-            <th><?php echo language::translate('title_developer', 'Developer'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_priority', 'Priority'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+  <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
 
-        <tbody>
-          <?php foreach ($modules as $module) { ?>
-          <?php if (!empty($module['installed'])) { ?>
-          <tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
-            <td><?php echo functions::form_draw_checkbox('modules['. $module['id'] .']', $module['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
-            <td><a href="<?php echo document::href_ilink('modules/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
-            <?php if ($_GET['doc'] == 'jobs' && !empty($module['status'])) { ?>
-            <td class="text-center"><a href="<?php echo document::href_ilink('modules/run_job', ['module_id' => $module['id']]); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
-            <?php } else { ?>
-            <td class="text-center"></td>
-            <?php } ?>
-            <td class="text-right"><?php echo $module['version']; ?></td>
-            <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
-            <td><?php echo $module['id']; ?></td>
-            <td class="text-center"><?php echo $module['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('modules/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th>&nbsp;</th>
+          <th><?php echo language::translate('title_version', 'Version'); ?></th>
+          <th><?php echo language::translate('title_developer', 'Developer'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_priority', 'Priority'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <?php foreach ($modules as $module) { ?>
+        <?php if (!empty($module['installed'])) { ?>
+        <tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('modules['. $module['id'] .']', $module['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
+          <td><a href="<?php echo document::href_ilink('modules/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
+          <?php if ($_GET['doc'] == 'jobs' && !empty($module['status'])) { ?>
+          <td class="text-center"><a href="<?php echo document::href_ilink('modules/run_job', ['module_id' => $module['id']]); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
           <?php } else { ?>
-          <tr class="semi-transparent">
-            <td></td>
-            <td></td>
-            <td><?php echo $module['name']; ?></td>
-            <td class="text-center"></td>
-            <td class="text-right"><?php echo $module['version']; ?></td>
-            <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
-            <td><?php echo $module['id']; ?></td>
-            <td class="text-center">-</td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('modules/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
-          </tr>
+          <td class="text-center"></td>
           <?php } ?>
-          <?php } ?>
-        </tbody>
+          <td class="text-right"><?php echo $module['version']; ?></td>
+          <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
+          <td><?php echo $module['id']; ?></td>
+          <td class="text-center"><?php echo $module['priority']; ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('modules/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } else { ?>
+        <tr class="semi-transparent">
+          <td></td>
+          <td></td>
+          <td><?php echo $module['name']; ?></td>
+          <td class="text-center"></td>
+          <td class="text-right"><?php echo $module['version']; ?></td>
+          <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
+          <td><?php echo $module['id']; ?></td>
+          <td class="text-center">-</td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('modules/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
+        </tr>
+        <?php } ?>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="9"><?php echo language::translate('title_modules', 'Modules'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="9"><?php echo language::translate('title_modules', 'Modules'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>

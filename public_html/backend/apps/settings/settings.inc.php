@@ -142,49 +142,47 @@
     </div>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('settings_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('settings_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo language::translate('title_key', 'Key'); ?></th>
-            <th><?php echo language::translate('title_value', 'Value'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo language::translate('title_key', 'Key'); ?></th>
+          <th><?php echo language::translate('title_value', 'Value'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($settings as $setting) { ?>
-          <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
-          <tr>
-            <td>
-              <u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br />
-              <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
-            </td>
-            <td><?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
-            <td class="text-right">
-              <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-              <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-            </td>
-          </tr>
-          <?php } else { ?>
-          <tr>
-            <td class="text-left"><a href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
-            <td style="white-space: normal;">
-              <div style="max-height: 200px; overflow-y: auto;" title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
-                <?php echo $setting['value']; ?>
-              </div>
-            </td>
-            <td class="text-right"><a href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-          <?php } ?>
-        </tbody>
-      </table>
+      <tbody>
+        <?php foreach ($settings as $setting) { ?>
+        <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
+        <tr>
+          <td>
+            <u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br />
+            <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
+          </td>
+          <td><?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
+          <td class="text-right">
+            <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+            <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+          </td>
+        </tr>
+        <?php } else { ?>
+        <tr>
+          <td class="text-left"><a href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
+          <td style="white-space: normal;">
+            <div style="max-height: 200px; overflow-y: auto;" title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
+              <?php echo $setting['value']; ?>
+            </div>
+          </td>
+          <td class="text-right"><a href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+        <?php } ?>
+      </tbody>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

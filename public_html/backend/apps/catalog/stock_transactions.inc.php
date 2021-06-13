@@ -66,42 +66,40 @@
       <div>
         <?php echo functions::form_draw_button('search', language::translate('title_filter', 'Filter'), 'submit'); ?>
       </div>
-  </div>
-    <?php echo functions::form_draw_form_end(); ?>
+    </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('stock_transactions_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('stock_transactions_form', 'post'); ?>
 
-      <table class="table table-striped data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_date', 'Date'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($transactions as $transaction) { ?>
+    <table class="table table-striped data-table">
+      <thead>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('stock_transactions['. $transaction['id'] .']', $transaction['id']); ?></td>
-          <td><?php echo $transaction['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink('catalog/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
-          <td><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>
-          <td><a href="<?php echo document::href_ilink('catalog/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_date', 'Date'); ?></th>
+          <th>&nbsp;</th>
         </tr>
-        <?php } ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="5"><?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo database::num_rows($stock_transactions_query); ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      </thead>
+      <tbody>
+      <?php foreach ($transactions as $transaction) { ?>
+      <tr>
+        <td><?php echo functions::form_draw_checkbox('stock_transactions['. $transaction['id'] .']', $transaction['id']); ?></td>
+        <td><?php echo $transaction['id']; ?></td>
+        <td><a href="<?php echo document::href_ilink('catalog/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
+        <td><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>
+        <td><a href="<?php echo document::href_ilink('catalog/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+      </tr>
+      <?php } ?>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5"><?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo database::num_rows($stock_transactions_query); ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination(ceil(database::num_rows($stock_transactions_query)/settings::get('data_table_rows_per_page'))); ?>

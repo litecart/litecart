@@ -68,47 +68,45 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('brands_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('brands_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_products', 'Products'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_products', 'Products'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($brands as $brand) { ?>
-          <tr class="<?php echo empty($brand['status']) ? 'semi-transparent' : ''; ?>">
-            <td><?php echo functions::form_draw_checkbox('brands['. $brand['id'] .']', $brand['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
-            <td><?php echo $brand['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
-            <td><img src="<?php echo document::href_link($brand['image'] ? WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_ilink('catalog/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
-            <td class="text-center"><?php echo (int)$brand['num_products']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_brand', ['brand_id' => $brand['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="6"><?php echo language::translate('title_brands', 'Brands'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tbody>
+        <?php foreach ($brands as $brand) { ?>
+        <tr class="<?php echo empty($brand['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('brands['. $brand['id'] .']', $brand['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
+          <td><?php echo $brand['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
+          <td><img src="<?php echo document::href_link($brand['image'] ? WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_ilink('catalog/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
+          <td class="text-center"><?php echo (int)$brand['num_products']; ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_brand', ['brand_id' => $brand['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6"><?php echo language::translate('title_brands', 'Brands'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+    <div class="btn-group">
+      <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+      <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

@@ -226,63 +226,59 @@
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('products_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('products_form', 'post'); ?>
 
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th class="text-right"><?php echo language::translate('title_created', 'Created'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th class="text-right"><?php echo language::translate('title_created', 'Created'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+      <tbody>
+        <?php foreach ($products as $product) { ?>
+        <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
+          <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
+          <td><img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
+          <td><?php echo $product['id']; ?></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
+          <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-        <tbody>
-          <?php foreach ($products as $product) { ?>
-          <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
-            <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-            <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
-            <td><img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
-            <td><?php echo $product['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
-            <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="10"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+    <ul class="list-inline">
+      <li>
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+        </div>
+      </li>
+      <li>
+        <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+      </li>
+      <li>
+        <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+      </li>
+    </ul>
 
-      <ul class="list-inline">
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-          </div>
-        </li>
-        <li>
-          <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
-        </li>
-        <li>
-          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-        </li>
-      </ul>
-
-
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

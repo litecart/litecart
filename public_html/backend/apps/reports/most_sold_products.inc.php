@@ -94,28 +94,26 @@ form[name="filter_form"] li {
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="card-body">
-    <table class="table table-striped table-hover data-table">
-      <thead>
-        <tr>
-          <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
-          <th class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-          <th class="text-center"><?php echo language::translate('title_sales', 'Sales'); ?></th>
-          <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($rows as $row) { ?>
-        <tr>
-          <td><?php echo $row['name']; ?></td>
-          <td class="text-center border-left"><?php echo (float)$row['total_quantity']; ?></td>
-          <td class="text-right border-left"><?php echo currency::format($row['total_sales'], false, settings::get('site_currency_code')); ?></td>
-          <td class="text-right border-left"><?php echo currency::format($row['total_tax'], false, settings::get('site_currency_code')); ?></td>
-        </tr>
-        <?php } ?>
-      </tbody>
-    </table>
-  </div>
+  <table class="table table-striped table-hover data-table">
+    <thead>
+      <tr>
+        <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
+        <th class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+        <th class="text-center"><?php echo language::translate('title_sales', 'Sales'); ?></th>
+        <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($rows as $row) { ?>
+      <tr>
+        <td><?php echo $row['name']; ?></td>
+        <td class="text-center border-left"><?php echo (float)$row['total_quantity']; ?></td>
+        <td class="text-right border-left"><?php echo currency::format($row['total_sales'], false, settings::get('site_currency_code')); ?></td>
+        <td class="text-right border-left"><?php echo currency::format($row['total_tax'], false, settings::get('site_currency_code')); ?></td>
+      </tr>
+      <?php } ?>
+    </tbody>
+  </table>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

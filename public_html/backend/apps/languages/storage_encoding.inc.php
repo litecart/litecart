@@ -85,41 +85,36 @@
     </div>
   </div>
 
-  <div class="card-body">
-    <p><?php echo language::translate('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.'); ?></p>
+  <?php echo functions::form_draw_form_begin('mysql_collation_form', 'post'); ?>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th class="main"><?php echo language::translate('title_table', 'Table'); ?></th>
+          <th><?php echo language::translate('title_collation', 'Collation'); ?></th>
+          <th><?php echo language::translate('title_engine', 'Engine'); ?></th>
+        </tr>
+      </thead>
 
-    <?php echo functions::form_draw_form_begin('mysql_collation_form', 'post'); ?>
+      <tbody>
+        <?php foreach ($tables as $table) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('tables[]', $table['TABLE_NAME'], true); ?></td>
+          <td><?php echo $table['TABLE_NAME']; ?></td>
+          <td><?php echo $table['TABLE_COLLATION']; ?></td>
+          <td><?php echo $table['ENGINE']; ?></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-      <h2><?php echo language::translate('title_database_tables', 'Database Tables'); ?></h2>
+      <tfoot>
+        <tr>
+          <td colspan="12"><?php echo language::translate('title_tables', 'Tables'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th class="main"><?php echo language::translate('title_table', 'Table'); ?></th>
-            <th><?php echo language::translate('title_collation', 'Collation'); ?></th>
-            <th><?php echo language::translate('title_engine', 'Engine'); ?></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <?php foreach ($tables as $table) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('tables[]', $table['TABLE_NAME'], true); ?></td>
-            <td><?php echo $table['TABLE_NAME']; ?></td>
-            <td><?php echo $table['TABLE_COLLATION']; ?></td>
-            <td><?php echo $table['ENGINE']; ?></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-
-        <tfoot>
-          <tr>
-            <td colspan="12"><?php echo language::translate('title_tables', 'Tables'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
-
+    <div class="card-body">
       <div style="width: 640px;">
         <div class="form-group">
           <label><?php echo language::translate('title_collation', 'Collation'); ?></label>
@@ -136,10 +131,12 @@
         </div>
       </div>
 
+      <p><?php echo language::translate('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.'); ?></p>
+
       <div class="btn-group">
         <?php echo functions::form_draw_button('convert', language::translate('title_convert', 'Convert'), 'submit'); ?>
       </div>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>

@@ -42,49 +42,47 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('tax_rates_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('tax_rates_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_tax_class', 'Tax Class'); ?></th>
-            <th><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></th>
-            <th><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-            <th><?php echo language::translate('title_rate', 'Rate'); ?></th>
-            <th><?php echo language::translate('title_type', 'Type'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th><?php echo language::translate('title_tax_class', 'Tax Class'); ?></th>
+          <th><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></th>
+          <th><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
+          <th><?php echo language::translate('title_rate', 'Rate'); ?></th>
+          <th><?php echo language::translate('title_type', 'Type'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($tax_rates as $tax_rate) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('tax_rates['. $tax_rate['id'] .']', $tax_rate['id']); ?></td>
-            <td><?php echo $tax_rate['id']; ?></td>
-            <td><?php echo $tax_rate['tax_class']; ?></td>
-            <td><?php echo $tax_rate['geo_zone']; ?></td>
-            <td><a href="<?php echo document::href_ilink('tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
-            <td><?php echo $tax_rate['description']; ?></td>
-            <td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
-            <td><?php echo $tax_rate['type']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($tax_rates as $tax_rate) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('tax_rates['. $tax_rate['id'] .']', $tax_rate['id']); ?></td>
+          <td><?php echo $tax_rate['id']; ?></td>
+          <td><?php echo $tax_rate['tax_class']; ?></td>
+          <td><?php echo $tax_rate['geo_zone']; ?></td>
+          <td><a href="<?php echo document::href_ilink('tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
+          <td><?php echo $tax_rate['description']; ?></td>
+          <td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
+          <td><?php echo $tax_rate['type']; ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="9"><?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="9"><?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

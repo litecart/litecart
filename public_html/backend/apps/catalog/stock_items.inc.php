@@ -62,49 +62,43 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="card-body">
+  <?php echo functions::form_draw_form_begin('stock_items_form', 'post'); ?>
 
-    <?php echo functions::form_draw_form_begin('stock_items_form', 'post'); ?>
+    <table class="table table-striped data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
+          <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
+          <th><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
+          <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($stock_items as $stock_item) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
+          <td><?php echo $stock_item['id']; ?></td>
+          <td><?php echo $stock_item['sku']; ?></td>
+          <td><a href="<?php echo document::link('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
+          <td><?php echo $stock_item['mpn']; ?></td>
+          <td><?php echo $stock_item['gtin']; ?></td>
+          <td class="text-right"><?php echo (float)$stock_item['ordered']; ?></td>
+          <td class="text-right"><?php echo (float)$stock_item['quantity']; ?></td>
+          <td><a href="<?php echo document::href_ilink('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <table class="table table-striped data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
-            <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-            <th><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
-            <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($stock_items as $stock_item) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
-            <td><?php echo $stock_item['id']; ?></td>
-            <td><?php echo $stock_item['sku']; ?></td>
-            <td><a href="<?php echo document::link('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
-            <td><?php echo $stock_item['mpn']; ?></td>
-            <td><?php echo $stock_item['gtin']; ?></td>
-            <td class="text-right"><?php echo (float)$stock_item['ordered']; ?></td>
-            <td class="text-right"><?php echo (float)$stock_item['quantity']; ?></td>
-            <td><a href="<?php echo document::href_ilink('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="10"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
-          </tr>
-        </tfoot>
-      </table>
-
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
-
-  <div class="card-footer">
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>

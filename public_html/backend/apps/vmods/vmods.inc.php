@@ -110,52 +110,52 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('vmods_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('vmods_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_version', 'Version'); ?></th>
-            <th><?php echo language::translate('title_author', 'Author'); ?></th>
-            <th></th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_version', 'Version'); ?></th>
+          <th><?php echo language::translate('title_author', 'Author'); ?></th>
+          <th></th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($vmods as $vmod) { ?>
-          <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
-            <td><?php echo functions::form_draw_checkbox('vmods['. $vmod['filename'] .']', $vmod['filename']); ?></td>
-            <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
-            <td><a href="<?php echo document::href_ilink('vmods/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['filename']; ?></a></td>
-            <td><?php echo $vmod['title']; ?></td>
-            <td><?php echo $vmod['version']; ?></td>
-            <td><?php echo $vmod['author']; ?></td>
-            <td><a href="<?php echo document::href_ilink('vmods/test', ['vmod' => $vmod['filename']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-            <td><a href="<?php echo document::href_ilink('vmods/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
-            <td><a href="<?php echo document::href_ilink('vmods/download', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
-            <td><a href="<?php echo document::href_ilink('vmods/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
-            <td><a href="<?php echo document::href_ilink('vmods/edit_vmod', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($vmods as $vmod) { ?>
+        <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
+          <td><?php echo functions::form_draw_checkbox('vmods['. $vmod['filename'] .']', $vmod['filename']); ?></td>
+          <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
+          <td><a href="<?php echo document::href_ilink('vmods/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['filename']; ?></a></td>
+          <td><?php echo $vmod['title']; ?></td>
+          <td><?php echo $vmod['version']; ?></td>
+          <td><?php echo $vmod['author']; ?></td>
+          <td><a href="<?php echo document::href_ilink('vmods/test', ['vmod' => $vmod['filename']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+          <td><a href="<?php echo document::href_ilink('vmods/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink('vmods/download', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink('vmods/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink('vmods/edit_vmod', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <?php if ($vmods) { ?>
+    <?php if ($vmods) { ?>
+    <div class="card-body">
       <ul class="list-inline">
         <li>
           <div class="btn-group">
@@ -166,12 +166,15 @@
         <li>
           <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
         </li>
-      </p>
-      <?php } ?>
+      </ul>
+    </div>
+    <?php } ?>
 
-    <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_draw_form_end(); ?>
 
-    <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>
+  <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>
+
+    <div class="card-body">
       <div class="form-group" style="max-width: 320px;">
         <label><?php echo language::translate('title_upload_new_vmod', 'Upload a New vMod'); ?> (*.xml)</label>
         <div class="input-group">
@@ -179,6 +182,7 @@
           <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
         </div>
       </div>
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+    </div>
+
+  <?php echo functions::form_draw_form_end(); ?>
 </div>

@@ -45,49 +45,47 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-          <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th></th>
-          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
-          <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
-          <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
-          <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-          <th>&nbsp;</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <?php foreach ($order_statuses as $order_status) { ?>
+    <table class="table table-striped table-hover data-table">
+      <thead>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
-          <td><?php echo $order_status['id']; ?></td>
-          <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
-          <td><a href="<?php echo document::href_ilink('orders/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
-          <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
-          <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo $order_status['priority']; ?></td>
-          <td class="text-right"><a href="<?php echo document::href_ilink('orders/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-        </tr>
-        <?php } ?>
-      </tbody>
+        <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+        <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th></th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
+        <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
+        <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
+        <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
 
-      <tfoot>
-        <tr>
-        <td colspan="9"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
-        </tr>
-      </tfoot>
-    </table>
+    <tbody>
+      <?php foreach ($order_statuses as $order_status) { ?>
+      <tr>
+        <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
+        <td><?php echo $order_status['id']; ?></td>
+        <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
+        <td><a href="<?php echo document::href_ilink('orders/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
+        <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+        <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
+        <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+        <td class="text-center"><?php echo $order_status['priority']; ?></td>
+        <td class="text-right"><a href="<?php echo document::href_ilink('orders/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+      </tr>
+      <?php } ?>
+    </tbody>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+    <tfoot>
+      <tr>
+      <td colspan="9"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

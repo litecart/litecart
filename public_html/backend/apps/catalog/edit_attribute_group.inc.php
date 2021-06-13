@@ -132,7 +132,6 @@
           </tr>
         </tfoot>
       </table>
-
     </div>
 
     <div class="card-action">

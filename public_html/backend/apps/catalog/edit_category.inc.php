@@ -111,7 +111,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label><?php echo language::translate('title_status', 'Status'); ?></label>
-                <?php echo functions::form_draw_toggle('status', 'e/d', isset($_POST['status']) ? $_POST['status'] : '0'); ?>
+                <?php echo functions::form_draw_toggle('status', 'e/d', true); ?>
               </div>
 
               <div class="form-group">
@@ -251,12 +251,6 @@
               </tr>
               <?php } ?>
             </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="2">
-                </td>
-              </tr>
-            </tfoot>
           </table>
 
           <div class="input-group" style="max-width: 320px;">
@@ -325,7 +319,7 @@
                + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
                + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
                + '  <td>new_attribute_group_name</td>'
-               + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true)); ?></td>'
                + '  <td class="text-right">'
                + '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
                + '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'

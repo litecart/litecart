@@ -62,44 +62,42 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('users_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('users_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th class="main"><?php echo language::translate('title_username', 'Username'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th class="main"><?php echo language::translate('title_username', 'Username'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($users as $user) { ?>
-          <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : ''; ?>">
-            <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($user['status'] ? 'on' : 'off'); ?></td>
-            <td><a href="<?php echo document::href_ilink('users/edit_user', ['user_id' => $user['id']]); ?>"><?php echo $user['username']; ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('users/edit_user', ['user_id' => $user['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php }?>
-        </tbody>
+      <tbody>
+        <?php foreach ($users as $user) { ?>
+        <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($user['status'] ? 'on' : 'off'); ?></td>
+          <td><a href="<?php echo document::href_ilink('users/edit_user', ['user_id' => $user['id']]); ?>"><?php echo $user['username']; ?></a></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('users/edit_user', ['user_id' => $user['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php }?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="4"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="4"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+    <div class="btn-group">
+      <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+      <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

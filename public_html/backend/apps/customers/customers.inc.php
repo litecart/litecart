@@ -101,52 +101,50 @@
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('customers_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('customers_form', 'post'); ?>
 
-      <table class="table table-striped table-hover table-sortable data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
-            <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th data-sort="company" class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
-            <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover table-sortable data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
+          <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th data-sort="company" class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
+          <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($customers as $customer) { ?>
-          <tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : ''; ?>">
-            <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
-            <td><?php echo $customer['id']; ?></td>
-            <td><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
-            <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
-            <td><?php echo $customer['company']; ?></td>
-            <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($customers as $customer) { ?>
+        <tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
+          <td><?php echo $customer['id']; ?></td>
+          <td><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
+          <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
+          <td><?php echo $customer['company']; ?></td>
+          <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="8"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="8"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+    <div class="btn-group">
+      <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+      <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>

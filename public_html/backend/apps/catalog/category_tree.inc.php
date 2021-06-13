@@ -244,21 +244,20 @@
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('catalog_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('catalog_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
 <?php
   $num_category_rows = 0;
   $num_product_rows = 0;
@@ -322,24 +321,24 @@
           $warning = $e->getMessage();
         }
 ?>
-          <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
-            <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
-            <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-            <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
-            <td><?php echo '<img src="'. document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
-            <td><a href="<?php echo document::href_ilink('frontend:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-          </tr>
+        <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
+          <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
+          <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
+          <td><?php echo '<img src="'. document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink('frontend:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+          <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
 <?php
       }
     }
 ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="6"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-          </tr>
-        </tfoot>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+        </tr>
+      </tfoot>
 <?php
 
   } else {
@@ -489,47 +488,46 @@
 
     echo $category_iterator(0, 1);
 ?>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="6"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-          </tr>
-        </tfoot>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+        </tr>
+      </tfoot>
 <?php
   }
 ?>
-      </table>
+    </table>
 
-      <p>
-        <ul class="list-inline">
-          <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-          <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-            </div>
-          </li>
-          <li>
-            <div>
-              <?php echo functions::form_draw_category_field('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?>
-            </div>
-          </li>
-          <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?>
-              <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
-              <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
-            </div>
-          </li>
-          <li>
-            <div class="btn-group">
-              <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
-              <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-            </div>
-          </li>
-        </ul>
-      </p>
+    <div class="card-body">
+      <ul class="list-inline">
+        <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          </div>
+        </li>
+        <li>
+          <div>
+            <?php echo functions::form_draw_category_field('category_id', true); ?>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?>
+            <?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?>
+            <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?>
+            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+          </div>
+        </li>
+      </ul>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>
