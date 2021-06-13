@@ -50,6 +50,10 @@ ErrorDocument 500 "Internal Server Error"
   RewriteCond %{REQUEST_URI} !\.(css|eot|gif|ico|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?.*?)?$ [NC]
   RewriteRule ^ - [R=403,L]
 
+  # Remove bogus URL query parameters without values (MSNBot)
+  RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$
+  RewriteRule ^(.*)$ $1 [R=301,L]
+
   # Web path to catalog root
   RewriteBase {BASE_DIR}
 

@@ -469,6 +469,10 @@
                    . '  RewriteCond %{REQUEST_URI} !/handlers/ [NC]' . PHP_EOL
                    . '  RewriteRule ^ - [R=403,L]' . PHP_EOL
                    . PHP_EOL
+                   . '  # Remove bogus URL query parameters without values (MSNBot)'. PHP_EOL
+                   . '  RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$' . PHP_EOL
+                   . '  RewriteRule ^(.*)$ $1 [R=301,L]' . PHP_EOL
+                   . PHP_EOL
                    . '  # Web path to catalog root' . PHP_EOL,
       ],
       [
