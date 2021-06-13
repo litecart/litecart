@@ -85,8 +85,10 @@
   </div>
 
   <div class="card-body table-responsive">
+
     <div class="row">
       <div class="col-md-6">
+
         <table class="table table-striped table-hover data-table">
           <tbody>
             <tr>
@@ -107,8 +109,11 @@
             </tr>
           </tbody>
         </table>
+
       </div>
+
       <div class="col-md-6">
+
         <table class="table table-striped table-hover data-table">
           <tbody>
             <tr>
@@ -129,6 +134,7 @@
             </tr>
           </tbody>
         </table>
+
       </div>
     </div>
   </div>

@@ -150,7 +150,7 @@
 </div>
 
 <script>
-  $('#default-menu .search').click(function(){
+  $('#site-menu .search').click(function(){
     $(this).find('input[name="query"]').focus();
   });
 </script>
