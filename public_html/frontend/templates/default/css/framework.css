@@ -1886,6 +1886,15 @@ ul.list-inline li {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.placeholder {
+  display: grid;
+  text-align: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #666;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
 /* Tables - Bootstrap Compatible */
 .table {
   width: 100%;

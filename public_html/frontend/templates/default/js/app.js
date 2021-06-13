@@ -332,10 +332,7 @@
 
       this.settings = $.extend({
         aspectRatio: "1:1",
-        backgroundColor: "#fff"
       }, options, this.$element.data());
-
-      this.$element.css('backgroundColor', this.settings.backgroundColor);
 
       this.refresh = function(){
         var width = this.$element.width(),
