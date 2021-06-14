@@ -21,7 +21,7 @@
 
   document::$snippets['title'][] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product');
 
-  breadcrumbs::add(language::translate('title_catalog', 'Catalog'), document::ilink('catalog/catalog'));
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'), document::ilink('catalog/category_tree'));
   breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'));
 
   if (isset($_POST['save'])) {
@@ -104,7 +104,7 @@
       $product->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('catalog/catalog', ['category_id' => $_POST['categories'][0]]));
+      header('Location: '. document::ilink('catalog/category_tree', ['category_id' => $_POST['categories'][0]]));
       exit;
 
     } catch (Exception $e) {
@@ -120,7 +120,7 @@
       $product->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('catalog/catalog', ['category_id' => $_POST['categories'][0]]));
+      header('Location: '. document::ilink('catalog/category_tree', ['category_id' => $_POST['categories'][0]]));
       exit;
 
     } catch (Exception $e) {
@@ -651,8 +651,8 @@
 
       <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
         <?php echo (isset($product->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
