@@ -9,7 +9,6 @@
 
   .card-heading {
     padding: 2em;
-    padding-bottom: 1em;
     color: var(--card-heading-text-color);
     background-color: var(--card-heading-background-color);
     border-bottom: 0px solid var(--card-border-color);
@@ -19,11 +18,13 @@
       font-weight: bold;
       font-size: 1.5rem;
     }
+    + .card-body {
+      padding-top: 1em;
+    }
   }
 
   .card-body {
     padding: 2em;
-    padding-top: 1em;
   }
 
   .card-footer {
@@ -32,6 +33,7 @@
     border-top: 1px solid var(--card-border-color);
     border-bottom-right-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
+    box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, .25);
   }
 }
 
