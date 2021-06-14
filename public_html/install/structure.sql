@@ -40,6 +40,24 @@ CREATE TABLE IF NOT EXISTS `lc_attribute_values_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_banners` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`status` TINYINT(1) NOT NULL DEFAULT '0',
+	`name` VARCHAR(64) NOT NULL DEFAULT '',
+	`languages` VARCHAR(64) NOT NULL DEFAULT '',
+	`html` TEXT NOT NULL DEFAULT '',
+	`image` VARCHAR(64) NOT NULL DEFAULT '',
+	`link` VARCHAR(256) NOT NULL DEFAULT '',
+	`keywords` VARCHAR(256) NOT NULL DEFAULT '',
+	`total_views` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`total_clicks` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`date_valid_from` TIMESTAMP NULL DEFAULT NULL,
+	`date_valid_to` TIMESTAMP NULL DEFAULT NULL,
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_brands` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `status` TINYINT(1) NOT NULL DEFAULT '0',

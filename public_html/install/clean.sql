@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS `lc_attribute_values`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_attribute_values_info`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_banners`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_cart_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories`;
