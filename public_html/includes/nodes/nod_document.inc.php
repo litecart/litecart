@@ -259,10 +259,28 @@
 
     // Define some resources for preloading
       if (preg_match_all('#<(img|link|script)[^>]+>#', $GLOBALS['output'], $matches)) {
-        foreach ($matches[0] as $match) {
-          if (preg_match('#(https?:)?//(?!'. preg_quote($_SERVER['HTTP_HOST'], '#') .')[0-9a-z_=/\-\.\?]+#is', $match, $m)) {
-            header('Link: <'.$m[0].'>; rel=preload', false);
+
+        $preloads = [];
+        foreach ($matches[0] as $key => $match) {
+
+          if (!preg_match('#(?<==")(https?:)?//[^"]+(?=")#is', $match, $m)) continue;
+
+          switch ($matches[1][$key]) {
+            case 'img':
+              $preloads[$m[0]] = 'image';
+              break;
+            case 'link':
+              if (!preg_match('#stylesheet#', $m[0])) continue 2;
+              $preloads[$m[0]] = 'style';
+              break;
+            case 'script':
+              $preloads[$m[0]] = 'script';
+              break;
           }
+        }
+
+        foreach ($preloads as $link => $type) {
+          header('Link: <'.$link.'>; rel=preload; as='.$type, false);
         }
       }
 
