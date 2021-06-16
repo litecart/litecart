@@ -167,6 +167,10 @@
     </fieldset>
   </div>
 
+  <?php if (!empty(customer::$data['id'])) { ?>
+  <p><?php echo functions::form_draw_checkbox('save_to_account', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_save_details_to_my_account', 'Save details to my account'); ?></p>
+  <?php } ?>
+
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div class="account">
 

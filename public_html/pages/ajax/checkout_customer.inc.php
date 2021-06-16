@@ -81,6 +81,14 @@
         }
       }
 
+    // Save details to account
+      if (!empty(customer::$data['id']) && !empty($_POST['save_to_account'])) {
+        $customer = new ent_customer(customer::$data['id']);
+        $customer->data = array_replace_recursive(array_intersect_key(customer::$data, $customer->data));
+        $customer->save();
+      }
+
+    // Create account
       if (settings::get('accounts_enabled') && empty(customer::$data['id'])) {
         if (!empty($_POST['create_account']) && !empty(customer::$data['email'])) {
           if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
