@@ -442,7 +442,7 @@
       }
 
       $order_modules = new mod_order();
-      $order_modules->update($this->data);
+      $order_modules->update($this);
 
       $this->previous = $this->data;
 
