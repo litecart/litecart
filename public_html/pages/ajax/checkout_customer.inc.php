@@ -56,7 +56,7 @@
       );
 
       foreach ($fields as $field) {
-        if (isset($_POST[$field])) customer::$data[$field] = $_POST[$field];
+        customer::$data[$field] = isset($_POST[$field]) ? $_POST[$field] : '';
       }
 
     // Shipping address
@@ -75,17 +75,9 @@
 
       foreach ($fields as $field) {
         if (!empty(customer::$data['different_shipping_address'])) {
-          if (isset($_POST['shipping_address'][$field])) {
-            customer::$data['shipping_address'][$field] = $_POST['shipping_address'][$field];
-          } else {
-            customer::$data['shipping_address'][$field] = null;
-          }
+          customer::$data['shipping_address'][$field] = isset($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
         } else {
-          if (isset($_POST[$field])) {
-            customer::$data['shipping_address'][$field] = $_POST[$field];
-          } else {
-            customer::$data['shipping_address'][$field] = null;
-          }
+          customer::$data['shipping_address'][$field] = isset($_POST[$field]) ? $_POST[$field] : '';
         }
       }
 

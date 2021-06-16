@@ -43,7 +43,7 @@
   </section>
 
   <section id="box-edit-details" class="box">
-    <h1 class="title"><?php echo language::translate('title_customer_profile', 'Customer Profile'); ?></h1>
+    <h1 class="title"><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h1>
 
     <?php echo functions::form_draw_form_begin('customer_details_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
 
