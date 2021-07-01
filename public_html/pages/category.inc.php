@@ -67,6 +67,7 @@
         'original' => $category->image ? 'images/' . $category->image : '',
         'thumbnail_1x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
+        'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
         'viewport' => array(
           'width' => $width,
           'height' => $height,

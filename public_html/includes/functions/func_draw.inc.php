@@ -90,6 +90,7 @@
         'original' => ltrim($product['image'] ? 'images/' . $product['image'] : '', '/'),
         'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+        'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
