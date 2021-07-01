@@ -1381,12 +1381,17 @@ ul.list-inline li {
 .nav-tabs {
   background: #f3f3f3;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  padding-bottom: 0;
 }
 .nav-tabs > li > a {
   margin-right: 2px;
   line-height: 1.42857143;
   border-radius: 4px 4px 0 0;
   padding: 10px 20px;
+}
+.nav-tabs > li:hover a {
+  background: rgba(255, 255, 255, 0.5);
 }
 .nav-tabs > li.active a {
   background: #fff;

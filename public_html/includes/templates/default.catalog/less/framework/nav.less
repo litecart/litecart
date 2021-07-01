@@ -101,12 +101,17 @@
 .nav-tabs {
   background: #f3f3f3;
   border-bottom: 1px solid @default-border-color;
+  padding: @default-gutter-size/4;
+  padding-bottom: 0;
   > li {
     > a {
       margin-right: 2px;
       line-height: 1.42857143;
       border-radius: @default-border-radius @default-border-radius 0 0;
       padding: @default-gutter-size/2 @default-gutter-size;
+    }
+    &:hover a {
+      background: rgba(255, 255, 255, .5);
     }
     &.active a {
       background: #fff;
