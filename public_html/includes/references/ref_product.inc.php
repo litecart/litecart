@@ -318,7 +318,7 @@
                 }
               }
 
-              $option['values'][] = $value;
+              $option['values'][$value['id']] = $value;
             }
 
             if ($option['sort'] == 'alphabetically') {
