@@ -113,6 +113,7 @@
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters. */
 		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
+		seamless:       null,                  /* Enable or disable seamless mode. */
 		width:          '',                    /* Specify width of lightbox. */
 		height:         '',                    /* Specify width of lightbox. */
 		maxWidth:       '',                    /* Specify max-width of lightbox. */
@@ -132,7 +133,7 @@
 				css = !self.resetCss ? self.namespace : self.namespace+'-reset', /* by adding -reset to the classname, we reset all the default css */
 				$background = $(self.background || [
 					'<div class="'+css+'-loading '+css+'">',
-						'<div class="'+css+'-content">',
+						'<div class="'+css+'-content'+ (self.seamless ? ' featherlight-seamless' : '') +'">',
 							'<div class="'+self.namespace+'-inner">' + self.loading + '</div>',
 						'</div>',
 					'</div>'].join('')),
