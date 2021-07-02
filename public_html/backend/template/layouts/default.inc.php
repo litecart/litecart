@@ -133,10 +133,10 @@
     var now = new Date();
     var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
     if ($(this).val() == 1) {
-      document.cookie = 'dark_mode=1;expires=0';
+      document.cookie = 'dark_mode=1;path=/;expires=<?php echo date('r', strtotime('+ 3 months')); ?>';
       $('body').addClass('dark-mode');
     } else {
-      document.cookie = 'dark_mode=0;expires=0';
+      document.cookie = 'dark_mode=0;path=/;expires=<?php echo date('r', strtotime('+ 3 months')); ?>';
       $('body').removeClass('dark-mode');
     }
   });

@@ -10,7 +10,7 @@
 {{head_tags}}
 {{style}}
 </head>
-<body>
+<body<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
 
 {{content}}
 

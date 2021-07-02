@@ -87,7 +87,7 @@
       $currency->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('currencies/currencies']));
+      header('Location: '. document::ilink('currencies/currencies'));
       exit;
 
     } catch (Exception $e) {

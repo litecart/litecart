@@ -138,8 +138,7 @@ textarea[name="html"] {
 
       <div class="form-group">
         <label><?php echo language::translate('title_banner_pools', 'Banner Pools'); ?> / <?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-        <?php echo functions::form_draw_text_field('keywords', true); ?>
-        <div><em><?php echo language::translate('description_keyword_triggers', 'A comma separated list of keywords that will trigger the banner to display.'); ?></em></div>
+        <?php echo functions::form_draw_text_field('keywords', true, 'placeholder="banner1,banner2,banner3"'); ?>
       </div>
 
       <div class="row">

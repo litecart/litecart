@@ -25,10 +25,10 @@
     }
   }
 
-  if (isset($_POST['duplicate'])) {
+  if (isset($_POST['clone'])) {
 
     try {
-      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_duplicate_category', 'You can\'t duplicate a category'));
+      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_clone_category', 'You can\'t clone a category'));
       if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
       if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
@@ -69,7 +69,7 @@
         $product->save();
       }
 
-      notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
+      notices::add('success', sprintf(language::translate('success_cloned_d_products', 'Cloned %d products'), count($_POST['products'])));
       header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 
@@ -271,7 +271,7 @@
         </div>
       </li>
       <li>
-        <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+        <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'fa-copy'); ?>
       </li>
       <li>
         <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
