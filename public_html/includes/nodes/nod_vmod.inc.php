@@ -72,8 +72,10 @@
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($original_file, $modified_file, $checksum) = explode(';', $line);
-          self::$_checked[$original_file] = FS_DIR_STORAGE . $modified_file;
-          self::$_checksums[$original_file] = $checksum;
+          if (filemtime(FS_DIR_STORAGE . $modified_file) > filemtime(FS_DIR_APP . $original_file)) {
+            self::$_checked[$original_file] = FS_DIR_STORAGE . $modified_file;
+            self::$_checksums[$original_file] = $checksum;
+          }
         }
       } else {
         file_put_contents($checked_file, '', LOCK_EX);
@@ -123,7 +125,8 @@
       }
 
       $short_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_STORAGE . 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '—', $short_file);
+      $modified_file = FS_DIR_STORAGE . 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $short_file);
+      $modified_short_file = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $short_file);
 
     // Returned an already checked file
       if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
@@ -244,7 +247,7 @@
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
-      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_short_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
 
