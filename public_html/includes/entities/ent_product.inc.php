@@ -633,7 +633,7 @@
         }
       }
 
-    // If stock quantity adjustent is set
+    // If stock quantity adjustment is set
       if (!empty($this->data['options_stock'])) {
 
         foreach (array_keys($this->data['options_stock']) as $key) {
@@ -644,7 +644,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_PRODUCTS ."products
+          "update ". DB_TABLE_PREFIX ."products
           set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
           where id = ". (int)$this->data['id'] ."
           limit 1;"
