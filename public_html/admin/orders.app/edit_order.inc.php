@@ -821,17 +821,17 @@
     <div class="row">
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_sku', 'SKU'); ?></label>
-        <?php echo functions::form_draw_text_field('sku', true); ?>
+        <?php echo functions::form_draw_text_field('sku', ''); ?>
       </div>
 
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_gtin', 'GTIN'); ?></label>
-        <?php echo functions::form_draw_text_field('gtin', true); ?>
+        <?php echo functions::form_draw_text_field('gtin', ''); ?>
       </div>
 
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_taric', 'TARIC'); ?></label>
-        <?php echo functions::form_draw_text_field('taric', true); ?>
+        <?php echo functions::form_draw_text_field('taric', ''); ?>
       </div>
     </div>
 
@@ -839,21 +839,21 @@
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_draw_decimal_field('weight', true, 2, 0); ?>
-          <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?></span>
+          <?php echo functions::form_draw_decimal_field('weight', '', 2, 0); ?>
+          <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', settings::get('store_weight_class'), false, 'style="width: auto;"'); ?></span>
         </div>
       </div>
 
       <div class="form-group col-md-8">
         <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_draw_decimal_field('dim_x', true, 1, 0); ?>
+          <?php echo functions::form_draw_decimal_field('dim_x', '', 1, 0); ?>
           <span class="input-group-addon">x</span>
-          <?php echo functions::form_draw_decimal_field('dim_y', true, 1, 0); ?>
+          <?php echo functions::form_draw_decimal_field('dim_y', '', 1, 0); ?>
           <span class="input-group-addon">x</span>
-          <?php echo functions::form_draw_decimal_field('dim_z', true, 1, 0); ?>
+          <?php echo functions::form_draw_decimal_field('dim_z', '', 1, 0); ?>
           <span class="input-group-addon">
-            <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
+            <?php echo functions::form_draw_length_classes_list('dim_class', settings::get('store_length_class'), false, 'style="width: auto;"'); ?>
           </span>
         </div>
       </div>
@@ -1256,6 +1256,9 @@
       });
       addItem(item);
     }
+
+    $(modal).find(':input[name="weight_class"]').val('<?php echo settings::get('store_weight_class'); ?>');
+    $(modal).find(':input[name="length_class"]').val('<?php echo settings::get('store_length_class'); ?>');
 
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
