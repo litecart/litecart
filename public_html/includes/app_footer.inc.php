@@ -1,21 +1,15 @@
 <?php
 
 // Store the captured output buffer
-  $GLOBALS['content'] = ob_get_clean();
+  document::$snippets['content'] = ob_get_clean();
 
 // Run after capture processes
   event::fire('after_capture');
 
-// Stitch content
+// Stitch with layout snippets
   $_page = new ent_view();
-  $_page->snippets = ['content' => $GLOBALS['content']];
-  $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
-  unset($GLOBALS['content']);
-
-// Stitch global snippets
   $_page->snippets = document::$snippets;
-  $_page->html = $GLOBALS['output'];
-  $GLOBALS['output'] = $_page->stitch(null, true);
+  $GLOBALS['output'] = (string)$_page->stitch('layouts/'.document::$layout, true);
 
 // Run before output processes
   event::fire('before_output');
