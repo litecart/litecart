@@ -33,7 +33,7 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_CART_ITEMS ."
+        "delete from ". DB_TABLE_PREFIX ."cart_items
         where date_created < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
       );
 
@@ -95,7 +95,7 @@
       self::reset();
 
       database::query(
-        "delete from ". DB_TABLE_CART_ITEMS ."
+        "delete from ". DB_TABLE_PREFIX ."cart_items
         where cart_uid = '". database::input(self::$data['uid']) ."';"
       );
     }
@@ -106,7 +106,7 @@
 
       if (!empty(customer::$data['id'])) {
         database::query(
-          "update ". DB_TABLE_CART_ITEMS ." set
+          "update ". DB_TABLE_PREFIX ."cart_items set
           cart_uid = '". database::input(self::$data['uid']) ."',
           customer_id = ". (int)customer::$data['id'] ."
           where cart_uid = '". database::input(self::$data['uid']) ."'
@@ -115,7 +115,7 @@
       }
 
       $cart_items_query = database::query(
-        "select * from ". DB_TABLE_CART_ITEMS ."
+        "select * from ". DB_TABLE_PREFIX ."cart_items
         where cart_uid = '". database::input(self::$data['uid']) ."';"
       );
 
@@ -124,7 +124,7 @@
       // Remove duplicate cart item if present
         if (!empty(self::$items[$item['key']])) {
           database::query(
-            "delete from ". DB_TABLE_CART_ITEMS ."
+            "delete from ". DB_TABLE_PREFIX ."cart_items
             where cart_uid = '". database::input(self::$data['uid']) ."'
             and id = ". (int)$item['id'] ."
             limit 1;"
@@ -387,7 +387,7 @@
 
       if (!empty(self::$items[$item_key]['id'])) {
         database::query(
-          "update ". DB_TABLE_CART_ITEMS ."
+          "update ". DB_TABLE_PREFIX ."cart_items
           set quantity = ". (float)self::$items[$item_key]['quantity'] .",
           date_updated = '". date('Y-m-d H:i:s') ."'
           where cart_uid = '". database::input(self::$data['uid']) ."'
@@ -397,7 +397,7 @@
       } else {
         if (!$force) {
           database::query(
-            "insert into ". DB_TABLE_CART_ITEMS ."
+            "insert into ". DB_TABLE_PREFIX ."cart_items
             (customer_id, cart_uid, `key`, product_id, options, quantity, date_updated, date_created)
             values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", '". database::input(serialize($item['options'])) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
           );
@@ -448,7 +448,7 @@
       if (!isset(self::$items[$item_key])) return;
 
       database::query(
-        "delete from ". DB_TABLE_CART_ITEMS ."
+        "delete from ". DB_TABLE_PREFIX ."cart_items
         where cart_uid = '". database::input(self::$data['uid']) ."'
         and id = ". (int)self::$items[$item_key]['id'] ."
         limit 1;"

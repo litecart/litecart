@@ -51,7 +51,7 @@
           $this->_data['info'] = [];
 
           $query = database::query(
-            "select * from ". DB_TABLE_CATEGORIES_INFO ."
+            "select * from ". DB_TABLE_PREFIX ."categories_info
             where category_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -96,14 +96,14 @@
           $this->_data['products'] = [];
 
           $query = database::query(
-            "select id from ". DB_TABLE_PRODUCTS ."
+            "select id from ". DB_TABLE_PREFIX ."products
             where status
             and id in (
-              select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
               where category_id = ". (int)$this->_data['id'] ."
             )
             and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -141,15 +141,15 @@
           }
 
           $query = database::query(
-            "select count(id) as num_products from ". DB_TABLE_PRODUCTS ."
+            "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
             where status
             and id in (
-              select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
               where category_id = ". $this->_data['id'] ."
               ". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
             )
             and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -167,7 +167,7 @@
           if (empty($this->parent_id)) return;
 
           $query = database::query(
-            "select id from ". DB_TABLE_CATEGORIES ."
+            "select id from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id = ". (int)$this->parent_id ."
             and id != ". (int)$this->_data['id'] ."
@@ -185,7 +185,7 @@
           $this->_data['descendants'] = [];
 
           $categories_query = database::query(
-            "select id, parent_id from ". DB_TABLE_CATEGORIES ."
+            "select id, parent_id from ". DB_TABLE_PREFIX ."categories
             join (select @parent_id := ". $this->_data['id'] .") tmp
             where find_in_set(parent_id, @parent_id)
             and length(@parent_id := concat(@parent_id, ',', id));"
@@ -203,7 +203,7 @@
           $this->_data['subcategories'] = [];
 
           $query = database::query(
-            "select id from ". DB_TABLE_CATEGORIES ."
+            "select id from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id = ". (int)$this->_data['id'] ."
             order by priority;"
@@ -220,7 +220,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_TABLE_CATEGORIES ."
+            "select * from ". DB_TABLE_PREFIX ."categories
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

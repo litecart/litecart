@@ -122,18 +122,18 @@
 
 // Delete Deprecated Modules
   $module_types_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS ."
+    "select * from ". DB_TABLE_PREFIX ."settings
     where `key` in ('order_action_modules', 'order_success_modules');"
   );
   while ($module_type = database::fetch($module_types_query)) {
     foreach (explode(';', $module_type['value']) as $module) {
       database::query(
-        "delete from ". DB_TABLE_SETTINGS ."
+        "delete from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module) ."';"
       );
     }
     database::query(
-      "delete from ". DB_TABLE_SETTINGS ."
+      "delete from ". DB_TABLE_PREFIX ."settings
       where `key` = '". database::input($module_type['key']) ."'
       limit 1;"
     );
@@ -141,13 +141,13 @@
 
 // Migrate Modules
   database::query(
-    "update ". DB_TABLE_SETTINGS ."
+    "update ". DB_TABLE_PREFIX ."settings
     set `key` = 'job_modules'
     where `key` = 'jobs_modules';"
   );
 
   $installed_modules_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS ."
+    "select * from ". DB_TABLE_PREFIX ."settings
     where `key` in ('job_modules', 'customer_modules', 'order_modules', 'order_total_modules', 'shipping_modules', 'payment_modules');"
   );
 
@@ -155,7 +155,7 @@
     foreach (explode(';', $installed_modules['value']) as $module) {
 
       $module_query = database::query(
-        "select * from ". DB_TABLE_SETTINGS ."
+        "select * from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module) ."'
         limit 1;"
       );
@@ -188,7 +188,7 @@
       );
 
       database::query(
-        "delete from ". DB_TABLE_SETTINGS ."
+        "delete from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module['key']) ."'
         limit 1;"
       );
@@ -197,7 +197,7 @@
 
 // Collect all languages
   $languages_query = database::query(
-    "select * from ". DB_TABLE_LANGUAGES ."
+    "select * from ". DB_TABLE_PREFIX ."languages
     where status
     order by priority, name;"
   );
@@ -209,7 +209,7 @@
 
 // Update slides
   $slides_query = database::query(
-    "select * from ". DB_TABLE_SLIDES .";"
+    "select * from ". DB_TABLE_PREFIX ."slides;"
   );
 
   while ($slide = database::fetch($slides_query)) {
@@ -229,4 +229,4 @@
     }
   }
 
-  database::query("alter table ". DB_TABLE_SLIDES ." change column `language_code` `languages` varchar(32) not null, drop column `caption`, drop column `link`;");
+  database::query("alter table ". DB_TABLE_PREFIX ."slides change column `language_code` `languages` varchar(32) not null, drop column `caption`, drop column `link`;");

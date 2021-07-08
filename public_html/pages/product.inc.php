@@ -35,7 +35,7 @@
   }
 
   database::query(
-    "update ". DB_TABLE_PRODUCTS ."
+    "update ". DB_TABLE_PREFIX ."products
     set views = views + 1
     where id = ". (int)$_GET['product_id'] ."
     limit 1;"

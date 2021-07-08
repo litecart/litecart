@@ -13,8 +13,8 @@
   // Categories
     $categories_query = database::query(
       "select c.id, ci.name
-      from ". DB_TABLE_CATEGORIES ." c
-      left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+      from ". DB_TABLE_PREFIX ."categories c
+      left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
       where c.status
       and c.parent_id = 0
       order by c.priority asc, ci.name asc;"
@@ -41,7 +41,7 @@
   // Manufacturers
     $manufacturers_query = database::query(
       "select m.id, m.name
-      from ". DB_TABLE_MANUFACTURERS ." m
+      from ". DB_TABLE_PREFIX ."manufacturers m
       where status
       and featured
       order by m.name asc;"
@@ -66,8 +66,8 @@
     }
 
     $pages_query = database::query(
-      "select p.id, pi.title from ". DB_TABLE_PAGES ." p
-      left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
       and find_in_set('information', dock)
       order by p.priority, pi.title;"
@@ -81,8 +81,8 @@
     }
 
     $pages_query = database::query(
-      "select p.id, pi.title from ". DB_TABLE_PAGES ." p
-      left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       where status
       and find_in_set('customer_service', dock)
       order by p.priority, pi.title;"

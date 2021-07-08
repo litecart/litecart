@@ -18,7 +18,7 @@
         ini_set('display_errors', 'On');
 
         database::query(
-          "update ". DB_TABLE_USERS ."
+          "update ". DB_TABLE_PREFIX ."users
           set date_active = '". date('Y-m-d H:i:s') ."'
           where id = ". (int)self::$data['id'] ."
           limit 1;"
@@ -31,7 +31,7 @@
         list($username, $key) = explode(':', $_COOKIE['remember_me']);
 
         $user_query = database::query(
-          "select * from ". DB_TABLE_USERS ."
+          "select * from ". DB_TABLE_PREFIX ."users
           where lower(username) = lower('". database::input($username) ."')
           and status
           and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
@@ -47,7 +47,7 @@
             self::load($user['id']);
 
             database::query(
-              "update ". DB_TABLE_USERS ."
+              "update ". DB_TABLE_PREFIX ."users
               set
                 last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
                 last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
@@ -66,14 +66,14 @@
 
             if (++$user['login_attempts'] < 3) {
               database::query(
-                "update ". DB_TABLE_USERS ."
+                "update ". DB_TABLE_PREFIX ."users
                 set login_attempts = login_attempts + 1
                 where id = ". (int)$user['id'] ."
                 limit 1;"
               );
             } else {
               database::query(
-                "update ". DB_TABLE_USERS ."
+                "update ". DB_TABLE_PREFIX ."users
                 set login_attempts = 0,
                 date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
                 where id = ". (int)$user['id'] ."
@@ -95,7 +95,7 @@
       session::$data['user'] = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_USERS .";"
+        "show fields from ". DB_TABLE_PREFIX ."users;"
       );
       while ($field = database::fetch($fields_query)) {
         session::$data['user'][$field['Field']] = null;
@@ -110,7 +110,7 @@
       self::reset();
 
       $user_query = database::query(
-        "select * from ". DB_TABLE_USERS ."
+        "select * from ". DB_TABLE_PREFIX ."users
         where id = ". (int)$user_id ."
         limit 1;"
       );

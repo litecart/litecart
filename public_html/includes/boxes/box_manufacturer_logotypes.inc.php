@@ -4,7 +4,7 @@
   if (cache::capture($box_manufacturer_logotypes_cache_token)) {
 
     $manufacturers_query = database::query(
-      "select id, image, name from ". DB_TABLE_MANUFACTURERS ."
+      "select id, image, name from ". DB_TABLE_PREFIX ."manufacturers
       where status
       and featured
       and image != ''

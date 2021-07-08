@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_TAX_CLASSES .";"
+        "show fields from ". DB_TABLE_PREFIX ."tax_classes;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -35,7 +35,7 @@
       $this->reset();
 
       $tax_class_query = database::query(
-        "select * from ". DB_TABLE_TAX_CLASSES ."
+        "select * from ". DB_TABLE_PREFIX ."tax_classes
         where ". (preg_match('#^[0-9]+$#', $tax_class_id) ? "id = ". (int)$tax_class_id : "code = '". database::input($tax_class_id) ."'") ."
         limit 1;"
       );
@@ -53,7 +53,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_TAX_CLASSES ."
+          "insert into ". DB_TABLE_PREFIX ."tax_classes
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -61,7 +61,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_TAX_CLASSES ."
+        "update ". DB_TABLE_PREFIX ."tax_classes
         set
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
@@ -79,7 +79,7 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_TAX_CLASSES ."
+        "delete from ". DB_TABLE_PREFIX ."tax_classes
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

@@ -33,7 +33,7 @@
         $line++;
 
       // Find page
-        if (!empty($row['id']) && $page = database::fetch(database::query("select id from ". DB_TABLE_PAGES ." where id = ". (int)$row['id'] ." limit 1;"))) {
+        if (!empty($row['id']) && $page = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."pages where id = ". (int)$row['id'] ." limit 1;"))) {
           $page = new ent_page($page['id']);
         }
 
@@ -59,7 +59,7 @@
 
           if (!empty($row['id'])) {
             database::query(
-              "insert into ". DB_TABLE_PAGES ." (id, date_created)
+              "insert into ". DB_TABLE_PREFIX ."pages (id, date_created)
               values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
             $page = new ent_page($row['id']);
@@ -109,7 +109,7 @@
 
       $csv = [];
 
-      $pages_query = database::query("select id from ". DB_TABLE_PAGES ." order by id;");
+      $pages_query = database::query("select id from ". DB_TABLE_PREFIX ."pages order by id;");
       while ($page = database::fetch($pages_query)) {
         $page = new ref_page($page['id'], $_POST['language_code']);
 

@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_GEO_ZONES .";"
+        "show fields from ". DB_TABLE_PREFIX ."geo_zones;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -37,7 +37,7 @@
       $this->reset();
 
       $geo_zone_query = database::query(
-        "select * from ". DB_TABLE_GEO_ZONES ."
+        "select * from ". DB_TABLE_PREFIX ."geo_zones
         where ". (preg_match('#^[0-9]+$#', $geo_zone_id) ? "id = ". (int)$geo_zone_id : "code = '". database::input($geo_zone_id) ."'") ."
         limit 1;"
       );
@@ -49,9 +49,9 @@
       }
 
       $zones_to_geo_zones_query = database::query(
-        "select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_ZONES_TO_GEO_ZONES ." z2gz
-        left join ". DB_TABLE_COUNTRIES ." c on (c.iso_code_2 = z2gz.country_code)
-        left join ". DB_TABLE_ZONES ." z on (z.code = z2gz.zone_code)
+        "select z2gz.*, c.name as country_name, z.name as zone_name from ". DB_TABLE_PREFIX ."zones_to_geo_zones z2gz
+        left join ". DB_TABLE_PREFIX ."countries c on (c.iso_code_2 = z2gz.country_code)
+        left join ". DB_TABLE_PREFIX ."zones z on (z.code = z2gz.zone_code)
         where geo_zone_id = ". (int)$geo_zone_id ."
         order by c.name, z.name;"
       );
@@ -69,7 +69,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_GEO_ZONES ."
+          "insert into ". DB_TABLE_PREFIX ."geo_zones
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -77,7 +77,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_GEO_ZONES ."
+        "update ". DB_TABLE_PREFIX ."geo_zones
         set
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
@@ -88,7 +88,7 @@
       );
 
       database::query(
-        "delete from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+        "delete from ". DB_TABLE_PREFIX ."zones_to_geo_zones
         where geo_zone_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['zones'], 'id')) ."');"
       );
@@ -98,7 +98,7 @@
 
           if (empty($zone['id'])) {
             database::query(
-              "insert into ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+              "insert into ". DB_TABLE_PREFIX ."zones_to_geo_zones
               (geo_zone_id, date_created)
               values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
@@ -106,7 +106,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+            "update ". DB_TABLE_PREFIX ."zones_to_geo_zones
             set country_code = '". database::input($zone['country_code']) ."',
             zone_code = '". (isset($zone['zone_code']) ? database::input($zone['zone_code']) : '') ."',
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -125,12 +125,12 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+        "delete from ". DB_TABLE_PREFIX ."zones_to_geo_zones
         where geo_zone_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_GEO_ZONES ."
+        "delete from ". DB_TABLE_PREFIX ."geo_zones
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

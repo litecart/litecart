@@ -44,7 +44,7 @@
           $this->_data['zones'] = [];
 
           $query = database::query(
-            "select * from ". DB_TABLE_ZONES ."
+            "select * from ". DB_TABLE_PREFIX ."zones
             where country_code = '". database::input($this->_country_code) ."'
             order by name;"
           );
@@ -61,7 +61,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_TABLE_COUNTRIES ."
+            "select * from ". DB_TABLE_PREFIX ."countries
             where iso_code_2 = '". database::input($this->_country_code) ."'
             limit 1;"
           );
@@ -106,7 +106,7 @@
       if (!is_array($geo_zones)) $geo_zones = [$geo_zones];
 
       $zones_to_geo_zones_query = database::query(
-        "select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+        "select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
         where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
         and (country_code = '' or country_code = '". database::input($this->_country_code) ."')
         ". (!empty($zone_code) ? "and (zone_code = '' or zone_code = '". database::input($zone_code) ."')" : "") ."

@@ -38,7 +38,7 @@
 // Mark as read
   if (!empty($order->data['id'])) {
     database::query(
-      "update ". DB_TABLE_ORDERS ."
+      "update ". DB_TABLE_PREFIX ."orders
       set unread = 0
       where id = ".  (int)$order->data['id'] ."
       limit 1;"

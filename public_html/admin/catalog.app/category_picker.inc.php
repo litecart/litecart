@@ -12,8 +12,8 @@
   }
 
   $query = database::query(
-    "select c.id, ci.name from ". DB_TABLE_CATEGORIES ." c
-    left join ". DB_TABLE_CATEGORIES_INFO ." ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
+    "select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
+    left join ". DB_TABLE_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
     where c.parent_id = ". (!empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : 0) ."
     order by c.priority, ci.name;"
   );

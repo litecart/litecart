@@ -23,7 +23,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_MODULES ." set
+          "update ". DB_TABLE_PREFIX ."modules set
           date_pushed = '". date('Y-m-d H:i:s') ."'
           where module_id = '". database::input($module_id) ."'
           limit 1;"
@@ -48,7 +48,7 @@
                . str_repeat('#', 72) . PHP_EOL;
 
           database::query(
-            "update ". DB_TABLE_MODULES ." set
+            "update ". DB_TABLE_PREFIX ."modules set
             last_log = '". database::input($log) ."'
             where module_id = '". database::input($module_id) ."'
             limit 1;"
@@ -57,7 +57,7 @@
           $output .= $log . PHP_EOL;
 
           database::query(
-            "update ". DB_TABLE_MODULES ." set
+            "update ". DB_TABLE_PREFIX ."modules set
             last_log = '". database::input($log) ."',
             date_processed = '". date('Y-m-d H:i:s') ."'
             where module_id = '". database::input($module_id) ."'

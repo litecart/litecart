@@ -1,7 +1,7 @@
 <?php
 
   $products_query =  database::query(
-    "select id, categories from ". DB_TABLE_PRODUCTS .";"
+    "select id, categories from ". DB_TABLE_PREFIX ."products;"
   );
 
   while ($product = database::fetch($products_query)) {
@@ -11,7 +11,7 @@
     foreach ($categories as $category_id) {
       if ($is_first) {
         database::query(
-          "update ". DB_TABLE_PRODUCTS ." set
+          "update ". DB_TABLE_PREFIX ."products set
           default_category_id = ". (int)$category_id . "
           where id = '". (int)$product['id'] ."'
           limit 1;"
@@ -27,7 +27,7 @@
   }
 
   database::query(
-    "alter table ". DB_TABLE_PRODUCTS ." drop `categories`;"
+    "alter table ". DB_TABLE_PREFIX ."products drop `categories`;"
   );
 
   $deleted_files = [

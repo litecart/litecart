@@ -28,7 +28,7 @@
 
         if (!functions::validate_email($_POST['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
 
-        if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+        if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
           if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
           if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
         }
@@ -91,7 +91,7 @@
     // Create account
       if (settings::get('accounts_enabled') && empty(customer::$data['id'])) {
         if (!empty($_POST['create_account']) && !empty(customer::$data['email'])) {
-          if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
 
             $customer = new ent_customer();
             foreach (array_keys($customer->data) as $key) {
@@ -104,7 +104,7 @@
             $customer->save();
 
             database::query(
-              "update ". DB_TABLE_CUSTOMERS ."
+              "update ". DB_TABLE_PREFIX ."customers
               set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
                   last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
                   last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
@@ -143,7 +143,7 @@
 
   $account_exists = false;
   if (settings::get('accounts_enabled')) {
-    if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
+    if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
       $account_exists = true;
     }
   }

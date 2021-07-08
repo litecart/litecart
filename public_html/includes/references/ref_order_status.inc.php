@@ -47,7 +47,7 @@
         case 'email_message':
 
           $query = database::query(
-            "select * from ". DB_TABLE_ORDER_STATUSES_INFO ."
+            "select * from ". DB_TABLE_PREFIX ."order_statuses_info
             where order_status_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -65,7 +65,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_TABLE_ORDER_STATUSES ."
+            "select * from ". DB_TABLE_PREFIX ."order_statuses
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

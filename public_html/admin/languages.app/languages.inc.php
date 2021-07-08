@@ -38,7 +38,7 @@
   $languages = [];
 
   $languages_query = database::query(
-    "select * from ". DB_TABLE_LANGUAGES ."
+    "select * from ". DB_TABLE_PREFIX ."languages
     order by field(status, 1, -1, 0), priority, name;"
   );
 

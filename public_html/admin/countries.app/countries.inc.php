@@ -36,7 +36,7 @@
   $countries = [];
 
   $countries_query = database::query(
-    "select * from ". DB_TABLE_COUNTRIES ."
+    "select * from ". DB_TABLE_PREFIX ."countries
     order by status desc, name asc;"
   );
 
@@ -82,7 +82,7 @@
             <td><?php echo $country['id']; ?></td>
             <td><?php echo $country['iso_code_2']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>"><?php echo $country['name']; ?></a></td>
-            <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES ." where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
+            <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones where country_code = '". database::input($country['iso_code_2']) ."'")); ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_country', 'country_code' => $country['iso_code_2']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>

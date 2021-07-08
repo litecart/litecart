@@ -32,8 +32,8 @@
       $output = [];
 
       $pages_query = database::query(
-        "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PAGES ." p
-        left join ". DB_TABLE_PAGES_INFO ." pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PREFIX ."pages p
+        left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where p.status
         ". (!empty($parent_id) ? "and p.parent_id = ". (int)$parent_id ."" : "and find_in_set('customer_service', p.dock)") ."
         order by p.priority asc, pi.title asc;"
@@ -52,7 +52,7 @@
 
         if (in_array($page['id'], $current_page_path)) {
           $sub_pages_query = database::query(
-            "select id from ". DB_TABLE_PAGES ."
+            "select id from ". DB_TABLE_PREFIX ."pages
             where parent_id = ". (int)$page['id'] .";"
           );
           if (database::num_rows($sub_pages_query) > 0) {

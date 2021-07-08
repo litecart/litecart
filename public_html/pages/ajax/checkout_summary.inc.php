@@ -18,7 +18,7 @@
 // Resume incomplete order in session
   if (!empty($resume_id)) {
     $order_query = database::query(
-      "select * from ". DB_TABLE_ORDERS ."
+      "select * from ". DB_TABLE_PREFIX ."orders
       where id = ". (int)$resume_id ."
       and order_status_id = 0
       and date_created > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'

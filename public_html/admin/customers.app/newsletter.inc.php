@@ -58,7 +58,7 @@
     }
 
   $customers_query = database::query(
-    "select firstname, lastname, email from ". DB_TABLE_CUSTOMERS ."
+    "select firstname, lastname, email from ". DB_TABLE_PREFIX ."customers
     where newsletter
     order by firstname, lastname;"
   );
@@ -92,7 +92,7 @@
     }
 
   $customers_query = database::query(
-    "select customer_firstname as firstname, customer_lastname as lastname, customer_email as email from ". DB_TABLE_ORDERS ."
+    "select customer_firstname as firstname, customer_lastname as lastname, customer_email as email from ". DB_TABLE_PREFIX ."orders
     where customer_id = 0
     group by customer_email
     order by customer_firstname, customer_lastname;"

@@ -144,7 +144,7 @@
     trigger_error(__METHOD__.'() is deprecated. Use reference::order(id)->public_key', E_USER_DEPRECATED);
 
     $query = database::query(
-      "select public_key from ". DB_TABLE_ORDERS ."
+      "select public_key from ". DB_TABLE_PREFIX ."orders
       where id = ". (int)$order_id ."
       limit 1;"
     );

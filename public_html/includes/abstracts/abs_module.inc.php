@@ -18,7 +18,7 @@
       if (!empty($filter) && !is_array($filter)) $filter = [$filter];
 
       $modules_query = database::query(
-        "select * from ". DB_TABLE_MODULES ."
+        "select * from ". DB_TABLE_PREFIX ."modules
         where type = '". database::input(strtr($type, ['jobs' => 'job'])) ."'
         ". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
       );
@@ -29,7 +29,7 @@
 
         // Remove deleted modules
           database::query(
-            "delete from ". DB_TABLE_MODULES ."
+            "delete from ". DB_TABLE_PREFIX ."modules
             where module_id = '". database::input($module['id']) ."'
             limit 1;"
           );

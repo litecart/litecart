@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_ORDER_STATUSES .";"
+        "show fields from ". DB_TABLE_PREFIX ."order_statuses;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -26,7 +26,7 @@
       }
 
       $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_ORDER_STATUSES_INFO .";"
+        "show fields from ". DB_TABLE_PREFIX ."order_statuses_info;"
       );
 
       while ($field = database::fetch($info_fields_query)) {
@@ -48,7 +48,7 @@
       $this->reset();
 
       $order_status_query = database::query(
-        "select * from ". DB_TABLE_ORDER_STATUSES ."
+        "select * from ". DB_TABLE_PREFIX ."order_statuses
         where id = ". (int)$order_status_id ."
         limit 1;"
       );
@@ -60,7 +60,7 @@
       }
 
       $order_status_info_query = database::query(
-        "select * from ". DB_TABLE_ORDER_STATUSES_INFO ."
+        "select * from ". DB_TABLE_PREFIX ."order_statuses_info
         where order_status_id = ". (int)$this->data['id'] .";"
       );
 
@@ -78,7 +78,7 @@
 
       if (!empty($this->data['id']) && $this->data['is_sale'] != $this->previous['is_sale']) {
         $orders_query = database::query(
-          "select * from ". DB_TABLE_ORDERS ."
+          "select * from ". DB_TABLE_PREFIX ."orders
           where order_status_id = ". (int)$this->data['id'] .";"
         );
         if (database::num_rows($orders_query)) {
@@ -88,7 +88,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_ORDER_STATUSES ."
+          "insert into ". DB_TABLE_PREFIX ."order_statuses
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -101,7 +101,7 @@
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
-        "update ". DB_TABLE_ORDER_STATUSES ."
+        "update ". DB_TABLE_PREFIX ."order_statuses
         set
           icon = '". database::input($this->data['icon']) ."',
           color = '". database::input($this->data['color']) ."',
@@ -118,7 +118,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $order_status_info_query = database::query(
-          "select * from ". DB_TABLE_ORDER_STATUSES_INFO ."
+          "select * from ". DB_TABLE_PREFIX ."order_statuses_info
           where order_status_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -126,7 +126,7 @@
 
         if (!$order_status_info = database::fetch($order_status_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_ORDER_STATUSES_INFO ."
+            "insert into ". DB_TABLE_PREFIX ."order_statuses_info
             (order_status_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
@@ -134,7 +134,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_ORDER_STATUSES_INFO ."
+          "update ". DB_TABLE_PREFIX ."order_statuses_info
           set
             name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."',
@@ -154,17 +154,17 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_ORDERS ." where order_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
+      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."orders where order_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
         throw new Exception(language::translate('error_cannot_delete_order_status_while_used', 'Cannot delete the order status because there are orders using it'));
       }
 
       database::query(
-        "delete from ". DB_TABLE_ORDER_STATUSES_INFO ."
+        "delete from ". DB_TABLE_PREFIX ."order_statuses_info
         where order_status_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_ORDER_STATUSES ."
+        "delete from ". DB_TABLE_PREFIX ."order_statuses
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

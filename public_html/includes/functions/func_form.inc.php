@@ -102,8 +102,8 @@
 
     if (!empty($value)) {
       $category_query = database::query(
-        "select c.id, c.code, ci.name, c.date_created from ". DB_TABLE_CATEGORIES ." c
-        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+        "select c.id, c.code, ci.name, c.date_created from ". DB_TABLE_PREFIX ."categories c
+        left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
         where c.id = ". (int)$value ."
         limit 1;"
       );
@@ -164,7 +164,7 @@
 
     if (!empty($value)) {
       $customer_query = database::query(
-        "select * from ". DB_TABLE_CUSTOMERS ."
+        "select * from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$value ."
         limit 1;"
       );
@@ -787,8 +787,8 @@
   function form_draw_attribute_groups_list($name, $input=true, $multiple=false, $parameters='') {
 
     $query = database::query(
-      "select ag.id, agi.name from ". DB_TABLE_ATTRIBUTE_GROUPS ." ag
-      left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
+      "select ag.id, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
+      left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
       order by name;"
     );
 
@@ -810,8 +810,8 @@
   function form_draw_attribute_values_list($group_id, $name, $input=true, $multiple=false, $parameters='') {
 
     $query = database::query(
-      "select av.id, avi.name from ". DB_TABLE_ATTRIBUTE_VALUES ." av
-      left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
+      "select av.id, avi.name from ". DB_TABLE_PREFIX ."attribute_values av
+      left join ". DB_TABLE_PREFIX ."attribute_groups_info avi on (avi.value_id = av.id and avi.language_code = '". database::input(language::$selected['code']) ."')
       where group_id = ". (int)$group_id ."
       order by name;"
     );
@@ -841,8 +841,8 @@
 
       $categories_query = database::query(
         "select c.id, ci.name
-        from ". DB_TABLE_CATEGORIES ." c
-        left join ". DB_TABLE_CATEGORIES_INFO ." ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
+        from ". DB_TABLE_PREFIX ."categories c
+        left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
         where parent_id = ". (int)$parent_id ."
         order by c.priority asc, ci.name asc;"
       );
@@ -854,7 +854,7 @@
 
         $sub_categories_query = database::query(
           "select id
-          from ". DB_TABLE_CATEGORIES ." c
+          from ". DB_TABLE_PREFIX ."categories c
           where parent_id = ". (int)$category['id'] ."
           limit 1;"
         );
@@ -900,7 +900,7 @@
     }
 
     $countries_query = database::query(
-      "select * from ". DB_TABLE_COUNTRIES ."
+      "select * from ". DB_TABLE_PREFIX ."countries
       where status
       order by name asc;"
     );
@@ -946,7 +946,7 @@
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $customers_query = database::query(
-      "select id, email, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
+      "select id, email, company, firstname, lastname from ". DB_TABLE_PREFIX ."customers
       order by email;"
     );
 
@@ -969,8 +969,8 @@
     }
 
     $query = database::query(
-      "select ds.id, dsi.name , dsi.description from ". DB_TABLE_DELIVERY_STATUSES ." ds
-      left join ". DB_TABLE_DELIVERY_STATUSES_INFO ." dsi on (dsi.delivery_status_id = ds.id and dsi.language_code = '". database::input(language::$selected['code']) ."')
+      "select ds.id, dsi.name , dsi.description from ". DB_TABLE_PREFIX ."delivery_statuses ds
+      left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (dsi.delivery_status_id = ds.id and dsi.language_code = '". database::input(language::$selected['code']) ."')
       order by dsi.name asc;"
     );
 
@@ -1046,7 +1046,7 @@
   function form_draw_geo_zones_list($name, $input=true, $multiple=false, $parameters='') {
 
     $geo_zones_query = database::query(
-      "select * from ". DB_TABLE_GEO_ZONES ."
+      "select * from ". DB_TABLE_PREFIX ."geo_zones
       order by name asc;"
     );
 
@@ -1111,7 +1111,7 @@
   function form_draw_manufacturers_list($name, $input=true, $multiple=false, $parameters='') {
 
     $manufacturers_query = database::query(
-      "select id, name from ". DB_TABLE_MANUFACTURERS ."
+      "select id, name from ". DB_TABLE_PREFIX ."manufacturers
       order by name asc;"
     );
 
@@ -1178,8 +1178,8 @@
   function form_draw_order_status_list($name, $input=true, $multiple=false, $parameters='') {
 
     $query = database::query(
-      "select os.id, osi.name from ". DB_TABLE_ORDER_STATUSES ." os
-      left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
+      "select os.id, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
+      left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
       order by priority, name;"
     );
 
@@ -1207,8 +1207,8 @@
       if (empty($parent_id)) $options[] = ['['.language::translate('title_root', 'Root').']', '0'];
 
       $pages_query = database::query(
-        "select p.id, pi.title from ". DB_TABLE_PAGES ." p
-        left join ". DB_TABLE_PAGES_INFO ." pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
+        left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where p.parent_id = '". (int)$parent_id ."'
         order by p.priority asc, pi.title asc;"
       );
@@ -1218,7 +1218,7 @@
         $options[] = [str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title'], $page['id']];
 
         $sub_pages_query = database::query(
-          "select id from ". DB_TABLE_PAGES ."
+          "select id from ". DB_TABLE_PREFIX ."pages
           where parent_id = '". (int)$page['id'] ."'
           limit 1;"
         );
@@ -1247,7 +1247,7 @@
   function form_draw_payment_modules_list($name, $input=true, $multiple=true, $parameters='') {
 
     $modules_query = database::query(
-      "select * from ". DB_TABLE_MODULES ."
+      "select * from ". DB_TABLE_PREFIX ."modules
       where type = 'payment'
       and status;"
     );
@@ -1276,8 +1276,8 @@
 
     if (!empty($value)) {
       $product_query = database::query(
-        "select p.id, pi.name from ". DB_TABLE_PRODUCTS ." p
-        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        "select p.id, pi.name from ". DB_TABLE_PREFIX ."products p
+        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where p.id = ". (int)$value ."
         limit 1;"
       );
@@ -1308,8 +1308,8 @@
     if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
 
     $products_query = database::query(
-      "select p.*, pi.name from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      "select p.*, pi.name from ". DB_TABLE_PREFIX ."products p
+      left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       order by pi.name"
     );
 
@@ -1332,8 +1332,8 @@
     }
 
     $quantity_units_query = database::query(
-      "select qu.*, qui.name, qui.description from ". DB_TABLE_QUANTITY_UNITS ." qu
-      left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qui.quantity_unit_id = qu.id and language_code = '". database::input(language::$selected['code']) ."')
+      "select qu.*, qui.name, qui.description from ". DB_TABLE_PREFIX ."quantity_units qu
+      left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.quantity_unit_id = qu.id and language_code = '". database::input(language::$selected['code']) ."')
       order by qu.priority, qui.name asc;"
     );
 
@@ -1355,7 +1355,7 @@
   function form_draw_shipping_modules_list($name, $input=true, $multiple=true, $parameters='') {
 
     $modules_query = database::query(
-      "select * from ". DB_TABLE_MODULES ."
+      "select * from ". DB_TABLE_PREFIX ."modules
       where type = 'shipping'
       and status;"
     );
@@ -1384,8 +1384,8 @@
     }
 
     $query = database::query(
-      "select sos.id, sosi.name, sosi.description from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
-      left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
+      "select sos.id, sosi.name, sosi.description from ". DB_TABLE_PREFIX ."sold_out_statuses sos
+      left join ". DB_TABLE_PREFIX ."sold_out_statuses_info sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
       order by sosi.name asc;"
     );
 
@@ -1407,7 +1407,7 @@
   function form_draw_suppliers_list($name, $input=true, $multiple=false, $parameters='') {
 
     $suppliers_query = database::query(
-      "select id, name, description from ". DB_TABLE_SUPPLIERS ."
+      "select id, name, description from ". DB_TABLE_PREFIX ."suppliers
       order by name;"
     );
 
@@ -1434,7 +1434,7 @@
     }
 
     $tax_classes_query = database::query(
-      "select * from ". DB_TABLE_TAX_CLASSES ."
+      "select * from ". DB_TABLE_PREFIX ."tax_classes
       order by name asc;"
     );
 
@@ -1500,7 +1500,7 @@
   function form_draw_users_list($name, $input=true, $multiple=false, $parameters='') {
 
     $users_query = database::query(
-      "select id, username from ". DB_TABLE_USERS ."
+      "select id, username from ". DB_TABLE_PREFIX ."users
       order by username;"
     );
 
@@ -1558,7 +1558,7 @@
     }
 
     $zones_query = database::query(
-      "select * from ". DB_TABLE_ZONES ."
+      "select * from ". DB_TABLE_PREFIX ."zones
       where country_code = '". database::input($country_code) ."'
       order by name asc;"
     );

@@ -88,19 +88,19 @@
 
 // Set language url type
   $setting_query = database::query(
-    "select `value` from ". DB_TABLE_SETTINGS ."
+    "select `value` from ". DB_TABLE_PREFIX ."settings
     where `key` = 'seo_links_language_prefix'
     limit 1;"
   );
 
   if ($setting = database::fetch($setting_query, 'value')) {
     database::query(
-      "update ". DB_TABLE_LANGUAGES ."
+      "update ". DB_TABLE_PREFIX ."languages
       set url_type = 'path';"
     );
   } else {
     database::query(
-      "update ". DB_TABLE_LANGUAGES ."
+      "update ". DB_TABLE_PREFIX ."languages
       set url_type = 'none';"
     );
   }

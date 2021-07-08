@@ -26,10 +26,10 @@
       sum(oi.quantity) as total_quantity,
       sum(oi.price * oi.quantity) as total_sales,
       sum(oi.tax * oi.quantity) as total_tax
-    from ". DB_TABLE_ORDERS_ITEMS ." oi
-    left join ". DB_TABLE_ORDERS ." o on (o.id = oi.order_id)
+    from ". DB_TABLE_PREFIX ."orders_items oi
+    left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
     where o.order_status_id in (
-      select id from ". DB_TABLE_ORDER_STATUSES ."
+      select id from ". DB_TABLE_PREFIX ."order_statuses
       where is_sale
     )
     and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'

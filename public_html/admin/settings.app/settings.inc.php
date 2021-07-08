@@ -11,7 +11,7 @@
 
       foreach (array_keys($_POST['settings']) as $key) {
         $settings_query = database::query(
-          "select * from ". DB_TABLE_SETTINGS ."
+          "select * from ". DB_TABLE_PREFIX ."settings
           where `key` = '". database::input($key) ."';"
         );
 
@@ -39,7 +39,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_TABLE_PREFIX ."settings
           set
             `value` = '". database::input($value) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -58,7 +58,7 @@
   }
 
   $settings_groups_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS_GROUPS ."
+    "select * from ". DB_TABLE_PREFIX ."settings_groups
     ". (!empty($_GET['doc']) ? "where `key` = '". database::input($_GET['doc']) ."'" : "") ."
     order by priority, `key`;"
   );
@@ -71,7 +71,7 @@
   $settings = [];
 
   $settings_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS ."
+    "select * from ". DB_TABLE_PREFIX ."settings
     where `setting_group_key` = '". database::input($settings_group['key']) ."'
     order by priority, `key` asc;"
   );

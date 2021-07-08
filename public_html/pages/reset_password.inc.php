@@ -13,7 +13,7 @@
       if (empty($_REQUEST['email'])) throw new Exception(language::translate('error_must_provide_email_address', 'You must provide an email address'));
 
       $customer_query = database::query(
-        "select * from ". DB_TABLE_CUSTOMERS ."
+        "select * from ". DB_TABLE_PREFIX ."customers
         where email = '". database::input($_REQUEST['email']) ."'
         limit 1;"
       );
@@ -56,7 +56,7 @@
         ];
 
         database::query(
-          "update ". DB_TABLE_CUSTOMERS ."
+          "update ". DB_TABLE_PREFIX ."customers
           set password_reset_token = '". database::input(json_encode($reset_token), JSON_UNESCAPED_SLASHES) ."'
           where id = ". (int)$customer['id'] ."
           limit 1;"
@@ -85,7 +85,7 @@
       } else {
 
         database::query(
-          "update ". DB_TABLE_CUSTOMERS ."
+          "update ". DB_TABLE_PREFIX ."customers
           set password_reset_token = ''
           where id = ". (int)$customer['id'] ."
           limit 1;"

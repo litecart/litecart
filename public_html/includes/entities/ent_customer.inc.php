@@ -18,7 +18,7 @@
       $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_CUSTOMERS .";"
+        "show fields from ". DB_TABLE_PREFIX ."customers;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -41,7 +41,7 @@
       $this->reset();
 
       $customer_query = database::query(
-        "select * from ". DB_TABLE_CUSTOMERS ."
+        "select * from ". DB_TABLE_PREFIX ."customers
         ". (preg_match('#^[0-9]+$#', $customer_id) ? "where id = '". (int)$customer_id ."'" : "") ."
         ". (preg_match('#@#', $customer_id) ? "where lower(email) = '". database::input(strtolower($customer_id)) ."'" : "") ."
         limit 1;"
@@ -75,7 +75,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_CUSTOMERS ."
+          "insert into ". DB_TABLE_PREFIX ."customers
           (email, date_created)
           values ('". database::input($this->data['email']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -84,7 +84,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_CUSTOMERS ."
+        "update ". DB_TABLE_PREFIX ."customers
         set
           code = '". database::input($this->data['code']) ."',
           status = '". (!empty($this->data['status']) ? '1' : '0') ."',
@@ -138,7 +138,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_CUSTOMERS ."
+        "update ". DB_TABLE_PREFIX ."customers
         set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -150,13 +150,13 @@
     public function delete() {
 
       database::query(
-        "update ". DB_TABLE_ORDERS ."
+        "update ". DB_TABLE_PREFIX ."orders
         set customer_id = 0
         where customer_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_CUSTOMERS ."
+        "delete from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

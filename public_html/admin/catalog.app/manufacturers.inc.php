@@ -30,7 +30,7 @@
   $manufacturers = [];
 
   $manufacturers_query = database::query(
-    "select * from ". DB_TABLE_MANUFACTURERS ."
+    "select * from ". DB_TABLE_PREFIX ."manufacturers
     order by name asc;"
   );
 
@@ -40,7 +40,7 @@
   while ($manufacturer = database::fetch($manufacturers_query)) {
 
     $products_query = database::query(
-      "select id from ". DB_TABLE_PRODUCTS ."
+      "select id from ". DB_TABLE_PREFIX ."products
       where manufacturer_id = ". (int)$manufacturer['id'] .";"
     );
 
