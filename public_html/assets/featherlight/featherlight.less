@@ -57,7 +57,7 @@ body.featherlight-open {
     vertical-align: middle;
   }
 
-  .featherlight-content {
+  .featherlight-modal {
     position: relative;
 
     /* position: centering vertical and horizontal */
@@ -79,6 +79,10 @@ body.featherlight-open {
     &:not(.featherlight-seamless) {
       padding: @gutter-size;
       background: #fff;
+    }
+
+    &.featherlight-seamless > * {
+      margin: 0 !important;
     }
   }
 
@@ -102,12 +106,12 @@ body.featherlight-open {
     font-family: Arial, sans-serif;
   }
 
-  .featherlight-content > img {
+  .featherlight-modal > img {
     max-width: 100%;
     max-height: ~"calc(100vh - 80px)";
   }
 
-  .featherlight-content > iframe {
+  .featherlight-modal > iframe {
     width: 100%;
     height: 100%;
     border: none;
@@ -124,7 +128,7 @@ body.featherlight-open {
     animation: featherlight-spin 2s linear infinite;
     opacity: 0.25;
   }
-  .featherlight-content {
+  .featherlight-modal {
     background: none;
     box-shadow: none;
   }
@@ -134,7 +138,7 @@ body.featherlight-open {
 .featherlight {
    perspective: 2048px;
 
-  .featherlight-content {
+  .featherlight-modal {
     transition: transform 0.25s linear, filter 0.25s linear;
     transform: -400px;
     transform: scale(0.8) rotateY(45deg) translateZ(-400px);
@@ -142,7 +146,7 @@ body.featherlight-open {
     filter: blur(@blur-size/2);
   }
 
-  &.active .featherlight-content {
+  &.active .featherlight-modal {
     transform: none !important;
     filter: none !important;
   }
