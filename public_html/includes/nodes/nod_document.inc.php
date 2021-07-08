@@ -258,7 +258,7 @@
       }
 
     // Define some resources for preloading
-      if (preg_match_all('#<(img|link|script)[^>]+>#', $GLOBALS['output'], $matches)) {
+      if (preg_match_all('#<(link|script)[^>]+>#', $GLOBALS['output'], $matches)) {
 
         $preloads = [];
         foreach ($matches[0] as $key => $match) {
@@ -266,9 +266,6 @@
           if (!preg_match('#(?<==")(https?:)?//[^"]+(?=")#is', $match, $m)) continue;
 
           switch ($matches[1][$key]) {
-            case 'img':
-              $preloads[$m[0]] = 'image';
-              break;
             case 'link':
               if (!preg_match('#stylesheet#', $m[0])) continue 2;
               $preloads[$m[0]] = 'style';
