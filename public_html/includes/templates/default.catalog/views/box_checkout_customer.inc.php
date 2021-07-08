@@ -171,6 +171,12 @@
   <p><?php echo functions::form_draw_checkbox('save_to_account', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_save_details_to_my_account', 'Save details to my account'); ?></p>
   <?php } ?>
 
+  <?php if (!$subscribed_to_newsletter) { ?>
+  <div class="form-group">
+    <?php echo functions::form_draw_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+  </div>
+  <?php } ?>
+
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div class="account">
 

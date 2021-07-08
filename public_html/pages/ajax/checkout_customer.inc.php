@@ -8,6 +8,20 @@
 
   if (empty(cart::$items)) return;
 
+  if (!empty(customer::$data['email'])) {
+    $newsletter_recipient_query = database::query(
+      "select id from ". DB_TABLE_PREFIX ."newsletter_recipients
+      where email = '". database::input(customer::$data['email']) ."'
+      limit 1;"
+    );
+
+    if (database::num_rows($newsletter_recipient_query)) {
+      customer::$data['newsletter'] = true;
+    } else {
+      customer::$data['newsletter'] = false;
+    }
+  }
+
   if (file_get_contents('php://input') == '') {
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
@@ -136,6 +150,14 @@
         }
       }
 
+      if (!empty($_POST['newsletter'])) {
+        database::query(
+          "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
+          (email, client_ip, date_created)
+          values ('". database::input($_POST['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
+        );
+      }
+
     } catch(Exception $e) {
       notices::add('errors', $e->getMessage());
     }
@@ -148,8 +170,14 @@
     }
   }
 
+  $subscribed_to_newsletter = false;
+  if (!empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($order->data['customer']['email']) ."');"))) {
+    $subscribed_to_newsletter = true;
+  }
+
   $box_checkout_customer = new ent_view();
   $box_checkout_customer->snippets = [
     'account_exists' => $account_exists,
+    'subscribed_to_newsletter' => $subscribed_to_newsletter,
   ];
   echo $box_checkout_customer->stitch('views/box_checkout_customer');
