@@ -134,8 +134,11 @@
         </div>
 
         <div class="tax" style="margin: 0 0 1em 0;">
-         <?php if ($tax_rates) echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
-         <?php else echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
+         <?php if ($tax_rates) { ?>
+          <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
+         <?php } else { ?>
+          <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
+         <?php } ?>
         </div>
 
         <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>

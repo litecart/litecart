@@ -1,8 +1,6 @@
 <div id="sidebar">
   <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_category_tree.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
-
   <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
 </div>
 
@@ -22,20 +20,6 @@
       <?php } ?>
 
       <div class="<?php echo $image ? 'col-md-8' : 'col-md-12'; ?>">
-        <?php if ($products) { ?>
-        <div class="btn-group pull-right hidden-xs">
-<?php
-  foreach ($sort_alternatives as $key => $value) {
-    if ($_GET['sort'] == $key) {
-      echo '<span class="btn btn-default active">'. $value .'</span>';
-    } else {
-      echo '<a class="btn btn-default" href="'. document::href_ilink(null, ['sort' => $key], true) .'">'. $value .'</a>';
-    }
-  }
-?>
-        </div>
-        <?php } ?>
-
         <h1 class="title"><?php echo $h1_title; ?></h1>
 
         <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
@@ -49,6 +33,8 @@
       <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
     </section>
     <?php } ?>
+
+    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
 
     <section class="listing products">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], ['category_id']); ?>

@@ -5,6 +5,12 @@
   $box_filter->snippets = [
     'manufacturers' => [],
     'attributes' => [],
+    'sort_alternatives' => [
+      'name' => language::translate('title_name', 'Name'),
+      'price' => language::translate('title_price', 'Price'),
+      'popularity' => language::translate('title_popularity', 'Popularity'),
+      'date' => language::translate('title_date', 'Date'),
+    ],
   ];
 
 // Manufacturers
