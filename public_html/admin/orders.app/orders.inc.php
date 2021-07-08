@@ -97,10 +97,19 @@
 
   switch($_GET['sort']) {
     case 'id':
-      $sql_sort = "o.id desc";
+      $sql_sort = "o.starred desc, o.id desc";
       break;
     case 'country':
-      $sql_sort = "o.customer_country_code";
+      $sql_sort = "o.starred desc, o.customer_country_code";
+      break;
+    case 'customer':
+      $sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
+      break;
+    case 'order_status':
+      $sql_sort = "o.starred desc, os.name asc";
+      break;
+    case 'payment_method':
+      $sql_sort = "o.starred desc, o.payment_option_name asc";
       break;
     default:
       $sql_sort = "o.starred desc, o.date_created desc, o.id desc";
