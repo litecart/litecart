@@ -12,30 +12,30 @@
 
 // Build apps list menu
   $box_apps_menu = new ent_view();
-  $box_apps_menu->snippets['apps'] = array();
+  $box_apps_menu->snippets['apps'] = [];
 
   foreach (functions::admin_get_apps() as $app) {
 
     if (!empty(user::$data['apps']) && empty(user::$data['apps'][$app['code']]['status'])) continue;
 
-    $box_apps_menu->snippets['apps'][$app['code']] = array(
+    $box_apps_menu->snippets['apps'][$app['code']] = [
       'code' => $app['code'],
       'name' => $app['name'],
-      'link' => document::link(WS_DIR_ADMIN, array('app' => $app['code'], 'doc' => $app['default'])),
-      'theme' => array(
+      'link' => document::link(WS_DIR_ADMIN, ['app' => $app['code'], 'doc' => $app['default']]),
+      'theme' => [
         'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'fa-plus',
         'color' => !(empty($app['theme']['color'])) ? $app['theme']['color'] : '#97a3b5',
-      ),
+      ],
       'active' => (isset($_GET['app']) && $_GET['app'] == $app['code']) ? true : false,
-      'menu' => array(),
-    );
+      'menu' => [],
+    ];
 
     if (!empty($app['menu'])) {
       foreach ($app['menu'] as $item) {
 
         if (!empty(user::$data['apps']) && (empty(user::$data['apps'][$app['code']]['status']) || !in_array($item['doc'], user::$data['apps'][$app['code']]['docs']))) continue;
 
-        $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['doc']), $item['params']) : array('app' => $app['code'], 'doc' => $item['doc']);
+        $params = !empty($item['params']) ? array_merge(['app' => $app['code'], 'doc' => $item['doc']], $item['params']) : ['app' => $app['code'], 'doc' => $item['doc']];
 
         if (isset($_GET['doc']) && $_GET['doc'] == $item['doc']) {
           $selected = true;
@@ -51,12 +51,12 @@
           $selected = false;
         }
 
-        $box_apps_menu->snippets['apps'][$app['code']]['menu'][] = array(
+        $box_apps_menu->snippets['apps'][$app['code']]['menu'][] = [
           'title' => $item['title'],
           'doc' => $item['doc'],
-          'link' => document::link(WS_DIR_ADMIN, array('app' => $app['code'], 'doc' => $item['doc']) + (!empty($item['params']) ? $item['params'] : array())),
+          'link' => document::link(WS_DIR_ADMIN, ['app' => $app['code'], 'doc' => $item['doc']] + (!empty($item['params']) ? $item['params'] : [])),
           'active' => $selected ? true : false,
-        );
+        ];
       }
     }
   }
@@ -78,7 +78,7 @@
 
   // Widgets
     $box_widgets = new ent_view();
-    $box_widgets->snippets['widgets'] = array();
+    $box_widgets->snippets['widgets'] = [];
 
     foreach (functions::admin_get_widgets() as $widget) {
       if (!empty(user::$data['widgets']) && empty(user::$data['widgets'][$widget['code']])) continue;
@@ -86,10 +86,10 @@
       ob_start();
       include vmod::check(FS_DIR_ADMIN . $widget['dir'] . $widget['file']);
 
-      $box_widgets->snippets['widgets'][] = array(
+      $box_widgets->snippets['widgets'][] = [
         'code' => basename($widget['dir'], '.widget'),
         'content' => ob_get_clean(),
-      );
+      ];
     }
 
     echo $box_widgets->stitch('views/box_widgets');
@@ -116,14 +116,14 @@
       if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
 
       $_page = new ent_view();
-      $_page->snippets = array(
+      $_page->snippets = [
         'app' => $_GET['app'],
         'doc' => $_GET['doc'],
-        'theme' => array(
+        'theme' => [
           'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
           'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
-        ),
-      );
+        ],
+      ];
 
       //document::$snippets['help_link'] = document::link('https://wiki.litecart.net/', array('id' => 'Admin:'. $_GET['app'] . (!empty($_GET['doc']) ? '/' . $_GET['doc'] : '')));
       document::$snippets['help_link'] = document::link('https://wiki.litecart.net/');

@@ -1,8 +1,8 @@
 <?php
 
-  $deleted_files = array(
+  $deleted_files = [
     FS_DIR_APP . 'includes/library/lib_custom.inc.php',
-  );
+  ];
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {

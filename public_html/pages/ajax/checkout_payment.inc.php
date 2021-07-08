@@ -24,7 +24,7 @@
   if (!empty($payment->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $payment->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
-      $payment->data['selected'] = array(); // Clear because option is no longer present
+      $payment->data['selected'] = []; // Clear because option is no longer present
     } else {
       $payment->select($module_id, $option_id); // Reinstate a present option
     }
@@ -49,9 +49,9 @@
 
   $box_checkout_payment = new ent_view();
 
-  $box_checkout_payment->snippets = array(
-    'selected' => !empty($payment->data['selected']) ? $payment->data['selected'] : array(),
+  $box_checkout_payment->snippets = [
+    'selected' => !empty($payment->data['selected']) ? $payment->data['selected'] : [],
     'options' => $options,
-  );
+  ];
 
   echo $box_checkout_payment->stitch('views/box_checkout_payment');

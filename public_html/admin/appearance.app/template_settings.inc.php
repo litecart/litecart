@@ -3,14 +3,14 @@
   document::$snippets['title'][] = language::translate('title_template_settings', 'Template Settings');
 
   breadcrumbs::add(language::translate('title_appearance', 'Appearance'));
-  breadcrumbs::add(language::translate('title_template', 'Template'), document::link(WS_DIR_ADMIN, array('doc' => 'template'), array('app')));
+  breadcrumbs::add(language::translate('title_template', 'Template'), document::link(WS_DIR_ADMIN, ['doc' => 'template'], ['app']));
   breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
 
 // Get template settings structure
   $settings = include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php');
   if (!is_array($settings)) include vmod::check(FS_DIR_APP . 'includes/templates/' . settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
 
-  if (empty($settings)) $settings = array();
+  if (empty($settings)) $settings = [];
 
 // Insert template settings
   $saved_settings = json_decode(settings::get('store_template_catalog_settings'), true);
@@ -53,7 +53,7 @@
 
     try {
 
-      $new_settings = array();
+      $new_settings = [];
       foreach ($settings as $setting) {
         $new_settings[$setting['key']] = $setting['value'];
       }
@@ -73,7 +73,7 @@
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
-      header('Location: '. document::link(WS_DIR_ADMIN, array(), true, array('action')));
+      header('Location: '. document::link(WS_DIR_ADMIN, [], true, ['action']));
       exit;
     } catch (Exception $e) {
       notices::add('errors', $e->getMessage());
@@ -100,9 +100,9 @@
 
       case (substr($setting['function'], 0, 6) == 'toggle'):
 
-        if (in_array(strtolower($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+        if (in_array(strtolower($setting['value']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
          $settings[$key]['value'] = language::translate('title_true', 'True');
-        } else if (in_array(strtolower($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
+        } else if (in_array(strtolower($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
          $settings[$key]['value'] = language::translate('title_false', 'False');
         }
 
@@ -156,7 +156,7 @@
                 <?php echo nl2br($setting['value']); ?>
               </div>
             </td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
           <?php } ?>

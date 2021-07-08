@@ -11,7 +11,7 @@
       if (empty($this->modules)) return;
 
       if (empty($modules)) $modules = array_keys($this->modules);
-      if (!is_array($modules)) $modules = array($modules);
+      if (!is_array($modules)) $modules = [$modules];
 
       $output = '';
 
@@ -71,7 +71,7 @@
 
     public function run($method_name, $module_id) {
       if (method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
+        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
       }
     }
   }

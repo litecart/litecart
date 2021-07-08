@@ -8,10 +8,10 @@
     public static $_vqversion = '2.6.4';        // Current version number
 
     private static $_debug = false;             // Debug mode
-    private static $_modFileList = array();     // Array of xml files
-    private static $_mods = array();            // Array of modifications to apply
-    private static $_filesModded = array();     // Array of already modified files
-    private static $_doNotMod = array();        // Array of files not to apply modifications to
+    private static $_modFileList = [];     // Array of xml files
+    private static $_mods = [];            // Array of modifications to apply
+    private static $_filesModded = [];     // Array of already modified files
+    private static $_doNotMod = [];        // Array of files not to apply modifications to
     private static $_cwd = '';                  // Current working directory path
     private static $_folderChecks = false;      // Flag for already checked log/cache folders exist
     private static $_cachePathFull = '';        // Full cache folder path
@@ -22,7 +22,7 @@
     public static $checkedCache = 'vqmod/checked.cache';       // Relative path to already checked files array cache file
     public static $protectedFilelist = 'vqmod/vqprotect.txt';  // Relative path to protected files array cache file
     public static $fileModding = null;                        // Reference to the current file being modified by vQmod for logging
-    public static $replaces = array();                         // Array of regex replaces to perform on file paths array(search => replace)
+    public static $replaces = [];                         // Array of regex replaces to perform on file paths array(search => replace)
 
     /**
      * VQMod::bootup()
@@ -128,7 +128,7 @@
         self::$_doNotMod[] = $sourcePath;
       }
 
-      self::$_filesModded[$sourcePath] = array('cached' => $changed);
+      self::$_filesModded[$sourcePath] = ['cached' => $changed];
       return $changed ? $writePath : $sourcePath;
     }
 
@@ -224,7 +224,7 @@
      */
     private static function _parseMods() {
 
-      set_error_handler(array('VQMod', 'handleXMLError'));
+      set_error_handler(['VQMod', 'handleXMLError']);
 
       $dom = new DOMDocument('1.0', 'UTF-8');
       foreach (self::$_modFileList as $modFileKey => $modFile) {
@@ -367,7 +367,7 @@
             if ($part === '*') {
               continue;
             } else if (strpos($part, '*') !== false) {
-              $part = preg_replace_callback('#([^*]+)#', array('self', '_quotePath'), $part);
+              $part = preg_replace_callback('#([^*]+)#', ['self', '_quotePath'], $part);
               $part = str_replace('*', '[^/]*', $part);
               $part = (bool) preg_match('#^' . $part . '$#', $checkParts[$k]);
 
@@ -411,7 +411,7 @@
     public $version;
     public $vqmver;
     public $author;
-    public $mods = array();
+    public $mods = [];
 
     private $_skip = false;
 
@@ -675,14 +675,14 @@
             }
 
             if (!$skipOperation) {
-              $this->mods[$fullPath][] = array(
+              $this->mods[$fullPath][] = [
                 'search'     => new VQSearchNode($search),
                 'add'        => new VQAddNode($add),
                 'ignoreif'   => $ignoreif,
                 'error'      => $error,
                 'fileToMod'  => $fileToMod,
                 'opIndex'    => $opIndex,
-              );
+              ];
             }
           }
 

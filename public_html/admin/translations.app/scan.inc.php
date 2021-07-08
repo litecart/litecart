@@ -16,7 +16,7 @@
     $found_translations = 0;
     $new_translations = 0;
     $updated_translations = 0;
-    $translation_keys = array();
+    $translation_keys = [];
     $deleted_translations = 0;
 
     foreach ($iterator as $file) {
@@ -25,18 +25,18 @@
       $found_files++;
       $contents = file_get_contents($file);
 
-      $regexp = array(
+      $regexp = [
         'language::translate\((?:(?!\$)',
         '(?:(__CLASS__)?\.)?',
         '(?:[\'"])([^\'"]+)(?:[\'"])',
         '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?',
         '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?',
         ')\)',
-      );
+      ];
       $regexp = '/'. implode('', $regexp) .'/s';
 
       preg_match_all($regexp, $contents, $matches);
-      $translations = array();
+      $translations = [];
 
       if (!empty($matches)) {
         for ($i=0; $i<count($matches[1]); $i++) {
@@ -45,7 +45,7 @@
           } else {
             $key = $matches[2][$i];
           }
-          $translations[$key] = str_replace(array("\\r", "\\n"), array("\r", "\n"), $matches[3][$i]);
+          $translations[$key] = str_replace(["\\r", "\\n"], ["\r", "\n"], $matches[3][$i]);
           $translation_keys[] = $key;
         }
       }

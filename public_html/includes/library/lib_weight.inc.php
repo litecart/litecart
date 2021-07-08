@@ -2,44 +2,44 @@
 
   class weight {
 
-    public static $classes = array(
-      'kg' => array(
+    public static $classes = [
+      'kg' => [
         'name' => 'Kilograms',
         'unit' => 'kg',
         'value' => 1,
         'decimals' => 2,
-      ),
-      'g' => array(
+      ],
+      'g' => [
         'name' => 'Grams',
         'unit' => 'g',
         'value' => 1000,
         'decimals' => 0,
-      ),
-      'dwt' => array(
+      ],
+      'dwt' => [
         'name' => 'Pennyweights',
         'unit' => 'dwt',
         'value' => 643.01493137256,
         'decimals' => 0,
-      ),
-      'lb' => array(
+      ],
+      'lb' => [
         'name' => 'Pounds',
         'unit' => 'lb',
         'value' => 2.2046,
         'decimals' => 2,
-      ),
-      'oz' => array(
+      ],
+      'oz' => [
         'name' => 'Ounces',
         'unit' => 'oz',
         'value' => 35.274,
         'decimals' => 1,
-      ),
-      'st' => array(
+      ],
+      'st' => [
         'name' => 'Stones',
         'unit' => 'st',
         'value' => 0.1575,
         'decimals' => 2,
-      ),
-    );
+      ],
+    ];
 
     public static function convert($value, $from, $to) {
 

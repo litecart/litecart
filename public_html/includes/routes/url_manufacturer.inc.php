@@ -3,16 +3,16 @@
   class url_manufacturer {
 
     function routes() {
-      return array(
-        array(
+      return [
+        [
           'pattern' => '#^.*-m-([0-9]+)/?$#',
           'page' => 'manufacturer',
           'params' => 'manufacturer_id=$1',
-          'options' => array(
+          'options' => [
             'redirect' => true,
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
     }
 
     function rewrite(ent_link $link, $language_code) {

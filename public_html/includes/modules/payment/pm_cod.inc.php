@@ -25,11 +25,11 @@
         if (!reference::country($country_code)->in_geo_zone($zone_code, $this->settings['geo_zones'])) return;
       }
 
-      $method = array(
+      $method = [
         'title' => $this->name,
         'description' => language::translate(__CLASS__.':description', ''),
-        'options' => array(
-          array(
+        'options' => [
+          [
             'id' => 'cod',
             'icon' => $this->settings['icon'],
             'name' => reference::country($country_code)->name,
@@ -38,80 +38,80 @@
             'cost' => $this->settings['fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
             'confirm' => language::translate(__CLASS__.':title_confirm_order', 'Confirm Order'),
-          ),
-        )
-      );
+          ],
+        ]
+      ];
       return $method;
     }
 
     public function transfer($order) {
-      return array(
+      return [
         'action' => '',
         'method' => '',
         'fields' => '',
-      );
+      ];
     }
 
     public function verify($order) {
-      return array(
+      return [
         'order_status_id' => $this->settings['order_status_id'],
         'payment_transaction_id' => '',
         'errors' => '',
-      );
+      ];
     }
 
     function settings() {
-      return array(
-        array(
+      return [
+        [
           'key' => 'status',
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
-        ),
-        array(
+        ],
+        [
           'key' => 'icon',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_icon', 'Icon'),
           'description' => language::translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
           'function' => 'text()',
-        ),
-        array(
+        ],
+        [
           'key' => 'fee',
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_payment_fee', 'Payment Fee'),
           'description' => language::translate(__CLASS__.':description_payment_fee', 'Adds a payment fee to the order.'),
           'function' => 'decimal()',
-        ),
-        array(
+        ],
+        [
           'key' => 'tax_class_id',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_tax_class', 'Tax Class'),
           'description' => language::translate(__CLASS__.':description_tax_class', 'The tax class for the fee.'),
           'function' => 'tax_class()',
-        ),
-        array(
+        ],
+        [
           'key' => 'order_status_id',
           'default_value' => '0',
           'title' => language::translate('title_order_status', 'Order Status'),
           'description' => language::translate('modules:description_order_status', 'Give orders made with this payment method the following order status.'),
           'function' => 'order_status()',
-        ),
-        array(
+        ],
+        [
           'key' => 'geo_zones',
           'default_value' => '',
           'title' => language::translate('title_geo_zone_limitation', 'Geo Zone Limitation'),
           'description' => language::translate('modules:description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
           'function' => 'geo_zones()',
-        ),
-        array(
+        ],
+        [
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate('title_priority', 'Priority'),
           'description' => language::translate('modules:description_priority', 'Process this module in the given priority order.'),
           'function' => 'number()',
-        ),
-      );
+        ],
+      ];
     }
 
     public function install() {}

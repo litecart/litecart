@@ -9,13 +9,13 @@
     order by name asc;"
   );
 
-  $json = array();
+  $json = [];
 
   while ($zone = database::fetch($zones_query)) {
-    $json[] = array(
+    $json[] = [
       'code' => $zone['code'],
       'name' => $zone['name'],
-    );
+    ];
   }
 
   language::convert_characters($json, language::$selected['charset'], 'UTF-8');

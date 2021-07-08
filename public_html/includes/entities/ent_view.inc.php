@@ -1,6 +1,6 @@
 <?php
   class ent_view {
-    public $snippets = array();
+    public $snippets = [];
     public $html = '';
 
     public function stitch($view=null, $cleanup=false) {
@@ -32,7 +32,7 @@
 
       if (!empty($this->snippets)) {
 
-        $search_replace = array();
+        $search_replace = [];
         foreach (array_keys($this->snippets) as $key) {
           if (!is_string($this->snippets[$key])) continue;
           $search_replace['<!--snippet:'.$key.'-->'] = &$this->snippets[$key];
@@ -48,10 +48,10 @@
 
     // Clean orphan snippets
       if ($cleanup) {
-        $search = array(
+        $search = [
           '#\{snippet:.*?\}#',
           '#<!--snippet:.*?-->#',
-        );
+        ];
 
         $this->html = preg_replace($search, '', $this->html);
       }

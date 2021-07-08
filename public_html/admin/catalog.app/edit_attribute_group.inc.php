@@ -15,28 +15,28 @@
   document::$snippets['title'][] = !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
   breadcrumbs::add(!empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'));
 
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['values'])) $_POST['values'] = array();
+      if (empty($_POST['values'])) $_POST['values'] = [];
 
       foreach ($_POST['values'] as $value) {
         foreach ($value['name'] as $name) {
           if (preg_match('#(["\',\[\]<>])#', $name, $matches)) {
-            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), array('%char' => $matches[1])));
+            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), ['%char' => $matches[1]]));
           }
         }
       }
 
-      $fields = array(
+      $fields = [
         'code',
         'sort',
         'name',
         'values',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $attribute_group->data[$field] = $_POST[$field];
@@ -45,7 +45,7 @@
       $attribute_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -61,7 +61,7 @@
       $attribute_group->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -69,10 +69,10 @@
     }
   }
 
-  $option_sort_options = array(
-    array(language::translate('title_list_order', 'List Order'), 'priority'),
-    array(language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'),
-  );
+  $option_sort_options = [
+    [language::translate('title_list_order', 'List Order'), 'priority'],
+    [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
+  ];
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">

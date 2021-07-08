@@ -95,11 +95,11 @@
             if (!empty($value_key)) {
               $attribute_group->data['values'][$value_key]['name'][$row['language_code']] = $row['value_name'];
             } else {
-              $attribute_group->data['values'][] = array(
-                'name' => array(
+              $attribute_group->data['values'][] = [
+                'name' => [
                   $row['language_code'] => $row['value_name'],
-                ),
-              );
+                ],
+              ];
             }
 
           // Sort values
@@ -220,14 +220,14 @@
             }
 
           // Set new category data
-            $fields = array(
+            $fields = [
               'parent_id',
               'status',
               'code',
               'keywords',
               'image',
               'priority',
-            );
+            ];
 
             foreach ($fields as $field) {
               if (isset($row[$field])) $category->data[$field] = $row[$field];
@@ -235,14 +235,14 @@
 
           // Set category info data
             if (!empty($row['language_code'])) {
-              $fields = array(
+              $fields = [
                 'name',
                 'short_description',
                 'description',
                 'head_title',
                 'h1_title',
                 'meta_description',
-              );
+              ];
 
               foreach ($fields as $field) {
                 if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
@@ -311,14 +311,14 @@
             }
 
           // Set new manufacturer data
-            $fields = array(
+            $fields = [
               'status',
               'code',
               'name',
               'keywords',
               'image',
               'priority',
-            );
+            ];
 
             foreach ($fields as $field) {
               if (isset($row[$field])) $manufacturer->data[$field] = $row[$field];
@@ -326,13 +326,13 @@
 
           // Set manufacturer info data
             if (!empty($row['language_code'])) {
-              $fields = array(
+              $fields = [
                 'short_description',
                 'description',
                 'head_title',
                 'h1_title',
                 'meta_description',
-              );
+              ];
 
               foreach ($fields as $field) {
                 if (isset($row[$field])) $manufacturer->data[$field][$row['language_code']] = $row[$field];
@@ -442,7 +442,7 @@
               }
             }
 
-            $fields = array(
+            $fields = [
               'status',
               'manufacturer_id',
               'supplier_id',
@@ -467,7 +467,7 @@
               'sold_out_status_id',
               'date_valid_from',
               'date_valid_to',
-            );
+            ];
 
           // Set new product data
             foreach ($fields as $field) {
@@ -485,14 +485,14 @@
           // Set product info data
             if (!empty($row['language_code'])) {
 
-              $fields = array(
+              $fields = [
                 'name',
                 'short_description',
                 'description',
                 'technical_data',
                 'head_title',
                 'meta_description',
-              );
+              ];
 
               foreach ($fields as $field) {
                 if (isset($row[$field])) $product->data[$field][$row['language_code']] = $row[$field];
@@ -503,8 +503,8 @@
             if (isset($row['images'])) {
               $row['images'] = explode(';', $row['images']);
 
-              $product_images = array();
-              $current_images = array();
+              $product_images = [];
+              $current_images = [];
               foreach ($product->data['images'] as $key => $image) {
                 if (in_array($image['filename'], $row['images'])) {
                   $product_images[$key] = $image;
@@ -515,7 +515,7 @@
               $i=0;
               foreach ($row['images'] as $image) {
                 if (!in_array($image, $current_images)) {
-                  $product_images['new'.++$i] = array('filename' => $image);
+                  $product_images['new'.++$i] = ['filename' => $image];
                 }
               }
 
@@ -547,35 +547,35 @@
 
           // Set attributes
             if (isset($row['attributes'])) {
-              $product->data['attributes'] = array();
+              $product->data['attributes'] = [];
 
               foreach (preg_split('#\R+#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $attribute_row) {
 
                 if (preg_match('#^([0-9]+):([0-9]+)$#', $attribute_row, $matches)) {
-                  $attribute = array(
+                  $attribute = [
                     'group_id' => $matches[1],
                     'value_id' => $matches[2],
                     'custom_value' => '',
-                  );
+                  ];
 
                 } else if (preg_match('#^([0-9]+):"([^"]*)"#', $attribute_row, $matches)) {
-                  $attribute = array(
+                  $attribute = [
                     'group_id' => $matches[1],
                     'value_id' => 0,
                     'custom_value' => $matches[2],
-                  );
+                  ];
 
                 } else {
                   echo " - Skipping unknown attribute $attribute_row" . PHP_EOL;
                   continue;
                 }
 
-                $product->data['attributes'][] = array(
+                $product->data['attributes'][] = [
                   'id' => isset($product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]) ? $product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]['id'] : null,
                   'group_id' => $attribute['group_id'],
                   'value_id' => $attribute['value_id'],
                   'custom_value' => $attribute['custom_value'],
-                );
+                ];
               }
             }
 
@@ -632,7 +632,7 @@
             }
 
           // Set new supplier data
-            $fields = array(
+            $fields = [
               'status',
               'code',
               'name',
@@ -640,7 +640,7 @@
               'email',
               'phone',
               'link',
-            );
+            ];
 
             foreach ($fields as $field) {
               if (isset($row[$field])) $supplier->data[$field] = $row[$field];
@@ -679,7 +679,7 @@
 
       if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
 
-      $csv = array();
+      $csv = [];
 
         switch ($_POST['type']) {
 
@@ -733,7 +733,7 @@
             while ($category = database::fetch($categories_query)) {
               $category = new ref_category($category['id'], $_POST['language_code']);
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $category->id,
                 'status' => $category->status,
                 'parent_id' => $category->parent_id,
@@ -748,7 +748,7 @@
                 'image' => $category->image,
                 'priority' => $category->priority,
                 'language_code' => $_POST['language_code'],
-              );
+              ];
             }
 
             break;
@@ -761,7 +761,7 @@
             while ($manufacturer = database::fetch($manufacturers_query)) {
               $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $manufacturer->id,
                 'status' => $manufacturer->status,
                 'code' => $manufacturer->code,
@@ -775,7 +775,7 @@
                 'image' => $manufacturer->image,
                 'priority' => $manufacturer->priority,
                 'language_code' => $_POST['language_code'],
-              );
+              ];
             }
 
             break;
@@ -802,7 +802,7 @@
                 }
               };
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $product->id,
                 'status' => $product->status,
                 'categories' => implode(',', array_keys($product->categories)),
@@ -841,7 +841,7 @@
                 'currency_code' => $_POST['currency_code'],
                 'date_valid_from' => $product->date_valid_from,
                 'date_valid_to' => $product->date_valid_to,
-              );
+              ];
             }
 
             break;
@@ -852,7 +852,7 @@
             while ($supplier = database::fetch($suppliers_query)) {
               $supplier = reference::supplier($supplier['id']);
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $supplier->id,
                 'status' => $supplier->status,
                 'code' => $supplier->code,
@@ -862,7 +862,7 @@
                 'email' => $supplier->email,
                 'phone' => $supplier->phone,
                 'link' => $supplier->link,
-              );
+              ];
             }
 
             break;
@@ -936,17 +936,17 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [[language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''], [','],  [';'], ['TAB', "\t"], ['|']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
@@ -999,17 +999,17 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
@@ -1019,12 +1019,12 @@
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+                <?php echo functions::form_draw_select_field('eol', [['Win'], ['Mac'], ['Linux']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_output', 'Output'); ?></label>
-                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+                <?php echo functions::form_draw_select_field('output', [[language::translate('title_file', 'File'), 'file'], [language::translate('title_screen', 'Screen'), 'screen']], true); ?>
               </div>
             </div>
 

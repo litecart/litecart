@@ -17,7 +17,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_EMAILS .";"
@@ -27,15 +27,15 @@
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['sender'] = array(
+      $this->data['sender'] = [
         'email' => settings::get('store_email'),
         'name' => settings::get('store_name'),
-      );
+      ];
 
-      $this->data['recipients'] = array();
-      $this->data['ccs'] = array();
-      $this->data['bccs'] = array();
-      $this->data['multiparts'] = array();
+      $this->data['recipients'] = [];
+      $this->data['ccs'] = [];
+      $this->data['bccs'] = [];
+      $this->data['multiparts'] = [];
 
       $this->previous = $this->data;
 
@@ -116,10 +116,10 @@
 
       if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
-      $this->data['sender'] = array(
+      $this->data['sender'] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -184,10 +184,10 @@
 
       if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
-      $this->data['recipients'][] = array(
+      $this->data['recipients'][] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -201,10 +201,10 @@
 
       if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
-      $this->data['ccs'][] = array(
+      $this->data['ccs'][] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -218,10 +218,10 @@
 
       if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
-      $this->data['bccs'][] = array(
+      $this->data['bccs'][] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -266,18 +266,18 @@
       }
 
     // Prepare headers
-      $headers = array(
+      $headers = [
         'Date' => date('r'),
         'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
         'Reply-To' => $this->format_contact($this->data['sender']),
         'Return-Path' => settings::get('store_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
-      );
+      ];
 
     // Add "To"
       if (!empty($this->data['recipients'])) {
-        $tos = array();
+        $tos = [];
         foreach ($this->data['recipients'] as $to) {
           $tos[] = $this->format_contact($to);
         }
@@ -286,7 +286,7 @@
 
     // Add "Cc"
       if (!empty($this->data['ccs'])) {
-        $ccs = array();
+        $ccs = [];
         foreach ($this->data['ccs'] as $cc) {
           $ccs[] = $this->format_contact($cc);
         }
@@ -335,7 +335,7 @@
 
           $smtp->connect();
 
-          $recipients = array();
+          $recipients = [];
 
           foreach ($this->data['recipients'] as $recipient) {
             $recipients[] = $recipient['email'];
@@ -368,14 +368,14 @@
 
       // PHP mail() needs a header for BCCs
         if (!empty($this->data['bccs'])) {
-          $bccs = array();
+          $bccs = [];
           foreach ($this->data['bccs'] as $bcc) {
             $bccs[] = $this->format_contact($bcc);
           }
           $headers .= 'Bcc: '. implode(', ', $bccs) . "\r\n";
         }
 
-        $recipients = array();
+        $recipients = [];
         foreach ($this->data['recipients'] as $recipient) {
           $recipients[] = $this->format_contact($recipient);
         }

@@ -2,16 +2,16 @@
 
   class cart {
 
-    public static $data = array();
-    public static $items = array();
-    public static $total = array();
+    public static $data = [];
+    public static $items = [];
+    public static $total = [];
 
     public static function init() {
 
       if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
-        session::$data['cart'] = array(
+        session::$data['cart'] = [
           'uid' => null,
-        );
+        ];
       }
 
       self::$data = &session::$data['cart'];
@@ -42,7 +42,7 @@
 
       if (!empty($_POST['add_cart_product'])) {
 
-        $options = !empty($_POST['options']) ? $_POST['options'] : array();
+        $options = !empty($_POST['options']) ? $_POST['options'] : [];
 
         if (!empty($options)) {
           foreach (array_keys($options) as $key) {
@@ -85,7 +85,7 @@
 
     public static function reset() {
 
-      self::$items = array();
+      self::$items = [];
 
       self::_calculate_total();
     }
@@ -146,11 +146,11 @@
         if (!empty($product->quantity_unit['separate'])) {
           $item_key = uniqid();
         } else {
-          $item_key = md5(json_encode(array($product->id, $options)));
+          $item_key = md5(json_encode([$product->id, $options]));
         }
       }
 
-      $item = array(
+      $item = [
         'id' => null,
         'product_id' => (int)$product->id,
         'options' => $options,
@@ -167,11 +167,11 @@
         'tax' => $product->tax,
         'tax_class_id' => $product->tax_class_id,
         'quantity' => $quantity,
-        'quantity_unit' => array(
+        'quantity_unit' => [
           'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
           'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',
           'separate' => !empty($product->quantity_unit['separate']) ? $product->quantity_unit['separate'] : '',
-        ),
+        ],
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,
         'dim_x' => $product->dim_x,
@@ -179,7 +179,7 @@
         'dim_z' => $product->dim_z,
         'dim_class' => $product->dim_class,
         'error' => '',
-      );
+      ];
 
       try {
         if (!$product->id) {
@@ -191,11 +191,11 @@
         }
 
         if (!empty($product->date_valid_from) && $product->date_valid_from > date('Y-m-d H:i:s')) {
-          throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from)))));
+          throw new Exception(strtr(language::translate('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))]));
         }
 
         if (!empty($product->date_valid_to) && $product->date_valid_to > 1970 && $product->date_valid_to < date('Y-m-d H:i:s')) {
-          throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to)))));
+          throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to))]));
         }
 
         if ($quantity <= 0) {
@@ -204,7 +204,7 @@
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
-          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), array('%quantity' => round((float)$product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0))));
+          throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round((float)$product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
         }
 
       // Remove empty options
@@ -223,7 +223,7 @@
         $options = $array_filter_recursive($options);
 
       // Build options structure
-        $sanitized_options = array();
+        $sanitized_options = [];
         foreach ($product->options as $option) {
 
         // Check group
@@ -246,13 +246,13 @@
 
               $selected_values = preg_split('#\s*,\s*#', $options[$matched_group], -1, PREG_SPLIT_NO_EMPTY);
 
-              $matched_values = array();
+              $matched_values = [];
               foreach ($option['values'] as $value) {
 
                 $possible_values = array_unique(
                   array_merge(
-                    array($value['name']),
-                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : array()
+                    [$value['name']],
+                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
                   )
                 );
 
@@ -280,8 +280,8 @@
 
                 $possible_values = array_unique(
                   array_merge(
-                    array($value['name']),
-                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : array()
+                    [$value['name']],
+                    !empty(reference::attribute_group($option['group_id'])->values[$value['value_id']]) ? array_filter(array_values(reference::attribute_group($option['group_id'])->values[$value['value_id']]['name']), 'strlen') : []
                   )
                 );
 
@@ -289,7 +289,7 @@
                   array_unshift($possible_values, '');
                 }
 
-                if ($matched_value = array_intersect(array($options[$matched_group]), $possible_values)) {
+                if ($matched_value = array_intersect([$options[$matched_group]], $possible_values)) {
                   $matched_value = array_shift($matched_value);
                   $item['extras'] += $value['price_adjust'];
                   $found_match = true;
@@ -314,13 +314,13 @@
               break;
           }
 
-          $sanitized_options[] = array(
+          $sanitized_options[] = [
             'group_id' => $option['id'],
             'value_id' => !empty($value['id']) ? $value['id'] : 0,
             'combination' => $option['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : 0),
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
-          );
+          ];
         }
 
       // Options stock
@@ -466,11 +466,11 @@
 
     private static function _calculate_total() {
 
-      self::$total = array(
+      self::$total = [
         'items' => 0,
         'value' => 0,
         'tax' => 0,
-      );
+      ];
 
       foreach (self::$items as $item) {
         $num_items = $item['quantity'];

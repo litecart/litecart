@@ -47,7 +47,7 @@
           if ($setting['value']) {
             $value = json_decode($setting['value'], true);
           } else {
-            $value = array();
+            $value = [];
           }
 
           if (isset($value[language::$selected['code']])) {

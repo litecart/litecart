@@ -2,7 +2,7 @@
 
   document::$snippets['title'][] = language::translate('title_csv_import_export', 'CSV Import/Export');
 
-  breadcrumbs::add(language::translate('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, array('doc' => 'customers'), array('app')));
+  breadcrumbs::add(language::translate('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, ['doc' => 'customers'], ['app']));
   breadcrumbs::add(language::translate('title_csv_import_export', 'CSV Import/Export'));
 
   if (isset($_POST['import'])) {
@@ -68,7 +68,7 @@
         }
 
       // Set customer data
-        $fields = array(
+        $fields = [
           'code',
           'email',
           'tax_id',
@@ -84,7 +84,7 @@
           'phone',
           'newsletter',
           'notes',
-        );
+        ];
 
         foreach ($fields as $field) {
           if (isset($row[$field])) $customer->data[$field] = $row[$field];
@@ -114,10 +114,10 @@
         order by date_created asc;"
       );
 
-      $csv = array();
+      $csv = [];
 
       while ($customer = database::fetch($customers_query)) {
-        $csv[] = array(
+        $csv[] = [
           'id' => $customer['id'],
           'code' => $customer['code'],
           'email' => $customer['email'],
@@ -134,7 +134,7 @@
           'phone' => $customer['phone'],
           'newsletter' => $customer['newsletter'],
           'notes' => $customer['notes'],
-        );
+        ];
       }
 
       ob_clean();
@@ -190,17 +190,17 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [[language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''], [','],  [';'], ['TAB', "\t"], ['|']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
@@ -233,17 +233,17 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
@@ -253,12 +253,12 @@
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+                <?php echo functions::form_draw_select_field('eol', [['Win'], ['Mac'], ['Linux']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_output', 'Output'); ?></label>
-                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+                <?php echo functions::form_draw_select_field('output', [[language::translate('title_file', 'File'), 'file'], [language::translate('title_screen', 'Screen'), 'screen']], true); ?>
               </div>
             </div>
 

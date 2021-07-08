@@ -12,7 +12,7 @@
 
   $_page = new ent_view();
 
-  $_page->snippets['orders'] = array();
+  $_page->snippets['orders'] = [];
 
   $orders_query = database::query(
     "select o.*, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
@@ -27,14 +27,14 @@
     $page_items = 0;
 
     while ($order = database::fetch($orders_query)) {
-      $_page->snippets['orders'][] = array(
+      $_page->snippets['orders'][] = [
         'id' => $order['id'],
-        'link' => document::ilink('order', array('order_id' => $order['id'], 'public_key' => $order['public_key'])),
-        'printable_link' => document::ilink('printable_order_copy', array('order_id' => $order['id'], 'public_key' => $order['public_key'])),
+        'link' => document::ilink('order', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
+        'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
         'order_status' => $order['order_status_name'],
         'date_created' => language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
         'payment_due' => currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']),
-      );
+      ];
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }

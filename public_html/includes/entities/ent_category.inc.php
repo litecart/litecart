@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $categories_query = database::query(
         "show fields from ". DB_TABLE_CATEGORIES .";"
@@ -30,15 +30,15 @@
       );
 
       while ($field = database::fetch($categories_info_query)) {
-        if (in_array($field['Field'], array('id', 'category_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'category_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
       }
 
-      $this->data['filters'] = array();
+      $this->data['filters'] = [];
 
       $this->previous = $this->data;
     }
@@ -68,7 +68,7 @@
 
       while ($category_info = database::fetch($categories_info_query)) {
         foreach ($category_info as $key => $value) {
-          if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
           $this->data[$key][$category_info['language_code']] = $value;
         }
       }
@@ -81,7 +81,7 @@
         order by priority;"
       );
 
-      $this->data['filters'] = array();
+      $this->data['filters'] = [];
       while ($group = database::fetch($category_filters_query)) {
         $this->data['filters'][] = $group;
       }
@@ -283,7 +283,7 @@
         exit;
       }
 
-      $this->data['filters'] = array();
+      $this->data['filters'] = [];
 
       $this->save();
 

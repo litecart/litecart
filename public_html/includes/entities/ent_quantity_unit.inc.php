@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_QUANTITY_UNITS .";"
@@ -30,9 +30,9 @@
       );
 
       while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], array('id', 'quantity_unit_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'quantity_unit_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -66,7 +66,7 @@
 
       while ($quantity_unit_info = database::fetch($quantity_unit_info_query)) {
         foreach ($quantity_unit_info as $key => $value) {
-          if (in_array($key, array('id', 'quantity_unit_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
           $this->data[$key][$quantity_unit_info['language_code']] = $value;
         }
       }

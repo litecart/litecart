@@ -6,17 +6,17 @@
 
     public static function init() {
       if (empty(session::$data['notices'])) {
-        session::$data['notices'] = array(
-          'errors' => array(),
-          'warnings' => array(),
-          'notices' => array(),
-          'success' => array(),
-        );
+        session::$data['notices'] = [
+          'errors' => [],
+          'warnings' => [],
+          'notices' => [],
+          'success' => [],
+        ];
       }
 
       self::$data = &session::$data['notices'];
 
-      event::register('after_capture', array(__CLASS__, 'after_capture'));
+      event::register('after_capture', [__CLASS__, 'after_capture']);
     }
 
     public static function after_capture() {
@@ -36,12 +36,12 @@
     public static function reset($type=null) {
 
       if ($type) {
-        self::$data[$type] = array();
+        self::$data[$type] = [];
 
       } else {
         if (!empty(self::$data)) {
           foreach (self::$data as $type => $container) {
-            self::$data[$type] = array();
+            self::$data[$type] = [];
           }
         }
       }
@@ -63,7 +63,7 @@
 
     public static function dump($type) {
       $stack = self::$data[$type];
-      self::$data[$type] = array();
+      self::$data[$type] = [];
       return $stack;
     }
   }

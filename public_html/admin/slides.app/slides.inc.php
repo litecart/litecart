@@ -26,7 +26,7 @@
   }
 
 // Table Rows
-  $slides = array();
+  $slides = [];
 
   $slides_query = database::query(
     "select * from ". DB_TABLE_SLIDES ."
@@ -55,7 +55,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_slide'), true), language::translate('title_add_new_slide', 'Add New Slide'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_slide'], true), language::translate('title_add_new_slide', 'Add New Slide'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -83,12 +83,12 @@
             <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><?php echo $slide['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>"><?php echo $slide['name']; ?></a></td>
             <td class="text-right"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
             <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
             <td class="text-right"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
             <td class="text-right"><?php echo $slide['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

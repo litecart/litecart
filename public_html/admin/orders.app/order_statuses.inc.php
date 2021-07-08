@@ -6,7 +6,7 @@
   breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'));
 
 // Table Rows
-  $order_statuses = array();
+  $order_statuses = [];
 
   $order_statuses_query = database::query(
     "select os.*, osi.name, os.priority from ". DB_TABLE_ORDER_STATUSES ." os
@@ -39,7 +39,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_order_status'), true), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_order_status'], true), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -67,12 +67,12 @@
           <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
           <td><?php echo $order_status['id']; ?></td>
           <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
-          <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>"><?php echo $order_status['name']; ?></a></td>
+          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>"><?php echo $order_status['name']; ?></a></td>
           <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo $order_status['priority']; ?></td>
-          <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_order_status', 'order_status_id' => $order_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

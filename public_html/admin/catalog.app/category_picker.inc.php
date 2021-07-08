@@ -1,7 +1,7 @@
 <?php
 	document::$layout = 'ajax';
 
-  $breadcrumbs = array();
+  $breadcrumbs = [];
   if (!empty($_GET['parent_id'])) {
     foreach (reference::category($_GET['parent_id'])->path as $id => $category) {
       $breadcrumbs[] = [
@@ -18,7 +18,7 @@
     order by c.priority, ci.name;"
   );
 
-  $categories = array();
+  $categories = [];
   while ($category = database::fetch($query)) {
     $categories[] = $category;
   }

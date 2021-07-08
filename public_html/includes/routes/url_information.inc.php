@@ -3,16 +3,16 @@
   class url_information {
 
     function routes() {
-      return array(
-        array(
+      return [
+        [
           'pattern' => '#^.*-i-([0-9]+)/?$#',
           'page' => 'information',
           'params' => 'page_id=$1',
-          'options' => array(
+          'options' => [
             'redirect' => true,
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
     }
 
     function rewrite(ent_link $link, $language_code) {

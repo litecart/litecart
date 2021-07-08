@@ -1,12 +1,12 @@
 <?php
 
-  $widget_addons_cache_token = cache::token('widget_addons', array('language'), 'file', 43200);
+  $widget_addons_cache_token = cache::token('widget_addons', ['language'], 'file', 43200);
   if (cache::capture($widget_addons_cache_token, 43200, true)) {
 
     try {
       $url = document::link('https://www.litecart.net/feeds/addons');
 
-      $store_info = array(
+      $store_info = [
         'platform' => PLATFORM_NAME,
         'version' => PLATFORM_VERSION,
         'name' => settings::get('store_name'),
@@ -14,7 +14,7 @@
         'language_code' => settings::get('store_language_code'),
         'country_code' => settings::get('store_country_code'),
         'url' => document::ilink(''),
-      );
+      ];
 
       $client = new wrap_http();
       $client->timeout = 10;
@@ -30,7 +30,7 @@
 
       if (!empty($rss->channel->item)) {
 
-        $addons = array();
+        $addons = [];
         foreach ($rss->channel->item as $item) {
           $addons[] = $item;
           if (count($addons) == 16) break;

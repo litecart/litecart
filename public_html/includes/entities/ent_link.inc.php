@@ -42,7 +42,7 @@
       if (!empty($this->_components[$component])) return $this->_components[$component];
 
     // Set defaults
-      if (in_array($component, array('scheme', 'host', 'port', 'path'))) {
+      if (in_array($component, ['scheme', 'host', 'port', 'path'])) {
         $this->$component = '';
       }
 
@@ -91,7 +91,7 @@
         // Pop path
           if (strpos($value, '..') !== false) {
             $parts = array_filter(explode('/', $value), 'strlen');
-            $absolutes = array();
+            $absolutes = [];
             foreach ($parts as $part) {
               if ('.' == $part) continue;
               if ('..' == $part) {
@@ -190,7 +190,7 @@
       if (is_array($key)) {
 
         $array_diff_recursive = function($array1, $array2) use (&$array_diff_recursive) {
-          $result = array();
+          $result = [];
           foreach ($array1 as $key => $value) {
             if (array_key_exists($key, $array2)) {
               if (is_array($value)) {
@@ -219,15 +219,15 @@
     }
 
     public function reset() {
-      $this->_components = array(
+      $this->_components = [
         'scheme' => '',
         'host' => '',
         'user' => '',
         'pass' => '',
         'port' => '',
         'path' => '',
-        'query' => array(),
+        'query' => [],
         'fragment' => '',
-      );
+      ];
     }
   }

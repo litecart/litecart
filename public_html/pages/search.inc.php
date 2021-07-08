@@ -19,18 +19,18 @@
   functions::draw_lightbox();
 
   $_page = new ent_view();
-  $_page->snippets = array(
+  $_page->snippets = [
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
-    'products' => array(),
-    'sort_alternatives' => array(
+    'products' => [],
+    'sort_alternatives' => [
       'relevance' => language::translate('title_relevance', 'Relevance'),
       'name' => language::translate('title_name', 'Name'),
       'price' => language::translate('title_price', 'Price'),
       'popularity' => language::translate('title_popularity', 'Popularity'),
       'date' => language::translate('title_date', 'Date'),
-    ),
+    ],
     'pagination' => null,
-  );
+  ];
 
   $code_regex = functions::format_regex_code($_GET['query']);
 
@@ -113,7 +113,7 @@
 
   if (database::num_rows($products_query) == 1) {
     $product = database::fetch($products_query);
-    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), true, 302);
+    header('Location: '. document::ilink('product', ['product_id' => $product['id']]), true, 302);
     exit;
   }
 

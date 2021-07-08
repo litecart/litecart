@@ -2,15 +2,15 @@
 
   function admin_get_apps() {
 
-    $apps_cache_token = cache::token('admin_apps', array('language'), 'file');
+    $apps_cache_token = cache::token('admin_apps', ['language'], 'file');
     if (!$apps = cache::get($apps_cache_token)) {
-      $apps = array();
+      $apps = [];
 
       foreach (glob('*.app/') as $dir) {
         $code = preg_replace('#\.app/$#', '', $dir);
         $app_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
         if (!is_array($app_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
-        $apps[$code] = array_merge(array('code' => $code, 'dir' => $dir), $app_config);
+        $apps[$code] = array_merge(['code' => $code, 'dir' => $dir], $app_config);
       }
 
       usort($apps, function($a, $b) {
@@ -33,15 +33,15 @@
 
   function admin_get_widgets() {
 
-    $widgets_cache_token = cache::token('admin_widgets', array('language'), 'file');
+    $widgets_cache_token = cache::token('admin_widgets', ['language'], 'file');
     if (!$widgets = cache::get($widgets_cache_token)) {
-      $widgets = array();
+      $widgets = [];
 
       foreach (glob('*.widget/') as $dir) {
         $code = preg_replace('#\.widget/$#', '', $dir);
         $widget_config = require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php');
         if (!is_array($widget_config)) require vmod::check(FS_DIR_ADMIN . $dir . 'config.inc.php'); // Backwards compatibility
-        $widgets[$code] = array_merge(array('code' => $code, 'dir' => $dir), $widget_config);
+        $widgets[$code] = array_merge(['code' => $code, 'dir' => $dir], $widget_config);
       }
 
       usort($widgets, function($a, $b) {

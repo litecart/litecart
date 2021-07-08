@@ -43,7 +43,7 @@
 
   document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
   document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), array('category_id')) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />';
 
   if (!empty($product->image)) {
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link('images/' . $product->image) .'"/>';
@@ -53,12 +53,12 @@
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
     foreach (reference::category($_GET['category_id'])->path as $category_crumb) {
       document::$snippets['title'][] = $category_crumb->name;
-      breadcrumbs::add($category_crumb->name, document::ilink('category', array('category_id' => $category_crumb->id)));
+      breadcrumbs::add($category_crumb->name, document::ilink('category', ['category_id' => $category_crumb->id]));
     }
   } else if (!empty($product->manufacturer)) {
     document::$snippets['title'][] = $product->manufacturer->name;
     breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-    breadcrumbs::add($product->manufacturer->name, document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer->id)));
+    breadcrumbs::add($product->manufacturer->name, document::ilink('manufacturer', ['manufacturer_id' => $product->manufacturer->id]));
   }
   breadcrumbs::add($product->name);
 
@@ -70,19 +70,19 @@
   }
 
   if (empty(session::$data['recently_viewed_products']) || !is_array(session::$data['recently_viewed_products'])) {
-    session::$data['recently_viewed_products'] = array();
+    session::$data['recently_viewed_products'] = [];
   }
 
-  session::$data['recently_viewed_products'][$product->id] = array(
+  session::$data['recently_viewed_products'][$product->id] = [
     'id' => $product->id,
     'name' => $product->name,
     'image' => $product->image,
-  );
+  ];
 
 // Page
   $_page = new ent_view();
 
-  $schema_json = array(
+  $schema_json = [
     '@context' => 'http://schema.org/',
     '@type' => 'Product',
     'productID' => $product->id,
@@ -92,7 +92,7 @@
     'name' => $product->name,
     'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
     'description' => !empty($product->description) ? strip_tags($product->description) : '',
-    'offers' => array(
+    'offers' => [
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
       'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? (float)currency::format_raw(tax::get_price($product->campaign['price'], $product->tax_class_id)) : (float)currency::format_raw(tax::get_price($product->price, $product->tax_class_id)),
@@ -100,14 +100,14 @@
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       'url' => document::link(),
-    ),
-  );
+    ],
+  ];
 
   list($width, $height) = functions::image_scale_by_width(480, settings::get('product_image_ratio'));
 
-  $_page->snippets = array(
+  $_page->snippets = [
     'product_id' => $product->id,
-    'link' => document::ilink('product', array(), true),
+    'link' => document::ilink('product', [], true),
     'code' => $product->code,
     'sku' => $product->sku,
     'mpn' => $product->mpn,
@@ -120,55 +120,55 @@
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
     'attributes' => $product->attributes,
     'keywords' => $product->keywords,
-    'image' => array(
+    'image' => [
       'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
       'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
-      'viewport' => array(
+      'viewport' => [
         'width' => $width,
         'height' => $height,
-      ),
-    ),
+      ],
+    ],
     'sticker' => '',
-    'extra_images' => array(),
-    'manufacturer' => array(),
+    'extra_images' => [],
+    'manufacturer' => [],
     'recommended_price' => tax::get_price((float)$product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => $product->tax,
-    'tax_rates' => array(),
+    'tax_rates' => [],
     'quantity' => round((float)$product->quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0),
     'quantity_unit' => $product->quantity_unit,
     'stock_status' => null,
-    'delivery_status' => !empty($product->delivery_status) ? $product->delivery_status : array(),
-    'sold_out_status' => !empty($product->sold_out_status) ? $product->sold_out_status : array(),
+    'delivery_status' => !empty($product->delivery_status) ? $product->delivery_status : [],
+    'sold_out_status' => !empty($product->sold_out_status) ? $product->sold_out_status : [],
     'orderable' => !empty($product->sold_out_status['orderable']),
     'cheapest_shipping_fee' => null,
-    'options' => array(),
-  );
+    'options' => [],
+  ];
 
 // Extra Images
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
-    $_page->snippets['extra_images'][] = array(
+    $_page->snippets['extra_images'][] = [
       'original' => 'images/' . $image,
       'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'viewport' => array(
+      'viewport' => [
         'width' => $width,
         'height' => $height,
-      ),
-    );
+      ],
+    ];
   }
 
 // Watermark Images
   if (settings::get('product_image_watermark')) {
-    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['image']['original'], array('watermark' => true));
+    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['image']['original'], ['watermark' => true]);
     foreach (array_keys($_page->snippets['extra_images']) as $key) {
-      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
+      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_APP . $_page->snippets['extra_images'][$key]['original'], ['watermark' => true]);
     }
   }
 
@@ -184,23 +184,23 @@
   if (!empty($product->manufacturer) && $product->manufacturer->status) {
     $schema_json['brand']['name'] = $product->manufacturer->name;
 
-    $_page->snippets['manufacturer'] = array(
+    $_page->snippets['manufacturer'] = [
       'id' => $product->manufacturer->id,
       'name' => $product->manufacturer->name,
-      'image' => array(),
-      'link' => document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer->id)),
-    );
+      'image' => [],
+      'link' => document::ilink('manufacturer', ['manufacturer_id' => $product->manufacturer->id]),
+    ];
 
     if (!empty($product->manufacturer->image)) {
-      $_page->snippets['manufacturer']['image'] = array(
+      $_page->snippets['manufacturer']['image'] = [
         'original' => 'images/' . $product->manufacturer->image,
         'thumbnail' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 200, 60),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_APP . 'images/' . $product->manufacturer->image, 400, 120),
-        'viewport' => array(
+        'viewport' => [
           'width' => 200,
           'height' => 60,
-        ),
-      );
+        ],
+      ];
     }
   }
 
@@ -224,8 +224,8 @@
 
     $shipping = new mod_shipping('local');
 
-    $shipping_items = array(
-      array(
+    $shipping_items = [
+      [
         'quantity' => 1,
         'product_id' => $product->id,
         'price' => !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price,
@@ -237,8 +237,8 @@
         'dim_y' => $product->dim_y,
         'dim_z' => $product->dim_z,
         'dim_class' => $product->dim_class,
-      ),
-    );
+      ],
+    ];
 
     $cheapest_shipping = $shipping->cheapest($shipping_items, currency::$selected['code'], customer::$data);
 
@@ -293,7 +293,7 @@
 
         case 'select':
 
-          $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+          $options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
           foreach ($group['values'] as $value) {
 
             $price_adjust_text = '';
@@ -305,7 +305,7 @@
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
+            $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
           }
 
           $values .= functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required' : ''));
@@ -323,13 +323,13 @@
           break;
       }
 
-      $_page->snippets['options'][] = array(
+      $_page->snippets['options'][] = [
         'id' => $group['id'],
         'group_id' => $group['group_id'],
         'name' => $group['name'],
         'required' => !empty($group['required']) ? 1 : 0,
         'values' => $values,
-      );
+      ];
     }
   }
 

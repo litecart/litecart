@@ -4,8 +4,8 @@
 
   document::$snippets['title'][] = language::translate('title_run_job', 'Run Job') .' '. htmlspecialchars($_GET['module_id']);
 
-  breadcrumbs::add(language::translate('title_modules', 'Modules'), document::link(WS_DIR_ADMIN, array('doc' => 'modules'), array('app')));
-  breadcrumbs::add(language::translate('title_job_modules', 'Job Modules'), document::link(WS_DIR_ADMIN, array('doc' => 'jobs'), array('app')));
+  breadcrumbs::add(language::translate('title_modules', 'Modules'), document::link(WS_DIR_ADMIN, ['doc' => 'modules'], ['app']));
+  breadcrumbs::add(language::translate('title_job_modules', 'Job Modules'), document::link(WS_DIR_ADMIN, ['doc' => 'jobs'], ['app']));
   breadcrumbs::add(language::translate('title_run_job', 'Run Job') .' '. htmlspecialchars($_GET['module_id']));
 
   ob_clean();

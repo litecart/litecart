@@ -39,7 +39,7 @@
       }
 
     // Billing address
-      $fields = array(
+      $fields = [
         'email',
         'tax_id',
         'company',
@@ -53,14 +53,14 @@
         'zone_code',
         'phone',
         'different_shipping_address',
-      );
+      ];
 
       foreach ($fields as $field) {
         customer::$data[$field] = isset($_POST[$field]) ? $_POST[$field] : '';
       }
 
     // Shipping address
-      $fields = array(
+      $fields = [
         'company',
         'firstname',
         'lastname',
@@ -71,7 +71,7 @@
         'country_code',
         'zone_code',
         'phone',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (!empty(customer::$data['different_shipping_address'])) {
@@ -112,13 +112,13 @@
               limit 1;"
             );
 
-            $aliases = array(
+            $aliases = [
               '%store_name' => settings::get('store_name'),
               '%store_link' => document::ilink(''),
               '%customer_firstname' => $_POST['firstname'],
               '%customer_lastname' => $_POST['lastname'],
               '%customer_email' => $_POST['email'],
-            );
+            ];
 
             $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
             $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
@@ -149,7 +149,7 @@
   }
 
   $box_checkout_customer = new ent_view();
-  $box_checkout_customer->snippets = array(
+  $box_checkout_customer->snippets = [
     'account_exists' => $account_exists,
-  );
+  ];
   echo $box_checkout_customer->stitch('views/box_checkout_customer');

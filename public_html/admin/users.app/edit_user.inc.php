@@ -14,7 +14,7 @@
 
   document::$snippets['title'][] = !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User');
 
-  breadcrumbs::add(language::translate('title_users', 'Users'), document::href_link(WS_DIR_ADMIN, array('doc' => 'users'), array('app')));
+  breadcrumbs::add(language::translate('title_users', 'Users'), document::href_link(WS_DIR_ADMIN, ['doc' => 'users'], ['app']));
   breadcrumbs::add(!empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'));
 
   if (isset($_POST['save'])) {
@@ -26,10 +26,10 @@
       if (!empty($_POST['password']) && empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_must_enter_confirmed_password', 'You must confirm the password'));
       if (!empty($_POST['password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 
-      if (empty($_POST['apps'])) $_POST['apps'] = array();
-      if (empty($_POST['widgets'])) $_POST['widgets'] = array();
+      if (empty($_POST['apps'])) $_POST['apps'] = [];
+      if (empty($_POST['widgets'])) $_POST['widgets'] = [];
 
-      $fields = array(
+      $fields = [
         'status',
         'username',
         'email',
@@ -38,7 +38,7 @@
         'widgets',
         'date_valid_from',
         'date_valid_to',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $user->data[$field] = $_POST[$field];
@@ -49,7 +49,7 @@
       $user->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'users'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'users'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -65,7 +65,7 @@
       $user->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'users'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'users'], ['app']));
       exit;
 
     } catch (Exception $e) {

@@ -101,7 +101,7 @@
       }
 
       if (!empty($user['last_host']) && $user['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
-        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), array('%hostname' => $user['last_host'])));
+        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), ['%hostname' => $user['last_host']]));
       }
 
       database::query(
@@ -131,7 +131,7 @@
         $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
       }
 
-      notices::add('success', str_replace(array('%username'), array(user::$data['username']), language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
+      notices::add('success', str_replace(['%username'], [user::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
       header('Location: '. $_POST['redirect_url']);
       exit;
 

@@ -10,7 +10,7 @@
 
   if (!$customer = database::fetch($customer_query)) exit;
 
-  $json = array(
+  $json = [
     'email' => !empty($customer['email']) ? $customer['email'] : '',
     'tax_id' => !empty($customer['tax_id']) ? $customer['tax_id'] : '',
     'company' => !empty($customer['company']) ? $customer['company'] : '',
@@ -24,7 +24,7 @@
     'zone_code' => !empty($customer['zone_code']) ? $customer['zone_code'] : '',
     'phone' => !empty($customer['phone']) ? $customer['phone'] : '',
     'different_shipping_address' => !empty($customer['different_shipping_address']) ? true : false,
-    'shipping_address' => array(
+    'shipping_address' => [
       'company' => !empty($customer['shipping_company']) ? $customer['shipping_company'] : '',
       'firstname' => !empty($customer['shipping_firstname']) ? $customer['shipping_firstname'] : '',
       'lastname' => !empty($customer['shipping_lastname']) ? $customer['shipping_lastname'] : '',
@@ -35,8 +35,8 @@
       'country_code' => !empty($customer['shipping_country_code']) ? $customer['shipping_country_code'] : '',
       'zone_code' => !empty($customer['shipping_zone_code']) ? $customer['shipping_zone_code'] : '',
       'phone' => !empty($customer['shipping_phone']) ? $customer['shipping_phone'] : '',
-    ),
-  );
+    ],
+  ];
 
   language::convert_characters($json, language::$selected['charset'], 'UTF-8');
   $json = json_encode($json);

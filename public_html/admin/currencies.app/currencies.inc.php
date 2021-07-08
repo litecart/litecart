@@ -35,7 +35,7 @@
   }
 
 // Table Rows
-  $currencies = array();
+  $currencies = [];
 
   $currencies_query = database::query(
     "select * from ". DB_TABLE_CURRENCIES ."
@@ -64,7 +64,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_currency'), true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_currency'], true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -97,7 +97,7 @@
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $currency['status_color'] .';"'); ?></td>
             <td><?php echo $currency['id']; ?></td>
             <td><?php echo $currency['code']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_currency', 'currency_code' => $currency['code']], true); ?>"><?php echo $currency['name']; ?></a></td>
             <td class="text-right"><?php echo $currency['value']; ?></td>
             <td class="text-center"><?php echo $currency['decimals']; ?></td>
             <td class="text-center"><?php echo $currency['prefix']; ?></td>
@@ -105,7 +105,7 @@
             <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo $currency['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_currency', 'currency_code' => $currency['code']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

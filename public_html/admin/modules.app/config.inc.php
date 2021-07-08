@@ -1,40 +1,40 @@
 <?php
 
-  return $app_config = array(
+  return $app_config = [
     'name' => language::translate('title_modules', 'Modules'),
     'default' => 'customer',
     'priority' => 0,
-    'theme' => array(
+    'theme' => [
       'color' => '#c469c5',
       'icon' => 'fa-cube',
-    ),
-    'menu' => array(
-      array(
+    ],
+    'menu' => [
+      [
         'title' => language::translate('title_customer_modules', 'Customer Modules'),
         'doc' => 'customer',
-      ),
-      array(
+      ],
+      [
         'title' => language::translate('title_shipping_modules', 'Shipping Modules'),
         'doc' => 'shipping',
-      ),
-      array(
+      ],
+      [
         'title' => language::translate('title_payment_modules', 'Payment Modules'),
         'doc' => 'payment',
-      ),
-      array(
+      ],
+      [
         'title' => language::translate('title_order_modules', 'Order Modules'),
         'doc' => 'order',
-      ),
-      array(
+      ],
+      [
         'title' => language::translate('title_order_total_modules', 'Order Total Modules'),
         'doc' => 'order_total',
-      ),
-      array(
+      ],
+      [
         'title' => language::translate('title_job_modules', 'Job Modules'),
         'doc' => 'jobs',
-      ),
-    ),
-    'docs' => array(
+      ],
+    ],
+    'docs' => [
       'customer' => 'modules.inc.php',
       'order' => 'modules.inc.php',
       'order_total' => 'modules.inc.php',
@@ -48,5 +48,5 @@
       'edit_payment' => 'edit_module.inc.php',
       'edit_shipping' => 'edit_module.inc.php',
       'run_job' => 'run_job.inc.php',
-    ),
-  );
+    ],
+  ];

@@ -8,7 +8,7 @@
 
 // Stitch content
   $_page = new ent_view();
-  $_page->snippets = array('content' => $GLOBALS['content']);
+  $_page->snippets = ['content' => $GLOBALS['content']];
   $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
   unset($GLOBALS['content']);
 

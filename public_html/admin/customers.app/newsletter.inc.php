@@ -2,7 +2,7 @@
 
   document::$snippets['title'][] = language::translate('title_newsletter', 'Newsletter');
 
-  breadcrumbs::add(language::translate('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, array('doc' => 'customers'), array('app')));
+  breadcrumbs::add(language::translate('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, ['doc' => 'customers'], ['app']));
   breadcrumbs::add(language::translate('title_newsletter', 'Newsletter'));
 
   if (!isset($_GET['template'])) $_GET['template'] = 'raw';
@@ -40,9 +40,9 @@
     <h2><?php echo language::translate('title_list_of_subscribers', 'List of Subscribers'); ?></h2>
 
     <p class="btn-group">
-      <a class="btn btn-default<?php echo (empty($_GET['template']) || $_GET['template'] == 'raw') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'raw'), array('app', 'doc')); ?>">Raw</a>
-      <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'email') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'email'), array('app', 'doc')); ?>">Email Formatted</a>
-      <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'csv') ? ' active' : null; ?>" href="<?php echo document::href_link('', array('template' => 'csv'), array('app', 'doc')); ?>">CSV</a>
+      <a class="btn btn-default<?php echo (empty($_GET['template']) || $_GET['template'] == 'raw') ? ' active' : null; ?>" href="<?php echo document::href_link('', ['template' => 'raw'], ['app', 'doc']); ?>">Raw</a>
+      <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'email') ? ' active' : null; ?>" href="<?php echo document::href_link('', ['template' => 'email'], ['app', 'doc']); ?>">Email Formatted</a>
+      <a class="btn btn-default<?php echo (isset($_GET['template']) && $_GET['template'] == 'csv') ? ' active' : null; ?>" href="<?php echo document::href_link('', ['template' => 'csv'], ['app', 'doc']); ?>">CSV</a>
     </ul>
 
     <div class="row" style="margin-bottom: 2em;">
@@ -68,7 +68,7 @@
         $output .= '"'. $customer['firstname'] .' '. $customer['lastname'] .'" <'. $customer['email'] .'>;' . PHP_EOL;
         break;
       case 'csv':
-        $output .= implode(';', array($customer['firstname'], $customer['lastname'], $customer['email'])) . PHP_EOL;
+        $output .= implode(';', [$customer['firstname'], $customer['lastname'], $customer['email']]) . PHP_EOL;
         break;
       case 'raw':
         $output .= $customer['email'] . PHP_EOL;
@@ -103,7 +103,7 @@
         $output .= '"'. $customer['firstname'] .' '. $customer['lastname'] .'" <'. $customer['email'] .'>;' . PHP_EOL;
         break;
       case 'csv':
-        $output .= implode(';', array($customer['firstname'], $customer['lastname'], $customer['email'])) . PHP_EOL;
+        $output .= implode(';', [$customer['firstname'], $customer['lastname'], $customer['email']]) . PHP_EOL;
         break;
       case 'raw':
       default:

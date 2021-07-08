@@ -26,7 +26,7 @@
 
     public function send($sender, $recipients, $data='') {
 
-      if (!is_array($recipients)) $recipients = array($recipients);
+      if (!is_array($recipients)) $recipients = [$recipients];
 
       if (!is_resource($this->_socket)) $this->connect();
 
@@ -45,14 +45,14 @@
 
     public function connect() {
 
-      $stream_context = $context = stream_context_create(array(
-        'ssl' => array(
+      $stream_context = $context = stream_context_create([
+        'ssl' => [
           // set some SSL/TLS specific options
           'verify_peer' => false,
           'verify_peer_name' => false,
           'allow_self_signed' => true
-        ),
-      ));
+        ],
+      ]);
 
       fwrite($this->_log_handle, "Connecting to $this->_host ...\r\n");
       $this->_socket = stream_socket_client($this->_host, $errno, $errstr, 3, STREAM_CLIENT_CONNECT, $stream_context);
@@ -77,7 +77,7 @@
 
       if (!empty($this->_username)) {
 
-        $auths = array();
+        $auths = [];
         if (preg_match('#250.AUTH (.*?)\R#', $this->_last_response, $matches)) {
           $auths = explode(' ', $matches[1]);
         }

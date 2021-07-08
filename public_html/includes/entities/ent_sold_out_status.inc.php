@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $sold_out_status_query = database::query(
         "show fields from ". DB_TABLE_SOLD_OUT_STATUSES .";"
@@ -30,9 +30,9 @@
       );
 
       while ($field = database::fetch($sold_out_status_info_query)) {
-        if (in_array($field['Field'], array('id', 'sold_out_status_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'sold_out_status_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -66,7 +66,7 @@
 
       while ($sold_out_status_info = database::fetch($sold_out_status_info_query)) {
         foreach ($sold_out_status_info as $key => $value) {
-          if (in_array($key, array('id', 'sold_out_status_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
           $this->data[$key][$sold_out_status_info['language_code']] = $value;
         }
       }

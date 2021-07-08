@@ -41,18 +41,18 @@
 
       $contents = preg_replace('#(\r\n?|\n)#', "\n", $contents);
 
-      $errors = array();
-      $occurrences = array();
+      $errors = [];
+      $occurrences = [];
 
       if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/_]+)\] ([^\n]*)((?:(?!\n\[|$).)*)#s', $contents, $matches)) {
         foreach (array_keys($matches[0]) as $i) {
           $checksum = md5($matches[2][$i]);
 
-          $errors[$checksum] = array(
+          $errors[$checksum] = [
             'error' => $matches[2][$i],
             'backtrace' => trim($matches[3][$i], "\n"),
             'last_occurrence' => $matches[1][$i],
-          );
+          ];
 
           if (isset($occurrences[$checksum])) {
             $occurrences[$checksum]++;
@@ -89,42 +89,42 @@
 
     function settings() {
 
-      return array(
-        array(
+      return [
+        [
           'key' => 'status',
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
-        ),
-        array(
+        ],
+        [
           'key' => 'working_hours',
           'default_value' => '07:00-21:00',
           'title' => language::translate(__CLASS__.':title_working_hours', 'Working Hours'),
           'description' => language::translate(__CLASS__.':description_working_hours', 'During what hours of the day the job would operate e.g. 07:00-21:00.'),
           'function' => 'text()',
-        ),
-        array(
+        ],
+        [
           'key' => 'report_frequency',
           'default_value' => 'Weekly',
           'title' => language::translate(__CLASS__.':title_report_frequency', 'Report Frequency'),
           'description' => language::translate(__CLASS__.':description_report_frequency', 'How often the reports should be sent.'),
           'function' => 'radio("Immediately","Hourly","Daily","Weekly","Monthly")',
-        ),
-        array(
+        ],
+        [
           'key' => 'email_recipient',
           'default_value' => settings::get('store_email'),
           'title' => language::translate(__CLASS__.':title_email_recipient', 'Email Recipient'),
           'description' => language::translate(__CLASS__.':description_email_recipient', 'The email address where reports will be sent.'),
           'function' => 'text()',
-        ),
-        array(
+        ],
+        [
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
           'function' => 'number()',
-        ),
-      );
+        ],
+      ];
     }
   }

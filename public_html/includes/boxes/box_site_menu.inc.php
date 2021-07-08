@@ -2,27 +2,27 @@
 
   $box_site_menu = new ent_view();
 
-  $box_site_menu_cache_token = cache::token('box_site_menu', array('language'), 'file');
+  $box_site_menu_cache_token = cache::token('box_site_menu', ['language'], 'file');
   if (!$box_site_menu->snippets = cache::get($box_site_menu_cache_token)) {
 
-    $box_site_menu->snippets = array(
-      'categories' => array(),
-      'manufacturers' => array(),
-      'pages' => array(),
-    );
+    $box_site_menu->snippets = [
+      'categories' => [],
+      'manufacturers' => [],
+      'pages' => [],
+    ];
 
   // Categories
 
     $categories_query = functions::catalog_categories_query(0);
 
     while ($category = database::fetch($categories_query)) {
-      $box_site_menu->snippets['categories'][$category['id']] = array(
+      $box_site_menu->snippets['categories'][$category['id']] = [
         'type' => 'category',
         'id' => $category['id'],
         'title' => $category['name'],
-        'link' => document::ilink('category', array('category_id' => $category['id'])),
+        'link' => document::ilink('category', ['category_id' => $category['id']]),
         'priority' => $category['priority'],
-      );
+      ];
     }
 
   // Manufacturers
@@ -35,13 +35,13 @@
     );
 
     while ($manufacturer = database::fetch($pages_query)) {
-      $box_site_menu->snippets['manufacturers'][$manufacturer['id']] = array(
+      $box_site_menu->snippets['manufacturers'][$manufacturer['id']] = [
         'type' => 'manufacturer',
         'id' => $manufacturer['id'],
         'title' => $manufacturer['name'],
-        'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
+        'link' => document::ilink('manufacturer', ['manufacturer_id' => $manufacturer['id']]),
         'priority' => 0,
-      );
+      ];
     }
 
   // Information pages
@@ -55,13 +55,13 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $box_site_menu->snippets['pages'][$page['id']] = array(
+      $box_site_menu->snippets['pages'][$page['id']] = [
         'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],
-        'link' => document::ilink('information', array('page_id' => $page['id'])),
+        'link' => document::ilink('information', ['page_id' => $page['id']]),
         'priority' => $page['priority'],
-      );
+      ];
     }
 
     cache::set($box_site_menu_cache_token, $box_site_menu->snippets);

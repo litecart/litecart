@@ -1,12 +1,12 @@
 <?php
-  $currency_options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+  $currency_options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
   foreach ($currencies as $currency) {
-    $currency_options[] = array($currency['name'], $currency['code']);
+    $currency_options[] = [$currency['name'], $currency['code']];
   }
 
-  $language_options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+  $language_options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
   foreach ($languages as $language) {
-    $language_options[] = array($language['name'], $language['code']);
+    $language_options[] = [$language['name'], $language['code']];
   }
 ?>
 

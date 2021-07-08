@@ -1,9 +1,9 @@
 <?php
 
 // Delete files
-  $deleted_files = array(
+  $deleted_files = [
     FS_DIR_APP . 'includes/templates/default.catalog/pages/page.inc.php',
-  );
+  ];
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
@@ -11,22 +11,22 @@
     }
   }
 
-  $modified_files = array(
-    array(
+  $modified_files = [
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCTS_OPTIONS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_PRODUCTS_OPTIONS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options`');" . PHP_EOL
                  . "  define('DB_TABLE_PRODUCTS_OPTIONS_VALUES',           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_options_values`');" . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_OPTION_GROUPS',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_groups`');" . PHP_EOL
                  . "  define('DB_TABLE_OPTION_GROUPS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_groups_info`');" . PHP_EOL
                  . "  define('DB_TABLE_OPTION_VALUES',                     '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_values`');" . PHP_EOL
                  . "  define('DB_TABLE_OPTION_VALUES_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'option_values_info`');" . PHP_EOL,
       'replace' => "" . PHP_EOL,
-    ),
-  );
+    ],
+  ];
 
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {

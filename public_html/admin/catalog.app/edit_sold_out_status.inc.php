@@ -15,7 +15,7 @@
   document::$snippets['title'][] = !empty($sold_out_status->data['id']) ? language::translate('title_edit_sold_out_status', 'Edit Sold Out Status') : language::translate('title_create_new_sold_out_status', 'Create New Sold Out Status');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'), document::link(WS_DIR_ADMIN, array('doc' => 'sold_out_statuses'), array('app')));
+  breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'), document::link(WS_DIR_ADMIN, ['doc' => 'sold_out_statuses'], ['app']));
   breadcrumbs::add(!empty($sold_out_status->data['id']) ? language::translate('title_edit_sold_out_status', 'Edit Sold Out Status') : language::translate('title_create_new_sold_out_status', 'Create New Sold Out Status'));
 
   if (isset($_POST['save'])) {
@@ -26,12 +26,12 @@
       if (empty($_POST['hidden'])) $_POST['hidden'] = 0;
       if (empty($_POST['orderable'])) $_POST['orderable'] = 0;
 
-      $fields = array(
+      $fields = [
         'name',
         'description',
         'hidden',
         'orderable',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $sold_out_status->data[$field] = $_POST[$field];
@@ -40,7 +40,7 @@
       $sold_out_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'sold_out_statuses'], true, ['sold_out_status_id']));
       exit;
 
     } catch (Exception $e) {
@@ -56,7 +56,7 @@
       $sold_out_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'sold_out_statuses'), true, array('sold_out_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'sold_out_statuses'], true, ['sold_out_status_id']));
       exit;
 
     } catch (Exception $e) {

@@ -1,17 +1,17 @@
 <?php
 
-  return $app_config = array(
+  return $app_config = [
     'name' => language::translate('title_slides', 'Slides'),
     'default' => 'slides',
     'priority' => 0,
-    'theme' => array(
+    'theme' => [
       'color' => '#a880d8',
       'icon' => 'fa-picture-o',
-    ),
-    'menu' => array(
-    ),
-    'docs' => array(
+    ],
+    'menu' => [
+    ],
+    'docs' => [
       'slides' => 'slides.inc.php',
       'edit_slide' => 'edit_slide.inc.php',
-    ),
-  );
+    ],
+  ];

@@ -4,7 +4,7 @@
     public $modules;
 
     public function reset() {
-      $this->modules = array();
+      $this->modules = [];
     }
 
     public function load($filter=null) {
@@ -15,11 +15,11 @@
 
       $directory = FS_DIR_APP . 'includes/modules/' . $type . '/';
 
-      if (!empty($filter) && !is_array($filter)) $filter = array($filter);
+      if (!empty($filter) && !is_array($filter)) $filter = [$filter];
 
       $modules_query = database::query(
         "select * from ". DB_TABLE_MODULES ."
-        where type = '". database::input(strtr($type, array('jobs' => 'job'))) ."'
+        where type = '". database::input(strtr($type, ['jobs' => 'job'])) ."'
         ". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
       );
 
@@ -44,11 +44,11 @@
         $settings = json_decode($module['settings'], true);
 
       // Set settings to object
-        $object->settings = array();
+        $object->settings = [];
         foreach ($object->settings() as $setting) {
           $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
-        $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) ? 1 : 0;
+        $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) ? 1 : 0;
         $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 
         if ($type == 'jobs') {

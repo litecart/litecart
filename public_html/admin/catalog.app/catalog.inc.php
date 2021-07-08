@@ -57,11 +57,11 @@
         $product->data['mpn'] = '';
         $product->data['gtin'] = '';
         $product->data['quantity'] = 0;
-        $product->data['categories'] = array($_POST['category_id']);
+        $product->data['categories'] = [$_POST['category_id']];
         $product->data['image'] = null;
-        $product->data['images'] = array();
+        $product->data['images'] = [];
 
-        foreach (array('attributes', 'campaigns', 'options', 'options_stock') as $field) {
+        foreach (['attributes', 'campaigns', 'options', 'options_stock'] as $field) {
           if (empty($product->data[$field])) continue;
           foreach (array_keys($product->data[$field]) as $key) {
             $product->data[$field][$key]['id'] = null;
@@ -83,7 +83,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_duplicated_d_products', 'Duplicated %d products'), count($_POST['products'])));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
       exit;
 
     } catch (Exception $e) {
@@ -105,7 +105,7 @@
       }
 
       notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
       exit;
 
     } catch (Exception $e) {
@@ -132,7 +132,7 @@
       if (!empty($_POST['products'])) {
         foreach ($_POST['products'] as $product_id) {
           $product = new ent_product($product_id);
-          $product->data['categories'] = array($_POST['category_id']);
+          $product->data['categories'] = [$_POST['category_id']];
           $product->save();
         }
         notices::add('success', sprintf(language::translate('success_moved_d_products', 'Moved %d products'), count($_POST['products'])));
@@ -147,7 +147,7 @@
         notices::add('success', sprintf(language::translate('success_moved_d_categories', 'Moved %d categories'), count($_POST['categories'])));
       }
 
-      header('Location: '. document::link(WS_DIR_ADMIN, array('category_id' => $_POST['category_id']), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['category_id' => $_POST['category_id']], true));
       exit;
 
     } catch (Exception $e) {
@@ -187,7 +187,7 @@
 
       if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
 
-      header('Location: '. document::link(WS_DIR_ADMIN, array(), true));
+      header('Location: '. document::link(WS_DIR_ADMIN, [], true));
       exit;
 
     } catch (Exception $e) {
@@ -228,8 +228,8 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id'])), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc'=> 'edit_product'), array('category_id')), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_category', 'parent_id' => $_GET['category_id']]), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc'=> 'edit_product'], ['category_id']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -237,7 +237,7 @@
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, array(), true, array('page', 'query')) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link(WS_DIR_ADMIN, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
@@ -305,11 +305,11 @@
           $warning = null;
 
           if ($product['date_valid_from'] > date('Y-m-d H:i:s')) {
-            throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from'])))));
+            throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
           }
 
           if ($product['date_valid_to'] > 1970 && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
-            throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to'])))));
+            throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
           }
 
           if ($product['quantity'] <= 0) {
@@ -323,10 +323,10 @@
           <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
             <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-            <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
+            <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
             <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
-            <td><a href="<?php echo document::href_ilink('product', array('product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td><a href="<?php echo document::href_ilink('product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
+            <td class="text-right"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
 <?php
       }
@@ -371,11 +371,11 @@
           $warning = null;
 
           if ($product['date_valid_from'] > date('Y-m-d H:i:s')) {
-            throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from'])))));
+            throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
           }
 
           if ($product['date_valid_to'] > 1970 && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
-            throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), array('%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to'])))));
+            throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
           }
 
           if ($product['quantity'] <= 0) {
@@ -391,14 +391,14 @@
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
 
         if ($display_images) {
-          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-left: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+          $output .= '  <td><span style="margin-left: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
 
         $output .= '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : '') .'</td>' . PHP_EOL
-                 . '  <td><a href="'. document::href_ilink('product', array('product_id' => $product['id'])) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td class="text-right"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
 
@@ -413,7 +413,7 @@
         $output .= '<tr>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', array('category_id' => '0'), true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', ['category_id' => '0'], true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
@@ -437,16 +437,16 @@
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
 
         if ($category['id'] == $_GET['category_id']) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else if (in_array($category['id'], $category_trail)) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', array('category_id' => $category['id']), true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
         $output .= '  <td>&nbsp;</td>' . PHP_EOL
-                 . '  <td><a href="'. document::href_ilink('category', array('category_id' => $category['id'])) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-right"><a href="'. document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id'])) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+                 . '  <td class="text-right"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 
         if (in_array($category['id'], $category_trail)) {

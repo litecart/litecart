@@ -1,6 +1,6 @@
 <?php
 
-  $box_slides_cache_token = cache::token('box_slides', array('language'), 'file');
+  $box_slides_cache_token = cache::token('box_slides', ['language'], 'file');
   if (cache::capture($box_slides_cache_token)) {
 
     $slides_query = database::query(
@@ -17,16 +17,16 @@
 
       $box_slides = new ent_view();
 
-      $box_slides->snippets['slides'] = array();
+      $box_slides->snippets['slides'] = [];
 
       while ($slide = database::fetch($slides_query)) {
-        $box_slides->snippets['slides'][] = array(
+        $box_slides->snippets['slides'][] = [
           'id' => $slide['id'],
           'name' => $slide['name'],
           'link' => $slide['link'],
           'image' => 'images/' . $slide['image'],
           'caption' => $slide['caption'],
-        );
+        ];
       }
 
       echo $box_slides->stitch('views/box_slides');

@@ -15,7 +15,7 @@
   document::$snippets['title'][] = !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::link(WS_DIR_ADMIN, array('doc' => 'quantity_units'), array('app')));
+  breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::link(WS_DIR_ADMIN, ['doc' => 'quantity_units'], ['app']));
   breadcrumbs::add(!empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit'));
 
   if (isset($_POST['save'])) {
@@ -25,13 +25,13 @@
 
       if (empty($_POST['separate'])) $_POST['separate'] = 0;
 
-      $fields = array(
+      $fields = [
         'decimals',
         'separate',
         'priority',
         'name',
         'description',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $quantity_unit->data[$field] = $_POST[$field];
@@ -40,7 +40,7 @@
       $quantity_unit->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'quantity_units'), true, array('quantity_unit_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'quantity_units'], true, ['quantity_unit_id']));
       exit;
 
     } catch (Exception $e) {
@@ -56,7 +56,7 @@
       $quantity_unit->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'quantity_units'), true, array('quantity_unit_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'quantity_units'], true, ['quantity_unit_id']));
       exit;
 
     } catch (Exception $e) {

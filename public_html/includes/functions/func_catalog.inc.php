@@ -6,7 +6,7 @@
 
     if (empty($language_code)) $language_code = language::$selected['code'];
 
-    $trail = array();
+    $trail = [];
 
     foreach (reference::category($category_id, $language_code)->path as $category) {
       $trail[$category->id] = $category->name;
@@ -19,7 +19,7 @@
 
     trigger_error('catalog_category_descendants() is deprecated. Use reference::category(id)->descendants', E_USER_DEPRECATED);
 
-    $descendants = array();
+    $descendants = [];
 
     foreach (reference::category($category_id, $language_code)->path as $category) {
       $descendants[$category->id] = $category->name;
@@ -42,7 +42,7 @@
   }
 
 // Filter function using AND syntax
-  function catalog_products_query($filter=array()) {
+  function catalog_products_query($filter=[]) {
 
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
 
@@ -54,8 +54,8 @@
 
     if (empty($filter['sort'])) $filter['sort'] = 'popularity';
 
-    $sql_inner_sort = array();
-    $sql_outer_sort = array();
+    $sql_inner_sort = [];
+    $sql_outer_sort = [];
 
     if (!empty($filter['campaigns_first'])) {
       $sql_outer_sort[] = "if(pc.campaign_price, 0, 1)";
@@ -102,7 +102,7 @@
       );
     }
 
-    $sql_where_attributes = array();
+    $sql_where_attributes = [];
     if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
       foreach ($filter['attributes'] as $group_id => $values) {
         $sql_where_attributes[] =
@@ -114,7 +114,7 @@
       $sql_where_attributes = implode(PHP_EOL, $sql_where_attributes);
     }
 
-    $sql_where_prices = array();
+    $sql_where_prices = [];
     if (!empty($filter['price_ranges']) && is_array($filter['price_ranges'])) {
       foreach ($filter['price_ranges'] as $price_range) {
         list($min,$max) = explode('-', $price_range);
@@ -187,7 +187,7 @@
   }
 
 // Search function using OR syntax
-  function catalog_products_search_query($filter=array()) {
+  function catalog_products_search_query($filter=[]) {
 
     if (!is_array($filter)) trigger_error('Invalid array filter for products query', E_USER_ERROR);
 

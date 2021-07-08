@@ -34,8 +34,8 @@
 
       self::identify();
 
-      event::register('after_capture', array(__CLASS__, 'after_capture'));
-      event::register('before_output', array(__CLASS__, 'before_output'));
+      event::register('after_capture', [__CLASS__, 'after_capture']);
+      event::register('before_output', [__CLASS__, 'before_output']);
     }
 
     public static function after_capture() {
@@ -74,7 +74,7 @@
         where status;"
       );
 
-      $countries = array();
+      $countries = [];
       while ($country = database::fetch($countries_query)) {
         $countries[] = $country['iso_code_2'];
       }
@@ -98,10 +98,10 @@
     // Get country from TLD
       if (empty(self::$data['country_code'])) {
         if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-          $matches[1] = strtr(strtoupper($matches[1]), array(
+          $matches[1] = strtr(strtoupper($matches[1]), [
             'UK' => 'GB', // ccTLD .uk is not a country
             'SU' => 'RU', // ccTLD .su is not a country
-          ));
+          ]);
           $countries_query = database::query(
             "select * from ". DB_TABLE_COUNTRIES ."
             where status
@@ -193,7 +193,7 @@
 
     public static function reset() {
 
-      session::$data['customer'] = array();
+      session::$data['customer'] = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_CUSTOMERS .";"
@@ -238,7 +238,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::ilink('login', array('redirect_url' => $_SERVER['REQUEST_URI'])));
+        header('Location: ' . document::ilink('login', ['redirect_url' => $_SERVER['REQUEST_URI']]));
         exit;
       }
     }

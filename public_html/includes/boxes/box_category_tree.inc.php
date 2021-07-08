@@ -1,39 +1,39 @@
 <?php
 
-  $box_category_tree_cache_token = cache::token('box_category_tree', array('language', !empty($_GET['category_id']) ? $_GET['category_id'] : 0), 'file');
+  $box_category_tree_cache_token = cache::token('box_category_tree', ['language', !empty($_GET['category_id']) ? $_GET['category_id'] : 0], 'file');
   if (cache::capture($box_category_tree_cache_token)) {
 
     if (!empty($_GET['category_id'])) {
       $category_path = array_keys(reference::category($_GET['category_id'])->path);
     } else {
-      $category_path = array();
+      $category_path = [];
     }
 
     $box_category_tree = new ent_view();
 
-    $box_category_tree->snippets = array(
+    $box_category_tree->snippets = [
       'title' => language::translate('title_categories', 'Categories'),
-      'categories' => array(),
+      'categories' => [],
       'category_path' => $category_path,
-    );
+    ];
 
     $iterator = function($parent_id, $level) use (&$iterator, &$category_path) {
 
-      $tree = array();
+      $tree = [];
 
       $categories_query = functions::catalog_categories_query($parent_id);
 
       while ($category = database::fetch($categories_query)) {
 
-        $tree[$category['id']] = array(
+        $tree[$category['id']] = [
           'id' => $category['id'],
           'parent_id' => $category['parent_id'],
           'name' => $category['name'],
-          'link' => document::ilink('category', array('category_id' => $category['id']), false),
+          'link' => document::ilink('category', ['category_id' => $category['id']], false),
           'active' => (!empty($_GET['category_id']) && $category['id'] == $_GET['category_id']) ? true : false,
           'opened' => (!empty($category_path) && in_array($category['id'], $category_path)) ? true : false,
-          'subcategories' => array(),
-        );
+          'subcategories' => [],
+        ];
 
         if (settings::get('category_tree_product_count')) {
           $tree[$category['id']]['num_products'] = reference::category($category['id'])->num_products;

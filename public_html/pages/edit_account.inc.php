@@ -41,9 +41,9 @@
         if (isset($_POST['new_password']) && isset($_POST['confirmed_password']) && $_POST['new_password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
       }
 
-      $fields = array(
+      $fields = [
         'email',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
@@ -90,7 +90,7 @@
         if (empty($_POST['shipping_address']['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['shipping_address']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
       }
 
-      $fields = array(
+      $fields = [
         'tax_id',
         'company',
         'firstname',
@@ -104,13 +104,13 @@
         'phone',
         'different_shipping_address',
         'newsletter',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
       }
 
-      $fields = array(
+      $fields = [
         'company',
         'firstname',
         'lastname',
@@ -121,14 +121,14 @@
         'country_code',
         'zone_code',
         'phone',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST['shipping_address'][$field])) $customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
       }
 
       if (empty($_POST['different_shipping_address'])) {
-        $fields = array(
+        $fields = [
           'company',
           'firstname',
           'lastname',
@@ -138,7 +138,7 @@
           'city',
           'country_code',
           'zone_code',
-        );
+        ];
 
         foreach ($fields as $key) {
           $customer->data['shipping_address'][$key] = $customer->data[$key];

@@ -4,29 +4,29 @@
 
     function routes() {
 
-      $titles = array();
+      $titles = [];
       foreach (language::$languages as $language) {
         $titles[] = preg_quote(functions::general_path_friendly(language::translate('title_customer_service', 'Customer Service', $language['code'])), '#');
       }
 
-      return array(
-        array(
+      return [
+        [
           'pattern' => '#^('. implode('|', array_filter($titles)) .')$#',
           'page' => 'customer_service',
           'params' => '',
-          'options' => array(
+          'options' => [
             'redirect' => true,
-          ),
-        ),
-        array(
+          ],
+        ],
+        [
           'pattern' => '#^.*-s-([0-9]+)/?$#',
           'page' => 'customer_service',
           'params' => 'page_id=$1',
-          'options' => array(
+          'options' => [
             'redirect' => true,
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
     }
 
     function rewrite(ent_link $link, $language_code) {

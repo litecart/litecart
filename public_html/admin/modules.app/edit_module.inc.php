@@ -48,14 +48,14 @@
 
     try {
       foreach (array_keys($_POST['settings']) as $key) {
-        if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
+        if (in_array($key, ['id', 'date_updated', 'date_created'])) continue;
         if (isset($module->data['settings'][$key])) $module->data['settings'][$key] = $_POST['settings'][$key];
       }
 
       $module->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => $return_doc), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => $return_doc], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -69,7 +69,7 @@
       $module->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => $return_doc), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => $return_doc], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -125,7 +125,7 @@
               <label><?php echo language::translate('title_translations', 'Translations'); ?></label>
             </td>
             <td>
-              <a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
+              <a href="<?php echo document::href_link('', ['app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true']); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
             </td>
           </tr>
         </tbody>

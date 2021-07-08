@@ -14,9 +14,9 @@
       exit;
     }
 
-    $options = array(
+    $options = [
       'from_version::', 'development_type::'
-    );
+    ];
 
     $_REQUEST = getopt(null, $options);
     $_REQUEST['upgrade'] = true;
@@ -75,7 +75,7 @@
   }
 
 // List supported upgrades
-  $supported_versions = array('1.0' => '1.0');
+  $supported_versions = ['1.0' => '1.0'];
   foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
     if (preg_match('#/([^/]+).(?:inc.php|sql)$#', $file, $matches)) {
       $supported_versions[$matches[1]] = $matches[1];
@@ -169,12 +169,12 @@
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-        $files_to_delete = array(
+        $files_to_delete = [
           FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/checkout.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/framework.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/printable.css',
-        );
+        ];
 
         foreach ($files_to_delete as $file) {
           file_delete($file);
@@ -182,13 +182,13 @@
 
       } else {
 
-        $files_to_delete = array(
+        $files_to_delete = [
           FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css',
           FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css.map',
           FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js',
           FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js.map',
           FS_DIR_APP . 'includes/templates/default.catalog/less/',
-        );
+        ];
 
         foreach ($files_to_delete as $file) {
           file_delete($file);
@@ -196,13 +196,13 @@
 
         foreach (glob(FS_DIR_APP . 'includes/templates/default.catalog/layouts/*.inc.php') as $file) {
           $contents = file_get_contents($file);
-          $search_replace = array(
+          $search_replace = [
             'app.min.css'  => 'app.css',
             'checkout.min.css'  => 'checkout.css',
             'framework.min.css' => 'framework.css',
             'printable.min.css' => 'printable.css',
             'app.min.js' => 'app.js',
-          );
+          ];
           file_put_contents($file, strtr($contents, $search_replace));
         }
       }

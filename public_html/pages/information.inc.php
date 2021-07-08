@@ -19,16 +19,16 @@
 
     breadcrumbs::add(language::translate('title_information', 'Information'));
     foreach (array_slice($page->path, 0, -1, true) as $crumb) {
-      breadcrumbs::add($crumb->title, document::ilink('information', array('page_id' => $crumb->id)));
+      breadcrumbs::add($crumb->title, document::ilink('information', ['page_id' => $crumb->id]));
     }
     breadcrumbs::add($page->title);
 
     $_page = new ent_view();
 
-    $_page->snippets = array(
+    $_page->snippets = [
       'title' => $page->title,
       'content' => $page->content,
-    );
+    ];
 
     echo $_page->stitch('pages/information');
 

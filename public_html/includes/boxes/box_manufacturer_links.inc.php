@@ -1,5 +1,5 @@
 <?php
-  $box_manufacturer_links_cache_token = cache::token('box_manufacturer_links', array('language', isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : ''), 'file');
+  $box_manufacturer_links_cache_token = cache::token('box_manufacturer_links', ['language', isset($_GET['manufacturer_id']) ? $_GET['manufacturer_id'] : ''], 'file');
   if (cache::capture($box_manufacturer_links_cache_token)) {
 
     $manufacturers_query = database::query(
@@ -13,16 +13,16 @@
 
       $box_manufacturer_links = new ent_view();
 
-      $box_manufacturer_links->snippets['manufacturers'] = array();
+      $box_manufacturer_links->snippets['manufacturers'] = [];
 
       while ($manufacturer = database::fetch($manufacturers_query)) {
-        $box_manufacturer_links->snippets['manufacturers'][] = array(
+        $box_manufacturer_links->snippets['manufacturers'][] = [
           'id' => $manufacturer['id'],
           'name' => $manufacturer['name'],
-          'link' => document::ilink('manufacturer', array('manufacturer_id' => $manufacturer['id'])),
+          'link' => document::ilink('manufacturer', ['manufacturer_id' => $manufacturer['id']]),
           'date_created' => $manufacturer['date_created'],
           'active' => (isset($_GET['manufacturer_id']) && $_GET['manufacturer_id'] == $manufacturer['id']) ? true : false,
-        );
+        ];
       }
 
       echo $box_manufacturer_links->stitch('views/box_manufacturer_links');

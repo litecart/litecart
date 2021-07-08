@@ -8,7 +8,7 @@
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
+  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
   $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_ORDERS ." limit 1;"));
   $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
@@ -21,7 +21,7 @@
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
 // Table Rows
-  $customers = array();
+  $customers = [];
 
   $customers_query = database::query(
     "select
@@ -106,7 +106,7 @@ form[name="filter_form"] li {
       <tbody>
         <?php foreach ($customers as $customer) { ?>
         <tr>
-          <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+          <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
           <td><?php echo $customer['email']; ?></td>
           <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
         </tr>

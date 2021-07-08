@@ -3,18 +3,18 @@
   class ref_page {
 
     private $_language_codes;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($page_id, $language_code=null) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_data['id'] = (int)$page_id;
-      $this->_language_codes = array_unique(array(
+      $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
-      ));
+      ]);
     }
 
     public function &__get($name) {
@@ -55,7 +55,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'page_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'page_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
           }
@@ -72,7 +72,7 @@
 
         case 'path':
 
-          $this->_data['path'] = array($this->id => $this);
+          $this->_data['path'] = [$this->id => $this];
 
           $current = $this;
           while ($current->parent_id) {
@@ -87,7 +87,7 @@
 
         case 'siblings':
 
-          $this->_data['siblings'] = array();
+          $this->_data['siblings'] = [];
 
           if (empty($this->parent_id)) return;
 
@@ -106,11 +106,11 @@
 
         case 'descendants':
 
-          $this->_data['descendants'] = array();
+          $this->_data['descendants'] = [];
 
           $iterator = function($parent_id) use (&$iterator) {
 
-            $descendants = array();
+            $descendants = [];
 
             $pages_query = database::query(
               "select id from ". DB_TABLE_PAGES ."
@@ -132,7 +132,7 @@
         case 'subpages': // To be deprecated
         case 'children':
 
-          $this->_data['subpages'] = array();
+          $this->_data['subpages'] = [];
 
             $page_query = database::query(
               "select id, parent_id from ". DB_TABLE_PAGES ."

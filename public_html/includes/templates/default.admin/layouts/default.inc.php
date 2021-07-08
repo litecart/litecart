@@ -58,7 +58,7 @@
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>
-            <a href="<?php echo document::href_link(null, array('language' => $language['code']), true); ?>">
+            <a href="<?php echo document::href_link(null, ['language' => $language['code']], true); ?>">
               <img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. $language['code'] .'.png'); ?>" alt="<?php echo $language['code']; ?>" style="max-height: 1em;" /> <?php echo $language['name']; ?>
             </a>
           </li>

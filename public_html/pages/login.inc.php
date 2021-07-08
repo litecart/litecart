@@ -91,11 +91,11 @@
         header('Set-Cookie: customer_remember_me='. $customer['email'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Lax', false);
       }
 
-      notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
+      notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), [
         '%email' => customer::$data['email'],
         '%firstname' => customer::$data['firstname'],
         '%lastname' => customer::$data['lastname'],
-      )));
+      ]));
 
       header('Location: '. $_REQUEST['redirect_url']);
       exit;

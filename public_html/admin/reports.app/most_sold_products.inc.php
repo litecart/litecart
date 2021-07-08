@@ -8,7 +8,7 @@
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
+  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
@@ -16,7 +16,7 @@
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
 // Table Rows
-  $rows = array();
+  $rows = [];
 
   $order_items_query = database::query(
     "select

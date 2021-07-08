@@ -92,7 +92,7 @@
 
     public static function reset() {
 
-      session::$data['user'] = array();
+      session::$data['user'] = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_USERS .";"
@@ -101,8 +101,8 @@
         session::$data['user'][$field['Field']] = null;
       }
 
-      session::$data['user']['apps'] = array();
-      session::$data['user']['widgets'] = array();
+      session::$data['user']['apps'] = [];
+      session::$data['user']['widgets'] = [];
     }
 
     public static function load($user_id) {
@@ -119,8 +119,8 @@
         throw new Exception('No user found');
       }
 
-      $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : array();
-      $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : array();
+      $user['apps'] = $user['apps'] ? json_decode($user['apps'], true) : [];
+      $user['widgets'] = $user['widgets'] ? json_decode($user['widgets'], true) : [];
 
       session::$data['user'] = $user;
     }
@@ -128,7 +128,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         //notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', array('redirect_url' => $_SERVER['REQUEST_URI'])));
+        header('Location: ' . document::link(WS_DIR_ADMIN . 'login.php', ['redirect_url' => $_SERVER['REQUEST_URI']]));
         exit;
       }
     }

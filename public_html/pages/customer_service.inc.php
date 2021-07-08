@@ -35,14 +35,14 @@
     document::$snippets['description'] = !empty($page->meta_description) ? $page->meta_description : '';
 
     foreach (array_slice($page->path, 0, -1, true) as $crumb) {
-      breadcrumbs::add($crumb->title, document::ilink('customer_service', array('page_id' => $crumb->id)));
+      breadcrumbs::add($crumb->title, document::ilink('customer_service', ['page_id' => $crumb->id]));
     }
     breadcrumbs::add($page->title);
 
-    $_page->snippets += array(
+    $_page->snippets += [
       'title' => $page->title,
       'content' => $page->content,
-    );
+    ];
 
   } else {
 

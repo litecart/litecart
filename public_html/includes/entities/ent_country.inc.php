@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_COUNTRIES .";"
@@ -54,7 +54,7 @@
         order by name;"
       );
 
-      $this->data['zones'] = array();
+      $this->data['zones'] = [];
       while ($zone = database::fetch($zones_query)) {
         $this->data['zones'][$zone['id']] = $zone;
       }

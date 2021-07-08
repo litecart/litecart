@@ -2,7 +2,7 @@
 
   $_GET['vqmod'] = basename($_GET['vqmod']);
 
-  breadcrumbs::add(language::translate('title_vqmods', 'vQmods'), document::href_link(WS_DIR_ADMIN, array('doc' => 'vqmods'), array('app')));
+  breadcrumbs::add(language::translate('title_vqmods', 'vQmods'), document::href_link(WS_DIR_ADMIN, ['doc' => 'vqmods'], ['app']));
   breadcrumbs::add(language::translate('title_view_vqmod', 'View vQmod') .' '. basename($_GET['vqmod']));
 
   document::$snippets['title'][] = language::translate('title_view_vqmod', 'View vQmod');
@@ -14,7 +14,7 @@
 
     if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
 
-    $directives = array();
+    $directives = [];
 
     $xml = simplexml_load_file($file);
 
@@ -23,9 +23,9 @@
     }
 
     foreach ($xml->file as $file) {
-      $directive = array(
-        'files' => array(),
-      );
+      $directive = [
+        'files' => [],
+      ];
     }
 
   } catch (Exception $e) {

@@ -7,7 +7,7 @@
   if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
 
   if (!empty($_REQUEST['query'])) {
-    $sql_find = array(
+    $sql_find = [
       "p.id = '". database::input($_REQUEST['query']) ."'",
       "p.code like '". database::input($_REQUEST['query']) ."%'",
       "find_in_set(p.keywords, '". database::input($_REQUEST['query']) ."')",
@@ -15,7 +15,7 @@
       "p.mpn like '". database::input($_REQUEST['query']) ."%'",
       "p.gtin like '". database::input($_REQUEST['query']) ."%'",
       "pi.name like '%". database::input($_REQUEST['query']) ."%'",
-    );
+    ];
   }
 
   $products_query = database::query(
@@ -30,25 +30,25 @@
     limit 15;"
   );
 
-  $products = array();
+  $products = [];
   if (database::num_rows($products_query) > 0) {
 
     if ($_REQUEST['page'] > 1) database::seek($products_query, (settings::get('data_table_rows_per_page') * ($_REQUEST['page']-1)));
 
     $page_items = 0;
     while ($product = database::fetch($products_query)) {
-      $products[] = array(
+      $products[] = [
         'id' => $product['id'],
         'name' => $product['name'],
         'code' => $product['code'],
         'sku' => $product['sku'],
-        'price' => array(
+        'price' => [
           'formatted' => currency::format($product['price'], true, $_GET['currency_code'], $_GET['currency_value']),
           'value' => (float)$product['price'],
-        ),
+        ],
         'quantity' => (float)$product['quantity'],
         'date_created' => language::strftime(language::$selected['format_date'], strtotime($product['date_created'])),
-      );
+      ];
 
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }

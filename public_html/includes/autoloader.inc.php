@@ -104,7 +104,7 @@
         }
 
         if (method_exists($class, 'init')) {
-          call_user_func(array($class, 'init')); // As static classes do not have a __construct() (PHP #62860)
+          call_user_func([$class, 'init']); // As static classes do not have a __construct() (PHP #62860)
         }
 
         break;

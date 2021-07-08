@@ -9,7 +9,7 @@
     if (empty($_GET['vqmod'])) throw new Exception('No vQmod provided');
     if (!is_file(FS_DIR_APP . 'vqmod/xml/' . basename($_GET['vqmod']))) throw new Exception('The vQmod does not exist');
 
-    $modification = array();
+    $modification = [];
 
     $dom = new \DOMDocument('1.0', 'UTF-8');
     $dom->preserveWhiteSpace = false;
@@ -205,18 +205,18 @@
             }
 
             if (!isset($modification[$short_file])) {
-              $modification[$short_file] = array();
+              $modification[$short_file] = [];
             }
 
-            $modification[$short_file][] = array(
+            $modification[$short_file][] = [
               'onerror' => $onerror,
-              'search' => array(
+              'search' => [
                 'pattern' => $search,
                 'indexes' => $indexes,
-              ),
+              ],
               'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
               'add' => $add,
-            );
+            ];
           }
         }
       }

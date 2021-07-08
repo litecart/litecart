@@ -6,10 +6,10 @@
     public $last_request;
     public $last_response;
 
-    public function call($method, $url='', $data=null, $headers=array(), $asynchronous=false) {
+    public function call($method, $url='', $data=null, $headers=[], $asynchronous=false) {
 
-      $this->last_request = array();
-      $this->last_response = array();
+      $this->last_request = [];
+      $this->last_response = [];
 
       $parts = parse_url($url);
 
@@ -60,11 +60,11 @@
       $response_body = '';
       $microtime_start = microtime(true);
 
-      $this->last_request = array(
+      $this->last_request = [
         'timestamp' => time(),
         'head' => $out,
         'body' => $data,
-      );
+      ];
 
       if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout)) {
         return;
@@ -107,14 +107,14 @@
       preg_match('#HTTP/\d(\.\d)?\s(\d{3})#', $response_headers, $matches);
       $status_code = $matches[2];
 
-      $this->last_response = array(
+      $this->last_response = [
         'timestamp' => time(),
         'status_code' => $status_code,
         'head' => $response_headers,
         'body' => $response_body,
         'duration' => round(microtime(true) - $microtime_start, 3),
         'bytes' => strlen($response_headers . "\r\n" . $response_body),
-      );
+      ];
 
       file_put_contents(FS_DIR_APP . 'logs/http_request_last-'. $parts['host'] .'.log',
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .

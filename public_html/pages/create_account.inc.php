@@ -68,7 +68,7 @@
 
       $customer->data['status'] = 1;
 
-      $fields = array(
+      $fields = [
         'email',
         'tax_id',
         'company',
@@ -82,7 +82,7 @@
         'zone_code',
         'phone',
         'newsletter',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
@@ -103,14 +103,14 @@
 
       customer::load($customer->data['id']);
 
-      $aliases = array(
+      $aliases = [
         '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
         '%customer_id' => $customer->data['id'],
         '%customer_firstname' => $customer->data['firstname'],
         '%customer_lastname' => $customer->data['lastname'],
         '%customer_email' => $customer->data['email'],
-      );
+      ];
 
       $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
       $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
@@ -132,15 +132,15 @@
 
   $_page = new ent_view();
 
-  $_page->snippets = array(
+  $_page->snippets = [
     'consent' => null,
-  );
+  ];
 
   if ($privacy_policy_id = settings::get('privacy_policy')) {
 
-      $aliases = array(
-        '%privacy_policy_link' => document::href_ilink('information', array('page_id' => $privacy_policy_id)),
-      );
+      $aliases = [
+        '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+      ];
 
       $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
   }

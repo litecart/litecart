@@ -8,7 +8,7 @@
 
     public static function init() {
 
-      self::$_data = array(
+      self::$_data = [
         'page_parse_time' => 0, // s
         'page_capture_time' => 0, // s
         'memory_peak_usage' => 0, // percent
@@ -17,14 +17,14 @@
         'http_requests' => 0, // qty
         'http_duration' => 0, // s
         'output_optimization' => 0, // s
-      );
+      ];
 
     // Set time stamp for execution
       self::$_page_parse_start = microtime(true);
 
-      event::register('before_capture', array(__CLASS__, 'before_capture'));
-      event::register('after_capture', array(__CLASS__, 'after_capture'));
-      event::register('before_output', array(__CLASS__, 'before_output'));
+      event::register('before_capture', [__CLASS__, 'before_capture']);
+      event::register('after_capture', [__CLASS__, 'after_capture']);
+      event::register('before_output', [__CLASS__, 'before_output']);
     }
 
     ######################################################################

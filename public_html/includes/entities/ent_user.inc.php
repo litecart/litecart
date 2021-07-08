@@ -15,7 +15,7 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_USERS .";"
@@ -25,8 +25,8 @@
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['apps'] = array();
-      $this->data['widgets'] = array();
+      $this->data['apps'] = [];
+      $this->data['widgets'] = [];
 
       $this->previous = $this->data;
     }
@@ -51,8 +51,8 @@
         throw new Exception('Could not find user (ID: '. (int)$user_id .') in database.');
       }
 
-      $this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : array();
-      $this->data['widgets'] = !empty($this->data['widgets']) ? json_decode($this->data['widgets'], true) : array();
+      $this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];
+      $this->data['widgets'] = !empty($this->data['widgets']) ? json_decode($this->data['widgets'], true) : [];
 
       $this->previous = $this->data;
     }
