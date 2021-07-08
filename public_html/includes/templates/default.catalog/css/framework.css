@@ -199,14 +199,9 @@ h3 {
   box-sizing: border-box;
 }
 html {
-  font: calc(15px - 2px) Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font: 16px Arial, 'Helvetica Neue', Helvetica, sans-serif;
   line-height: 1.333333;
   color: #333;
-}
-@media (min-width: 768px) {
-  html {
-    font: 15px Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  }
 }
 html,
 body {
@@ -841,6 +836,12 @@ tr.semi-transparent td {
 .twelve-eighty {
   min-width: 320px;
   max-width: 1280px;
+  margin: 0 auto;
+}
+.container,
+.fourteen-forty {
+  min-width: 320px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 .pull-left {
