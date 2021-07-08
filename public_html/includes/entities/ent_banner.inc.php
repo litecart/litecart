@@ -72,7 +72,7 @@
           link = '". database::input($this->data['link']) ."',
           ". (!empty($this->data['image']) ? "image = '" . database::input($this->data['image']) . "'," : '') ."
           html = '". database::input($this->data['html'], true) ."',
-          keywords = '". database::input(implode(',', preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY)) ."',
+          keywords = '". database::input(implode(',', preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY))) ."',
           date_valid_from = '". database::input($this->data['date_valid_from']) ."',
           date_valid_to = '". database::input($this->data['date_valid_to']) ."',
           date_updated = '". date('Y-m-d H:i:s') ."'

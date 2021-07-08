@@ -1,5 +1,77 @@
 <?php
 
+  function draw_banner($keywords) {
+
+    if (!is_array($keywords)) {
+      $keywords = preg_split('#\s*,\s*#', $keywords);
+    }
+
+  // Add support for Google Analytics campaigns
+    if (isset($_GET['utm_campaign'])) {
+      $keywords[] = $_GET['utm_campaign'];
+    }
+
+    $banner_query = database::query(
+      "select * from ". DB_TABLE_PREFIX ."banners
+      where status
+      and image != '' or html != ''
+      and (". implode(" or ", array_map(function($k){ return "find_in_set('". database::input($k) ."', keywords)"; }, $keywords)) .")
+      order by rand()
+      limit 1;"
+    );
+
+    if (!$banner = database::fetch($banner_query)) return;
+
+    database::query(
+      "update ". DB_TABLE_PREFIX ."banners
+      set total_views = total_views + 1
+      where id = ". (int)$banner['id'] ."
+      limit 1;"
+    );
+
+    if (empty($banner['html'])) {
+      $banner['html'] = '<img class="img-responsive" src="$image_url" alt="" />';
+
+      if (!empty($banner['link'])) {
+        $banner['html'] = '<a href="$target_url" target="_blank">' . PHP_EOL
+                        . '  ' . $banner['html'] . PHP_EOL
+                        . '</a>';
+      }
+    }
+
+    $aliases = [
+      '$id' => $banner['id'],
+      '$language_code' => language::$selected['code'],
+      '$image_url' => document::link(WS_DIR_APP .'images/' . $banner['image']),
+      '$target_url' => document::href_link($banner['link']),
+    ];
+
+    document::$snippets['javascript'][] = '  var mouseOverAd = false;' . PHP_EOL
+                                        . '  $(\'.banner[data-id="'. $banner['id'] .'"]\').hover(function(){' . PHP_EOL
+                                        . '    mouseOverAd = "'. $banner['id'] .'";' . PHP_EOL
+                                        . '  }, function(){' . PHP_EOL
+                                        . '    mouseOverAd = false;' . PHP_EOL
+                                        . '  });' . PHP_EOL
+                                        . PHP_EOL
+                                        . '  $(\'.banner[data-id="'. $banner['id'] .'"]\').click(function(){' . PHP_EOL
+                                        . '    $.post("'. document::ilink('ajax/bct') .'", "banner_id='. $banner['id'] .'");' . PHP_EOL
+                                        . '  });' . PHP_EOL
+                                        . PHP_EOL
+                                        . '  $(window).blur(function(){' . PHP_EOL
+                                        . '    if (mouseOverAd == "'. $banner['id'] .'"){' . PHP_EOL
+                                        . '      $.post("'. document::ilink('ajax/bct') .'", "banner_id='. $banner['id'] .'");' . PHP_EOL
+                                        . '    }' . PHP_EOL
+                                        . '  });';
+
+    $output = strtr($banner['html'], $aliases);
+
+    $output = '<div class="banner" data-id="'. $banner['id'] .'" data-name="'. $banner['name'] .'">'. PHP_EOL
+             . $output . PHP_EOL
+             . '</div>';
+
+    return $output;
+  }
+
   function draw_fonticon($class, $parameters=null) {
 
     switch(true) {
