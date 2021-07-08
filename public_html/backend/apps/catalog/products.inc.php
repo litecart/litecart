@@ -236,6 +236,7 @@
           <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th class="text-right"><?php echo language::translate('title_created', 'Created'); ?></th>
           <th>&nbsp;</th>
@@ -248,8 +249,9 @@
           <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
-          <td><img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
+          <td><img src="<?php echo document::href_link(functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
           <td><?php echo $product['id']; ?></td>
+          <td><?php echo $product['sku']; ?></td>
           <td><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
           <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
           <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
@@ -258,7 +260,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="10"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="9"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

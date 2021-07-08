@@ -145,8 +145,6 @@
   $order->data['customer'] = customer::$data;
   $order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
 
-  $order->data['customer'] = customer::$data;
-
   if (!empty($previous_order)) {
     $order->data['customer'] = $previous_order->data['customer'];
     $order->shipping = $previous_order->shipping;

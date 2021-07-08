@@ -74,9 +74,14 @@
     <?php echo functions::form_draw_form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-8">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+          <?php echo functions::form_draw_number_field('priority', true); ?>
         </div>
       </div>
 
@@ -94,13 +99,6 @@
         <div class="form-group col-md-8">
           <br />
           <?php echo functions::form_draw_checkbox('separate', ['1', language::translate('text_separate_added_cart_items', 'Separate added cart items')], true); ?>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-4">
-          <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_draw_number_field('priority', true); ?>
         </div>
       </div>
 

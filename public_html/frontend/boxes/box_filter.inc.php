@@ -29,7 +29,7 @@
         $box_filter->snippets['brands'][] = [
           'id' => $brand['id'],
           'name' => $brand['name'],
-          'href' => document::ilink('brand', ['brand_id' => $brand['id']]),
+          'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
         ];
       }
     }

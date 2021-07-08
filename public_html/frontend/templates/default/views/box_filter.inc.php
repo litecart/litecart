@@ -51,7 +51,9 @@
       <?php if ($brands) { ?>
       <div>
         <div class="dropdown">
-          <div class="form-select" data-toggle="dropdown"><?php echo language::translate('title_brands', 'Brands'); ?></div>
+          <div class="form-select" data-toggle="dropdown">
+            <?php echo language::translate('title_brands', 'Brands'); ?>
+          </div>
           <ul class="dropdown-menu">
             <?php foreach ($brands as $brand) { ?>
             <li>
@@ -68,7 +70,9 @@
       <?php if ($attributes) foreach ($attributes as $group) { ?>
       <div>
         <div class="dropdown">
-          <div class="form-select" data-toggle="dropdown"><?php echo $group['name']; ?></div>
+          <div class="form-select" data-toggle="dropdown">
+            <?php echo $group['name']; ?>
+          </div>
           <ul class="dropdown-menu">
             <?php foreach ($group['values'] as $value) { ?>
             <li>
@@ -84,7 +88,9 @@
 
       <div>
         <div class="dropdown">
-          <div class="form-select" data-toggle="dropdown"><?php echo language::translate('title_sort_by', 'Sort By'); ?></div>
+          <div class="form-select" data-toggle="dropdown">
+            <?php echo language::translate('title_sort_by', 'Sort By'); ?>
+          </div>
           <ul class="dropdown-menu">
             <?php foreach ($sort_alternatives as $key => $title) { ?>
             <li>
