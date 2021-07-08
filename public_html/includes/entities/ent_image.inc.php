@@ -52,7 +52,7 @@
         throw new Exception('No image processing library available');
       }
 
-      if (!empty($file)) $this->_file = $file;
+      if (!empty($file)) $this->_file = functions::file_realpath($file);
 
       $this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
     }
@@ -163,6 +163,12 @@
               list($this->_data['width'], $this->_data['height']) = GetImageSize($this->_file);
               break 2;
           }
+
+          break;
+
+        case 'webpath':
+          $this->_data['webpath'] = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', $this->_file);
+          break;
       }
 
       return $this->_data[$name];

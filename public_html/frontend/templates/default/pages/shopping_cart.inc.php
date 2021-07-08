@@ -47,7 +47,7 @@
                     <div class="row">
                       <div class="col-xs-4 col-md-2">
                         <a href="<?php echo htmlspecialchars($item['link']); ?>" class="thumbnail pull-left" style="max-width: 64px; margin-right: 1em;">
-                          <img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="" />
+                          <img src="<?php echo document::href_link($item['thumbnail']); ?>" alt="" />
                         </a>
                       </div>
 

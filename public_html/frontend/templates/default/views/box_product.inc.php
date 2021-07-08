@@ -5,16 +5,16 @@
       <div class="images row">
 
         <div class="col-xs-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
+          <a class="main-image thumbnail" href="<?php echo document::href_link($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link($image['thumbnail']); ?>" srcset="<?php echo document::href_link($image['thumbnail']); ?> 1x, <?php echo document::href_link($image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
             {{sticker}}
           </a>
         </div>
 
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-xs-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
+          <a class="extra-image thumbnail" href="<?php echo document::href_link($extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link($extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link($extra_image['thumbnail']); ?> 1x, <?php echo document::href_link($extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
           </a>
         </div>
         <?php } ?>
@@ -35,7 +35,7 @@
       <div class="brand">
         <a href="<?php echo htmlspecialchars($brand['link']); ?>">
           <?php if ($brand['image']) { ?>
-          <img src="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" title="<?php echo htmlspecialchars($brand['name']); ?>" />
+          <img src="<?php echo document::href_link($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" title="<?php echo htmlspecialchars($brand['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $brand['name']; ?></h3>
           <?php } ?>
@@ -128,7 +128,7 @@
                   <input type="radio" name="stock_item_id" value="<?php echo $stock_option['stock_item_id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" data-set-title="<?php echo htmlspecialchars($stock_option['name']); ?>" required />
                   <div class="row">
                     <div class="col-xs-2">
-                      <img src="<?php echo document::href_link(WS_DIR_STORAGE . $stock_option['image']['thumbnail']); ?>" class="thumbnail" alt="" />
+                      <img src="<?php echo document::href_link($stock_option['image']['thumbnail']); ?>" class="thumbnail" alt="" />
                     </div>
                     <div class="col-xs-10">
                       <div class="name"><?php echo $stock_option['name']; ?></div>
