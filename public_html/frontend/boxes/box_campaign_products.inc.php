@@ -6,7 +6,7 @@
   $box_campaign_products_cache_token = cache::token('box_campaign_products', ['language', 'currency']);
   if (cache::capture($box_campaign_products_cache_token)) {
 
-    $box_campaign_products = new ent_view();
+    $box_campaign_products = new ent_view('views/box_campaign_products.inc.php');
 
     $products_query = functions::catalog_products_query([
       'campaign' => true,
@@ -21,7 +21,7 @@
         $box_campaign_products->snippets['products'][] = $listing_product;
       }
 
-      echo $box_campaign_products->stitch('views/box_campaign_products.inc.php');
+      echo $box_campaign_products;
     }
 
     cache::end_capture($box_campaign_products_cache_token);

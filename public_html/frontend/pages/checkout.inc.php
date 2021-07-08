@@ -157,7 +157,7 @@
 
   $order->calculate_total();
 
-  $_page = new ent_view();
-  echo $_page->stitch(FS_DIR_TEMPLATE . 'pages/checkout.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/checkout.inc.php');
+  echo $_page;
 
   functions::draw_lightbox();

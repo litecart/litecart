@@ -7,9 +7,10 @@
   event::fire('after_capture');
 
 // Stitch with layout snippets
-  $_page = new ent_view();
+  $_page = new ent_view('layouts/'.document::$layout);
   $_page->snippets = document::$snippets;
-  $GLOBALS['output'] = (string)$_page->stitch('layouts/'.document::$layout, true);
+  $_page->cleanup = true;
+  $GLOBALS['output'] = (string)$_page;
 
 // Run before output processes
   event::fire('before_output');

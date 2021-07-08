@@ -8,7 +8,7 @@
     breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'));
   }
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/customer_service.inc.php');
 
   ob_start();
   include vmod::check(FS_DIR_APP . 'frontend/boxes/box_customer_service_links.inc.php');
@@ -39,13 +39,13 @@
     }
     breadcrumbs::add($page->title);
 
-    $_box = new ent_view();
-    $_box->snippets = [
+    $box_information = new ent_view(FS_DIR_TEMPLATE . 'views/box_information.inc.php');
+    $box_information->snippets = [
       'title' => $page->title,
       'content' => $page->content,
     ];
 
-    $_page->snippets['content'] = $_box->stitch(FS_DIR_TEMPLATE . 'views/box_information.inc.php');
+    $_page->snippets['content'] = $box_information;
 
   } else {
 
@@ -54,4 +54,4 @@
     $_page->snippets['content'] = ob_get_clean();
   }
 
-  echo $_page->stitch('pages/customer_service.inc.php');
+  echo $_page;

@@ -39,5 +39,5 @@
     }
   }
 
-  $box_contact_us = new ent_view();
-  echo $box_contact_us->stitch('views/box_contact_us.inc.php');
+  $box_contact_us = new ent_view('views/box_contact_us.inc.php');
+  echo $box_contact_us;

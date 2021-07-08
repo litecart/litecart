@@ -130,7 +130,7 @@
     }
   }
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/create_account.inc.php');
 
   $_page->snippets = [
     'consent' => null,
@@ -145,4 +145,4 @@
       $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
   }
 
-  echo $_page->stitch('pages/create_account.inc.php');
+  echo $_page;

@@ -182,9 +182,9 @@
 
   functions::draw_lightbox();
 
-  $box_checkout_customer = new ent_view();
+  $box_checkout_customer = new ent_view('views/box_checkout_customer.inc.php');
   $box_checkout_customer->snippets = [
     'account_exists' => $account_exists,
     'subscribed_to_newsletter' => $subscribed_to_newsletter,
   ];
-  echo $box_checkout_customer->stitch('views/box_checkout_customer.inc.php');
+  echo $box_checkout_customer;

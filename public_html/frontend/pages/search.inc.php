@@ -18,7 +18,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/search_results.inc.php');
   $_page->snippets = [
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
     'products' => [],
@@ -131,4 +131,4 @@
 
   $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
 
-  echo $_page->stitch('pages/search_results.inc.php');
+  echo $_page;

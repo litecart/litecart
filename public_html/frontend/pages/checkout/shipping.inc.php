@@ -35,11 +35,11 @@
     }
   }
 
-  $box_checkout_shipping = new ent_view();
+  $box_checkout_shipping = new ent_view('views/box_checkout_shipping.inc.php');
 
   $box_checkout_shipping->snippets = [
     'selected' => $order->shipping->selected,
     'options' => $options,
   ];
 
-  echo $box_checkout_shipping->stitch('views/box_checkout_shipping.inc.php');
+  echo $box_checkout_shipping;

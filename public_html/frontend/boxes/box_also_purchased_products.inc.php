@@ -21,14 +21,14 @@
 
       if (database::num_rows($products_query)) {
 
-        $box_also_purchased_products = new ent_view();
+        $box_also_purchased_products = new ent_view('views/box_also_purchased_products.inc.php');
 
         $box_also_purchased_products->snippets['products'] = [];
         while ($listing_product = database::fetch($products_query)) {
           $box_also_purchased_products->snippets['products'][] = $listing_product;
         }
 
-        echo $box_also_purchased_products->stitch('views/box_also_purchased_products.inc.php');
+        echo $box_also_purchased_products;
       }
     }
 

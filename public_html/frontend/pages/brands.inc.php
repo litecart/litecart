@@ -7,7 +7,7 @@
   $brands_cache_token = cache::token('brands', ['get', 'language'], 'file');
   if (cache::capture($brands_cache_token)) {
 
-    $_page = new ent_view();
+    $_page = new ent_view('pages/brands.inc.php');
 
     $brands_query = database::query(
       "select b.id, b.name, b.image, bi.short_description, bi.link
@@ -32,7 +32,7 @@
       ];
     }
 
-    echo $_page->stitch('pages/brands.inc.php');
+    echo $_page;
 
     cache::end_capture($brands_cache_token);
   }

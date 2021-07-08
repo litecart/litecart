@@ -14,7 +14,7 @@
     public static function after_capture() {
 
       if (count(self::$data) > 1) {
-        $breadcrumbs = new ent_view();
+        $breadcrumbs = new ent_view('views/breadcrumbs.inc.php');
 
         $breadcrumbs->snippets['breadcrumbs'] = [];
         foreach (self::$data as $breadcrumb) {
@@ -24,7 +24,7 @@
           ];
         }
 
-        document::$snippets['breadcrumbs'] = $breadcrumbs->stitch('views/breadcrumbs.inc.php');
+        document::$snippets['breadcrumbs'] = $breadcrumbs;
       }
     }
 

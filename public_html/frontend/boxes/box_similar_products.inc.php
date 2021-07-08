@@ -21,7 +21,7 @@
 
     if (database::num_rows($products_query) > 0) {
 
-      $box_similar_products = new ent_view();
+      $box_similar_products = new ent_view('views/box_similar_products.inc.php');
 
       $box_similar_products->snippets['products'] = [];
       while ($listing_product = database::fetch($products_query)) {
@@ -30,7 +30,7 @@
       }
 
       if ($box_similar_products->snippets['products']) {
-        echo $box_similar_products->stitch('views/box_similar_products.inc.php');
+        echo $box_similar_products;
       }
     }
 

@@ -13,14 +13,14 @@
 
     if (database::num_rows($products_query)) {
 
-      $box_latest_products = new ent_view();
+      $box_latest_products = new ent_view('views/box_latest_products.inc.php');
 
       $box_latest_products->snippets['products'] = [];
       while ($listing_product = database::fetch($products_query)) {
         $box_latest_products->snippets['products'][] = $listing_product;
       }
 
-      echo $box_latest_products->stitch('views/box_latest_products.inc.php');
+      echo $box_latest_products;
     }
 
     cache::end_capture($box_latest_products_cache_token);

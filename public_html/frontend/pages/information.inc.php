@@ -23,14 +23,14 @@
     }
     breadcrumbs::add($page->title);
 
-    $_page = new ent_view();
+    $_page = new ent_view('pages/information.inc.php');
 
     $_page->snippets = [
       'title' => $page->title,
       'content' => $page->content,
     ];
 
-    echo $_page->stitch('pages/information.inc.php');
+    echo $_page;
 
   } catch (Exception $e) {
     http_response_code($e->getCode());

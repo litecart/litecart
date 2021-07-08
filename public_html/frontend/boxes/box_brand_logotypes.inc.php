@@ -13,7 +13,7 @@
 
     if (database::num_rows($brands_query)) {
 
-      $box_brand_logotypes = new ent_view();
+      $box_brand_logotypes = new ent_view('views/box_brand_logotypes.inc.php');
 
       $box_brand_logotypes->snippets['logotypes'] = [];
 
@@ -29,7 +29,7 @@
         ];
       }
 
-      echo $box_brand_logotypes->stitch('views/box_brand_logotypes.inc.php');
+      echo $box_brand_logotypes;
     }
 
     cache::end_capture($box_brand_logotypes_cache_token);

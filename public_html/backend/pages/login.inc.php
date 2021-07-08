@@ -123,5 +123,5 @@
     }
   }
 
-  $page_login = new ent_view();
-  echo $page_login->stitch('pages/login.inc.php');
+  $page_login = new ent_view('pages/login.inc.php');
+  echo $page_login;

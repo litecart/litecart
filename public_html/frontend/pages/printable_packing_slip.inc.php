@@ -27,8 +27,8 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/printable_packing_slip.inc.php');
   $_page->snippets['order'] = $order->data;
-  echo $_page->stitch('pages/printable_packing_slip.inc.php');
+  echo $_page;
 
   language::set($session_language);

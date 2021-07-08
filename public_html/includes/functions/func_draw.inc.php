@@ -129,7 +129,7 @@
 
   function draw_listing_category($category) {
 
-    $listing_category = new ent_view();
+    $listing_category = new ent_view('views/listing_category.inc.php');
 
     list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
@@ -149,12 +149,12 @@
       'short_description' => $category['short_description'],
     ];
 
-    return $listing_category->stitch('views/listing_category.inc.php');
+    return (string)$listing_category;
   }
 
   function draw_listing_product($product, $inherit_params=[]) {
 
-    $listing_product = new ent_view();
+    $listing_product = new ent_view('views/listing_product.inc.php');
 
     $sticker = '';
     if ((float)$product['campaign_price']) {
@@ -208,7 +208,7 @@
       $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
     }
 
-    return $listing_product->stitch('views/listing_product.inc.php');
+    return (string)$listing_product;
   }
 
   function draw_lightbox($selector='', $params=[]) {

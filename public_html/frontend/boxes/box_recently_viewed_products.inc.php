@@ -22,7 +22,7 @@
   });
 
 // Create list
-  $box_recently_viewed_products = new ent_view();
+  $box_recently_viewed_products = new ent_view('views/box_recently_viewed_products.inc.php');
   $box_recently_viewed_products->snippets['products'] = [];
 
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
@@ -52,4 +52,4 @@
   }
 
 // Output
-  echo $box_recently_viewed_products->stitch('views/box_recently_viewed_products.inc.php');
+  echo $box_recently_viewed_products;

@@ -27,7 +27,7 @@
   $payment = new mod_payment();
   $order_module = new mod_order();
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/order_success.inc.php');
   $_page->snippets = [
     'order' => $order->data,
     'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key'], 'media' => 'print']),
@@ -35,4 +35,4 @@
     'order_success_modules_output' => $order_module->success($order),
   ];
 
-  echo $_page->stitch('pages/order_success.inc.php');
+  echo $_page;

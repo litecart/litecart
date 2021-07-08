@@ -1,5 +1,5 @@
 <?php
-  $box_filter = new ent_view();
+  $box_filter = new ent_view('views/box_filter.inc.php');
 
   $box_filter->snippets = [
     'brands' => [],
@@ -67,4 +67,4 @@
     }
   }
 
-  echo $box_filter->stitch('views/box_filter.inc.php');
+  echo $box_filter;

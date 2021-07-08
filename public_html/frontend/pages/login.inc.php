@@ -90,10 +90,11 @@
     }
   }
 
-  $_page = new ent_view();
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    echo $_page->stitch('pages/login.ajax.inc.php');
+    $_page = new ent_view('pages/login.ajax.inc.php');
   } else {
-    echo $_page->stitch('pages/login.inc.php');
+    $_page = new ent_view('pages/login.inc.php');
   }
+
+  echo $_page;

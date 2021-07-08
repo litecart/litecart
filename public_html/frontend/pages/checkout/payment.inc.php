@@ -35,11 +35,11 @@
     }
   }
 
-  $box_checkout_payment = new ent_view();
+  $box_checkout_payment = new ent_view(FS_DIR_TEMPLATE . 'views/box_checkout_payment.inc.php');
 
   $box_checkout_payment->snippets = [
     'selected' => $order->payment->selected,
     'options' => $options,
   ];
 
-  echo $box_checkout_payment->stitch(FS_DIR_TEMPLATE . 'views/box_checkout_payment.inc.php');
+  echo $box_checkout_payment;

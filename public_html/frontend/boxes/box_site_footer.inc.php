@@ -2,7 +2,7 @@
   $box_site_footer_cache_token = cache::token('box_site_footer', ['language', 'login', 'region']);
   if (cache::capture($box_site_footer_cache_token)) {
 
-    $box_site_footer = new ent_view();
+    $box_site_footer = new ent_view('views/box_site_footer.inc.php');
 
     $box_site_footer->snippets = [
       'pages' => [],
@@ -81,7 +81,7 @@
       ];
     }
 
-    echo $box_site_footer->stitch('views/box_site_footer.inc.php');
+    echo $box_site_footer;
 
     cache::end_capture($box_site_footer_cache_token);
   }

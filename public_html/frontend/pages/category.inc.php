@@ -39,7 +39,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/category.inc.php');
 
   $box_category_cache_token = cache::token('box_category', ['get', 'language', 'currency'], 'file');
   if (!$_page->snippets = cache::get($box_category_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
@@ -104,4 +104,4 @@
     cache::set($box_category_cache_token, $_page->snippets);
   }
 
-  echo $_page->stitch('pages/category.inc.php');
+  echo $_page;

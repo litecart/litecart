@@ -155,5 +155,5 @@
     }
   }
 
-  $_page = new ent_view();
-  echo $_page->stitch('pages/edit_account.inc.php');
+  $_page = new ent_view('pages/edit_account.inc.php');
+  echo $_page;

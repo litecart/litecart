@@ -8,7 +8,7 @@
       $current_page_path = [];
     }
 
-    $box_customer_service_links = new ent_view();
+    $box_customer_service_links = new ent_view('views/box_customer_service_links.inc.php');
     $box_customer_service_links->snippets = [
       'title' =>  language::translate('title_customer_service', 'Customer Service'),
       'pages' => [],
@@ -62,7 +62,7 @@
     };
 
     if ($box_customer_service_links->snippets['pages'] = $iterator(0, 0)) {
-      echo $box_customer_service_links->stitch('views/box_customer_service_links.inc.php');
+      echo $box_customer_service_links;
     }
 
     cache::end_capture($box_customer_service_links_cache_token);

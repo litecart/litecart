@@ -9,7 +9,7 @@
     exit;
   }
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/error_document.inc.php');
   $_page->snippets['code'] = http_response_code();
 
   switch (http_response_code()) {
@@ -40,4 +40,4 @@
       break;
   }
 
-  echo $_page->stitch('pages/error_document.inc.php');
+  echo $_page;

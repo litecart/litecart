@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_account', 'Account'));
   breadcrumbs::add(language::translate('title_order_history', 'Order History'));
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/order_history.inc.php');
 
   $_page->snippets['orders'] = [];
 
@@ -53,4 +53,4 @@
 
   $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page')));
 
-  echo $_page->stitch('pages/order_history.inc.php');
+  echo $_page;

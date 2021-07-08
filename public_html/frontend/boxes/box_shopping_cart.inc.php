@@ -1,7 +1,7 @@
 <?php
   if (settings::get('catalog_only_mode')) return;
 
-  $box_shopping_cart = new ent_view();
+  $box_shopping_cart = new ent_view('views/box_shopping_cart.inc.php');
   $box_shopping_cart->snippets = [
     'items' => [],
     'link' => document::ilink('shopping_cart'),
@@ -20,4 +20,4 @@
     $box_shopping_cart->snippets['cart_total'] = currency::format(cart::$total['value']);
   }
 
-  echo $box_shopping_cart->stitch('views/box_shopping_cart.inc.php');
+  echo $box_shopping_cart;

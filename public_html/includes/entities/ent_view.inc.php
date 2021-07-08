@@ -27,6 +27,11 @@
       $this->register_parser('#([0-9a-zA-Z_]+)(|[^'. preg_quote($this->wrapper[1][0], '#') .']+)?#', function($matches) {
 
         if (!isset($this->snippets[$matches[1]])) return $matches[0];
+
+        if ($this->snippets[$matches[1]] instanceof ent_view) {
+          $this->snippets[$matches[1]] = (string)$this->snippets[$matches[1]];
+        }
+
         if (empty($matches[2])) return $this->snippets[$matches[1]];
 
         $output = $this->snippets[$matches[1]];

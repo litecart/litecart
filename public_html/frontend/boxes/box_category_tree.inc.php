@@ -11,7 +11,7 @@
       $parent_id = 0;
     }
 
-    $box_category_tree = new ent_view();
+    $box_category_tree = new ent_view('views/box_category_tree.inc.php');
     $box_category_tree->snippets = [
       'title' => $parent_id ? reference::category($parent_id)->name : language::translate('title_categories', 'Categories'),
       'categories' => [],
@@ -52,7 +52,7 @@
     };
 
     if ($box_category_tree->snippets['categories'] = $iterator(0, 0)) {
-      echo $box_category_tree->stitch('views/box_category_tree.inc.php');
+      echo $box_category_tree;
     }
 
     cache::end_capture($box_category_tree_cache_token);

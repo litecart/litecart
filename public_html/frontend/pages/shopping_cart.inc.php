@@ -17,7 +17,7 @@
     return;
   }
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/shopping_cart.inc.php');
 
   $_page->snippets = [
     'items' => [],
@@ -59,4 +59,4 @@
     ];
   }
 
-  echo $_page->stitch('pages/shopping_cart.inc.php');
+  echo $_page;

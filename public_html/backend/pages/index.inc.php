@@ -7,7 +7,7 @@
 
 // Apps
 
-  $box_apps_menu = new ent_view();
+  $box_apps_menu = new ent_view('views/box_apps_menu.inc.php');
   $box_apps_menu->snippets['apps'] = [];
 
   $apps_cache_token = cache::token('backend_apps', ['language']);
@@ -63,7 +63,7 @@
     }
   }
 
-  document::$snippets['box_apps_menu'] = $box_apps_menu->stitch('views/box_apps_menu.inc.php');
+  document::$snippets['box_apps_menu'] = $box_apps_menu;
 
 // Start page
 
@@ -87,7 +87,7 @@
       cache::set($widgets_cache_token, $widgets);
     }
 
-    $box_widgets = new ent_view();
+    $box_widgets = new ent_view('views/box_widgets.inc.php');
     $box_widgets->snippets['widgets'] = [];
 
     foreach ($widgets as $widget) {
@@ -102,7 +102,7 @@
       ];
     }
 
-    echo $box_widgets->stitch('views/box_widgets.inc.php');
+    echo $box_widgets;
 
 // App content
 
@@ -123,7 +123,7 @@
 
       breadcrumbs::add($app_config['name'], document::ilink($_GET['app'], ['doc' => $app_config['default']]));
 
-      $_page = new ent_view();
+      $_page = new ent_view('pages/doc.inc.php');
       $_page->snippets = [
         'app' => $_GET['app'],
         'doc' => $_GET['doc'],
@@ -148,7 +148,7 @@
 
 
       if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
-        echo $_page->stitch('pages/doc.inc.php');
+        echo $_page;
       } else {
         echo $_page->snippets['doc'];
       }

@@ -6,7 +6,7 @@
 
   if (empty($order->data['items'])) return;
 
-  $box_checkout_summary = new ent_view();
+  $box_checkout_summary = new ent_view('views/box_checkout_summary.inc.php');
 
   $box_checkout_summary->snippets = [
     'order' => $order->data,
@@ -35,4 +35,4 @@
     '%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
   ]);
 
-  echo $box_checkout_summary->stitch('views/box_checkout_summary.inc.php');
+  echo $box_checkout_summary;

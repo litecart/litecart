@@ -27,7 +27,7 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
-  $_page = new ent_view();
+  $_page = new ent_view('pages/order.inc.php');
   $_page->snippets = [
     'order' => $order->data,
     'comments' => [],
@@ -51,6 +51,6 @@
     $_page->snippets['comments'][] = $comment;
   }
 
-  echo $_page->stitch('pages/order.inc.php');
+  echo $_page;
 
   language::set($session_language);

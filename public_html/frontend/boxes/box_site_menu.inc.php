@@ -1,6 +1,6 @@
 <?php
 
-  $box_site_menu = new ent_view();
+  $box_site_menu = new ent_view('views/box_site_menu.inc.php');
 
   $box_site_menu_cache_token = cache::token('box_site_menu', ['language']);
   if (!$box_site_menu->snippets = cache::get($box_site_menu_cache_token)) {
@@ -67,4 +67,4 @@
     cache::set($box_site_menu_cache_token, $box_site_menu->snippets);
   }
 
-  echo $box_site_menu->stitch('views/box_site_menu.inc.php');
+  echo $box_site_menu;
