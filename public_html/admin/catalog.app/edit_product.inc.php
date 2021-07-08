@@ -196,41 +196,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
-                <div id="categories" class="form-control">
-<?php
-  $catalog_tree_iterator = function($category_id=0, $depth=1, $count=0) use (&$catalog_tree_iterator) {
-
-    $output = '';
-
-    if (empty($category_id)) {
-      $output .= '<div class="checkbox" id="category-id-0"><label>'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', 'Root')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', 'Root') .'" style="color: #cccc66;"') .' ['. language::translate('title_root', 'Root') .']</label></div>' . PHP_EOL;
-    }
-
-  // Output categories
-    $categories_query = database::query(
-      "select c.id, ci.name
-      from ". DB_TABLE_PREFIX ."categories c
-      left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-      where c.parent_id = ". (int)$category_id ."
-      order by c.priority asc, ci.name asc;"
-    );
-
-    while ($category = database::fetch($categories_query)) {
-      $count++;
-
-      $output .= '  <div class="checkbox"><label>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label></div>' . PHP_EOL;
-
-      if (database::num_rows(database::query("select * from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0) {
-        $output .= $catalog_tree_iterator($category['id'], $depth+1, $count);
-      }
-    }
-
-    return $output;
-  };
-
-  echo $catalog_tree_iterator(0, 1, 0);
-?>
-                </div>
+                <?php echo functions::form_draw_categories_list('categories[]', true, 'style="max-height: 480px;"'); ?>
               </div>
 
               <div class="form-group">

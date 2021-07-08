@@ -833,51 +833,68 @@
 
   function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
-    $iterator = function($parent_id, $depth, $index) use (&$iterator) {
+    if (!$multiple || !preg_match('#\[\]$#', $name)) {
+      return form_draw_category_field($name, $options, $input, $parameters);
+    }
 
-      $options = [];
+    if ($input === true) {
+      $input = form_reinsert_value($name);
+    }
 
-      if (empty($parent_id)) $options[] = [functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0'];
+    $html = '<div class="input-group" style="flex-direction: column;"' . (($parameters) ? ' ' . $parameters : '') .' data-toggle="category-picker">' . PHP_EOL
+          . '  <div class="form-control" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
+          . '    <ul class="categories list-unstyled">' . PHP_EOL;
+
+    if (!empty($input)) {
 
       $categories_query = database::query(
-        "select c.id, ci.name
-        from ". DB_TABLE_PREFIX ."categories c
-        left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-        where parent_id = ". (int)$parent_id ."
-        order by c.priority asc, ci.name asc;"
+        "select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
+        left join ". DB_TABLE_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
+        where c.id in ('". implode("', '", database::input($input)) ."');"
       );
 
       while ($category = database::fetch($categories_query)) {
-        $index++;
 
-        $options[] = [str_repeat('&nbsp;&nbsp;&nbsp;', $depth) . functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') .' '. $category['name'], $category['id'], 'data-index="'. $index .'" data-name="'. htmlspecialchars($category['name']) .'"'];
+        $path = [];
+        if (!empty(reference::category($category['id'])->path)) {
+          foreach (reference::category($category['id'])->path as $ancestor) {
+            $path[] = $ancestor->name;
+          }
+        }
 
-        $sub_categories_query = database::query(
-          "select id
-          from ". DB_TABLE_PREFIX ."categories c
-          where parent_id = ". (int)$category['id'] ."
-          limit 1;"
-        );
-
-        $sub_options = $iterator($category['id'], $depth+1, $index);
-
-        $options = array_merge($options, $sub_options);
+        $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
+               . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . PHP_EOL
+               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('fa-folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
+               . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
+               .'</li>';
       }
-
-      return $options;
-    };
-
-    $options = [];
-
-    if (empty($multiple)) $options[] = ['-- '. language::translate('title_select', 'Select') . ' --', ''];
-
-    $options = array_merge($options, $iterator(0, 1, 0));
-
-    if ($multiple) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      return form_draw_select_field($name, $options, $input, $parameters);
     }
+
+    $html .= '    </ul>' . PHP_EOL
+           . '  </div>' . PHP_EOL
+           . '  <div class="dropdown">' . PHP_EOL
+           . '  '. functions::form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
+           . '    <ul class="dropdown-menu" style="right: 0;"></ul>' . PHP_EOL
+           . '  </div>' . PHP_EOL
+           . '</div>';
+
+    document::$snippets['javascript']['category-picker'] = '$(\'[data-toggle="category-picker"]\').categoryPicker({' . PHP_EOL
+                                                         . '  inputName: "'. $name .'",' . PHP_EOL
+                                                         . '  link: "'. document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'categories.json']) .'",' . PHP_EOL
+                                                         . '  icons: {' . PHP_EOL
+                                                         . '    folder: \''. functions::draw_fonticon('fa-folder', 'style="color: #cccc66;"') .'\',' . PHP_EOL
+                                                         . '    back: \''. functions::draw_fonticon('fa-arrow-left') .'\'' . PHP_EOL
+                                                         . '  },' . PHP_EOL
+                                                         . '  translations: {' . PHP_EOL
+                                                         . '    search_results: "'. language::translate('title_search_results', 'Search Results') .'",' . PHP_EOL
+                                                         . '    root: "'. language::translate('title_root', 'Root') .'",' . PHP_EOL
+                                                         . '    add: "'. language::translate('title_add', 'Add') .'",' . PHP_EOL
+                                                         . '    remove: "'. language::translate('title_remove', 'Remove') .'",' . PHP_EOL
+                                                         . '    root: "'. language::translate('title_root', 'Root') .'"' . PHP_EOL
+                                                         . '  }' . PHP_EOL
+                                                         . '})';
+
+    return $html;
   }
 
   function form_draw_countries_list($name, $input=true, $multiple=false, $parameters='') {
