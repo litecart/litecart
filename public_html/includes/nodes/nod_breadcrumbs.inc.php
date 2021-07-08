@@ -8,10 +8,10 @@
 
       self::add(language::translate('title_home', 'Home'), WS_DIR_APP);
 
-      event::register('prepare_output', [__CLASS__, 'prepare_output']);
+      event::register('after_capture', [__CLASS__, 'after_capture']);
     }
 
-    public static function prepare_output() {
+    public static function after_capture() {
 
       if (count(self::$data) > 1) {
         $breadcrumbs = new ent_view();

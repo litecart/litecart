@@ -9,7 +9,7 @@
 
     public static function init() {
       event::register('before_capture', [__CLASS__, 'before_capture']);
-      event::register('prepare_output', [__CLASS__, 'prepare_output']);
+      event::register('after_capture', [__CLASS__, 'after_capture']);
       event::register('before_output',  [__CLASS__, 'before_output']);
     }
 
@@ -63,7 +63,7 @@
       }
     }
 
-    public static function prepare_output() {
+    public static function after_capture() {
 
     // JavaScript Environment
       self::$jsenv['platform'] = [

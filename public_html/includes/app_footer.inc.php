@@ -12,9 +12,6 @@
   $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
   unset($GLOBALS['content']);
 
-// Prepare output
-  event::fire('prepare_output');
-
 // Stitch global snippets
   $_page->snippets = document::$snippets;
   $_page->html = $GLOBALS['output'];
