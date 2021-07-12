@@ -19,16 +19,7 @@
           throw new Exception(language::translate('error_setting_key_does_not_exist', 'The settings key does not exist'));
         }
 
-        $values_required_for_keys = [
-          'site_language_code',
-          'site_currency_code',
-          'site_weight_unit',
-          'site_length_unit',
-          'default_language_code',
-          'default_currency_code',
-        ];
-
-        if (in_array($key, $values_required_for_keys) && empty($_POST['settings'][$key])) {
+        if (!empty($setting['required']) && empty($_POST['settings'][$key])) {
           throw new Exception(language::translate('error_cannot_set_empty_value_for_setting', 'You cannot set an empty value for this setting'));
         }
 

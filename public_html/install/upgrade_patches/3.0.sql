@@ -98,13 +98,13 @@ ADD INDEX `brand_id` (`brand_id`);
 ALTER TABLE `lc_products_images`
 CHANGE COLUMN `checksum` `checksum` VARCHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
-UPDATE lc_settings
+UPDATE `lc_settings`
 SET `key` = REGEXP_REPLACE(`key`, '^store_', 'site_'),
   title = REPLACE(title, 'Store', 'Site'),
   description = REPLACE(description, 'store', 'site')
 WHERE `key` REGEXP '^store_';
 -- --------------------------------------------------------
-UPDATE lc_settings_groups
+UPDATE `lc_settings_groups`
 SET `key` = 'site_info',
   title = 'Site Info',
   description = 'Site information'
@@ -142,6 +142,9 @@ CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `length`,
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `width`,
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
+ALTER TABLE `lc_settings`
+ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `function`;
+-- --------------------------------------------------------
 UPDATE `lc_settings`
 SET `key` = 'site_weight_unit',
   `title` = 'Site Weight Unit',
@@ -153,6 +156,13 @@ SET `key` = 'site_length_unit',
   `title` = 'Site Length Unit',
   `description` = 'The prefered length unit.'
 WHERE `key` = 'site_weight_class' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE `lc_settings`
+SET `required` = 1
+WHERE `key` IN (
+  'site_email', 'site_name', 'site_language_code','site_currency_code', 'site_weight_unit', 'site_length_unit', 'site_timezone',
+  'default_language_code', 'default_currency_code', 'default_country_code', 'default_zone_code', 'template'
+);
 -- --------------------------------------------------------
 UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
 -- --------------------------------------------------------
