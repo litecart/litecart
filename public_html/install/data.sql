@@ -301,7 +301,7 @@ INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALU
 ('advanced', 'Advanced', 'Advanced settings', 100),
 ('security', 'Security', 'Site security and protection against threats', 110);
 -- --------------------------------------------------------
-INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_updated`, `date_created`) VALUES
 ('', 'global', 'Platform Database Version', 'The platform version of the database', 'platform_database_version', '', '', 0, 0, NOW(), NOW()),
 ('site_info', 'global', 'Site Name', 'The name of your site.', 'site_name', '{STORE_NAME}', 'text()', 1, 10, NOW(), NOW()),
 ('site_info', 'global', 'Site Email', 'The site\'s email address.', 'site_email', '{STORE_EMAIL}', 'text()', 1, 11, NOW(), NOW()),

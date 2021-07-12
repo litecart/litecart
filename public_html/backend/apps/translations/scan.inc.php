@@ -101,7 +101,7 @@
 
     $settings_query = database::query(
       "select `key` from ". DB_TABLE_PREFIX ."settings
-      where (setting_group_key is not null and setting_group_key != '');"
+      where (group_key is not null and group_key != '');"
     );
 
     while ($setting = database::fetch($settings_query)) {

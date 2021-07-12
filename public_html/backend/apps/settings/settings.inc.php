@@ -63,7 +63,7 @@
 
   $settings_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."settings
-    where `setting_group_key` = '". database::input($settings_group['key']) ."'
+    where `group_key` = '". database::input($settings_group['key']) ."'
     order by priority, `key` asc;"
   );
 

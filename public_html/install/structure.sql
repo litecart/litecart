@@ -669,7 +669,7 @@ CREATE TABLE IF NOT EXISTS `lc_quantity_units_info` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `setting_group_key` VARCHAR(64) NOT NULL DEFAULT '',
+  `group_key` VARCHAR(64) NOT NULL DEFAULT '',
   `type` enum('global','local') NOT NULL DEFAULT 'local',
   `key` VARCHAR(64) NOT NULL DEFAULT '',
   `value` VARCHAR(8192) NOT NULL DEFAULT '',
@@ -682,7 +682,7 @@ CREATE TABLE `lc_settings` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`),
-  KEY `setting_group_key` (`setting_group_key`)
+  KEY `group_key` (`group_key`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_settings_groups` (
