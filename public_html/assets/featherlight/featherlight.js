@@ -531,7 +531,7 @@
 
 			onResize: function(_super, event){
 				return _super(event);
-			}
+			},
 
 			beforeOpen: function(_super, event) {
 
