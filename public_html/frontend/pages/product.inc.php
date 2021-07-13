@@ -266,6 +266,6 @@
     }
   }
 
-  echo $page;
+  echo $_page;
 
   document::$snippets['head_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
