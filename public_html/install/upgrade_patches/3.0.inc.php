@@ -435,6 +435,11 @@
         'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
       ],
       [
+        'search'  => "/\/\/ Database Tables - Backwards Compatibility \(LiteCart <2\.3\).*?######################################################################/",
+        'replace' => "######################################################################",
+        'regexp'  => true,
+      ],
+      [
         'search'  => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
         'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
       ],
@@ -516,10 +521,6 @@
         'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL,
         'replace' => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');" . PHP_EOL
                    . "  define('WS_DIR_STORAGE',     WS_DIR_APP . 'storage/');" . PHP_EOL,
-      ],
-      [
-        'search'  => "// Database tables",
-        'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],
       [
         'search'  => '#'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?('. preg_quote('## Database ##########################################################', '#') .')#',
