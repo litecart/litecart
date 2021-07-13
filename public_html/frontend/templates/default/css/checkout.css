@@ -1,6 +1,8 @@
 /* Media Breakpoints */
-body {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) calc(50% - 20px), #ccc 50%, #fff 50%);
+@media (min-width: 768px) {
+  body {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) calc(50% - 20px), #ccc 50%, #fff 50%);
+  }
 }
 #content {
   padding: 0.5rem 1rem;

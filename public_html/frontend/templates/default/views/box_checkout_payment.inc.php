@@ -53,6 +53,6 @@
     var formdata = $('#box-checkout-payment .option.active :input').serialize();
 
     $('#box-checkout').trigger('update', [{component: 'payment', data: formdata, refresh: false}])
-                      .trigger('update', [{component: 'summary'}]);
+                      .trigger('update', [{component: 'summary', refresh: true}]);
   });
 </script>

@@ -6,7 +6,7 @@
     try {
       $url = document::link('https://www.litecart.net/feeds/addons');
 
-      $store_info = [
+      $site_info = [
         'platform' => PLATFORM_NAME,
         'version' => PLATFORM_VERSION,
         'name' => settings::get('site_name'),
@@ -19,7 +19,7 @@
       $client = new wrap_http();
       $client->timeout = 10;
 
-      $response = $client->call('POST', $url, $store_info);
+      $response = $client->call('POST', $url, $site_info);
 
       if (!$response) throw new Exception('No response');
 

@@ -217,9 +217,9 @@
         },
 
         'input': function(e){
-            var dropdown = $(self).find('.dropdown');
+            var dropdownMenu = $(self).find('.dropdown-menu');
 
-            $(dropdown).find('.dropdown-menu').html('');
+            $(dropdownMenu).html('');
 
             if (self.xhr) self.xhr.abort();
 
@@ -227,64 +227,16 @@
 
               $.getJSON(self.config.link+'?parent_id=0', function(result) {
 
-                $(dropdown).find('.dropdown-menu').html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+                $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
 
                 $.each(result.subcategories, function(i, category) {
-                  $(dropdown).find('.dropdown-menu').append(
+                  $(dropdownMenu).append(
                     '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
                     '  ' + self.config.icons.folder +
                     '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
                     '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
                     '</li>'
                   );
-                });
-
-                $(dropdown).find('.dropdown-menu').on('click', '.list-item a', function(e){
-                  e.preventDefault();
-
-                  $.getJSON($(this).data('link'), function(result) {
-
-                    $(dropdown).find('.dropdown-menu').html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
-
-                    if (result.id) {
-                      $(dropdown).find('.dropdown-menu').append(
-                        '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex;">' +
-                        '  ' + self.config.icons.back +
-                        '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
-                        '</li>'
-                      );
-                    }
-
-                    $.each(result.subcategories, function(i, category) {
-                      $(dropdown).find('.dropdown-menu').append(
-                        '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
-                        '  ' + self.config.icons.folder +
-                        '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
-                        '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
-                        '</li>'
-                      );
-                    });
-                  });
-                });
-
-                $(dropdown).find('.dropdown-menu').on('click', '.list-item button.add', function(e){
-                  e.preventDefault();
-
-                  var category = $(this).closest('li');
-
-                  $(self).find('.categories').append(
-                    '<li class="list-item" style="display: flex;">' +
-                    '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'" />' +
-                    '  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
-                    '  <button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button>' +
-                    '</li>'
-                  );
-
-                  $(self).trigger('change');
-
-                  $('.dropdown.open').removeClass('open');
-
-                  return false;
                 });
               });
 
@@ -310,14 +262,14 @@
               success: function(result) {
 
                 if (!result.subcategories.length) {
-                  $(dropdown).find('dropdown-menu').html('<li class="list-item text-center no-results"><em>:(</em></li>');
+                  $(dropdownMenu).html('<li class="list-item text-center no-results"><em>:(</em></li>');
                   return;
                 }
 
-                $(dropdown).find('.dropdown-menu').html('<li class="list-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>');
+                $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>');
 
                 $.each(result.subcategories, function(i, category) {
-                  $(dropdown).find('.dropdown-menu').append(
+                  $(dropdownMenu).append(
                     '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
                     '  ' + self.config.icons.folder +
                     '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
@@ -328,6 +280,56 @@
               },
             });
           }
+      });
+
+      $(this).on('click', '.dropdown-menu .list-item a', function(e){
+        e.preventDefault();
+
+        var dropdownMenu = $(this).closest('.dropdown-menu');
+
+        $.getJSON($(this).data('link'), function(result) {
+
+          $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+
+          if (result.id) {
+            $(dropdownMenu).append(
+              '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex;">' +
+              '  ' + self.config.icons.back +
+              '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
+              '</li>'
+            );
+          }
+
+          $.each(result.subcategories, function(i, category) {
+            $(dropdownMenu).append(
+              '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
+              '  ' + self.config.icons.folder +
+              '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
+              '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
+              '</li>'
+            );
+          });
+        });
+      });
+
+      $(this).on('click', '.dropdown-menu .list-item button.add', function(e){
+        e.preventDefault();
+
+        var category = $(this).closest('li');
+
+        $(self).find('.categories').append(
+          '<li class="list-item" style="display: flex;">' +
+          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'" />' +
+          '  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
+          '  <button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button>' +
+          '</li>'
+        );
+
+        $(self).trigger('change');
+
+        $('.dropdown.open').removeClass('open');
+
+        return false;
       });
 
       $(this).find('.categories').on('click', '.remove', function(e){
@@ -347,7 +349,6 @@
   }
 
 }(jQuery);
-
 
 /* ========================================================================
  * Bootstrap: dropdown.js v3.3.7

@@ -3,16 +3,16 @@
 
   <div class="options btn-group-vertical">
 
-    <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
-    <label class="option btn btn-default btn-block text-left<?php echo (!empty($selected['id']) && $selected['id'] == $module['id'].':'.$option['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
-      <?php echo functions::form_draw_radio_button('shipping[option_id]', $module['id'].':'.$option['id'], !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
+    <?php foreach ($options as $id => $option) { ?>
+    <label class="option text-left<?php echo (!empty($selected['id']) && $selected['id'] == $id) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
+      <?php echo functions::form_draw_radio_button('shipping[option_id]', $id, !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-sm-4 thumbnail" style="margin: 0;">
           <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 160, 80, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />
         </div>
 
         <div class="col-sm-8" style="padding-bottom: 0;">
-          <h3 class="title"><?php echo $module['title']; ?></h3>
+          <h3 class="title"><?php echo $option['title']; ?></h3>
 
           <?php if (!empty($option['description'])) { ?>
           <p class="description"><?php echo $option['description']; ?></p>
@@ -54,6 +54,6 @@
 
     $('#box-checkout').trigger('update', [{component: 'shipping', data: formdata, refresh: false}])
                       .trigger('update', [{component: 'payment', refresh: true}])
-                      .trigger('update', [{component: 'summary'}]);
+                      .trigger('update', [{component: 'summary', refresh: true}]);
   });
 </script>

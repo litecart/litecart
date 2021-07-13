@@ -1,5 +1,3 @@
-@import "framework/media.less";
-
 html {
   background: var(--site-background-color);
 }
@@ -171,8 +169,19 @@ body.cart-open #cart .dropdown-menu {
   a {
     color: inherit;
   }
-  .cart a {
-    background-color: var(--navigation-cart-color);
+  .shopping-cart {
+    > a {
+      background-color: var(--navigation-cart-color);
+    }
+    img {
+      max-width: 64px;
+      max-height: 64px;
+    }
+    @media (min-width: @media-breakpoint-md) {
+      .dropdown-menu {
+        width: 320px;
+      }
+    }
   }
 }
 

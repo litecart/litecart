@@ -6,7 +6,6 @@
 
     script.src = url;
     script.async = true;
-    script.defer = true;
 
     if (callback) {
       script.onload = function(){ callback(); };
@@ -18,6 +17,21 @@
 
     document.body.appendChild(script);
   }
+
+  $.cachedScript = function(url, options) {
+
+    options = $.extend(options || {}, {
+      dataType: 'script',
+      cache: true,
+      url: url
+    });
+
+    return jQuery.ajax(options);
+  };
+
+  //$.cachedScript('ajax/test.js').done(function(script, textStatus) {
+  //  console.log(textStatus);
+  //});
 
 // Toggle Cart
   $('[data-toggle="cart"]').click(function(e){
@@ -59,7 +73,7 @@
       }
     }).trigger('resize');
   }
-
+/*
 // Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
     e.preventDefault();
@@ -70,15 +84,15 @@
         'border': '1px rgba(0,136,204,1) solid',
         'background-color': 'rgba(0,136,204,0.5)',
         'z-index': '999999',
-        'border-radius': '3px',
-        'padding': '5px'
+        'border-radius': 'var(--border-radius)',
+        'padding': '.5em'
       },
       callback: function() {
         updateCart($(form).serialize() + '&add_cart_product=true');
       }
     });
   });
-
+*/
 // Bootstrap Compatible (data-toggle="tab")
   $('body').on('click', '[data-toggle="tab"]', function(e) {
     e.preventDefault();
@@ -109,6 +123,24 @@
 
   $('body').on('click', '[data-toggle="buttons"] input[type="radio"]', function(){
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
+  });
+
+// Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
+  $('[data-toggle="offcanvas"]').on('click', function() {
+    $(this).closest('.navbar').toggleClass('expanded');
+    $('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '');
+  });
+
+// Dropdown select
+  $('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
+    var dropdown = $(this).closest('.dropdown');
+    var input = $(dropdown).find(':input:checked');
+    $(dropdown).find('li.active').removeClass('active');
+    if ($(dropdown).find(':input:checked').data('set-title')) {
+      $(dropdown).find('.form-select').text($(input).data('set-title'));
+      $(input).closest('li').addClass('active');
+    }
+    $(dropdown).trigger('click.bs.dropdown');
   });
 
 // Data-Table Toggle Checkboxes
@@ -696,6 +728,207 @@
       var $carousel = $(this)
       Plugin.call($carousel, $carousel.data())
     })
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: collapse.js v3.3.7
+ * http://getbootstrap.com/javascript/#collapse
+ * ========================================================================
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
++function ($) {
+  'use strict';
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
+                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
+    this.transitioning = null
+
+    if (this.options.parent) {
+      this.$parent = this.getParent()
+    } else {
+      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
+    }
+
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.3.7'
+
+  Collapse.TRANSITION_DURATION = 350
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var activesData
+    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
+
+    if (actives && actives.length) {
+      activesData = actives.data('bs.collapse')
+      if (activesData && activesData.transitioning) return
+    }
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    if (actives && actives.length) {
+      Plugin.call(actives, 'hide')
+      activesData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+
+    this.$trigger
+      .removeClass('collapsed')
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse in')
+
+    this.$trigger
+      .addClass('collapsed')
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse')
+        .trigger('hidden.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+  Collapse.prototype.getParent = function () {
+    return $(this.options.parent)
+      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
+      .each($.proxy(function (i, element) {
+        var $element = $(element)
+        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
+      }, this))
+      .end()
+  }
+
+  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
+    var isOpen = $element.hasClass('in')
+
+    $trigger.toggleClass('collapsed', !isOpen)
+  }
+
+  function getTargetFromTrigger($trigger) {
+    var href
+    var target = $trigger.attr('data-target')
+      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+
+    return $(target)
+  }
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var $this   = $(this)
+
+    if (!$this.attr('data-target')) e.preventDefault()
+
+    var $target = getTargetFromTrigger($this)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+
+    Plugin.call($target, option)
   })
 
 }(jQuery);

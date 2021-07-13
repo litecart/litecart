@@ -24,12 +24,12 @@
 
       foreach (array_keys($_POST['files']) as $f) {
         foreach (array_keys($_POST['files'][$f]['operations']) as $o) {
-          if (!empty($_POST['files'][$f]['operations'][$o]['find']['regex'])) $_POST['files'][$f]['operations'][$o]['find']['regex'] = 'true';
-          if (!empty($_POST['files'][$f]['operations'][$o]['find']['trim'])) $_POST['files'][$f]['operations'][$o]['find']['trim'] = 'true';
-          if (!empty($_POST['files'][$f]['operations'][$o]['insert']['regex'])) $_POST['files'][$f]['operations'][$o]['insert']['regex'] = 'true';
-          if (!empty($_POST['files'][$f]['operations'][$o]['insert']['trim'])) $_POST['files'][$f]['operations'][$o]['insert']['trim'] = 'true';
-          if (!empty($_POST['files'][$f]['operations'][$o]['ignoreif']['regex'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['regex'] = 'true';
-          if (!empty($_POST['files'][$f]['operations'][$o]['ignoreif']['trim'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['trim'] = 'true';
+          if (empty($_POST['files'][$f]['operations'][$o]['find']['regex'])) $_POST['files'][$f]['operations'][$o]['find']['regex'] = 'true';
+          if (empty($_POST['files'][$f]['operations'][$o]['find']['trim'])) $_POST['files'][$f]['operations'][$o]['find']['trim'] = 'true';
+          if (empty($_POST['files'][$f]['operations'][$o]['insert']['regex'])) $_POST['files'][$f]['operations'][$o]['insert']['regex'] = 'true';
+          if (empty($_POST['files'][$f]['operations'][$o]['insert']['trim'])) $_POST['files'][$f]['operations'][$o]['insert']['trim'] = 'true';
+          if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['regex'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['regex'] = 'true';
+          if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['trim'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['trim'] = 'true';
         }
       }
 
@@ -106,8 +106,6 @@
 
 textarea {
   font-family: monospace;
-  background: #323538 !important;
-  color: #fff !important;
 }
 </style>
 

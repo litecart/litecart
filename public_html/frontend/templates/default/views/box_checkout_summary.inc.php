@@ -21,8 +21,8 @@
 
       <?php if ($order['tax_total']) { ?>
       <tr>
-        <td colspan="3" class="text-right" style="color: #999999;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-        <td class="text-right" style="color: #999999;"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td colspan="3" class="text-right text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+        <td class="text-right text-muted"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
     </tbody>

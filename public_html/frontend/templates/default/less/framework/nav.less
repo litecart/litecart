@@ -33,20 +33,20 @@
       max-width: none;
     }
     li > a {
-      padding-top: calc(var(--gutter-size)/2);
-      padding-bottom: calc(var(--gutter-size)/2);
+      padding-top: ~"calc(var(--gutter-size)/2)";
+      padding-bottom: ~"calc(var(--gutter-size)/2)";
     }
     > ul {
       list-style: none;
       padding: 0;
       > li > a {
-        padding-left: calc(var(--gutter-size)*2);
+        padding-left: ~"calc(var(--gutter-size)*2)";
       }
       > li > ul > li > a {
-        padding-left: calc(var(--gutter-size)*3);
+        padding-left: ~"calc(var(--gutter-size)*3)";
       }
       > li > ul > li > ul > li > a {
-        padding-left: calc(var(--gutter-size)*4);
+        padding-left: ~"calc(var(--gutter-size)*4)";
       }
     }
   }
@@ -81,8 +81,8 @@
   li a {
     margin: 1px 0;
     background: var(--pills-background-color);
-    padding-top: calc(var(--gutter-size)/2);
-    padding-bottom: calc(var(--gutter-size)/2);
+    padding-top: ~"calc(var(--gutter-size)/2)";
+    padding-bottom: ~"calc(var(--gutter-size)/2)";
     border-radius: var(--border-radius);
     transition: all 125ms linear;
     color: var(--pills-text-color);
@@ -112,6 +112,10 @@
       line-height: 1.42857143;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+      background-color: rgba(255, 255, 255, .5);
+    }
+    &:hover a {
+      background-color: rgba(255, 255, 255, .75);
     }
     &.active a {
       background: var(--tabs-background-color-active);

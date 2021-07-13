@@ -217,7 +217,6 @@ CREATE TABLE `lc_customers` (
   `shipping_country_code` VARCHAR(4) NOT NULL DEFAULT '',
   `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
   `shipping_phone` VARCHAR(24) NOT NULL DEFAULT '',
-  `newsletter` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
   `notes` TEXT NOT NULL DEFAULT '',
   `password_reset_token` VARCHAR(128) NOT NULL DEFAULT '',
   `num_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -682,6 +681,7 @@ CREATE TABLE `lc_settings` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`),
+  KEY `type` (`type`),
   KEY `group_key` (`group_key`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------

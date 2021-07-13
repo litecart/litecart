@@ -2,13 +2,16 @@
 @import "framework/media.less";
 
 body {
-  background: linear-gradient(90deg, rgba(255,255,255,0) calc(50% - 20px), #ccc 50%, #fff 50%);
+  @media(min-width: @media-breakpoint-md) {
+    background: linear-gradient(90deg, rgba(255,255,255,0) calc(50% - 20px), #ccc 50%, #fff 50%);
+    //background: linear-gradient(90deg, #fff 0%, #ccc 50%, rgba(255,255,255,0) calc(50% - 20px));
+  }
 }
 
 #content {
   padding: .5rem 1rem;
   @media(min-width: @media-breakpoint-sm) {
-  padding: 1rem;
+    padding: 1rem;
   }
 }
 

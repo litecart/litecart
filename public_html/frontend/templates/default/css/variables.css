@@ -20,7 +20,7 @@
   --sidebar-width: 320px;
   --navigation-background-color: rgba(229, 229, 234, 0.75);
   --navigation-text-color: #333;
-  --navigation-cart-color: #d8be83;
+  --navigation-cart-color: #b7d851;
   --default-background-color: #d6dbe0;
   --default-background-color-hover: #e4e4e4;
   --default-background-color-active: #ccc;
@@ -41,7 +41,7 @@
   --primary-notice-text-color: #000;
   --success-background-color: #91C231;
   --success-background-color-hover: calc(var(--success-background-color) * 1.1);
-  --success-background-color-active: calc(var(--success-background-color) * 0.9);
+  --success-background-color-active: calc(var(--success-background-color) * .9);
   --success-border-color: #91C231;
   --success-text-color: #fff;
   --success-notice-background-color: #d6eca6;
