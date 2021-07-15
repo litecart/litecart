@@ -333,6 +333,14 @@ CREATE TABLE `lc_newsletter_recipients` (
   UNIQUE INDEX `email` (`email`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_newsletter_recipients` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(128) NOT NULL DEFAULT '',
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email` (`email`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_orders` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(13) NOT NULL DEFAULT '',

@@ -196,7 +196,7 @@
       if (is_array($key)) {
 
         $array_diff_recursive = function($array1, $array2) use (&$array_diff_recursive) {
-          $result = array();
+          $result = [];
           foreach ($array1 as $key => $value) {
             if (array_key_exists($key, $array2)) {
               if (is_array($value)) {

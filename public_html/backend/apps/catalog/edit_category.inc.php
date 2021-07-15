@@ -237,12 +237,12 @@
             </thead>
             <tbody>
               <?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
-              <tr class="grabable">
+              <tr>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-                <td><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
-                <td><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
+                <td class="grabable"><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
+                <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-right">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                   <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
@@ -255,7 +255,7 @@
 
           <div class="input-group" style="max-width: 320px;">
             <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-            <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
+              <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
           </div>
         </div>
       </div>

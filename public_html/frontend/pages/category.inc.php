@@ -56,6 +56,12 @@
       'image' => [],
       'subcategories' => [],
       'products' => [],
+      'sort_alternatives' => [
+        'name' => language::translate('title_name', 'Name'),
+        'price' => language::translate('title_price', 'Price'),
+        'popularity' => language::translate('title_popularity', 'Popularity'),
+        'date' => language::translate('title_date', 'Date'),
+      ],
     ];
 
     if ($category->image) {
@@ -64,6 +70,7 @@
         'original' => $category->image ? 'images/' . $category->image : '',
         'thumbnail_1x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width, $height, settings::get('category_image_clipping')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width*2, $height*2, settings::get('category_image_clipping')),
+        'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
         'viewport' => [
           'width' => $width,
           'height' => $height,

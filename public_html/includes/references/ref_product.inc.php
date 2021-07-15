@@ -308,10 +308,10 @@
 
         case 'parents':
 
-          $this->_data['parents'] = array();
+          $this->_data['parents'] = [];
 
           $query = database::query(
-            "select category_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+            "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
             where product_id = ". (int)$this->_data['id'] .";"
           );
 
@@ -326,7 +326,7 @@
           $this->_data['price'] = 0;
 
           $products_prices_query = database::query(
-            "select * from ". DB_TABLE_PRODUCTS_PRICES ."
+            "select * from ". DB_TABLE_PREFIX ."products_prices
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
@@ -344,7 +344,7 @@
         case 'quantity_unit':
 
           $quantity_unit_query = database::query(
-            "select id, decimals, separate from ". DB_TABLE_QUANTITY_UNITS ."
+            "select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
             where id = ". (int)$this->quantity_unit_id ."
             limit 1;"
           );
@@ -352,14 +352,14 @@
           if (!$this->_data['quantity_unit'] = database::fetch($quantity_unit_query)) return;
 
           $query = database::query(
-            "select * from ". DB_TABLE_QUANTITY_UNITS_INFO ."
+            "select * from ". DB_TABLE_PREFIX ."quantity_units_info
             where quantity_unit_id = ". (int)$this->quantity_unit_id ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'quantity_unit_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
               if (empty($this->_data['quantity_unit'][$key])) $this->_data['quantity_unit'][$key] = $value;
             }
           }
@@ -401,6 +401,12 @@
               if (empty($this->_data['sold_out_status'][$key])) $this->_data['sold_out_status'][$key] = $value;
             }
           }
+
+          break;
+
+        case 'tax':
+
+          $this->_data['tax'] = tax::get_tax(!empty($this->campaign) ? $this->campaign['price'] : $this->price, $this->tax_class_id);
 
           break;
 

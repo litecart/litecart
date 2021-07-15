@@ -136,11 +136,6 @@
       }
 
       database::query(
-        "delete from
-        where sold_out_status_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
         "delete ss, ssi
         from ". DB_TABLE_PREFIX ."sold_out_statuses ss
         left join ". DB_TABLE_PREFIX ."sold_out_statuses_info ssi on (ssi.sold_out_status_id = si.id)

@@ -18,7 +18,7 @@
     $box_customer_service_links->snippets['pages'][] = [
       'id' => 0,
       'title' => language::translate('title_contact_us', 'Contact Us'),
-      'link' => document::href_ilink('customer_service'),
+      'link' => document::ilink('customer_service'),
       'opened' => false,
       'active' => (route::$route['page'] == 'customer_service' && empty($_GET['page_id'])) ? true : false,
       'subpages' => [],

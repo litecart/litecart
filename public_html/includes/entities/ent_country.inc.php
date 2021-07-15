@@ -155,7 +155,7 @@
         throw new Exception(language::translate('error_cannot_delete_store_country', 'You must change the store country before it can be deleted.'));
       }
 
-      if ($this->data['code'] == settings::get('default_country_code')) {
+      if ($this->data['iso_code_2'] == settings::get('default_country_code')) {
         throw new Exception(language::translate('error_cannot_delete_default_country', 'You must change the default country before it can be deleted.'));
       }
 

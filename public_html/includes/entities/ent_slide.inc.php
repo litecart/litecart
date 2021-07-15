@@ -183,11 +183,6 @@
     public function delete() {
 
       database::query(
-        "delete from
-        where slide_id = ". (int)$this->data['id'] .";"
-      );
-
-      database::query(
         "delete s, si
         from ". DB_TABLE_PREFIX ."slides s
         left join ". DB_TABLE_PREFIX ."slides_info si on (si.slide_id = s.id)

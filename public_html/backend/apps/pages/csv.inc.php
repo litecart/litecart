@@ -30,7 +30,7 @@
         $line++;
 
       // Find page
-        if (!empty($row['id']) && $page = database::fetch(database::query("select id from ". DB_TABLE_PAGES ." where id = ". (int)$row['id'] ." limit 1;"))) {
+        if (!empty($row['id']) && $page = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."pages where id = ". (int)$row['id'] ." limit 1;"))) {
           $page = new ent_page($page['id']);
         }
 

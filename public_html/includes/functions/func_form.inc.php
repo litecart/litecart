@@ -1025,7 +1025,7 @@ END;
           . '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
           . '    <ul class="categories list-unstyled">' . PHP_EOL;
 
-    if (!empty($input)) {
+      if (empty($parent_id)) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
 
       $categories_query = database::query(
         "select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
@@ -1087,6 +1087,18 @@ END;
     if ($input === true) {
       $input = form_reinsert_value($name);
       if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_country_code');
+    }
+
+    switch ($input) {
+      case 'customer_country_code':
+        $input = customer::$data['country_code'];
+        break;
+      case 'default_country_code':
+        $input = settings::get('default_country_code');
+        break;
+      case 'store_country_code':
+        $input = settings::get('store_country_code');
+        break;
     }
 
     $countries_query = database::query(

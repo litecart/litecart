@@ -51,7 +51,7 @@
 
     public function load($product_id) {
 
-      if (empty($product_id)) throw new Exception('Invalid product (ID: '. $product_id .')');
+      if (empty($product_id)) throw new Exception('Invalid product (ID: n/a)');
 
       $this->reset();
 
@@ -449,7 +449,7 @@
           database::query(
             "update ". DB_TABLE_PREFIX ."products_images
             set filename = '". database::input($image['filename']) ."',
-                priority = '". $image_priority++ ."'
+              priority = '". $image_priority++ ."'
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$image['id'] ."
             limit 1;"

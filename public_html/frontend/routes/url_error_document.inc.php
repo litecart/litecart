@@ -9,11 +9,11 @@
           'pattern' => '#^error_document$#',
           'page' => 'error_document',
           'params' => '',
-          'options' => array(
+          'options' => [
             'redirect' => false,
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
     }
 
     function rewrite(ent_link $link, $language_code) {

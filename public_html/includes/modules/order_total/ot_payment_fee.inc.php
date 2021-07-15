@@ -27,13 +27,6 @@
         'calculate' => true,
       ];
 
-      $output[] = array(
-        'title' => $order->data['payment_option']['title'] .' ('. $order->data['payment_option']['name'] .')',
-        'value' => $order->data['payment_option']['cost'],
-        'tax' => tax::get_tax($order->data['payment_option']['cost'], $order->data['payment_option']['tax_class_id'], $order->data['customer']),
-        'calculate' => true,
-      );
-
       return $output;
     }
 

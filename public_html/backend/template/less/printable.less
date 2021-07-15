@@ -7,7 +7,6 @@
 .page {
   position: relative;
   font-size: 12px;
-  font-family: Arial, Helvetica, sans-serif;
   color: #000;
 
   .footer {
@@ -38,7 +37,7 @@ hr {
     &[data-size="A4"] {
       height: calc(29.7cm - @page-margin - @page-margin);
     }
-    &[data-="A4"][data-orientation="portrait"] {
+    &[data-size="A4R"] {
       height: calc(21cm - @page-margin - @page-margin);
     }
   }
@@ -75,7 +74,7 @@ hr {
       width: 21cm;
       height: 29.7cm;
     }
-    &[data-="A4"][data-orientation="portrait"] {
+    &[data-size="A4R"] {
       width: 29.7cm;
       height: 21cm;
     }

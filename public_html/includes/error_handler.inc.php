@@ -52,8 +52,8 @@
       }
     }
 
-    if (in_array(strtolower(ini_get('display_errors')), ['1', 'on', 'true'])) {
-      if (in_array(strtolower(ini_get('html_errors')), [0, 'off', 'false']) || PHP_SAPI == 'cli') {
+    if (preg_match('#^(1|on|true)$#i', ini_get('display_errors'))) {
+      if (preg_match('#^(0|off|false)$#i', ini_get('html_errors')) || PHP_SAPI == 'cli') {
         echo strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
       } else {
         echo $output . (isset($_GET['debug']) ? $backtrace_output : '');

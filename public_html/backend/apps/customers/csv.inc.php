@@ -25,13 +25,13 @@
         $line++;
 
       // Find customer
-        if (!empty($row['id']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+        if (!empty($row['id']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;"))) {
           $customer = new ent_customer($customer['id']);
 
-        } else if (!empty($row['code']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+        } else if (!empty($row['code']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;"))) {
           $customer = new ent_customer($customer['id']);
 
-        } else if (!empty($row['email']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($row['email']) ."' limit 1;"))) {
+        } else if (!empty($row['email']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;"))) {
           $customer = new ent_customer($customer['id']);
         }
 

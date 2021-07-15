@@ -130,6 +130,7 @@
       'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
       'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
       'viewport' => [
         'width' => $width,
         'height' => $height,
@@ -164,6 +165,7 @@
       'original' => 'images/' . $image,
       'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'aspect_ratio' => settings::get('product_image_ratio'),
       'viewport' => [
         'width' => $width,
         'height' => $height,

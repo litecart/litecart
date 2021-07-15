@@ -136,10 +136,6 @@
         throw new Exception('Cannot delete the quantity unit because there are products using it');
       }
 
-      database::query(
-        "delete from
-        where quantity_unit_id = ". (int)$this->data['id'] .";"
-      );
 
       database::query(
         "delete qu, qui

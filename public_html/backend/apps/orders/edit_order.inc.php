@@ -773,17 +773,17 @@ body.dark-mode #box-comments {
     <div class="row">
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_sku', 'SKU'); ?></label>
-        <?php echo functions::form_draw_text_field('sku', true); ?>
+        <?php echo functions::form_draw_text_field('sku', ''); ?>
       </div>
 
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_gtin', 'GTIN'); ?></label>
-        <?php echo functions::form_draw_text_field('gtin', true); ?>
+        <?php echo functions::form_draw_text_field('gtin', ''); ?>
       </div>
 
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_taric', 'TARIC'); ?></label>
-        <?php echo functions::form_draw_text_field('taric', true); ?>
+        <?php echo functions::form_draw_text_field('taric', ''); ?>
       </div>
     </div>
 
@@ -893,7 +893,7 @@ body.dark-mode #box-comments {
     <div class="row">
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_quantity', 'quantity'); ?></label>
-        <?php echo functions::form_draw_decimal_field('quantity', ''); ?>
+        <?php echo functions::form_draw_decimal_field('quantity', '0'); ?>
       </div>
 
         <div class="form-group col-md-4">
@@ -1202,6 +1202,12 @@ body.dark-mode #box-comments {
       });
       addItem(item);
     }
+
+    $(modal).find(':input[name="weight_unit"]').val('<?php echo settings::get('site_weight_class'); ?>');
+    $(modal).find(':input[name="length_unit"]').val('<?php echo settings::get('site_length_class'); ?>');
+
+    $(modal).find(':input[name="weight_unit"]').val('<?php echo settings::get('site_weight_class'); ?>');
+    $(modal).find(':input[name="length_unit"]').val('<?php echo settings::get('site_length_class'); ?>');
 
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');

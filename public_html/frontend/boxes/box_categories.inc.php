@@ -3,7 +3,6 @@
   if (cache::capture($box_categories_cache_token)) {
 
     $categories_query = functions::catalog_categories_query();
-    if (database::num_rows($categories_query)) {
 
       $box_categories = new ent_view('views/box_categories.inc.php');
 
@@ -17,5 +16,6 @@
 
       echo $box_categories;
     }
+
     cache::end_capture($box_categories_cache_token);
   }

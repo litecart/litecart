@@ -4,7 +4,6 @@
 .page {
   position: relative;
   font-size: 12px;
-  font-family: Arial, Helvetica, sans-serif;
   color: #000;
 }
 .page .footer {
@@ -31,7 +30,7 @@ hr {
   .page[data-size="A4"] {
     height: calc(29.7cm - 15mm - 15mm);
   }
-  .page[data-="A4"][data-orientation="portrait"] {
+  .page[data-size="A4R"] {
     height: calc(21cm - 15mm - 15mm);
   }
   h1 {
@@ -64,7 +63,7 @@ hr {
     width: 21cm;
     height: 29.7cm;
   }
-  .page[data-="A4"][data-orientation="portrait"] {
+  .page[data-size="A4R"] {
     width: 29.7cm;
     height: 21cm;
   }
