@@ -767,7 +767,12 @@
                     </div>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true, 2, null, null, 'data-quantity="'. (isset($product->data['options_stock'][$key]['quantity']) ? (float)$product->data['options_stock'][$key]['quantity'] : '0') .'"'); ?></td>
-                  <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity_adjustment]', true); ?></td>
+                  <td>
+                    <div class="input-group">
+                      <span class="input-group-addon">&plusmn;</span>
+                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity_adjustment]', true); ?>
+                    </div>
+                  </td>
                   <td class="text-right">
                     <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                     <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
@@ -1061,7 +1066,7 @@
         decimals = get_currency_decimals(currency_code),
         gross_field = $('input[name="gross_prices['+ currency_code +']"]');
 
-    var gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
+    var gross_price = Number( parseFloat($(this).val() || 0) * (1 + (get_tax_rate()/100)) ).toFixed(decimals);
 
     if ($(this).val() == 0) {
       $(gross_field).val('');
@@ -1078,7 +1083,7 @@
         decimals = get_currency_decimals(currency_code),
         net_field = $('input[name="prices['+ currency_code +']"]');
 
-    var net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
+    var net_price = Number( parseFloat($(this).val() || 0) / (1 + (get_tax_rate()/100)) ).toFixed(decimals);
 
     if ($(this).val() == 0) {
       $(net_field).val('');
@@ -1106,8 +1111,8 @@
           currency_net_price = net_price / get_currency_value(currency_code);
           currency_gross_price = gross_price / get_currency_value(currency_code);
 
-      currency_net_price = currency_net_price ? parseFloat(currency_net_price.toFixed(currency_decimals)) : '';
-      currency_gross_price = currency_gross_price ? parseFloat(currency_gross_price.toFixed(currency_decimals)) : '';
+      currency_net_price = currency_net_price ? parseFloat(currency_net_price.toFixed(currency_decimals) || 0) : '';
+      currency_gross_price = currency_gross_price ? parseFloat(currency_gross_price.toFixed(currency_decimals) || 0) : '';
 
       $('input[name="prices['+ currency_code +']"]').attr('placeholder', currency_net_price);
       $('input[name="gross_prices['+ currency_code +']"]').attr('placeholder', currency_gross_price);
@@ -1451,16 +1456,16 @@
 
     var decimals = $('option:selected', this).data('decimals');
 
-    var value = parseFloat($('input[name="quantity"]').val()).toFixed(decimals);
+    var value = parseFloat($('input[name="quantity"]').val() || 0).toFixed(decimals);
     $('input[name="quantity"]').val(value);
 
     $('input[name^="option_stock"][name$="[quantity]"]').each(function(){
-      var value = parseFloat($(this).val()).toFixed(decimals);
+      var value = parseFloat($(this).val() || 0).toFixed(decimals);
       $(this).val(value);
     });
 
     $('input[name^="option_stock"][name$="[quantity_adjustment]"]').each(function(){
-      var value = parseFloat($(this).val()).toFixed(decimals);
+      var value = parseFloat($(this).val() || 0).toFixed(decimals);
       $(this).val(value);
     });
   }).trigger('change');
@@ -1468,40 +1473,40 @@
 // Stock
 
   $('#table-stock').on('input', 'input[name="quantity"]', function(){
-    $('input[name="quantity_adjustment"]').val(parseFloat($(this).val()) - parseFloat($(this).data('quantity')));
+    $('input[name="quantity_adjustment"]').val( parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0) );
   });
 
   $('#table-stock').on('input', 'input[name="quantity_adjustment"]', function(){
-    $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat($(this).val()));
+    $('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').data('quantity') || 0) + parseFloat($(this).val() || 0) );
   });
 
   $('#table-stock').on('input', 'input[name$="[quantity]"]', function(){
     var adjustment_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-    $(adjustment_field).val(parseFloat($(this).val()) - parseFloat($(this).data('quantity')));
+    $(adjustment_field).val( parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0) );
 
     $('input[name="quantity"]').val(0);
     $(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
-      $('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val()) + parseFloat($(this).val() ));
+      $('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
     });
 
     $('input[name="quantity_adjustment"]').val(0);
     $(this).closest('tbody').find('input[name$="[quantity_adjustment]"]').each(function() {
-      $('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val()) + parseFloat($(this).val()) );
+      $('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
     });
   });
 
   $('#table-stock').on('input', 'input[name$="[quantity_adjustment]"]', function(){
     var qty_field = $(this).closest('tr').find('input[name$="[quantity]"]');
-    $(qty_field).val(parseFloat($(qty_field).data('quantity')) + parseFloat($(this).val()));
+    $(qty_field).val( parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0) );
 
     $('input[name="quantity"]').val(0);
     $(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
-      $('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val()) + parseFloat($(this).val()) );
+      $('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
     });
 
     $('input[name="quantity_adjustment"]').val(0);
     $(this).closest('tbody').find('input[name$="[quantity_adjustment]"]').each(function() {
-      $('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val()) + parseFloat($(this).val()));
+      $('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
     });
   });
 
@@ -1511,7 +1516,7 @@
 
     var total = 0;
     $(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
-      total += parseFloat($(this).val());
+      total += parseFloat($(this).val() || 0);
     });
 
     if (!$('input[name^="options_stock"][name$="[id]"]').length) {
@@ -1525,13 +1530,12 @@
 
       $('input[name="quantity"]').val(0);
       $('input[name^="options_stock"][name$="[quantity]"]').each(function() {
-        $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').val()) + parseFloat($(this).val()));
+        $('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
       });
 
       $('input[name="quantity_adjustment"]').val(0);
       $('input[name^="options_stock"][name$="[quantity_adjustment]"]').each(function() {
-        console.log(parseFloat($('input[name="quantity_adjustment"]').val()), parseFloat($(this).val()));
-        $('input[name="quantity_adjustment"]').val(parseFloat($('input[name="quantity_adjustment"]').val()) + parseFloat($(this).val()));
+        $('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
       });
     }
   });
