@@ -162,7 +162,7 @@
         'mpn' => $product->mpn,
         'gtin' => $product->gtin,
         'taric' => $product->taric,
-        'price' => (!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price,
+        'price' => $product->final_price,
         'extras' => 0,
         'tax' => $product->tax,
         'tax_class_id' => $product->tax_class_id,
