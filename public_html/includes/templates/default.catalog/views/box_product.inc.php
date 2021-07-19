@@ -1,7 +1,7 @@
 <article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
   <div class="row">
-    <div class="col-sm-4 col-md-6">
+    <div class="col-md-6">
       <div class="images row">
 
         <div class="col-xs-12">
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="col-sm-8 col-md-6">
+    <div class="col-md-6">
       <h1 class="title"><?php echo $name; ?></h1>
 
       <?php if ($short_description) { ?>

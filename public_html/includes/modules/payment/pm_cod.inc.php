@@ -73,7 +73,7 @@
           'key' => 'icon',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_icon', 'Icon'),
-          'description' => language::translate(__CLASS__.':description_icon', 'Web path of the icon to be displayed.'),
+          'description' => language::translate(__CLASS__.':description_icon', 'Path to an image to be displayed.'),
           'function' => 'text()',
         ],
         [

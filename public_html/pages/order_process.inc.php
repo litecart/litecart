@@ -102,9 +102,11 @@
                 exit;
 
               case 'GET':
-              default:
                 header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')));
                 exit;
+
+              default:
+                throw new Exception('Undefined method ('. $gateway['method'] .')');
             }
           }
         }

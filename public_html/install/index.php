@@ -319,14 +319,14 @@ input[name="development_type"]:checked + div {
         <ul>
           <li>Settings
             <ul>
-              <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), ['off', 'false', '', '0']) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
+              <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
               <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
               <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
             </ul>
           </li>
           <li>Extensions
             <ul>
-              <li>apcu <?php echo extension_loaded('apcu') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+              <li>apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
               <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
               <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
               <li>intl <?php echo extension_loaded('intl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
