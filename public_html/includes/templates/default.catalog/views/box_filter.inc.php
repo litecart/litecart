@@ -1,51 +1,171 @@
+<style>
+#box-filter .filter {
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 1em;
+  grid-template-columns: 1fr;
+  margin-bottom: 1em;
+}
+#box-filter .filter [data-toggle="dropdown"] {
+  cursor: pointer;
+}
+#box-filter .filter .dropdown-menu li {
+  margin: .5em 1em;
+}
+#box-filter .filter .dropdown-menu .option {
+  white-space: nowrap;
+}
+@media (min-width: 480px) {
+  #box-filter .filter {
+    grid-auto-flow: column;
+  }
+}
+@media (min-width: 768px) {
+  #box-filter .filter {
+    grid-auto-flow: column;
+  }
+}
+#box-filter .token {
+  padding: .5em 1em;
+  border-radius: 4px;
+  cursor: default;
+  margin-right: .5em;
+}
+#box-filter .token .remove {
+  padding-left: .5em;
+  color: inherit;
+  font-weight: 600;
+}
+
+#box-filter .token[data-group="name"] {
+  background: #cbe2b6;
+}
+#box-filter .token[data-group="manufacturer"] {
+  background: #b6c2e2;
+}
+#box-filter .token[data-group^="attribute"] {
+  background: #e2c6b6;
+}
+</style>
+
 <section id="box-filter" class="box">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
-    <?php if ($manufacturers) { ?>
-    <div class="box manufacturers">
-      <h2 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h2>
-      <div class="form-control">
-        <ul class="list-unstyled">
-          <?php foreach ($manufacturers as $manufacturer) echo '<li><label>'. functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true) .' '. $manufacturer['name'] .'</label></li>' . PHP_EOL; ?>
-        </ul>
-      </div>
-    </div>
-    <?php } ?>
+    <div class="filter">
 
-    <?php if ($attributes) { ?>
-    <div class="box attributes">
-      <?php foreach ($attributes as $group) { ?>
-      <div class="group">
-        <h2><?php echo $group['name']; ?></h2>
-        <?php if (!empty($group['select_multiple'])) { ?>
-        <div class="form-control">
-          <?php foreach ($group['values'] as $value) { ?>
-          <div>
-            <label><?php echo functions::form_draw_checkbox('attributes['. $group['id'] .'][]', !empty($value['id']) ? $value['id'] : $value['value'], true); ?> <?php echo $value['value']; ?></label>
+      <div>
+        <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. htmlspecialchars(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
+      </div>
+
+      <?php if ($manufacturers) { ?>
+      <div>
+        <div class="dropdown">
+          <div class="form-control" data-toggle="dropdown">
+            <?php echo language::translate('title_manufacturers', 'Brands'); ?> <span class="caret right"></span>
           </div>
-          <?php } ?>
+          <ul class="dropdown-menu">
+            <?php foreach ($manufacturers as $manufacturer) { ?>
+            <li>
+              <label class="option"><?php echo functions::form_draw_checkbox('manufacturers[]', $manufacturer['id'], true, 'data-token-group="manufacturer" data-token-title="'. language::translate('title_manufacturer', 'Brand') .'" data-token-value="'. $manufacturer['name'] .'"'); ?>
+                <span class="title"><?php echo $manufacturer['name']; ?></span>
+              </label>
+            </li>
+            <?php } ?>
+          </ul>
         </div>
-        <?php } else { ?>
-<?php
-  $options = array(array('-- '. language::translate('title_select', 'Select') . ' --', ''));
-  foreach ($group['values'] as $value) {
-    $options[] = array($value['value'], $value['id']);
-  }
-  echo functions::form_draw_select_field('attributes['. $group['id'] .'][]', $options, true);
-?>
-        <?php } ?>
       </div>
       <?php } ?>
+
+      <?php if ($attributes) foreach ($attributes as $group) { ?>
+      <div>
+        <div class="dropdown">
+          <div class="form-control" data-toggle="dropdown">
+            <?php echo $group['name']; ?> <span class="caret right"></span>
+          </div>
+          <ul class="dropdown-menu">
+            <?php foreach ($group['values'] as $value) { ?>
+            <li>
+              <label class="option"><?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"'); ?>
+                <span class="title"><?php echo $value['value']; ?></span>
+              </label>
+            </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+      <?php } ?>
+
+      <div>
+        <div class="dropdown">
+          <div class="form-control" data-toggle="dropdown">
+            <?php echo language::translate('title_sort_by', 'Sort By'); ?> <span class="caret right"></span>
+          </div>
+          <ul class="dropdown-menu">
+            <?php foreach ($sort_alternatives as $key => $title) { ?>
+            <li>
+              <label class="option">
+                <?php echo functions::form_draw_radio_button('sort', $key, true); ?>
+                <span class="title"><?php echo $title; ?></span>
+              </label>
+            </li>
+            <?php } ?>
+          </ul>
+        </div>
+      </div>
+
     </div>
-    <?php } ?>
+
+    <div class="tokens"></div>
 
   <?php echo functions::form_draw_form_end(); ?>
 </section>
 
 <script>
-  $('form[name="filter_form"]').change(function(){
-    var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize() + '&sort=<?php echo isset($_GET['sort']) ? $_GET['sort'] : ''; ?>');
+  $('#box-filter form[name="filter_form"] :input').on('input', function(){
+    $('#box-filter .tokens').html('');
+
+    $.each($('#box-filter input[data-token-title][type="search"]'), function(i,el) {
+      if (!$(this).val()) return;
+      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).val() +'<a href="#" class="remove">×</a></span>');
+    });
+
+    $.each($('#box-filter input[data-token-title][type="checkbox"]:checked, #box-filter input[data-token-title][type="radio"]:checked'), function(i,el) {
+      if (!$(this).val()) return;
+      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">×</a></span>');
+    });
+  });
+
+  $('#box-filter form[name="filter_form"] input[name="product_name"]').trigger('input');
+
+  var xhr_filter = null;
+  $('#box-filter form[name="filter_form"]').on('input', function(){
+    if (xhr_filter) xhr_filter.abort();
+    var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
     history.replaceState(null, null, url);
-    $('#content').load(url.href + ' #content');
+    $('section.listing.products').hide();
+    xhr_filter = $.ajax({
+      type: 'get',
+      url: url.href,
+      dataType: 'html',
+      success: function(response){
+        var html = $('section.listing.products', response)[0].outerHTML;
+        $('section.listing.products').replaceWith(html).fadeIn('fast');
+      }
+    });
+  });
+
+  $('#box-filter form[name="filter_form"] .tokens').on('click', '.remove', function(e){
+    e.preventDefault();
+    var token = $(this).closest('.token');
+    switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
+      case 'radio':
+      case 'checkbox':
+        $(':input[name="'+ $(token).data('name') +'"][value="'+ $(token).data('value') +'"]').prop('checked', false).trigger('input');
+        break;
+      case 'text':
+      case 'search':
+        $(':input[name="'+ $(token).data('name') +'"]').val('').trigger('input');
+        break;
+    }
   });
 </script>
