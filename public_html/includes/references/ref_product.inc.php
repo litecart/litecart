@@ -188,6 +188,12 @@
 
           break;
 
+        case 'final_price':
+
+          $this->_data['final_price'] = (isset($this->campaign['price']) && $this->campaign['price'] > 0) ? $this->campaign['price'] : $this->price;
+
+          break;
+
         case 'images':
 
           $this->_data['images'] = [];
@@ -498,7 +504,7 @@
 
         case 'tax':
 
-          $this->_data['tax'] = tax::get_tax(!empty($this->campaign) ? $this->campaign['price'] : $this->price, $this->tax_class_id);
+          $this->_data['tax'] = tax::get_tax($this->final_price, $this->tax_class_id);
 
           break;
 

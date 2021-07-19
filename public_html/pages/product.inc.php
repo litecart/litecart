@@ -95,7 +95,7 @@
     'offers' => [
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
-      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? (float)currency::format_raw(tax::get_price($product->campaign['price'], $product->tax_class_id)) : (float)currency::format_raw(tax::get_price($product->price, $product->tax_class_id)),
+      'price' => (float)currency::format_raw(tax::get_price($product->final_price, $product->tax_class_id)),
       'priceValidUntil' => (!empty($product->campaign) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
@@ -228,8 +228,8 @@
       [
         'quantity' => 1,
         'product_id' => $product->id,
-        'price' => !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price,
-        'tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
+        'price' => $product->final_price,
+        'tax' => tax::get_tax($product->final_price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
         'weight' => $product->weight,
         'weight_class' => $product->weight_class,
