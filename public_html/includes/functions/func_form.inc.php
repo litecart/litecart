@@ -151,7 +151,7 @@
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" step="any" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
          . '  <strong class="input-group-addon" style="opacity: 0.75;">'. htmlspecialchars($currency_code) .'</strong>' . PHP_EOL
          . '</div>';
   }
