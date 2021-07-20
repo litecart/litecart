@@ -67,7 +67,8 @@
         "Host: {$_SERVER['HTTP_HOST']}" . PHP_EOL .
         "Client: {$_SERVER['REMOTE_ADDR']} (". gethostbyaddr($_SERVER['REMOTE_ADDR']) .")" . PHP_EOL .
         "User Agent: {$_SERVER['HTTP_USER_AGENT']}" . PHP_EOL .
-        (!empty($_SERVER['HTTP_REFERER']) ? "Referer: {$_SERVER['HTTP_REFERER']}" . PHP_EOL : '')
+        (!empty($_SERVER['HTTP_REFERER']) ? "Referer: {$_SERVER['HTTP_REFERER']}" . PHP_EOL : '') .
+        "Platform: ". PLATFORM_NAME ."/". PLATFORM_VERSION . PHP_EOL
       );
     }
 
