@@ -148,11 +148,6 @@
           case 'shipping_option_name':
             $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field)] = $value;
             break;
-
-          case 'selected_shipping':
-          case 'selected_payment':
-            $this->data[$field] = $this->$field->selected = json_decode($value, true);
-            break;
         }
       }
 
@@ -275,8 +270,6 @@
           shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
           shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
           shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
-          selected_shipping = '". database::input(json_encode($this->shipping->selected, JSON_UNESCAPED_SLASHES)) ."',
-          selected_payment = '". database::input(json_encode($this->payment->selected, JSON_UNESCAPED_SLASHES)) ."',
           shipping_option_id = '". database::input($this->shipping->selected['id']) ."',
           shipping_option_name = '". database::input($this->shipping->selected['name']) ."',
           shipping_tracking_id = '". database::input($this->data['shipping_tracking_id']) ."',

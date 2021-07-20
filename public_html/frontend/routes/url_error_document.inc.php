@@ -3,8 +3,8 @@
   class url_error_document {
 
     function routes() {
-      return array(
-        array(
+      return [
+        [
           'endpoint' => 'frontend',
           'pattern' => '#^error_document$#',
           'page' => 'error_document',

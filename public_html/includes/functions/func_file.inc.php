@@ -76,7 +76,6 @@
     return implode('/', $absolutes);
   }
 
-
   function file_permissions($file) {
     return '-'.strtr(substr(decoct(fileperms($file)), -3), [
       '0'	=> '---', // No Permission

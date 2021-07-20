@@ -1025,29 +1025,28 @@ END;
           . '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
           . '    <ul class="categories list-unstyled">' . PHP_EOL;
 
-      if (empty($parent_id)) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
+    if (empty($parent_id)) $options[] = array(functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"') . ' ['.language::translate('title_root', 'Root').']', '0');
 
-      $categories_query = database::query(
-        "select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
-        left join ". DB_TABLE_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
-        where c.id in ('". implode("', '", database::input($input)) ."');"
-      );
+    $categories_query = database::query(
+      "select c.id, ci.name from ". DB_TABLE_PREFIX ."categories c
+      left join ". DB_TABLE_PREFIX ."categories_info ci on (c.id = ci.category_id and ci.language_code = '". database::input(language::$selected['code']) ."')
+      where c.id in ('". implode("', '", database::input($input)) ."');"
+    );
 
-      while ($category = database::fetch($categories_query)) {
+    while ($category = database::fetch($categories_query)) {
 
-        $path = [];
-        if (!empty(reference::category($category['id'])->path)) {
-          foreach (reference::category($category['id'])->path as $ancestor) {
-            $path[] = $ancestor->name;
-          }
+      $path = [];
+      if (!empty(reference::category($category['id'])->path)) {
+        foreach (reference::category($category['id'])->path as $ancestor) {
+          $path[] = $ancestor->name;
         }
-
-        $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
-               . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . PHP_EOL
-               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
-               . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
-               .'</li>';
       }
+
+      $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
+             . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . PHP_EOL
+             . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
+             . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
+             .'</li>';
     }
 
     $html .= '    </ul>' . PHP_EOL
