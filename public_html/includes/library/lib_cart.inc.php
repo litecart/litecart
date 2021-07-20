@@ -202,6 +202,18 @@
           throw new Exception(language::translate('error_invalid_item_quantity', 'Invalid item quantity'));
         }
 
+        if ($product->quantity_min > 0 && $quantity < $product->quantity_min) {
+          throw new Exception(strtr(language::translate('error_must_purchase_min_items', 'You must purchase a minimum of %num for this item'), ['%num' => $product->quantity_min]));
+        }
+
+        if ($product->quantity_max > 0 && $quantity > $product->quantity_max) {
+          throw new Exception(strtr(language::translate('error_cannot_purchase_more_than_max_items', 'You cannot purchase more than %num of this item'), ['%num' => $product->quantity_max]));
+        }
+
+        if ($product->quantity_step > 0 && ($quantity % $product->quantity_step) != 0) {
+          throw new Exception(strtr(language::translate('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => $product->quantity_max]));
+        }
+
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
         if (($product->quantity - $quantity - (isset(self::$items[$item_key]) ? self::$items[$item_key]['quantity'] : 0)) < 0 && empty($product->sold_out_status['orderable'])) {
           throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round((float)$product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
