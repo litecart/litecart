@@ -74,9 +74,6 @@ ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_products`
 ADD COLUMN `autofill_technical_data` TINYINT(1) NOT NULL DEFAULT '0' AFTER `image`,
-ADD COLUMN `quantity_min` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity`,
-ADD COLUMN `quantity_max` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity_min`,
-ADD COLUMN `quantity_step` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity_max`,
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL DEFAULT '0' AFTER `status`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
