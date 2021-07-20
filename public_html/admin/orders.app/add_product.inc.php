@@ -321,15 +321,15 @@
       sku: $(form).find(':input[name="sku"]').val(),
       gtin: $(form).find(':input[name="gtin"]').val(),
       taric: $(form).find(':input[name="taric"]').val(),
-      weight: parseFloat($(form).find(':input[name="weight"]').val()),
+      weight: parseFloat($(form).find(':input[name="weight"]').val() || 0),
       weight_class: $(form).find(':input[name="weight_class"]').val(),
-      dim_x: parseFloat($(form).find(':input[name="dim_x"]').val()),
-      dim_y: parseFloat($(form).find(':input[name="dim_y"]').val()),
-      dim_z: parseFloat($(form).find(':input[name="dim_z"]').val()),
+      dim_x: parseFloat($(form).find(':input[name="dim_x"]').val() || 0),
+      dim_y: parseFloat($(form).find(':input[name="dim_y"]').val() || 0),
+      dim_z: parseFloat($(form).find(':input[name="dim_z"]').val() || 0),
       dim_class: $(form).find(':input[name="dim_class"]').val(),
-      quantity: parseFloat($(form).find(':input[name="quantity"]').val()),
-      price: parseFloat($(form).find(':input[name="price"]').val()),
-      tax: parseFloat($(form).find(':input[name="tax"]').val())
+      quantity: parseFloat($(form).find(':input[name="quantity"]').val() || 0),
+      price: parseFloat($(form).find(':input[name="price"]').val() || 0),
+      tax: parseFloat($(form).find(':input[name="tax"]').val() || 0)
     };
 
     var selected_option_combinations = [];
@@ -337,8 +337,8 @@
     $(form).find('.options input[type="checkbox"]:checked').each(function(){
       if ($(this).val()) {
         if (!item.options[$(this).data('group')]) item.options[$(this).data('group')] = [];
-        item.price += parseFloat($(this).data('price-adjust'));
-        item.tax += parseFloat($(this).data('tax-adjust'));
+        item.price += parseFloat($(this).data('price-adjust') || 0);
+        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).data('group')].push($(this).val());
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
@@ -351,8 +351,8 @@
 
     $(form).find('.options input[type="radio"]:checked').each(function(){
       if ($(this).val()) {
-        item.price += parseFloat($(this).data('price-adjust'));
-        item.tax += parseFloat($(this).data('tax-adjust'));
+        item.price += parseFloat($(this).data('price-adjust') || 0);
+        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).data('group')] = $(this).val();
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
@@ -365,8 +365,8 @@
 
     $(form).find('.options select :selected').each(function(){
       if ($(this).val()) {
-        item.price += parseFloat($(this).data('price-adjust'));
-        item.tax += parseFloat($(this).data('tax-adjust'));
+        item.price += parseFloat($(this).data('price-adjust') || 0);
+        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).parent().data('group')] = $(this).val();
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
@@ -379,8 +379,8 @@
 
     $(form).find('.options input[type!="radio"][type!="checkbox"]').each(function(){
       if ($(this).val()) {
-        item.price += parseFloat($(this).data('price-adjust'));
-        item.tax += parseFloat($(this).data('tax-adjust'));
+        item.price += parseFloat($(this).data('price-adjust') || 0);
+        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).data('group')] = $(this).val();
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
@@ -410,13 +410,13 @@
         item.sku = stock_option.sku;
         item.gtin = stock_option.gtin;
         if (stock_option.weight > 0) {
-          item.weight = parseFloat(stock_option.weight);
+          item.weight = parseFloat(stock_option.weight || 0);
           item.weight_class = stock_option.weight_class;
         }
         if (stock_option.dim_x > 0) {
-          item.dim_x = parseFloat(stock_option.dim_x);
-          item.dim_y = parseFloat(stock_option.dim_y);
-          item.dim_z = parseFloat(stock_option.dim_z);
+          item.dim_x = parseFloat(stock_option.dim_x || 0);
+          item.dim_y = parseFloat(stock_option.dim_y || 0);
+          item.dim_z = parseFloat(stock_option.dim_z || 0);
           item.dim_class = stock_option.dim_class;
         }
       }
