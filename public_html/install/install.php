@@ -2,7 +2,7 @@
 
   if (php_sapi_name() == 'cli') {
 
-    if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
+    if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
       echo "\nLiteCart® 3.0.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
@@ -33,9 +33,9 @@
     $_REQUEST = getopt(null, $options);
     $_REQUEST['install'] = true;
 
-  } else {
-    require __DIR__ . '/includes/header.inc.php';
   }
+
+  require __DIR__ . '/includes/header.inc.php';
 
   if (empty($_REQUEST['install'])) {
     header('Location: index.php');

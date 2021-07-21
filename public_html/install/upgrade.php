@@ -3,11 +3,11 @@
 
   if (php_sapi_name() == 'cli') {
 
-    if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
+    if (($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
       echo "\nLiteCart® 3.0.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
-      . "Usage: php install.php [options]\n\n"
+      . "Usage: php upgrade.php [options]\n\n"
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
       . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n";
@@ -21,10 +21,10 @@
     $_REQUEST = getopt(null, $options);
     $_REQUEST['upgrade'] = true;
 
-  } else {
-    require_once __DIR__ . '/includes/header.inc.php';
-    require_once __DIR__ . '/includes/functions.inc.php';
   }
+
+  require_once __DIR__ . '/includes/header.inc.php';
+  require_once __DIR__ . '/includes/functions.inc.php';
 
   if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
@@ -104,7 +104,7 @@
 
       echo '<h1>Upgrade</h1>' . PHP_EOL . PHP_EOL;
 
-      ### PHP > Check Version #######################################
+      ### PHP > Check Version ################################################
 
       echo '<p>Checking PHP version... ';
 
@@ -128,7 +128,7 @@
         throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
       }
 
-      #############################################
+      ########################################################################
 
       foreach ($supported_versions as $version) {
 
