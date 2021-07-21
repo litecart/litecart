@@ -636,7 +636,7 @@
         }
       }
 
-    // If stock quantity adjustent is set
+    // If stock quantity adjustment is set
       if (!empty($this->data['options_stock'])) {
 
         foreach (array_keys($this->data['options_stock']) as $key) {
