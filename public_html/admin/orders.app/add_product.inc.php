@@ -337,8 +337,6 @@
     $(form).find('.options input[type="checkbox"]:checked').each(function(){
       if ($(this).val()) {
         if (!item.options[$(this).data('group')]) item.options[$(this).data('group')] = [];
-        item.price += parseFloat($(this).data('price-adjust') || 0);
-        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).data('group')].push($(this).val());
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
@@ -351,8 +349,6 @@
 
     $(form).find('.options input[type="radio"]:checked').each(function(){
       if ($(this).val()) {
-        item.price += parseFloat($(this).data('price-adjust') || 0);
-        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).data('group')] = $(this).val();
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
@@ -365,8 +361,6 @@
 
     $(form).find('.options select :selected').each(function(){
       if ($(this).val()) {
-        item.price += parseFloat($(this).data('price-adjust') || 0);
-        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).parent().data('group')] = $(this).val();
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
@@ -379,8 +373,6 @@
 
     $(form).find('.options input[type!="radio"][type!="checkbox"]').each(function(){
       if ($(this).val()) {
-        item.price += parseFloat($(this).data('price-adjust') || 0);
-        item.tax += parseFloat($(this).data('tax-adjust') || 0);
         item.options[$(this).data('group')] = $(this).val();
         if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
       } else {
