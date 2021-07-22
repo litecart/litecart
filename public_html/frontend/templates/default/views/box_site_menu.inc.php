@@ -89,20 +89,6 @@
         </li>
         <?php } ?>
 
-        <li class="cart dropdown">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-shopping-basket fa-lg'); ?> <span class="hidden-sm hidden-md hidden-lg hidden-xl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span> <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <?php if (!empty(cart::$items)) { ?>
-            <?php foreach (cart::$items as $item) { ?>
-            <li><a href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['image']); ?>" alt="<?php echo $item['name']; ?>" /> <?php echo $item['name']; ?></a></li>
-            <?php } ?>
-            <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
-            <?php } else { ?>
-            <li><span>Empty</span></li>
-            <?php } ?>
-          </ul>
-        </li>
-
         <?php if (settings::get('accounts_enabled')) { ?>
         <li class="account dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span> <b class="caret"></b></a>
@@ -144,6 +130,20 @@
           </ul>
         </li>
         <?php } ?>
+
+        <li class="cart dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-shopping-basket fa-lg'); ?> <span class="hidden-sm hidden-md hidden-lg hidden-xl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <?php if (!empty(cart::$items)) { ?>
+            <?php foreach (cart::$items as $item) { ?>
+            <li><a href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['image']); ?>" alt="<?php echo $item['name']; ?>" /> <?php echo $item['name']; ?></a></li>
+            <?php } ?>
+            <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
+            <?php } else { ?>
+            <li><span>Empty</span></li>
+            <?php } ?>
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>

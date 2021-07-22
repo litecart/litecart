@@ -130,8 +130,6 @@
 
 <script>
   $('input[name="dark_mode"]').click(function(){
-    var now = new Date();
-    var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
     if ($(this).val() == 1) {
       document.cookie = 'dark_mode=1;path=/;expires=<?php echo date('r', strtotime('+ 3 months')); ?>';
       $('body').addClass('dark-mode');

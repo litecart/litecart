@@ -152,7 +152,7 @@
     });
   }
 
-  var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
+  var timerCart = setInterval("updateCart()", 60e3); // Keeps session alive
 
 /*
  * jQuery Animate From To plugin 1.0

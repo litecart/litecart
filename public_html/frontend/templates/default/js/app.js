@@ -231,7 +231,7 @@
       });
     }
 
-    var timerCart = setInterval('updateCart()', 60000); // Keeps session alive
+    var timerCart = setInterval('updateCart()', 60e3); // Keeps session alive
   }
 */
 
