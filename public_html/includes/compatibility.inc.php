@@ -237,6 +237,7 @@
 
 // Emulate some $_SERVER variables
   if (php_sapi_name() === 'cli') {
+    $_SERVER['DOCUMENT_ROOT'] = rtrim(FS_DIR_APP, '/');
     $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
     $_SERVER['SERVER_NAME'] = 'localhost';
     $_SERVER['SERVER_PORT'] = '80';
