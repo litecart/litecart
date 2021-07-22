@@ -99,7 +99,12 @@
 
   if (!empty($_REQUEST['upgrade'])) {
 
-    ob_start();
+    ob_start(function($buffer) {
+      if (php_sapi_name() == 'cli') {
+        $buffer = strip_tags($buffer);
+      }
+      return $buffer;
+    });
 
     try {
 
@@ -352,14 +357,9 @@
       echo $e->getMessage();
     }
 
-    $buffer = ob_get_clean();
+    echo ob_get_clean();
 
-    if (php_sapi_name() == 'cli') {
-      echo strip_tags($buffer);
-      exit;
-    }
-
-    echo $buffer;
+    if (php_sapi_name() == 'cli') exit;
 
     require('includes/footer.inc.php');
     exit;

@@ -42,7 +42,13 @@
     exit;
   }
 
-  ob_start();
+  ob_start(function($buffer) {
+    if (php_sapi_name() == 'cli') {
+      $buffer = strip_tags($buffer);
+      exit;
+    }
+    return $buffer;
+  });
 
   try {
 
@@ -625,18 +631,13 @@
     echo PHP_EOL . '[ABORTED] ' . $e->getMessage() . PHP_EOL;
   }
 
-  $buffer = ob_get_clean();
-
-  if (php_sapi_name() == 'cli') {
-    echo strip_tags($buffer);
-    exit;
-  }
-
   if (!empty($_REQUEST['redirect'])) {
     header('Location: '. $_REQUEST['redirect']);
     exit;
   }
 
-  echo $buffer;
+  echo ob_get_clean();
+
+  if (php_sapi_name() == 'cli') exit;
 
   require __DIR__ . '/includes/footer.inc.php';
