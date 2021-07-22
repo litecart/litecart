@@ -10,12 +10,13 @@
       . "Usage: php upgrade.php [options]\n\n"
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
-      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n";
+      . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n"
+      . "  --backup             Backup the database before running upgrade (Omit for no backup)\n";
       exit;
     }
 
     $options = [
-      'from_version::', 'development_type::'
+      'from_version::', 'development_type::', 'backup::'
     ];
 
     $_REQUEST = getopt(null, $options);
@@ -115,7 +116,95 @@
       } else {
         echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
-      ### App > Check Version #######################################
+
+      ### Backup > Database ##################################################
+
+      if (isset($_REQUEST['backup']) && !preg_match('#^(0|false|no|off)$#i', $_REQUEST['backup'])) {
+
+        echo '<p>Backing up the database... ';
+
+        if (!file_exists(FS_DIR_STORAGE . 'backups/')) {
+          if (!mkdir(FS_DIR_STORAGE . 'backups/', 0777)) {
+            throw new Exception('Could not create folder for backups');
+          }
+        }
+
+        $backup_file = FS_DIR_STORAGE . 'backups/' . PLATFORM_NAME .'-'. PLATFORM_VERSION .'-'. strftime('%Y%m%d-%H%M%S') . '.sql';
+
+        if (!$backup_handle = fopen($backup_file, 'w')) {
+          throw new Exception("Cannot open backup file for writing ($backup_file)");
+          exit;
+        }
+
+        $separator = '-- --------------------------------------------------------';
+
+        $tables_query = database::query('SHOW TABLES');
+        while ($table = database::fetch($tables_query)) {
+          $table = array_shift($table);
+
+        // Drop Table
+          $output = (!empty($use_initial_separator) ? $separator . PHP_EOL : "")
+                  . "DROP TABLE IF EXISTS `" . $table . "`;" . PHP_EOL;
+          fwrite($backup_handle, $output);
+          $use_initial_separator = true;
+
+        // Create Table
+          $query = database::query("SHOW CREATE TABLE `" . $table . "`;");
+          while ($row = database::fetch($query)) {
+            $output = $separator . PHP_EOL
+                    . $row['Create Table'] . ';' . PHP_EOL;
+            fwrite($backup_handle, $output);
+          }
+
+          if (empty($ignore_tables) || !in_array($table, explode(',', $ignore_tables))) {
+
+          // Insert Data
+            $columns = [];
+            $columns_query = database::query("SHOW COLUMNS FROM `" . $table ."`");
+            while ($column = database::fetch($columns_query)) {
+              $columns[] = $column['Field'];
+            }
+
+            $rows_query = database::query("SELECT `" . implode('`, `', $columns) . "` FROM `" . $table ."`");
+
+            if (database::num_rows($rows_query)) {
+
+              $output = $separator . PHP_EOL
+                      . 'INSERT INTO `' . $table . '` (`' . implode('`, `', $columns) . '`) VALUES ' . PHP_EOL;
+
+              while ($rows = database::fetch($rows_query)) {
+
+                $output .= '(';
+
+                foreach($columns as $column) {
+                  if (!isset($rows[$column])) {
+                    $output .= 'NULL, ';
+                  } elseif (!empty($rows[$column])) {
+                    $row = strtr($rows[$column], ["'" => "\\'", '\\'=> '\\\\', "\r" => "\\r", "\n" => "\\n"]);
+                    $row = preg_replace('#'. preg_quote(PHP_EOL, '#') ."\##", PHP_EOL . '#', $row);
+
+                    $output .= "'$row', ";
+                  } else {
+                    $output .= "'', ";
+                  }
+                }
+
+                $output = preg_replace('#, $#', '), ', $output) . PHP_EOL;
+              }
+
+              $output = preg_replace('#\),\s+$#', ');', $output) . PHP_EOL;
+
+              fwrite($backup_handle, $output);
+            }
+          }
+        }
+
+        fclose($backup_handle);
+
+        echo '<span class="ok">[OK]</span> '. $backup_file .'</p>' . PHP_EOL . PHP_EOL;
+      }
+
+      ### App > Check Version ################################################
 
       echo '<p>Checking application database version... ';
 
@@ -320,6 +409,12 @@ input[name="development_type"]:checked + div {
 
 <form name="upgrade_form" method="post">
   <h1>Upgrade</h1>
+
+  <h3>Backup</h3>
+
+  <div class="form-group">
+    <label><input class="form-check" type="checkbox" name="backup" value="true" checked /> Backup my database before performing the upgrade.</label>
+  </div>
 
   <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
   <div class="form-group">
