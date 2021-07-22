@@ -182,7 +182,6 @@
           $cache_file = FS_DIR_STORAGE .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
           if (!file_exists($cache_file) || filemtime($cache_file) < strtotime('-'.$max_age .' seconds')) return;
-          if (filemtime($cache_file) < strtotime(settings::get('cache_system_breakpoint'))) return;
 
           $data = @json_decode(file_get_contents($cache_file), true);
 
@@ -209,7 +208,6 @@
         case 'session':
 
           if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-            if (self::$_data[$token['id']]['mtime'] < strtotime(settings::get('cache_system_breakpoint'))) return;
             return self::$_data[$token['id']]['data'];
           }
 
@@ -354,12 +352,14 @@
         }
       }
 
-    // Set breakpoint (for all session cache)
-      database::query(
-        "update ". DB_TABLE_PREFIX ."settings
-        set value = '". date('Y-m-d H:i:s') ."'
-        where `key` = 'cache_system_breakpoint'
-        limit 1;"
-      );
+      if (!empty($keyword)) {
+        foreach (array_keys(self::$_data) as $token_id) {
+          if (strpos($keyqird, $token_id) !== false) {
+            unset(self::$_data[$token_id]);
+          }
+        }
+      } else {
+        self::$_data = [];
+      }
     }
   }

@@ -387,8 +387,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, NOW(), NOW());
 ('', 'global', 'Template', '', 'template', 'default', 'template()', 1, 0, NOW(), NOW()),
 ('', 'global', 'Template Settings', '', 'template_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, 0, NOW(), NOW()),
-('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW()),
-('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'text()', 0, 0, NOW(), NOW());
+('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
 (1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());

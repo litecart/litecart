@@ -583,19 +583,6 @@
       ];
     }
 
-    ### Set cache breakpoint ######################################
-
-    echo '<p>Set cache breakpoint...';
-
-    database::query(
-      "update ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_settings`') ."
-      set value = '". date('Y-m-d H:i:s') ."'
-      where `key` = 'cache_system_breakpoint'
-      limit 1;"
-    );
-
-    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-
     ### Create files ######################################
 
     echo '<p>Create file container for error logging...';

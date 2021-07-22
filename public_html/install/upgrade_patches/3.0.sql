@@ -104,7 +104,7 @@ UPDATE `lc_settings` SET `key` = 'template', title = 'Template' WHERE `key` = 's
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'site_template_catalog_settings';
 -- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts');
+DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint');
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
 CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL DEFAULT '' AFTER `type`,
