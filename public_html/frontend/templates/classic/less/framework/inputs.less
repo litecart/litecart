@@ -11,7 +11,7 @@ input[type="number"] {
   text-align: right;
 }
 input[type="number"]::-webkit-inner-spin-button {
-  margin-left: var(--input-padding-x);
+  margin-inline-start: var(--input-padding-x);
 }
 
 input[type="checkbox"] {
@@ -171,7 +171,7 @@ select.form-input {
   .input-group-icon {
     flex: 1 0 auto;
     padding: var(--input-padding-y) var(--input-padding-x);
-    margin-right: -12px;
+    margin-inline-end: -12px;
     align-self: center;
   }
   .form-input:first-child,
@@ -180,7 +180,7 @@ select.form-input {
   }
   .form-input:last-child,
   .input-group-text:last-child {
-    margin-right: -1px;
+    margin-inline-end: -1px;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
   + .input-group {

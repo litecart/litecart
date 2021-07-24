@@ -69,7 +69,7 @@
             '  <td class="name">' + item.name + '</td>' +
             '  <td class="gtin">' + item.gtin + '</td>' +
             '  <td class="mpn">' + item.mpn + '</td>' +
-            '  <td class="quantity text-right">' + item.quantity + '</td>' +
+            '  <td class="quantity text-end">' + item.quantity + '</td>' +
             '  <td class="date-created">' + item.date_created + '</td>' +
             '</tr>'
           );

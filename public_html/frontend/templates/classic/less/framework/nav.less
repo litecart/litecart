@@ -56,7 +56,7 @@
     > li {
       flex: 1 0 auto;
       > a {
-        margin-right: 0;
+        margin-inline-end: 0;
         text-align: center;
         @media (min-width: @media-breakpoint-sm) {
           margin-bottom: 0;
@@ -71,7 +71,7 @@
     li {
       display: block;
       + li > a {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
   }
@@ -94,7 +94,7 @@
     background: #cdcdcd;
   }
   li + li > a {
-    margin-left: 2px;
+    margin-inline-start: 2px;
   }
 }
 
@@ -103,7 +103,7 @@
   border-bottom: 1px solid var(--default-border-color);
   > li {
     > a {
-      margin-right: 2px;
+      margin-inline-end: 2px;
       line-height: 1.42857143;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);

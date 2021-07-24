@@ -21,7 +21,7 @@ body {
   top: 50%;
   left: 50%;
   margin-top: -64px;
-  margin-left: -64px;
+  margin-inline-start: -64px;
 }
 
 #box-login-wrapper {

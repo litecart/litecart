@@ -56,7 +56,7 @@
 
   <div class="card-filter">
     <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
-    <ul class="list-inline pull-right">
+    <ul class="list-inline float-end">
       <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></li>
     </ul>
     <?php echo functions::form_draw_form_end(); ?>
@@ -87,8 +87,8 @@
           <td><a href="<?php echo document::link('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
           <td><?php echo $stock_item['mpn']; ?></td>
           <td><?php echo $stock_item['gtin']; ?></td>
-          <td class="text-right"><?php echo (float)$stock_item['ordered']; ?></td>
-          <td class="text-right"><?php echo (float)$stock_item['quantity']; ?></td>
+          <td class="text-end"><?php echo (float)$stock_item['ordered']; ?></td>
+          <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
           <td><a href="<?php echo document::href_ilink('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>

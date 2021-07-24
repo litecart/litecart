@@ -238,7 +238,7 @@
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th class="text-right"><?php echo language::translate('title_created', 'Created'); ?></th>
+          <th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
           <th>&nbsp;</th>
         </tr>
       </thead>
@@ -253,8 +253,8 @@
           <td><?php echo $product['id']; ?></td>
           <td><?php echo $product['sku']; ?></td>
           <td><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
-          <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
-          <td class="text-right"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

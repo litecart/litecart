@@ -95,8 +95,8 @@
           <tr>
             <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
             <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-            <th class="text-right" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
-            <th class="text-right" style="min-width: 150px;"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
+            <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
+            <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
             <th>&nbsp;</th>
           </tr>
         </thead>

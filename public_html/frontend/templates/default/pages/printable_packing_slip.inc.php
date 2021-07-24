@@ -17,7 +17,7 @@ h1 {
   border: 1px solid #000;
   border-radius: 5mm;
   padding: 4mm;
-  margin-left: -15px;
+  margin-inline-start: -15px;
   margin-bottom: 3mm;
 }
 .rounded-rectangle .value {
@@ -52,7 +52,7 @@ table.items tbody tr:nth-child(11) {
           <img class="logotype" src="<?php echo document::link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" />
         </div>
 
-        <div class="col-xs-6 text-right">
+        <div class="col-xs-6 text-end">
           <h1><?php echo language::translate('title_packing_slip', 'Packing Slip'); ?></h1>
           <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
           <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>

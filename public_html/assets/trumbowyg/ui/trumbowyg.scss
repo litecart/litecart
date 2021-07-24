@@ -222,7 +222,7 @@ $slow-transition-duration: 300ms !default;
 
         &.trumbowyg-textual-button {
             padding-left: 10px !important;
-            padding-right: 18px !important;
+            padding-inline-end: 18px !important;
 
             &::after {
                 top: 17px;
@@ -246,7 +246,7 @@ $slow-transition-duration: 300ms !default;
     padding: 5px 0;
     border-top: none;
     background: #FFF;
-    margin-left: -1px;
+    margin-inline-start: -1px;
     box-shadow: rgba(0, 0, 0, .1) 0 2px 3px;
     z-index: 12;
 
@@ -272,7 +272,7 @@ $slow-transition-duration: 300ms !default;
 
         svg {
             float: left;
-            margin-right: 14px;
+            margin-inline-end: 14px;
         }
     }
 }
@@ -555,7 +555,7 @@ body.trumbowyg-body-fullscreen {
             margin-bottom: 15px !important;
         }
         blockquote {
-            margin-left: 32px !important;
+            margin-inline-start: 32px !important;
             font-style: italic !important;
             color: #555;
         }

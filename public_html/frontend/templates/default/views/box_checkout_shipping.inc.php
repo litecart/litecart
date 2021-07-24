@@ -4,7 +4,7 @@
   <div class="options btn-group-vertical">
 
     <?php foreach ($options as $id => $option) { ?>
-    <label class="option text-left<?php echo (!empty($selected['id']) && $selected['id'] == $id) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
+    <label class="option text-start<?php echo (!empty($selected['id']) && $selected['id'] == $id) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
       <?php echo functions::form_draw_radio_button('shipping[option_id]', $id, !empty($selected['id']) ? $selected['id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-sm-4 thumbnail" style="margin: 0;">
@@ -26,7 +26,7 @@
       <?php if (empty($option['error']) && !empty($option['fields'])) { ?>
       <div class="content">
         <hr />
-        <div class="fields text-left"><?php echo $option['fields']; ?></div>
+        <div class="fields text-start"><?php echo $option['fields']; ?></div>
       </div>
       <?php } ?>
     </label>

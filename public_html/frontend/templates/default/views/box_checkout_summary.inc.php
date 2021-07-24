@@ -5,32 +5,32 @@
     <tbody>
       <?php foreach ($order['items'] as $item) { ?>
       <tr>
-        <td class="text-left"><?php echo $item['quantity']; ?></td>
-        <td class="text-left"><?php echo $item['name']; ?></td>
-        <td class="text-right"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td class="text-right"><?php echo currency::format((!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price']) * $item['quantity'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td class="text-start"><?php echo $item['quantity']; ?></td>
+        <td class="text-start"><?php echo $item['name']; ?></td>
+        <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td class="text-end"><?php echo currency::format((!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price']) * $item['quantity'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
 
       <?php foreach ($order['order_total'] as $row) { ?>
       <tr>
-        <td colspan="3" class="text-right"><strong><?php echo $row['title']; ?>:</strong></td>
-        <td class="text-right"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $row['value'] + $row['tax'] : $row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td colspan="3" class="text-end"><strong><?php echo $row['title']; ?>:</strong></td>
+        <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $row['value'] + $row['tax'] : $row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
 
       <?php if ($order['tax_total']) { ?>
       <tr>
-        <td colspan="3" class="text-right text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-        <td class="text-right text-muted"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td colspan="3" class="text-end text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+        <td class="text-end text-muted"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
     </tbody>
 
     <tfoot>
       <tr>
-        <td colspan="3" class="text-right"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
-        <td class="text-right" style="width: 25%;"><strong><?php echo currency::format_html($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
+        <td colspan="3" class="text-end"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
+        <td class="text-end" style="width: 25%;"><strong><?php echo currency::format_html($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
       </tr>
     </tfoot>
   </table>

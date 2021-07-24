@@ -60,7 +60,7 @@
           <td><?php echo $tax_class['id']; ?></td>
           <td><a href="<?php echo document::href_ilink('tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>"><?php echo $tax_class['name']; ?></a></td>
           <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-          <td class="text-right"><a href="<?php echo document::href_ilink('tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink('tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

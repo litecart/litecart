@@ -94,14 +94,14 @@
           <td><?php echo $currency['id']; ?></td>
           <td><?php echo $currency['code']; ?></td>
           <td><a href="<?php echo document::href_ilink('currencies/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
-          <td class="text-right"><?php echo $currency['value']; ?></td>
+          <td class="text-end"><?php echo $currency['value']; ?></td>
           <td class="text-center"><?php echo $currency['decimals']; ?></td>
           <td class="text-center"><?php echo $currency['prefix']; ?></td>
           <td class="text-center"><?php echo $currency['suffix']; ?></td>
           <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo ($currency['code'] == settings::get('site_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo $currency['priority']; ?></td>
-          <td class="text-right"><a href="<?php echo document::href_ilink('currencies/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink('currencies/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

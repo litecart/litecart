@@ -373,7 +373,7 @@ ul.breadcrumb li a {
   flex: 1 0 auto;
   border-radius: 0;
   font-size: inherit;
-  margin-left: -1px;
+  margin-inline-start: -1px;
 }
 .btn-group .btn:first-child {
   border-top-left-radius: var(--border-radius);
@@ -539,11 +539,11 @@ ul.breadcrumb li a {
 }
 .carousel-control .icon-prev {
   left: 50%;
-  margin-left: -10px;
+  margin-inline-start: -10px;
 }
 .carousel-control .icon-next {
   right: 50%;
-  margin-right: -10px;
+  margin-inline-end: -10px;
 }
 .carousel-control .icon-prev,
 .carousel-control .icon-next {
@@ -561,10 +561,10 @@ ul.breadcrumb li a {
     font-size: 30px;
   }
   .carousel-control .icon-prev {
-    margin-left: -10px;
+    margin-inline-start: -10px;
   }
   .carousel-control .icon-next {
-    margin-right: -10px;
+    margin-inline-end: -10px;
   }
 }
 .carousel-indicators {
@@ -574,7 +574,7 @@ ul.breadcrumb li a {
   z-index: 15;
   width: 60%;
   padding-left: 0;
-  margin-left: -30%;
+  margin-inline-start: -30%;
   text-align: center;
   list-style: none;
 }
@@ -712,7 +712,7 @@ ul.breadcrumb li a {
   visibility: hidden;
   top: 100%;
   left: 0;
-  float: left;
+  float: inline-start;
   min-width: 160px;
   margin: 0;
   padding: 0;
@@ -728,7 +728,7 @@ ul.breadcrumb li a {
   transition: 250ms;
   opacity: 0;
 }
-.dropdown .dropdown-menu.pull-right {
+.dropdown .dropdown-menu.float-end {
   right: 0;
   left: auto;
 }
@@ -798,7 +798,7 @@ ul.breadcrumb li a {
   top: 0;
   z-index: 990;
 }
-.pull-right > .dropdown-menu {
+.float-end > .dropdown-menu {
   right: 0;
   left: auto;
 }
@@ -851,11 +851,17 @@ tr.semi-transparent td {
   max-width: 1440px;
   margin: 0 auto;
 }
-.pull-left {
-  float: left;
+.container,
+.fourteen-forty {
+  min-width: 320px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
-.pull-right {
-  float: right;
+.float-start {
+  float: inline-start;
+}
+.float-end {
+  float: inline-end;
 }
 .grid,
 .row {
@@ -1153,7 +1159,7 @@ input[type="number"] {
   text-align: right;
 }
 input[type="number"]::-webkit-inner-spin-button {
-  margin-left: var(--input-padding-x);
+  margin-inline-start: var(--input-padding-x);
 }
 input[type="checkbox"] {
   -webkit-appearance: none;
@@ -1301,7 +1307,7 @@ select.form-input.multiple option {
 .input-group .input-group-icon {
   flex: 1 0 auto;
   padding: var(--input-padding-y) var(--input-padding-x);
-  margin-right: -12px;
+  margin-inline-end: -12px;
   align-self: center;
 }
 .input-group .form-input:first-child,
@@ -1310,7 +1316,7 @@ select.form-input.multiple option {
 }
 .input-group .form-input:last-child,
 .input-group .input-group-text:last-child {
-  margin-right: -1px;
+  margin-inline-end: -1px;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 .input-group + .input-group {
@@ -1340,8 +1346,8 @@ select.form-input.multiple option {
 }
 .thumbnail > img,
 .thumbnail a > img {
-  margin-right: auto;
-  margin-left: auto;
+  margin-inline-end: auto;
+  margin-inline-start: auto;
 }
 .img-thumbnail {
   padding: calc(var(--gutter-size)/4);
@@ -1363,7 +1369,7 @@ ul.list-unstyled li {
   list-style: none;
 }
 ul.list-unstyled ul {
-  margin-left: 18px;
+  margin-inline-start: 18px;
   padding: 0;
 }
 ul.list-inline {
@@ -1442,7 +1448,7 @@ ul.list-inline li {
   flex: 1 0 auto;
 }
 .nav.nav-justified > li > a {
-  margin-right: 0;
+  margin-inline-end: 0;
   text-align: center;
 }
 @media (min-width: 768px) {
@@ -1458,7 +1464,7 @@ ul.list-inline li {
   display: block;
 }
 .nav.nav-stacked li + li > a {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 .nav-pills {
   display: inline-flex;
@@ -1478,14 +1484,14 @@ ul.list-inline li {
   background: #cdcdcd;
 }
 .nav-pills li + li > a {
-  margin-left: 2px;
+  margin-inline-start: 2px;
 }
 .nav-tabs {
   background: #f3f3f3;
   border-bottom: 1px solid var(--default-border-color);
 }
 .nav-tabs > li > a {
-  margin-right: 2px;
+  margin-inline-end: 2px;
   line-height: 1.42857143;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: calc(var(--gutter-size)/2) var(--gutter-size);
@@ -1575,7 +1581,7 @@ ul.list-inline li {
     flex-direction: row;
   }
   .navbar .navbar-nav {
-    float: left;
+    float: inline-start;
   }
 }
 @media (max-width: 767px) {
@@ -1607,7 +1613,7 @@ ul.list-inline li {
 }
 @media (min-width: 768px) {
   .navbar-header {
-    float: left;
+    float: inline-start;
     width: calc(var(--sidebar-width) + var(--gutter-size)/4);
   }
 }
@@ -1645,7 +1651,7 @@ ul.list-inline li {
 }
 @media (min-width: 768px) {
   .navbar-right {
-    float: right !important;
+    float: inline-end !important;
   }
 }
 .navbar-form {
@@ -1691,7 +1697,7 @@ ul.list-inline li {
   padding: var(--input-padding-y) var(--input-padding-x);
 }
 .alert .close {
-  float: right;
+  float: inline-end;
   font-size: 1.5em;
   font-weight: bold;
   line-height: 1;
@@ -1747,11 +1753,11 @@ ul.list-inline li {
   color: var(--pagination-text-color);
   background: var(--pagination-background-color);
   border: 1px solid var(--default-border-color);
-  margin-left: -1px;
+  margin-inline-start: -1px;
 }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
-  margin-left: 0;
+  margin-inline-start: 0;
   border-top-left-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
 }
@@ -1906,45 +1912,45 @@ ul.list-inline li {
   border-top: 0;
 }
 /* Typography - Bootstrap Compatible */
-.text-left {
+.text-start {
   text-align: left !important;
 }
 .text-center {
   text-align: center !important;
 }
-.text-right {
+.text-end {
   text-align: right !important;
 }
 @media (min-width: 768px) {
-  .text-sm-left {
+  .text-sm-start {
     text-align: left !important ;
   }
   .text-sm-center {
     text-align: center !important ;
   }
-  .text-sm-right {
+  .text-sm-end {
     text-align: right !important ;
   }
 }
 @media (min-width: 992px) {
-  .text-md-left {
+  .text-md-start {
     text-align: left !important ;
   }
   .text-md-center {
     text-align: center !important ;
   }
-  .text-md-right {
+  .text-md-end {
     text-align: right !important ;
   }
 }
 @media (min-width: 1200px) {
-  .text-lg-left {
+  .text-lg-start {
     text-align: left !important ;
   }
   .text-lg-center {
     text-align: center !important ;
   }
-  .text-lg-right {
+  .text-lg-end {
     text-align: right !important ;
   }
 }

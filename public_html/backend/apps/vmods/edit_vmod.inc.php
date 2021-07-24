@@ -194,7 +194,7 @@ textarea {
             <?php foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
             <div class="operation">
 
-              <div class="pull-right">
+              <div class="float-end">
                 <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
                 <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
                 <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
@@ -339,7 +339,7 @@ textarea {
 <div id="new-operation-template" style="display: none;">
   <div class="operation">
 
-    <div class="pull-right">
+    <div class="float-end">
       <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
       <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
       <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>

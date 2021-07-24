@@ -143,7 +143,7 @@
           <tfoot>
             <tr>
               <td colspan="2"></td>
-              <td class="text-right"><strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?></td>
+              <td class="text-end"><strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?></td>
             </tr>
           </tfoot>
         </table>

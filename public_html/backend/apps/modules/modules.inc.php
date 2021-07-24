@@ -150,11 +150,11 @@
           <?php } else { ?>
           <td class="text-center"></td>
           <?php } ?>
-          <td class="text-right"><?php echo $module['version']; ?></td>
+          <td class="text-end"><?php echo $module['version']; ?></td>
           <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-center"><?php echo $module['priority']; ?></td>
-          <td class="text-right"><a href="<?php echo document::href_ilink('modules/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink('modules/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } else { ?>
         <tr class="semi-transparent">
@@ -162,11 +162,11 @@
           <td></td>
           <td><?php echo $module['name']; ?></td>
           <td class="text-center"></td>
-          <td class="text-right"><?php echo $module['version']; ?></td>
+          <td class="text-end"><?php echo $module['version']; ?></td>
           <td><?php echo (!empty($module['website'])) ? '<a href="'. document::link($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
           <td><?php echo $module['id']; ?></td>
           <td class="text-center">-</td>
-          <td class="text-right"><a href="<?php echo document::href_ilink('modules/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink('modules/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
         </tr>
         <?php } ?>
         <?php } ?>

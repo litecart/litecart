@@ -59,7 +59,7 @@
                 $('#search .results ul[data-group="'+ group.name +'"]').append(
                   '<li class="result">' +
                   '  <a class="list-group-item" href="'+ result.url +'" style="border-left: 3px solid '+ group.theme.color +';">' +
-                  '    <small class="id pull-right">#'+ result.id +'</small>' +
+                  '    <small class="id float-end">#'+ result.id +'</small>' +
                   '    <div class="title">'+ result.title +'</div>' +
                   '    <div class="description"><small>'+ result.description +'</small></div>' +
                   '  </a>' +

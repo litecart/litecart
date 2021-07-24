@@ -169,7 +169,7 @@
 
         <div class="form-group">
           <?php if (!empty($stock_item->data['file'])) { ?>
-          <small class="pull-right"><?php echo functions::form_draw_checkbox('delete', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></small>
+          <small class="float-end"><?php echo functions::form_draw_checkbox('delete', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></small>
           <?php } ?>
           <label><?php echo language::translate('title_digital_item', 'Digital Item'); ?></label>
           <?php echo functions::form_draw_file_field('file', true); ?>

@@ -20,7 +20,7 @@
   padding: .5em 1em;
   border-radius: 4px;
   cursor: default;
-  margin-right: .5em;
+  margin-inline-end: .5em;
 }
 #box-filter .token .remove {
   padding-left: .5em;
@@ -105,7 +105,7 @@
       </div>
 
       <div>
-        <div class="btn-group btn-group-inline pull-right" data-toggle="buttons">
+        <div class="btn-group btn-group-inline float-end" data-toggle="buttons">
           <label class="btn btn-default<?php echo ($_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo ($_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-large'); ?></label>
           <label class="btn btn-default<?php echo ($_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo ($_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-bars'); ?></label>
         </div>

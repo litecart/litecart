@@ -17,7 +17,7 @@ h1 {
   border: 1px solid #000;
   border-radius: 5mm;
   padding: 4mm;
-  margin-left: -15px;
+  margin-inline-start: -15px;
   margin-bottom: 3mm;
 }
 .billing-address .value {
@@ -52,7 +52,7 @@ table.items tbody tr:nth-child(11) {
           <img class="logotype" src="<?php echo document::link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" />
         </div>
 
-        <div class="col-xs-6 text-right">
+        <div class="col-xs-6 text-end">
           <h1><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
           <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
           <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>
@@ -109,9 +109,9 @@ table.items tbody tr:nth-child(11) {
             <th><?php echo language::translate('title_qty', 'Qty'); ?></th>
             <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
             <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
-            <th class="text-right"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-            <th class="text-right"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
-            <th class="text-right"><?php echo language::translate('title_sum', 'Sum'); ?></th>
+            <th class="text-end"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+            <th class="text-end"><?php echo language::translate('title_tax', 'Tax'); ?> </th>
+            <th class="text-end"><?php echo language::translate('title_sum', 'Sum'); ?></th>
           </tr>
         </thead>
         <tbody>
@@ -139,13 +139,13 @@ table.items tbody tr:nth-child(11) {
 ?>
             </td>
             <?php if (!empty($order['display_prices_including_tax'])) { ?>
-            <td class="text-right"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
-            <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
-            <td class="text-right"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
+            <td class="text-end"><?php echo currency::format($item['quantity'] * ($item['price'] + $item['tax']), false, $order['currency_code'], $order['currency_value']); ?></td>
             <?php } else { ?>
-            <td class="text-right"><?php echo currency::format($item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
-            <td class="text-right"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
-            <td class="text-right"><?php echo currency::format($item['quantity'] * $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo currency::format($item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>
+            <td class="text-end"><?php echo currency::format($item['quantity'] * $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
             <?php } ?>
           </tr>
           <?php } ?>
@@ -157,27 +157,27 @@ table.items tbody tr:nth-child(11) {
           <?php foreach ($order['order_total'] as $ot_row) { ?>
           <?php if (!empty($order['display_prices_including_tax'])) { ?>
           <tr>
-            <td class="text-right"><?php echo $ot_row['title']; ?>:</td>
-            <td class="text-right"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo $ot_row['title']; ?>:</td>
+            <td class="text-end"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
           </tr>
           <?php } else { ?>
           <tr>
-            <td class="text-right"><?php echo $ot_row['title']; ?>:</td>
-            <td class="text-right"><?php echo currency::format($ot_row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo $ot_row['title']; ?>:</td>
+            <td class="text-end"><?php echo currency::format($ot_row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
           </tr>
           <?php } ?>
           <?php } ?>
 
           <?php if (!empty($order['tax_total']) && $order['tax_total'] != 0) { ?>
           <tr>
-            <td class="text-right"><?php echo !empty($order['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-            <td class="text-right"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo !empty($order['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
+            <td class="text-end"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
           </tr>
           <?php } ?>
 
           <tr>
-            <td class="text-right"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
-            <td class="text-right"><strong><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
+            <td class="text-end"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
+            <td class="text-end"><strong><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
           </tr>
         </tbody>
       </table>

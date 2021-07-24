@@ -61,7 +61,7 @@
     > li {
       flex: 1 0 auto;
       > a, > .nav-item {
-        margin-right: 0;
+        margin-inline-end: 0;
         text-align: center;
         @media (min-width: @media-breakpoint-sm) {
           margin-bottom: 0;
@@ -76,7 +76,7 @@
     li {
       display: block;
       + li > a, + li > .nav-item {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
   }
@@ -103,7 +103,7 @@
   }
 
   li + li > a, li + li > .nav-item {
-    margin-left: 2px;
+    margin-inline-start: 2px;
   }
 }
 
@@ -116,7 +116,7 @@
 
   > li {
     > a, > .nav-item {
-      margin-right: 2px;
+      margin-inline-end: 2px;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       padding: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)";
     }

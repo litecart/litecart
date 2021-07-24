@@ -159,7 +159,7 @@
   overflow: hidden;
 }
 #images .thumbnail {
-  margin-right: 15px;
+  margin-inline-end: 15px;
 }
 #images img {
   max-width: 50px;
@@ -309,7 +309,7 @@
                     <?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?>
                     <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
-                    <div class="thumbnail pull-left">
+                    <div class="thumbnail float-start">
                       <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
                     </div>
 
@@ -327,7 +327,7 @@
 
                 <div class="new-images">
                   <div class="image form-group">
-                    <div class="thumbnail pull-left">
+                    <div class="thumbnail float-start">
                       <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />
                     </div>
 
@@ -374,7 +374,7 @@
               </div>
 
               <div class="form-group">
-                <label class="pull-right"><?php echo functions::form_draw_checkbox('autofill_technical_data', '1', true); ?> <?php echo language::translate('text_autogenerate_from_attributes', 'Generate from attributes'); ?></label>
+                <label class="float-end"><?php echo functions::form_draw_checkbox('autofill_technical_data', '1', true); ?> <?php echo language::translate('text_autogenerate_from_attributes', 'Generate from attributes'); ?></label>
                 <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
                 <?php echo functions::form_draw_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
               </div>
@@ -420,7 +420,7 @@
                 <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
                 <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
                 <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
-                <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+                <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
               </tr>
               <?php } ?>
             </tbody>
@@ -575,8 +575,8 @@
                 <tr>
                   <th style="width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
                   <th><?php echo language::translate('title_item', 'Item'); ?></th>
-                  <th style="width: 100px;" class="text-right"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-                  <th style="width: 150px;" class="text-right"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
+                  <th style="width: 100px;" class="text-end"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+                  <th style="width: 150px;" class="text-end"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                   <th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
                   <th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
                   <th style="width: 175px;" class="text-center"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
@@ -605,10 +605,10 @@
                   <td class="grabable">
                     <span class="name"><?php echo $_POST['stock_items'][$key]['name']; ?></span>
                   </td>
-                  <td class="grabable text-right">
+                  <td class="grabable text-end">
                     <span class="weight"><?php echo (float)$_POST['stock_items'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_items'][$key]['weight_unit']; ?></span>
                   </td>
-                  <td class="grabable text-right">
+                  <td class="grabable text-end">
                     <span class="length"><?php echo (float)$_POST['stock_items'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_items'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_items'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_items'][$key]['length_unit']; ?></span>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('stock_items['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_items'][$key]) ? (float)$product->data['stock_items'][$key]['quantity'] : '0') .'"'); ?></td>
@@ -624,12 +624,12 @@
                       <?php echo functions::form_draw_decimal_field('stock_items['. $key .'][ordered]', true, 2, 'min="0"'); ?>
                     </div>
                   </td>
-                  <td class="text-right">
+                  <td class="text-end">
                     <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #39c;"'); ?></a>
                     <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #39c;"'); ?></a>
                     <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
                   </td>
-                  <td class="text-right">
+                  <td class="text-end">
                     <a class="edit" href="<?php echo document::href_ilink('', ['doc' => 'edit_stock_item', 'stock_item_id' => $_POST['stock_items'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
                   </td>
                 </tr>
@@ -721,7 +721,7 @@
   $('#images .add').click(function(e) {
     e.preventDefault();
     var output = '<div class="image form-group">'
-               + '  <div class="thumbnail pull-left">'
+               + '  <div class="thumbnail float-start">'
                + '    <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
                + '  </div>'
                + '  '
@@ -836,7 +836,7 @@
                + '  <td>new_group_name</td>'
                + '  <td>new_value_name</td>'
                + '  <td>new_custom_value</td>'
-               + '  <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>'
+               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>'
                + '</tr>';
 
     while ($('input[name="attributes[new_'+new_attribute_i+']"]').length) new_attribute_i++;
@@ -1135,10 +1135,10 @@
                  + '  <td>'
                  + '    <span class="name"></name>'
                  + '  </td>'
-                 + '  <td class="text-right">'
+                 + '  <td class="text-end">'
                  + '    <span class="weight"></span> <span class="weight_unit"></span>'
                  + '  </td>'
-                 + '  <td class="text-right">'
+                 + '  <td class="text-end">'
                  + '    <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>'
                  + '  </td>'
                  + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][quantity]', '0', 2, 'data-quantity="0"')); ?></td>'
@@ -1154,12 +1154,12 @@
                  + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][ordered]', '', 2, 'min="0"')); ?>'
                  + '    </div>'
                  + '  </td>'
-                 + '  <td class="text-right">'
+                 + '  <td class="text-end">'
                  + '    <a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #39c;"')); ?></a>'
                  + '    <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #39c;"')); ?></a>'
                  + '    <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a>'
                  + '  </td>'
-                 + '  <td class="text-right">'
+                 + '  <td class="text-end">'
                  + '    <a class="edit" href="<?php echo document::href_ilink('catalog/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>'
                  + '  </td>'
                  + '</tr>';

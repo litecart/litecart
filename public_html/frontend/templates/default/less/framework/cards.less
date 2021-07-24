@@ -12,8 +12,8 @@
   border-radius: 0.25rem;
 
   > hr {
-    margin-right: 0;
-    margin-left: 0;
+    margin-inline-end: 0;
+    margin-inline-start: 0;
   }
 
   > .list-group:first-child .list-group-item:first-child {
@@ -52,7 +52,7 @@
   }
 
   .card-link + .card-link {
-    margin-left: 1.25rem;
+    margin-inline-start: 1.25rem;
   }
 }
 
@@ -95,8 +95,8 @@
   .card-deck {
     -ms-flex-flow: row wrap;
     flex-flow: row wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+    margin-inline-end: -15px;
+    margin-inline-start: -15px;
     .card {
       display: -ms-flexbox;
       display: flex;
@@ -104,9 +104,9 @@
       flex: 1 0 0%;
       -ms-flex-direction: column;
       flex-direction: column;
-      margin-right: 15px;
+      margin-inline-end: 15px;
       margin-bottom: 0;
-      margin-left: 15px;
+      margin-inline-start: 15px;
     }
   }
 }
@@ -131,7 +131,7 @@
       margin-bottom: 0;
     }
     > .card + .card {
-      margin-left: 0;
+      margin-inline-start: 0;
       border-left: 0;
     }
     > .card:first-child {

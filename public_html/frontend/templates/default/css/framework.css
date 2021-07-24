@@ -19,7 +19,7 @@ legend {
   padding: 0;
 }
 html {
-  line-height: 1.15;
+  line-height: 1.2;
   -webkit-text-size-adjust: 100%;
 }
 body {
@@ -237,7 +237,7 @@ hr {
 }
 /* Boxes */
 .box {
-  margin-bottom: calc(var(--gutter-size) * 2);
+  margin-bottom: calc(var(--gutter-size) *2);
 }
 .box.white {
   padding: var(--gutter-size);
@@ -391,7 +391,7 @@ ul.breadcrumb li a {
 }
 .btn-group .btn {
   flex: 1 0 auto;
-  margin-left: -1px;
+  margin-inline-start: -1px;
 }
 .btn-group:not(.btn-group-vertical) > .btn:not(:first-child) {
   border-left: 1px solid var(--default-border-color);
@@ -563,11 +563,11 @@ ul.breadcrumb li a {
 }
 .carousel-control .icon-prev {
   left: 50%;
-  margin-left: -10px;
+  margin-inline-start: -10px;
 }
 .carousel-control .icon-next {
   right: 50%;
-  margin-right: -10px;
+  margin-inline-end: -10px;
 }
 .carousel-control .icon-prev,
 .carousel-control .icon-next {
@@ -585,10 +585,10 @@ ul.breadcrumb li a {
     font-size: 30px;
   }
   .carousel-control .icon-prev {
-    margin-left: -10px;
+    margin-inline-start: -10px;
   }
   .carousel-control .icon-next {
-    margin-right: -10px;
+    margin-inline-end: -10px;
   }
 }
 .carousel-indicators {
@@ -598,7 +598,7 @@ ul.breadcrumb li a {
   z-index: 15;
   width: 60%;
   padding-left: 0;
-  margin-left: -30%;
+  margin-inline-start: -30%;
   text-align: center;
   list-style: none;
 }
@@ -725,7 +725,7 @@ ul.breadcrumb li a {
   background-repeat: no-repeat;
   background-position: right 1em center;
   background-size: 0.8em;
-  padding-right: 2.5em !important;
+  padding-inline-end: 2.5em !important;
 }
 .dropdown-toggle:focus {
   outline: 0;
@@ -736,7 +736,7 @@ ul.breadcrumb li a {
   top: 100%;
   left: 0;
   z-index: 1000;
-  float: left;
+  float: inline-start;
   min-width: 160px;
   padding: 0.5em;
   margin: 2px 0 0;
@@ -749,7 +749,7 @@ ul.breadcrumb li a {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
 }
-.dropdown-menu.pull-right {
+.dropdown-menu.float-end {
   right: 0;
   left: auto;
 }
@@ -829,7 +829,7 @@ ul.breadcrumb li a {
   top: 0;
   z-index: 990;
 }
-.pull-right > .dropdown-menu {
+.float-end > .dropdown-menu {
   right: 0;
   left: auto;
 }
@@ -863,11 +863,11 @@ tr.semi-transparent td {
   max-width: 1440px;
   margin: 0 auto;
 }
-.pull-left {
-  float: left;
+.float-start {
+  float: inline-start;
 }
-.pull-right {
-  float: right;
+.float-end {
+  float: inline-end;
 }
 .row {
   display: grid;
@@ -1218,7 +1218,7 @@ input[type="number"] {
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   vertical-align: text-bottom;
-  margin-right: 0.25em;
+  margin-inline-end: 0.25em;
 }
 .form-check input[type="radio"]:checked {
   background-color: #999;
@@ -1272,7 +1272,7 @@ input[type="number"] {
   background-position: right 1em center;
   background-size: 16px 12px;
   cursor: default;
-  padding-right: 2.5em;
+  padding-inline-end: 2.5em;
   user-select: none;
   appearance: none;
 }
@@ -1358,7 +1358,7 @@ input[type="number"] {
 }
 .input-group .input-group-text {
   flex: 0 1 auto;
-  padding: var(--input-padding-y) var(--input-padding-x);
+  padding: 0.5em 1em;
   background-color: var(--input-addon-background-color);
   border-left: 1px solid var(--input-border-color);
   border-right: 1px solid var(--input-border-color);
@@ -1371,7 +1371,7 @@ input[type="number"] {
 .input-group .input-group-icon {
   flex: 0 1 auto;
   padding: 0.5em 1em;
-  margin-right: -12px;
+  margin-inline-end: -12px;
 }
 .input-group > *:first-child {
   border-left: none;
@@ -1404,8 +1404,8 @@ input[type="number"] {
 }
 .thumbnail > img,
 .thumbnail a > img {
-  margin-right: auto;
-  margin-left: auto;
+  margin-inline-end: auto;
+  margin-inline-start: auto;
 }
 .img-thumbnail {
   padding: calc(var(--gutter-size)/4);
@@ -1427,7 +1427,7 @@ ul.list-unstyled li {
   list-style: none;
 }
 ul.list-unstyled ul {
-  margin-left: 18px;
+  margin-inline-start: 18px;
   padding: 0;
 }
 ul.list-inline {
@@ -1533,7 +1533,7 @@ ul.list-inline li {
   flex: 1 0 auto;
 }
 .nav.nav-justified > li > a {
-  margin-right: 0;
+  margin-inline-end: 0;
   text-align: center;
 }
 @media (min-width: 576px) {
@@ -1549,7 +1549,7 @@ ul.list-inline li {
   display: block;
 }
 .nav.nav-stacked li + li > a {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 .nav-pills {
   display: inline-flex;
@@ -1571,7 +1571,7 @@ ul.list-inline li {
   color: var(--pills-text-color-active);
 }
 .nav-pills li + li > a {
-  margin-left: 2px;
+  margin-inline-start: 2px;
 }
 .nav-tabs {
   background: var(--tabs-background-color);
@@ -1584,7 +1584,7 @@ ul.list-inline li {
   flex: 0 0 auto;
 }
 .nav-tabs > li > a {
-  margin-right: 2px;
+  margin-inline-end: 2px;
   line-height: 1.42857143;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: calc(var(--gutter-size)/2) var(--gutter-size);
@@ -1794,7 +1794,7 @@ ul.list-inline li {
   padding: var(--gutter-size) calc(var(--gutter-size)*2);
 }
 .alert .close {
-  float: right;
+  float: inline-end;
   font-size: 1.5em;
   font-weight: bold;
   line-height: 1;
@@ -1850,11 +1850,11 @@ ul.list-inline li {
   color: var(--pagination-text-color);
   background: var(--pagination-background-color);
   border: 1px solid var(--default-border-color);
-  margin-left: -1px;
+  margin-inline-start: -1px;
 }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
-  margin-left: 0;
+  margin-inline-start: 0;
   border-top-left-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
 }
@@ -2024,45 +2024,45 @@ ul.list-inline li {
 .text-muted {
   opacity: 0.75;
 }
-.text-left {
+.text-start {
   text-align: left !important;
 }
 .text-center {
   text-align: center !important;
 }
-.text-right {
+.text-end {
   text-align: right !important;
 }
 @media (min-width: 576px) {
-  .text-sm-left {
+  .text-sm-start {
     text-align: left !important ;
   }
   .text-sm-center {
     text-align: center !important ;
   }
-  .text-sm-right {
+  .text-sm-end {
     text-align: right !important ;
   }
 }
 @media (min-width: 768px) {
-  .text-md-left {
+  .text-md-start {
     text-align: left !important ;
   }
   .text-md-center {
     text-align: center !important ;
   }
-  .text-md-right {
+  .text-md-end {
     text-align: right !important ;
   }
 }
 @media (min-width: 992px) {
-  .text-lg-left {
+  .text-lg-start {
     text-align: left !important;
   }
   .text-lg-center {
     text-align: center !important;
   }
-  .text-lg-right {
+  .text-lg-end {
     text-align: right !important;
   }
 }

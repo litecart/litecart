@@ -130,7 +130,7 @@ body.cart-open #cart .dropdown-menu {
     transition: margin ease-out 200ms;
   }
   body.cart-open #site-wrapper {
-    margin-right: 320px;
+    margin-inline-end: 320px;
   }
   body.cart-open #cart .dropdown-menu {
     position: fixed;
@@ -507,7 +507,7 @@ body.cart-open #cart .dropdown-menu {
   }
 }
 #view-full-page {
-  float: right;
+  float: inline-end;
   display: inline-block;
   padding: 0.5rem 1rem;
 }
