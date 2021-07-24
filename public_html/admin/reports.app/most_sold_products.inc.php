@@ -107,8 +107,8 @@ form[name="filter_form"] li {
         <tr>
           <td><?php echo $row['name']; ?></td>
           <td style="text-align: center;" class="border-left"><?php echo (float)$row['total_quantity']; ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
+          <td style="text-align: end;" class="border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
+          <td style="text-align: end;" class="border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
         </tr>
         <?php } ?>
       </tbody>

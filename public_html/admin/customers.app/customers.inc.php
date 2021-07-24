@@ -125,8 +125,8 @@
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>"><?php echo $customer['email']; ?></a></td>
             <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
             <td><?php echo $customer['company']; ?></td>
-            <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

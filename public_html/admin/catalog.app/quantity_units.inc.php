@@ -61,7 +61,7 @@
             <td><?php echo $quantity_unit['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>"><?php echo $quantity_unit['name']; ?></a></td>
             <td><?php echo $quantity_unit['description']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

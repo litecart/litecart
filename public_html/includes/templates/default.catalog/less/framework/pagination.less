@@ -2,7 +2,7 @@
 
 .pagination {
   display: inline-flex;
-  padding-left: 0;
+  padding-inline-start: 0;
   margin: @default-gutter-size 0;
   border-radius: @default-border-radius;
   flex-wrap: wrap;
@@ -17,11 +17,11 @@
       color: inherit;
       background-color: #fff;
       border: 1px solid @default-border-color;
-      margin-left: -1px;
+      margin-inline-start: -1px;
     }
     &:first-child {
       > a, > span {
-        margin-left: 0;
+        margin-inline-start: 0;
         border-top-left-radius: @default-border-radius;
         border-bottom-left-radius: @default-border-radius;
       }

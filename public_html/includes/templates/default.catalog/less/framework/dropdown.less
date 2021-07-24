@@ -2,7 +2,7 @@
   display: inline-block;
   width: 0;
   height: 0;
-  margin-left: 2px;
+  margin-inline-start: 2px;
   vertical-align: middle;
   border-top: 4px dashed;
   border-top: 4px solid \9;
@@ -30,13 +30,13 @@
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  text-align: left;
+  text-align: start;
   background-color: #fff;
   border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
-  &.pull-right {
+  &.float-end {
     right: 0;
     left: auto;
   }
@@ -129,7 +129,7 @@
   z-index: 990;
 }
 
-.pull-right > .dropdown-menu {
+.float-end > .dropdown-menu {
   right: 0;
   left: auto;
 }
@@ -157,5 +157,15 @@
   .navbar-right .dropdown-menu-left {
     left: 0;
     right: auto;
+  }
+  html[dir="rtl"] {
+    .navbar-right .dropdown-menu {
+      left: 0;
+      right: auto;
+    }
+    .navbar-right .dropdown-menu-left {
+      left: auto;
+      right: 0;
+    }
   }
 }

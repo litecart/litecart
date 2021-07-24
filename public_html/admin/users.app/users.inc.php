@@ -110,7 +110,7 @@
             <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : language::translate('title_administrator', 'Administrator'); ?></td>
             <td><?php echo ($user['date_valid_from'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from'])) : '-'; ?></td>
             <td><?php echo ($user['date_valid_to'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to'])) : '-'; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php }?>
         </tbody>

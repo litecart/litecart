@@ -90,7 +90,7 @@
             <td><?php echo $manufacturer['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
             <td><img src="<?php echo document::href_link($manufacturer['image'] ? WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_link('', ['doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']], ['app']); ?>"><?php echo $manufacturer['name']; ?></a></td>
             <td class="text-center"><?php echo (int)$manufacturer['num_products']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

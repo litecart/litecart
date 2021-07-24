@@ -22,7 +22,7 @@
 }
 #header .customer-service {
   align-self: center;
-  text-align: right;
+  text-align: end;
   line-height: 150%;
 }
 @media (min-width: 768px) {
@@ -118,7 +118,7 @@
   max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
-  text-align: left;
+  text-align: start;
   transition: all 0.25s ease;
 }
 @media (min-width: 768px) {

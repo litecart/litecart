@@ -233,7 +233,7 @@ table td {
   line-height: 200% !important;
 }
 .operations {
-  margin-left: 2em;
+  margin-inline-start: 2em;
 }
 </style>
 

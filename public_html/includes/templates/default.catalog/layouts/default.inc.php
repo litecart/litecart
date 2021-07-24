@@ -25,7 +25,7 @@
       <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_region.inc.php'); ?>
     </div>
 
-    <div class="text-right">
+    <div class="text-end">
       <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
     </div>
   </header>

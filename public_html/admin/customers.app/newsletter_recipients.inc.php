@@ -138,8 +138,8 @@
             <td><?php echo $recipient['id']; ?></td>
             <td><?php echo $recipient['email']; ?></td>
             <td><?php echo $recipient['client_ip']; ?></td>
-            <td class="text-right"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
-            <td class="text-right"><a href="<?php echo document::href_ilink('customers/edit_recipient', ['recipient_id' => $recipient['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+            <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
+            <td class="text-end"><a href="<?php echo document::href_ilink('customers/edit_recipient', ['recipient_id' => $recipient['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

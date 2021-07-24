@@ -61,7 +61,7 @@ html {
   cursor: default;
 }
 #region .change {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 #region > div {
   display: inline-block;
@@ -145,7 +145,7 @@ html {
 @media (min-width: 768px) {
   #sidebar {
     width: 300px;
-    margin-right: 20px;
+    margin-inline-end: 20px;
   }
   #sidebar > *:first-child {
     margin-top: 0;
@@ -473,7 +473,7 @@ html {
   font-size: 1.25em;
   background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%, #ffffff 100%);
   padding: 10px;
-  padding-left: 40px;
+  padding-inline-start: 40px;
 }
 @media (min-width: 768px) {
   .listing .product-row {

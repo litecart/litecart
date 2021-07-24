@@ -12,11 +12,11 @@
           <?php echo language::translate('title_item', 'Item'); ?>
         </div>
 
-        <div class="hidden-xs col-sm-2 text-right">
+        <div class="hidden-xs col-sm-2 text-end">
           <?php echo language::translate('title_price', 'Price'); ?>
         </div>
 
-        <div class="col-sm-2 text-right">
+        <div class="col-sm-2 text-end">
           <?php echo language::translate('title_sum', 'Sum'); ?>
         </div>
       </div>
@@ -29,7 +29,7 @@
 
       <div class="row">
         <div class="col-xs-3 col-sm-2 col-md-1">
-          <a href="<?php echo htmlspecialchars($item['link']); ?>" class="thumbnail pull-left" style="margin-right: 1em;">
+          <a href="<?php echo htmlspecialchars($item['link']); ?>" class="thumbnail float-start" style="margin-inline-end: 1em;">
             <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $item['image']['thumbnail']); ?>" alt="" />
           </a>
         </div>
@@ -55,20 +55,20 @@
                   <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                 <?php } ?>
                 </div>
-                <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-left: 0.5em;"'); ?>
+                <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
 
-                <div style="margin-left: 1em;"><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></div>
+                <div style="margin-inline-start: 1em;"><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></div>
               </div>
             </div>
 
             <div class="hidden-xs col-sm-2">
-              <div class="unit-price text-right">
+              <div class="unit-price text-end">
                 <?php echo currency::format($item['display_price']); ?>
               </div>
             </div>
 
             <div class="col-sm-2">
-              <div class="total-price text-right">
+              <div class="total-price text-end">
                 <?php echo currency::format($item['display_price'] * $item['quantity']); ?>
               </div>
             </div>
@@ -80,7 +80,7 @@
     <?php } ?>
   </ul>
 
-  <div class="subtotal text-right">
+  <div class="subtotal text-end">
     <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format_html(cart::$total['value']); ?></strong>
   </div>
 

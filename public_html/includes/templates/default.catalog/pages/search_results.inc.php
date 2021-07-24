@@ -10,7 +10,7 @@
   <section id="box-search-results" class="box">
 
     <?php if ($products) { ?>
-    <div class="btn-group pull-right hidden-xs">
+    <div class="btn-group float-end hidden-xs">
 <?php
   $separator = false;
   foreach ($sort_alternatives as $key => $value) {

@@ -9,7 +9,7 @@
 
   <article id="box-manufacturer" class="box">
     <?php if ($products) { ?>
-    <div class="btn-group pull-right hidden-xs">
+    <div class="btn-group float-end hidden-xs">
 <?php
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {

@@ -141,7 +141,7 @@
               <?php echo language::translate(settings::get('store_template_catalog').':description_'.$setting['key'], $setting['description']); ?>
             </td>
             <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>
-            <td class="text-right">
+            <td class="text-end">
               <div class="btn-group">
                 <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
                 <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
@@ -156,7 +156,7 @@
                 <?php echo nl2br($setting['value']); ?>
               </div>
             </td>
-            <td class="text-right"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
           <?php } ?>
