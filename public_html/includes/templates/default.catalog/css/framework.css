@@ -841,17 +841,6 @@ tr.semi-transparent td {
   box-shadow: 0 0 3px 0 #2e9cd4;
 }
 /* Grid - Bootstrap Compatible */
-.twelve-eighty {
-  min-width: 320px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-.container,
-.fourteen-forty {
-  min-width: 320px;
-  max-width: 1440px;
-  margin: 0 auto;
-}
 .float-start {
   float: left;
 }
@@ -864,6 +853,17 @@ html[dir="rtl"] .float-start {
 }
 html[dir="rtl"] .float-end {
   float: left;
+}
+.twelve-eighty {
+  min-width: 320px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.container,
+.fourteen-forty {
+  min-width: 320px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 .row {
   display: grid;
