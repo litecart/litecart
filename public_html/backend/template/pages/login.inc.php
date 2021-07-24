@@ -66,7 +66,7 @@ body {
   border-top: 1px solid rgba(255,255,255,0.8);
   background: #f6f6f6;
   padding: 10px;
-  text-align: right;
+  text-align: end;
   border-radius: 0px 0px 0px 25px;
 }
 </style>

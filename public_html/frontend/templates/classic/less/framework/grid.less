@@ -1,4 +1,21 @@
 /* Grid - Bootstrap Compatible */
+.float-start {
+  float: left;
+}
+.float-end {
+  float: right;
+}
+
+/* Workaround as inline-start and inline-end are not yet supported by browsers */
+html[dir="rtl"] {
+  .float-start {
+    float: right;
+  }
+  .float-end {
+    float: left;
+  }
+}
+
 
 .container {
   min-width: 320px;

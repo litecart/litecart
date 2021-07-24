@@ -221,7 +221,7 @@ $slow-transition-duration: 300ms !default;
         }
 
         &.trumbowyg-textual-button {
-            padding-left: 10px !important;
+            padding-inline-start: 10px !important;
             padding-inline-end: 18px !important;
 
             &::after {
@@ -261,7 +261,7 @@ $slow-transition-duration: 300ms !default;
         color: #333 !important;
         border: none;
         cursor: pointer;
-        text-align: left;
+        text-align: start;
         font-size: 15px;
         transition: all $transition-duration;
 
@@ -341,7 +341,7 @@ $slow-transition-duration: 300ms !default;
 
         .trumbowyg-input-infos {
             display: block;
-            text-align: left;
+            text-align: start;
             height: 25px;
             line-height: 25px;
             transition: all 150ms;
@@ -561,7 +561,7 @@ body.trumbowyg-body-fullscreen {
         }
         ul,
         ol {
-            padding-left: 20px !important;
+            padding-inline-start: 20px !important;
         }
         ul ul,
         ol ol,
@@ -570,7 +570,7 @@ body.trumbowyg-body-fullscreen {
             border: none;
             margin: 2px !important;
             padding: 0 !important;
-            padding-left: 24px !important;
+            padding-inline-start: 24px !important;
         }
         hr {
             display: block;

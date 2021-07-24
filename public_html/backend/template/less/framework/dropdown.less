@@ -24,7 +24,7 @@
   padding: calc(var(--gutter-size)/2);
   margin: 2px 0 0;
   list-style: none;
-  text-align: left;
+  text-align: start;
   background-color: #fff;
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
@@ -130,5 +130,15 @@
   .navbar-right .dropdown-menu-left {
     left: 0;
     right: auto;
+  }
+  html[dir="rtl"] {
+    .navbar-right .dropdown-menu {
+      left: 0;
+      right: auto;
+    }
+    .navbar-right .dropdown-menu-left {
+      left: auto;
+      right: 0;
+    }
   }
 }

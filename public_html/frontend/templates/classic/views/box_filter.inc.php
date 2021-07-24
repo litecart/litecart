@@ -23,7 +23,7 @@
   margin-inline-end: .5em;
 }
 #box-filter .token .remove {
-  padding-left: .5em;
+  padding-inline-start: .5em;
   color: inherit;
   font-weight: 600;
 }

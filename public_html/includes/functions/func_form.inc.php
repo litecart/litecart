@@ -817,7 +817,7 @@ END;
         return form_draw_delivery_statuses_list($name, $input, $parameters);
 
       case 'email':
-        return functions::form_draw_email_field($name, $input, $parameters);
+        return form_draw_email_field($name, $input, $parameters);
 
       case 'file':
         return functions::form_draw_file_field($name);
@@ -1052,7 +1052,7 @@ END;
     $html .= '    </ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
-           . '  '. functions::form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
+           . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
            . '    <ul class="dropdown-menu" style="right: 0;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';

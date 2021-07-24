@@ -18,3 +18,8 @@ WHERE status AND newsletter;
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
 DROP COLUMN `newsletter`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_products`
+ADD COLUMN `quantity_min` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity`,
+ADD COLUMN `quantity_max` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity_min`,
+ADD COLUMN `quantity_step` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity_max`;

@@ -48,21 +48,18 @@
         $headers['Connection'] = 'Close';
       }
 
-      $out = $method ." ". $parts['path'] . ((isset($parts['query'])) ? '?' . $parts['query'] : '') ." HTTP/1.1\r\n" .
-             "Host: ". $parts['host'] ."\r\n";
+      $request_headers = "$method $parts[path]" . ((isset($parts['query'])) ? '?' . $parts['query'] : '') ." HTTP/1.1\r\n"
+                       . "Host: $parts[host]\r\n";
 
       foreach ($headers as $key => $value) {
-        $out .= "$key: $value\r\n";
+        $request_headers .= "$key: $value\r\n";
       }
 
-      $found_body = false;
-      $response_headers = '';
-      $response_body = '';
       $microtime_start = microtime(true);
 
       $this->last_request = [
         'timestamp' => time(),
-        'head' => $out,
+        'head' => $request_headers,
         'body' => $data,
       ];
 
@@ -72,9 +69,9 @@
 
       stream_set_timeout($socket, $this->timeout);
 
-      fwrite($socket, $out . "\r\n");
-      fwrite($socket, $data);
+      fwrite($socket, $request_headers . "\r\n" . $data);
 
+      $response = '';
       while (!feof($socket)) {
 
         if ((microtime(true) - $microtime_start) > $this->timeout) {
@@ -82,22 +79,13 @@
           return false;
         }
 
-        $line = fgets($socket);
-        if ($line == "\r\n") {
-          $found_body = true;
-          continue;
-        }
-
-        if ($found_body) {
-          if ($asynchronous) return true;
-          $response_body .= $line;
-          continue;
-        }
-
-        $response_headers .= $line;
+        $response .= fgets($socket);
       }
 
       fclose($socket);
+
+      $response_headers = substr($response, 0, strpos($response, "\r\n\r\n") - 2);
+      $response_body = substr($response, strpos($response, "\r\n\r\n") + 4);
 
     // Decode chunked data
       if (preg_match('#Transfer-Encoding:\s?Chunked#i', $response_headers)) {

@@ -1161,7 +1161,7 @@ body.dark-mode #box-comments {
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
       var value = $(row).find(':input[name$="['+field+']"]').val();
-      if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value);
+      if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value || 0);
       $(modal).find(':input[name="'+field+'"]').val(value);
     });
   });
@@ -1356,32 +1356,32 @@ body.dark-mode #box-comments {
 
     var subtotal = 0;
     $('input[name^="items["][name$="[price]"]').each(function() {
-      subtotal += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
+      subtotal += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
     });
-    subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
+    subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
 
     var subtotal_tax = 0;
     $('input[name^="items["][name$="[tax]"]').each(function() {
-      subtotal_tax += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
+      subtotal_tax += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
     });
-    subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
+    subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
     $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
 
     var order_total = subtotal + subtotal_tax;
     $('input[name^="order_total["][name$="[value]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += parseFloat(parseFloat($(this).val()));
+        order_total += parseFloat($(this).val() || 0);
       }
     });
 
     $('input[name^="order_total["][name$="[tax]"]').each(function() {
       if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += parseFloat($(this).val());
+        order_total += parseFloat($(this).val() || 0);
       }
     });
 
-    order_total = parseFloat(order_total.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
+    order_total = parseFloat(order_total.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
     $('#order-total .total').text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
   }
 
