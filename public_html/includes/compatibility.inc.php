@@ -12,7 +12,7 @@
       function array_column(array $array, $column_key, $index_key=null) {
         $result = [];
         foreach ($array as $arr) {
-          if(!is_array($arr)) continue;
+          if (!is_array($arr)) continue;
           if (is_null($column_key)) {
             $value = $arr;
           } else {
@@ -39,18 +39,18 @@
     if (!function_exists('password_hash')) {
       function password_hash($password, $algo, array $options = []) {
         if (!function_exists('crypt')) {
-          trigger_error("Crypt must be loaded for password_hash to function", E_USER_WARNING);
+          trigger_error('Crypt must be loaded for password_hash to function', E_USER_WARNING);
           return null;
         }
         if (is_null($password) || is_int($password)) {
           $password = (string) $password;
         }
         if (!is_string($password)) {
-          trigger_error("password_hash(): Password must be a string", E_USER_WARNING);
+          trigger_error('password_hash(): Password must be a string', E_USER_WARNING);
           return null;
         }
         if (!is_int($algo)) {
-          trigger_error("password_hash() expects parameter 2 to be long, " . gettype($algo) . " given", E_USER_WARNING);
+          trigger_error('password_hash() expects parameter 2 to be long, ' . gettype($algo) . ' given', E_USER_WARNING);
           return null;
         }
         $resultLength = 0;
@@ -60,7 +60,7 @@
             if (isset($options['cost'])) {
               $cost = (int) $options['cost'];
               if ($cost < 4 || $cost > 31) {
-                trigger_error(sprintf("password_hash(): Invalid bcrypt cost parameter specified: %d", $cost), E_USER_WARNING);
+                trigger_error(sprintf('password_hash(): Invalid bcrypt cost parameter specified: %d', $cost), E_USER_WARNING);
                 return null;
               }
             }
@@ -70,7 +70,7 @@
             $resultLength = 60;
             break;
           default:
-            trigger_error(sprintf("password_hash(): Unknown password hashing algorithm: %s", $algo), E_USER_WARNING);
+            trigger_error(sprintf('password_hash(): Unknown password hashing algorithm: %s', $algo), E_USER_WARNING);
             return null;
         }
         $salt_req_encoding = false;
@@ -197,7 +197,7 @@
     if (!function_exists('password_verify')) {
       function password_verify($password, $hash) {
         if (!function_exists('crypt')) {
-          trigger_error("Crypt must be loaded for password_verify to function", E_USER_WARNING);
+          trigger_error('Crypt must be loaded for password_verify to function', E_USER_WARNING);
           return false;
         }
         $ret = crypt($password, $hash);
@@ -254,12 +254,10 @@
 /*
 // Redefine $_SERVER['REMOTE_ADDR'] (Can easily be spoofed by clients - Do not enable unless necessary)
   foreach (['HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'HTTP_CF_CONNECTING_IP'] as $key) {
-    if (!empty($_SERVER[$key])) {
-      foreach (array_reverse(explode(',', $_SERVER[$key])) as $ip) {
-        $ip = trim($ip);
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
-          $_SERVER['REMOTE_ADDR'] = $ip;
-        }
+    if (empty($_SERVER[$key])) continue;
+    foreach (array_reverse(preg_split('#\s*,\s*#', $_SERVER[$key], -1, PREG_SPLIT_NO_EMPTY)) as $ip) {
+      if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+        $_SERVER['REMOTE_ADDR'] = $ip;
       }
     }
   }
