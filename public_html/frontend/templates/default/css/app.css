@@ -69,7 +69,7 @@ body main {
   cursor: default;
 }
 #region .change {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 #region > div {
   display: inline-block;
@@ -330,6 +330,7 @@ body.cart-open #cart .dropdown-menu {
   position: relative;
   overflow: hidden;
   background: var(--whitespace-color);
+  border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   transform: scale(1);
   transition: all 100ms linear;
@@ -396,6 +397,9 @@ body.cart-open #cart .dropdown-menu {
 .listing .product .image-wrapper .sticker.sale {
   background: rgba(237, 60, 50, 0.9);
 }
+.listing .product .info {
+  padding-bottom: 1em;
+}
 .listing .product .name {
   display: flex;
   justify-content: center;
@@ -416,6 +420,9 @@ body.cart-open #cart .dropdown-menu {
 }
 .listing .product .description {
   margin-top: 1rem;
+}
+.listing .product .price-wrapper {
+  text-align: center;
 }
 .listing .product .price-wrapper .price {
   color: #333;
@@ -496,7 +503,7 @@ body.cart-open #cart .dropdown-menu {
   font-size: 1.25em;
   background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%, #ffffff 100%);
   padding: 0.5rem;
-  padding-left: 2rem;
+  padding-inline-start: 2rem;
 }
 @media (min-width: 576px) {
   .listing.rows .product {
@@ -507,7 +514,7 @@ body.cart-open #cart .dropdown-menu {
   }
 }
 #view-full-page {
-  float: inline-end;
+  float: right;
   display: inline-block;
   padding: 0.5rem 1rem;
 }

@@ -104,7 +104,7 @@
 }
 #header .customer-service {
   align-self: center;
-  text-align: right;
+  text-align: end;
   line-height: 150%;
 }
 @media (min-width: 768px) {
@@ -162,6 +162,10 @@
   color: #ff0000;
   animation: flasher 1s linear infinite;
 }
+#box-checkout-shipping .thumbnail,
+#box-checkout-payment .thumbnail {
+  padding: 0.5em;
+}
 #box-checkout-shipping .option,
 #box-checkout-payment .option {
   position: relative;
@@ -196,7 +200,7 @@
   max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
-  text-align: left;
+  text-align: start;
   transition: all 0.25s ease;
 }
 @media (min-width: 768px) {

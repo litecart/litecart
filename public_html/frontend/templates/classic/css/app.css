@@ -144,7 +144,7 @@ html {
   cursor: default;
 }
 #region .change {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 #region > div {
   display: inline-block;
@@ -580,7 +580,7 @@ html {
   font-size: 1.25em;
   background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%, #ffffff 100%);
   padding: calc(var(--gutter-size)/2);
-  padding-left: calc(var(--gutter-size) * 2);
+  padding-inline-start: calc(var(--gutter-size) * 2);
 }
 @media (min-width: 768px) {
   .listing.rows .product {
@@ -591,7 +591,7 @@ html {
   }
 }
 #view-full-page {
-  float: inline-end;
+  float: right;
   display: inline-block;
   padding: calc(var(--gutter-size)/2) var(--gutter-size);
 }

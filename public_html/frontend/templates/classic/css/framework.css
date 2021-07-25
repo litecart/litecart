@@ -573,7 +573,7 @@ ul.breadcrumb li a {
   left: 50%;
   z-index: 15;
   width: 60%;
-  padding-left: 0;
+  padding-inline-start: 0;
   margin-inline-start: -30%;
   text-align: center;
   list-style: none;
@@ -712,7 +712,7 @@ ul.breadcrumb li a {
   visibility: hidden;
   top: 100%;
   left: 0;
-  float: inline-start;
+  float: left;
   min-width: 160px;
   margin: 0;
   padding: 0;
@@ -846,6 +846,19 @@ tr.semi-transparent td {
   flex: 1 0 auto;
 }
 /* Grid - Bootstrap Compatible */
+.float-start {
+  float: left;
+}
+.float-end {
+  float: right;
+}
+/* Workaround as inline-start and inline-end are not yet supported by browsers */
+html[dir="rtl"] .float-start {
+  float: right;
+}
+html[dir="rtl"] .float-end {
+  float: left;
+}
 .container {
   min-width: 320px;
   max-width: 1440px;
@@ -858,10 +871,10 @@ tr.semi-transparent td {
   margin: 0 auto;
 }
 .float-start {
-  float: inline-start;
+  float: left;
 }
 .float-end {
-  float: inline-end;
+  float: right;
 }
 .grid,
 .row {
@@ -1436,13 +1449,13 @@ ul.list-inline li {
   padding: 0;
 }
 .nav > li > ul > li > a {
-  padding-left: 30px;
+  padding-inline-start: 30px;
 }
 .nav > li > ul > li > ul > li > a {
-  padding-left: 45px;
+  padding-inline-start: 45px;
 }
 .nav > li > ul > li > ul > li > ul > li > a {
-  padding-left: 60px;
+  padding-inline-start: 60px;
 }
 .nav.nav-justified > li {
   flex: 1 0 auto;
@@ -1581,7 +1594,7 @@ ul.list-inline li {
     flex-direction: row;
   }
   .navbar .navbar-nav {
-    float: inline-start;
+    float: left;
   }
 }
 @media (max-width: 767px) {
@@ -1613,7 +1626,7 @@ ul.list-inline li {
 }
 @media (min-width: 768px) {
   .navbar-header {
-    float: inline-start;
+    float: left;
     width: calc(var(--sidebar-width) + var(--gutter-size)/4);
   }
 }
@@ -1651,7 +1664,7 @@ ul.list-inline li {
 }
 @media (min-width: 768px) {
   .navbar-right {
-    float: inline-end !important;
+    float: right !important;
   }
 }
 .navbar-form {
@@ -1690,6 +1703,12 @@ ul.list-inline li {
   top: -6px;
   transform: rotate(-45deg);
 }
+html[dir="rtl"] .navbar-nav {
+  float: right;
+}
+html[dir="rtl"] .navbar-right {
+  float: left !important;
+}
 /* Notices (Alerts) - Bootstrap Compatible */
 .alert {
   border-radius: var(--border-radius);
@@ -1697,7 +1716,7 @@ ul.list-inline li {
   padding: var(--input-padding-y) var(--input-padding-x);
 }
 .alert .close {
-  float: inline-end;
+  float: right;
   font-size: 1.5em;
   font-weight: bold;
   line-height: 1;
@@ -1736,7 +1755,7 @@ ul.list-inline li {
 /* Pagination - Bootstrap Compatible */
 .pagination {
   display: inline-flex;
-  padding-left: 0;
+  padding-inline-start: 0;
   margin: var(--gutter-size) 0;
   border-radius: var(--border-radius);
   flex-wrap: wrap;
@@ -1844,7 +1863,7 @@ ul.list-inline li {
 }
 .table > thead > tr > th {
   padding: 12px;
-  text-align: left;
+  text-align: start;
   vertical-align: bottom;
   border-bottom: 2px solid var(--default-border-color);
 }
@@ -1858,7 +1877,7 @@ ul.list-inline li {
 }
 .table > tfoot {
   padding: 6px 12px;
-  text-align: left;
+  text-align: start;
   border-top: 1px solid var(--default-border-color);
 }
 @media print {

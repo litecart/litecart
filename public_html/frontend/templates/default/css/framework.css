@@ -597,7 +597,7 @@ ul.breadcrumb li a {
   left: 50%;
   z-index: 15;
   width: 60%;
-  padding-left: 0;
+  padding-inline-start: 0;
   margin-inline-start: -30%;
   text-align: center;
   list-style: none;
@@ -736,12 +736,12 @@ ul.breadcrumb li a {
   top: 100%;
   left: 0;
   z-index: 1000;
-  float: inline-start;
+  float: left;
   min-width: 160px;
   padding: 0.5em;
   margin: 2px 0 0;
   list-style: none;
-  text-align: left;
+  text-align: start;
   color: var(--default-text-color);
   background-color: #fff;
   border: 1px solid var(--default-border-color);
@@ -864,10 +864,10 @@ tr.semi-transparent td {
   margin: 0 auto;
 }
 .float-start {
-  float: inline-start;
+  float: left;
 }
 .float-end {
-  float: inline-end;
+  float: right;
 }
 .row {
   display: grid;
@@ -1521,13 +1521,13 @@ ul.list-inline li {
   padding: 0;
 }
 .nav > li > ul > li > a {
-  padding-left: calc(var(--gutter-size)*2);
+  padding-inline-start: calc(var(--gutter-size)*2);
 }
 .nav > li > ul > li > ul > li > a {
-  padding-left: calc(var(--gutter-size)*3);
+  padding-inline-start: calc(var(--gutter-size)*3);
 }
 .nav > li > ul > li > ul > li > ul > li > a {
-  padding-left: calc(var(--gutter-size)*4);
+  padding-inline-start: calc(var(--gutter-size)*4);
 }
 .nav.nav-justified > li {
   flex: 1 0 auto;
@@ -1794,7 +1794,7 @@ ul.list-inline li {
   padding: var(--gutter-size) calc(var(--gutter-size)*2);
 }
 .alert .close {
-  float: inline-end;
+  float: right;
   font-size: 1.5em;
   font-weight: bold;
   line-height: 1;
@@ -1833,7 +1833,7 @@ ul.list-inline li {
 /* Pagination - Bootstrap Compatible */
 .pagination {
   display: flex;
-  padding-left: 0;
+  padding-inline-start: 0;
   margin: var(--gutter-size) 0;
   border-radius: var(--border-radius);
   flex-wrap: wrap;
