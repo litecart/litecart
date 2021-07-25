@@ -110,7 +110,7 @@
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters. */
 		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the modal */
-		seamless:       null,                  /* Enable or disable seamless mode. */
+		seamless:       false,                 /* Enable or disable seamless mode. */
 		width:          '',                    /* Specify width of lightbox. */
 		height:         '',                    /* Specify width of lightbox. */
 		maxWidth:       '',                    /* Specify max-width of lightbox. */
@@ -130,7 +130,7 @@
 
 			self.$instance = $([
 				'<div class="'+self.namespace+' '+self.namespace+'-loading">',
-					'<div class="'+self.namespace+'-modal'+ ((typeof self.seamless !== 'undefined') ? ' featherlight-seamless' : '') +'">',
+					'<div class="'+self.namespace+'-modal'+ (self.seamless ? ' featherlight-seamless' : '') +'">',
 							'<div class="'+self.namespace+'-inner">' + self.loading + '</div>',
 						'</div>',
 				'</div>'
