@@ -1,49 +1,57 @@
 <?php
 
-	if (!empty($_POST['subscribe'])) {
+  if (!empty($_POST['subscribe'])) {
 
-		try {
+    try {
 
-			if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
 
-			$_POST['email'] = strtolower($_POST['email']);
+      $_POST['email'] = strtolower($_POST['email']);
 
-			database::query(
-				"insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
-				(email, date_created)
-				values ('". database::input($_POST['email']) ."', '". date('c') ."');"
-			);
+      database::query(
+        "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
+        (email, date_created)
+        values ('". database::input($_POST['email']) ."', '". date('c') ."');"
+      );
 
-			notices::add('success', language::translate('success_subscribed_to_newsletter', 'Thank you for subscribing to our newsletter'));
-			header('Location: '. $_SERVER['REQUEST_URI']);
-			exit;
+      if (empty(customer::$data['email'])) {
+        customer::$data['email'] = $_POST['email'];
+      }
 
-		} catch (Exception $e) {
-			notices::add('errors', $e->getMessage());
-		}
-	}
+      notices::add('success', language::translate('success_subscribed_to_newsletter', 'Thank you for subscribing to our newsletter'));
+      header('Location: '. $_SERVER['REQUEST_URI']);
+      exit;
 
-	if (!empty($_POST['unsubscribe'])) {
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
 
-		try {
+  if (!empty($_POST['unsubscribe'])) {
 
-			if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
+    try {
 
-			$_POST['email'] = strtolower($_POST['email']);
+      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
 
-			database::query(
-				"delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-				where email like '". database::input($_POST['email']) ."';"
-			);
+      $_POST['email'] = strtolower($_POST['email']);
 
-			notices::add('success', language::translate('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
-			header('Location: '. $_SERVER['REQUEST_URI']);
-			exit;
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
+        where email like '". database::input($_POST['email']) ."';"
+      );
 
-		} catch (Exception $e) {
-			notices::add('errors', $e->getMessage());
-		}
-	}
+      if (empty(customer::$data['email'])) {
+        customer::$data['email'] = $_POST['email'];
+      }
 
-	$box_newsletter_subscribe = new ent_view('views/box_newsletter_subscribe.inc.php');
-	echo $box_newsletter_subscribe;
+      notices::add('success', language::translate('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
+      header('Location: '. $_SERVER['REQUEST_URI']);
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
+  $box_newsletter_subscribe = new ent_view('views/box_newsletter_subscribe.inc.php');
+  echo $box_newsletter_subscribe;
