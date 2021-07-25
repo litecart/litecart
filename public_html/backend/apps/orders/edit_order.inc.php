@@ -1203,11 +1203,11 @@ body.dark-mode #box-comments {
       addItem(item);
     }
 
-    $(modal).find(':input[name="weight_unit"]').val('<?php echo settings::get('site_weight_class'); ?>');
-    $(modal).find(':input[name="length_unit"]').val('<?php echo settings::get('site_length_class'); ?>');
+    $(modal).find(':input[name="weight_unit"]').val('<?php echo settings::get('site_weight_unit'); ?>');
+    $(modal).find(':input[name="length_unit"]').val('<?php echo settings::get('site_length_unit'); ?>');
 
-    $(modal).find(':input[name="weight_unit"]').val('<?php echo settings::get('site_weight_class'); ?>');
-    $(modal).find(':input[name="length_unit"]').val('<?php echo settings::get('site_length_class'); ?>');
+    $(modal).find(':input[name="weight_unit"]').val('<?php echo settings::get('site_weight_unit'); ?>');
+    $(modal).find(':input[name="length_unit"]').val('<?php echo settings::get('site_length_unit'); ?>');
 
     $.each($(modal).find(':input'), function(i,element){
       var field = $(element).attr('name');
