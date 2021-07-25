@@ -7,6 +7,9 @@
   if (isset($_POST['import'])) {
 
     try {
+
+      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+
       if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }
@@ -24,74 +27,136 @@
       foreach ($csv as $row) {
         $line++;
 
-      // Find customer
-        if (!empty($row['id']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;"))) {
-          $customer = new ent_customer($customer['id']);
+        switch ($_POST['type']) {
 
-        } else if (!empty($row['code']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;"))) {
-          $customer = new ent_customer($customer['id']);
+          case 'customers':
 
-        } else if (!empty($row['email']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;"))) {
-          $customer = new ent_customer($customer['id']);
+          // Find customer
+            if (!empty($row['id']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;"))) {
+              $customer = new ent_customer($customer['id']);
+
+            } else if (!empty($row['code']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;"))) {
+              $customer = new ent_customer($customer['id']);
+
+            } else if (!empty($row['email']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;"))) {
+              $customer = new ent_customer($customer['id']);
+            }
+
+            if (!empty($customer->data['id'])) {
+
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing customer on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo 'Updating existing customer '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
+              $updated++;
+
+            } else {
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new customer on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo 'Inserting new customer: '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
+              $inserted++;
+
+              if (!empty($row['id'])) {
+                database::query(
+                  "insert into ". DB_TABLE_PREFIX ."customers (id, date_created)
+                  values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+                );
+                $customer = new ent_customer($row['id']);
+              } else {
+                $customer = new ent_customer();
+              }
+            }
+
+          // Set customer data
+            $fields = [
+              'code',
+              'email',
+              'tax_id',
+              'company',
+              'firstname',
+              'lastname',
+              'address1',
+              'address2',
+              'postcode',
+              'city',
+              'country_code',
+              'zone_code',
+              'phone',
+              'newsletter',
+              'notes',
+            ];
+
+            foreach ($fields as $field) {
+              if (isset($row[$field])) $customer->data[$field] = $row[$field];
+            }
+
+            if (!empty($row['new_password'])) $customer->set_password($row['new_password']);
+
+            $customer->save();
+
+            break;
+
+          case 'newsletter_recipients':
+
+          // Find newsletter recipient
+            if (!empty($row['id']) && $recipient = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where id = ". (int)$row['id'] ." limit 1;"))) {
+              $recipient = new ent_newsletter_recipient($recipient['id']);
+
+            } else if (!empty($row['email']) && $recipient = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where email = '". database::input($row['email']) ."' limit 1;"))) {
+              $recipient = new ent_newsletter_recipient($recipient['id']);
+            }
+
+            if (!empty($recipient->data['id'])) {
+
+              if (empty($_POST['overwrite'])) {
+                echo "Skip updating existing newsletter recipient on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo 'Updating existing newsletter recipient '. (!empty($row['email']) ? $row['email'] : "on line $line") . PHP_EOL;
+              $updated++;
+
+            } else {
+
+              if (empty($_POST['insert'])) {
+                echo "Skip inserting new newsletter recipient on line $line" . PHP_EOL;
+                continue 2;
+              }
+
+              echo 'Inserting new newsletter recipient: '. (!empty($row['email']) ? $row['email'] : "on line $line") . PHP_EOL;
+              $inserted++;
+
+              if (!empty($row['id'])) {
+                database::query(
+                  "insert into ". DB_TABLE_PREFIX ."newsletter_recipients (id, date_created)
+                  values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
+                );
+                $recipient = new ent_newsletter_recipient($row['id']);
+              } else {
+                $recipient = new ent_newsletter_recipient();
+              }
+            }
+
+          // Set newsletter recipient data
+            $fields = [
+              'email',
+              'client_ip',
+            ];
+
+            foreach ($fields as $field) {
+              if (isset($row[$field])) $recipient->data[$field] = $row[$field];
+            }
+
+            $recipient->save();
+
+            break;
         }
-
-        if (!empty($customer->data['id'])) {
-
-          if (empty($_POST['overwrite'])) {
-            echo "Skip updating existing customer on line $line" . PHP_EOL;
-            continue;
-          }
-
-          echo 'Updating existing customer '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
-          $updated++;
-
-        } else {
-
-          if (empty($_POST['insert'])) {
-            echo "Skip inserting new customer on line $line" . PHP_EOL;
-            continue;
-          }
-
-          echo 'Inserting new customer: '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
-          $inserted++;
-
-          if (!empty($row['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."customers (id, date_created)
-              values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-            );
-            $customer = new ent_customer($row['id']);
-          } else {
-            $customer = new ent_customer();
-          }
-        }
-
-      // Set customer data
-        $fields = [
-          'code',
-          'email',
-          'tax_id',
-          'company',
-          'firstname',
-          'lastname',
-          'address1',
-          'address2',
-          'postcode',
-          'city',
-          'country_code',
-          'zone_code',
-          'phone',
-          'newsletter',
-          'notes',
-        ];
-
-        foreach ($fields as $field) {
-          if (isset($row[$field])) $customer->data[$field] = $row[$field];
-        }
-
-        if (!empty($row['new_password'])) $customer->set_password($row['new_password']);
-
-        $customer->save();
       }
 
       notices::add($updated ? 'success' : 'notice', strtr(language::translate('success_updated_n_existing_entries', 'Updated %n existing entries'), ['%n' => $updated]));
@@ -108,32 +173,61 @@
   if (isset($_POST['export'])) {
 
     try {
-      $customers_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."customers
-        order by date_created asc;"
-      );
+
+      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
 
       $csv = [];
 
-      while ($customer = database::fetch($customers_query)) {
-        $csv[] = [
-          'id' => $customer['id'],
-          'code' => $customer['code'],
-          'email' => $customer['email'],
-          'tax_id' => $customer['tax_id'],
-          'company' => $customer['company'],
-          'firstname' => $customer['firstname'],
-          'lastname' => $customer['lastname'],
-          'address1' => $customer['address1'],
-          'address2' => $customer['address2'],
-          'postcode' => $customer['postcode'],
-          'city' => $customer['city'],
-          'country_code' => $customer['country_code'],
-          'zone_code' => $customer['zone_code'],
-          'phone' => $customer['phone'],
-          'newsletter' => $customer['newsletter'],
-          'notes' => $customer['notes'],
-        ];
+      switch ($_POST['type']) {
+
+        case 'customers':
+
+          $customers_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."customers
+            order by date_created asc;"
+          );
+
+
+          while ($customer = database::fetch($customers_query)) {
+            $csv[] = [
+              'id' => $customer['id'],
+              'code' => $customer['code'],
+              'email' => $customer['email'],
+              'tax_id' => $customer['tax_id'],
+              'company' => $customer['company'],
+              'firstname' => $customer['firstname'],
+              'lastname' => $customer['lastname'],
+              'address1' => $customer['address1'],
+              'address2' => $customer['address2'],
+              'postcode' => $customer['postcode'],
+              'city' => $customer['city'],
+              'country_code' => $customer['country_code'],
+              'zone_code' => $customer['zone_code'],
+              'phone' => $customer['phone'],
+              'newsletter' => $customer['newsletter'],
+              'notes' => $customer['notes'],
+            ];
+          }
+
+          break;
+
+        case 'newsletter_recipients':
+
+          $newsletter_recipients_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+            order by date_created asc;"
+          );
+
+          while ($recipient = database::fetch($newsletter_recipients_query)) {
+            $csv[] = [
+              'id' => $recipient['id'],
+              'email' => $recipient['email'],
+              'client_ip' => $recipient['client_ip'],
+              'date_created' => $recipient['date_created'],
+            ];
+          }
+
+          break;
       }
 
       ob_clean();
@@ -184,6 +278,14 @@
             <legend><?php echo language::translate('title_import', 'Import'); ?></legend>
 
             <div class="form-group">
+              <label><?php echo language::translate('title_type', 'Type'); ?></label>
+              <div>
+                <?php echo functions::form_draw_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
               <?php echo functions::form_draw_file_field('file'); ?></td>
             </div>
@@ -226,6 +328,14 @@
 
           <fieldset>
             <legend><?php echo language::translate('title_export', 'Export'); ?></legend>
+
+            <div class="form-group">
+              <label><?php echo language::translate('title_type', 'Type'); ?></label>
+              <div>
+                <?php echo functions::form_draw_radio_button('type', ['customers', language::translate('title_customers', 'Customers')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['newsletter_recipients', language::translate('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
+              </div>
+            </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
