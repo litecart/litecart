@@ -686,18 +686,17 @@
           trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
         }
 
-      } else {
+      }
 
-        database::query(
-          "update ". DB_TABLE_PREFIX ."products
-          set quantity = quantity + ". (float)$quantity_adjustment ."
-          where id = ". (int)$this->data['id'] ."
-          limit 1;"
-        );
+      database::query(
+        "update ". DB_TABLE_PREFIX ."products
+        set quantity = quantity + ". (float)$quantity_adjustment ."
+        where id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
 
-        if (!database::affected_rows()) {
-          trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .')', E_USER_WARNING);
-        }
+      if (!database::affected_rows()) {
+        trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .')', E_USER_WARNING);
       }
     }
 
