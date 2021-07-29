@@ -80,11 +80,13 @@
       if (empty(self::$route)) self::identify();
 
       if (!empty(self::$route['page'])) {
+
         if (!empty(self::$route['endpoint']) && self::$route['endpoint'] == 'backend') {
           $page = FS_DIR_APP . 'backend/pages/' . self::$route['page'] .'.inc.php';
-      } else {
+        } else {
           $page = FS_DIR_APP . 'frontend/pages/' . self::$route['page'] .'.inc.php';
         }
+
       } else {
         $page = false;
       }
