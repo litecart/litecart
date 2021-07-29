@@ -3,7 +3,7 @@
 
   $module_id = basename($_GET['module_id']);
 
-  switch ($_GET['doc']) {
+  switch (__DOC__) {
     case 'edit_customer':
       $type = 'customer';
       $return_doc = 'customer';

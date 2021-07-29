@@ -9,9 +9,58 @@
   include vmod::check(FS_DIR_APP . 'backend/boxes/box_apps_menu.inc.php');
   document::$snippets['box_apps_menu'] = $box_apps_menu;
 
-// Start page
+// Display app content
+  if (defined('__APP__')) {
 
-  if (empty($_GET['app'])) {
+  // Get app config
+    $app_config = require vmod::check(FS_DIR_ADMIN .'apps/'. __APP__ .'/config.inc.php');
+
+  // Set default document if missing
+    if (!defined('__DOC__')) define('__DOC__', $app_config['default']);
+
+  // Check if user is permitted to access document
+    if (!empty(user::$data['apps'][__APP__]['status']) && !in_array(__DOC__, user::$data['apps'][__APP__]['docs'])) {
+      notices::add('errors', language::translate('title_access_denied', 'Access Denied'));
+      return;
+    }
+
+  // Make sure document exists
+    if (!file_exists(FS_DIR_ADMIN .'apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
+      notices::add('errors', __APP__ .'/'. htmlspecialchars(__DOC__) . ' is not a valid app document');
+      return;
+    }
+
+    breadcrumbs::add($app_config['name'], document::ilink(__APP__, ['doc' => $app_config['default']]));
+
+  // Render the app document
+    $_content = new ent_view(FS_DIR_APP . 'backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);
+
+    $_content->snippets = [
+      'app_icon' => '<span class="app-icon">' . PHP_EOL
+                  . '  ' . functions::draw_fonticon($app_config['theme']['icon'] .' fa-fw') . PHP_EOL
+                  . '</span>',
+    ];
+
+  // Render the page
+    $_page = new ent_view('pages/doc.inc.php');
+
+    $_page->snippets = [
+      'app' => __APP__,
+      'doc' => __DOC__,
+      'theme' => [
+        'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
+        'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
+      ],
+      'content' => (string)$_content,
+    ];
+
+    echo $_page;
+    //if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    //  return;
+    //}
+
+// Display the start page
+  } else {
 
     document::$snippets['title'][] = language::translate('title_dashboard', 'Dashboard');
 
@@ -25,79 +74,22 @@
 
   // Widgets
 
-    $widgets_cache_token = cache::token('backend_widgets', ['language']);
-    if (!$widgets = cache::get($widgets_cache_token)) {
-      $widgets = functions::admin_get_widgets();
-      cache::set($widgets_cache_token, $widgets);
-    }
-
     $box_widgets = new ent_view('views/box_widgets.inc.php');
     $box_widgets->snippets['widgets'] = [];
 
+    $widgets = functions::admin_get_widgets();
+
     foreach ($widgets as $widget) {
-      if (!empty(user::$data['widgets']) && empty(user::$data['widgets'][$widget['code']])) continue;
+      if (!empty(user::$data['widgets']) && empty(user::$data['widgets'][$widget['id']])) continue;
 
       ob_start();
       include vmod::check($widget['directory'] . $widget['file']);
 
       $box_widgets->snippets['widgets'][] = [
-        'code' => $widget['code'],
+        'id' => $widget['id'],
         'content' => ob_get_clean(),
       ];
     }
 
     echo $box_widgets;
-
-// App content
-
-  } else {
-
-    if (empty(user::$data['apps']) || (!empty(user::$data['apps'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['apps'][$_GET['app']]['docs']))) {
-
-      if (empty($_GET['doc'])) $_GET['doc'] = $app_config['default'];
-
-      $app_config = require vmod::check(FS_DIR_ADMIN .'apps/'. $_GET['app'] .'/config.inc.php');
-
-      if (empty($app_config['docs'][$_GET['doc']])) {
-        http_response_code(404);
-        die('Doc not found');
-      }
-
-      if (empty($app_config['theme']['icon']) && !empty($app_config['icon'])) $app_config['theme']['icon'] = $app_config['icon']; // Backwards compatibility
-
-      breadcrumbs::add($app_config['name'], document::ilink($_GET['app'], ['doc' => $app_config['default']]));
-
-      $_page = new ent_view('pages/doc.inc.php');
-      $_page->snippets = [
-        'app' => $_GET['app'],
-        'doc' => $_GET['doc'],
-        'theme' => [
-          'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
-          'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
-        ],
-      ];
-
-      $app_icon = '<span class="app-icon">' . PHP_EOL
-                . '  ' . functions::draw_fonticon($_page->snippets['theme']['icon'] .' fa-fw') . PHP_EOL
-                . '</span>';
-
-      ob_start();
-      if (!empty($_GET['doc'])) {
-      if (empty($app_config['docs'][$_GET['doc']]) || !file_exists(FS_DIR_ADMIN .'apps/'. $_GET['app'] . '/' . $app_config['docs'][$_GET['doc']])) trigger_error($_GET['app'] .'/'. htmlspecialchars($_GET['doc']) . ' is not a valid admin document', E_USER_ERROR);
-      include vmod::check(FS_DIR_ADMIN .'apps/'. $_GET['app'] .'/'. $app_config['docs'][$_GET['doc']]);
-      } else {
-      include vmod::check(FS_DIR_ADMIN .'apps/'. $_GET['app'] .'/'. $app_config['docs'][$app_config['default']]);
-      }
-      $_page->snippets['doc'] = ob_get_clean();
-
-
-      if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
-        echo $_page;
-      } else {
-        echo $_page->snippets['doc'];
-      }
-
-    } else {
-      echo '<p>'. language::translate('title_access_denied', 'Access Denied') .'</p>';
-    }
   }

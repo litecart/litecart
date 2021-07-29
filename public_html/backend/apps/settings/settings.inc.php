@@ -50,12 +50,12 @@
 
   $settings_groups_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."settings_groups
-    ". (!empty($_GET['doc']) ? "where `key` = '". database::input($_GET['doc']) ."'" : "") ."
+    ". (!empty(__DOC__) ? "where `key` = '". database::input(__DOC__) ."'" : "") ."
     order by priority, `key`;"
   );
 
   if (!$settings_group = database::fetch($settings_groups_query)) {
-    die('Invalid setting group ('. $_GET['doc'] .')');
+    die('Invalid setting group ('. __DOC__ .')');
   }
 
 // Table Rows

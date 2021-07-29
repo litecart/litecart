@@ -1,6 +1,6 @@
 <?php
 
-  switch ($_GET['doc']) {
+  switch (__DOC__) {
     case 'customer':
       $title = language::translate('title_customer_modules', 'Customer Modules');
       $files = glob(FS_DIR_APP . 'includes/modules/customer/*.inc.php');
@@ -145,7 +145,7 @@
           <td><?php echo functions::form_draw_checkbox('modules['. $module['id'] .']', $module['id']); ?></td>
           <td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
           <td><a href="<?php echo document::href_ilink('modules/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
-          <?php if ($_GET['doc'] == 'jobs' && !empty($module['status'])) { ?>
+          <?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>
           <td class="text-center"><a href="<?php echo document::href_ilink('modules/run_job', ['module_id' => $module['id']]); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
           <?php } else { ?>
           <td class="text-center"></td>

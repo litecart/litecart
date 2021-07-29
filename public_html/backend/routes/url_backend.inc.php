@@ -8,7 +8,7 @@
           'pattern' => '#^'. BACKEND_ALIAS .'/(.*?)/(.*?)$#',
           'endpoint' => 'backend',
           'page' => 'index',
-          'params' => 'app=$1&doc=$2',
+          'params' => '',
           'options' => [
             'redirect' => false,
           ],
@@ -42,8 +42,8 @@
         $link->unset_query('app');
       }
 
-      if (!empty($_GET['doc'])) {
-        $link->path .= $_GET['doc'];
+      if (!empty(__DOC__)) {
+        $link->path .= __DOC__;
         $link->unset_query('doc');
       }
 
