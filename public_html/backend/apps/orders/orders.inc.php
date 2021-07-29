@@ -49,15 +49,8 @@
 
       sort($_POST['orders']);
 
-      ob_start();
-
       if ($result = call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders'])) {
         echo $result;
-      }
-
-    // Backwards compatibility
-      if ($output = ob_get_clean()) {
-        echo $output;
         return;
       }
 

@@ -79,11 +79,11 @@
       foreach ($this->modules as $module) {
 
         if (!$options = $module->options($items, $subtotal['amount'], $subtotal['tax'], $currency_code, $customer)) continue;
-        if (!empty($options['options'])) $options = $options['options']; // Backwards compatibility
+        if (!empty($options['options'])) $options = $options['options']; // Backwards compatibility LiteCart <3.0.0
 
         foreach ($options as $option) {
 
-          if (empty($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility
+          if (empty($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility LiteCart <3.0.0
 
           $this->_cache['options'][$checksum][$module->id.':'.$option['id']] = [
             'module_id' => $module->id,

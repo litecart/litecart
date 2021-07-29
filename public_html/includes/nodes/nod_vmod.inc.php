@@ -17,13 +17,13 @@
 
       $timestamp = microtime(true);
 
-    // Backwards Compatibility
+    // Backwards Compatibility LiteCart <3.0.0
       self::$aliases['#^admin/#'] = 'backend/';
       self::$aliases['#^admin/(.*?)\.app/#'] = 'backend/apps/$1/';
       self::$aliases['#^admin/(.*?)\.widget/#'] = 'backend/widgets/$1/';
       self::$aliases['#^pages/#'] = 'frontend/pages/';
       self::$aliases['#^includes/boxes/#'] = 'frontend/boxes/';
-      self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
+      self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_'; // <2.2.0
       self::$aliases['#^includes/library/lib_#'] = 'includes/nodes/nod_';
       self::$aliases['#^includes/routes/#'] = 'frontend/routes/';
       self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/';

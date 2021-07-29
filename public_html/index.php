@@ -23,17 +23,17 @@
 
   route::identify();
 
-// Set template
+// Initialize endpoint
   if (!empty(route::$route['endpoint']) && route::$route['endpoint'] == 'backend') {
     require vmod::check(FS_DIR_APP . 'backend/bootstrap.inc.php');
   } else {
     require vmod::check(FS_DIR_APP . 'frontend/bootstrap.inc.php');
   }
 
-// Run operations before capture
+// Run operations before processing the route
   event::fire('before_capture');
 
-// Go capture the content
+// Process the route and capture the content
   route::process();
 
   require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');

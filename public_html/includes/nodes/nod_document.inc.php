@@ -320,7 +320,6 @@
 
         if ($endpoint == 'backend') {
           $route = WS_DIR_APP . BACKEND_ALIAS .'/'. $route;
-
         } else {
           $route = WS_DIR_APP . $route;
         }
