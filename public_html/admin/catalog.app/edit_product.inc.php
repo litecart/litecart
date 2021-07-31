@@ -1339,7 +1339,7 @@
                  + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
                  + '  <div class="row">'
                  + '    <div class="form-group col-sm-4 col-md-2">'
-                 + '      <label><?php echo functions::general_escape_js(translate('title_function', 'Function')); ?></label>'
+                 + '      <label><?php echo functions::general_escape_js(language::translate('title_function', 'Function')); ?></label>'
                  + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>'
                  + '    </div>'
                  + '    <div class="form-group col-sm-4 col-md-2">'
