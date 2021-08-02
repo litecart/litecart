@@ -11,6 +11,8 @@ public_html/vqmod/vqcache/*
 !public_html/**/index.html
 !public_html/**/.htaccess
 
+composer.lock
+package-lock.json
 public_html/admin/.htaccess
 public_html/admin/.htpasswd
 public_html/includes/config.inc.php
