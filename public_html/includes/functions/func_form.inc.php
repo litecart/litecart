@@ -530,7 +530,8 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_APP .'ext/trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
+                                                  . '<link href="'. WS_DIR_APP .'ext/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />'
+                                                  . '<link href="'. WS_DIR_APP .'ext/trumbowyg/plugins/table/ui/trumbowyg.table.min.css" rel="stylesheet" />';
 
     document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_APP .'ext/trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
                                                   . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_APP .'ext/trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
@@ -538,7 +539,7 @@
                                                   . '<script src="'. WS_DIR_APP .'ext/trumbowyg/plugins/table/trumbowyg.table.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
-                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
+                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
                                         . '    btnsDef: {' . PHP_EOL
                                         . '      lists: {' . PHP_EOL
                                         . '        dropdown: ["unorderedList", "orderedList"],' . PHP_EOL
