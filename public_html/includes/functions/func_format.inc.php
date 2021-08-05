@@ -16,6 +16,11 @@
     return reference::country($address['country_code'])->format_address($address);
   }
 
+  function format_mysql_fulltext($string) {
+    $string = strip_tags($string);
+    return preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
+  }
+
   function format_regex_code($string) {
 
     $string = strip_tags($string);

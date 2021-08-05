@@ -33,14 +33,15 @@
   ];
 
   $code_regex = functions::format_regex_code($_GET['query']);
+  $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
   $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
     (
       if(p.id = '". database::input($_GET['query']) ."', 10, 0)
-      + (match(pi.name) against ('". database::input($_GET['query']) ."' in boolean mode))
-      + (match(pi.short_description) against ('". database::input($_GET['query']) ."' in boolean mode) / 2)
-      + (match(pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) / 3)
+      + (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
+      + (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
+      + (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
       + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
       + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
       + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
