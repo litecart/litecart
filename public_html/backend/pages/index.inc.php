@@ -3,7 +3,7 @@
   user::require_login();
 
   breadcrumbs::reset();
-  breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
+  breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), document::ilink(''));
 
 // Apps
   include vmod::check(FS_DIR_APP . 'backend/boxes/box_apps_menu.inc.php');
@@ -13,7 +13,7 @@
   if (defined('__APP__')) {
 
   // Get app config
-    $app_config = require vmod::check(FS_DIR_ADMIN .'apps/'. __APP__ .'/config.inc.php');
+    $app_config = require vmod::check(FS_DIR_APP .'backend/apps/'. __APP__ .'/config.inc.php');
 
   // Set default document if missing
     if (!defined('__DOC__')) define('__DOC__', $app_config['default']);
@@ -25,12 +25,12 @@
     }
 
   // Make sure document exists
-    if (!file_exists(FS_DIR_ADMIN .'apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
+    if (!file_exists(FS_DIR_APP .'backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
       notices::add('errors', __APP__ .'/'. htmlspecialchars(__DOC__) . ' is not a valid app document');
       return;
     }
 
-    breadcrumbs::add($app_config['name'], document::ilink(__APP__, ['doc' => $app_config['default']]));
+    breadcrumbs::add($app_config['name'], document::ilink(__APP__ .'/'. $app_config['default']));
 
   // Render the app document
     $_content = new ent_view(FS_DIR_APP . 'backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);

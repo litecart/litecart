@@ -38,7 +38,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_quantity_unit'), language::translate('title_add_new_unit', 'Add New Unit'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_quantity_unit'), language::translate('title_add_new_unit', 'Add New Unit'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -60,9 +60,9 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('quantity_units['. $quantity_unit['id'] .']', $quantity_unit['id']); ?></td>
           <td><?php echo $quantity_unit['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink('catalog/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>"><?php echo $quantity_unit['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>"><?php echo $quantity_unit['name']; ?></a></td>
           <td><?php echo $quantity_unit['description']; ?></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink('catalog/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

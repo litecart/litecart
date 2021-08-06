@@ -211,7 +211,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_product'), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_product'), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -249,12 +249,12 @@
           <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
-          <td><img src="<?php echo document::href_link(functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" class="thumbnail" style="width: 32px; height: 32px; vertical-align: bottom;" /></td>
+          <td><img class="thumbnail" src="<?php echo document::href_link(functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" /></td>
           <td><?php echo $product['id']; ?></td>
           <td><?php echo $product['sku']; ?></td>
-          <td><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

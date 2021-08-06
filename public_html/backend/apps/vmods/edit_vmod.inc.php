@@ -49,7 +49,7 @@
       $vmod->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('vmods/vmods'));
+      header('Location: '. document::ilink(__APP__.'/vmods'));
       exit;
 
     } catch (Exception $e) {
@@ -65,7 +65,7 @@
       $vmod->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('vmods/vmods'));
+      header('Location: '. document::ilink(__APP__.'/vmods'));
       exit;
 
     } catch (Exception $e) {

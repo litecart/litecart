@@ -50,7 +50,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink('catalog/stock_items.json'); ?>&query=' + $(this).val(),
+			url: '<?php echo document::ilink(__APP__.'/stock_items.json'); ?>&query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));

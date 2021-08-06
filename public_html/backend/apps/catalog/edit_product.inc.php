@@ -21,7 +21,7 @@
 
   document::$snippets['title'][] = !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product');
 
-  breadcrumbs::add(language::translate('title_catalog', 'Catalog'), document::ilink('catalog/category_tree'));
+  breadcrumbs::add(language::translate('title_catalog', 'Catalog'), document::ilink(__APP__.'/category_tree'));
   breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'));
 
   if (isset($_POST['save'])) {
@@ -104,7 +104,7 @@
       $product->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('catalog/category_tree', ['category_id' => $_POST['categories'][0]]));
+      header('Location: '. document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]));
       exit;
 
     } catch (Exception $e) {
@@ -120,7 +120,7 @@
       $product->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('catalog/category_tree', ['category_id' => $_POST['categories'][0]]));
+      header('Location: '. document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]));
       exit;
 
     } catch (Exception $e) {
@@ -630,7 +630,7 @@
                     <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
                   </td>
                   <td class="text-end">
-                    <a class="edit" href="<?php echo document::href_ilink('', ['doc' => 'edit_stock_item', 'stock_item_id' => $_POST['stock_items'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
+                    <a class="edit" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_items'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
                   </td>
                 </tr>
               <?php } ?>
@@ -638,8 +638,8 @@
               <tfoot>
                 <tr>
                   <td colspan="9">
-                    <a href="<?php echo document::href_ilink('catalog/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
-                    <a href="<?php echo document::href_ilink('catalog/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
+                    <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
+                    <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
                   </td>
                 </tr>
               </tfoot>
@@ -780,7 +780,7 @@
   $('select[name="new_attribute[group_id]"]').change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::ilink('catalog/attribute_values.json'); ?>&group_id=' + $(this).val(),
+      url: '<?php echo document::ilink(__APP__.'/attribute_values.json'); ?>&group_id=' + $(this).val(),
       type: 'get',
       cache: true,
       async: true,
@@ -1160,7 +1160,7 @@
                  + '    <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a>'
                  + '  </td>'
                  + '  <td class="text-end">'
-                 + '    <a class="edit" href="<?php echo document::href_ilink('catalog/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>'
+                 + '    <a class="edit" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>'
                  + '  </td>'
                  + '</tr>';
 

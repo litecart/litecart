@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User');
 
-  breadcrumbs::add(language::translate('title_users', 'Users'), document::href_ilink('users/users'));
+  breadcrumbs::add(language::translate('title_users', 'Users'), document::href_ilink(__APP__.'/users'));
   breadcrumbs::add(!empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'));
 
   if (isset($_POST['save'])) {
@@ -47,7 +47,7 @@
       $user->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('users/users'));
+      header('Location: '. document::ilink(__APP__.'/users'));
       exit;
 
     } catch (Exception $e) {
@@ -63,7 +63,7 @@
       $user->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('users/users'));
+      header('Location: '. document::ilink(__APP__.'/users'));
       exit;
 
     } catch (Exception $e) {

@@ -37,7 +37,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('catalog/edit_sold_out_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_sold_out_status'), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -60,10 +60,10 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $sold_out_status['id'] .']', $sold_out_status['id']); ?></td>
           <td><?php echo $sold_out_status['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink('catalog/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>"><?php echo $sold_out_status['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>"><?php echo $sold_out_status['name']; ?></a></td>
           <td class="text-center"><?php echo !empty($sold_out_status['hidden']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo !empty($sold_out_status['orderable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td style="text-end"><a href="<?php echo document::href_ilink('catalog/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td style="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

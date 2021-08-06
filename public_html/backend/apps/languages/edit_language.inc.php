@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language');
 
-  breadcrumbs::add(language::translate('title_languages', 'Languages'), document::ilink('languages/languages'));
+  breadcrumbs::add(language::translate('title_languages', 'Languages'), document::ilink(__APP__.'/languages'));
   breadcrumbs::add(!empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'));
 
   if (isset($_POST['save'])) {
@@ -101,7 +101,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('languages/languages'));
+      header('Location: '. document::ilink(__APP__.'/languages'));
       exit;
 
     } catch (Exception $e) {
@@ -117,7 +117,7 @@
       $language->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('languages/languages'));
+      header('Location: '. document::ilink(__APP__.'/languages'));
       exit;
 
     } catch (Exception $e) {

@@ -85,7 +85,7 @@
     var id = $(row).find('.id').text();
     if (!id) return;
 
-    var url = String('<?php echo document::ilink('orders/add_product', ['product_id' => '__id__']); ?>').replace(/__id__/, id);
+    var url = String('<?php echo document::ilink(__APP__.'/add_product', ['product_id' => '__id__']); ?>').replace(/__id__/, id);
     $.get(url, function(data) {
       $('.featherlight-content').html(data);
     }, 'html');

@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status');
 
-  breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink('orders/order_statuses'));
+  breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::ilink(__APP__.'/order_statuses'));
   breadcrumbs::add(!empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'));
 
   if (isset($_POST['save'])) {
@@ -44,7 +44,7 @@
       $order_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('orders/order_statuses'));
+      header('Location: '. document::ilink(__APP__.'/order_statuses'));
       exit;
 
     } catch (Exception $e) {
@@ -60,7 +60,7 @@
       $order_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('orders/order_statuses'));
+      header('Location: '. document::ilink(__APP__.'/order_statuses'));
       exit;
 
     } catch (Exception $e) {

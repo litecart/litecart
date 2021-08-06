@@ -41,7 +41,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('orders/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -68,12 +68,12 @@
         <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
         <td><?php echo $order_status['id']; ?></td>
         <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
-        <td><a href="<?php echo document::href_ilink('orders/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
+        <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
         <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
         <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
         <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
         <td class="text-center"><?php echo $order_status['priority']; ?></td>
-        <td class="text-end"><a href="<?php echo document::href_ilink('orders/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
       </tr>
       <?php } ?>
     </tbody>

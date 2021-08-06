@@ -64,7 +64,7 @@
     <?php echo functions::form_draw_hidden_field('doc'); ?>
     <ul class="list-inline">
       <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::ilink('banners/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
     </ul>
   <?php echo functions::form_draw_form_end(); ?>
   </div>
@@ -93,14 +93,14 @@
           <td><?php echo functions::form_draw_checkbox('banners['. $banner['id'] .']', $banner['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($banner['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
           <td><?php echo $banner['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink('banners/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>
           <td><?php echo $banner['keywords']; ?></td>
           <td class="text-end"><?php echo $banner['total_clicks']; ?></td>
           <td class="text-end"><?php echo $banner['total_views']; ?></td>
           <td class="text-end"><?php echo !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-'; ?></td>
           <td class="text-center"><?php echo (date('Y', strtotime($banner['date_valid_from'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($banner['date_valid_from'])) : '-'; ?></td>
           <td class="text-center"><?php echo (date('Y', strtotime($banner['date_valid_to'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($banner['date_valid_to'])) : '-'; ?></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink('banners/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

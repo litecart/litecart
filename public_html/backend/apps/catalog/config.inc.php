@@ -141,7 +141,7 @@
           'id' => $product['id'],
           'title' => $product['name'],
           'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
-          'link' => document::ilink('catalog/edit_product', ['product_id' => $product['id']]),
+          'link' => document::ilink(__APP__.'/edit_product', ['product_id' => $product['id']]),
         ];
       }
 

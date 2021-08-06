@@ -31,7 +31,7 @@
 
   document::$snippets['title'][] = !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order');
 
-  breadcrumbs::add(language::translate('title_orders', 'Orders'), document::ilink('orders/orders'));
+  breadcrumbs::add(language::translate('title_orders', 'Orders'), document::ilink(__APP__.'/orders'));
   breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
 
 // Mark as read
@@ -140,7 +140,7 @@
       if (!empty($_GET['redirect_url'])) {
         $redirect_url = $_GET['redirect_url'];
       } else {
-        $redirect_url = document::ilink('orders/orders');
+        $redirect_url = document::ilink(__APP__.'/orders');
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -160,7 +160,7 @@
       $order->delete();
 
       if (empty($_GET['redirect_url'])) {
-        $_GET['redirect_url'] = document::ilink('orders/orders');
+        $_GET['redirect_url'] = document::ilink(__APP__.'/orders');
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -580,7 +580,7 @@ body.dark-mode #box-comments {
               <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
               <tr class="item">
                 <td class="grabable">
-                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('frontend:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
+                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][stock_item_id]', true); ?>
@@ -617,7 +617,7 @@ body.dark-mode #box-comments {
             <tfoot>
               <tr>
                 <td colspan="8">
-                  <a class="btn btn-default add-product" href="<?php echo document::href_ilink('orders/product_picker'); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_ilink('orders/product_picker'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                  <a class="btn btn-default add-product" href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
                 </td>
               </tr>

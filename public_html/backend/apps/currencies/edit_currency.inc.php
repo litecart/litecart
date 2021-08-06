@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency');
 
-  breadcrumbs::add(language::translate('title_currencies', 'Currencies'), document::ilink('currencies/currencies'));
+  breadcrumbs::add(language::translate('title_currencies', 'Currencies'), document::ilink(__APP__.'/currencies'));
   breadcrumbs::add(!empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'));
 
   if (isset($_POST['save'])) {
@@ -71,7 +71,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('currencies/currencies'));
+      header('Location: '. document::ilink(__APP__.'/currencies'));
       exit;
 
     } catch (Exception $e) {
@@ -87,7 +87,7 @@
       $currency->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('currencies/currencies'));
+      header('Location: '. document::ilink(__APP__.'/currencies'));
       exit;
 
     } catch (Exception $e) {

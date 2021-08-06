@@ -51,7 +51,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink('catalog/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
   </div>
 
   <div class="card-filter">
@@ -89,7 +89,7 @@
           <td><?php echo $stock_item['gtin']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['ordered']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
-          <td><a href="<?php echo document::href_ilink('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

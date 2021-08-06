@@ -65,7 +65,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('languages/edit_language'), language::translate('title_add_new_language', 'Add New Language'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_language'), language::translate('title_add_new_language', 'Add New Language'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -94,12 +94,12 @@
           <td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $language['id']; ?></td>
           <td><?php echo $language['code']; ?></td>
-          <td><a href="<?php echo document::href_ilink('languages/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
           <td><?php echo $language['url_type']; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('site_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo $language['priority']; ?></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink('languages/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

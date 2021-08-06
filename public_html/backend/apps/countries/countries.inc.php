@@ -60,7 +60,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('countries/edit_country'), language::translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_country'), language::translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -86,9 +86,9 @@
           <td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $country['id']; ?></td>
           <td><?php echo $country['iso_code_2']; ?></td>
-          <td><a href="<?php echo document::href_ilink('countries/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>
           <td class="text-center"><?php echo $country['num_zones'] ? $country['num_zones'] : '-'; ?></td>
-          <td><a href="<?php echo document::href_ilink('countries/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

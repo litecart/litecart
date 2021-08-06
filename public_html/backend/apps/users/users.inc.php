@@ -58,7 +58,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('users/edit_user'), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_user'), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -79,8 +79,8 @@
         <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
           <td><?php echo functions::draw_fonticon($user['status'] ? 'on' : 'off'); ?></td>
-          <td><a href="<?php echo document::href_ilink('users/edit_user', ['user_id' => $user['id']]); ?>"><?php echo $user['username']; ?></a></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink('users/edit_user', ['user_id' => $user['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_user', ['user_id' => $user['id']]); ?>"><?php echo $user['username']; ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_user', ['user_id' => $user['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php }?>
       </tbody>

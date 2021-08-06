@@ -13,7 +13,7 @@
   document::$snippets['title'][] = !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::ilink('catalog/quantity_units'));
+  breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'), document::ilink(__APP__.'/quantity_units'));
   breadcrumbs::add(!empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit'));
 
   if (isset($_POST['save'])) {
@@ -38,7 +38,7 @@
       $quantity_unit->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('catalog/quantity_units'));
+      header('Location: '. document::ilink(__APP__.'/quantity_units'));
       exit;
 
     } catch (Exception $e) {
@@ -54,7 +54,7 @@
       $quantity_unit->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('catalog/quantity_units'));
+      header('Location: '. document::ilink(__APP__.'/quantity_units'));
       exit;
 
     } catch (Exception $e) {

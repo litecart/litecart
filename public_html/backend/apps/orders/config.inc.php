@@ -72,7 +72,7 @@
           'id' => $order['id'],
           'title' => language::translate('title_order', 'Order') .' '. $order['id'],
           'description' => $order['customer_name'],
-          'link' => document::ilink('orders/edit_order', ['order_id' => $order['id']]),
+          'link' => document::ilink(__APP__.'/edit_order', ['order_id' => $order['id']]),
         ];
       }
 

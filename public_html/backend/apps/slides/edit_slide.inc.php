@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');
 
-  breadcrumbs::add(language::translate('title_slides', 'Slides'), document::ilink('slides/slides'));
+  breadcrumbs::add(language::translate('title_slides', 'Slides'), document::ilink(__APP__.'/slides'));
   breadcrumbs::add(!empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'));
 
   if (isset($_POST['save'])) {
@@ -43,7 +43,7 @@
       $slide->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('slides/slides'));
+      header('Location: '. document::ilink(__APP__.'/slides'));
       exit;
 
     } catch (Exception $e) {
@@ -59,7 +59,7 @@
       $slide->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('slides/slides'));
+      header('Location: '. document::ilink(__APP__.'/slides'));
       exit;
 
     } catch (Exception $e) {
