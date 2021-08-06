@@ -4,10 +4,12 @@
     'name' => language::translate('title_appearance', 'Appearance'),
     'default' => 'template',
     'priority' => 0,
+
     'theme' => [
       'color' => '#ff2a72',
       'icon' => 'fa-adjust',
     ],
+
     'menu' => [
       [
         'title' => language::translate('title_template', 'Template'),
@@ -20,6 +22,7 @@
         'params' => [],
       ],
     ],
+
     'docs' => [
       'logotype' => 'logotype.inc.php',
       'template' => 'template.inc.php',

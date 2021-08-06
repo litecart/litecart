@@ -4,10 +4,12 @@
     'name' => language::translate('title_translations', 'Translations'),
     'default' => 'search',
     'priority' => 0,
+
     'theme' => [
       'color' => '#c14a4a',
       'icon' => 'fa-book',
     ],
+
     'menu' => [
       [
         'title' => language::translate('title_search_translations', 'Search Translations'),
@@ -25,6 +27,7 @@
         'params' => [],
       ],
     ],
+
     'docs' => [
       'search' => 'search.inc.php',
       'scan' => 'scan.inc.php',

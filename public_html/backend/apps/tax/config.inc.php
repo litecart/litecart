@@ -4,10 +4,12 @@
     'name' => language::translate('title_tax', 'Tax'),
     'default' => 'tax_rates',
     'priority' => 0,
+
     'theme' => [
       'color' => '#a8bf2e',
       'icon' => 'fa-university',
     ],
+
     'menu' => [
       [
         'title' => language::translate('title_tax_rates', 'Tax Rates'),
@@ -20,6 +22,7 @@
         'params' => [],
       ],
     ],
+
     'docs' => [
       'tax_classes' => 'tax_classes.inc.php',
       'edit_tax_class' => 'edit_tax_class.inc.php',

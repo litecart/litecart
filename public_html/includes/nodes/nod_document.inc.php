@@ -66,10 +66,18 @@
     public static function after_capture() {
 
     // JavaScript Environment
+
       self::$jsenv['platform'] = [
         'path' => WS_DIR_APP,
-        'url' => document::ilink(''),
+        'url' => document::ilink('f:'),
       ];
+
+      if (!empty(user::$data['id'])) {
+        self::$jsenv['backend'] = [
+          'path' => WS_DIR_APP . BACKEND_ALIAS .'/',
+          'url' => document::ilink('b:'),
+        ];
+      }
 
       self::$jsenv['session'] = [
         'language_code' => language::$selected['code'],
@@ -96,7 +104,7 @@
         ];
       }
 
-      self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .", config = _env;</script>";
+      self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .";</script>";
 
     // Prepare title
       if (!empty(self::$snippets['title'])) {

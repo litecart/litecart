@@ -4,10 +4,12 @@
     'name' => language::translate('title_reports', 'Reports'),
     'default' => 'monthly_sales',
     'priority' => 0,
+
     'theme' => [
       'color' => '#b97631',
       'icon' => 'fa-pie-chart',
     ],
+
     'menu' => [
       [
         'title' => language::translate('title_monthly_sales', 'Monthly Sales'),
@@ -25,6 +27,7 @@
         'params' => [],
       ],
     ],
+
     'docs' => [
       'monthly_sales' => 'monthly_sales.inc.php',
       'most_sold_products' => 'most_sold_products.inc.php',

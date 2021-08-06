@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{language}}" dir="{{text_direction}}">
+<html lang="{{language}}" dir="{{text_direction}}"<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}" />
@@ -11,7 +11,7 @@
 {{head_tags}}
 {{style}}
 </head>
-<body<?php echo !empty($_COOKIE['dark_mode']) ? ' class="dark-mode"' : ''; ?>>
+<body>
 
 <div id="backend-wrapper">
   <input id="sidebar-compressed" type="checkbox" hidden />
@@ -51,10 +51,10 @@
   $('input[name="dark_mode"]').click(function(){
     if ($(this).val() == 1) {
       document.cookie = 'dark_mode=1;path=/;expires=<?php echo date('r', strtotime('+ 3 months')); ?>';
-      $('body').addClass('dark-mode');
+      $('html').addClass('dark-mode');
     } else {
       document.cookie = 'dark_mode=0;path=/;expires=<?php echo date('r', strtotime('+ 3 months')); ?>';
-      $('body').removeClass('dark-mode');
+      $('html').removeClass('dark-mode');
     }
   });
 </script>

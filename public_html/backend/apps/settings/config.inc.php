@@ -4,10 +4,12 @@
     'name' => language::translate('title_settings', 'Settings'),
     'default' => 'site_info',
     'priority' => 0,
+
     'theme' => [
       'color' => '#757575',
       'icon' => 'fa-cogs',
     ],
+
     'menu' => [],
     'docs' => [],
   ];

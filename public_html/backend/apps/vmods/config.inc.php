@@ -4,11 +4,14 @@
     'name' => language::translate('title_vMods', 'vMods'),
     'default' => 'vmods',
     'priority' => 0,
+
     'theme' => [
       'color' => '#4dcac3',
       'icon' => 'fa-plug',
     ],
+
     'menu' => [],
+
     'docs' => [
       'configure' => 'configure.inc.php',
       'edit_vmod' => 'edit_vmod.inc.php',

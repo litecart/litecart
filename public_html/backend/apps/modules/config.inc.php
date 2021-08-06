@@ -4,10 +4,12 @@
     'name' => language::translate('title_modules', 'Modules'),
     'default' => 'customer',
     'priority' => 0,
+
     'theme' => [
       'color' => '#c449c5',
       'icon' => 'fa-cube',
     ],
+
     'menu' => [
       [
         'title' => language::translate('title_customer_modules', 'Customer Modules'),
@@ -34,6 +36,7 @@
         'doc' => 'jobs',
       ],
     ],
+
     'docs' => [
       'customer' => 'modules.inc.php',
       'order' => 'modules.inc.php',

@@ -4,10 +4,12 @@
     'name' => language::translate('title_languages', 'Languages'),
     'default' => 'languages',
     'priority' => 0,
+
     'theme' => [
       'color' => '#2b6ca2',
       'icon' => 'fa-comments',
     ],
+
     'menu' => [
       [
         'title' => language::translate('title_languages', 'Languages'),
@@ -20,6 +22,7 @@
         'params' => [],
       ],
     ],
+
     'docs' => [
       'languages' => 'languages.inc.php',
       'edit_language' => 'edit_language.inc.php',
