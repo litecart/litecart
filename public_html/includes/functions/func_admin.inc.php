@@ -63,3 +63,24 @@
 
     return $widgets;
   }
+
+  function admin_search_apps($query) {
+
+    $apps = admin_get_apps();
+
+    $search_results = [];
+
+    foreach (array_column($apps, 'search', 'id') as $app => $search) {
+      if (!$results = $search($query)) continue;
+      foreach ($results as $result) {
+        $search_results[] = [
+          'app' => $app,
+          'theme' => $apps[$app]['theme'],
+          'name' => $result['name'],
+          'results' => $result['results'],
+        ];
+      }
+    }
+
+    return $search_results;
+  }

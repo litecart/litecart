@@ -11,6 +11,9 @@
   var timer_ajax_search = null;
   var xhr_search = null;
   $('#search input[name="query"]').on('input', function(){
+
+    var search_field = this;
+
     if (xhr_search) xhr_search.abort();
 
     if ($(this).val() == '') {
@@ -30,7 +33,7 @@
         type: 'get',
         async: true,
         cache: false,
-        url: 'search_results.json.php?query=' + $(this).val(),
+        url: window._env.backend.url + 'search_results.json?query=' + $(search_field).val(),
         dataType: 'json',
 
         beforeSend: function(jqXHR) {
@@ -58,7 +61,7 @@
               $.each(group.results, function(i, result){
                 $('#search .results ul[data-group="'+ group.name +'"]').append(
                   '<li class="result">' +
-                  '  <a class="list-group-item" href="'+ result.url +'" style="border-left: 3px solid '+ group.theme.color +';">' +
+                  '  <a class="list-group-item" href="'+ encodeURIComponent(result.link) +'" style="border-left: 3px solid '+ group.theme.color +';">' +
                   '    <small class="id float-end">#'+ result.id +'</small>' +
                   '    <div class="title">'+ result.title +'</div>' +
                   '    <div class="description"><small>'+ result.description +'</small></div>' +
