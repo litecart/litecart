@@ -13,7 +13,7 @@
         'email' => settings::get('site_email'),
         'language_code' => settings::get('site_language_code'),
         'country_code' => settings::get('site_country_code'),
-        'url' => document::ilink('frontend:'),
+        'url' => document::ilink('f:'),
       ];
 
       $client = new wrap_http();

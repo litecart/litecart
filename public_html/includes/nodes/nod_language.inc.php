@@ -29,7 +29,7 @@
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         $translations_query = database::query(
           "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_PREFIX ."translations
-          where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
+          where ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") ."
           having text != '';"
         );
 
@@ -55,7 +55,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."translations
-        set ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") .",
+        set ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") .",
           date_accessed = '". date('Y-m-d H:i:s') ."'
         where code in ('". implode("', '", database::input(self::$_accessed_translations)) ."');"
       );

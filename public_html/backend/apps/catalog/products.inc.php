@@ -200,6 +200,10 @@
 .warning {
   color: #f00;
 }
+table .thumbnail {
+  width: 24px;
+  height: 24px;
+}
 </style>
 
 <div class="card card-app">

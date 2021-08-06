@@ -75,7 +75,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('catalog/stock_items'));
+      header('Location: '. document::ilink(__APP__.'/stock_items'));
       exit;
 
     } catch (Exception $e) {

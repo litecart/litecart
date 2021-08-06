@@ -43,7 +43,7 @@
       $attribute_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved successfully'));
-      header('Location: '. document::link('catalog/attribute_groups'));
+      header('Location: '. document::ilink(__APP__.'/attribute_groups'));
       exit;
 
     } catch (Exception $e) {

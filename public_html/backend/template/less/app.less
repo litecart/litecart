@@ -44,16 +44,17 @@
         box-shadow: none;
       }
       .docs {
-        width: 220px;
         display: block;
         position: absolute;
-        background: #f5f5f5;
-        z-index: 999;
         top: 0;
         left: 35px;
+        width: calc(var(--sidebar-width) - 64px);
+        padding: .5em;
+        background: var(--sidebar-background-color);
+        z-index: 999;
         box-shadow: 0 0 5px rgba(0, 0, 0, .15);
         .name {
-          display: block;
+          display: inline-block;
         }
       }
     }
@@ -148,7 +149,6 @@
     //border-bottom: 1px var(--sidebar-border-color) solid;
 
     a {
-      margin-inline-start: .5em;
       display: block;
       padding: .5em;
       font-size: 1em;
@@ -164,14 +164,24 @@
       }
     }
 
-    &.selected {
+    .app-icon {
+      margin-inline-end: 0;
+    }
+
+    .docs {
+      display: none;
+    }
+
+    &.active {
       border-color: var(--app-color);
       //background: rgba(255, 255, 255, 0.1);
-      > a, .doc.selected > a {
+      .docs {
+        display: block;
+      }
+      > a, .doc.active > a {
         background: rgba(255, 255, 255, 0.15);
         box-shadow: 0 2px 0 0 rgba(0,0,0,0.05);
       }
-
     }
   }
 
@@ -185,7 +195,7 @@
     border: none;
     li {
       border: none;
-      margin-bottom: 2px 0;
+      margin: 2px 0;
       list-style: none;
       a {
         font-weight: normal;
@@ -211,7 +221,6 @@
   display: inline-block;
   width: fit-content;
   padding: .33em;
-  margin-inline-end: .5em;
   line-height: 100%;
   border-radius: var(--border-radius);
   background: var(--app-color);
@@ -245,7 +254,7 @@
 
 /* Dark Mode */
 
-body.dark-mode {
+html.dark-mode {
   #top-bar > li > a {
     color: inherit;
   }

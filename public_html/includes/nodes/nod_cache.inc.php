@@ -95,7 +95,7 @@
             break;
 
           case 'endpoint':
-            $hash_string .= preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? 'backend' : 'frontend';
+            $hash_string .= (isset(route::$request['endpoint']) && route::$request['endpoint'] == 'admin') ? 'backend' : 'frontend';
             break;
 
           case 'get':

@@ -127,7 +127,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         //notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::link(WS_DIR_ADMIN . 'login', ['redirect_url' => $_SERVER['REQUEST_URI']]));
+        header('Location: ' . document::ilink('b:login', ['redirect_url' => $_SERVER['REQUEST_URI']]));
         exit;
       }
     }

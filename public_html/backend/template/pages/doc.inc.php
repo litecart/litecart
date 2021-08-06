@@ -1,7 +1,9 @@
 <style>
-#content {
+#main {
   --app-color: <?php echo $theme['color']; ?>;
-  background: linear-gradient(180deg, var(--app-color) 5px, var(--page-background-color) 5px);
+}
+#top-bar {
+  border-bottom: 5px solid var(--app-color);
 }
 </style>
 

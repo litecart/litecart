@@ -52,7 +52,7 @@
   </div>
 
   <div class="card-action">
-      <?php echo functions::form_draw_link_button(document::link('catalog/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
+      <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
   </div>
 
     <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>

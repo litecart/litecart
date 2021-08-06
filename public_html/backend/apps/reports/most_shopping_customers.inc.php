@@ -107,7 +107,7 @@ form[name="filter_form"] li {
     <tbody>
       <?php foreach ($customers as $customer) { ?>
       <tr>
-        <td><?php echo !empty($customer['id']) ? '<a href="'. document::ilink('customers/edit_customer', ['customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+        <td><?php echo !empty($customer['id']) ? '<a href="'. document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
         <td><?php echo $customer['email']; ?></td>
         <td class="text-end"><?php echo currency::format($customer['total_amount'], false, settings::get('site_currency_code')); ?></td>
       </tr>

@@ -81,7 +81,7 @@
          . '    '. functions::draw_fonticon('folder') .' <span class="name" style="display: inline-block;">'. $category_name .'</span>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'category_picker', 'parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '    <a href="'. document::href_ilink('b:catalog/category_picker', ['parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '</div>';
   }
@@ -240,7 +240,7 @@ END;
 
     return '<div class="form-input"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
          . '  ' . form_draw_hidden_field($name, true) . PHP_EOL
-         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$input .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '  '. language::translate('title_id', 'ID') .': <span class="id">'. (int)$input .'</span> &ndash; <span class="name">'. $account_name .'</span> <a href="'. document::href_ilink('b:customers/customer_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
          . '</div>';
   }
 
@@ -426,7 +426,7 @@ END;
          . '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'product_picker']) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '    <a href="'. document::href_ilink('b:catalog/product_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '</div>';
   }

@@ -84,7 +84,7 @@
           <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
           <td><?php echo $stock_item['id']; ?></td>
           <td><?php echo $stock_item['sku']; ?></td>
-          <td><a href="<?php echo document::link('catalog/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
           <td><?php echo $stock_item['mpn']; ?></td>
           <td><?php echo $stock_item['gtin']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['ordered']; ?></td>
