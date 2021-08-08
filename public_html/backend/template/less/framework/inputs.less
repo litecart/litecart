@@ -6,19 +6,19 @@
   position: relative;
   color: var(--input-text-color);
   background: var(--input-background-color);
-  //border: 1px solid var(--input-border-color);
   border: none;
+  box-shadow: 0 1px 2px var(--input-border-color);
   border-radius: var(--border-radius);
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, .15);
+  overflow-y: auto;
 }
 
 fieldset {
   padding: var(--gutter-size);
-  border-color: var(--input-border-color);
+  border: 2px solid var(--input-border-color);
   border-radius: var(--border-radius);
   > legend {
     font-size: 1.25em;
-    padding: 0.25em 0.5em;
+    padding: .25em .5em;
   }
 }
 
@@ -45,8 +45,6 @@ input[type="number"] {
   > label:not(.form-check) {
     display: block;
     font-size: .9em;
-    font-weight: bold;
-    //letter-spacing: .05em;
     opacity: .8;
   }
 }

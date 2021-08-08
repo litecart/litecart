@@ -30,10 +30,9 @@
 .btn {
   cursor: pointer;
   display: inline-block;
-  padding: 0 1em;
+  padding: var(--input-padding-y) var(--input-padding-x);
   text-decoration:  none;
   font-weight: normal;
-  line-height: 250%;
   border: none;
   border-radius: var(--border-radius);
   box-shadow: 0 1px 1px var(--shadow-color);
@@ -55,12 +54,20 @@
   //&.btn-outline-warning { .btn-outline("warning"); }
   &.btn-outline-danger { .btn-outline("danger"); }
 
-  &.btn-sm { font-size: .75em; }
+  &.btn-app {
+    border-left: 5px solid var(--app-color);
+  }
+
+  &.btn-sm { font-size: .75em; padding: .25em 1em; }
   &.btn-lg { font-size: 1.2em; }
 
   &.active, &:active { box-shadow: inset 1px 1px 0px 0 rgba(0, 0, 0, .15); }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
   [data-type="toggle"] { display: none; }
+
+  .fa {
+    margin-inline-end: .25em;
+  }
 }
 
 .btn-block {

@@ -78,8 +78,6 @@ form[name="filter_form"] li {
 
   <div class="card-action">
     <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-      <?php echo functions::form_draw_hidden_field('app'); ?>
-      <?php echo functions::form_draw_hidden_field('doc'); ?>
       <ul class="list-inline">
         <li><?php echo language::translate('title_date_period', 'Date Period'); ?>:</li>
         <li>

@@ -17,17 +17,17 @@
 
       $timestamp = microtime(true);
 
-    // Backwards Compatibility LiteCart <3.0.0
-      self::$aliases['#^admin/#'] = 'backend/';
-      self::$aliases['#^admin/(.*?)\.app/#'] = 'backend/apps/$1/';
-      self::$aliases['#^admin/(.*?)\.widget/#'] = 'backend/widgets/$1/';
-      self::$aliases['#^pages/#'] = 'frontend/pages/';
-      self::$aliases['#^includes/boxes/#'] = 'frontend/boxes/';
+    // Backwards Compatibility
+      self::$aliases['#^admin/#'] = 'backend/'; // <3.0.0
+      self::$aliases['#^admin/(.*?)\.app/#'] = 'backend/apps/$1/'; // <3.0.0
+      self::$aliases['#^admin/(.*?)\.widget/#'] = 'backend/widgets/$1/'; // <3.0.0
+      self::$aliases['#^pages/#'] = 'frontend/pages/'; // <3.0.0
+      self::$aliases['#^includes/boxes/#'] = 'frontend/boxes/'; // <3.0.0
       self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_'; // <2.2.0
-      self::$aliases['#^includes/library/lib_#'] = 'includes/nodes/nod_';
-      self::$aliases['#^includes/routes/#'] = 'frontend/routes/';
-      self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/';
-      self::$aliases['#^includes/templates/(.*?)\.catalog/#'] = 'frontend/templates/$1/';
+      self::$aliases['#^includes/library/lib_#'] = 'includes/nodes/nod_'; // <3.0.0
+      self::$aliases['#^includes/routes/#'] = 'frontend/routes/'; // <3.0.0
+      self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/'; // <3.0.0
+      self::$aliases['#^includes/templates/(.*?)\.catalog/#'] = 'frontend/templates/$1/'; // <3.0.0
 
       $last_modified = null;
 
@@ -68,13 +68,13 @@
         }
       }
 
+    // Create a list of checked files
       $checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($original_file, $modified_file, $checksum) = explode(';', $line);
-          if (filemtime(FS_DIR_STORAGE . $modified_file) > filemtime(FS_DIR_APP . $original_file)) {
-            self::$_checked[$original_file] = FS_DIR_STORAGE . $modified_file;
-            self::$_checksums[$original_file] = $checksum;
+          list($short_file, $modified_file, $checksum) = explode(';', $line);
+          if (!is_file(FS_DIR_APP . $short_file) || filemtime(FS_DIR_STORAGE . $modified_file) > filemtime(FS_DIR_APP . $short_file)) {
+            self::$_checksums[$short_file] = $checksum;
           }
         }
       } else {
@@ -129,7 +129,7 @@
       $modified_short_file = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $short_file);
 
     // Returned an already checked file
-      if (!empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file])) {
+      if (!empty(self::$_checked[$short_file]) && is_file(self::$_checked[$short_file])) {
         self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file];
       }
@@ -158,14 +158,13 @@
       }
 
     // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$short_file]) && file_exists(self::$_checked[$short_file]) && self::$_checksums[$short_file] == $checksum) {
+      if (!empty(self::$_checksums[$short_file]) && !empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file]) && self::$_checksums[$short_file] == $checksum) {
         self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file] = $modified_file;
       }
 
     // Modify file
       if (is_file($file)) {
-        //$original = $buffer = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($file));
         $original = $buffer = file_get_contents($file);
       } else {
         $original = $buffer = null;
@@ -307,7 +306,7 @@
           }
         }
 
-    // Run install for previously not installed modifications
+      // Run install for previously not installed modifications
         if (!in_array($vmod['id'], self::$_installed)) {
 
         // Exceute install in an isolated scope
@@ -348,13 +347,11 @@
         $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
       }
 
+      $aliases = [];
+      foreach ($dom->getElementsByTagName('alias') as $alias_node) {
+        $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
+      }
 
-      //if ($dom->getElementsByTagName('alias')->length > 0) {
-        $aliases = [];
-        foreach ($dom->getElementsByTagName('alias') as $alias_node) {
-          $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
-        }
-      //}
 
       if (empty($dom->getElementsByTagName('file'))) {
         throw new \Exception('File has no defined files to modify');

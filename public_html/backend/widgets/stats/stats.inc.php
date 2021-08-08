@@ -11,7 +11,7 @@
       $order_statuses[] = (int)$order_status['id'];
     }
 
-  $stats = [];
+    $stats = [];
 
   // Total Sales
     $orders_query = database::query(

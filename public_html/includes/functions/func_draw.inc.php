@@ -81,7 +81,7 @@
         document::$snippets['head_tags']['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />';
         return '<i class="bi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
-    // Fontawesome
+    // Fontawesome 4
       case (substr($class, 0, 3) == 'fa-'):
         //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document
         return '<i class="fa '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
@@ -104,7 +104,7 @@
     // Material Design Icons
       case (substr($class, 0, 4) == 'mdi-'):
         document::$snippets['head_tags']['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css" />';
-        return '<i class="mdi '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
     }
 
     switch($class) {
@@ -213,7 +213,7 @@
     return (string)$listing_product;
   }
 
-  function draw_lightbox($selector='', $params=[]) {
+  function draw_lightbox($selector='', $parameters=[]) {
 
     $selector = str_replace("'", '"', $selector);
 
@@ -231,8 +231,8 @@
       $js = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
     }
 
-    foreach ($params as $key => $value) {
-      switch (gettype($params[$key])) {
+    foreach ($parameters as $key => $value) {
+      switch (gettype($parameters[$key])) {
 
         case 'NULL':
           $js .= '    '. $key .': null,' . PHP_EOL;

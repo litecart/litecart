@@ -116,8 +116,8 @@
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
-    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
-    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
+    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
+    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
   );
 
@@ -128,7 +128,7 @@
 
     if (empty($order['order_status_id'])) {
       $order['order_status_icon'] = 'fa-minus';
-      $order['order_status_color'] = '#cccccc';
+      $order['order_status_color'] = '#ccc';
     }
 
     if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
@@ -197,8 +197,6 @@ table .fa-star:hover {
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app', true); ?>
-    <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <div><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></div>
@@ -243,7 +241,7 @@ table .fa-star:hover {
           <td><?php echo $order['payment_option_name']; ?></td>
           <td class="text-end"><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>
           <td class="text-end"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
-          <td class="text-center"><?php echo !empty($order['order_status_id']) ? $order['order_status_name'] : language::translate('title_unprocessed', 'Unprocessed'); ?></td>
+          <td class="text-center"><?php echo $order['order_status_name']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
           <td>
             <a href="<?php echo document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print']); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
@@ -304,7 +302,6 @@ table .fa-star:hover {
       $('#order-actions button').prop('disabled', true);
     }
   }).trigger('change');
-
 
   $('table').on('click', '.fa-star-o', function(e){
     e.stopPropagation();

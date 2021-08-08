@@ -576,6 +576,7 @@ body.dark-mode #box-comments {
                 <th style="width: 75px;">&nbsp;</th>
               </tr>
             </thead>
+
             <tbody>
               <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
               <tr class="item">
@@ -614,6 +615,7 @@ body.dark-mode #box-comments {
               </tr>
               <?php } ?>
             </tbody>
+
             <tfoot>
               <tr>
                 <td colspan="8">
@@ -623,6 +625,7 @@ body.dark-mode #box-comments {
               </tr>
             </tfoot>
           </table>
+
         </div>
       </div>
 
@@ -641,6 +644,7 @@ body.dark-mode #box-comments {
                 <th style="width: 30px;"></th>
               </tr>
             </thead>
+
             <tbody>
 <?php
   if (empty($_POST['order_total'])) {
@@ -653,6 +657,7 @@ body.dark-mode #box-comments {
       'calculate' => '0',
     ];
   }
+
   foreach (array_keys($_POST['order_total']) as $key) {
     switch($_POST['order_total'][$key]['module_id']) {
       case 'ot_subtotal':
@@ -696,6 +701,7 @@ body.dark-mode #box-comments {
                 <td colspan="6"><a class="add" href="#" title="<?php echo language::translate('title_insert_', 'Insert'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?></a></td>
               </tr>
             </tbody>
+
             <tfoot>
               <tr>
                 <td colspan="6" class="text-end" style="font-size: 1.5em;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
@@ -940,10 +946,10 @@ body.dark-mode #box-comments {
         $.each(data, function(key, value) {
           if (key.match(/^shipping_address/)) {
             $.each(value, function(key, value) {
-              if ($('*[name="customer[shipping_address]['+key+']"]').length) $('*[name="customer[shipping_address]['+key+']"]').val(value).trigger('change');
+              if ($(':input[name="customer[shipping_address]['+key+']"]').length) $(':input[name="customer[shipping_address]['+key+']"]').val(value).trigger('change');
             });
           } else {
-            if ($('*[name="customer['+key+']"]').length) $('*[name="customer['+key+']"]').val(value).trigger('change');
+            if ($(':input[name="customer['+key+']"]').length) $(':input[name="customer['+key+']"]').val(value).trigger('change');
           }
         });
       },

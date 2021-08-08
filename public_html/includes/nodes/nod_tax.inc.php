@@ -78,6 +78,7 @@
         switch(strtolower($customer)) {
 
           case 'store':
+
             $customer = [
               'tax_id' => false,
               'company' => false,
@@ -89,9 +90,11 @@
                 'zone_code' => settings::get('site_zone_code'),
               ],
             ];
+
             break;
 
           case 'customer':
+
             $customer = [
               'tax_id' => !empty(customer::$data['tax_id']) ? true : false,
               'company' => !empty(customer::$data['company']) ? true : false,
@@ -111,6 +114,7 @@
                 'zone_code' => customer::$data['zone_code'],
               ];
             }
+
             break;
 
           default:

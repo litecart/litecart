@@ -354,7 +354,7 @@
 
       if (!empty($keyword)) {
         foreach (array_keys(self::$_data) as $token_id) {
-          if (strpos($keyqird, $token_id) !== false) {
+          if (strpos($keyword, $token_id) !== false) {
             unset(self::$_data[$token_id]);
           }
         }

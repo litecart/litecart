@@ -55,7 +55,7 @@
   </div>
 
   <div class="card-filter">
-    <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
+    <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <ul class="list-inline float-end">
       <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></li>
     </ul>

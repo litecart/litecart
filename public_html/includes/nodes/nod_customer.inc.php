@@ -98,16 +98,19 @@
     // Get country from TLD
       if (empty(self::$data['country_code'])) {
         if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+
           $matches[1] = strtr(strtoupper($matches[1]), [
             'UK' => 'GB', // ccTLD .uk is not a country
             'SU' => 'RU', // ccTLD .su is not a country
           ]);
+
           $countries_query = database::query(
             "select * from ". DB_TABLE_PREFIX ."countries
             where status
             and iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
             limit 1;"
           );
+
           $country = database::fetch($countries_query);
           if (!empty($country['iso_code_2'])) self::$data['country_code'] = $country['iso_code_2'];
         }
@@ -139,7 +142,7 @@
 
     // Set first country in list
       if (empty(self::$data['country_code'])) {
-        self::$data['country_code'] = $countries[0];
+        self::$data['country_code'] = $countries[0]['iso_code_2'];
       }
 
     // Set zone from cookie

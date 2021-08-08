@@ -108,8 +108,6 @@
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app', true); ?>
-    <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>

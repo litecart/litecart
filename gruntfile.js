@@ -32,7 +32,7 @@ module.exports = function(grunt) {
     },
 
     less: {
-      backend_template: {
+      backend_variables: {
         options: {
           compress: false,
           sourceMap: false,
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
         }
       },
 
-      backend_template_minified: {
+      backend_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
         }
       },
 
-      frontend_template: {
+      frontend: {
         options: {
           compress: false,
           sourceMap: false,
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
         }
       },
 
-      frontend_template_minified: {
+      frontend_minified: {
         options: {
           compress: true,
           sourceMap: true,

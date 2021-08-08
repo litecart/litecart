@@ -15,7 +15,7 @@
     } else {
       http_response_code(503);
       include vmod::check(FS_DIR_APP . 'frontend/pages/maintenance_mode.inc.php');
-      require_once vmod::check(FS_DIR_APP . 'system/app_footer.inc.php');
+      require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
       exit;
     }
   }

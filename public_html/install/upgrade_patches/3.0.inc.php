@@ -358,7 +358,6 @@
   ]);
 
   perform_action('move', [
-    FS_DIR_ADMIN . '.htpasswd' => FS_DIR_APP . '.htpasswd',
     FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_STORAGE . 'config.inc.php',
   ]);
 

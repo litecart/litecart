@@ -62,7 +62,6 @@
     where c.id
     ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by $sql_sort;"
-
   );
 
   if ($_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -93,8 +92,6 @@
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app', true); ?>
-    <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
@@ -123,11 +120,11 @@
           <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
           <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $customer['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
           <td><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></td>
           <td><?php echo $customer['company']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

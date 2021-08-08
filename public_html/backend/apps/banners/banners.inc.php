@@ -59,14 +59,12 @@
   </div>
 
   <div class="card-action">
-  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app'); ?>
-    <?php echo functions::form_draw_hidden_field('doc'); ?>
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
-    </ul>
-  <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+      <ul class="list-inline">
+        <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
+        <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
+      </ul>
+    <?php echo functions::form_draw_form_end(); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('banners_form', 'post'); ?>

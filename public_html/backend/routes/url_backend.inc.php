@@ -5,6 +5,15 @@
     function routes() {
       return [
         [
+          'pattern' => '#^'. BACKEND_ALIAS .'/?$#',
+          'endpoint' => 'backend',
+          'page' => 'index',
+          'params' => '',
+          'options' => [
+            'redirect' => false,
+          ],
+        ],
+        [
           'pattern' => '#^'. BACKEND_ALIAS .'/(.*?)/(.*?)$#',
           'endpoint' => 'backend',
           'page' => 'index',
@@ -21,29 +30,21 @@
             'redirect' => false,
           ],
         ],
-        [
-          'pattern' => '#^'. BACKEND_ALIAS .'/?$#',
-          'endpoint' => 'backend',
-          'page' => 'index',
-          'params' => '',
-          'options' => [
-            'redirect' => false,
-          ],
-        ],
       ];
     }
 
+  // Backwards Compatibility <3.0.0
     function rewrite(ent_link $link, $language_code) {
 
-      $link->path = ''; // Remove index file for site root
+      $link->path = '';
 
       if (!empty($_GET['app'])) {
         $link->path .= $_GET['app'].'/';
         $link->unset_query('app');
       }
 
-      if (!empty(__DOC__)) {
-        $link->path .= __DOC__;
+      if (!empty($_GET['doc'])) {
+        $link->path .= $_GET['doc'];
         $link->unset_query('doc');
       }
 

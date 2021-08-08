@@ -12,7 +12,7 @@
 
   document::$snippets['title'][] = !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer');
 
-  breadcrumbs::add(language::translate('title_customers', 'Customers'), document::ilink('customers/customers'));
+  breadcrumbs::add(language::translate('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));
   breadcrumbs::add(!empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer'));
 
   if (isset($_POST['save'])) {
@@ -68,7 +68,7 @@
       if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('customers/customers'));
+      header('Location: '. document::ilink(__APP__.'/customers'));
       exit;
 
     } catch (Exception $e) {
@@ -84,7 +84,7 @@
       $customer->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink('customers/customers'));
+      header('Location: '. document::ilink(__APP__.'customers'));
       exit;
 
     } catch (Exception $e) {
@@ -453,10 +453,8 @@
       success: function(data) {
         if (data['alert']) {
           alert(data['alert']);
-          return;
         }
         $.each(data, function(key, value) {
-          console.log(key +' '+ value);
           if ($('input[name="shipping_address['+key+']"]').length && $('input[name="shipping_address['+key+']"]').val() == '') $('input[name="shipping_address['+key+']"]').val(data[key]);
         });
       },

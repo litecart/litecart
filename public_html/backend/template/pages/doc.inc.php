@@ -50,9 +50,9 @@
   </li>
   <?php } ?>
 
-  <?php if ($control_card_link = settings::get('control_card_link', '')) { ?>
+  <?php if ($control_panel_link = settings::get('control_panel_link', '')) { ?>
   <li>
-    <a href="<?php echo $control_card_link; ?>" target="_blank" title="<?php echo language::translate('title_control_card', 'Control Panel'); ?>">
+    <a href="<?php echo $control_panel_link; ?>" target="_blank" title="<?php echo language::translate('title_control_card', 'Control Panel'); ?>">
       <?php echo functions::draw_fonticon('fa-cogs'); ?>
     </a>
   </li>

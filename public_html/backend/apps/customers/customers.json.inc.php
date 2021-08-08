@@ -1,5 +1,4 @@
 <?php
-  ob_end_clean();
 
   if (empty($_REQUEST['page'])) $_REQUEST['page'] = 1;
 

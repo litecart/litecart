@@ -55,7 +55,7 @@
       <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_stock_transaction'), language::translate('title_create_new_transaction', 'Create New Transaction'), '', 'add'); ?>
   </div>
 
-    <?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
+    <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
   <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <div class="input-group">

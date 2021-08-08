@@ -113,8 +113,6 @@ th:not(:last-child) {
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app', true); ?>
-    <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="card-filter">
       <?php if (count($_GET['languages']) > 1) { ?>
       <div>
