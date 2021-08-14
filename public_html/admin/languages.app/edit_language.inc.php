@@ -342,10 +342,10 @@
 
 <script>
 $('input[name="url_type"]').change(function(){
-  if ($(this).val() == 'domain') {
+  if ($('input[name="url_type"][value="domain"]:checked').length) {
     $('input[name="domain_name"]').prop('disabled', false);
   } else {
     $('input[name="domain_name"]').prop('disabled', true);
   }
-}).trigger('change');
+}).first().trigger('change');
 </script>
