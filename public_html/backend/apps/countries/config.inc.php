@@ -15,5 +15,6 @@
     'docs' => [
       'countries' => 'countries.inc.php',
       'edit_country' => 'edit_country.inc.php',
+      'zones.json' => 'zones.json.inc.php',
     ],
   ];

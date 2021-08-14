@@ -488,7 +488,7 @@
 
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+      url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
       async: true,
@@ -531,7 +531,7 @@
 
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+      url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
       async: true,
