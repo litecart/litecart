@@ -1,7 +1,7 @@
 <?php
 
   perform_action('copy', [
-    "data/default/storage/" => FS_DIR_STORAGE,
+    FS_DIR_APP . 'install/data/default/storage/files' => FS_DIR_STORAGE,
   ]);
 
   perform_action('delete', [
@@ -138,6 +138,7 @@
     FS_DIR_APP . 'data/bad_urls.txt',
     FS_DIR_APP . 'data/captcha.ttf',
     FS_DIR_APP . 'data/index.html',
+    FS_DIR_APP . 'images/index.html',
     FS_DIR_APP . 'includes/boxes/box_account_links.inc.php',
     FS_DIR_APP . 'includes/boxes/box_also_purchased_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_campaign_products.inc.php',
@@ -317,6 +318,7 @@
     FS_DIR_APP . 'includes/templates/default.catalog/views/notices.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/pagination.inc.php',
     FS_DIR_APP . 'logs/.htaccess',
+    FS_DIR_APP . 'logs/index.html',
     FS_DIR_APP . 'pages/ajax/cart.json.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_cart.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_customer.inc.php',
@@ -354,7 +356,7 @@
     FS_DIR_APP . 'pages/regional_settings.inc.php',
     FS_DIR_APP . 'pages/reset_password.inc.php',
     FS_DIR_APP . 'pages/search.inc.php',
-    FS_DIR_APP . 'vqmods/.htaccess',
+    FS_DIR_APP . 'vqmod/.htaccess',
   ]);
 
   perform_action('move', [
@@ -389,6 +391,8 @@
     perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_STORAGE . 'logs/', $file)]);
   }
 
+  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
+
   foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
     perform_action('move', [$file => FS_DIR_APP . 'frontend/boxes/' . basename($file)]);
   }
@@ -398,7 +402,7 @@
   }
 
   foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog') as $file) {
-    perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('#\.catalog$#', '', basename($file))]);
+    perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('#\.catalog#', '', basename($file))]);
   }
 
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*') as $file) {
@@ -406,7 +410,7 @@
   }
 
   foreach (glob(FS_DIR_APP . 'pages/*') as $file) {
-    perform_action('move', [$file => FS_DIR_APP . preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file)]);
+    perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file)]);
   }
 
   perform_action('delete', [
@@ -423,12 +427,13 @@
     FS_DIR_APP . 'vqmod/',
   ]);
 
-  perform_action('copy', [
-    FS_DIR_APP . 'install/data/default/storage/files' => FS_DIR_STORAGE,
-  ]);
-
   perform_action('modify', [
     FS_DIR_STORAGE . 'config.inc.php' => [
+      [
+        'search'  => '/'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2) ########', '/') . PHP_EOL .'#{70}'. PHP_EOL .'.*?(#{70})/',
+        'replace' => '$1',
+        'regexp'  => true,
+      ],
       [
         'search'  => "  define('DB_CONNECTION_CHARSET', (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? 'latin1' : 'utf8'); // utf8 or latin1" . PHP_EOL,
         'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,

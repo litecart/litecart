@@ -69,7 +69,6 @@ RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_brands_info`
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL DEFAULT '0' AFTER `id`,
-ADD UNIQUE INDEX `brand_info` (`brand_id`, `language_code`),
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_products`
@@ -98,9 +97,7 @@ UPDATE `lc_settings` SET `setting_group_key` = 'site_info' WHERE `setting_group_
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'site_template' LIMIT 1;
--- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'template', title = 'Template' WHERE `key` = 'site_template_catalog';
+UPDATE `lc_settings` SET `key` = 'template', title = 'Template', `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'site_template_catalog' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'site_template_catalog_settings';
 -- --------------------------------------------------------

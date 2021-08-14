@@ -8,6 +8,10 @@ DROP TABLE IF EXISTS `lc_attribute_values_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_banners`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_brands`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_brands_info`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_cart_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories`;
@@ -31,10 +35,6 @@ DROP TABLE IF EXISTS `lc_emails`;
 DROP TABLE IF EXISTS `lc_geo_zones`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_languages`;
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_brands`;
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_brands_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_modules`;
 -- --------------------------------------------------------
