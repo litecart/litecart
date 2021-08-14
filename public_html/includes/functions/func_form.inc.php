@@ -1117,6 +1117,31 @@ END;
     return $html;
   }
 
+  function form_draw_brands_list($name, $input=true, $parameters='') {
+
+    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+      trigger_error('Passing $multiple as 3rd parameter in form_draw_brands_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      if (isset($args[3])) $parameters = $args[2];
+    }
+
+    $brands_query = database::query(
+      "select id, name from ". DB_TABLE_PREFIX ."brands
+      order by name asc;"
+    );
+
+    $options = [];
+    while ($brand = database::fetch($brands_query)) {
+      $options[] = [$brand['id'], $brand['name']];
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_draw_countries_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
@@ -1371,31 +1396,6 @@ END;
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
       array_unshift($options, ['--', '']);
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
-  function form_draw_brands_list($name, $input=true, $parameters='') {
-
-    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_brands_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
-      if (isset($args[3])) $parameters = $args[2];
-    }
-
-    $brands_query = database::query(
-      "select id, name from ". DB_TABLE_PREFIX ."brands
-      order by name asc;"
-    );
-
-    $options = [];
-    while ($brand = database::fetch($brands_query)) {
-      $options[] = [$brand['name'], $brand['id']];
-    }
-
-    if (preg_match('#\[\]$#', $name)) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }

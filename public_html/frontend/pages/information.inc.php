@@ -7,7 +7,7 @@
     $page = reference::page($_GET['page_id']);
 
     if (empty($page->id)) {
-      throw new Exception(language::translate('error_410_gone', 'The requested file is no longer available'), 410);
+      throw new Exception(language::translate('error_410_gone', 'The requested page is no longer available'), 410);
     }
 
     if (empty($page->status)) {

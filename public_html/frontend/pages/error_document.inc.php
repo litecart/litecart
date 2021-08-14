@@ -36,7 +36,7 @@
 
     case 410:
       $_page->snippets['title'] = 'Gone';
-      $_page->snippets['description'] = language::translate('error_410_gone', 'The requested file is no longer available.');
+      $_page->snippets['description'] = language::translate('error_410_gone', 'The requested page is no longer available.');
       break;
 
     default:

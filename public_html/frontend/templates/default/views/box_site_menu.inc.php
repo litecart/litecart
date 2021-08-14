@@ -131,8 +131,14 @@
         </li>
         <?php } ?>
 
-        <li class="cart dropdown">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-shopping-basket fa-lg'); ?> <span class="hidden-sm hidden-md hidden-lg hidden-xl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span> <span class="caret"></span></a>
+        <li class="shopping-cart<?php if (!empty(cart::$items)) echo ' filled'; ?> dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+            <?php echo functions::draw_fonticon('fa-shopping-basket fa-lg'); ?> <span class="hidden-sm hidden-md hidden-lg hidden-xl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
+
+            <?php if (!empty(cart::$items)) { ?>
+            <span class="badge"><?php echo cart::$total['items']; ?></span>
+            <?php } ?>
+          </a>
           <ul class="dropdown-menu">
             <?php if (!empty(cart::$items)) { ?>
             <?php foreach (cart::$items as $item) { ?>

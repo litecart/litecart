@@ -154,7 +154,7 @@ body.cart-open #cart .dropdown-menu {
 #site-menu a {
   color: inherit;
 }
-#site-menu .shopping-cart > a {
+#site-menu .shopping-cart.filled > a {
   background-color: var(--navigation-cart-color);
 }
 #site-menu .shopping-cart img {

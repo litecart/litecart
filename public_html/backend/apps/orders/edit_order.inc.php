@@ -721,7 +721,7 @@ body.dark-mode #box-comments {
           </li>
           <li>
             <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-            <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+            <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
             <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
           </li>
         </ul>
@@ -1100,7 +1100,7 @@ body.dark-mode #box-comments {
       }
     }
 
-    $('.add-product').attr('href', $('.add-product').data('href') +'&'+ $.param(params));
+    $('.add-product').attr('href', $('.add-product').data('href') +'?'+ $.param(params));
   });
 
   $(':input[name^="customer"]').first().trigger('input');

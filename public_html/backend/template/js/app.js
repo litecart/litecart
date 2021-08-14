@@ -5,7 +5,7 @@
   });
 
 // Form required asterix
-  $(':input[required="required"]').closest('.form-group').addClass('required');
+  $(':input[required]').closest('.form-group').addClass('required');
 
 // AJAX Search
   var timer_ajax_search = null;
@@ -196,7 +196,7 @@
       url: window._env.platform.url + 'ajax/cart.json',
       cache: false
     });
-  }, 60000);
+  }, 60e3);
 
 /*
  * jQuery Category Picker

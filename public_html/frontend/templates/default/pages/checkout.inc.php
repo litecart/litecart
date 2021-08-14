@@ -5,6 +5,12 @@
       <div class="col-md-6">
         {{notices}}
 
+        <div class="text-center" style="margin-bottom: 2em;">
+          <a class="btn btn-default btn-lg" href="<?php echo document::ilink(''); ?>" >
+            <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
+          </a>
+        </div>
+
         <div class="customer wrapper"></div>
 
         <div class="shipping wrapper"></div>
