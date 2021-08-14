@@ -96,6 +96,24 @@
               if (isset($row[$field])) $customer->data[$field] = $row[$field];
             }
 
+          // Set customer data
+            $fields = [
+              'shipping_company',
+              'shipping_firstname',
+              'shipping_lastname',
+              'shipping_address1',
+              'shipping_address2',
+              'shipping_postcode',
+              'shipping_city',
+              'shipping_country_code',
+              'shipping_zone_code',
+              'shipping_phone',
+            ];
+
+            foreach ($fields as $field) {
+              if (isset($row[$field])) $customer->data['shipping_address'][$field] = $row[$field];
+            }
+
             if (!empty($row['new_password'])) $customer->set_password($row['new_password']);
 
             $customer->save();
@@ -206,6 +224,17 @@
               'phone' => $customer['phone'],
               'newsletter' => $customer['newsletter'],
               'notes' => $customer['notes'],
+              'different_shipping_address' => $customer['different_shipping_address'],
+              'shipping_company' => $customer['shipping_address']['company'],
+              'shipping_firstname' => $customer['shipping_address']['firstname'],
+              'shipping_lastname' => $customer['shipping_address']['lastname'],
+              'shipping_address1' => $customer['shipping_address']['address1'],
+              'shipping_address2' => $customer['shipping_address']['address2'],
+              'shipping_postcode' => $customer['shipping_address']['postcode'],
+              'shipping_city' => $customer['shipping_address']['city'],
+              'shipping_country_code' => $customer['shipping_address']['country_code'],
+              'shipping_zone_code' => $customer['shipping_address']['zone_code'],
+              'shipping_phone' => $customer['shipping_address']['phone'],
             ];
           }
 
