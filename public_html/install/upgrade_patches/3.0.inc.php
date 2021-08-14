@@ -434,8 +434,8 @@
         'replace' => "  define('DB_CONNECTION_CHARSET', 'utf8'); // utf8 or latin1" . PHP_EOL,
       ],
       [
-        'search'  => "/\/\/ Database Tables - Backwards Compatibility \(LiteCart <2\.3\).*?######################################################################/",
-        'replace' => "######################################################################",
+        'search'  => '/'. preg_quote('// Database Tables - Backwards Compatibility (LiteCart <2.3)', '/') .'.*?(#{70})/',
+        'replace' => '$1',
         'regexp'  => true,
       ],
       [
@@ -448,19 +448,19 @@
   perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
       [
-        'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.', '#') . PHP_EOL,
+        'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL, '/') .'/',
         'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL
                   .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
       [
-        'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$', '#') . PHP_EOL,
+        'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$' . PHP_EOL, '/') .'/',
         'replace' => '  $1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL
                   .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
       [
-        'search'  => '  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.mydomain\.com', '#') . PHP_EOL,
+        'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www.mydomain.com' . PHP_EOL, '/') .'/',
         'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL
                   .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
@@ -517,7 +517,7 @@
                    . "  define('WS_DIR_STORAGE',     WS_DIR_APP . 'storage/');" . PHP_EOL,
       ],
       [
-        'search'  => '#'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?('. preg_quote('## Database ##########################################################', '#') .')#',
+        'search'  => '/'. preg_quote('## Backwards Compatible Directory Definitions (LiteCart <2.2)', '#') .'.*?('. preg_quote('## Database ##########################################################', '/') .')/',
         'replace' => '$1',
         'regexp'  => true,
       ],
