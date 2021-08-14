@@ -66,9 +66,15 @@
             limit 1;"
           );
 
-          if (!$row = database::fetch($query)) return;
+          if (!$row = database::fetch($query)) {
+            $country = new ent_country();
+            $this->_data = $country->data;
+            return;
+          }
 
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+          foreach ($row as $key => $value) {
+            $this->_data[$key] = $value;
+          }
 
           break;
       }
