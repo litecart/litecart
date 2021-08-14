@@ -74,17 +74,17 @@
   }
 
   $on_error_options = [
-    [language::translate('title_warning', 'Warning'), 'warning'],
-    [language::translate('title_ignore', 'Ignore'), 'ignore'],
-    [language::translate('title_cancel', 'Cancel'), 'cancel'],
+    'warning' => language::translate('title_warning', 'Warning'),
+    'ignore' => language::translate('title_ignore', 'Ignore'),
+    'cancel' => language::translate('title_cancel', 'Cancel'),
   ];
 
   $position_options = [
-    [language::translate('title_replace', 'Replace'), 'replace'],
-    [language::translate('title_before', 'Before'), 'before'],
-    [language::translate('title_after', 'After'), 'after'],
-    [language::translate('title_top', 'Top'), 'top'],
-    [language::translate('title_bottom', 'Bottom'), 'Bottom'],
+    'replace' => language::translate('title_replace', 'Replace'),
+    'before' => language::translate('title_before', 'Before'),
+    'after' => language::translate('title_after', 'After'),
+    'top' => language::translate('title_top', 'Top'),
+    'bottom' => language::translate('title_bottom', 'Bottom'),
   ];
 
 ?>

@@ -93,6 +93,11 @@
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 
+  $language_options = ['' => '-- '. language::translate('title_select', 'Select') .' --'];
+  foreach ($_GET['languages'] as $language_code) {
+    $language_options[$language_code] = language::$languages[$language_code]['name'];
+  }
+
   functions::draw_lightbox();
 ?>
 <style>
@@ -120,7 +125,7 @@ th:not(:last-child) {
       </div>
       <?php } ?>
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <div><?php echo functions::form_draw_select_field('endpoint', [['-- '. language::translate('title_all', 'All') .' --', ''], [language::translate('title_frontend', 'Frontend'), 'frontend'], [language::translate('title_backend', 'Backend'), 'backend']]); ?></div>
+      <div><?php echo functions::form_draw_select_field('endpoint', ['' => '-- '. language::translate('title_all', 'All') .' --'], 'frontend' => language::translate('title_frontend', 'Frontend'), 'backend' => language::translate('title_backend', 'Backend')]); ?></div>
       <div>
         <label><?php echo functions::form_draw_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?></label><br />
         <label><?php echo functions::form_draw_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?></label>
@@ -189,17 +194,11 @@ th:not(:last-child) {
     <div class="col-md-6">
       <div class="form-group">
         <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
-<?php
-  $options = [['-- '. language::translate('title_select', 'Select') .' --']];
-  foreach ($_GET['languages'] as $language_code) {
-    $options[] = [language::$languages[$language_code]['name'], $language_code];
-  }
-?>
-        <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>
+        <?php echo functions::form_draw_select_field('from_language_code', $language_options, $_GET['languages'][0]); ?>
       </div>
       <div class="form-group">
         <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
-        <?php echo functions::form_draw_select_field('to_language_code', $options); ?>
+        <?php echo functions::form_draw_select_field('to_language_code', $language_options); ?>
       </div>
       <div class="form-group">
         <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>

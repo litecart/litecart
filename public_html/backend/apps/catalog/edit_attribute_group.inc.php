@@ -68,8 +68,8 @@
   }
 
   $sort_options = [
-    [language::translate('title_list_order', 'List Order'), 'priority'],
-    [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
+    'priority' => language::translate('title_list_order', 'List Order'),
+    'alphabetical' => language::translate('title_alphabetical', 'Alphabetical'),
   ];
 ?>
 <div class="card card-app">

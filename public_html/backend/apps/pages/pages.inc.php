@@ -71,10 +71,10 @@
   }
 
   $dock_options = [
-    ['-- '. language::translate('title_all', 'All') .' --', ''],
-    [language::translate('title_site_menu', 'Site Menu'), 'menu'],
-    [language::translate('title_customer_service', 'Customer Service'), 'customer_service'],
-    [language::translate('title_information', 'Information'), 'information'],
+    '' => '-- '. language::translate('title_all', 'All') .' --',
+    'menu' => language::translate('title_site_menu', 'Site Menu'),
+    'customer_service' => language::translate('title_customer_service', 'Customer Service'),
+    'information' => language::translate('title_information', 'Information'),
   ];
 ?>
 

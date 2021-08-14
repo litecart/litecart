@@ -122,7 +122,7 @@
           <label><?php echo language::translate('title_rate', 'Rate'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_decimal_field('rate', true, 4); ?>
-            <?php echo functions::form_draw_select_field('type', [['percent'], ['fixed']], true, 'style="width: 150px;"'); ?>
+            <?php echo functions::form_draw_select_field('type', ['percent' => language::translate('title_percent', 'Percent'), 'fixed' => language::translate('title_fixed', 'Fixed')], true, 'style="width: 150px;"'); ?>
           </div>
         </div>
       </div>

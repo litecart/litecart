@@ -196,32 +196,32 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
-  $options = [
-    [language::strftime('%e %b %Y'), '%e %b %Y'],
-    [language::strftime('%b %e %Y'), '%b %e %Y'],
+  $date_format_options = [
+    '%e %b %Y' => language::strftime('%e %b %Y'),
+    '%b %e %Y' => language::strftime('%b %e %Y'),
   ];
-  echo functions::form_draw_select_field('format_date', $options, true);
+  echo functions::form_draw_select_field('format_date', $date_format_options, true);
 ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
-  $options = [
+  $time_format_options = [
     [
       'label' => '12-Hour Format',
       'options' => [
-        [language::strftime('%I:%M %p'), '%I:%M %P'],
+        '%I:%M %P' => language::strftime('%I:%M %p'),
       ],
     ],
     [
       'label' => '24-Hour Format',
       'options' => [
-        [language::strftime('%H:%M'), '%H:%M'],
+        '%H:%M' => language::strftime('%H:%M'),
       ],
     ],
   ];
-  echo functions::form_draw_select_optgroup_field('format_time', $options, true);
+  echo functions::form_draw_select_optgroup_field('format_time', $time_format_options, true);
 ?>
         </div>
       </div>
@@ -230,52 +230,52 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
-  $options = [
+  $raw_date_format_options = [
     [
       'label' => 'Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled',
       'options' => [
-        [date('Y-m-d'), 'Y-m-d'],
-        [date('Y.m.d'), 'Y.m.d'],
-        [date('Y/m/d'), 'Y/m/d'],
+        'Y-m-d' => date('Y-m-d'),
+        'Y.m.d' => date('Y.m.d'),
+        'Y/m/d' => date('Y/m/d'),
       ],
     ],
     [
       'label' => 'Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled',
       'options' => [
-        [date('d-m-Y'), 'd-m-Y'],
-        [date('d.m.Y'), 'd.m.Y'],
-        [date('d/m/Y'), 'd/m/Y'],
+        'd-m-Y' => date('d-m-Y'),
+        'd.m.Y' => date('d.m.Y'),
+        'd/m/Y' => date('d/m/Y'),
       ],
     ],
     [
       'label' => 'Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled',
       'options' => [
-        [date('m/d/y'), 'm/d/y'],
+        'm/d/y' => date('m/d/y'),
       ],
     ],
   ];
-  echo functions::form_draw_select_optgroup_field('raw_date', $options, true);
+  echo functions::form_draw_select_optgroup_field('raw_date', $raw_date_format_options, true);
 ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
-  $options = [
+  $raw_time_format_options = [
     [
       'label' => '12-hour format',
       'options' => [
-        [date('h:i A'), 'h:i A'],
+        'h:i A' => date('h:i A'),
       ],
     ],
     [
       'label' => '24-hour format',
       'options' => [
-        [date('H:i'), 'H:i'],
-      ]
+        'H:i' => date('H:i'),
+      ],
     ],
   ];
-  echo functions::form_draw_select_optgroup_field('raw_time', $options, true);
+  echo functions::form_draw_select_optgroup_field('raw_time', $raw_time_format_options, true);
 ?>
         </div>
       </div>
@@ -284,25 +284,25 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></label>
 <?php
-  $options = [
-    [language::translate('char_dot', 'Dot'), '.'],
-    [language::translate('char_comma', 'Comma'), ','],
+  $decimal_point_options = [
+    '.' => language::translate('char_dot', 'Dot'),
+    ',' => language::translate('char_comma', 'Comma'),
   ];
-  echo functions::form_draw_select_field('decimal_point', $options, true);
+  echo functions::form_draw_select_field('decimal_point', $decimal_point_options, true);
 ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></label>
 <?php
-  $options = [
-    [language::translate('char_comma', 'Comma'), ','],
-    [language::translate('char_dot', 'Dot'), '.'],
-    [language::translate('char_space', 'Space'), ' '],
-    [language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '],
-    [language::translate('char_single_quote', 'Single quote'), '\''],
+  $thousands_separator_options = [
+    ',' => language::translate('char_comma', 'Comma'),
+    '.' => language::translate('char_dot', 'Dot'),
+    ' ' => language::translate('char_space', 'Space'),
+    ' ' => language::translate('char_nonbreaking_space', 'Non-Breaking Space'),
+    '\'' => language::translate('char_single_quote', 'Single quote'),
   ];
-  echo functions::form_draw_select_field('thousands_sep', $options, true);
+  echo functions::form_draw_select_field('thousands_sep', $thousands_separator_options, true);
 ?>
         </div>
       </div>
@@ -321,12 +321,8 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('set_default', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_default_language', 'Set as default language'); ?></label>
-          </div>
-          <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('set_store', '1', (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('site_language_code')) ? '1' : true); ?> <?php echo language::translate('description_set_as_store_language', 'Set as store language'); ?></label>
-          </div>
+          <?php echo functions::form_draw_checkbox('set_default', ['1', language::translate('description_set_as_default_language', 'Set as default language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?>
+          <?php echo functions::form_draw_checkbox('set_store', ['1', language::translate('description_set_as_store_language', 'Set as store language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('site_language_code')) ? '1' : true); ?></label>
         </div>
       </div>
 
