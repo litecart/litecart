@@ -49,7 +49,7 @@ ALTER TABLE `lc_orders_items`
 ADD COLUMN `stock_item_id` INT(11) NOT NULL DEFAULT '0' AFTER `product_id`,
 ADD COLUMN `description` VARCHAR(256) NOT NULL DEFAULT '' AFTER `name`,
 CHANGE COLUMN `options` `data` VARCHAR(1024) NOT NULL DEFAULT '' AFTER `description`,
-ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `length_unit`,
+ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `dim_class`,
 ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
@@ -89,7 +89,7 @@ WHERE `key` REGEXP '^store_';
 -- --------------------------------------------------------
 UPDATE `lc_settings_groups`
 SET `key` = 'site_info',
-  title = 'Site Info',
+  name = 'Site Info',
   description = 'Site information'
 WHERE `key` = 'store_info'
 LIMIT 1;
@@ -222,3 +222,8 @@ CREATE TABLE `lc_stock_transactions_contents` (
 	`quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 	PRIMARY KEY (`id`)
 );
+-- --------------------------------------------------------
+ALTER TABLE `lc_users`
+CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '' AFTER `total_logins`,
+CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '' AFTER `last_ip_address`,
+ADD COLUMN `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '' AFTER `last_hostname`;

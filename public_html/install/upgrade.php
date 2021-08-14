@@ -11,7 +11,7 @@
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
       . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n"
-      . "  --backup             Backup the database before running upgrade (Omit for no backup)\n";
+      . "  --backup             Backup the database before running upgrade (Default: true)\n";
       exit;
     }
 
@@ -412,7 +412,9 @@ input[name="development_type"]:checked + div {
   <h3>Backup</h3>
 
   <div class="form-group">
-    <label><input class="form-check" type="checkbox" name="backup" value="true" checked /> Backup my database before performing the upgrade.</label>
+    <label class="form-check">
+      <input type="checkbox" name="backup" value="true" checked /> Backup my database before performing the upgrade.
+    </label>
   </div>
 
   <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
@@ -463,8 +465,6 @@ input[name="development_type"]:checked + div {
       </div>
     </label>
   </div>
-
-  <p class="alert alert-danger">Backup your files <strong><u>and</u></strong> database <strong><u>before</u></strong> you continue!</p>
 
   <button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
 </form>

@@ -6,7 +6,7 @@
 
   ini_set('display_errors', 'On');
 
-  $document_root = file_realpath(dirname(__FILE__) . '/..') .'/';
+  $document_root = str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/'));
 
   function return_bytes($string) {
     sscanf($string, '%u%c', $number, $suffix);
@@ -268,7 +268,7 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="../assets/jquery/jquery-3.5.1.min.js"></script>
+<script src="../assets/jquery/jquery-3.6.0.min.js"></script>
 <script src="../assets/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
