@@ -183,7 +183,7 @@
                 foreach($columns as $column) {
                   if (!isset($rows[$column])) {
                     $output .= 'NULL, ';
-                  } elseif (!empty($rows[$column])) {
+                  } elseif ($rows[$column] != '') {
                     $row = strtr($rows[$column], ["'" => "\\'", '\\'=> '\\\\', "\r" => "\\r", "\n" => "\\n"]);
                     $row = preg_replace('#'. preg_quote(PHP_EOL, '#') ."\##", PHP_EOL . '#', $row);
 
@@ -316,7 +316,7 @@
 
       echo '<p>Reset error log... ';
 
-      if (file_put_contents(FS_DIR_APP . 'logs/errors.log', '') !== false) {
+      if (file_put_contents(FS_DIR_STORAGE . 'logs/errors.log', '') !== false) {
         echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
