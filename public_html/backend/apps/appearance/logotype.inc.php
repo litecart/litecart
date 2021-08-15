@@ -49,7 +49,7 @@
     <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true, 'style="max-width: 320px;"'); ?>
 
       <div class="thumbnail" style="padding: 1em; display: inline-block;  margin-top: 1em;">
-        <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/logotype.png', 500, 500, 'FIT_ONLY_BIGGER')); ?>" alt="" />
+        <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/logotype.png', 500, 500, 'FIT_ONLY_BIGGER')); ?>" alt="" />
       </div>
 
       <div class="form-group">
