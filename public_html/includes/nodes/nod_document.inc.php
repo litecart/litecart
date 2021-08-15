@@ -246,7 +246,7 @@
           }
 
         // Remove JS comments
-          $javascript = preg_replace('#(?:(?:/\*(?:[^*]|(?:\*+[^*/]))*\*+/)|(?:(?<!\:|\\\|\')//.*))#', '', $javascript);
+          $javascript = preg_replace('#(/\*([^*]|\*+[^*/])*\*+/|\s+//.*)#', '', $javascript);
 
           if (!empty($javascript)) {
             $javascript = '<script>' . PHP_EOL
