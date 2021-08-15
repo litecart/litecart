@@ -239,6 +239,7 @@ CREATE TABLE `lc_languages` (
   `code` VARCHAR(2) NOT NULL DEFAULT '',
   `code2` VARCHAR(3) NOT NULL DEFAULT '',
   `name` VARCHAR(32) NOT NULL DEFAULT '',
+  `direction` ENUM('ltr','rtl') NOT NULL DEFAULT 'ltr',
   `locale` VARCHAR(64) NOT NULL DEFAULT '',
   `charset` VARCHAR(16) NOT NULL DEFAULT '',
   `url_type` VARCHAR(16) NOT NULL DEFAULT '',

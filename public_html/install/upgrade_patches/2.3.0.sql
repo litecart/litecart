@@ -23,3 +23,6 @@ ALTER TABLE `lc_products`
 ADD COLUMN `quantity_min` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity`,
 ADD COLUMN `quantity_max` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity_min`,
 ADD COLUMN `quantity_step` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTER `quantity_max`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_languages`
+ADD COLUMN `direction` ENUM('ltr','rtl') NOT NULL DEFAULT 'ltr' AFTER `name`;
