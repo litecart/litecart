@@ -7,11 +7,15 @@
     $page = reference::page($_GET['page_id']);
 
     if (empty($page->id)) {
-      throw new Exception(language::translate('error_410_gone', 'The requested file is no longer available'), 410);
+      http_response_code(410);
+      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      return;
     }
 
     if (empty($page->status)) {
-      throw new Exception(language::translate('error_404_not_found', 'The requested file could not be found'), 404);
+      http_response_code(404);
+      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      return;
     }
 
     document::$snippets['title'][] = !empty($page->head_title) ? $page->head_title : $page->title;

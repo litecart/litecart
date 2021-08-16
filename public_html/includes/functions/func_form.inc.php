@@ -842,7 +842,7 @@
       $input = form_reinsert_value($name);
     }
 
-    $html = '<div class="input-group" style="flex-direction: column;"' . (($parameters) ? ' ' . $parameters : '') .' data-toggle="category-picker">' . PHP_EOL
+    $html = '<div data-toggle="category-picker"' . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
           . '  <div class="form-control" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
           . '    <ul class="categories list-unstyled">' . PHP_EOL;
 
@@ -875,7 +875,7 @@
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
            . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
-           . '    <ul class="dropdown-menu" style="right: 0;"></ul>' . PHP_EOL
+           . '    <ul class="dropdown-menu" style="padding: .5em; right: 0;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';
 
