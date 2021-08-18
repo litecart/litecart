@@ -74,10 +74,6 @@ ErrorDocument 500 "Internal Server Error"
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
-  <IfModule !mod_authz_core.c>
-    Order Deny,Allow
-    Deny from all
-  </IfModule>
 </FilesMatch>
 
 # Cacheable external content
@@ -99,13 +95,7 @@ ErrorDocument 500 "Internal Server Error"
 #  Header set X-Robots-Tag "noindex, nofollow"
 #</IfModule>
 
-# Protect catalog using admin .htpasswd, handy for development platforms
-#<IfModule mod_auth.c>
-#  AuthType Basic
-#  AuthName "Restricted Area"
-#  AuthUserFile "{APP_DIR}.htpasswd"
-#  Require valid-user
-#</IfModule>
+# Protect your site HTTP Auth Basic protection, handy for development platforms
 #<IfModule mod_auth_basic.c>
 #  AuthType Basic
 #  AuthName "Restricted Area"
