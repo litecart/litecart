@@ -167,6 +167,9 @@
         'tax' => $product->tax,
         'tax_class_id' => $product->tax_class_id,
         'quantity' => $quantity,
+        'quantity_min' => $product->quantity_min ? $product->quantity_min : '0',
+        'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
+        'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,
         'quantity_unit' => [
           'name' => !empty($product->quantity_unit['name']) ? $product->quantity_unit['name'] : '',
           'decimals' => !empty($product->quantity_unit['decimals']) ? $product->quantity_unit['decimals'] : '',

@@ -146,7 +146,7 @@
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
-              <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 1 / intval('1'.str_repeat('0', $quantity_unit['decimals'])), null) : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_min ? $quantity_min : '1', $quantity_max ? $quantity_max : '', 'step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
+              <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_min ? $quantity_min : '1', $quantity_max ? $quantity_max : null, 'step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
               <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
             </div>
 
