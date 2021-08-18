@@ -384,6 +384,8 @@ CREATE TABLE `lc_orders` (
   `currency_code` VARCHAR(3) NOT NULL DEFAULT '',
   `currency_value` DECIMAL(11,6) UNSIGNED NOT NULL DEFAULT '0',
   `display_prices_including_tax` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `total` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `tax_total` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `client_ip` VARCHAR(39) NOT NULL DEFAULT '',

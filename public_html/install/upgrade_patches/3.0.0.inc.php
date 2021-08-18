@@ -608,6 +608,18 @@
     );
   }
 
+// Set subtotal for all previous orders
+  database::query(
+    "update `". DB_TABLE_PREFIX ."`orders o
+    left join (
+      select order_id, sum(quantity * price) as subtotal, sum(quantity * tax) as subtotal_tax
+      from `". DB_TABLE_PREFIX ."`orders_items
+      group by order_id
+    ) oi on (oi.order_id = o.id)
+    set o.subtotal = if(oi.subtotal, oi.subtotal, 0),
+      o.subtotal_tax = if(oi.subtotal_tax, oi.subtotal_tax, 0);"
+  );
+
 // Convert Table Charset and Collations
   $collations = [];
 
