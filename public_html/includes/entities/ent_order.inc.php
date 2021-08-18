@@ -82,6 +82,8 @@
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
       ]);
 
+      $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
+
       $this->shipping = new mod_shipping();
       $this->payment = new mod_payment();
       $this->order_total = new mod_order_total();
@@ -284,7 +286,7 @@
           weight_total = ". (float)$this->data['weight_total'] .",
           weight_unit = '". database::input($this->data['weight_unit']) ."',
           display_prices_including_tax = ". (int)$this->data['display_prices_including_tax'] .",
-          payment_due = ". (float)$this->data['payment_due'] .",
+          total = ". (float)$this->data['total'] .",
           tax_total = ". (float)$this->data['tax_total'] .",
           public_key = '". database::input($this->data['public_key']) ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -482,14 +484,14 @@
 
     public function refresh_total() {
       $this->data['subtotal'] = ['amount' => 0, 'tax' => 0];
-      $this->data['payment_due'] = 0;
+      $this->data['total'] = 0;
       $this->data['tax_total'] = 0;
       $this->data['weight_total'] = 0;
 
       foreach ($this->data['items'] as $item) {
         $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
         $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
-        $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
+        $this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
         $this->data['tax_total'] += $item['tax'] * $item['quantity'];
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
       }
@@ -501,7 +503,7 @@
         }
 
         if (empty($row['calculate'])) continue;
-        $this->data['payment_due'] += $row['value'] + $row['tax'];
+        $this->data['total'] += $row['value'] + $row['tax'];
         $this->data['tax_total'] += $row['tax'];
       } unset($row);
     }
@@ -560,7 +562,7 @@
 
       $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
       $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
-      $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
+      $this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
       $this->data['tax_total'] += $item['tax'] * $item['quantity'];
       $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
     }
@@ -718,7 +720,7 @@
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
-        '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
+        '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
         '%store_name' => settings::get('site_name'),
@@ -749,7 +751,7 @@
       $subject = '['. language::translate('title_order', 'Order', $language_code) .' #'. $this->data['id'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation', $language_code);
 
       $message = "Thank you for your purchase!\r\n\r\n"
-               . "Your order #%order_id has successfully been created with a total of %payment_due for the following ordered items:\r\n\r\n"
+               . "Your order #%order_id has successfully been created with a total of %total for the following ordered items:\r\n\r\n"
                . "%order_items\r\n\r\n"
                . "A printable order copy is available here:\r\n"
                . "%order_copy_url\r\n\r\n"
@@ -789,7 +791,7 @@
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
-        '%payment_due' => currency::format($this->data['payment_due'], true, $this->data['currency_code'], $this->data['currency_value']),
+        '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
         '%order_status' => $order_status->name,
         '%store_name' => settings::get('site_name'),

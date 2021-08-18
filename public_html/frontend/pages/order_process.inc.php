@@ -25,7 +25,7 @@
   }
 
 // If there is an amount to pay
-  if (currency::format_raw($order->data['payment_due'], $order->data['currency_code'], $order->data['currency_value']) > 0) {
+  if (currency::format_raw($order->data['total'], $order->data['currency_code'], $order->data['currency_value']) > 0) {
 
   // Refresh the order if it's in the database in case a callback might have tampered with it
     if (!empty($order->data['id'])) {

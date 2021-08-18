@@ -15,7 +15,7 @@
 
   // Total Sales
     $orders_query = database::query(
-      "select count(id) as num_orders, max(payment_due) as max_order_amount, sum(payment_due - tax_total) as total_sales from ". DB_TABLE_PREFIX ."orders
+      "select count(id) as num_orders, max(total) as max_order_amount, sum(total - tax_total) as total_sales from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."');"
     );
     $orders = database::fetch($orders_query);
@@ -25,7 +25,7 @@
 
   // Total Sales Year
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales_year from ". DB_TABLE_PREFIX ."orders
+      "select sum(total - tax_total) as total_sales_year from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) ."';"
     );
@@ -34,7 +34,7 @@
 
   // Total Sales Month
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales_month from ". DB_TABLE_PREFIX ."orders
+      "select sum(total - tax_total) as total_sales_month from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) ."';"
     );
@@ -43,7 +43,7 @@
 
   // Average order amount
     $orders_query = database::query(
-      "select count(id) as num_orders, sum(payment_due - tax_total) as total_sales from ". DB_TABLE_PREFIX ."orders
+      "select count(id) as num_orders, sum(total - tax_total) as total_sales from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."';"
     );

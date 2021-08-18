@@ -704,7 +704,7 @@ body.dark-mode #box-comments {
 
             <tfoot>
               <tr>
-                <td colspan="6" class="text-end" style="font-size: 1.5em;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
+                <td colspan="6" class="text-end" style="font-size: 1.5em;"><?php echo language::translate('title_total', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['total'], false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
               </tr>
             </tfoot>
           </table>

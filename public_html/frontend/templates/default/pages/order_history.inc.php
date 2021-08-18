@@ -33,7 +33,7 @@
                 <td><a href="<?php echo htmlspecialchars($order['link']); ?>" class="lightbox-iframe"><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
                 <td class="text-center"><?php echo $order['num_downloads'] ? '<a href="'. document::href_ilink('downloads') .'">'. language::translate('title_downloads', 'Downloads') .'</a>' : ''; ?></td>
                 <td class="text-center"><?php echo $order['order_status']; ?></td>
-                <td class="text-end"><?php echo $order['payment_due']; ?></td>
+                <td class="text-end"><?php echo $order['total']; ?></td>
                 <td class="text-end"><?php echo $order['date_created']; ?></td>
                 <td class="text-end"><a href="<?php echo htmlspecialchars($order['printable_link']); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
               </tr>

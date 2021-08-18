@@ -43,6 +43,7 @@ DROP INDEX `product_option_stock`,
 ADD UNIQUE INDEX `stock_option` (`product_id`, `combination`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
+CHANGE COLUMN `payment_due` `total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
 ADD INDEX `uid` (`uid`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`

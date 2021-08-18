@@ -176,7 +176,7 @@ table.items tbody tr:nth-child(11) {
 
         <tr>
           <td class="text-end"><strong><?php echo language::translate('title_grand_total', 'Grand Total'); ?>:</strong></td>
-          <td class="text-end"><strong><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
+          <td class="text-end"><strong><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
         </tr>
       </tbody>
     </table>

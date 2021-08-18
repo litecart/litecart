@@ -29,8 +29,8 @@
 
     <tfoot>
       <tr>
-        <td colspan="3" class="text-end"><strong><?php echo language::translate('title_payment_due', 'Payment Due'); ?>:</strong></td>
-        <td class="text-end" style="width: 25%;"><strong><?php echo currency::format_html($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
+        <td colspan="3" class="text-end"><strong><?php echo language::translate('title_total', 'Payment Due'); ?>:</strong></td>
+        <td class="text-end" style="width: 25%;"><strong><?php echo currency::format_html($order['total'], false, $order['currency_code'], $order['currency_value']); ?></strong></td>
       </tr>
     </tfoot>
   </table>

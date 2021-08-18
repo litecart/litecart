@@ -44,7 +44,7 @@
         'order_status' => $order['order_status_name'],
         'num_downloads' => database::num_rows($downloadable_order_items_query),
         'date_created' => language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
-        'payment_due' => currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']),
+        'total' => currency::format($order['total'], false, $order['currency_code'], $order['currency_value']),
       ];
 
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

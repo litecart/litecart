@@ -19,7 +19,7 @@
   $orders_query = database::query(
     "select
       group_concat(o.id) as order_ids,
-      sum(o.payment_due) - sum(o.tax_total) as total_sales,
+      sum(o.total) - sum(o.tax_total) as total_sales,
       sum(o.tax_total) as total_tax,
       sum(otst.value) as total_subtotal,
       sum(otsf.value) as total_shipping_fees,

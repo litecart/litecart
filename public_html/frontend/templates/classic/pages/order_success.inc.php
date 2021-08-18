@@ -4,7 +4,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <section id="box-order-success" data-id="<?php echo $order['id']; ?>" data-payment-due="<?php echo currency::format_raw($order['payment_due'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['tax_total'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
+        <section id="box-order-success" data-id="<?php echo $order['id']; ?>" data-payment-due="<?php echo currency::format_raw($order['total'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['tax_total'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
 
           <h1 class="title"><?php echo strtr(language::translate('title_order_completed', 'Your order #%order_id was completed successfully!'), ['%order_id' => $order['id']]); ?></h1>
 
@@ -18,7 +18,7 @@
             <?php } ?>
           </ul>
 
-          <p><strong><?php echo language::translate('title_order_total', 'Order Total'); ?></strong>: <?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></p>
+          <p><strong><?php echo language::translate('title_order_total', 'Order Total'); ?></strong>: <?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></p>
 
           <p><a href="<?php echo htmlspecialchars($printable_link); ?>" target="_blank"><?php echo language::translate('description_click_printable_copy', 'Click here for a printable copy'); ?></a></p>
 
