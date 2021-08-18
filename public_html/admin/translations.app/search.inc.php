@@ -156,7 +156,7 @@ th:not(:last-child) {
               <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
               <td>
                 <?php echo functions::form_draw_hidden_field('translations['. $translation['code'] .'][id]', $translation['id']); ?>
-                <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
+                <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
               </td>
               <?php } ?>
               <td style="text-align: end;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
