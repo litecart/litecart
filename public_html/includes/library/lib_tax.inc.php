@@ -81,10 +81,12 @@
               'company' => false,
               'country_code' => settings::get('store_country_code'),
               'zone_code' => settings::get('store_zone_code'),
+              'city' => '',
               'shipping_address' => [
                 'company' => false,
                 'country_code' => settings::get('store_country_code'),
                 'zone_code' => settings::get('store_zone_code'),
+                'city' => '',
               ],
             ];
             break;
@@ -95,10 +97,12 @@
               'company' => !empty(customer::$data['company']) ? true : false,
               'country_code' => customer::$data['country_code'],
               'zone_code' => customer::$data['zone_code'],
+              'city' => customer::$data['city'],
               'shipping_address' => [
                 'company' => customer::$data['shipping_address']['company'],
                 'country_code' => customer::$data['shipping_address']['country_code'],
                 'zone_code' => customer::$data['shipping_address']['zone_code'],
+                'city' => customer::$data['shipping_address']['city'],
               ],
             ];
 
@@ -107,6 +111,7 @@
                 'company' => customer::$data['company'],
                 'country_code' => customer::$data['country_code'],
                 'zone_code' => customer::$data['zone_code'],
+                'city' => customer::$data['city'],
               ];
             }
             break;
@@ -139,6 +144,7 @@
               select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['country_code']) ."'
               and (zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
+              and (city = '' or city like '". database::input($customer['city']) ."')
             )
           ) or (
             address_type = 'shipping'
@@ -146,6 +152,7 @@
               select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['shipping_address']['country_code']) ."'
               and (zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
+              and (city = '' or city like '". database::input($customer['shipping_address']['city']) ."')
             )
           )
         )

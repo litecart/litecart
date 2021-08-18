@@ -851,11 +851,13 @@ CREATE TABLE `lc_zones_to_geo_zones` (
   `geo_zone_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `country_code` VARCHAR(2) NOT NULL DEFAULT '',
   `zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+  `city` VARCHAR(32) NOT NULL DEFAULT '',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `region` (`geo_zone_id`, `country_code`, `zone_code`),
+  UNIQUE KEY `region` (`geo_zone_id`, `country_code`, `zone_code`, `city`),
   KEY `geo_zone_id` (`geo_zone_id`),
   KEY `country_code` (`country_code`),
-  KEY `zone_code` (`zone_code`)
+  KEY `zone_code` (`zone_code`),
+  KEY `city` (`city`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};

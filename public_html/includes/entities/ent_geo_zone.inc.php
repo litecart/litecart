@@ -94,21 +94,22 @@
       );
 
       if (!empty($this->data['zones'])) {
-        foreach ($this->data['zones'] as $zone) {
+        foreach ($this->data['zones'] as $key => $zone) {
 
           if (empty($zone['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."zones_to_geo_zones
-              (geo_zone_id, date_created)
-              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
+              (geo_zone_id, country_code, zone_code, city, date_created)
+              values (". (int)$this->data['id'] .", '". database::input($zone['country_code']) ."', '". database::input($zone['zone_code']) ."', '". database::input($zone['city']) ."', '". ($this->data['zones'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
-            $zone['id'] = database::insert_id();
+            $this->data['zones'][$key]['id'] = $zone['id'] = database::insert_id();
           }
 
           database::query(
             "update ". DB_TABLE_PREFIX ."zones_to_geo_zones
             set country_code = '". database::input($zone['country_code']) ."',
-            zone_code = '". (isset($zone['zone_code']) ? database::input($zone['zone_code']) : '') ."',
+            zone_code = '". database::input($zone['zone_code']) ."',
+            city = '". database::input($zone['city']) ."',
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where geo_zone_id = ". (int)$this->data['id'] ."
             and id = ". (int)$zone['id'] ."
