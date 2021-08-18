@@ -168,10 +168,10 @@ table.items tbody tr:nth-child(11) {
           <?php } ?>
           <?php } ?>
 
-          <?php if (!empty($order['tax_total']) && $order['tax_total'] != 0) { ?>
+          <?php if (!empty($order['total_tax']) && $order['total_tax'] != 0) { ?>
           <tr>
             <td class="text-end"><?php echo !empty($order['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-            <td class="text-end"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
           </tr>
           <?php } ?>
 

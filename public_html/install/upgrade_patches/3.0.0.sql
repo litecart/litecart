@@ -46,6 +46,7 @@ ALTER TABLE `lc_orders`
 ADD COLUMN `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
 ADD COLUMN `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
 CHANGE COLUMN `payment_due` `total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal_tax`,
+CHANGE COLUMN `tax_total` `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `total`,
 ADD INDEX `uid` (`uid`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`

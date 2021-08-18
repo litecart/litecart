@@ -19,10 +19,10 @@
       </tr>
       <?php } ?>
 
-      <?php if ($order['tax_total']) { ?>
+      <?php if ($order['total_tax']) { ?>
       <tr>
         <td colspan="3" class="text-end text-muted"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>:</td>
-        <td class="text-end text-muted"><?php echo currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td class="text-end text-muted"><?php echo currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
       </tr>
       <?php } ?>
     </tbody>

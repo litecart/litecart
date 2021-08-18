@@ -9,7 +9,7 @@
   // Monthly Sales
 
     $orders_query = database::query(
-      "select sum(total - tax_total) as total_sales, date_format(date_created, '%Y') as year, date_format(date_created, '%m') as month
+      "select sum(total - total_tax) as total_sales, date_format(date_created, '%Y') as year, date_format(date_created, '%m') as month
       from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
         select id from ". DB_TABLE_PREFIX ."order_statuses
@@ -60,7 +60,7 @@
     }
 
     $orders_query = database::query(
-      "select round(sum(total - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday
+      "select round(sum(total - total_tax) / count(distinct(date(date_created))), 2) as total_sales, total_tax as total_tax, weekday(date_created)+1 as weekday
       from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
         select id from ". DB_TABLE_PREFIX ."order_statuses
@@ -76,7 +76,7 @@
     }
 
     $orders_query = database::query(
-      "select round(sum(total - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(total - tax_total)
+      "select round(sum(total - total_tax) / count(distinct(date(date_created))), 2) as average_sales, total_tax as total_tax, weekday(date_created)+1 as weekday, group_concat(total - total_tax)
       from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
         select id from ". DB_TABLE_PREFIX ."order_statuses

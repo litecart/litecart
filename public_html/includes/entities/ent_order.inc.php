@@ -84,6 +84,7 @@
       ]);
 
       $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
+      $this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
 
       $this->shipping = new mod_shipping();
       $this->payment = new mod_payment();
@@ -190,6 +191,9 @@
         $this->data['comments'][$row['id']] = $row;
       }
 
+      $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
+      $this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
+
       if (!empty($this->data['shipping'])) {
         $this->shipping = new mod_shipping();
       }
@@ -290,7 +294,7 @@
           subtotal = ". (float)$this->data['subtotal'] .",
           subtotal_tax = ". (float)$this->data['subtotal_tax'] .",
           total = ". (float)$this->data['total'] .",
-          tax_total = ". (float)$this->data['tax_total'] .",
+          total_tax = ". (float)$this->data['total_tax'] .",
           public_key = '". database::input($this->data['public_key']) ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
@@ -489,14 +493,14 @@
       $this->data['subtotal'] = 0;
       $this->data['subtotal_tax'] = 0;
       $this->data['total'] = 0;
-      $this->data['tax_total'] = 0;
+      $this->data['total_tax'] = 0;
       $this->data['weight_total'] = 0;
 
       foreach ($this->data['items'] as $item) {
         $this->data['subtotal'] += $item['price'] * $item['quantity'];
         $this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
         $this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
-        $this->data['tax_total'] += $item['tax'] * $item['quantity'];
+        $this->data['total_tax'] += $item['tax'] * $item['quantity'];
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
       }
 
@@ -508,7 +512,7 @@
 
         if (empty($row['calculate'])) continue;
         $this->data['total'] += $row['value'] + $row['tax'];
-        $this->data['tax_total'] += $row['tax'];
+        $this->data['total_tax'] += $row['tax'];
       } unset($row);
     }
 
@@ -567,7 +571,7 @@
       $this->data['subtotal'] += $item['price'] * $item['quantity'];
       $this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
       $this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
-      $this->data['tax_total'] += $item['tax'] * $item['quantity'];
+      $this->data['total_tax'] += $item['tax'] * $item['quantity'];
       $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
     }
 

@@ -23,10 +23,10 @@
       </tr>
       <?php } ?>
 
-      <?php if ($tax_total) { ?>
+      <?php if ($total_tax) { ?>
       <tr>
         <td class="text-end" style="color: #999;" colspan="5"><?php echo $incl_excl_tax; ?>:</td>
-        <td class="text-end" style="color: #999;"><?php echo $tax_total; ?></td>
+        <td class="text-end" style="color: #999;"><?php echo $total_tax; ?></td>
       </tr>
       <?php } ?>
 

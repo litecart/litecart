@@ -387,7 +387,7 @@ CREATE TABLE `lc_orders` (
   `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `total` DECIMAL(11,4) NOT NULL DEFAULT '0',
-  `tax_total` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `client_ip` VARCHAR(39) NOT NULL DEFAULT '',
   `user_agent` VARCHAR(256) NOT NULL DEFAULT '',
   `domain` VARCHAR(64) NOT NULL DEFAULT '',

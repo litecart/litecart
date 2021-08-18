@@ -25,7 +25,7 @@
 
   $customers_query = database::query(
     "select
-      sum(o.total - tax_total) as total_amount,
+      sum(o.total - total_tax) as total_amount,
       o.customer_id as id,
       if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name,
       customer_email as email

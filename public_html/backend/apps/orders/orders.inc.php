@@ -240,7 +240,7 @@ table .fa-star:hover {
           <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
           <td><?php echo $order['payment_option_name']; ?></td>
           <td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-          <td class="text-end"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
+          <td class="text-end"><?php echo ($order['total_tax'] != 0) ? currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
           <td class="text-center"><?php echo $order['order_status_name']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
           <td>
