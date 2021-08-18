@@ -492,6 +492,11 @@
                    . "  RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
       ],
       [
+        'search'  => "#". preg_quote('<FilesMatch "\.(css|js)$">', '#') .".*?". preg_quote('<FilesMatch "\.(a?png|bmp|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">', '#') ."#",
+        'replace' => '<FilesMatch "\.(a?png|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">',
+        'regexp'  => true,
+      ],
+      [
         'search'  => '#AuthUserFile ".*?.htpasswd"#',
         'replace' => 'AuthUserFile "'. FS_DIR_APP .'.htpasswd"',
         'regexp'  => true,
