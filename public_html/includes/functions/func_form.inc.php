@@ -213,7 +213,7 @@
       $value = round((float)$value, $decimals);
     }
 
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' step="any" />';
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" '. (($min != '') ? 'min="'. (float)$min .'"' : false) . (($max != '') ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) . (!preg_match('#step="([^"]+)?"#', $parameters) ? ' step="any"' : '') .' />';
   }
 
   function form_draw_email_field($name, $value=true, $parameters='') {

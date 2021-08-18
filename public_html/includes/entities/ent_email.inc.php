@@ -144,11 +144,12 @@
         trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
         return $this;
       }
+
       if (!$charset) $charset = $this->data['charset'];
 
       $this->data['multiparts'][] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. $charset . "\r\n"
-                                   . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
-                                   . trim($content);
+                                  . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
+                                  . trim($content);
 
       return $this;
     }

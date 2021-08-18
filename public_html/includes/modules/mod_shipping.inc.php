@@ -58,7 +58,6 @@
         $this->data['options'][$module->id]['options'] = [];
 
         foreach ($module_options['options'] as $option) {
-
           $this->data['options'][$module->id]['options'][$option['id']] = [
             'id' => $option['id'],
             'icon' => $option['icon'],
