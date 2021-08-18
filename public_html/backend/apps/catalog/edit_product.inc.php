@@ -639,7 +639,7 @@
                 <tr>
                   <td colspan="9">
                     <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
-                    <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
+                    <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
                   </td>
                 </tr>
               </tfoot>

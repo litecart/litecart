@@ -9,7 +9,6 @@
   border: none;
   box-shadow: 0 1px 2px var(--input-border-color);
   border-radius: var(--border-radius);
-  overflow-y: auto;
 }
 
 fieldset {
@@ -95,6 +94,7 @@ input[type="number"] {
   display: block;
   color: var(--input-text-color);
   vertical-align: middle;
+  overflow-y: auto;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   //transition: all 50ms;
   &[type="color"] {
@@ -137,7 +137,7 @@ input[type="number"] {
   background-color: #fff;
   background-repeat: no-repeat;
   background-size: contain;
-  border: 1px solid rgba(0,0,0,.25);
+  border: 1px solid rgba(0, 0, 0, .25);
   appearance: none;
   -webkit-print-color-adjust: exact;
   transition: background-color .15s ease-in-out,background-position .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -151,7 +151,7 @@ input[type="number"] {
   }
   &:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.25rem #ccc;
+    box-shadow: 0 0 0 .25rem #ccc;
   }
   &:disabled {
     opcaity: .5;
