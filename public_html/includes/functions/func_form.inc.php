@@ -88,7 +88,7 @@
 
     if (!is_array($value)) {
       if ($input === true) $input = form_reinsert_value($name, $value);
-      return '<span class="form-check"><input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input == $value ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' /></span>';
+      return '<span class="form-check"><input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. ($input == $value ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' /></span>';
     }
 
     if ($input === true) $input = form_reinsert_value($name, $value[0]);
@@ -289,11 +289,11 @@ END;
 
   function form_draw_dropdown($name, $options=[], $input=true, $parameters='') {
 
-    $html = '<div class="form-input dropdown"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
-          . '  <div class="title" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>' . PHP_EOL
-          . '  <div class="dropdown-menu">' . PHP_EOL;
+    $html = '<div class="dropdown"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+          . '  <div class="form-select" data-toggle="dropdown">-- '. language::translate('title_select', 'Select') .' --</div>' . PHP_EOL
+          . '  <ul class="dropdown-menu">' . PHP_EOL;
 
-    $is_numerical_index = (array_keys($group['options']) === range(0, count($group['options']) - 1));
+    $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
 
     foreach ($options as $key => $option) {
 
@@ -305,14 +305,14 @@ END;
         }
       }
 
-      if (substr($name, -2) == '[]') {
-        $html .= '<div class="option">' . functions::form_draw_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></div>' . PHP_EOL;
+      if (preg_match('#\[\]$#', $name)) {
+        $html .= '<li class="option">' . functions::form_draw_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
       } else {
-        $html .= '<div class="option">' . functions::form_draw_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .' <span class="title">'. isset($option[1]) ? $option[1] : $option[0] .'</span></div>' . PHP_EOL;
+        $html .= '<li class="option">' . functions::form_draw_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
       }
     }
 
-    $html .= '  </div>' . PHP_EOL
+    $html .= '  </ul>' . PHP_EOL
            . '</div>';
 
     return $html;
@@ -438,7 +438,7 @@ END;
 
     if (!is_array($value)) {
 	    if ($input === true) $input = form_reinsert_value($name, $value);
-      return '<span class="form-check"><input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-radio"' : '') .' type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" '. ($input == $value ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' /></span>';
+      return '<span class="form-check"><input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-radio"' : '') .' type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. ($input == $value ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' /></span>';
     }
 
     if ($input === true) $input = form_reinsert_value($name, $value[0]);

@@ -66,10 +66,10 @@
     </div>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('form_geo_zone', 'post', false, false, 'style="max-width: 640px;"'); ?>
+  <?php echo functions::form_draw_form_begin('form_geo_zone', 'post'); ?>
+    <div class="card-body">
 
-      <div class="row">
+      <div class="row" style="max-width: 640px;">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
           <?php echo functions::form_draw_text_field('code', true); ?>
@@ -79,56 +79,54 @@
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php echo functions::form_draw_text_field('name', true); ?>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
           <label><?php echo language::translate('title_description', 'Description'); ?></label>
           <?php echo functions::form_draw_text_field('description', true); ?>
         </div>
       </div>
 
       <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
+    </div>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_country', 'Country'); ?></th>
-            <th><?php echo language::translate('title_zone', 'Zone'); ?></th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th><?php echo language::translate('title_country', 'Country'); ?></th>
+          <th><?php echo language::translate('title_zone', 'Zone'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.language::translate('title_all_zones', 'All Zones') .' --'; ?></td>
-            <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
+          <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
+          <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.language::translate('title_all_zones', 'All Zones') .' --'; ?></td>
+          <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td><?php echo functions::form_draw_hidden_field('new_zone[id]', ''); ?></td>
-            <td><?php echo functions::form_draw_countries_list('new_zone[country_code]', ''); ?></td>
-            <td><?php echo functions::form_draw_zones_list('new_zone[zone_code]', '', '', '', 'all'); ?></td>
-            <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td><?php echo functions::form_draw_hidden_field('new_zone[id]', ''); ?></td>
+          <td><?php echo functions::form_draw_countries_list('new_zone[country_code]', ''); ?></td>
+          <td><?php echo functions::form_draw_zones_list('new_zone[zone_code]', '', '', '', 'all'); ?></td>
+          <td class="text-end"><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
-        <?php echo (!empty($geo_zone->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-      </div>
+    <div class="card-action">
+      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+      <?php echo (!empty($geo_zone->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>
 
 <script>
@@ -140,7 +138,7 @@
     var zone_field = $(this).closest('tr').find("select[name='new_zone[zone_code]']");
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+      url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
       cache: true,
       async: true,

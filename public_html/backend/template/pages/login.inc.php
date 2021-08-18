@@ -59,15 +59,14 @@ body {
 #box-login .content {
   padding: 0 30px;
   margin: 0 auto;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
 #box-login .footer {
-  border-top: 1px solid rgba(255,255,255,0.8);
   background: #f6f6f6;
   padding: 10px;
   text-align: end;
   border-radius: 0px 0px 0px 25px;
+  box-shadow: inset 0px 2px 3px -2px #ccc;
 }
 </style>
 

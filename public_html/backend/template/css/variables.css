@@ -21,12 +21,12 @@
   --sidebar-background-color: #e6e8ec;
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: #222;
-  --sidebar-width: 275px;
+  --sidebar-width: 250px;
   --navigation-background-color: #3e3e3e;
   --navigation-text-color: #fff;
-  --default-background-color: #f3f3f3;
-  --default-background-color-active: #f9f9f9;
-  --default-background-color-hover: #efefef;
+  --default-background-color: #dfe1e7;
+  --default-background-color-active: #e8eaee;
+  --default-background-color-hover: #d3d7df;
   --default-border-color: #e0e0e0;
   --default-line-height: 1.5;
   --default-text-font: Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif;
@@ -94,13 +94,13 @@
   --copyright-text-color: #444;
   --border-radius: 5px;
   --gutter-size: 2rem;
-  --input-background-color: #f9f9f9;
+  --input-background-color: #f2f3f6;
   --input-addon-background-color: #f1f1f1;
   --input-text-color: #000;
-  --input-border-color: var(--default-border-color);
+  --input-border-color: #ccc;
   --input-padding-x: 15px;
   --input-padding-y: 7.5px;
-  --link-text-color: #0066bb;
+  --link-text-color: #06b;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --whitespace-color: #fff;
 }
