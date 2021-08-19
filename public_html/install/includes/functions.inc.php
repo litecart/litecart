@@ -8,7 +8,7 @@
 
         foreach ($payload as $source => $target) {
 
-          if (!$files = functions::file_search($source)) {
+          if (!$files = file_search($source)) {
             if ($on_error == 'skip') continue;
             die("<span class=\"error\">[Error] Could not copy $source</span>" . PHP_EOL . PHP_EOL);
           }
@@ -22,7 +22,7 @@
               perform_action($action, [[rtrim($file, '/') . '/*' => rtrim($target, '/') . '/' . basename($file) .'/']], $on_error);
             }
 
-            if (functions::file_copy($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
+            if (file_copy($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
               echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else if ($on_error == 'skip') {
               echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -37,11 +37,11 @@
       case 'delete':
 
         foreach ($payload as $source) {
-          foreach (functions::file_search($source) as $file) {
+          foreach (file_search($source) as $file) {
 
             echo 'Delete ' . preg_replace('#^('. FS_DIR_APP .')#', '', $file);
 
-            if (functions::file_delete($file)) {
+            if (file_delete($file)) {
               echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
             } else if ($on_error == 'skip') {
               echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -58,7 +58,7 @@
 
         foreach ($payload as $source => $target) {
 
-          if (!$files = functions::file_search($source)) {
+          if (!$files = file_search($source)) {
             if ($on_error == 'skip') continue;
             die("<span class=\"error\">[Error] Could not move $source</span>" . PHP_EOL . PHP_EOL);
           }
@@ -82,7 +82,7 @@
 
         foreach ($payload as $source => $operations) {
 
-          if (!$files = functions::file_search($source)) {
+          if (!$files = file_search($source)) {
             if ($on_error == 'skip') continue;
             die("<span class=\"error\">[Error] Could not modify $source</span>");
           }

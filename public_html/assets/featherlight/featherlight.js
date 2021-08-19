@@ -566,6 +566,8 @@
 
 			afterClose: function(_super, event) {
 
+				var self = this;
+
 				// Restore focus
 				this._$previouslyTabbable.removeAttr('tabindex');
 				this._$previouslyWithTabIndex.each(function(i, element) {

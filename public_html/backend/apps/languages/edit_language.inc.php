@@ -70,6 +70,7 @@
         'code',
         'code2',
         'name',
+        'direction',
         'charset',
         'locale',
         'url_type',
@@ -149,7 +150,14 @@
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php echo functions::form_draw_text_field('name', true); ?>
         </div>
+      </div>
 
+      <div class="form-group">
+        <label><?php echo language::translate('title_direction', 'Direction'); ?></label>
+        <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
+          <label class="btn btn-default<?php echo ($_POST['direction'] == 'ltr') ? ' active' : ''; ?>" style="text-align: left;"><?php echo functions::form_draw_radio_button('direction', 'ltr', true); ?> <?php echo language::translate('title_left_to_right', 'Left To Right'); ?></label>
+          <label class="btn btn-default<?php echo ($_POST['direction'] == 'rtl') ? ' active' : ''; ?>" style="text-align: right;"><?php echo functions::form_draw_radio_button('direction', 'rtl', true); ?><?php echo language::translate('title_right_to_left', 'Right To Left'); ?></label>
+        </div>
       </div>
 
       <div class="row">

@@ -107,15 +107,28 @@
       return trim($output);
     }
 
-    public function in_geo_zone($zone_code, $geo_zones) {
+    public function in_geo_zone($geo_zones, $address=[]) {
+
+      $args = func_get_args();
+
+      if (is_numeric($args[1]) || (is_array($args[1]) && is_numeric($args[1][0]))) {
+        trigger_error('Passing geo zone last preceeded by zone is deprecated. Instead do \$country->in_geo_zones($geo_zones, $address)', E_USER_DEPRECATED);
+        list($zone_code, $geo_zones) = $args;
+        $address = [
+          'country_code' => $this->_country_code,
+          'zone_code' => $zone_code,
+          'city' => '',
+        ];
+      }
 
       if (!is_array($geo_zones)) $geo_zones = [$geo_zones];
 
       $zones_to_geo_zones_query = database::query(
         "select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
         where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
-        and (country_code is null or country_code = '' or country_code = '". database::input($this->_country_code) ."')
-        ". (!empty($zone_code) ? "and (zone_code is null or zone_code = '' or zone_code = '". database::input($zone_code) ."')" : "") ."
+        ". (!empty($address['country_code']) ? "and (country_code = '' or country_code = '". database::input($address['country_code']) ."')" : "and (country_code = '' or country_code = '". database::input($this->_country_code) ."')") ."
+        ". (!empty($address['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($address['zone_code']) ."')" : "and zone_code = ''") ."
+        ". (!empty($address['city']) ? "and (city = '' or city like '". database::input($address['city']) ."')" : "and city = ''") ."
         limit 1;"
       );
 

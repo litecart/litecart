@@ -29,6 +29,7 @@
 
   $_page = new ent_view('pages/printable_order_copy.inc.php');
   $_page->snippets['order'] = $order->data;
+  $_page->snippets['text_direction'] = !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr';
   echo $_page;
 
   language::set($session_language);

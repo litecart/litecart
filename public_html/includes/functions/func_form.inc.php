@@ -312,10 +312,7 @@ END;
       }
     }
 
-    $html .= '  </ul>' . PHP_EOL
-           . '</div>';
-
-    return $html;
+    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="decimal" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' step="any" />';
   }
 
   function form_draw_email_field($name, $input=true, $parameters='') {
@@ -743,8 +740,9 @@ END;
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/ui/trumbowyg.min.css') .'" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css') .'" rel="stylesheet" />';
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. document::href_rlink(FS_DIR_APP .'assets/trumbowyg/ui/trumbowyg.min.css') .'" rel="stylesheet" />' . PHP_EOL
+                                                  . '<link href="'. document::href_rlink(FS_DIR_APP .'assets/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css') .'" rel="stylesheet" />'
+                                                  . '<link href="'. document::href_rlink(FS_DIR_APP .'assets/trumbowyg/plugins/table/ui/trumbowyg.table.min.css') .'" rel="stylesheet" />';
 
     document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/trumbowyg.min.js') .'"></script>' . PHP_EOL
                                                   . ((language::$selected['code'] != 'en') ? '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/langs/'. language::$selected['code'] .'.min.js') .'"></script>' . PHP_EOL : '')
@@ -753,7 +751,7 @@ END;
                                                   . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/table/trumbowyg.table.min.js') .'"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
-                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
+                                        . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
                                         . '    btnsDef: {' . PHP_EOL
                                         . '      lists: {' . PHP_EOL
                                         . '        dropdown: ["unorderedList", "orderedList"],' . PHP_EOL
@@ -1062,7 +1060,7 @@ END;
       $input = form_reinsert_value($name);
     }
 
-    $html = '<div class="input-group" style="flex-direction: column;"' . (($parameters) ? ' ' . $parameters : '') .' data-toggle="category-picker">' . PHP_EOL
+    $html = '<div data-toggle="category-picker"' . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
           . '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
           . '    <ul class="categories list-unstyled">' . PHP_EOL;
 
@@ -1094,7 +1092,7 @@ END;
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
            . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
-           . '    <ul class="dropdown-menu" style="right: 0;"></ul>' . PHP_EOL
+           . '    <ul class="dropdown-menu" style="padding: .5em; right: 0;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';
 

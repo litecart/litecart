@@ -90,7 +90,9 @@
   }
 
   function file_realpath($path) {
-    return str_replace('\\', '/', realpath($path));
+    $path = str_replace('\\', '/', realpath($path));
+    if (is_dir($path)) $path = rtrim($path, '/') . '/';
+    return $path;
   }
 
 // Search files (Supports dual globstar **)

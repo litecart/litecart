@@ -44,7 +44,7 @@ table.items tbody tr:nth-child(11) {
 }
 </style>
 
-<section class="page" data-size="A4">
+<section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
   <header class="header">
     <div class="row">
       <div class="col-xs-6">

@@ -16,27 +16,28 @@
     return reference::country($address['country_code'])->format_address($address);
   }
 
+  function format_mysql_fulltext($string) {
+    $string = strip_tags($string);
+    return preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
+  }
+
   function format_regex_code($string) {
 
-    if (strlen($string) > 24 || preg_match('#[^0-9a-zA-Z -\./]#', $string)) {
-      return preg_quote($string, "'");
+    $string = strip_tags($string);
+
+    if (strlen($string) > 24 || preg_match('#[^0-9a-zA-Z \-\./]#', $string)) {
+      return addcslashes(preg_quote($string, "'"), '&<>');
     }
 
     $string = preg_replace('#[ -\./]+#', '', $string);
 
-    if (mb_strlen($string) > 1) {
+    $parts = preg_split('#(.)#u', $string, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 
-      do {
-        $c = mb_strlen($string);
-        $parts[] = mb_substr($string, 0, 1);
-        $string = mb_substr($string, 1);
-      } while (!empty($string));
-
-    } else {
-      $parts = [$string];
+    foreach ($parts as $key => $char) {
+      $parts[$key] = addcslashes(preg_quote($char, "'"), '&<>');
     }
 
-    $string = implode('([ -\./]+)?', $parts);
+    $string = implode('([ \-\./]+)?', $parts);
 
     return $string;
   }

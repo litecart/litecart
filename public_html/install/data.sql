@@ -384,7 +384,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('social_media', 'global', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 0, 30, NOW(), NOW()),
 ('social_media', 'global', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, NOW(), NOW()),
 ('social_media', 'global', 'Twitter Link', 'The link to your Twitter page.', 'twitter_link', '', 'url()', 0, 50, NOW(), NOW()),
-('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, NOW(), NOW());
+('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, NOW(), NOW()),
 ('', 'global', 'Template', '', 'template', 'default', 'template()', 1, 0, NOW(), NOW()),
 ('', 'global', 'Template Settings', '', 'template_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, 0, NOW(), NOW()),
 ('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW());

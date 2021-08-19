@@ -368,17 +368,7 @@ input[name="development_type"]:checked + div {
     <ul class="list-unstyled">
 <?php
   $paths = [
-    'admin/.htaccess',
-    'admin/.htpasswd',
-    'cache/',
-    'data/',
-    'images/',
-    'includes/config.inc.php',
-    'vqmod/',
-    'vqmod/xml/',
-    'vqmod/vqcache/',
-    'vqmod/checked.cache',
-    'vqmod/mods.cache',
+    'storage/',
     '.htaccess',
   ];
   foreach ($paths as $path) {
@@ -459,6 +449,9 @@ input[name="development_type"]:checked + div {
         <option>utf8mb4_hungarian_ci</option>
         <option>utf8mb4_sinhala_ci</option>
       </select>
+      <label class="form-check">
+        <input type="checkbox" name="set_default_collation" value="1" checked /> Set default collation for the database
+      </label>
     </div>
 
     <div class="form-group col-md-6">
@@ -546,7 +539,7 @@ input[name="development_type"]:checked + div {
           .js + .min.js
         </div>
         <small class="description">
-          (Requires <a href="https://www.litecart.net/sv/addons/163/developer-kit" target="_blank">Developer Kit</a>)
+          (Requires <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">Developer Kit</a>)
         </small>
       </div>
     </label>

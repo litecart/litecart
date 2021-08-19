@@ -1092,10 +1092,12 @@ body.dark-mode #box-comments {
         company: $('input[name="customer[company]"]').val(),
         country_code: $('select[name="customer[country_code]"]').val(),
         zone_code: $('select[name="customer[zone_code]"]').val(),
+        city: $('select[name="customer[city]"]').val(),
         shipping_address: {
           company: $('input[name="customer[shipping_address][company]"]').val(),
           country_code: $('select[name="customer[shipping_address][country_code]"]').val(),
           zone_code: $('select[name="customer[shipping_address][zone_code]"]').val(),
+          city: $('select[name="customer[shipping_address][city]"]').val(),
         }
       }
     }

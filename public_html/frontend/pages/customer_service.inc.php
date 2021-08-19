@@ -10,10 +10,6 @@
 
   $_page = new ent_view('pages/customer_service.inc.php');
 
-  ob_start();
-  include vmod::check(FS_DIR_APP . 'frontend/boxes/box_customer_service_links.inc.php');
-  $_page->snippets['box_customer_service_links'] = ob_get_clean();
-
 // Custom page
   if (!empty($_GET['page_id'])) {
 
@@ -25,7 +21,14 @@
       return;
     }
 
-    if (empty($page->status)) {
+    if (empty($page->status) || !in_array('customer_service', $page->dock)) {
+      http_response_code(404);
+      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      return;
+    }
+
+    $mother_page = array_values($page->path)[0];
+    if (!in_array('customer_service', $page->dock) && !in_array('customer_service', $mother_page->dock)) {
       http_response_code(404);
       include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
       return;

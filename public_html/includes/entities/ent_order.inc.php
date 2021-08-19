@@ -769,6 +769,10 @@
 
       $message = strtr(language::translate('email_order_confirmation', $message, $language_code), $aliases);
 
+      if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
+        $message = "\xe2\x80\x8f" . $message;
+      }
+
       $email = new ent_email();
 
       if (!empty($bccs)) {
@@ -830,6 +834,12 @@
 
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
       if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), ['%new_status' => $order_status->name]);
+
+      if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
+        $message = '<div dir="rtl">' . PHP_EOL
+                 . $message . PHP_EOL
+                 . '</div>';
+      }
 
       $email = new ent_email();
       $email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])

@@ -17,7 +17,6 @@
       . "  --db_engine          Set table storage engine (Default: Aria / MyISAM)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
-      . "  --storage_folder     Set storage folder name (Default storage)\n"
       . "  --admin_folder       Set admin folder name (Default admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
@@ -27,15 +26,13 @@
 
     $options = [
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-      'document_root:', 'timezone::', 'storage_folder::', 'admin_folder::', 'username::', 'password::', 'development_type::',
+      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
     ];
 
     $_REQUEST = getopt(null, $options);
     $_REQUEST['install'] = true;
 
   }
-
-  require __DIR__ . '/includes/header.inc.php';
 
   if (empty($_REQUEST['install'])) {
     header('Location: index.php');
@@ -50,11 +47,16 @@
     return $buffer;
   });
 
+  require __DIR__ . '/includes/header.inc.php';
+  require __DIR__ . '/includes/functions.inc.php';
+
   try {
 
-    define('FS_DIR_APP', functions::file_realpath(__DIR__ .'/../') .'/');
-    require_once FS_DIR_APP . 'includes/error_handler.inc.php';
-    require_once FS_DIR_APP . 'includes/autoload.inc.php';
+    define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__ .'/../')), '/') .'/');
+    require FS_DIR_APP . 'includes/error_handler.inc.php';
+    require FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
+    require FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
+    require FS_DIR_APP . 'includes/functions/func_file.inc.php';
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
@@ -68,16 +70,15 @@
     echo '<p>Checking installation parameters...';
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(functions::file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_APP));
+      define('WS_DIR_APP', preg_replace('#^'. preg_quote(file_realpath($_SERVER['DOCUMENT_ROOT']), '#') .'#', '', FS_DIR_APP));
     } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(functions::file_realpath($_REQUEST['document_root']), '/'), '#') .'#', '', FS_DIR_APP));
+      define('WS_DIR_APP', preg_replace('#^'. preg_quote(file_realpath($_REQUEST['document_root']), '#') .'#', '', FS_DIR_APP));
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
 
-    if (preg_match('#^'. preg_quote(rtrim(functions::file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', functions::file_realpath($_REQUEST['storage_folder']))) {
-      define(FS_DIR_STORAGE, rtrim(functions::file_realpath($_REQUEST['storage_folder']), '/') . '/');
-      define(WS_DIR_STORAGE, preg_replace('#^'. preg_quote(rtrim(functions::file_realpath($_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', FS_DIR_STORAGE);
+    if (preg_match('#^'. preg_quote(file_realpath($_SERVER['DOCUMENT_ROOT']), '#') .'#', FS_DIR_APP . 'storage/')) {
+      define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' The storage folder must be under the document root.</p>' . PHP_EOL  . PHP_EOL);
     }
@@ -222,8 +223,6 @@
 
     echo '<p>Connecting to MySQL server on '. $_REQUEST['db_server'] .'... ';
 
-    require_once FS_DIR_APP . 'includes/library/lib_database.inc.php';
-
     if (!extension_loaded('mysqli')) {
       throw new Exception(' <span class="error">[Error]</span> MySQLi is not installed or configured for PHP</p>' . PHP_EOL  . PHP_EOL);
     } else if (!database::connect('default', $_REQUEST['db_server'], $_REQUEST['db_username'], $_REQUEST['db_password'], $_REQUEST['db_database'], 'utf8')) {
@@ -257,20 +256,33 @@
       where schema_name = '". database::input($_REQUEST['db_database']) ."'
       limit 1;"
     );
-    $charset = database::fetch($charset_query);
 
-    if (substr($charset['DEFAULT_CHARACTER_SET_NAME'], 0, 4) != 'utf8') {
-      echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \'utf8\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+    if (!$charset = database::fetch($charset_query)) {
+      throw new Exception(' <span class="error">[Error] Failed to retrieve character set</span></p>');
+    }
+
+    if (strtok($charset['DEFAULT_CHARACTER_SET_NAME'], '_') != strtok($_REQUEST['db_collation'], '_')) {
+      if (!empty($_REQUEST['set_default_collation'])) {
+        database::query("ALTER DATABASE `". $_REQUEST['db_database'] ."` CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";");
+        echo 'Setting '. strtok($_REQUEST['db_collation'], '_') . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      } else {
+        echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \''. strtok($_REQUEST['db_collation'], '_') .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+      }
     } else {
       echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    }
 
-      echo '<p>Checking MySQL database default collation... ';
+    echo '<p>Checking MySQL database default collation... ';
 
-      if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
-        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. substr($_REQUEST['db_collation'], 0, strpos($_REQUEST['db_collation'], '_')) .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+    if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
+      if (!empty($_REQUEST['set_default_collation'])) {
+        database::query("ALTER DATABASE `". $_REQUEST['db_database'] ."` CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";");
+        echo 'Setting '. $_REQUEST['db_collation'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
-        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
       }
+    } else {
+      echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### Database > Check Engines ##################################
@@ -281,7 +293,7 @@
       "show engines;"
     );
 
-    while ($engine = database::fetch($engines_query))
+    while ($engine = database::fetch($engines_query)) {
       if ($engine['Engine'] != 'Aria') {
         $found_engine = true;
         break;
@@ -289,7 +301,7 @@
     }
 
     if (!empty($found_engine)) {
-      echo $_REQUEST['db_engine'] . ' <span class="warning">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      echo $_REQUEST['db_engine'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo $_REQUEST['db_engine'] . ' <span class="warning">[Warning] Not found, defaulting to MyISAM</span></p>' . PHP_EOL . PHP_EOL;
       $_REQUEST['db_engine'] = 'MyIsam';
@@ -301,7 +313,7 @@
 
     echo '<p>Set up storage folder... ';
 
-    if (file_exists($_REQUEST['storage_folder']) || mkdir($_REQUEST['storage_folder'])) {
+    if (file_exists(FS_DIR_STORAGE) || mkdir(FS_DIR_STORAGE, 0777)) {
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
@@ -314,7 +326,7 @@
     $config = file_get_contents('config');
 
     $map = [
-      '{STORAGE_FOLDER}' => rtrim($_REQUEST['storage_folder'], '/'),
+      '{STORAGE_FOLDER}' => 'storage',
       '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
       '{DB_TYPE}' => 'mysql',
       '{DB_SERVER}' => $_REQUEST['db_server'],
@@ -329,9 +341,7 @@
 
     $config = strtr($config, $map);
 
-    define('PASSWORD_SALT', $map['{PASSWORD_SALT}']); // we need it for later
-
-    if (file_put_contents(rtrim($_REQUEST['storage_folder'], '/') . '/config.inc.php', $config) !== false) {
+    if (file_put_contents(FS_DIR_STORAGE . 'config.inc.php', $config) !== false) {
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
@@ -441,24 +451,7 @@
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
-    ### Admin > .htpasswd Users ###################################
-
-    echo '<p>Granting admin access for user '. $_REQUEST['username'] .'...';
-
-    if (is_dir('../'.$_REQUEST['admin_folder'])) {
-      $htpasswd = $_REQUEST['username'] .':{SHA}'. base64_encode(sha1($_REQUEST['password'], true)) . PHP_EOL;
-      if (file_put_contents('../'. $_REQUEST['admin_folder'] . '/.htpasswd', $htpasswd) !== false) {
-        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-      } else {
-        echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
-      }
-    } else {
-      echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
-    }
-
     ### Admin > Database > Users ##################################
-
-    require FS_DIR_APP . 'includes/functions/func_password.inc.php';
 
     database::query(
       "insert into ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_users`') ."
@@ -514,11 +507,11 @@
         }
 
         if (file_exists('data/'. $dir .'/public_html/')) {
-          perform_action('copy', "data/$dir/public_html/" => FS_DIR_APP);
+          perform_action('copy', ["data/$dir/public_html/" => FS_DIR_APP]);
         }
 
         if (file_exists('data/'. $dir .'/storage/')) {
-          perform_action('copy', "data/$dir/storage/" => FS_DIR_STORAGE);
+          perform_action('copy', ["data/$dir/storage/" => FS_DIR_STORAGE]);
         }
       }
 
@@ -567,7 +560,7 @@
         FS_DIR_APP . 'frontend/templates/default/css/checkout.css',
         FS_DIR_APP . 'frontend/templates/default/css/framework.css',
         FS_DIR_APP . 'frontend/templates/default/css/printable.css',
-      ];
+      ]);
 
     } else {
 
@@ -577,7 +570,7 @@
         FS_DIR_APP . 'frontend/templates/default/js/*.min.js',
         FS_DIR_APP . 'frontend/templates/default/js/*.min.js.map',
         FS_DIR_APP . 'frontend/templates/default/less/',
-      ];
+      ]);
 
       perform_action('modify', [
         FS_DIR_APP . 'frontend/templates/default/layouts/*.inc.php' => [
@@ -586,7 +579,7 @@
           ['search' => 'framework.min.css', 'replace' => 'framework.css'],
           ['search' => 'printable.min.css', 'replace' => 'printable.css'],
         ],
-      ];
+      ]);
     }
 
     ### Create files ######################################
@@ -599,9 +592,12 @@
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
-    echo '<p>Create files for vQmod cache...';
+    echo '<p>Create files for vMod cache and management...';
 
-    if (file_put_contents(FS_DIR_APP . 'vqmod/checked.cache', '') !== false && file_put_contents(FS_DIR_APP . 'vqmod/mods.cache', '') !== false) {
+    if (file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', '') !== false
+     && file_put_contents(FS_DIR_STORAGE . 'vmods/.settings', '') !== false
+     && file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', '') !== false
+     && file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.modifications', '') !== false) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;

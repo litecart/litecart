@@ -6,6 +6,9 @@
 !public_html/**/.htaccess
 
 public_html/storage/*
+
+composer.lock
+package-lock.json
 public_html/.htaccess
 public_html/.user.ini
 public_html/favicon.ico

@@ -173,7 +173,7 @@
 
   <?php if (!$subscribed_to_newsletter) { ?>
   <div class="form-group">
-    <?php echo functions::form_draw_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+    <label class="checkbox"><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?></label>
   </div>
   <?php } ?>
 
