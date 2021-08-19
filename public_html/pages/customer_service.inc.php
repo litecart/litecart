@@ -10,10 +10,6 @@
 
   $_page = new ent_view();
 
-  ob_start();
-  include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php');
-  $_page->snippets['box_customer_service_links'] = ob_get_clean();
-
 // Custom page
   if (!empty($_GET['page_id'])) {
 
