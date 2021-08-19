@@ -12,7 +12,7 @@
       return;
     }
 
-    if (empty($page->status)) {
+    if (empty($page->status) || !in_array('information', $page->dock)) {
       http_response_code(404);
       include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
       return;
