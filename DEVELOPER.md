@@ -28,6 +28,39 @@ Done! Node.js should now have installed all necessary libraries, you can now use
   Branch: dev
 
 
+# How To Make a Git Pull Request
+
+If you are new to Git we recommend SourceTree or GitHub Desktop as a great graphical user interface for working with Git.
+
+1. Fork the official LiteCart repository.
+
+2. Use git clone to download the code from your forked repository.
+
+    Example:
+    git clone https://github.com/you/litecart.git
+    git checkout dev
+
+3. Create a new branch for your new feature or modification.
+
+    Example:
+    git checkout -b mynewfeature
+
+4. Commit your changes and push it to your forked repository.
+
+    Example:
+    git commit -m "My commit of things"
+    git push -u origin mynewfeature
+
+5. Go to your forked repository in Github and click "Pull Requests" and the button "New Pull Request".
+
+6. Set Base to the dev branch of the official repository.
+   Set Head to your forked repository and the branch containing your new feature.
+
+7. After creating the pull request. Do not implement new features to your branch, unless you have bugs that needs patching.
+
+8. Once the pull request is accepted you can safely delete your feature branch.
+
+
 ## Changelog / Commit Messages
 
     ! means critical
