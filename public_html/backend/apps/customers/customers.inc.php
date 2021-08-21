@@ -101,7 +101,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('customers/edit_customer'), language::translate('title_add_new_customer', 'Add New Customer'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'add'); ?></li>
     </ul>
   </div>
 

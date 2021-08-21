@@ -61,7 +61,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_currency'), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_currency'), language::translate('title_create_new_currency', 'Create New Currency'), '', 'add'); ?></li>
     </ul>
   </div>
 

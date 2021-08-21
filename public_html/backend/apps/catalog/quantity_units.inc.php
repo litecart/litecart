@@ -38,7 +38,7 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_quantity_unit'), language::translate('title_add_new_unit', 'Add New Unit'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_quantity_unit'), language::translate('title_create_new_unit', 'Create New Unit'), '', 'add'); ?></li>
     </ul>
   </div>
 

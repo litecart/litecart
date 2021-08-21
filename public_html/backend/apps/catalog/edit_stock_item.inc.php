@@ -105,7 +105,7 @@
     }
   }
 
-  breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_add_new_stock_item', 'Add New Stock Item'));
+  breadcrumbs::add(!empty($stock_item->data['id']) ? language::translate('title_edit_stock_item', 'Edit Stock Item') : language::translate('title_create_new_stock_item', 'Create New Stock Item'));
 ?>
 <div class="card card-app">
   <div class="card-heading">
