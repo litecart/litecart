@@ -783,22 +783,31 @@ CREATE TABLE `lc_stock_items` (
 	INDEX `code` (`code`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_stock_transactions` (
+CREATE TABLE `lc_stock_items_info` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
-	`notes` MEDIUMTEXT NOT NULL DEFAULT '',
-	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	INDEX `stock_item_id` (`stock_item_id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_transactions` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(128) NOT NULL DEFAULT '',
+  `notes` MEDIUMTEXT NOT NULL DEFAULT '',
+  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions_contents` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
-	PRIMARY KEY (`id`)
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  PRIMARY KEY (`id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_suppliers` (

@@ -425,11 +425,11 @@
     echo '<p>Copying default files...</p>' . PHP_EOL;
 
     if (file_exists('data/default/public_html/')) {
-      perform_action('copy', ['data/default/public_html/' => FS_DIR_APP]);
+      perform_action('copy', ['data/default/public_html/*' => FS_DIR_APP]);
     }
 
     if (file_exists('data/default/storage/')) {
-      perform_action('copy', ['data/default/storage/' => FS_DIR_STORAGE]);
+      perform_action('copy', ['data/default/storage/*' => FS_DIR_STORAGE]);
     }
 
     echo PHP_EOL;
@@ -578,6 +578,7 @@
           ['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
           ['search' => 'framework.min.css', 'replace' => 'framework.css'],
           ['search' => 'printable.min.css', 'replace' => 'printable.css'],
+          ['search' => 'app.min.js',        'replace' => 'app.js'],
         ],
       ]);
     }

@@ -42,7 +42,7 @@
   }
 
 // Include config
-  require_once(__DIR__ . '/../includes/config.inc.php');
+  require_once(__DIR__ . '/../storage/config.inc.php');
 
   if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8'); // Prior to 1.2.0
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.0
@@ -133,7 +133,15 @@
           }
         }
 
-        $backup_file = FS_DIR_STORAGE . 'backups/' . PLATFORM_NAME .'-'. PLATFORM_VERSION .'-'. strftime('%Y%m%d-%H%M%S') . '.sql';
+        $platform_database_version_query = database::query(
+          "select `value` from ". DB_TABLE_SETTINGS ."
+          where `key` = 'platform_database_version'
+          limit 1;"
+        );
+
+        $platform_database_version = database::fetch($platform_database_version_query, 'value');
+
+        $backup_file = FS_DIR_STORAGE . 'backups/'. strftime('%Y%m%d-%H%M%S') . '-database-'. PLATFORM_NAME .'-'. $platform_database_version .'.sql';
 
         if (!$backup_handle = fopen($backup_file, 'w')) {
           throw new Exception("Cannot open backup file for writing ($backup_file)");
