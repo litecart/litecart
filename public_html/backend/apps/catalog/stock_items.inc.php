@@ -73,7 +73,7 @@
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
           <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
-          <th><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
+          <th><?php echo language::translate('title_reordered', 'Reordered'); ?></th>
           <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
           <th>&nbsp;</th>
         </tr>
@@ -87,7 +87,7 @@
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
           <td><?php echo $stock_item['mpn']; ?></td>
           <td><?php echo $stock_item['gtin']; ?></td>
-          <td class="text-end"><?php echo (float)$stock_item['ordered']; ?></td>
+          <td class="text-end"><?php echo (float)$stock_item['reordered']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>

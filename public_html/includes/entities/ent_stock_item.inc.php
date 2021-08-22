@@ -88,7 +88,7 @@
         sku = '". database::input(strtoupper($this->data['sku'])) ."',
         mpn = '". database::input($this->data['mpn']) ."',
         gtin = '". database::input($this->data['gtin']) ."',
-        ordered = ". (float)$this->data['ordered'] .",
+        reordered = ". (float)$this->data['reordered'] .",
         quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
         purchase_price = '". (float)$this->data['purchase_price'] ."',
         purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',

@@ -656,7 +656,7 @@
               'width',
               'height',
               'length_unit',
-              'ordered',
+              'reordered',
             ];
 
             foreach ($fields as $field) {

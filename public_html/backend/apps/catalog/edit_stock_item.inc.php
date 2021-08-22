@@ -49,7 +49,7 @@
         'length_unit',
         'quantity',
         'quantity_adjustment',
-        'ordered',
+        'reordered',
         'quantity_unit_id',
         'purchase_price',
         'purchase_price_currency_code',
@@ -193,10 +193,10 @@
           </div>
 
           <div class="form-group col-md-4">
-            <label><?php echo language::translate('title_ordered', 'Ordered'); ?></label>
+            <label><?php echo language::translate('title_reordered', 'Reordered'); ?></label>
             <div class="input-group">
               <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-              <?php echo functions::form_draw_decimal_field('ordered', true, 2, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('reordered', true, 2, 'min="0"'); ?>
             </div>
           </div>
         </div>
@@ -257,7 +257,7 @@
 </div>
 
 <script>
-  $('form[name="stock_item_form"] input[name="quantity"], form[name="stock_item_form"] input[name="quantity_adjustment"], form[name="stock_item_form"] input[name="ordered"]').on('blur', function(){
+  $('form[name="stock_item_form"] input[name="quantity"], form[name="stock_item_form"] input[name="quantity_adjustment"], form[name="stock_item_form"] input[name="reordered"]').on('blur', function(){
     $(this).val(parseFloat($(this).val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
   });
 
@@ -274,14 +274,14 @@
   $('form[name="stock_item_form"] select[name="quantity_unit_id"]').on('change', function(){
     if ($('input[name="quantity"]').val() != '') $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').val()).toFixed($(this).find('option:selected').data('decimals')));
     if ($('input[name="quantity_adjustment"]').val() != '') $('input[name="quantity_adjustment"]').val(parseFloat($('input[name="quantity_adjustment"]').val()).toFixed($(this).find('option:selected').data('decimals')));
-    if ($('input[name="ordered"]').val() != '') $('input[name="ordered"]').val(parseFloat($('input[name="ordered"]').val()).toFixed($(this).find('option:selected').data('decimals')));
+    if ($('input[name="reordered"]').val() != '') $('input[name="reordered"]').val(parseFloat($('input[name="reordered"]').val()).toFixed($(this).find('option:selected').data('decimals')));
   });
 
   $('button[name="transfer"]').click(function(){
     var quantity_field = $(this).closest('form').find('input[name="quantity_adjustment"]');
-    var ordered_field = $(this).closest('form').find('input[name="ordered"]');
-    $(quantity_field).val( Number($(quantity_field).val()) + Number($(ordered_field).val()) ).trigger('input');
-    $(ordered_field).val(0);
+    var reordered_field = $(this).closest('form').find('input[name="reordered"]');
+    $(quantity_field).val( Number($(quantity_field).val()) + Number($(reordered_field).val()) ).trigger('input');
+    $(reordered_field).val(0);
   });
 
   if ($.featherlight && $.featherlight.opened) {

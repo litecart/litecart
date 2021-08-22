@@ -96,7 +96,7 @@
             <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
             <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
             <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
-            <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
+            <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_reordered', 'Reordered'); ?></th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -118,7 +118,7 @@
             <td class="text-center">
               <div class="input-group">
                 <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                <?php echo functions::form_draw_decimal_field('contents['. $key .'][ordered]', true, 2); ?>
+                <?php echo functions::form_draw_decimal_field('contents['. $key .'][reordered]', true, 2); ?>
               </div>
             </td>
             <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
@@ -138,7 +138,7 @@
             <td class="text-center">
               <div class="input-group">
                 <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                <?php echo functions::form_draw_decimal_field('new[ordered]', true, 2); ?>
+                <?php echo functions::form_draw_decimal_field('new[reordered]', true, 2); ?>
               </div>
             </td>
             <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
@@ -148,7 +148,7 @@
 
       <datalist id="available-stock-items">
         <?php foreach ($available_stock_items as $stock_item) { ?>
-        <option value="<?php echo htmlspecialchars($stock_item['sku']); ?>" data-name="<?php echo htmlspecialchars($stock_item['name']); ?>" data-ordered="<?php echo $stock_item['ordered']; ?>">
+        <option value="<?php echo htmlspecialchars($stock_item['sku']); ?>" data-name="<?php echo htmlspecialchars($stock_item['name']); ?>" data-reordered="<?php echo $stock_item['reordered']; ?>">
         <?php } ?>
       </datalist>
 
@@ -170,7 +170,7 @@
     var row = $(this).closest('tr');
     if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
       $(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
-      $(row).find('input[name="new[ordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('ordered'));
+      $(row).find('input[name="new[reordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('reordered'));
     } else {
       $(row).find('input[name="new[name]"]').prop('readonly', false);
     }
@@ -178,9 +178,9 @@
 
   $('body').on('click', 'button[name="transfer"]', function(){
     var quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-    var ordered_field = $(this).closest('tr').find('input[name$="[ordered]"]');
-    $(quantity_field).val( Number($(quantity_field).val()) + Number($(ordered_field).val()) );
-    $(ordered_field).val(0);
+    var reordered_field = $(this).closest('tr').find('input[name$="[reordered]"]');
+    $(quantity_field).val( Number($(quantity_field).val()) + Number($(reordered_field).val()) );
+    $(reordered_field).val(0);
   });
 
   $('table tfoot').keypress(function(e) {
@@ -226,7 +226,7 @@
                + '    <td class="text-center">'
                + '      <div class="input-group">'
                + '        <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-               + '        <?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][ordered]', true, 2)); ?>'
+               + '        <?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][reordered]', true, 2)); ?>'
                + '      </div>'
                + '    </td>'
 							 + '    <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
@@ -241,7 +241,7 @@
 		$(inserted).find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku'));
 		$(inserted).find('[name$="[name]"]').val($('input[name="new[name]"]').val());
 		$(inserted).find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val());
-		$(inserted).find('[name$="[ordered]"]').val($('input[name="new[ordered]"]').val());
+		$(inserted).find('[name$="[reordered]"]').val($('input[name="new[reordered]"]').val());
 
     $('input[name="new[sku]"]').val('');
     $('input[name="new[name]"]').val('');

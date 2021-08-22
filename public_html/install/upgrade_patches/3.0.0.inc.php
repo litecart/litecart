@@ -548,7 +548,174 @@
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `brand_info`;");
   }
 
-// Separate and migrate stock options from product options
+// Migrate products without options to stock items
+  $products_query = database::query(
+    "select * from ". DB_TABLE_PREFIX ."products
+    where id not in (
+      select distinct product_id from ". DB_TABLE_PREFIX ."lc_products_stock_options
+    )"
+  );
+
+  while ($product = database::fetch($stock_items_query)) {
+
+    database::query(
+      "insert into ". DB_TABLE_PREFIX ."stock_items
+      (brand_id, supplier_id, sku, gtin, mpn, taric, weight, weight_unit, length, width, height, length_unit, quantity, quantity_unit)
+      values (". $product['brand_id'] .", ". $product['supplier_id'] .", '". database::input($product['sku']) ."', '". database::input($product['gtin']) ."', '". database::input($product['mpn']) ."', '". database::input($product['taric']) ."', ". (float)$product['purchase_price']) .", '". database::input($product['purchase_price_currency_code']) ."', ". (float)$product['weight']) .", '". database::input($product['weight_unit']) ."', ". (float)$product['length']) .", ". (float)$product['width']) .", ". (float)$product['height']) .", '". database::input($product['length_unit']) ."', ". (float)$product['quantity']) .", '". database::input($product['quantity_unit']) ."');"
+    );
+
+    $product['stock_item_id'] = database::insert_id();
+
+    database::query(
+      "insert into ". DB_TABLE_PREFIX ."stock_items_info
+      (stock_item_id, name, language_code)
+      select '". $product['stock_item_id'] ."' as stock_item_id, name, language_code
+      from ". DB_TABLE_PREFIX ."products_info
+      where product_id = ". (int)$product['id'] .";"
+    );
+
+    database::query(
+      "insert into ". DB_TABLE_PREFIX ."products_to_stock_items
+      (product_id, stock_item_id, price_adjust, price_operator)
+      values ('". database::input($product['id']) ."', '". database::input($product['stock_item_id']) ."', '". database::input($product['price_adjust']) ."', '". database::input($product['price_operator']) ."');"
+    );
+  }
+
+// Complete missing data for stock items
+  $stock_items_query = database::query(
+    "select si.*, p.brand_id, p.supplier_id, p.gtin, p.mpn, p.taric, p.quantity_unit, p.purchase_price, p.purchase_price_currency_code
+      if(si.sku != '', si.sku, p.sku) as sku,
+      if(si.gtin != '', si.sku, p.gtin) as gtin,
+      if(si.mpn != '', si.sku, p.mpn) as mpn,
+      if(si.taric != '', si.sku, p.taric) as taric,
+      if(si.weight > 0, si.weight, p.weight) as weight,
+      if(si.weight_unit != '', si.weight_unit, p.weight_unit) as weight_unit,
+      if(si.length > 0, si.length, p.length) as length,
+      if(si.width > 0, si.width, p.width) as width,
+      if(si.height > 0, si.height, p.height) as height,
+      if(si.length_unit != '', si.length_unit, p.length_unit) as length_unit,
+    from ". DB_TABLE_PREFIX ."lc_stock_items si
+    left join ". DB_TABLE_PREFIX ."products p on (si.product_id = p.id);"
+  );
+
+  while ($stock_item = database::fetch($stock_items_query)) {
+    database::query(
+      "update ". DB_TABLE_PREFIX ."stock_items
+      set brand_id = ". (int)$stock_item['brand_id'] .",
+        supplier_id = ". (int)$stock_item['supplier_id'] .",
+        sku = ". (int)$stock_item['sku'] .",
+        gtin = ". (int)$stock_item['gtin'] .",
+        mpn = ". (int)$stock_item['mpn'] .",
+        taric = ". (int)$stock_item['taric'] .",
+        weight = ". (int)$stock_item['weight'] .",
+        weight_unit = '". database::input($stock_item['weight_unit']) ."',
+        length = ". (int)$stock_item['length'] .",
+        width = ". (int)$stock_item['width'] .",
+        height = ". (int)$stock_item['height'] .",
+        length_unit = '". database::input($stock_item['length_unit']) ."',
+        quantity = ". (float)$stock_item['quantity'] .",
+        quantity_unit_id = ". (int)$stock_item['quantity_unit_id'] .",
+      where id = ". $stock_item['id'] ."
+      limit 1;"
+    );
+
+    database::query(
+      "insert into ". DB_TABLE_PREFIX ."products_to_stock_items
+      (product_id, stock_item_id, price_adjust, price_operator, priority)
+      values ('". database::input($stock_item['product_id']) ."', '". database::input($stock_item['stock_item_id']) ."', '". database::input($stock_item['price_adjust']) ."', '". database::input($stock_item['price_operator']) ."', ". (int)$stock_item['priority']) .", );"
+    );
+  }
+
+// Make sure SKUs are unique
+  $duplicate_skus_query = database::query(
+    "select sku, count(sku)
+    from ". DB_TABLE_PREFIX ."stock_items
+    where sku ! = ''
+    group by sku
+    having count(sku) > 1;"
+  );
+
+  while ($duplicate_sku = database::fetch($duplicate)) {
+
+    $stock_items_query = database::query(
+      "select id from ". DB_TABLE_PREFIX ."stock_items
+       where sku = '". database::input($duplicate_sku['sku']) ."'
+       order by id
+       limit 1, 9999;"
+    );
+
+    $i = 2;
+    while ($stock_item = database::fetch($stock_items_query)) {
+      database::query(
+        "update ". DB_TABLE_PREFIX ."stock_items
+        set sku = '". database::input($duplicate_sku['sku'].'-'.$i) ."'
+        where id = ". $stock_item['id'] ."
+        limit 1;"
+      );
+      $i++;
+    }
+  }
+
+// Set SKU for items missing SKU
+  $settings_query = database::query(
+    "select value from ". DB_TABLE_PREFIX ."settings
+    where `key` = 'site_language_code'
+    limit 1;"
+  );
+
+  $site_language_code = database::fetch($settings_query, 'value');
+
+  $missing_skus_query = database::query(
+    "select si.id, sii.name from ". DB_TABLE_PREFIX ."stock_items si
+    left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = s.id and sii.language_code = '". $site_language_code ."')
+    where sku = '';"
+  );
+
+  while ($missing_sku = database::fetch($duplicate)) {
+
+    $stock_item['sku'] = $missing_sku['id'] .'-'. ($missing_sku['name'] ? strtoupper(substr($missing_sku['name'], 0, 4)) : 'UNKN');
+
+    $i = 1;
+    while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($stock_item['sku']) ."' limit 1;"))) {
+      $stock_item['sku'] = $missing_sku['id'] .'-'. ($missing_sku['name'] ? strtoupper(substr($missing_sku['name'], 0, 4)) : 'UNKN') .'-'. $i++;
+    }
+
+    $stock_items_query = database::query(
+      "update ". DB_TABLE_PREFIX ."stock_items
+      set sku = '". database::input($stock_item['sku']) ."'
+      where id = ". $stock_item['id'] ."
+      limit 1;"
+    );
+  }
+
+// Insert stock before upgrade
+  database::query(
+    "INSERT INTO `lc_stock_transactions` (`id`, `name`, `notes`, `date_updated`, `date_created`) VALUES
+    ('1', 'Initial Sales Deposit', 'Initial transaction to reflect order sales before upgrade.', NOW(), NOW()),
+    ('2', 'Initial Stock Deposit', 'Initial transaction to reflect stock quantity before upgrade.', NOW(), NOW());"
+  );
+
+  database::query(
+    "INSERT INTO `lc_stock_transactions_contents` (`transaction_id`, `product_id`, `combination`, `sku`, `quantity`)
+    SELECT '1', product_id, combination, sku, sum(quantity) as quantity FROM `lc_orders_items`
+    WHERE order_id IN (
+      SELECT id FROM `lc_orders`
+      WHERE order_status_id IN (
+        SELECT id FROM `lc_order_statuses`
+        WHERE is_sale
+      )
+    )
+    GROUP BY product_id, combination, sku;"
+  );
+
+  database::query(
+    "INSERT INTO `lc_stock_transactions_contents` (`transaction_id`, `stock_item_id`, `quantity_adjustment`)
+    SELECT '2', id, quantity FROM `lc_stock_items`
+    WHERE quantity != 0
+    ORDER BY id;"
+  );
+
+// Separate product customization from
   $stock_items_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."products_stock_options;"
   );
@@ -576,6 +743,33 @@
       );
     }
   }
+
+// Cleanup tables
+  database::query(
+    "ALTER TABLE `lc_products`
+    DROP COLUMN `brand_id`,
+    DROP COLUMN `supplier_id`,
+    DROP COLUMN `sku`,
+    DROP COLUMN `upc`,
+    DROP COLUMN `mpn`,
+    DROP COLUMN `gtin`,
+    DROP COLUMN `taric`
+    DROP COLUMN `purchase_price`
+    DROP COLUMN `purchase_price_currency_code`;"
+  );
+
+  database::query(
+    "ALTER TABLE `lc_stock_items`
+    DROP INDEX `product_id`,
+    DROP INDEX `sku`,
+    DROP COLUMN `product_id`,
+    ADD UNIQUE KEY `sku` (`sku`);"
+  );
+
+  database::query(
+    "ALTER TABLE `lc_orders_items`
+    DROP COLUMN `combination`;"
+  );
 
  // Migrate PHP serialized options/customizations to JSON
   $order_items_query = database::query(

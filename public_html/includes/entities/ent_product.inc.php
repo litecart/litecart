@@ -58,7 +58,7 @@
     // Product
       $products_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."products
-        where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "sku = '". database::input($product_id) ."'") ."
+        where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "code = '". database::input($product_id) ."'") ."
         limit 1;"
       );
 
@@ -135,7 +135,7 @@
 
     // Stock Items
       $products_stock_items_query = database::query(
-        "select p2si.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.ordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+        "select p2si.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.reordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
         left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where p2si.product_id = ". (int)$this->data['id'] ."
@@ -186,8 +186,6 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."products
         set status = ". (int)$this->data['status'] .",
-          brand_id = ". (int)$this->data['brand_id'] .",
-          supplier_id = ". (int)$this->data['supplier_id'] .",
           delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
           sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
           default_category_id = ". (int)$this->data['default_category_id'] .",
@@ -198,15 +196,9 @@
           quantity_max = ". (float)$this->data['quantity_max'] .",
           quantity_step = ". (float)$this->data['quantity_step'] .",
           quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
-          purchase_price = ". (float)$this->data['purchase_price'] .",
-          purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
           recommended_price = ". (float)$this->data['recommended_price'] .",
           tax_class_id = ". (int)$this->data['tax_class_id'] .",
           code = '". database::input($this->data['code']) ."',
-          sku = '". database::input($this->data['sku']) ."',
-          mpn = '". database::input($this->data['mpn']) ."',
-          gtin = '". database::input($this->data['gtin']) ."',
-          taric = '". database::input($this->data['taric']) ."',
           length = ". (float)$this->data['length'] .",
           width = ". (float)$this->data['width'] .",
           height = ". (float)$this->data['height'] .",
@@ -398,7 +390,7 @@
 
           $ent_stock_item = new ent_stock_item($stock_item['stock_item_id']);
           $ent_stock_item->data['quantity_adjust'] = $stock_item['quantity_adjustment'];
-          $ent_stock_item->data['ordered'] = $stock_item['ordered'];
+          $ent_stock_item->data['reordered'] = $stock_item['reordered'];
           $ent_stock_item->save();
         }
       }
@@ -476,7 +468,6 @@
       $this->previous = $this->data;
 
       cache::clear_cache('category');
-      cache::clear_cache('brand');
       cache::clear_cache('products');
     }
 
@@ -555,7 +546,6 @@
       $this->reset();
 
       cache::clear_cache('category');
-      cache::clear_cache('brand');
       cache::clear_cache('products');
     }
   }

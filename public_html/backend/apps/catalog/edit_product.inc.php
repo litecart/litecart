@@ -31,9 +31,6 @@
       if (empty($_POST['categories'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
       if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
-      if (!empty($_POST['sku'])  && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and sku = '". database::input($_POST['sku']) ."' limit 1;")))   throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
-      if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
-      if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
 
       if (empty($_POST['categories'])) $_POST['categories'] = [];
       if (empty($_POST['images'])) $_POST['images'] = [];
@@ -47,8 +44,6 @@
       $fields = [
         'type',
         'status',
-        'brand_id',
-        'supplier_id',
         'delivery_status_id',
         'sold_out_status_id',
         'default_category_id',
@@ -63,8 +58,6 @@
         'quantity_max',
         'quantity_step',
         'quantity_unit_id',
-        'purchase_price',
-        'purchase_price_currency_code',
         'recommended_price',
         'prices',
         'campaigns',
@@ -270,16 +263,6 @@
               </div>
 
               <div class="form-group">
-                <label><?php echo language::translate('title_brand', 'Brand'); ?></label>
-                <?php echo functions::form_draw_brands_list('brand_id', true); ?>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_supplier', 'Supplier'); ?></label>
-                <?php echo functions::form_draw_suppliers_list('supplier_id', true); ?>
-              </div>
-
-              <div class="form-group">
                 <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
                 <?php echo functions::form_draw_text_field('keywords', true); ?>
               </div>
@@ -441,21 +424,13 @@
 
             <div class="row">
               <div class="form-group col-md-6">
-                <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
-                <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
-                  <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
-                </div>
+                <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
+                <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
                 <?php echo functions::form_draw_currency_field('recommended_price', settings::get('site_currency_code'), true); ?>
-              </div>
-
-              <div class="form-group col-md-6">
-                <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
-                <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
               </div>
             </div>
 
@@ -579,7 +554,7 @@
                   <th style="width: 150px;" class="text-end"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
                   <th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
                   <th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
-                  <th style="width: 175px;" class="text-center"><?php echo language::translate('title_ordered', 'Ordered'); ?></th>
+                  <th style="width: 175px;" class="text-center"><?php echo language::translate('title_reordered', 'Reordered'); ?></th>
                   <th style="width: 85px;">&nbsp;</th>
                   <th style="width: 50px;">&nbsp;</th>
                 </tr>
@@ -621,7 +596,7 @@
                   <td>
                     <div class="input-group">
                       <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                      <?php echo functions::form_draw_decimal_field('stock_items['. $key .'][ordered]', true, 2, 'min="0"'); ?>
+                      <?php echo functions::form_draw_decimal_field('stock_items['. $key .'][reordered]', true, 2, 'min="0"'); ?>
                     </div>
                   </td>
                   <td class="text-end">
@@ -1066,10 +1041,10 @@
 
   $('#stock-items button[name="transfer"]').click(function(){
     var quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-    var ordered_field = $(this).closest('tr').find('input[name$="[ordered]"]');
+    var reordered_field = $(this).closest('tr').find('input[name$="[reordered]"]');
     console.log($(quantity_field).length);
-    $(quantity_field).val(Number($(quantity_field).val()) + Number($(ordered_field).val())).trigger('input');
-    $(ordered_field).val(0);
+    $(quantity_field).val(Number($(quantity_field).val()) + Number($(reordered_field).val())).trigger('input');
+    $(reordered_field).val(0);
   });
 
   $('#stock-items').on('click', '.move-up, .move-down', function(e) {
@@ -1151,7 +1126,7 @@
                  + '  <td>'
                  + '    <div class="input-group">'
                  + '      <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][ordered]', '', 2, 'min="0"')); ?>'
+                 + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_items[new_stock_item_i][reordered]', '', 2, 'min="0"')); ?>'
                  + '    </div>'
                  + '  </td>'
                  + '  <td class="text-end">'
