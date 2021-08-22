@@ -1,4 +1,4 @@
-<section id="box-account" class="box white">
+<section id="box-account" class="box box-default">
 
   <h2 class="title"><?php echo language::translate('title_account', 'Account'); ?></h2>
 

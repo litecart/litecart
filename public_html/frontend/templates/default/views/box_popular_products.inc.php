@@ -15,7 +15,7 @@
 }
 </style>
 
-<section id="box-popular-products" class="box white">
+<section id="box-popular-products" class="box box-default">
 
   <h2 class="title"><?php echo language::translate('title_popular_products', 'Popular Products'); ?></h2>
 

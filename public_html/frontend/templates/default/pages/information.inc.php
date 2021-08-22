@@ -10,7 +10,7 @@
       <div id="content">
         {{notices}}
 
-        <section id="box-information" class="box white">
+        <section id="box-information" class="box box-default">
           {{content}}
         </section>
     </div>

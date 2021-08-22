@@ -13,7 +13,7 @@
   };
 ?>
 
-<section id="box-information-links" class="box white">
+<section id="box-information-links" class="box box-default">
 
   <h2 class="title"><?php echo language::translate('title_information', 'Information'); ?></h2>
 

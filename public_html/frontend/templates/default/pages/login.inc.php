@@ -5,7 +5,7 @@
 
     <div class="row layout">
       <div class="col-md-6">
-        <section id="box-login" class="box white" style="">
+        <section id="box-login" class="box box-default" style="">
 
           <h2 class="title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 
@@ -38,7 +38,7 @@
 
       <div class="col-md-6">
 
-        <section id="box-login-create" class="box white">
+        <section id="box-login-create" class="box box-default">
 
           <h2 class="title"><?php echo language::translate('title_create_an_account', 'Create an Account'); ?></h2>
 

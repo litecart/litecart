@@ -1,4 +1,4 @@
-<section id="box-contact-us" class="box white">
+<section id="box-contact-us" class="box box-default">
 
   <div class="row layout">
     <div class="col-md-8">

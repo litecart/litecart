@@ -12,7 +12,7 @@
         {{notices}}
         {{breadcrumbs}}
 
-        <article id="box-brand" class="box white">
+        <article id="box-brand" class="box box-default">
 
           <h1 class="title">{{title}}</h1>
 

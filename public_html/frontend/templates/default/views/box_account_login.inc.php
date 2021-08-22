@@ -1,4 +1,4 @@
-<section id="box-account-login" class="box white">
+<section id="box-account-login" class="box box-default">
   <h2><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 
   <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login')); ?>

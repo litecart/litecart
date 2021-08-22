@@ -11,7 +11,7 @@
         {{notices}}
         {{breadcrumbs}}
 
-        <section id="box-create-account" class="box white">
+        <section id="box-create-account" class="box box-default">
 
           <h1><?php echo language::translate('title_create_account', 'Create Account'); ?></h1>
 

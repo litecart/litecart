@@ -12,7 +12,7 @@
         {{notices}}
         {{breadcrumbs}}
 
-        <article id="box-category" class="box white">
+        <article id="box-category" class="box box-default">
 
           <div class="row">
             <?php if ($_GET['page'] == 1 && $image) { ?>

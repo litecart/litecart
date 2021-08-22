@@ -11,7 +11,7 @@
       <div id="content">
         {{notices}}
 
-        <section id="box-edit-account" class="box white">
+        <section id="box-edit-account" class="box box-default">
           <h1 class="title"><?php echo language::translate('title_sign_in_and_security', 'Sign-In and Security'); ?></h1>
 
           <?php echo functions::form_draw_form_begin('customer_account_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
@@ -45,7 +45,7 @@
           <?php echo functions::form_draw_form_end(); ?>
         </section>
 
-        <section id="box-edit-details" class="box white">
+        <section id="box-edit-details" class="box box-default">
           <h1 class="title"><?php echo language::translate('title_customer_profile', 'Customer Profile'); ?></h1>
 
           <?php echo functions::form_draw_form_begin('customer_details_form', 'post', null, false, 'style="max-width: 640px;"'); ?>

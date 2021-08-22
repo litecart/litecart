@@ -15,7 +15,7 @@
 }
 </style>
 
-<section id="box-campaign-products" class="box white">
+<section id="box-campaign-products" class="box box-default">
 
   <h2 class="title"><?php echo language::translate('title_campaign_products', 'Campaign Products'); ?></h2>
 

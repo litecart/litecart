@@ -8,7 +8,7 @@
 
   margin-bottom: ~"calc(var(--gutter-size) *2)";
 
-  &.white {
+  &.box-default {
     padding: var(--gutter-size);
     background: #fff;
     box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
@@ -18,17 +18,16 @@
     }
   }
 
-  + .box.white {
+  + &.box-default {
     margin-top: var(--gutter-size);
   }
 
   @media(min-width: @media-breakpoint-md) {
-    &.white {
+    &.box-default {
       padding: ~"calc(var(--gutter-size) *2)";
     }
-    + .box.white {
+    + &.box-default {
       margin-top: ~"calc(var(--gutter-size) *2)";
     }
   }
-
 }

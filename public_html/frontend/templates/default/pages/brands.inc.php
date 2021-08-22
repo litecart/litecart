@@ -2,7 +2,7 @@
   <div id="content">
     {{notices}}
 
-    <section id="box-brands" class="box white">
+    <section id="box-brands" class="box box-default">
 
       <h1 class="title"><?php echo language::translate('title_brands', 'Brands'); ?></h1>
 

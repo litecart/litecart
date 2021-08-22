@@ -1,4 +1,4 @@
-<section id="box-checkout-customer" class="box white">
+<section id="box-checkout-customer" class="box box-default">
   <?php echo functions::form_draw_hidden_field('customer_details', 'true'); ?>
 
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>

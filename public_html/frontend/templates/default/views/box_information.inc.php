@@ -1,3 +1,3 @@
-<section id="box-information" class="box white" data-id="{{id}}">
+<section id="box-information" class="box box-default" data-id="{{id}}">
   {{content}}
 </section>

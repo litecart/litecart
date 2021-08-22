@@ -12,7 +12,7 @@
         {{notices}}
         {{breadcrumbs}}
 
-        <section id="box-search-results" class="box white">
+        <section id="box-search-results" class="box box-default">
 
           <?php if ($products) { ?>
           <div class="btn-group float-end hidden-xs">

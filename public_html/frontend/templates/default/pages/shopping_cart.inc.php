@@ -34,7 +34,7 @@
 
         <?php echo functions::form_draw_form_begin('shopping_cart_form', 'post'); ?>
 
-          <section id="box-shopping-cart" class="box white">
+          <section id="box-shopping-cart" class="box box-default">
 
             <h2 class="title"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></h2>
 

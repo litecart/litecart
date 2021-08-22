@@ -11,7 +11,7 @@
       <div id="content">
         {{notices}}
 
-        <section id="box-order-history" class="box white">
+        <section id="box-order-history" class="box box-default">
 
           <h1 class="title"><?php echo language::translate('title_order_history', 'Order History'); ?></h1>
 

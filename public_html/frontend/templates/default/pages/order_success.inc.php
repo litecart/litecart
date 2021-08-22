@@ -2,7 +2,7 @@
   <div id="content">
     {{notices}}
 
-    <section id="box-order-success" class="box white" data-id="<?php echo $order['id']; ?>" data-total="<?php echo currency::format_raw($order['total'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['total_tax'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
+    <section id="box-order-success" class="box box-default" data-id="<?php echo $order['id']; ?>" data-total="<?php echo currency::format_raw($order['total'], $order['currency_code']); ?>" data-total-tax="<?php echo currency::format_raw($order['total_tax'], $order['currency_code']); ?>" data-currency-code="<?php echo $order['currency_code']; ?>" data-transaction-id="<?php echo $order['payment_transaction_id']; ?>">
 
       <h1 class="title"><?php echo strtr(language::translate('title_order_completed', 'Your order #%order_id was completed successfully!'), ['%order_id' => $order['id']]); ?></h1>
 
