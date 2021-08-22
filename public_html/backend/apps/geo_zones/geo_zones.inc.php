@@ -5,7 +5,7 @@
 
   breadcrumbs::add(language::translate('title_geo_zones', 'Geo Zones'));
 
-  if (isset($_POST['duplicate'])) {
+  if (isset($_POST['clone'])) {
 
     try {
       if (empty($_POST['geo_zones'])) throw new Exception(language::translate('error_must_select_geo_zones', 'You must select geo zones'));
@@ -102,7 +102,7 @@
     </table>
 
     <div class="card-body">
-      <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+      <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'fa-file-copy'); ?>
 
       <?php echo functions::draw_pagination($num_pages); ?>
     </div>

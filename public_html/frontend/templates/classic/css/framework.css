@@ -846,9 +846,22 @@ tr.semi-transparent td {
   flex: 1 0 auto;
 }
 /* Grid - Bootstrap Compatible */
-.twelve-eighty {
+.float-start {
+  float: left;
+}
+.float-end {
+  float: right;
+}
+/* Workaround as inline-start and inline-end are not yet supported by browsers */
+html[dir="rtl"] .float-start {
+  float: right;
+}
+html[dir="rtl"] .float-end {
+  float: left;
+}
+.container {
   min-width: 320px;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 .container,
@@ -863,13 +876,7 @@ tr.semi-transparent td {
 .float-end {
   float: right;
 }
-/* Workaround as inline-start and inline-end are not yet supported by browsers */
-html[dir="rtl"] .float-start {
-  float: right;
-}
-html[dir="rtl"] .float-end {
-  float: left;
-}
+.grid,
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -1326,77 +1333,6 @@ select.form-input.multiple option {
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 .input-group + .input-group {
-  margin-top: -1px;
-}
-.input-group-vertical {
-  position: relative;
-  color: #555;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-}
-.input-group-vertical .form-control {
-  background: none;
-  box-shadow: none;
-  border-radius: 0;
-  border: none;
-  margin-inline-start: -1px;
-}
-.input-group-vertical .input-group-addon {
-  flex: 1 0 auto;
-  margin: 0 -1px;
-  padding: 0.5em 1em;
-  background-color: #f9f9f9;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  color: #555;
-  white-space: nowrap;
-  font-weight: normal;
-  text-align: center;
-}
-.input-group-vertical .input-group-addon .select-wrapper {
-  background: none;
-  margin: -0.5em -1em;
-}
-.input-group-vertical .input-group-addon .select-wrapper:before {
-  right: -1em;
-}
-.input-group-vertical .input-group-addon .select-wrapper select {
-  width: auto;
-  background: none;
-  border: none;
-}
-.input-group-vertical .input-group-icon {
-  flex: 1 0 auto;
-  padding: 0.5em 1em;
-  margin-inline-end: -12px;
-}
-.input-group-vertical .input-group-btn {
-  flex: 1 0 auto;
-}
-.input-group-vertical .input-group-btn .btn {
-  border-top: none;
-  border-bottom: none;
-  padding: 7px 12px;
-}
-.input-group-vertical .form-control:first-child,
-.input-group-vertical .input-group-addon:first-child,
-.input-group-vertical .input-group-btn:first-child > .btn,
-.input-group-vertical .input-group-btn:first-child > .btn-group > .btn,
-.input-group-vertical .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-  border-radius: 4px 4px 0 0;
-}
-.input-group-vertical .form-control:last-child,
-.input-group-vertical .input-group-addon:last-child,
-.input-group-vertical .input-group-btn:last-child > .btn,
-.input-group-vertical .input-group-btn:last-child > .btn-group > .btn,
-.input-group-vertical .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-  margin-inline-end: -1px;
-  border-radius: 0 0 4px 4px;
-}
-.input-group-vertical + .input-group {
   margin-top: -1px;
 }
 [data-toggle="buttons"] input[type="checbox"],

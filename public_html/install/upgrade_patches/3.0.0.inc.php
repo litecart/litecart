@@ -541,11 +541,11 @@
 
 // Remove some indexes if they exist
   if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
-    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `brand`;");
+    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer`;");
   }
 
   if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
-    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `brand_info`;");
+    database::query("ALTER TABLE `". DB_TABLE_PREFIX ."manufacturers_info` DROP INDEX `brand_info`;");
   }
 
 // Migrate products without options to stock items

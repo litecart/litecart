@@ -103,7 +103,7 @@
   <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_button('add_recipient', language::translate('title_create_new_recipient', 'Create New Recipient'), 'button', '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::link(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
     </ul>
   </div>
 

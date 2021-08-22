@@ -4,7 +4,7 @@
   if (cache::capture($widget_addons_cache_token, 43200, false)) {
 
     try {
-      $url = document::link('https://www.litecart.net/feeds/addons');
+      $url = 'https://www.litecart.net/feeds/addons';
 
       $site_info = [
         'platform' => PLATFORM_NAME,

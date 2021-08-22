@@ -89,22 +89,6 @@ CREATE TABLE `lc_brands_info` (
   KEY `language_code` (`language_code`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_cart_items` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `customer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `cart_uid` VARCHAR(13) NOT NULL DEFAULT '',
-  `key` VARCHAR(32) NOT NULL DEFAULT '',
-  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `options` VARCHAR(2048) NOT NULL DEFAULT '',
-  `quantity` DECIMAL(11, 4) NOT NULL DEFAULT '0',
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `customer_id` (`customer_id`),
-  KEY `cart_uid` (`cart_uid`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
 CREATE TABLE `lc_categories` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parent_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',

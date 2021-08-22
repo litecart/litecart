@@ -4,7 +4,7 @@
 
     try {
 
-      $url = document::link('https://www.litecart.net/feeds/discussions.rss');
+      $url = 'https://www.litecart.net/feeds/discussions.rss';
 
       $client = new wrap_http();
       $client->timeout = 10;

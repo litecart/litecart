@@ -66,6 +66,7 @@
       $this->_data[$name] = null;
 
       switch ($name) {
+
         case 'type':
 
           if (!$this->_image) {
@@ -105,19 +106,20 @@
                 $this->_data['type'] = 'png';
                 break 2;
             }
+
+          } else {
+            $this->load();
           }
 
           switch ($this->_library) {
 
             case 'imagick':
 
-              if (!$this->_image) $this->load();
+              this->_data['type'] =$this->_image->getImageFormat();
 
-              return $this->_image->getImageFormat();
+              break 2;
 
             case 'gd':
-
-              if ($this->_image) $this->load();
 
               break 2;
           }

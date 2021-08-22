@@ -230,8 +230,8 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_category', ['parent_id' => $_GET['category_id']]), language::translate('title_add_new_category', 'Add New Category'), '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_add_new_product', 'Add New Product'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_category', ['parent_id' => $_GET['category_id']]), language::translate('title_create_new_category', 'Create New Category'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_product', [], ['category_id']), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?></li>
     </ul>
   </div>
 
