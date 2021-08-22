@@ -74,6 +74,16 @@
 
     public function save() {
 
+     // Create sku if missing
+      if (empty($this->data['sku'])) {
+        $this->data['sku'] = $missing_sku['id'] .'-'. ($this->data['name'][settings::get('site_language_code')] ? strtoupper(substr($this->data['name'][settings::get('site_language_code')], 0, 4)) : 'UNKN');
+
+        $i = 1;
+        while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;"))) {
+          $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('site_language_code')] ? strtoupper(substr($this->data['name'][settings::get('site_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
+        }
+      }
+
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."stock_items
