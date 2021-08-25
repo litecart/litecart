@@ -245,21 +245,7 @@
   if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
   if (empty($_SERVER['HTTP_HTTPS'])) $_SERVER['HTTP_HTTPS'] = 'off';
 
-// Redefine some $_SERVER variables
-  if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
-  if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) $_SERVER['SERVER_PORT'] = $_SERVER['HTTP_X_FORWARDED_PORT'];
-  if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') $_SERVER['HTTPS'] = 'on';
-
-/*
-// Redefine $_SERVER['REMOTE_ADDR'] (Can easily be spoofed by clients - Do not enable unless necessary)
-  foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'HTTP_X_REAL_IP', 'HTTP_CF_CONNECTING_IP') as $key) {
-    if (!empty($_SERVER[$key])) {
-      foreach (array_reverse(explode(',', $_SERVER[$key])) as $ip) {
-        $ip = trim($ip);
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
-          $_SERVER['REMOTE_ADDR'] = $ip;
-        }
-      }
-    }
-  }
-*/
+// Redefine $_SERVER['REMOTE_ADDR'] (For websites with CloudFlare Proxy only!!)
+  //if (!empty($_SERVER['HTTP_CF_CONNECTING_IP']) && if (filter_var($_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {) {
+  //  $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+  //}
