@@ -184,8 +184,6 @@
             } elseif (!empty($row['code']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
               $category = new ent_category($category['id']);
 
-            } elseif (!empty($row['name']) && !empty($row['language_code']) && $category = database::fetch(database::query("select category_id as id from ". DB_TABLE_PREFIX ."categories_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-              $category = new ent_category($category['id']);
             }
 
             if (!empty($category->data['id'])) {
@@ -374,8 +372,6 @@
             } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['name']) && !empty($row['language_code']) && $product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PREFIX ."products_info where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
             }
 
             if (!empty($product->data['id'])) {
