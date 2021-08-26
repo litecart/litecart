@@ -113,6 +113,12 @@
         self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
       }
 
+    // Add meta description
+      if (!empty(self::$snippets['description'])) {
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. htmlspecialchars(self::$snippets['description']) .'" />';
+        unset(self::$snippets['description']);
+      }
+
     // Prepare styles
       if (!empty(self::$snippets['style'])) {
         self::$snippets['style'] = '<style>' . PHP_EOL
