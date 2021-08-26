@@ -1,12 +1,17 @@
 # Install Node.js + Grunt For Windows
 
+This project uses Node + Grunt to compile less to css among other things.
+To install Grunt do the following:
+
 1. Install Node.js from https://nodejs.org/
 
 2. In your LiteCart project folder (next to package.json) create the file "Run Node.cmd" with the following content:
 
     @C:\Windows\System32\cmd.exe /k "C:\Program Files\nodejs\nodevars.bat"
 
-3. Execute "Run Node.cmd" and in the command prompt type:
+3. Execute "Run Node.cmd".
+
+4. To install all necessary node libraries, type the following in the command prompt:
 
     npm install
 
