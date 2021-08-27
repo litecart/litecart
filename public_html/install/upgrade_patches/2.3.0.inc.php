@@ -1,5 +1,16 @@
 <?php
 
+// Delete old files
+  $deleted_files = [
+    FS_DIR_APP . 'ext/jquery/jquery-3.5.1.min.js',
+  ];
+
+  foreach ($deleted_files as $pattern) {
+    if (!file_delete($pattern)) {
+      echo '<span class="error">[Skipped]</span></p>';
+    }
+  }
+
 // Modify some files
   $modified_files = [
     [
