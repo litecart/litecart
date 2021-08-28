@@ -5,33 +5,81 @@
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
-  if (isset($_POST['import'])) {
+  if (isset($_POST['import']) || isset($_GET['resume'])) {
 
     try {
 
-      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      ob_clean();
 
-      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+
+      if (isset($_GET['resume'])) {
+
+        if (empty(session::$data['csv_batch'])) {
+          throw new Exception('Missing batch to resume');
+        }
+
+        $batch = &session::$data['csv_batch'];
+
+        $progress = round(($batch['total_lines'] - count($batch['rows'])) / $batch['total_lines'] * 100, 2, PHP_ROUND_HALF_DOWN);
+        $time_elapsed = round(microtime(true) - $batch['time_start'], 2);
+        $time_remaining = round($time_elapsed / $progress * 100, 2) - $time_elapsed;
+        $memory_usage = round(memory_get_usage() / 1024 / 1024, 3);
+
+        echo $progress .'% complete' .' - Estimated time remaining: '. $time_remaining .' s - Memory usage: '. $memory_usage .' MB' . PHP_EOL . PHP_EOL;
+
+      } else {
+
+        if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+
+        if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+          throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+        }
+
+        $csv = file_get_contents($_FILES['file']['tmp_name']);
+
+        if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+          throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+        }
+
+        echo 'Creating a batch of '. count($csv) .' lines for processing' . PHP_EOL . PHP_EOL;
+
+        session::$data['csv_batch'] = [
+          'type' => $_POST['type'],
+          'time_start' => microtime(true),
+          'rows' => $csv,
+          'total_lines' => count($csv),
+          'insert' => !empty($_POST['insert']),
+          'overwrite' => !empty($_POST['overwrite']),
+          'counters' => [
+            'updated' => 0,
+            'inserted' => 0,
+            'line' => 1,
+          ],
+        ];
+
+        $batch = &session::$data['csv_batch'];
       }
 
-      echo 'CSV Import' . PHP_EOL
-         . '----------' . PHP_EOL;
+      $time_start = microtime(true);
 
-      $csv = file_get_contents($_FILES['file']['tmp_name']);
+      ignore_user_abort(true);
 
-      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
-        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
-      }
+      echo 'Processing batch...' . PHP_EOL . PHP_EOL;
 
-      $updated = 0;
-      $inserted = 0;
-      $line = 1;
+      while ($row = array_shift($batch['rows'])) {
 
-      foreach ($csv as $row) {
-        $line++;
+        if (round(microtime(true) - $time_start) > 5) {
+          echo PHP_EOL . 'Resuming '. number_format(count($batch['rows']), 0, '', ' ') .' remaining lines for processing...' . PHP_EOL . PHP_EOL;
+          header('Refresh: 0; url='. document::link(null, ['resume' => 'true']));
+          exit;
+        }
 
-        switch ($_POST['type']) {
+        if (connection_aborted()) {
+          throw new Exception('Connection aborted');
+        }
+
+        switch ($batch['type']) {
 
           case 'attributes':
 
@@ -48,23 +96,23 @@
 
             if (!empty($attribute_group->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing attribute group on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Updating existing attribute group on line $line" . PHP_EOL;
-              $updated++;
+              echo 'Updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new attribute group on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Inserting new attribute group on line $line" . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['group_id'])) {
                 database::query(
@@ -129,23 +177,23 @@
 
             if (!empty($campaign['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing campaign on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Updating existing campaign on line $line" . PHP_EOL;
-              $updated++;
+              echo 'Updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new campaign on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Inserting new campaign on line $line" . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
@@ -188,23 +236,23 @@
 
             if (!empty($category->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing category on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing category on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new category on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new category on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new category: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new category: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
@@ -279,23 +327,23 @@
 
             if (!empty($manufacturer->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing manufacturer on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new manufacturer on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
@@ -376,23 +424,23 @@
 
             if (!empty($product->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing product on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing product on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new product on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new product on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new product: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new product: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
@@ -599,22 +647,22 @@
             }
 
             if (!empty($supplier->data['id'])) {
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing supplier on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing supplier on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
-              echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new supplier on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new supplier on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new supplier: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
@@ -660,12 +708,20 @@
         }
       }
 
-      header('Content-Type: text/plain; charset='. language::$selected['charset']);
-      echo ob_get_clean();
+      unset(session::$data['csv_batch']);
+
+      echo PHP_EOL . 'Completed!';
+
+      notices::add('success', language::translate('success_import_completed', 'Import completed'));
+
+      header('Refresh: 5; url='. document::link(null, [], ['app', 'doc'], 'resume'));
       exit;
 
     } catch (Exception $e) {
+      unset(session::$data['csv_batch']);
       notices::add('errors', $e->getMessage());
+      header('Location: '. document::link(null, [], ['app', 'doc'], 'resume'));
+      exit;
     }
   }
 
