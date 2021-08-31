@@ -12,7 +12,6 @@
 		$sql_where_query = [
 			"si.id = '". database::input($_GET['query']) ."'",
 			"sii.name like '%". database::input($_GET['query']) ."%'",
-			"si.code regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
 			"si.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
 			"si.mpn regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
 			"si.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
@@ -20,8 +19,9 @@
 	}
 
 	$stock_items_query = database::query(
-		"select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
+		"select si.*, sii.name, b.name as brand_name from ". DB_TABLE_PREFIX ."stock_items si
 		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+		left join ". DB_TABLE_PREFIX ."brands b on (b.id = si.brand_id)
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 		order by si.sku, sii.name;"
@@ -57,7 +57,9 @@
   <div class="card-filter">
     <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <ul class="list-inline float-end">
-      <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></li>
+      <li style="min-width: 250px;"><?php echo functions::form_draw_brands_list('brand_id', true); ?></li>
+      <li style="min-width: 250px;"><?php echo functions::form_draw_suppliers_list('supplier_id', true); ?></li>
+      <li style="min-width: 500px;"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></li>
     </ul>
     <?php echo functions::form_draw_form_end(); ?>
   </div>
@@ -69,10 +71,11 @@
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw'); ?></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
+          <th><?php echo language::translate('title_brand', 'Brand'); ?></th>
+          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
+          <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
           <th><?php echo language::translate('title_reordered', 'Reordered'); ?></th>
           <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
           <th>&nbsp;</th>
@@ -83,10 +86,11 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
           <td><?php echo $stock_item['id']; ?></td>
-          <td><?php echo $stock_item['sku']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
-          <td><?php echo $stock_item['mpn']; ?></td>
+          <td><?php echo $stock_item['brand_name']; ?></td>
+          <td><?php echo $stock_item['sku']; ?></td>
           <td><?php echo $stock_item['gtin']; ?></td>
+          <td><?php echo $stock_item['mpn']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['reordered']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

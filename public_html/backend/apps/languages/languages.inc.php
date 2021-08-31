@@ -77,8 +77,9 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th>ISO 639-1</th>
+          <th>ISO 639-2</th>
           <th><?php echo language::translate('title_url_type', 'URL Type'); ?></th>
           <th><?php echo language::translate('title_default_language', 'Default Language'); ?></th>
           <th><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
@@ -93,8 +94,9 @@
           <td><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
           <td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $language['id']; ?></td>
-          <td><?php echo $language['code']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
+          <td><?php echo $language['code']; ?></td>
+          <td><?php echo $language['code2']; ?></td>
           <td><?php echo $language['url_type']; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('site_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
@@ -106,7 +108,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="10"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="11"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

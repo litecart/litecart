@@ -72,8 +72,10 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th>Numeric</th>
+          <th>Alpha 2</th>
+          <th>Alpha-3</th>
           <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
           <th>&nbsp;</th>
         </tr>
@@ -85,8 +87,10 @@
           <td><?php echo functions::form_draw_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
           <td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $country['id']; ?></td>
-          <td><?php echo $country['iso_code_2']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>
+          <td><?php echo $country['iso_code_1']; ?></td>
+          <td><?php echo $country['iso_code_2']; ?></td>
+          <td><?php echo $country['iso_code_3']; ?></td>
           <td class="text-center"><?php echo $country['num_zones'] ? $country['num_zones'] : '-'; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
@@ -95,7 +99,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="7"><?php echo language::translate('title_countries', 'Countries'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="9"><?php echo language::translate('title_countries', 'Countries'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>
