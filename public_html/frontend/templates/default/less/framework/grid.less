@@ -18,12 +18,15 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: var(--gutter-size);
+  margin-bottom: ~"calc(var(--gutter-size)*2)";
+  &.layout {
+    @media (min-width: @media-breakpoint-lg) {
+      grid-gap: ~"calc(var(--gutter-size)*2)";
+      margin-bottom: ~"calc(var(--gutter-size)*2)";
+    }
+  }
   &.half-gutter {
     grid-gap: ~"calc(var(--gutter-size)/2)";
-  }
-  &.layout {
-    grid-gap: 2rem;
-    margin-bottom: 2rem;
   }
   &.column {
     flex-direction: column;
