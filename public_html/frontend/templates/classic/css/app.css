@@ -349,10 +349,6 @@ html {
 #box-information li a:hover {
   color: var(--link-text-color);
 }
-#box-filter .manufacturers ul {
-  max-height: 200px;
-  overflow-y: auto;
-}
 #box-recently-viewed-products .listing {
   grid-template-columns: repeat(auto-fill, minmax(48px, 0.5fr));
 }
@@ -386,11 +382,11 @@ html {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
 }
-.listing.manufacturers {
+.listing.brands {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 @media (min-width: 768px) {
-  .listing.manufacturers {
+  .listing.brands {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }
@@ -405,7 +401,7 @@ html {
   text-decoration: none;
 }
 .listing .category,
-.listing .manufacturer,
+.listing .brand,
 .listing .product,
 .listing .product {
   position: relative;
@@ -420,7 +416,7 @@ html {
 }
 @media (min-width: 768px) {
   .listing .category:hover,
-  .listing .manufacturer:hover,
+  .listing .brand:hover,
   .listing .product:hover,
   .listing .product:hover {
     box-shadow: 0 calc(var(--gutter-size)/4) calc(var(--gutter-size)/2) 0 rgba(0, 0, 0, 0.15);
@@ -437,12 +433,12 @@ html {
   color: inherit;
   margin: 0;
 }
-.listing .manufacturer img {
+.listing .brand img {
   width: 100%;
   height: auto;
   padding: calc(var(--gutter-size)/2);
 }
-.listing .manufacturer .caption {
+.listing .brand .caption {
   margin: 0;
   padding: calc(var(--gutter-size)/2);
   background: #f2f2f2;
@@ -487,7 +483,7 @@ html {
   border-bottom: 0;
   margin: 0;
 }
-.listing .product .manufacturer-name {
+.listing .product .brand-name {
   color: var(--default-text-color);
   font-size: 0.9em;
   overflow: hidden;
