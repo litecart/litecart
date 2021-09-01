@@ -107,6 +107,7 @@
 
       customer::load($customer['id']);
 
+      session::$data['security.timestamp'] = time();
       session::regenerate_id();
 
       if (!empty($_POST['remember_me'])) {

@@ -54,8 +54,12 @@
         session::regenerate_id();
       }
 
+      $customer->data['date_expire_sessions'] = date('Y-m-d H:i:s');
+
       $customer->save();
       customer::$data = $customer->data;
+
+      session::$data['security.timestamp'] = strtotime($customer->data['date_expire_sessions']);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link());

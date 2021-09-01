@@ -126,6 +126,7 @@
           shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
           notes = '". database::input($this->data['notes']) ."',
           date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "NULL") .",
+          date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "NULL") .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
