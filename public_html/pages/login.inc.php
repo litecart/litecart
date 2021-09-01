@@ -59,7 +59,30 @@
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
-        throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
+
+        if (++$customer['login_attempts'] < 3) {
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."customers
+            set login_attempts = login_attempts + 1
+            where id = ". (int)$customer['id'] ."
+            limit 1;"
+          );
+
+          throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
+
+        } else {
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."customers
+            set login_attempts = 0,
+            date_blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+            where id = ". (int)$customer['id'] ."
+            limit 1;"
+          );
+
+          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+        }
       }
 
       if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
