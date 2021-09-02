@@ -75,7 +75,7 @@ form[name="filter_form"] li {
 </style>
 
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>
     </div>

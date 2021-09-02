@@ -39,7 +39,7 @@
   }
 ?>
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_logotype', 'Logotype'); ?>
     </div>

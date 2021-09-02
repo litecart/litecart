@@ -89,7 +89,7 @@
   list($category_image_width, $category_image_height) = functions::image_scale_by_width(320, settings::get('category_image_ratio'));
 ?>
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']] : language::translate('title_create_new_category', 'Create New Category'); ?>
     </div>

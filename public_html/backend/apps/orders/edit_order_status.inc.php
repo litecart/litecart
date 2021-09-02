@@ -69,7 +69,7 @@
   }
 ?>
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'); ?>
     </div>

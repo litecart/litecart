@@ -81,7 +81,7 @@
   }
 ?>
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_create_new_country', 'Create New Country'); ?>
     </div>

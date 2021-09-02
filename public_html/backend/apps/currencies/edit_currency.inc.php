@@ -98,7 +98,7 @@
   $store_currency = reference::currency(settings::get('site_currency_code'));
 ?>
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_create_new_currency', 'Create New Currency'); ?>
     </div>

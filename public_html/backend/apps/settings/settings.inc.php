@@ -127,7 +127,7 @@
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings').' &ndash; '.$settings_group['name']; ?>
     </div>

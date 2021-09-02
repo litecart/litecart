@@ -76,7 +76,7 @@
 ?>
 
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($brand->data['id']) ? language::translate('title_edit_brand', 'Edit Brand') :  language::translate('title_create_new_brand', 'Create New Brand'); ?>
     </div>

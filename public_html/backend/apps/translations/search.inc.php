@@ -111,7 +111,7 @@ th:not(:last-child) {
 </style>
 
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?>
     </div>
@@ -131,8 +131,7 @@ th:not(:last-child) {
         <label><?php echo functions::form_draw_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?></label>
       </div>
       <div>
-        <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
-        <div><?php foreach (array_keys(language::$languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', [$language_code, $language_code]) .'</span>'; ?></div>
+        <?php echo functions::form_draw_languages_list('languages[]', true); ?>
       </div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>

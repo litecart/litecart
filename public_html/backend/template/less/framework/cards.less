@@ -7,18 +7,18 @@
   border-radius: var(--border-radius);
   box-shadow: 0 1px .25rem var(--shadow-color);
 
-  .card-heading, .card-body, .card-footer {
+  .card-header, .card-body, .card-footer {
     padding: 2em;
     padding-bottom: 0;
   }
 
-  .card-heading:last-child, .card-body:last-child, .card-footer:last-child {
+  .card-header:last-child, .card-body:last-child, .card-footer:last-child {
     padding-bottom: 2em;
   }
 
-  .card-heading {
-    color: var(--card-heading-text-color);
-    background-color: var(--card-heading-background-color);
+  .card-header {
+    color: var(--card-header-text-color);
+    background-color: var(--card-header-background-color);
     border-bottom: 0px solid var(--card-border-color);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     line-height: 100%;
@@ -42,7 +42,7 @@
 
 .card-app {
   position: relative;
-  > .card-heading {
+  > .card-header {
     .icon-wrapper {
       font-size: 24px;
     }
