@@ -21,7 +21,8 @@
           'options' => [
             'redirect' => false,
           ],
-        ],        [
+        ],
+        [
           'pattern' => '#^'. BACKEND_ALIAS .'/(login|logout|search_results.json)$#',
           'endpoint' => 'backend',
           'page' => '$1',

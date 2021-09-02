@@ -873,13 +873,16 @@ tr.semi-transparent td {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: var(--gutter-size);
+  margin-bottom: calc(var(--gutter-size)*2);
+}
+@media (min-width: 992px) {
+  .row.layout {
+    grid-gap: calc(var(--gutter-size)*2);
+    margin-bottom: calc(var(--gutter-size)*2);
+  }
 }
 .row.half-gutter {
   grid-gap: calc(var(--gutter-size)/2);
-}
-.row.layout {
-  grid-gap: 2rem;
-  margin-bottom: 2rem;
 }
 .row.column {
   flex-direction: column;
@@ -1375,11 +1378,11 @@ input[type="number"] {
   padding: 0.5em 1em;
   margin-inline-end: -12px;
 }
-.input-group > *:first-child {
+.input-group > *:first-child:not(.btn) {
   border-left: none;
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
-.input-group > *:last-child {
+.input-group > *:last-child:not(.btn) {
   border-right: none;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
@@ -1902,6 +1905,12 @@ ul.list-inline li {
   font-weight: bold;
   color: #666;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+.mt-0 {
+  margin-top: 0;
+}
+.mb-0 {
+  margin-top: 0;
 }
 /* Tables - Bootstrap Compatible */
 .table {

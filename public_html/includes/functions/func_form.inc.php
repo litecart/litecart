@@ -281,7 +281,7 @@ END;
     if ($input === true) $input = form_reinsert_value($name);
 
     if ($input != '') {
-      $input = round((float)$input, $decimals);
+      $input = round($input, (int)$decimals);
     }
 
     return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" '. (($parameters) ? ' '.$parameters : '') .' />';
@@ -580,7 +580,7 @@ END;
   function form_draw_select_optgroup_field($name, $groups=[], $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
-      trigger_error('Passing $multiple as 4th parameter in form_draw_select_optgroup_field() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+      trigger_error('Passing $multiple as 4th parameter in form_draw_select_optgroup_field() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
       if (isset($args[4])) $parameters = $args[3];
     }
 
@@ -809,7 +809,7 @@ END;
 
       case 'number':
       case 'int':
-        return form_draw_number_field($name, $input, null, null, $parameters);
+        return form_draw_number_field($name, $input, $parameters);
 
       case 'checkbox':
         $html = '';
@@ -896,6 +896,20 @@ END;
       case 'order_statuses':
         return form_draw_order_status_list($name, $input, $parameters);
 
+      case 'page':
+      case 'pages':
+        return form_draw_pages_list($name, $input, $parameters);
+
+      case 'password':
+        return functions::form_draw_password_field($name, $input);
+
+      case 'radio':
+        $html = '';
+        foreach ($options as $option) {
+          $html .= form_draw_radio_button($name, [$option, $option], $input, $parameters);
+        }
+        return $html;
+
       case 'regional_input': //Deprecated
       case 'regional_text':
         $html = '';
@@ -915,17 +929,6 @@ END;
         $html = '';
         foreach (array_keys(language::$languages) as $language_code) {
           $html .= form_draw_regional_wysiwyg_field($name.'['. $language_code.']', $language_code, $input, $parameters);
-        }
-        return $html;
-
-      case 'page':
-      case 'pages':
-        return form_draw_pages_list($name, $input, $parameters);
-
-      case 'radio':
-        $html = '';
-        foreach ($options as $option) {
-          $html .= form_draw_radio_button($name, [$option, $option], $input, $parameters);
         }
         return $html;
 

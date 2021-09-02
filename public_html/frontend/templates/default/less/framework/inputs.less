@@ -68,9 +68,6 @@ input[type="number"] {
     &:hover {
       box-shadow: 0 0 0 0.25rem #ccc;
     }
-    &:disabled {
-      opacity: .5;
-    }
   }
 
   input[type="radio"] {
@@ -95,9 +92,6 @@ input[type="number"] {
     &:hover {
       box-shadow: 0 0 0 0.25rem #ccc;
     }
-    &:disabled {
-      opcaity: .5;
-    }
   }
 }
 
@@ -112,9 +106,6 @@ input[type="number"] {
   }
   &[type="file"] {
     font-size: .75em;
-  }
-  &[disabled] {
-    opacity: 0.5;
   }
   &[readonly] {
     color: #999;
@@ -206,9 +197,6 @@ input[type="number"] {
     background-color: transparent;
     border-radius: 0;
     border: none;
-    &[disabled] {
-      opacity: .5;
-    }
   }
   .input-group-text {
     flex: 0 1 auto;
@@ -235,6 +223,13 @@ input[type="number"] {
     border-right: none;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
+}
+
+fieldset[disabled] > :not(legend),
+:input[disabled],
+.form-input[disabled],
+.form-select[disabled] {
+  opacity: .5;
 }
 
 [data-toggle="buttons"] input[type="checkbox"],

@@ -28,7 +28,7 @@
   --default-line-height: 1.3333;
   --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #000;
-  --default-text-size: 14px;
+  --default-text-size: 15px;
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
   --default-notice-background-color: #f0f0f0;
@@ -84,15 +84,15 @@
   --link-text-color: #5bc0de;
   --shadow-color: rgba(0, 0, 0, 0.5);
   --whitespace-color: #fff;
-  --gutter-size: 1rem;
+  --gutter-size: 0.75rem;
 }
 @media (min-width: 576px) {
   :root {
-    --default-text-size: calc(var(--default-text-size) + 1px);
+    --gutter-size: 0.87rem;
   }
 }
 @media (min-width: 768px) {
   :root {
-    --default-text-size: calc(var(--default-text-size) + 2px);
+    --gutter-size: 1rem;
   }
 }

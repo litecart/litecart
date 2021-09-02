@@ -2,7 +2,7 @@
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '3.0.0');
 
-// Capture output buffer
+// Capture output buffer (use compression)
   if (!ob_start('ob_gzhandler')) ob_start();
 
 // Get config

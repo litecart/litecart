@@ -1,6 +1,9 @@
 <?php
 
-// Modify some files
+  perform_action('delete', [
+    FS_DIR_APP . 'ext/jquery/jquery-3.5.1.min.js',
+  ]);
+
   perform_action('modify', [
     FS_DIR_APP . 'includes/config.inc.php' => [
       [

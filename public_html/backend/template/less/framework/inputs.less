@@ -210,6 +210,13 @@ input[type="number"] {
   }
 }
 
+fieldset[disabled] > :not(legend),
+:input[disabled],
+.form-input[disabled],
+.form-select[disabled] {
+  opacity: .5;
+}
+
 [data-toggle="buttons"] input[type="checkbox"],
 [data-toggle="buttons"] input[type="radio"] {
   display: none;
