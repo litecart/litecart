@@ -47,7 +47,7 @@
       type: 'get',
       async: true,
       cache: false,
-      url: '<?php echo document::ilink('customers/customers.json'); ?>&query=' + $(this).val(),
+      url: '<?php echo document::ilink('customers/customers.json'); ?>?query=' + $(this).val(),
       dataType: 'json',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
