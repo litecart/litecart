@@ -17,6 +17,9 @@ SELECT email, date_created FROM `lc_customers`
 WHERE status AND newsletter;
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
+ADD COLUMN `login_attempts` INT NOT NULL DEFAULT '0' AFTER `password_reset_token`,
+ADD COLUMN `date_blocked_until` DATETIME NULL DEFAULT NULL AFTER `date_login`,
+ADD COLUMN `date_expire_sessions` DATETIME NULL DEFAULT NULL AFTER `date_blocked_until`,
 DROP COLUMN `newsletter`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products`

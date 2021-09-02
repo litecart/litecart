@@ -7,7 +7,7 @@
       echo "\nLiteCart® 3.0.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
-      . "Usage: php upgrade.php [options]\n\n"
+      . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
       . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n"
@@ -44,8 +44,8 @@
 // Include config
   require_once(__DIR__ . '/../storage/config.inc.php');
 
-  if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8'); // Prior to 1.2.0
-  if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.0
+  if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8'); // Prior to 1.2.x
+  if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/'); // Prior to 3.0.0
 
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);

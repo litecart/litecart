@@ -32,6 +32,15 @@
         }
       }
 
+      if (!empty(self::$data['id']) && !empty(self::$data['date_expire_sessions'])) {
+        if (!isset(session::$data['security.timestamp']) || session::$data['security.timestamp'] < strtotime(self::$data['date_expire_sessions'])) {
+          self::reset();
+          notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+          header('Location: '. document::ilink('login'));
+          exit;
+        }
+      }
+
       self::identify();
 
       event::register('after_capture', [__CLASS__, 'after_capture']);

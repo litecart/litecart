@@ -11,15 +11,13 @@
 </div>
 
 <script>
-  $('button[name="accept_cookies"]').click(function(){
+  $('#box-cookie-notice button[name="accept_cookies"]').click(function(){
     $('#box-cookie-notice').fadeOut();
-    var now = new Date();
-    var expires = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));
-    document.cookie = 'cookies_accepted=1; Expires=' + expires.toUTCString() +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
+    document.cookie = 'cookies_accepted=1; Max-Age=' + (365 * 24 * 60 * 60 * 1000) +'; Path=<?php echo WS_DIR_APP; ?>; SameSite=Lax';
     $('document').trigger('cookiesAccepted');
   });
 
-  $('button[name="decline_cookies"]').click(function(){
+  $('#box-cookie-notice button[name="decline_cookies"]').click(function(){
     $('#box-cookie-notice').fadeOut();
     document.cookie = 'cookies_accepted=0; Expires=0; Path=<?php echo WS_DIR_STORAGE; ?>; SameSite=Lax';
   });

@@ -19,7 +19,7 @@
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
       header('X-Powered-By: '. PLATFORM_NAME);
 
-    // Default to AJAX layout on AJAX request
+    // Set template
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         self::$layout = 'ajax';
       }
@@ -110,6 +110,12 @@
         self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
       }
 
+    // Add meta description
+      if (!empty(self::$snippets['description'])) {
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. htmlspecialchars(self::$snippets['description']) .'" />';
+        unset(self::$snippets['description']);
+      }
+
     // Prepare styles
       if (!empty(self::$snippets['style'])) {
         self::$snippets['style'] = '<style>' . PHP_EOL
@@ -138,7 +144,7 @@
         return implode($replace, explode($search, $subject, 2));
       };
 
-    // Remove Comments
+    // Extract and group in content stylesheets
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $GLOBALS['output'] = preg_replace('#(<html(?:[^>]+)?>).*(</html>)#is', '$1'. addcslashes(preg_replace('#<!--.*?-->#ms', '', $matches[1]), '\\$') .'$2', $GLOBALS['output']);
       }
