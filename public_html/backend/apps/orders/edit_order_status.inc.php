@@ -30,6 +30,7 @@
         'is_sale',
         'is_archived',
         'notify',
+        'track_shipping',
         'priority',
         'name',
         'description',
@@ -107,13 +108,20 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
+
               <div>
                 <strong><?php echo functions::form_draw_checkbox('is_sale', ['1', language::translate('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>
                 <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?>
               </div>
+
               <div>
                 <strong><?php echo functions::form_draw_checkbox('is_archived', ['1', language::translate('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?></strong>
                 <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?>
+              </div>
+
+              <div class="checkbox">
+                <strong><?php echo functions::form_draw_checkbox('track_shipping', ['1', language::translate('text_track_shipping', 'Track Shipping')], empty($_POST['track_shipping']) ? '0' : '1'); ?> </strong>
+                <?php echo language::translate('order_status:description_track_shipping', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
               </div>
             </div>
           </div>
@@ -154,7 +162,7 @@
               <?php } ?>
             </div>
 
-            <div><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %order_items, %total, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %shipping_tracking_url, %order_copy_url, %store_name, %store_url</code></div>
+            <div><?php echo language::translate('title_aliases', 'Aliases'); ?>: <code>%order_id, %order_status, %firstname, %lastname, %billing_address, %order_items, %total, %payment_transaction_id, %shipping_address, %shipping_tracking_id, %shipping_tracking_url, %shipping_current_status, %shipping_current_location, %order_copy_url, %store_name, %store_url</code></div>
           </fieldset>
         </div>
       </div>

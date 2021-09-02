@@ -134,6 +134,9 @@ ADD COLUMN `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_pri
 ADD COLUMN `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
 CHANGE COLUMN `payment_due` `total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `tax_total` `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+ADD COLUMN `shipping_progress` TINYINT(3) NOT NULL DEFAULT 0 AFTER `shipping_tracking_url`,
+ADD COLUMN `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_progress`,
+ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_current_status`,
 ADD INDEX `uid` (`uid`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
@@ -151,6 +154,7 @@ ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
+ADD COLUMN `track_shipping` TINYINT(1) NOT NULL DEFAULT '0' AFTER `notify`,
 DROP COLUMN `keywords`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_stock_items`

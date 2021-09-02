@@ -146,6 +146,10 @@
       return $this->run('after_process', null, $order);
     }
 
+    public function track($order) {
+      return $this->run('track', null, $order);
+    }
+
     public function run($method_name, $module_id=null) {
 
       if (empty($module_id)) {

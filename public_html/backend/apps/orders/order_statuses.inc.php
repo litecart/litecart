@@ -57,6 +57,7 @@
         <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
         <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
         <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
+        <th><?php echo language::translate('title_track', 'Track'); ?></th>
         <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
         <th>&nbsp;</th>
       </tr>
@@ -72,6 +73,7 @@
         <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
         <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
         <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+        <td class="text-center"><?php echo !empty($order_status['track_shipping']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
         <td class="text-center"><?php echo $order_status['priority']; ?></td>
         <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
       </tr>

@@ -266,21 +266,24 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW()),
 (4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","report_frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW()),
 (5, 'job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
-(6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW());
+(6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
+(7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
-(2, 'fa-clock-o', '#d7d96f', 1, 0, 2, NOW(), NOW()),
-(3, 'fa-cog', '#ffa851', 1, 0, 3, NOW(), NOW()),
-(4, 'fa-truck', '#99cc66', 1, 1, 4, NOW(), NOW()),
-(5, 'fa-times', '#ff6666', 0, 1, 5, NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `track_shipping`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'fa-money', '#c0c0c0', 0, 0, 0, 10, NOW(), NOW()),
+(2, 'fa-clock-o', '#d7d96f', 1, 0, 0, 20, NOW(), NOW()),
+(3, 'fa-cog', '#ffa851', 1, 0, 0, 30, NOW(), NOW()),
+(4, 'fa-truck', '#99cc66', 1, 0, 1, 40, NOW(), NOW()),
+(5, 'fa-times', '#ff6666', 0, 1, 0, 50, NOW(), NOW()),
+(5, 'fa-check', '#99cc66', 1, 1, 0, 60, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Awaiting payment', ''),
 (2, 2, 'en', 'Pending', ''),
 (3, 3, 'en', 'Processing', ''),
 (4, 4, 'en', 'Dispatched', ''),
-(5, 5, 'en', 'Cancelled', '');
+(5, 5, 'en', 'Cancelled', ''),
+(6, 6, 'en', 'Delivered', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 0, NOW(), NOW());

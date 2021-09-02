@@ -802,6 +802,8 @@
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
+        '%shipping_current_status' => !empty($this->data['shipping_current_status']) ? $this->data['shipping_current_status'] : '',
+        '%shipping_current_location' => !empty($this->data['shipping_current_location']) ? $this->data['shipping_current_location'] : '',
         '%order_items' => null,
         '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
