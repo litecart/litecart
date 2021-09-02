@@ -92,6 +92,8 @@ CREATE TABLE `lc_stock_transactions_contents` (
   PRIMARY KEY (`id`)
 );
 -- --------------------------------------------------------
+RENAME TABLE `lc_cart_items` TO `lc_shopping_carts_items`;
+-- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
@@ -130,10 +132,10 @@ CHANGE COLUMN `checksum` `checksum` VARCHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-ADD COLUMN `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
-ADD COLUMN `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
 CHANGE COLUMN `payment_due` `total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `tax_total` `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+ADD COLUMN `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
+ADD COLUMN `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
 ADD COLUMN `shipping_progress` TINYINT(3) NOT NULL DEFAULT 0 AFTER `shipping_tracking_url`,
 ADD COLUMN `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_progress`,
 ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_current_status`,

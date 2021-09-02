@@ -109,9 +109,9 @@
       if (empty($options)) return false;
 
       foreach ($options as $option) {
-          if (!empty($option['error'])) continue;
-          if (!empty($option['exclude_cheapest'])) continue;
-          if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
+        if (!empty($option['error'])) continue;
+        if (!empty($option['exclude_cheapest'])) continue;
+        if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
           $cheapest = [
             'module_id' => $option['module_id'],
             'option_id' => $option['option_id'],
@@ -157,8 +157,8 @@
         list($module_id, $option_id) = explode(':', $this->selected['id']);
       }
 
-      if (!empty($this->modules[$module_id]) && method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
-      }
+      if (!method_exists($this->modules[$module_id], $method_name)) return false;
+
+      return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
     }
   }
