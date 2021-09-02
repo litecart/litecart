@@ -28,7 +28,7 @@
   $num_rows = database::num_rows($orders_query);
 ?>
 <div id="widget-orders" class="card card-widget">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo language::translate('title_orders', 'Orders'); ?>
     </div>

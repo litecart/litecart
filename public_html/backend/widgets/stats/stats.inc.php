@@ -78,7 +78,7 @@
     $stats['num_products'] = $products['num_products'];
 ?>
 <div id="widget-stats" class="card card-widget">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo language::translate('title_statistics', 'Statistics'); ?>
     </div>

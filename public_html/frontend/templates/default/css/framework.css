@@ -1209,9 +1209,6 @@ input[type="number"] {
 .form-check input[type="checkbox"]:hover {
   box-shadow: 0 0 0 0.25rem #ccc;
 }
-.form-check input[type="checkbox"]:disabled {
-  opacity: 0.5;
-}
 .form-check input[type="radio"] {
   display: inline-block;
   position: relative;
@@ -1232,9 +1229,6 @@ input[type="number"] {
 .form-check input[type="radio"]:hover {
   box-shadow: 0 0 0 0.25rem #ccc;
 }
-.form-check input[type="radio"]:disabled {
-  opcaity: 0.5;
-}
 .form-input {
   position: relative;
   display: block;
@@ -1254,9 +1248,6 @@ input[type="number"] {
 }
 .form-input[type="file"] {
   font-size: 0.75em;
-}
-.form-input[disabled] {
-  opacity: 0.5;
 }
 .form-input[readonly] {
   color: #999;
@@ -1358,9 +1349,6 @@ input[type="number"] {
   border-radius: 0;
   border: none;
 }
-.input-group .form-select[disabled] {
-  opacity: 0.5;
-}
 .input-group .input-group-text {
   flex: 0 1 auto;
   padding: 0.5em 1em;
@@ -1385,6 +1373,12 @@ input[type="number"] {
 .input-group > *:last-child:not(.btn) {
   border-right: none;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+fieldset[disabled] > :not(legend),
+:input[disabled],
+.form-input[disabled],
+.form-select[disabled] {
+  opacity: 0.5;
 }
 [data-toggle="buttons"] input[type="checkbox"],
 [data-toggle="buttons"] input[type="radio"] {
