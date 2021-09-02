@@ -7,7 +7,7 @@
       echo "\nLiteCart® 2.3.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
-      . "Usage: php install.php [options]\n\n"
+      . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
       . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
       . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n";

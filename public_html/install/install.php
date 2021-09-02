@@ -6,7 +6,7 @@
       echo "\nLiteCart® 2.3.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
-      . "Usage: php install.php [options]\n\n"
+      . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
       . "  --db_server          Set database hostname (Default: 127.0.0.1)\n"
       . "  --db_username        Set database username\n"
