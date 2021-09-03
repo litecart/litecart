@@ -5,6 +5,8 @@
   require('includes/functions.inc.php');
 
   ini_set('display_errors', 'On');
+  mb_internal_encoding('UTF-8');
+  mb_http_output('UTF-8');
 
   $document_root = str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/'));
 

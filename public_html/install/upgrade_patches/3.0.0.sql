@@ -116,6 +116,12 @@ CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
+ALTER TABLE `lc_emails`
+DROP COLUMN `charset`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_languages`
+DROP COLUMN `charset`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_products`
 ADD COLUMN `autofill_technical_data` TINYINT(1) NOT NULL DEFAULT '0' AFTER `image`,
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL DEFAULT '0',

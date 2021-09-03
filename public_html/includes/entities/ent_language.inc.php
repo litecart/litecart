@@ -91,7 +91,6 @@
           code2 = '". database::input($this->data['code2']) ."',
           name = '". database::input($this->data['name']) ."',
           direction = '". database::input($this->data['direction']) ."',
-          charset = '". database::input($this->data['charset']) ."',
           locale = '". database::input($this->data['locale']) ."',
           url_type = '". database::input($this->data['url_type']) ."',
           domain_name = '". database::input($this->data['domain_name']) ."',

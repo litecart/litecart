@@ -117,7 +117,7 @@
       data: task.data,
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
+        jqXHR.overrideMimeType('text/html;charset=<?php echo mb_http_output(); ?>');
       },
 
       error: function(jqXHR, textStatus, errorThrown) {

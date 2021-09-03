@@ -2,8 +2,8 @@
 
   language::set(settings::get('site_language_code'));
 
-  $output = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL
-          . '<urlset xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . PHP_EOL;
+  $output = '<?xml version="1.0" encoding="'. mb_http_output() .'"?>' . PHP_EOL
+          . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . PHP_EOL;
 
   $hreflangs = '';
   foreach (language::$languages as $language) {
@@ -91,6 +91,6 @@
   $output .= '</urlset>';
 
   ob_clean();
-  header('Content-type: application/xml; charset=UTF-8');
+  header('Content-type: application/xml; charset='. mb_http_output());
   echo $output;
   exit;

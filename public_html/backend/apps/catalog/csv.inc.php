@@ -11,7 +11,7 @@
 
       ob_clean();
 
-      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+      header('Content-Type: text/plain; charset='. mb_http_output());
 
       if (isset($_GET['resume'])) {
 

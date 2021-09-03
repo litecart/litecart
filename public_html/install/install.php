@@ -1,5 +1,9 @@
 <?php
 
+  ini_set('display_errors', 'On');
+  mb_internal_encoding('UTF-8');
+  mb_http_output('UTF-8');
+
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {

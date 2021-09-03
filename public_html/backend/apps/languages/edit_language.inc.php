@@ -172,16 +172,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-          <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required placeholder="UTF-8"'); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
-          <?php echo functions::form_draw_text_field('locale', true, 'placeholder="E.g. en_US.utf8,en-US.UTF-8,english"'); ?>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
+        <?php echo functions::form_draw_text_field('locale', true, 'placeholder="en_US.utf8, en-US.UTF-8, english"'); ?>
       </div>
 
       <div class="row">

@@ -4,15 +4,13 @@
     public $data;
     public $previous;
 
-    public function __construct($email_id=null, $charset=null) {
+    public function __construct($email_id=null) {
 
       if ($email_id !== null) {
         $this->load($email_id);
       } else {
         $this->reset();
       }
-
-      $this->data['charset'] = $charset ? $charset : language::$selected['charset'];
     }
 
     public function reset() {
@@ -87,7 +85,6 @@
         "update ". DB_TABLE_PREFIX ."emails set
         status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
         code = '". database::input($this->data['code']) ."',
-        charset = '". database::input($this->data['charset']) ."',
         sender = '". database::input(json_encode($this->data['sender'], JSON_UNESCAPED_SLASHES)) ."',
         recipients = '". database::input(json_encode($this->data['recipients'], JSON_UNESCAPED_SLASHES)) ."',
         ccs = '". database::input(json_encode($this->data['ccs'], JSON_UNESCAPED_SLASHES)) ."',
@@ -138,16 +135,14 @@
       return $this;
     }
 
-    public function add_body($content, $html=false, $charset=null) {
+    public function add_body($content, $html=false) {
 
       if (empty($content)) {
         trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
         return $this;
       }
 
-      if (!$charset) $charset = $this->data['charset'];
-
-      $this->data['multiparts'][] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. $charset . "\r\n"
+      $this->data['multiparts'][] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. mb_http_output() . "\r\n"
                                   . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
                                   . trim($content);
 
@@ -233,15 +228,7 @@
         return $contact['email'];
       }
 
-      if (strtoupper(language::$selected['charset']) == 'UTF-8') {
-        return mb_encode_mimeheader($contact['name']) .' <'. $contact['email'] .'>';
-      }
-
-      if (preg_match('#[,;"]#', $contact['name'])) {
-        return '"'. addcslashes($contact['name'], '"') .'" <'. $contact['email'] .'>';
-      }
-
-      return $contact['name'] .' <'. $contact['email'] .'>';
+      return mb_encode_mimeheader($contact['name']) .' <'. $contact['email'] .'>';
     }
 
     public function cleanup($time_ago='-30 days') {

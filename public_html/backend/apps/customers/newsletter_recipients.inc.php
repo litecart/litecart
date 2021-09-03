@@ -51,7 +51,7 @@
 
     ob_clean();
 
-    header('Content-Type: text/plain; charset='. language::$selected['code']);
+    header('Content-Type: text/plain; charset='. mb_http_output());
 
     $recipients_query = database::query(
       "select email from ". DB_TABLE_PREFIX ."newsletter_recipients

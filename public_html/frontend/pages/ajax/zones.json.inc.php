@@ -18,6 +18,6 @@
   }
 
   ob_clean();
-  header('Content-type: application/json; charset='. language::$selected['charset']);
+  header('Content-type: application/json; charset='. mb_http_output());
   echo json_encode($json, JSON_UNESCAPED_SLASHES);
   exit;

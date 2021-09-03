@@ -11,7 +11,7 @@
 
       ob_clean();
 
-      header('Content-type: text/plain; charset='. language::$selected['charset']);
+      header('Content-type: text/plain; charset='. mb_http_output());
 
       echo "CSV Import\r\n"
          . "----------\r\n";

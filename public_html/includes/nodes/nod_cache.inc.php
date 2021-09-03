@@ -183,13 +183,7 @@
 
           if (!file_exists($cache_file) || filemtime($cache_file) < strtotime('-'.$max_age .' seconds')) return;
 
-          $data = @json_decode(file_get_contents($cache_file), true);
-
-          if (strtolower(language::$selected['charset']) != 'utf-8') {
-            $data = language::convert_characters($data, 'UTF-8', language::$selected['charset']);
-          }
-
-          return $data;
+          return @json_decode(file_get_contents($cache_file), true);
 
         case 'memory':
 

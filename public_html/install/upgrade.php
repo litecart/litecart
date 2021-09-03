@@ -1,6 +1,10 @@
 <?php
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
+  ini_set('display_errors', 'On');
+  mb_internal_encoding('UTF-8');
+  mb_http_output('UTF-8');
+
   if (php_sapi_name() == 'cli') {
 
     if (($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help') || ($argv[1] == '/?')) {
@@ -44,7 +48,7 @@
 // Include config
   require_once(__DIR__ . '/../storage/config.inc.php');
 
-  if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8'); // Prior to 1.2.x
+  if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8mb4'); // Prior to 1.2.x
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
   if (!defined('FS_DIR_STORAGE')) define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/'); // Prior to 3.0.0
 

@@ -61,8 +61,7 @@
   }
 
   if (isset($_GET['download'])) {
-    //header('Content-Type: text/plain; charset='. language::$selected['code']);
-    header('Content-Type: application/csv; charset='. language::$selected['code']);
+    header('Content-Type: application/csv; charset='. mb_http_output());
     header('Content-Disposition: filename="monthly_sales_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
     echo functions::csv_encode($rows);
     exit;

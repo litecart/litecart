@@ -26,9 +26,7 @@
     'alert' => isset($result['alert']) ? $result['alert'] : '',
   ];
 
-  language::convert_characters($json, language::$selected['charset'], 'UTF-8');
-
   ob_clean();
-  header('Content-type: text/plain; charset='. language::$selected['charset']);
+  header('Content-type: text/plain; charset='. mb_http_output());
   echo json_encode($json, JSON_UNESCAPED_SLASHES);
   exit;

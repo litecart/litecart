@@ -103,18 +103,6 @@
       if (!setlocale(LC_TIME, preg_split('#\s*,\s*#', self::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
         trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['code'], E_USER_WARNING);
       }
-
-    // Set PHP multibyte charset
-      mb_internal_encoding(self::$selected['charset']);
-
-    // Set RegEx multibyte encoding
-      mb_regex_encoding(self::$selected['charset']);
-
-    // Set PHP output encoding
-      mb_http_output(self::$selected['charset']);
-
-    // Set mysql charset and collation
-      database::set_encoding(self::$selected['charset']);
     }
 
     public static function identify() {
@@ -283,29 +271,29 @@
             return iconv('UTF-8', "$locale", strftime($format, $timestamp));
 
           case (preg_match('#\.1250$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-2');
+            return mb_convert_encoding(strftime($format, $timestamp), mb_internal_encoding(), 'ISO-8859-2');
 
           case (preg_match('#\.(1251|1252|1254)$#', $locale, $matches)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'Windows-'.$matches[1]);
+            return mb_convert_encoding(strftime($format, $timestamp), mb_internal_encoding(), 'Windows-'.$matches[1]);
 
           case (preg_match('#\.(1255|1256)$#', $locale, $matches)):
-            return iconv(self::$selected['charset'], "Windows-{$matches[1]}", strftime($format, $timestamp));
+            return iconv(mb_internal_encoding(), "Windows-{$matches[1]}", strftime($format, $timestamp));
 
           case (preg_match('#\.1257$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-13');
+            return mb_convert_encoding(strftime($format, $timestamp), mb_internal_encoding(), 'ISO-8859-13');
 
           case (preg_match('#\.(932|936|950)$#', $locale, $matches)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'CP'.$matches[1]);
+            return mb_convert_encoding(strftime($format, $timestamp), mb_internal_encoding(), 'CP'.$matches[1]);
 
           case (preg_match('#\.(949)$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'EUC-KR');
+            return mb_convert_encoding(strftime($format, $timestamp), mb_internal_encoding(), 'EUC-KR');
 
           //case (preg_match('#\.(x-iscii-ma)$i#', $locale)):
           //  return '???';
 
           default:
             trigger_error("No predefined charset mapped for Windows locale $locale. Attempting automatic detection instead.", E_USER_NOTICE);
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'auto');
+            return mb_convert_encoding(strftime($format, $timestamp), mb_internal_encoding(), 'auto');
         }
       }
 
@@ -314,8 +302,8 @@
 
     public static function convert_characters($variable, $from_charset=null, $to_charset=null) {
 
-      if (empty($from_charset)) $from_charset = self::$selected['charset'];
-      if (empty($to_charset)) $to_charset = self::$selected['charset'];
+      if (empty($from_charset)) $from_charset = mb_internal_encoding();
+      if (empty($to_charset)) $to_charset = mb_internal_encoding();
 
       if ($from_charset == $to_charset) return $variable;
 

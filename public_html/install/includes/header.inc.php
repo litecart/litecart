@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="<?php echo mb_http_output(); ?>" />
 <title>LiteCart Installer</title>
 <link rel="stylesheet" href="../backend/template/css/variables.css" />
 <link rel="stylesheet" href="../backend/template/css/framework.min.css" />

@@ -46,3 +46,7 @@
     ini_set('display_startup_errors', 'On');
     ini_set('display_errors', 'On');
   }
+
+// Character Set Encoding
+  mb_internal_encoding('UTF-8');
+  mb_regex_encoding('UTF-8');

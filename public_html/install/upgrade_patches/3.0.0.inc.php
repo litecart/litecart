@@ -535,6 +535,14 @@
         'search'  => '#'. preg_quote(PHP_EOL, '#') .'// Password Encryption Salt.*?\);'. preg_quote(PHP_EOL, '#') .'#m',
         'replace' => '',
         'regexp'  => true,
+      ],      [
+        'search'  => '#('. preg_quote("    ini_set('display_errors', 'On');". PHP_EOL ."  }", ')#') .'#m',
+        'replace' => '$1' . PHP_EOL
+                   . PHP_EOL
+                   . "// Character Set Encoding" . PHP_EOL
+                   . "  mb_internal_encoding('UTF-8');" . PHP_EOL
+                   . "  mb_regex_encoding('UTF-8');" . PHP_EOL
+        'regexp'  => true,
       ],
     ],
   ], 'abort');

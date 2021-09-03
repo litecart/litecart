@@ -3,7 +3,7 @@
   class database {
     private static $_links = [];
 
-    public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset='utf8mb4') {
+    public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset=DB_CONNECTION_CHARSET) {
 
       if (!isset(self::$_links[$link])) {
 
@@ -26,7 +26,10 @@
 
       if (self::$_links[$link]->connect_error) exit;
 
-      self::set_charset($charset, $link);
+      if (!$result = self::$_links[$link]->set_charset($charset)) {
+        trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
+        return false;
+      }
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
@@ -57,62 +60,6 @@
       event::register('shutdown', [__CLASS__, 'disconnect']);
 
       return self::$_links[$link];
-    }
-
-    public static function set_charset($charset, $link='default') {
-
-      if (!$result = self::$_links[$link]->set_charset($charset)) {
-        trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
-        return false;
-      }
-
-      return $result;
-    }
-
-    public static function set_encoding($charset, $collation=null, $link='default') {
-
-      if (!isset(self::$_links[$link])) self::connect($link);
-
-      if (empty($charset)) return false;
-
-      $charset = strtolower($charset);
-
-      $charset_to_mysql_character_set = [
-        'euc-kr' => 'euckr',
-        'iso-8859-1' => 'latin1',
-        'iso-8859-2' => 'latin2',
-        'iso-8859-3' => 'latin7',
-        'iso-8859-4' => 'cp1257',
-        'iso-8859-5' => 'cp1251',
-        'iso-8859-6' => 'cp1256',
-        'iso-8859-7' => 'greek',
-        'iso-8859-8' => 'hebrew',
-        'iso-8859-9' => 'latin5',
-        'iso-8859-13' => 'latin7',
-        'iso-2022-jp' => 'cp932',
-        'iso-2022-jp-2' => 'eucjpms',
-        'iso-2022-kr' => 'euckr',
-        'utf-8' => 'utf8mb4',
-        'utf-16' => 'utf16',
-        'windows-1250' => 'cp1250',
-        'windows-1251' => 'cp1251',
-        'windows-1252' => 'latin1',
-        'windows-1256' => 'cp1256',
-        'windows-1257' => 'cp1257',
-      ];
-
-      $charset = strtr($charset, $charset_to_mysql_character_set);
-
-      if (!self::set_charset($charset, $link)) {
-        trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
-        return false;
-      }
-
-      if (!empty($collation)) {
-        self::query("set collation_connection = ". database::input($collation), $link);
-      }
-
-      return true;
     }
 
     public static function set_option($option, $value, $link='default') {
