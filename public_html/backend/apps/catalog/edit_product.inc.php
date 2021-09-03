@@ -755,7 +755,7 @@
   $('select[name="new_attribute[group_id]"]').change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({
-      url: '<?php echo document::ilink(__APP__.'/attribute_values.json'); ?>&group_id=' + $(this).val(),
+      url: '<?php echo document::ilink(__APP__.'/attribute_values.json'); ?>?group_id=' + $(this).val(),
       type: 'get',
       cache: true,
       async: true,
