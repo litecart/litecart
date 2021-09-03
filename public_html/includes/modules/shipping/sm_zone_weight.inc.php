@@ -31,7 +31,7 @@
 
         if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address'])) continue;
 
-        $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
+        $cost = $this->calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
 
         $options[] = [
           'id' => 'zone_'.$i,
@@ -49,7 +49,7 @@
 
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
-          $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
+          $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
 
           $options[] = [
             'id' => 'zone_x',
