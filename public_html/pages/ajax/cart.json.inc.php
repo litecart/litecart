@@ -26,7 +26,6 @@
       'tax_class_id' => $item['tax_class_id'],
       'quantity' => (float)$item['quantity'],
       'quantity_unit' => $item['quantity_unit'],
-      'link' => document::ilink('product', ['product_id' => $item['product_id']]),
     ];
   }
 
