@@ -103,12 +103,13 @@
   background: var(--tabs-background-color);
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
-  padding: ~"calc(var(--gutter-size)/2)" ~"calc(var(--gutter-size)/2)" 0 ~"calc(var(--gutter-size)/2)";
+  padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size) 0 var(--gutter-size);
   color: var(--tabs-text-color);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
   > li {
     flex: 0 0 auto;
     > a {
-      margin-inline-end: 2px;
+      margin-inline-end: ~"calc(var(--gutter-size)/2)";
       line-height: 1.42857143;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
@@ -131,6 +132,9 @@
   background: var(--page-background-color);
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
+  background: #fff;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
   .tab-pane {
     > .title {
      margin-top: 0;

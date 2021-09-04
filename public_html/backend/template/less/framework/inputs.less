@@ -161,6 +161,7 @@ input[type="number"] {
   .input-field();
   display: flex;
   padding: 0;
+
   .form-input, .input-group {
     flex: 1 1 auto;
     box-shadow: none;
@@ -184,8 +185,6 @@ input[type="number"] {
     flex: 0 1 auto;
     padding: var(--input-padding-y) var(--input-padding-x);
     background-color: var(--input-addon-background-color);
-    border-left: 1px solid var(--input-border-color);
-    border-right: 1px solid var(--input-border-color);
     color: var(--input-text-color);
     align-self: stretch;
     font-weight: normal;
@@ -199,12 +198,10 @@ input[type="number"] {
   }
   //> *:first-child:is(.btn, .form-select, .form-input) {
   > *:first-child {
-    border-left: none;
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
   //> *:last-child:is(.btn, .form-select, .form-input) {
   > *:last-child {
-    border-right: none;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
 }

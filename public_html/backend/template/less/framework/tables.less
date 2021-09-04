@@ -10,7 +10,7 @@
 
   thead th {
     background: var(--table-header-background-color);
-    border-bottom: 2px solid var(--default-border-color);
+    border-bottom: 2px solid var(--table-border-color);
   }
 
   td, th {
@@ -27,10 +27,10 @@
     }
 
     &.border-left {
-      border-left: 1px solid var(--default-border-color);
+      border-left: 1px solid var(--table-border-color);
     }
     &.border-right {
-      border-right: 1px solid var(--default-border-color);
+      border-right: 1px solid var(--table-border-color);
     }
 
     @media print {
@@ -58,38 +58,38 @@
 
   &:not(.table-striped) {
     > tbody > tr:not(:last-child) > td {
-      border-bottom: 1px solid var(--default-border-color);
+      border-bottom: 1px solid var(--table-border-color);
     }
   }
 
   > tfoot {
     background: var(--table-footer-background-color);
-    border-top: 1px solid var(--default-border-color);
+    border-top: 1px solid var(--table-border-color);
     padding: 6px 12px;
     text-align: start;
   }
 
   &.table-bordered {
     > thead {
-      border-bottom: 2px solid var(--default-border-color);
+      border-bottom: 2px solid var(--table-border-color);
     }
     > * > tr > td {
-      border-top: 1px solid var(--default-border-color);
+      border-top: 1px solid var(--table-border-color);
       @media print {
         border-color: #000 !important;
       }
     }
     > tfoot {
-      border-top: 1px solid var(--default-border-color);
+      border-top: 1px solid var(--table-border-color);
     }
   }
 
   &.table-striped {
     > tbody > tr:nth-of-type(odd) {
-      background: var(--table-row-odd-background-color);
+      background: var(--table-row-background-color-odd);
     }
     > tbody > tr:nth-of-type(even) {
-      background: var(--table-row-even-background-color);
+      background: var(--table-row-background-color-even);
     }
     @media print {
       > tbody > tr {
@@ -102,7 +102,7 @@
     > tbody > tr {
       transition: background 125ms linear;
       &:hover {
-        background: var(--table-row-hover-background-color);
+        background: var(--table-row-background-color-hover);
       }
     }
   }
@@ -117,6 +117,7 @@
   &.table-dragable {
     > tbody .grabable {
       cursor: n-resize;
+      user-select: none;
     }
     > tbody > tr.grabbed {
       user-input: unset;

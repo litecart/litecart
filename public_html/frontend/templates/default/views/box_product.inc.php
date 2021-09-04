@@ -1,6 +1,6 @@
 <article id="box-product" class="box<?php echo (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') ? ' white' : ''; ?>" data-id="{{product_id}}" data-sku="{{sku|escape}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
-  <div class="row">
+  <div class="row layout">
     <div class="col-sm-4 col-md-6">
       <div class="images row">
 
@@ -219,7 +219,7 @@
     var n = this,
       c = <?php echo (int)currency::$selected['decimals']; ?>,
       d = '<?php echo language::$selected['decimal_point']; ?>',
-      t = '<?php echo language::$selected['thousands_sep']; ?>',
+      t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
       p = '<?php echo currency::$selected['prefix']; ?>',
       x = '<?php echo currency::$selected['suffix']; ?>',
       s = n < 0 ? '-' : '',
@@ -250,9 +250,9 @@
 
     $(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
       if ($(this).val() != '') {
-      if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
-      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+        if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+        if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
+        if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
       }
     });
 

@@ -1,29 +1,16 @@
 /* Buttons & Button Groups - Bootstrap Compatible */
 
 .btn(@type) {
-  background: ~"var(--@{type}-background-color)";
-  color: ~"var(--@{type}-text-color)";
-  border: 1px solid ~"var(--@{type}-border-color)";
+  background: ~"var(--button-@{type}-background-color)";
+  color: ~"var(--button-@{type}-text-color)";
+  border: 1px solid ~"var(--button-@{type}-border-color)";
   text-decoration: none;
   &:hover:not(.active):not(.disabled):not([disabled]) {
-    background: ~"var(--@{type}-background-color-hover)";
+    background: ~"var(--button-@{type}-background-color-hover)";
   }
   &.active {
     background: ~"var(--@{type}-background-color-active)";
-    border-color: ~"var(--@{type}-border-color)";
-  }
-}
-
-.btn-outline(@type) {
-  background: transparent;
-  border: 1px solid ~"var(--@{type}-background-color)";
-  color: ~"var(--@{type}-background-color)";
-  text-decoration: none;
-  &:hover:not(.active):not(.disabled):not([disabled]) {
-    border-color: ~"var(--@{type}-background-color-hover)";
-  }
-  &.active {
-    border-color: ~"var(--@{type}-background-color-active)";
+    border-color: ~"var(--button-@{type}-border-color)";
   }
 }
 
@@ -43,16 +30,8 @@
   touch-action: manipulation;
 
   &.btn-default { .btn("default"); }
-  &.btn-primary { .btn("primary"); }
   &.btn-success { .btn("success"); }
-  //&.btn-warning { .btn("warning"); }
   &.btn-danger { .btn("danger"); }
-
-  &.btn-outline-default { .btn-outline("default"); }
-  &.btn-outline-primary { .btn-outline("primary"); }
-  &.btn-outline-success { .btn-outline("success"); }
-  //&.btn-outline-warning { .btn-outline("warning"); }
-  &.btn-outline-danger { .btn-outline("danger"); }
 
   &.btn-app {
     border-left: 5px solid var(--app-color);

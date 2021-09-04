@@ -7,6 +7,7 @@
   if (isset($_POST['import'])) {
 
     try {
+
       if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }

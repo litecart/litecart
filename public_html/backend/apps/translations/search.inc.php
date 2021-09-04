@@ -218,7 +218,7 @@ th:not(:last-child) {
   </ul>
 
   <p>
-    <button type="button" class="btn btn-primary" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
+    <button type="button" class="btn btn-default" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
   </p>
 
 </div>

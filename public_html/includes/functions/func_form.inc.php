@@ -1412,7 +1412,7 @@ END;
 
     $collations_query = database::query(
       "select * from information_schema.COLLATIONS
-      where CHARACTER_SET_NAME = 'utf8mb4'
+      where CHARACTER_SET_NAME = '". database::input(DB_CONNECTION_CHARSET) ."'
       order by COLLATION_NAME;"
     );
 

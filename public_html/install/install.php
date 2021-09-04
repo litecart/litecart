@@ -57,6 +57,8 @@
   try {
 
     define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__ .'/../')), '/') .'/');
+    define('DB_CONNECTION_CHARSET', 'utf8mb4');
+
     require FS_DIR_APP . 'includes/error_handler.inc.php';
     require FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
     require FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
