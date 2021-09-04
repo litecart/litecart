@@ -65,6 +65,122 @@
         </div>
       </div>
 
+      <div class="options">
+<?php
+  if (count($product->options) > 0) {
+    foreach ($product->options as $group) {
+
+      echo '  <div class="form-group">'
+         . '    <label>'. $group['name'] .'</label>';
+
+      switch ($group['function']) {
+
+        case 'checkbox':
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            $price_adjust_text = '';
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +' . $price_adjust_text;
+            }
+
+            echo '<div class="checkbox">' . PHP_EOL
+               . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '</div>';
+          }
+          break;
+
+        case 'input':
+
+          $value = array_shift($group['values']);
+
+          $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+          $price_adjust_text = '';
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
+            if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+          }
+
+          echo functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) . $price_adjust_text . PHP_EOL;
+
+          break;
+
+        case 'radio':
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            $price_adjust_text = '';
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+            }
+
+            echo '<div class="radio">' . PHP_EOL
+               . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '</div>';
+          }
+
+          break;
+
+        case 'select':
+
+          $options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
+
+          foreach ($group['values'] as $value) {
+
+            $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+            $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id));
+
+            $price_adjust_text = '';
+            if ($value['price_adjust']) {
+              $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
+              if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
+            }
+
+            $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
+          }
+
+          echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required' : ''));
+
+          break;
+
+        case 'textarea':
+
+          $value = array_shift($group['values']);
+
+          $price_adjust = currency::format_raw($value['price_adjust'], $_GET['currency_code'], $_GET['currency_value']);
+          $tax_adjust = currency::format_raw(tax::get_tax($value['price_adjust'], $product->tax_class_id), $_GET['currency_code'], $_GET['currency_value']);
+
+          $price_adjust_text = '';
+          if ($value['price_adjust']) {
+            $price_adjust_text = currency::format($value['price_adjust'], false, $_GET['currency_code'], $_GET['currency_value']);
+            if ($value['price_adjust'] > 0) {
+              $price_adjust_text = ' <br />+'. $price_adjust;
+            }
+          }
+
+          echo functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) . $price_adjust_text. PHP_EOL;
+
+          break;
+      }
+
+      echo '</div>';
+    }
+  }
+
+  echo functions::form_draw_hidden_field('combination', '');
+?>
+      </div>
+
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_sku', 'SKU'); ?></label>
@@ -86,20 +202,22 @@
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
-            <?php echo functions::form_draw_weight_units_list('weight_unit', true); ?>
+            <?php echo functions::form_draw_decimal_field('weight', true, 2, 0); ?>
+            <span class="input-group-text"><?php echo functions::form_draw_weight_units_list('weight_unit', true, false, 'style="width: auto;"'); ?></span>
           </div>
         </div>
 
         <div class="form-group col-md-8">
           <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('length', true, 3, 'min="0"'); ?>
+            <?php echo functions::form_draw_decimal_field('length', true, 1, 0); ?>
             <span class="input-group-text">x</span>
-            <?php echo functions::form_draw_decimal_field('width', true, 3, 'min="0"'); ?>
+            <?php echo functions::form_draw_decimal_field('width', true, 1, 0); ?>
             <span class="input-group-text">x</span>
-            <?php echo functions::form_draw_decimal_field('height', true, 3, 'min="0"'); ?>
-            <?php echo functions::form_draw_length_units_list('length_unit', true); ?>
+            <?php echo functions::form_draw_decimal_field('height', true, 1, 0); ?>
+            <span class="input-group-text">
+              <?php echo functions::form_draw_length_units_list('length_unit', true, false, 'style="width: auto;"'); ?>
+            </span>
           </div>
         </div>
       </div>
@@ -161,6 +279,32 @@
 </div>
 
 <script>
+  $('form[name=form_add_product]').on('input', function(e) {
+
+    var price = <?php echo (float)$price; ?>;
+    var tax = <?php echo (float)$tax; ?>;
+
+    $(this).find('input[name^="options"][type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+
+    $(this).find('select[name^="options"] option:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+
+    $(this).find('input[name^="options"][type!="radio"][type!="checkbox"]').each(function(){
+      if ($(this).val() != '') {
+        if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+        if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+      }
+    });
+
+    $(this).find('input[name="price"]').val(price);
+    $(this).find('input[name="tax"]').val(tax);
+  });
+
   $('form[name="form_add_product"] button[name="ok"]').unbind('click').click(function(e){
     e.preventDefault();
 
@@ -170,21 +314,104 @@
     var item = {
       id: '',
       product_id: $(form).find(':input[name="product_id"]').val(),
-      stock_item_id: $(form).find(':input[name="stock_item_id"]').val(),
+      combination: $(form).find(':input[name="combination"]').val(),
+      options: {},
       name: $(form).find(':input[name="name"]').val(),
       sku: $(form).find(':input[name="sku"]').val(),
       gtin: $(form).find(':input[name="gtin"]').val(),
       taric: $(form).find(':input[name="taric"]').val(),
-      weight: parseFloat($(form).find(':input[name="weight"]').val()),
+      weight: parseFloat($(form).find(':input[name="weight"]').val() || 0),
       weight_unit: $(form).find(':input[name="weight_unit"]').val(),
-      length: parseFloat($(form).find(':input[name="length"]').val()),
-      width: parseFloat($(form).find(':input[name="width"]').val()),
-      height: parseFloat($(form).find(':input[name="height"]').val()),
+      length: parseFloat($(form).find(':input[name="length"]').val() || 0),
+      width: parseFloat($(form).find(':input[name="width"]').val() || 0),
+      height: parseFloat($(form).find(':input[name="height"]').val() || 0),
       length_unit: $(form).find(':input[name="length_unit"]').val(),
-      quantity: parseFloat($(form).find(':input[name="quantity"]').val()),
-      price: parseFloat($(form).find(':input[name="price"]').val()),
-      tax: parseFloat($(form).find(':input[name="tax"]').val())
+      quantity: parseFloat($(form).find(':input[name="quantity"]').val() || 0),
+      price: parseFloat($(form).find(':input[name="price"]').val() || 0),
+      tax: parseFloat($(form).find(':input[name="tax"]').val() || 0)
     };
+
+    var selected_option_combinations = [];
+
+    $(form).find('.options input[type="checkbox"]:checked').each(function(){
+      if ($(this).val()) {
+        if (!item.options[$(this).data('group')]) item.options[$(this).data('group')] = [];
+        item.options[$(this).data('group')].push($(this).val());
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    $(form).find('.options input[type="radio"]:checked').each(function(){
+      if ($(this).val()) {
+        item.options[$(this).data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    $(form).find('.options select :selected').each(function(){
+      if ($(this).val()) {
+        item.options[$(this).parent().data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).parent().attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    $(form).find('.options input[type!="radio"][type!="checkbox"]').each(function(){
+      if ($(this).val()) {
+        item.options[$(this).data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
+    });
+
+    if (error) {
+      alert("<?php echo htmlspecialchars(language::translate('error_missing_required_options', 'Missing required options')); ?>");
+      return false;
+    }
+
+    selected_option_combinations.sort();
+    var available_stock_options = <?php echo !empty($product->id) ? json_encode($product->options_stock, JSON_UNESCAPED_SLASHES) : '[]'; ?>;
+
+    $.each(available_stock_options, function(i, stock_option) {
+      var matched = false;
+      $.each(stock_option.combination.split(','), function(j, current_stock_combination){
+        if ($.inArray(current_stock_combination, selected_option_combinations) != -1) matched = true;
+      });
+
+      if (matched) {
+        item.combination = stock_option.combination;
+        item.sku = stock_option.sku;
+        item.gtin = stock_option.gtin;
+        if (stock_option.weight > 0) {
+          item.weight = parseFloat(stock_option.weight || 0);
+          item.weight_unit = stock_option.weight_unit;
+        }
+        if (stock_option.length > 0) {
+          item.length = parseFloat(stock_option.length || 0);
+          item.width = parseFloat(stock_option.width || 0);
+          item.height = parseFloat(stock_option.height || 0);
+          item.length_unit = stock_option.length_unit;
+        }
+      }
+    });
 
     addItem(item);
     $.featherlight.close();

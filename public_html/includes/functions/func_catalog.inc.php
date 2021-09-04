@@ -248,7 +248,6 @@
       "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, group_concat(concat(pa.group_id, '-', if(pa.custom_value != '', pa.custom_value, pa.value_id)) separator ',') as attributes, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
-        ". (!empty($filter['brands']) ? "+ if(p.brand_id and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."'), 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."
         ". (!empty($filter['products']) ? "+ if(p.id in ('". implode("', '", database::input($filter['products'])) ."'), 1, 0)" : false) ."
       ) as occurrences
@@ -262,8 +261,8 @@
           and (p.id
           ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
           ". (!empty($sql_where_categories) ? $sql_where_categories : null) ."
-          ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
           ". (!empty($filter['brands']) ? "or brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
+          ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
           ". (!empty($filter['keywords']) ? "or (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         )
         and (p.quantity > 0 or ss.hidden != 1)

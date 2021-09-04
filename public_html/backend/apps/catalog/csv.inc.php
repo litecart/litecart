@@ -636,129 +636,6 @@
 
             break;
 
-          case 'stock_items':
-
-          // Find stock_item
-            if (!empty($row['id']) && $stock_item = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id = ". (int)$row['id'] ." limit 1;"))) {
-              $stock_item = new ent_stock_item($stock_item['id']);
-
-            } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($row['sku']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
-
-            } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
-
-            } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
-            }
-
-            if (!empty($stock_item->data['id'])) {
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing stock item on line $line" . PHP_EOL;
-                continue 2;
-              }
-              echo 'Updating existing stock item '. (!empty($row['name'][$row['language_code']]) ? $row['name'][$row['language_code']] : "on line $line") . PHP_EOL;
-              $updated++;
-
-            } else {
-
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new stock item on line $line" . PHP_EOL;
-                continue 2;
-              }
-
-              echo 'Inserting new stock item: '. (!empty($row['name'][$row['language_code']]) ? $row['name'][$row['language_code']] : "on line $line") . PHP_EOL;
-              $inserted++;
-
-              if (!empty($row['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."stock_items (id, date_created)
-                  values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-                );
-                $stock_item = new ent_stock_item($row['id']);
-              } else {
-                $stock_items = new ent_stock_item();
-              }
-            }
-
-            if (empty($row['brand_id']) && !empty($row['brand_name'])) {
-              $brands_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."brands
-                where name = '". database::input($row['brand_name']) ."'
-                limit 1;"
-              );
-
-              if ($brand = database::fetch($brands_query)) {
-                $row['brand_id'] = $brand['id'];
-              } else {
-                $brand = new ent_brand();
-                $brand->data['name'] = $row['brand_name'];
-                $brand->save();
-                $row['brand_id'] = $brand->data['id'];
-              }
-            }
-
-            if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
-              $suppliers_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."suppliers
-                where name = '". database::input($row['supplier_name']) ."'
-                limit 1;"
-              );
-              if ($supplier = database::fetch($suppliers_query)) {
-                $row['supplier_id'] = $supplier['id'];
-              } else {
-                $supplier = new ent_supplier();
-                $supplier->data['name'] = $row['supplier_name'];
-                $supplier->save();
-                $row['supplier_id'] = $supplier->data['id'];
-              }
-            }
-
-          // Set new stock item data
-            $fields = [
-              'brand_id',
-              'supplier_id',
-              'status',
-              'sku',
-              'mpn',
-              'gtin',
-              'quantity',
-              'weight',
-              'weight_unit',
-              'length',
-              'width',
-              'height',
-              'length_unit',
-              'purchase_price',
-              'purchase_price_currency_code',
-              'reordered',
-            ];
-
-            foreach ($fields as $field) {
-              if (isset($row[$field])) $stock_item->data[$field] = $row[$field];
-            }
-
-            $fields = [
-              'name',
-            ];
-
-            foreach ($fields as $field) {
-              if (isset($row[$field])) $stock_item->data[$field][[$row['language_code']]] = $row[$field];
-            }
-
-            $stock_item->save();
-
-            if (!empty($row['date_created'])) {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."stock_items
-                set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
-                where id = ". (int)$stock_item->data['id'] ."
-                limit 1;"
-              );
-            }
-
-            break;
-
           case 'suppliers':
 
           // Find supplier
@@ -984,7 +861,13 @@
                 'id' => $product->id,
                 'status' => $product->status,
                 'categories' => implode(',', array_keys($product->categories)),
+                'brand_id' => $product->brand_id,
+                'supplier_id' => $product->supplier_id,
                 'code' => $product->code,
+                'sku' => $product->sku,
+                'mpn' => $product->mpn,
+                'gtin' => $product->gtin,
+                'taric' => $product->taric,
                 'name' => $product->name,
                 'short_description' => $product->short_description,
                 'description' => $product->description,
@@ -994,48 +877,25 @@
                 'meta_description' => $product->meta_description,
                 'images' => implode(';', $product->images),
                 'attributes' => implode("\r\n", array_map($attribute_map, $product->attributes)),
+                'purchase_price' => $product->purchase_price,
+                'purchase_price_currency_code' => $product->purchase_price_currency_code,
                 'recommended_price' => $product->recommended_price,
                 'price' => $product->price,
                 'tax_class_id' => $product->tax_class_id,
                 'quantity' => $product->quantity,
                 'quantity_unit_id' => $product->quantity_unit['id'],
+                'weight' => $product->weight,
+                'weight_unit' => $product->weight_unit,
+                'length' => $product->length,
+                'width' => $product->width,
+                'height' => $product->height,
+                'length_unit' => $product->length_unit,
                 'delivery_status_id' => $product->delivery_status_id,
                 'sold_out_status_id' => $product->sold_out_status_id,
                 'language_code' => $_POST['language_code'],
                 'currency_code' => $_POST['currency_code'],
                 'date_valid_from' => $product->date_valid_from,
                 'date_valid_to' => $product->date_valid_to,
-              ];
-            }
-
-            break;
-
-          case 'stock_items':
-
-            $stock_items_query = database::query("select id from ". DB_TABLE_PREFIX ."stock_items order by id;");
-            while ($stock_item = database::fetch($stock_items_query)) {
-
-              $stock_item = reference::stock_item($stock_item['id']);
-
-              $csv[] = [
-                'id' => $stock_item->id,
-                'brand_id' => $product->brand_id,
-                'supplier_id' => $product->supplier_id,
-                'status' => $stock_item->status,
-                'code' => $stock_item->code,
-                'sku' => $stock_item->sku,
-                'mpn' => $stock_item->mpn,
-                'gtin' => $stock_item->gtin,
-                'name' => $stock_item->name[language::$selected],
-                'purchase_price' => $stock_item->purchase_price,
-                'purchase_price_currency_code' => $stock_item->purchase_price_currency_code,
-                'weight' => $stock_item->weight,
-                'weight_unit' => $stock_item->weight_unit,
-                'length' => $stock_item->length,
-                'width' => $stock_item->width,
-                'height' => $stock_item->height,
-                'length_unit' => $stock_item->length_unit,
-                'language_code' => $_POST['language_code'],
               ];
             }
 
@@ -1117,11 +977,11 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
+                <?php echo functions::form_draw_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
                 <?php echo functions::form_draw_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['brands', language::translate('title_brands', 'Manufacturers')], true); ?>
+                <?php echo functions::form_draw_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true); ?>
                 <?php echo functions::form_draw_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
                 <?php echo functions::form_draw_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>
@@ -1173,11 +1033,11 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
+                <?php echo functions::form_draw_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
                 <?php echo functions::form_draw_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['brands', language::translate('title_brands', 'Manufacturers')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>

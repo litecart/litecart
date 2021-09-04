@@ -121,8 +121,8 @@ table.items tbody tr:nth-child(11) {
             <td><?php echo $item['gtin']; ?></td>
             <td style="white-space: normal;"><?php echo $item['name']; ?>
 <?php
-    if (!empty($item['options'])) {
-      foreach ($item['options'] as $key => $value) {
+    if (!empty($item['data'])) {
+      foreach ($item['data'] as $key => $value) {
         if (is_array($value)) {
           echo '<br />- '.$key .': ';
           $useComa = false;

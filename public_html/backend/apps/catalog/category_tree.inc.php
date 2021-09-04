@@ -53,11 +53,7 @@
         $product->data['id'] = null;
         $product->data['status'] = 0;
         $product->data['code'] = '';
-        $product->data['sku'] = '';
-        $product->data['mpn'] = '';
-        $product->data['gtin'] = '';
         $product->data['categories'] = [$_POST['category_id']];
-        $product->data['quantity'] = 0;
         $product->data['image'] = null;
         $product->data['images'] = [];
 
@@ -222,7 +218,7 @@
 </style>
 
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_catalog', 'Catalog'); ?>
     </div>
@@ -283,16 +279,16 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."stock_items
-          where sku regexp '". database::input($code_regex) ."'
-        ), 5, 0)
+            select product_id from ". DB_TABLE_PREFIX ."products_options_stock
+            where sku regexp '". database::input($code_regex) ."'
+          )), 5, 0)
         + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
         + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
       ) as relevance
       from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-      left join ". DB_TABLE_PREFIX ."brands b on (p.brand_id = b.id)
-      left join ". DB_TABLE_PREFIX ."suppliers s on (p.supplier_id = s.id)
+      left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+      left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
       having relevance > 0
       order by relevance desc;"
     );

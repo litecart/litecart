@@ -114,33 +114,13 @@
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
-        <?php if ($stock_options) { ?>
-        <div class="form-group">
-          <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
-          <div class="dropdown">
-            <div class="form-select" data-toggle="dropdown">
-              <span class="title">-- <?php echo language::translate('title_select', 'Select'); ?> --</span>
-            </div>
-            <ul class="dropdown-menu stock-options" style="width: 100%;">
-              <?php foreach ($stock_options as $stock_option) { ?>
-              <li>
-                <label style="display: flex;">
-                  <input type="radio" name="stock_item_id" value="<?php echo $stock_option['stock_item_id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" data-set-title="<?php echo htmlspecialchars($stock_option['name']); ?>" required />
-                  <div class="row">
-                    <div class="col-xs-2">
-                      <img src="<?php echo document::href_link($stock_option['image']['thumbnail']); ?>" class="thumbnail" alt="" />
-                    </div>
-                    <div class="col-xs-10">
-                      <div class="name"><?php echo $stock_option['name']; ?></div>
-                      <div class="stock-status"><?php echo $stock_option['quantity']; ?></div>
-                    </div>
-                  </div>
-                </label>
-              </li>
-              <?php } ?>
-            </ul>
+        <?php if ($options) { ?>
+          <?php foreach ($options as $option) { ?>
+          <div class="form-group">
+            <label><?php echo $option['name']; ?></label>
+            <?php echo $option['values']; ?>
           </div>
-        </div>
+          <?php } ?>
         <?php } ?>
 
         <div class="price-wrapper">
@@ -235,16 +215,6 @@
 </article>
 
 <script>
-  $('#box-product[data-id="<?php echo $product_id; ?>"] button[name="add_cart_product"]').click(function(e) {
-    if ($('input[name="stock_item_id"]').length) {
-      if (!$('input[name="stock_item_id"]:checked').length) {
-        e.preventDefault();
-        $(this).closest('form').find('.dropdown [data-toggle="dropdown"]').click();
-        return false;
-      }
-    }
-  });
-
   Number.prototype.toMoney = function() {
     var n = this,
       c = <?php echo (int)currency::$selected['decimals']; ?>,
@@ -260,7 +230,7 @@
     return s + p + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (<?php echo (settings::get('auto_decimals')) ? "(c && f)" : "c"; ?> ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
   }
 
-  $('#box-product form[name=buy_now_form]').bind('input propertyChange', function(e) {
+  $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form]').bind('input propertyChange', function(e) {
 
     var regular_price = <?php echo currency::format_raw($regular_price); ?>;
     var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;

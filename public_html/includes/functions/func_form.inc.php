@@ -1671,32 +1671,6 @@ END;
     }
   }
 
-  function form_draw_stock_items_list($name, $input=true, $parameters='') {
-
-    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_stock_items_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
-      if (isset($args[3])) $parameters = $args[2];
-    }
-
-    $stock_items_query = database::query(
-      "select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
-      left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.product_id and sii.language_code = '". database::input(language::$selected['code']) ."')
-      order by sii.name"
-    );
-
-    $options = [];
-    while ($stock_item = database::fetch($stock_items_query)) {
-      $options[] = [$stock_item['id'], $stock_item['name'] .' &mdash; '. $stock_item['sku'] . ' ['. (float)$stock_item['quantity'] .']'];
-    }
-
-    if (preg_match('#\[\]$#', $name)) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
   function form_draw_suppliers_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {

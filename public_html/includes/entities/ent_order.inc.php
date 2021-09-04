@@ -162,7 +162,7 @@
       );
 
       while ($item = database::fetch($order_items_query)) {
-        $item['options'] = $item['options'] ? json_decode($item['options'], true) : '';
+        $item['data'] = $item['data'] ? json_decode($item['data'], true) : '';
         $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
         $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
         $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
@@ -304,13 +304,9 @@
     // Restock previous items
       if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
-          if (empty($previous_order_item['stock_item_id'])) continue;
-          database::query(
-            "update ". DB_TABLE_PREFIX ."stock_items
-            set quantity = quantity + ". (float)$previous_order_item['quantity'] ."
-            where id = ". (int)$previous_order_item['stock_item_id'] ."
-            limit 1;"
-          );
+          if (empty($previous_order_item['product_id'])) continue;
+          $product = new ent_product($previous_order_item['product_id']);
+          $product->adjust_quantity($previous_order_item['quantity'], $previous_order_item['combination']);
         }
       }
 
@@ -345,23 +341,17 @@
         }
 
       // Withdraw stock
-        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['stock_item_id'])) {
-          database::query(
-            "update ". DB_TABLE_PREFIX ."stock_items
-            set quantity = quantity - ". (float)$item['quantity'] ."
-            where id = ". (int)$item['stock_item_id'] ."
-            limit 1;"
-          );
+        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
+          $product = new ent_product($item['product_id']);
+          $product->adjust_quantity(-$item['quantity'], $item['combination']);
         }
 
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",
-            stock_item_id = ". (int)$item['stock_item_id'] .",
-            options = '". (!empty($item['options']) ? database::input(json_encode($item['options'], JSON_UNESCAPED_SLASHES)) : '') ."',
+            combination = '". database::input($item['combination']) ."',
             name = '". database::input($item['name']) ."',
-            description = '". database::input($item['description']) ."',
-            data = '". database::input($item['data']) ."',
+            data = '". (!empty($item['data']) ? database::input(json_encode($item['data'], JSON_UNESCAPED_SLASHES)) : '') ."',
             sku = '". database::input($item['sku']) ."',
             gtin = '". database::input($item['gtin']) ."',
             taric = '". database::input($item['taric']) ."',
@@ -741,8 +731,8 @@
           $product = reference::product($item['product_id'], $language_code);
 
           $options = [];
-          if (!empty($item['options'])) {
-            foreach ($item['options'] as $k => $v) {
+          if (!empty($item['data'])) {
+            foreach ($item['data'] as $k => $v) {
               $options[] = $k .': '. $v;
             }
           }
@@ -818,8 +808,8 @@
           $product = reference::product($item['product_id'], $this->data['language_code']);
 
           $options = [];
-          if (!empty($item['options'])) {
-            foreach ($item['options'] as $k => $v) {
+          if (!empty($item['data'])) {
+            foreach ($item['data'] as $k => $v) {
               $options[] = $k .': '. $v;
             }
           }

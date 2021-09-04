@@ -48,7 +48,7 @@
         $product->data['image'] = null;
         $product->data['images'] = [];
 
-        foreach (['attributes', 'campaigns', 'stock_items'] as $field) {
+        foreach (['attributes', 'campaigns', 'stock_options'] as $field) {
           if (empty($product->data[$field])) continue;
           foreach (array_keys($product->data[$field]) as $key) {
             $product->data[$field][$key]['id'] = null;
@@ -104,7 +104,7 @@
   if (!empty($_GET['query'])) {
 
     $products_query = database::query(
-      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name,
+      "select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name,
       (
         if(p.id = '". database::input($_GET['query']) ."', 10, 0)
         + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
@@ -121,16 +121,16 @@
         + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
         + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
-          select product_id from ". DB_TABLE_PREFIX ."stock_items
-          where sku regexp '". database::input($code_regex) ."'
-        ), 5, 0)
+            select product_id from ". DB_TABLE_PREFIX ."products_options_stock
+            where sku regexp '". database::input($code_regex) ."'
+          )), 5, 0)
         + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
         + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
       ) as relevance
       from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-      left join ". DB_TABLE_PREFIX ."brands b on (p.brand_id = b.id)
-      left join ". DB_TABLE_PREFIX ."suppliers s on (p.supplier_id = s.id)
+      left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+      left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
       having relevance > 0
       order by relevance desc;"
     );
@@ -142,7 +142,7 @@
   } else if (!empty($_GET['category_id'])) {
 
     $products_query = database::query(
-      "select p.id, p.status, pi.name, p.sku, p.gtin, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
+      "select p.id, p.status, p.code, pi.name, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
       where p.id in (
         select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
@@ -154,7 +154,7 @@
   } else {
 
     $products_query = database::query(
-      "select p.id, p.status, pi.name, p.sku, p.gtin, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
+      "select p.id, p.status, p.code, pi.name, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
       order by status desc, pi.name asc;"
     );
@@ -207,7 +207,7 @@ table .thumbnail {
 </style>
 
 <div class="card card-app">
-  <div class="card-heading">
+  <div class="card-header">
     <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_products', 'Products'); ?>
     </div>
@@ -223,7 +223,6 @@ table .thumbnail {
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
       <div style="min-width: 300px;"><?php echo functions::form_draw_category_field('category_id', true); ?></div>
-      <div style="min-width: 250px;"><?php echo functions::form_draw_brands_list('brand_id', true); ?></div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
@@ -238,8 +237,8 @@ table .thumbnail {
           <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
           <th>&nbsp;</th>
         </tr>
@@ -253,8 +252,8 @@ table .thumbnail {
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
           <td><img class="thumbnail" src="<?php echo document::href_link(functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" /></td>
           <td><?php echo $product['id']; ?></td>
-          <td><?php echo $product['sku']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>
+          <td><?php echo $product['code']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
           <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
