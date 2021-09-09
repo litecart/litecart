@@ -44,6 +44,48 @@
     );
   }
 
+// Create return order
+  if (!empty($_POST['return'])) {
+
+    try {
+
+      if (empty($_POST['selected_items'])) throw new Exception(language::translate('error_must_select_items', 'You must select items'));
+
+      $return_order = new ent_order();
+
+      $fields = [
+        'language_code',
+        'currency_code',
+        'currency_value',
+        'display_prices_including_tax',
+        'customer',
+      ];
+
+      foreach ($fields as $field) {
+        $return_order->data[$field] = $order->data[$field];
+      }
+
+      foreach ($_POST['selected_items'] as $item_id) {
+        $return_order->add_item(array_merge($order->data['items'][$item_id], ['quantity' => 0 - $order->data['items'][$item_id]['quantity']]));
+      }
+
+      $return_order->data['comments'] = [[
+        'author' => 'system',
+        'hidden' => true,
+        'text' => 'Returned items from order '. $order->data['id'],
+      ]];
+
+      $return_order->save();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::ilink(__APP__.'/edit_order', ['order_id' => $return_order->data['id']]));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Save data to database
   if (isset($_POST['save'])) {
 
@@ -566,6 +608,7 @@ body.dark-mode #box-comments {
           <table class="table table-striped table-hover table-input table-dragable">
             <thead>
               <tr>
+                <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
                 <th><?php echo language::translate('title_item', 'Item'); ?></th>
                 <th style="width: 200px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
                 <th style="width: 150px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
@@ -580,6 +623,7 @@ body.dark-mode #box-comments {
             <tbody>
               <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
               <tr class="item">
+                <td><?php echo functions::form_draw_checkbox('selected_items[]', $key, true); ?></td>
                 <td class="grabable">
                   <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
@@ -638,7 +682,8 @@ body.dark-mode #box-comments {
 
             <tfoot>
               <tr>
-                <td colspan="8">
+                <td colspan="9">
+                  <?php echo functions::form_draw_button('return', language::translate('title_return_items', 'Return Items')); ?>
                   <a class="btn btn-default add-product" href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
                 </td>
@@ -1279,6 +1324,7 @@ body.dark-mode #box-comments {
     new_item_index++;
 
     var output = '  <tr class="item">'
+               + '    <td></td>'
                + '    <td class="grabable">' + item.name
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'

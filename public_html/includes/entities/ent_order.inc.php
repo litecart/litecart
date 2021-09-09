@@ -491,7 +491,7 @@
         $this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
         $this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
         $this->data['total_tax'] += $item['tax'] * $item['quantity'];
-        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
+        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * abs($item['quantity']);
       }
 
       foreach ($this->data['order_total'] as $row) {
