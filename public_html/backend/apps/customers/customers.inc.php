@@ -131,7 +131,7 @@
       <tbody>
         <?php foreach ($customers as $customer) { ?>
         <tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('customers[]', $customer['id']); ?></td>
           <td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $customer['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>"><?php echo $customer['email']; ?></a></td>
@@ -150,15 +150,17 @@
       </tfoot>
     </table>
 
-    <ul class="list-inline">
-      <li>
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
-      </li>
-      <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
-    </ul>
+    <div class="card-body">
+      <ul class="list-inline">
+        <li>
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+        </div>
+        </li>
+        <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+      </ul>
+    </div>
 
   <?php echo functions::form_draw_form_end(); ?>
 

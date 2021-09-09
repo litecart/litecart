@@ -81,7 +81,7 @@
       <tbody>
         <?php foreach ($slides as $slide) { ?>
         <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('slides[]', $slide['id']); ?></td>
           <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $slide['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>

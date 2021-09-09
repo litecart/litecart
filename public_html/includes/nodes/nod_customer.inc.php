@@ -25,7 +25,7 @@
           $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
 
           if ($checksum == $key) {
-            self::load($customer['id']);
+            self::$data['id'] = $customer['id'];
           } else if (!empty($_COOKIE['customer_remember_me'])) {
             header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
           }

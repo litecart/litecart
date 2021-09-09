@@ -85,7 +85,7 @@
       <tbody>
         <?php foreach ($brands as $brand) { ?>
         <tr class="<?php echo empty($brand['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('brands['. $brand['id'] .']', $brand['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('brands[]', $brand['id']); ?></td>
           <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $brand['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
           <td><img src="<?php echo document::href_link($brand['image'] ? WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>

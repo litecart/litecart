@@ -317,7 +317,7 @@
         }
 ?>
         <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
           <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
@@ -386,7 +386,7 @@
         }
 
         $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
-                 . '  <td>'. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::form_draw_checkbox('products[]', $product['id'], true) .'</td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>' . PHP_EOL
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : '') .'</td>' . PHP_EOL;
 
@@ -432,7 +432,7 @@
         $num_category_rows++;
 
         $output .= '<tr class="'. ($category['status'] ? null : ' semi-transparent') .'">' . PHP_EOL
-                 . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
+                 . '  <td>'. functions::form_draw_checkbox('categories[]', $category['id'], true) .'</td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL;
 

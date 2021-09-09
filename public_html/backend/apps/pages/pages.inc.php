@@ -151,7 +151,7 @@
 
 ?>
         <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
@@ -210,7 +210,7 @@
         }
 ?>
         <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
           <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>

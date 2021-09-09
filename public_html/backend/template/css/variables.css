@@ -69,8 +69,8 @@
   --pagination-hover-background-color: var(--primary-background-color);
   --pagination-hover-text-color: #fff;
   --button-default-background-color: #f2f3f6;
-  --button-default-background-color-hover: #e8eaee;
-  --button-default-background-color-active: #f2f3f6;
+  --button-default-background-color-hover: #f7f8ff;
+  --button-default-background-color-active: #e8e9ed;
   --button-default-border-color: #e0e0e0;
   --button-default-text-color: #222;
   --button-danger-background-color: #d9534f;
@@ -86,7 +86,7 @@
   --input-background-color: #f2f3f6;
   --input-addon-background-color: #e8eaee;
   --input-text-color: #000;
-  --input-border-color: #ccc;
+  --input-border-color: #e7e9f0;
   --input-padding-x: 15px;
   --input-padding-y: 7.5px;
   --notice-default-background-color: #e5e5e5;

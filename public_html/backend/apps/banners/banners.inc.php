@@ -88,7 +88,7 @@
       <tbody>
         <?php foreach ($banners as $banner) { ?>
         <tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">
-          <td><?php echo functions::form_draw_checkbox('banners['. $banner['id'] .']', $banner['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('banners[]', $banner['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($banner['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
           <td><?php echo $banner['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>
