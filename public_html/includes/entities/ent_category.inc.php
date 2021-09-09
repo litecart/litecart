@@ -39,6 +39,7 @@
       }
 
       $this->data['filters'] = [];
+      $this->data['products'] = [];
 
       $this->previous = $this->data;
     }
@@ -84,6 +85,18 @@
       $this->data['filters'] = [];
       while ($group = database::fetch($category_filters_query)) {
         $this->data['filters'][] = $group;
+      }
+
+    // Products
+      $products_to_categories_query = database::query(
+        "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+        where category_id = ". (int)$this->data['id'] ."
+        order by product_id;"
+      );
+
+      $this->data['products'] = [];
+      while ($product = database::fetch($products_to_categories_query)) {
+        $this->data['products'][] = $product['product_id'];
       }
 
       $this->previous = $this->data;
@@ -167,26 +180,42 @@
       );
 
     // Update filters
-      if (!empty($this->data['filters'])) {
-        $filter_priority = 1;
-        foreach ($this->data['filters'] as $key => $filter) {
-          if (empty($filter['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."categories_filters
-              (category_id, attribute_group_id)
-              values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
-            );
-            $this->data['filters'][$key]['id'] = $filter['id'] = database::insert_id();
-          }
-
+      $filter_priority = 1;
+      foreach ($this->data['filters'] as $key => $filter) {
+        if (empty($filter['id'])) {
           database::query(
-            "update ". DB_TABLE_PREFIX ."categories_filters set
-              attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
-              select_multiple = ". (!empty($filter['select_multiple']) ? 1 : 0) .",
-              priority = ". $filter_priority++ ."
-            where category_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$filter['id'] ."
-            limit 1;"
+            "insert into ". DB_TABLE_PREFIX ."categories_filters
+            (category_id, attribute_group_id)
+            values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
+          );
+          $this->data['filters'][$key]['id'] = $filter['id'] = database::insert_id();
+        }
+
+        database::query(
+          "update ". DB_TABLE_PREFIX ."categories_filters set
+            attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
+            select_multiple = ". (!empty($filter['select_multiple']) ? 1 : 0) .",
+            priority = ". $filter_priority++ ."
+          where category_id = ". (int)$this->data['id'] ."
+          and id = ". (int)$filter['id'] ."
+          limit 1;"
+        );
+      }
+
+    // Delete product mountpoints
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_to_categories
+        where category_id = ". (int)$this->data['id'] ."
+        and product_id not in ('". implode("', '", $this->data['products']) ."');"
+      );
+
+    // Insert product mountpoints
+      foreach ($this->data['products'] as $product_id) {
+        if (empty($filter['id'])) {
+          database::query(
+            "insert ignore into ". DB_TABLE_PREFIX ."products_to_categories
+            (category_id, product_id)
+            values (". (int)$this->data['id'] .", ". (int)$product_id .");"
           );
         }
       }
