@@ -1,8 +1,8 @@
 <?php
 
-  document::$snippets['title'][] = language::translate('title_catalog', 'Catalog');
+  document::$snippets['title'][] = language::translate('title_category_tree', 'Category Tree');
 
-  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
+  breadcrumbs::add(language::translate('title_category_tree', 'Category Tree'));
 
   if (empty($_GET['category_id'])) $_GET['category_id'] = 0;
 
@@ -10,7 +10,7 @@
 
     try {
       if (empty($_POST['categories']) && empty($_POST['products'])) {
-        throw new Exception(language::translate('error_must_select_categories_or_products', 'You must select categories or products'));
+        throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
 
       if (!empty($_POST['categories'])) {
@@ -117,10 +117,12 @@
       if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
       if (isset($_POST['category_id']) && $_POST['category_id'] == '') throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
-      foreach ($_POST['products'] as $product_id) {
-        $product = new ent_product($product_id);
-        $product->data['categories'][] = $_POST['category_id'];
-        $product->save();
+      if (!empty($_POST['products'])) {
+        foreach ($_POST['products'] as $product_id) {
+          $product = new ent_product($product_id);
+          $product->data['categories'][] = $_POST['category_id'];
+          $product->save();
+        }
       }
 
       notices::add('success', sprintf(language::translate('success_copied_d_products', 'Copied %d products'), count($_POST['products'])));
@@ -154,7 +156,6 @@
           $product->data['categories'] = [$_POST['category_id']];
           $product->save();
         }
-        notices::add('success', sprintf(language::translate('success_moved_d_products', 'Moved %d products'), count($_POST['products'])));
       }
 
       if (!empty($_POST['categories'])) {
@@ -163,9 +164,9 @@
           $category->data['parent_id'] = $_POST['category_id'];
           $category->save();
         }
-        notices::add('success', sprintf(language::translate('success_moved_d_categories', 'Moved %d categories'), count($_POST['categories'])));
       }
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 
@@ -177,7 +178,11 @@
   if (isset($_POST['unmount'])) {
 
     try {
-      if (empty($_POST['categories']) && empty($_POST['products'])) throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+
+      if (empty($_POST['categories']) && empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
+      }
+
       if (empty($_GET['category_id'])) throw new Exception(language::translate('error_category_must_be_nested_in_another_category_to_unmount', 'A category must be nested in another category to be unmounted'));
 
       if (!empty($_POST['categories'])) {
@@ -188,7 +193,6 @@
             $category->save();
           }
         }
-        notices::add('success', sprintf(language::translate('success_unmounted_d_categories', 'Unmounted %d categories'), count($_POST['categories'])));
       }
 
       if (!empty($_POST['products'])) {
@@ -201,11 +205,11 @@
             }
           }
         }
-        notices::add('success', sprintf(language::translate('success_unmounted_d_products', 'Unmounted %d products'), count($_POST['products'])));
       }
 
       if (isset($_POST['categories']) && in_array($_GET['category_id'], $_POST['categories'])) unset($_GET['category_id']);
 
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 

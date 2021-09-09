@@ -16,7 +16,7 @@
 
   document::$snippets['title'][] = !empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_create_new_category', 'Create New Category');
 
-  breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
+  breadcrumbs::add(language::translate('title_category_tree', 'Category Tree'), document::ilink(__APP__.'/category_tree'));
   breadcrumbs::add(!empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_create_new_category', 'Create New Category'));
 
   if (isset($_POST['save'])) {
