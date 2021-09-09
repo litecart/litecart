@@ -86,6 +86,56 @@
     }
   }
 
+// Split order
+  if (!empty($_POST['split'])) {
+
+    try {
+
+      if (empty($_POST['selected_items'])) throw new Exception(language::translate('error_must_select_items', 'You must select items'));
+
+      $split_order = new ent_order();
+
+      $fields = [
+        'reference',
+        'language_code',
+        'currency_code',
+        'currency_value',
+        'display_prices_including_tax',
+        'customer',
+        'order_status_id',
+        'payment_transaction_id',
+      ];
+
+      foreach ($fields as $field) {
+        $return_order->data[$field] = $order->data[$field];
+      }
+
+      $return_order->shipping->selected = $order->shipping->selected;
+      $return_order->payment->selected = $order->payment->selected;
+
+      $split_order->data['comments'] = [[
+        'author' => 'system',
+        'hidden' => true,
+        'text' => 'Splitted items from order '. $order->data['id'],
+      ]];
+
+      foreach ($_POST['selected_items'] as $item_id) {
+        $split_order->add_item($order->data['items'][$item_id]);
+        unset($order->data['items'][$item_id]);
+      }
+
+      $split_order->save();
+      $order->save();
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::ilink());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Save data to database
   if (isset($_POST['save'])) {
 
@@ -684,6 +734,7 @@ body.dark-mode #box-comments {
               <tr>
                 <td colspan="9">
                   <?php echo functions::form_draw_button('return', language::translate('title_return_items', 'Return Items')); ?>
+                  <?php echo functions::form_draw_button('split', language::translate('title_split_order', 'Split Order')); ?>
                   <a class="btn btn-default add-product" href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
                 </td>
