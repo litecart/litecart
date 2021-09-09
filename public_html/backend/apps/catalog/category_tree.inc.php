@@ -217,15 +217,25 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_only_products_are_supported', 'Only products are supported for this operation'));
-      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
-
-      foreach ($_POST['products'] as $product_id) {
-        $product = new ent_product($product_id);
-        $product->delete();
+      if (empty($_POST['categories']) && empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
 
-      notices::add('success', sprintf(language::translate('success_deleted_d_products', 'Deleted %d products'), count($_POST['products'])));
+      if (!empty($_POST['products'])) {
+        foreach ($_POST['products'] as $product_id) {
+          $product = new ent_product($product_id);
+          $product->delete();
+        }
+      }
+
+      if (!empty($_POST['categories'])) {
+        foreach (array_reverse($_POST['categories']) as $category_id) {
+          $category = new ent_category($category_id);
+          $category->delete();
+        }
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
       exit;
 
