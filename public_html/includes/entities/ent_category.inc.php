@@ -287,28 +287,30 @@
 
       if (empty($this->data['id'])) return;
 
-      $products_query = database::query(
-        "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
-        where category_id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
-
-      if (database::num_rows($products_query) > 0) {
-        notices::add('errors', language::translate('error_delete_category_not_empty_products', 'The category could not be deleted because there are products linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
-      }
-
+    // Delete subcategories
       $subcategories_query = database::query(
         "select id from ". DB_TABLE_PREFIX ."categories
-        where parent_id = ". (int)$this->data['id'] ."
-        limit 1;"
+        where parent_id = ". (int)$this->data['id'] .";"
       );
 
-      if (database::num_rows($subcategories_query) > 0) {
-        notices::add('errors', language::translate('error_delete_category_not_empty_subcategories', 'The category could not be deleted because there are subcategories linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
+      while ($subcategory = database::fetch($subcategories_query)) {
+        $subcategory = new ent_category($subcategory['id']);
+        $subcategory->delete();
+      }
+
+    // Delete products
+      foreach ($this->data['products'] as $product_id) {
+        $product = new ent_product($product_id);
+
+        if (($key = array_search($category_id, $product->data['categories'])) !== false) {
+          unset($product->data['categories'][$key]);
+        }
+
+        if (empty($product->data['categories'])) {
+          $product->delete();
+        } else {
+          $product->save();
+        }
       }
 
       database::query(
