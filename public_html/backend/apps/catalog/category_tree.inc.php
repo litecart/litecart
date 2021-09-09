@@ -41,44 +41,67 @@
   if (isset($_POST['clone'])) {
 
     try {
-      if (!empty($_POST['categories'])) throw new Exception(language::translate('error_cant_clone_category', 'You can\'t clone a category'));
-      if (empty($_POST['products'])) throw new Exception(language::translate('error_must_select_products', 'You must select products'));
-      if (empty($_POST['category_id'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
-
-      foreach ($_POST['products'] as $product_id) {
-        $original = new ent_product($product_id);
-        $product = new ent_product();
-
-        $product->data = $original->data;
-        $product->data['id'] = null;
-        $product->data['status'] = 0;
-        $product->data['code'] = '';
-        $product->data['categories'] = [$_POST['category_id']];
-        $product->data['image'] = null;
-        $product->data['images'] = [];
-
-        foreach (['attributes', 'campaigns', 'stock_options'] as $field) {
-          if (empty($product->data[$field])) continue;
-          foreach (array_keys($product->data[$field]) as $key) {
-            $product->data[$field][$key]['id'] = null;
-          }
-        }
-
-        if (!empty($original->data['images'])) {
-          foreach ($original->data['images'] as $image) {
-            $product->add_image(FS_DIR_STORAGE . 'images/' . $image['filename']);
-          }
-        }
-
-        foreach (array_keys($product->data['name']) as $language_code) {
-          $product->data['name'][$language_code] .= ' (copy)';
-        }
-
-        $product->data['status'] = 0;
-        $product->save();
+      if (empty($_POST['categories']) && empty($_POST['products'])) {
+        throw new Exception(language::translate('error_must_select_category_or_product', 'You must select a category or product'));
       }
 
-      notices::add('success', sprintf(language::translate('success_cloned_d_products', 'Cloned %d products'), count($_POST['products'])));
+      if (!empty($_POST['categories'])) {
+        foreach ($_POST['categories'] as $category_id) {
+          $original_category = new ent_category($category_id);
+          $new_category = new ent_category();
+
+          $new_category->data = $original_category->data;
+          $new_category->data['id'] = null;
+          $new_category->data['status'] = 0;
+          $new_category->data['code'] = '';
+
+          foreach (array_keys($new_category->data['name']) as $language_code) {
+            $new_category->data['name'][$language_code] .= ' (copy)';
+          }
+
+          if (!empty($original_category->data['image'])) {
+            $new_category->save_image(FS_DIR_STORAGE . 'images/' . $original_category->data['image']);
+          }
+
+          $new_category->save();
+        }
+      }
+
+      if (!empty($_POST['products'])) {
+        foreach ($_POST['products'] as $product_id) {
+          $original_product = new ent_product($product_id);
+          $new_product = new ent_product();
+
+          $new_product->data = $original_product->data;
+          $new_product->data['id'] = null;
+          $new_product->data['status'] = 0;
+          $new_product->data['code'] = '';
+          $new_product->data['categories'] = [$_POST['category_id']];
+          $new_product->data['image'] = null;
+          $new_product->data['images'] = [];
+
+          foreach (['attributes', 'campaigns', 'stock_options'] as $field) {
+            if (empty($new_product->data[$field])) continue;
+            foreach (array_keys($new_product->data[$field]) as $key) {
+              $new_product->data[$field][$key]['id'] = null;
+            }
+          }
+
+          if (!empty($original_product->data['images'])) {
+            foreach ($original_product->data['images'] as $image) {
+              $new_product->add_image(FS_DIR_STORAGE . 'images/' . $image['filename']);
+            }
+          }
+
+          foreach (array_keys($new_product->data['name']) as $language_code) {
+            $new_product->data['name'][$language_code] .= ' (copy)';
+          }
+
+          $new_product->save();
+        }
+      }
+
+      notices::add('success', sprintf(language::translate('success_changes_saved', 'Changes saved')));
       header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 
