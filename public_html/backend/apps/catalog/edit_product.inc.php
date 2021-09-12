@@ -76,7 +76,7 @@
         'length',
         'width',
         'height',
-        'length_class',
+        'length_unit',
         'weight',
         'weight_unit',
         'name',
@@ -375,7 +375,7 @@
               </div>
 
               <div class="form-group">
-                <span class="float-end"><?php echo functions::general_escape_js(functions::form_draw_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], '')); ?></span>
+                <span class="float-end"><?php echo functions::form_draw_checkbox('autofill_technical_data', ['1', language::translate('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></span>
                 <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
                 <?php echo functions::form_draw_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
               </div>
@@ -513,7 +513,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="<?php echo 5 + count(currency::$currencies) - 1; ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <a class="add" href="#"><?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></a></td>
+                  <td colspan="<?php echo 5 + count(currency::$currencies) - 1; ?>"><button class="btn btn-default add" type="button"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></button></td>
                 </tr>
               </tfoot>
             </table>
@@ -579,7 +579,7 @@
                     <tr>
                       <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
                       <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
-                      <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
+                      <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field('options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', $currency_code, (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
                       <td class="text-end"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
                     </tr>
                   <?php } ?>
@@ -593,8 +593,8 @@
           </ul>
 
           <div>
-            <a class="btn btn-default" href="#modal-predefined-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></a>
-            <a class="btn btn-default" href="#modal-user-input-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></a>
+            <a class="btn btn-default" href="#modal-predefined-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_predefined_option', 'Add Predefined Option'); ?></a>
+            <a class="btn btn-default" href="#modal-user-input-option" data-toggle="lightbox"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_user_input_option', 'Add User Input Option'); ?></a>
           </div>
 
           <div id="modal-predefined-option" style="display: none;">
@@ -692,16 +692,16 @@
                   <td><?php echo functions::form_draw_text_field('sku', true); ?></td>
                   <td>
                     <div class="input-group">
-                      <?php echo functions::form_draw_decimal_field('weight', true, 4, 0); ?>
+                      <?php echo functions::form_draw_decimal_field('weight', true, 4, 'min="0"'); ?>
                       <?php echo functions::form_draw_weight_units_list('weight_unit', true, 'style="width: auto;"'); ?>
                     </div>
                   </td>
                   <td>
                     <div class="input-group">
-                      <?php echo functions::form_draw_decimal_field('length', true, 4, 0); ?>
-                      <?php echo functions::form_draw_decimal_field('width', true, 4, 0); ?>
-                      <?php echo functions::form_draw_decimal_field('height', true, 4, 0); ?>
-                      <?php echo functions::form_draw_length_units_list('length_class', true, 'style="width: auto;"'); ?>
+                      <?php echo functions::form_draw_decimal_field('length', true, 4, 'min="0"'); ?>
+                      <?php echo functions::form_draw_decimal_field('width', true, 4, 'min="0"'); ?>
+                      <?php echo functions::form_draw_decimal_field('height', true, 4, 'min="0"'); ?>
+                      <?php echo functions::form_draw_length_units_list('length_unit', true, 'style="width: auto;"'); ?>
                     </div>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, 'data-quantity="'. (float)$product->data['quantity'] .'"' . (!empty($_POST['options_stock']) ? ' readonly' : '')); ?></td>
@@ -715,25 +715,27 @@
                 </tr>
                 <?php if (!empty($_POST['options_stock'])) foreach (array_keys($_POST['options_stock']) as $key) { ?>
                 <tr>
-                  <td><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][id]', true); ?><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][combination]', true); ?>
+                  <td>
+                    <?php echo functions::form_draw_hidden_field('options_stock['.$key.'][id]', true); ?><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][combination]', true); ?>
                     <?php echo functions::form_draw_hidden_field('options_stock['.$key.'][name]['. language::$selected['name'] .']', true); ?>
-                    <?php echo $_POST['options_stock'][$key]['name'][language::$selected['code']]; ?></td>
+                    <?php echo @$_POST['options_stock'][$key]['name'][language::$selected['code']]; ?>
+                  </td>
                   <td><?php echo functions::form_draw_text_field('options_stock['.$key.'][sku]', true); ?></td>
                   <td>
                     <div class="input-group">
-                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 4, 0); ?>
-                      <?php echo functions::form_draw_weight_unites_list('options_stock['.$key.'][weight_unit]', true, false, 'style="width: auto;"'); ?>
+                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 4, 'min="0"'); ?>
+                      <?php echo functions::form_draw_weight_units_list('options_stock['.$key.'][weight_unit]', true, 'style="width: auto;"'); ?>
                     </div>
                   </td>
                   <td>
                     <div class="input-group">
-                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][length]', true, 4, 0); ?>
-                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][width]', true, 4, 0); ?>
-                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][height]', true, 4, 0); ?>
-                      <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][length_class]', true, false, 'style="width: auto;"'); ?>
+                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][length]', true, 4, 'min="0"'); ?>
+                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][width]', true, 4, 'min="0"'); ?>
+                      <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][height]', true, 4, 'min="0"'); ?>
+                      <?php echo functions::form_draw_length_units_list('options_stock['.$key.'][length_unit]', true, 'style="width: auto;"'); ?>
                     </div>
                   </td>
-                  <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true, 2, null, null, 'data-quantity="'. (isset($product->data['options_stock'][$key]['quantity']) ? (float)$product->data['options_stock'][$key]['quantity'] : '0') .'"'); ?></td>
+                  <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['options_stock'][$key]['quantity']) ? (float)$product->data['options_stock'][$key]['quantity'] : '0') .'"'); ?></td>
                   <td>
                     <div class="input-group">
                       <span class="input-group-text">&plusmn;</span>
@@ -750,7 +752,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="7"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a href="#" data-toggle="lightbox" data-target="#new-stock-option"><?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
+                  <td colspan="7"><a class="btn btn-default" href="#" data-toggle="lightbox" data-target="#new-stock-option"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
                 </tr>
               </tfoot>
             </table>
@@ -776,7 +778,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo language::translate('title_add_to_combination', 'Add To Combination'); ?></a></td>
+                  <td><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('title_add_to_combination', 'Add To Combination'); ?></a></td>
                   <td>&nbsp;</td>
                   <td>&nbsp;</td>
                 </tr>
@@ -1606,16 +1608,16 @@
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 'min="0"')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_weight_units_list('options_stock[new_option_stock_i][weight_unit]', '', 'style="width: auto;"')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][length]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][width]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][height]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_length_units_list('options_stock[new_option_stock_i][length_class]', '', 'style="width: auto;"')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][length]', '0.00', 4, 'min="0"')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][width]', '0.00', 4, 'min="0"')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][height]', '0.00', 4, 'min="0"')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_length_units_list('options_stock[new_option_stock_i][length_unit]', '', 'style="width: auto;"')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity]', '0', 2, 'data-quantity="0"')); ?></td>'
