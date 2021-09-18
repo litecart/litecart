@@ -82,7 +82,7 @@
 
     <tfoot>
       <tr>
-      <td colspan="9"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
+      <td colspan="10"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
       </tr>
     </tfoot>
   </table>

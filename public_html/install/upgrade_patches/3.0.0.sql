@@ -1,6 +1,6 @@
 CREATE TABLE `lc_banners` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `status` TINYINT(1) NOT NULL DEFAULT '0',
+  `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `name` VARCHAR(64) NOT NULL DEFAULT '',
   `languages` VARCHAR(64) NOT NULL DEFAULT '',
   `html` TEXT NOT NULL DEFAULT '',
@@ -19,7 +19,7 @@ CREATE TABLE `lc_banners` (
 CREATE TABLE `lc_shopping_carts` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` VARCHAR(13) NOT NULL DEFAULT '',
-  `customer_id` INT(11) NOT NULL DEFAULT '0',
+  `customer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `customer_email` VARCHAR(128) NOT NULL DEFAULT '',
   `billing_company` VARCHAR(64) NOT NULL DEFAULT '',
   `billing_firstname` VARCHAR(64) NOT NULL DEFAULT '',
@@ -32,7 +32,7 @@ CREATE TABLE `lc_shopping_carts` (
   `billing_country_code` VARCHAR(2) NOT NULL DEFAULT '',
   `billing_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
   `billing_phone` VARCHAR(24) NOT NULL DEFAULT '',
-  `different_shipping_adddress` TINYINT(1) NOT NULL DEFAULT '0',
+  `different_shipping_adddress` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `delivery_company` VARCHAR(64) NOT NULL DEFAULT '',
   `delivery_firstname` VARCHAR(64) NOT NULL DEFAULT '',
   `delivery_lastname` VARCHAR(64) NOT NULL DEFAULT '',
@@ -45,12 +45,12 @@ CREATE TABLE `lc_shopping_carts` (
   `delivery_phone` VARCHAR(24) NOT NULL DEFAULT '',
   `shipping_option_id` VARCHAR(32) NOT NULL DEFAULT '',
   `payment_option_id` VARCHAR(32) NOT NULL DEFAULT '',
-  `weight_total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  `weight_total` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
   `currency_code` VARCHAR(3) NOT NULL DEFAULT '',
   `currency_value` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
-  `display_prices_including_tax` TINYINT(1) NOT NULL DEFAULT '0',
+  `display_prices_including_tax` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `total_amount` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
   `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
   `client_ip` VARCHAR(39) NOT NULL DEFAULT '',
@@ -69,7 +69,7 @@ RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_brands_info`
-CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL DEFAULT '0',
+CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_categories`
@@ -87,12 +87,12 @@ ALTER TABLE `lc_languages`
 DROP COLUMN `charset`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products`
-ADD COLUMN `autofill_technical_data` TINYINT(1) NOT NULL DEFAULT '0' AFTER `image`,
-CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) NOT NULL DEFAULT '0',
+ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `image`,
+CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `dim_x` `length` DECIMAL(10,4) NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_y` `width` DECIMAL(10,4) NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_z` `height` DECIMAL(10,4) NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT ''
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);

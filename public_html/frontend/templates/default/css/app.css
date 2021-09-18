@@ -159,6 +159,10 @@ body.cart-open #cart .dropdown-menu {
 #site-menu .shopping-cart.filled > a {
   background-color: var(--navigation-cart-color);
 }
+#site-menu .shopping-cart .badge {
+  animation: pulsating 2s linear;
+  animation-iteration-count: infinite;
+}
 #site-menu .shopping-cart img {
   max-width: 64px;
   max-height: 64px;
