@@ -5,14 +5,14 @@
   header('X-Robots-Tag: noindex');
   header('Content-type: text/plain; charset='. mb_http_output());
 
-  if (strtotime(settings::get('jobs_last_run')) > strtotime('-'. settings::get('jobs_interval') .' minutes')) die('Already did my duty!');
+  if (strtotime(settings::get('jobs_last_push')) > strtotime('-5 minutes')) die('Already did my duty!');
 
   session::close();
 
   database::query(
     "update ". DB_TABLE_PREFIX ."settings
     set value = '". date('Y-m-d H:i:s') ."'
-    where `key` = 'jobs_last_run'
+    where `key` = 'jobs_last_push'
     limit 1;"
   );
 

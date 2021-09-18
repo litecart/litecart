@@ -227,4 +227,11 @@ UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_stock_items` psi ON (psi.product_id = oi.product_id AND psi.combination = oi.combination)
 SET oi.stock_item_id = psi.id;
 -- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint');
+DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
+-- --------------------------------------------------------
+UPDATE `lc_settings`
+SET `key` = 'jobs_last_push',
+  `title` = 'Background Jobs Last Push',
+  `description` = 'Time when background jobs were last pushed.'
+WHERE `key` = 'jobs_last_run'
+LIMIT 1;
