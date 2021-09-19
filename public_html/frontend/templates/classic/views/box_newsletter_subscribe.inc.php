@@ -20,7 +20,7 @@
       <div class="form-group">
         <div class="input-group" style="max-width: 480px; margin-top: 4px;">
           <?php echo functions::form_draw_text_field('email', true, 'placeholder="your@email.com" required'); ?>
-          <?php echo functions::form_draw_button('subscribe', language::translate('title_subscripbe', 'Subscribe')); ?>
+          <?php echo functions::form_draw_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
         </div>
       </div>
 

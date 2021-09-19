@@ -41,21 +41,21 @@
   foreach (cart::$items as $key => $item) {
     $_page->snippets['items'][$key] = [
       'product_id' => $item['product_id'],
-      'link' => document::ilink('product', ['product_id' => $item['product_id']]),
+      'stock_option_id' => $item['stock_option_id'],
+      'name' => $item['name'],
+      'sku' => $item['sku'],
       'image' => [
         'original' => 'images/' . (!empty($item['image']) ? $item['image'] : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING',
         'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . (!empty($item['image']) ? $item['image'] : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
       ],
-      'name' => $item['name'],
-      'sku' => $item['sku'],
-      'options' => [],
+      'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
       'price' => $item['price'],
       'tax' => $item['tax'],
       'tax_class_id' => $item['tax_class_id'],
       'quantity' => (float)$item['quantity'],
       'quantity_unit' => $item['quantity_unit'],
-      'error' => $item['error'],
+      'error' => !empty($item['error']) ? $item['error'] : null,
     ];
   }
 

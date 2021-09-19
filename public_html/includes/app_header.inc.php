@@ -1,6 +1,7 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
   define('PLATFORM_VERSION', '3.0.0');
+  define('SCRIPT_TIMESTAMP_START', microtime(true));
 
 // Capture output buffer (use compression)
   if (!ob_start('ob_gzhandler')) ob_start();

@@ -19,9 +19,6 @@
         'output_optimization' => 0, // s
       ];
 
-    // Set time stamp for execution
-      self::$_page_parse_start = microtime(true);
-
       event::register('before_capture', [__CLASS__, 'before_capture']);
       event::register('after_capture', [__CLASS__, 'after_capture']);
       event::register('before_output', [__CLASS__, 'before_output']);
@@ -36,7 +33,7 @@
     public static function after_capture() {
 
     // Capture parse time
-      $page_parse_time = microtime(true) - self::$_page_parse_start;
+      $page_parse_time = microtime(true) - self::$_capture_parse_start;
       self::set('page_capture_time', $page_parse_time);
 
       if (self::get('page_parse_time') > 5) {
@@ -51,7 +48,7 @@
       self::set('memory_peak_usage', memory_get_peak_usage(true) / 1e6);
 
     // Page parse time
-      $page_parse_time = microtime(true) - self::$_page_parse_start;
+      $page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START;
       self::set('page_parse_time', $page_parse_time);
 
     // Output stats
@@ -66,7 +63,7 @@
              . '  - Network Requests: ' . self::get('http_requests') . PHP_EOL
              . '  - Network Requests Duration: ' . number_format(self::get('http_duration')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('http_duration')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
              . '  - Output Optimization: ' . number_format(self::get('output_optimization')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('output_optimization')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
-             . '  - vMod: ' . number_format(vmod::$time_elapsed*1000, 0, '.', ' ') . ' ms (' . number_format(vmod::$time_elapsed/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+             . '  - vMod: ' . number_format(vmod::$time_elapsed*1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '-->';
 
       $GLOBALS['output'] = preg_replace('#</html>#', '</html>' . PHP_EOL . $stats, $GLOBALS['output']);

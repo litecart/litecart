@@ -131,22 +131,23 @@
         </li>
         <?php } ?>
 
-        <li class="shopping-cart<?php if (!empty(cart::$items)) echo ' filled'; ?> dropdown">
+        <li class="shopping-cart<?php if (!empty($cart['items'])) echo ' filled'; ?> dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle">
             <?php echo functions::draw_fonticon('fa-shopping-basket fa-lg'); ?> <span class="hidden-sm hidden-md hidden-lg hidden-xl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
 
-            <?php if (!empty(cart::$items)) { ?>
-            <span class="badge"><?php echo cart::$total['items']; ?></span>
+            <?php if (!empty($cart['items'])) { ?>
+            <span class="badge"><?php echo $cart['num_items']; ?></span>
             <?php } ?>
           </a>
+
           <ul class="dropdown-menu">
-            <?php if (!empty(cart::$items)) { ?>
-            <?php foreach (cart::$items as $item) { ?>
-            <li><a href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['image']); ?>" alt="<?php echo $item['name']; ?>" /> <?php echo $item['name']; ?></a></li>
+            <?php if (!empty($cart['items'])) { ?>
+            <?php foreach ($cart['items'] as $item) { ?>
+            <li><a href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" /> <?php echo $item['name']; ?></a></li>
             <?php } ?>
             <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
             <?php } else { ?>
-            <li><span>Empty</span></li>
+            <li><span><?php echo language::translate('title_empty'), 'Empty'; ?></span></li>
             <?php } ?>
           </ul>
         </li>
