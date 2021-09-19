@@ -30,7 +30,7 @@
         'is_sale',
         'is_archived',
         'notify',
-        'track_shipping',
+        'is_trackable',
         'priority',
         'name',
         'description',
@@ -120,8 +120,8 @@
               </div>
 
               <div class="checkbox">
-                <strong><?php echo functions::form_draw_checkbox('track_shipping', ['1', language::translate('text_track_shipping', 'Track Shipping')], empty($_POST['track_shipping']) ? '0' : '1'); ?> </strong>
-                <?php echo language::translate('order_status:description_track_shipping', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
+                <strong><?php echo functions::form_draw_checkbox('is_trackable', ['1', language::translate('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
+                <?php echo language::translate('order_status:description_is_trackable', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
               </div>
             </div>
           </div>

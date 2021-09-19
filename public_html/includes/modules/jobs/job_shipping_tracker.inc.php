@@ -44,7 +44,7 @@
         where shipping_tracking_id != ''
         and order_status_id in (
           select id from ". DB_TABLE_PREFIX ."order_statuses
-          where track_shipping
+          where is_trackable
         )
         and date_created > '". date('Y-m-d H:i:s', strtotime('-30 days')) ."'
         order by date_created asc

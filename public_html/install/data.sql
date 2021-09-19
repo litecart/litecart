@@ -269,7 +269,7 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `track_shipping`, `priority`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'fa-money', '#c0c0c0', 0, 0, 0, 10, NOW(), NOW()),
 (2, 'fa-clock-o', '#d7d96f', 1, 0, 0, 20, NOW(), NOW()),
 (3, 'fa-cog', '#ffa851', 1, 0, 0, 30, NOW(), NOW()),

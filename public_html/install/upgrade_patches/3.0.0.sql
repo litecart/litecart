@@ -130,7 +130,7 @@ ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_option_id` (`stock_option_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
-ADD COLUMN `track_shipping` TINYINT(1) NOT NULL DEFAULT '0' AFTER `notify`,
+ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
 DROP COLUMN `keywords`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_stock_options`
