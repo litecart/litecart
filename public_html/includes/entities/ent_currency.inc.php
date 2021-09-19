@@ -126,7 +126,7 @@
           );
 
           database::query(
-            "alter table ". DB_TABLE_PREFIX ."products_options_values
+            "alter table ". DB_TABLE_PREFIX ."products_stock_options
             change `". database::input($this->previous['code']) ."` `". database::input($this->data['code']) ."` decimal(11, 4) not null;"
           );
         }
@@ -157,14 +157,14 @@
           );
         }
 
-        $products_options_query = database::query(
-          "show fields from ". DB_TABLE_PREFIX ."products_options_values
+        $product_stock_options_query = database::query(
+          "show fields from ". DB_TABLE_PREFIX ."products_stock_options
           where `Field` = '". database::input($this->data['code']) ."';"
         );
 
-        if (!database::num_rows($products_options_query)) {
+        if (!database::num_rows($product_stock_options_query)) {
           database::query(
-            "alter table ". DB_TABLE_PREFIX ."products_options_values
+            "alter table ". DB_TABLE_PREFIX ."products_stock_options
             add `". database::input($this->data['code']) ."` decimal(11, 4) not null after `price_operator`;"
           );
         }

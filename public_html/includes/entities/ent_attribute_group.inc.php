@@ -170,13 +170,13 @@
 
         if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete value linked to product attributes');
 
-        $products_options_query = database::query(
-          "select id from ". DB_TABLE_PREFIX ."products_options_values
-          where value_id = ". (int)$value['id'] ."
+        $products_stock_options_query = database::query(
+          "select id from ". DB_TABLE_PREFIX ."products_stock_options
+          where attributes regexp '-". (int)$value['id'] ."(,|$)'
           limit 1;"
         );
 
-        if (database::num_rows($products_options_query)) throw new Exception('Cannot delete value linked to product options');
+        if (database::num_rows($products_stock_options_query)) throw new Exception('Cannot delete value linked to product stock options');
 
         database::query(
           "delete from ". DB_TABLE_PREFIX ."attribute_values
@@ -250,21 +250,30 @@
 
       if (empty($this->data['id'])) return;
 
+    // Check category filters for attribute
+      $category_filters_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."categories_filters
+        where group_id = ". (int)$this->data['id'] .";"
+      );
+
+      if (database::num_rows($category_filters_query)) throw new Exception('Cannot delete group linked to products');
+
     // Check products for attribute
-      $products_attributes_query = database::query(
+      $product_attributes_query = database::query(
         "select id from ". DB_TABLE_PREFIX ."products_attributes
         where group_id = ". (int)$this->data['id'] .";"
       );
 
-      if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete group linked to products');
+      if (database::num_rows($product_attributes_query)) throw new Exception('Cannot delete group linked to products');
 
-    // Check products for options
-      $products_options_query = database::query(
-        "select id from ". DB_TABLE_PREFIX ."products_attributes
-        where group_id = ". (int)$this->data['id'] .";"
+    // Check product stock options for attriute
+      $product_stock_options_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."products_stock_options
+        where attributes regexp '(^|,)". (int)$this->data['id'] ."-'
+        limit 1;"
       );
 
-      if (database::num_rows($products_options_query)) throw new Exception('Cannot delete group linked to products');
+      if (database::num_rows($product_stock_options_query)) throw new Exception('Cannot delete group linked to product stock options');
 
       $this->data['values'] = [];
       $this->save();
