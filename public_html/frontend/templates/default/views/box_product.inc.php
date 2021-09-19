@@ -114,13 +114,11 @@
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
-        <?php if ($options) { ?>
-          <?php foreach ($options as $option) { ?>
-          <div class="form-group">
-            <label><?php echo $option['name']; ?></label>
-            <?php echo $option['values']; ?>
-          </div>
-          <?php } ?>
+        <?php if ($stock_options) { ?>
+        <div class="form-group">
+          <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
+          <?php echo form_draw_product_stock_options_list('stock_option_id', $product_id, true); ?>
+        </div>
         <?php } ?>
 
         <div class="price-wrapper">

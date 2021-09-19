@@ -310,9 +310,3 @@
 
     return $products_query;
   }
-
-  function catalog_stock_adjust($product_id, $combination, $quantity) {
-    trigger_error('catalog_stock_adjust() is deprecated. Use $ent_product->adjust_quantity()', E_USER_DEPRECATED);
-    $product = new ent_product($product_id);
-    return $product->adjust_quantity($quantity, $combination);
-  }

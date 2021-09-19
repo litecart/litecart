@@ -68,6 +68,10 @@ RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 -- --------------------------------------------------------
+RENAME TABLE `lc_products_options` TO `lc_products_configurations`;
+-- --------------------------------------------------------
+RENAME TABLE `lc_products_options_values` TO `lc_products_configurations_values`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_brands_info`
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 ADD INDEX `brand_id` (`brand_id`);
@@ -112,30 +116,35 @@ ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `s
 ADD INDEX `uid` (`uid`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
+ADD COLUMN `stock_option_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
+CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `data` VARCHAR(1024) NOT NULL DEFAULT '',
-CHANGE COLUMN `option_stock_combination` `combination` VARCHAR(32) NOT NULL DEFAULT,
+CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT,
 ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD INDEX `product_id` (`product_id`),
-ADD INDEX `combination` (`combination`);
+ADD INDEX `stock_option_id` (`stock_option_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `track_shipping` TINYINT(1) NOT NULL DEFAULT '0' AFTER `notify`,
 DROP COLUMN `keywords`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_products_options_stock`
+ALTER TABLE `lc_products_stock_options`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `combination` `attributes` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-ADD INDEX `sku` (`sku`);
+ADD INDEX `sku` (`sku`)
+ADD UNIQUE KEY `stock_option` (`product_id`, `attributes`)
+DROP INDEX `product_option_stock`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
 ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`;
@@ -224,8 +233,8 @@ SET ´function` = 'regional_text()'
 WHERE ´function` = 'regional_input()';
 -- --------------------------------------------------------
 UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_stock_items` psi ON (psi.product_id = oi.product_id AND psi.combination = oi.combination)
-SET oi.stock_item_id = psi.id;
+LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
+SET oi.stock_option_id = pso.id;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
 -- --------------------------------------------------------

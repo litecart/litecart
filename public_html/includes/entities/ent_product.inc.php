@@ -45,7 +45,7 @@
       $this->data['prices'] = [];
       $this->data['campaigns'] = [];
       $this->data['options'] = [];
-      $this->data['options_stock'] = [];
+      $this->data['stock_options'] = [];
 
       $this->previous = $this->data;
     }
@@ -134,48 +134,20 @@
         $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
       }
 
-    // Options
-      $products_options_query = database::query(
-        "select po.*, agi.name from ". DB_TABLE_PREFIX ."products_options po
-        left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = po.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
-        where product_id = ". (int)$this->data['id'] ."
-        order by priority asc;"
-      );
-
-      while ($option = database::fetch($products_options_query)) {
-
-        $option['values'] = [];
-
-      // Option Values
-        $products_options_values_query = database::query(
-          "select pov.*, if(pov.value_id = 0, custom_value, avi.name) as name from ". DB_TABLE_PREFIX ."products_options_values pov
-          left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
-          where product_id = ". (int)$this->data['id'] ."
-          and group_id = ". (int)$option['group_id'] ."
-          order by priority asc;"
-        );
-
-        while ($value = database::fetch($products_options_values_query)) {
-          $option['values'][$value['id']] = $value;
-        }
-
-        $this->data['options'][$option['group_id']] = $option;
-      }
-
-    // Options stock
-      $products_options_stock_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."products_options_stock
+    // Stock Options
+      $product_stock_options_query = database::query(
+        "select * from ". DB_TABLE_PREFIX ."products_stock_options
         where product_id = ". (int)$this->data['id'] ."
         order by priority;"
       );
 
-      while ($option_stock = database::fetch($products_options_stock_query)) {
+      while ($stock_option = database::fetch($product_stock_options_query)) {
 
-        $this->data['options_stock'][$option_stock['id']] = $option_stock;
-        $this->data['options_stock'][$option_stock['id']]['name'] = [];
+        $this->data['stock_options'][$stock_option['id']] = $stock_option;
+        $this->data['stock_options'][$stock_option['id']]['name'] = [];
 
-        foreach (explode(',', $option_stock['combination']) as $combination) {
-          list($group_id, $value_id) = explode('-', $combination);
+        foreach (preg_split('#\s*,\s*#', $stock_option['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $pair) {
+          list($group_id, $value_id) = explode('-', $pair);
 
           $options_values_query = database::query(
             "select avi.value_id, avi.name, avi.language_code from ". DB_TABLE_PREFIX ."attribute_values_info avi
@@ -183,12 +155,12 @@
           );
 
           while ($option_value = database::fetch($options_values_query)) {
-            if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']])) {
-              $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] = '';
+            if (!isset($this->data['stock_options'][$stock_option['id']]['name'][$option_value['language_code']])) {
+              $this->data['stock_options'][$stock_option['id']]['name'][$option_value['language_code']] = '';
             } else {
-              $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] .= ', ';
+              $this->data['stock_options'][$stock_option['id']]['name'][$option_value['language_code']] .= ', ';
             }
-            $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] .= $option_value['name'];
+            $this->data['stock_options'][$stock_option['id']]['name'][$option_value['language_code']] .= $option_value['name'];
           }
         }
       }
@@ -411,116 +383,30 @@
         }
       }
 
-    // Delete options
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_options
-        where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". implode("', '", array_column($this->data['options'], 'id')) ."');"
-      );
-
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_options_values
-        where product_id = ". (int)$this->data['id'] ."
-        and group_id not in ('". implode("', '", array_column($this->data['options'], 'group_id')) ."');"
-      );
-
-    // Update stock items
-      if (!empty($this->data['options'])) {
-
-        $i = 0;
-        foreach ($this->data['options'] as &$option) {
-
-          if (empty($option['id'])) {
-            database::query(
-              "insert into ". DB_TABLE_PREFIX ."products_options
-              (product_id)
-              values (". (int)$this->data['id'] .");"
-            );
-            $option['id'] = database::insert_id();
-          }
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."products_options set
-              group_id = ". (int)$option['group_id'] .",
-              `function` = '". database::input($option['function']) ."',
-              required = ". (!empty($option['required']) ? 1 : 0) .",
-              sort = '". database::input($option['sort']) ."',
-              priority = ". ++$i ."
-            where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$option['id'] ."
-            limit 1;"
-          );
-
-        // Delete option values
-          database::query(
-            "delete from ". DB_TABLE_PREFIX ."products_options_values
-            where product_id = ". (int)$this->data['id'] ."
-            and group_id = ". (int)$option['group_id'] ."
-            and id not in ('". implode("', '", !empty($option['values']) ? array_column($option['values'], 'id') : []) ."');"
-          );
-
-        // Update option values
-          if (!empty($option['values'])) {
-
-            $j = 0;
-            foreach ($option['values'] as &$value) {
-
-              if (empty($value['id'])) {
-                database::query(
-                  "insert into ". DB_TABLE_PREFIX ."products_options_values
-                  (product_id, group_id, value_id)
-                  values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .", ". (int)$value['value_id'] .");"
-                );
-                $value['id'] = database::insert_id();
-              }
-
-              $sql_currencies = "";
-              foreach (array_keys(currency::$currencies) as $currency_code) {
-                $sql_currencies .= $currency_code ." = '". (isset($value[$currency_code]) ? (float)$value[$currency_code] : 0) ."', ";
-              }
-
-              database::query(
-                "update ". DB_TABLE_PREFIX ."products_options_values set
-                  group_id = ". (int)$option['group_id'] .",
-                  value_id = ". (int)$value['value_id'] .",
-                  custom_value = '". database::input($value['custom_value']) ."',
-                  price_operator = '". database::input($value['price_operator']) ."',
-                  $sql_currencies
-                  priority = ". ++$j ."
-                where product_id = ". (int)$this->data['id'] ."
-                and group_id = ". (int)$option['group_id'] ."
-                and id = ". (int)$value['id'] ."
-                limit 1;"
-              );
-            } unset($value);
-          }
-        } unset($option);
-      }
-
     // Delete stock options
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_options_stock
+        "delete from ". DB_TABLE_PREFIX ."products_stock_options
         where product_id = ". (int)$this->data['id'] ."
-        and id not in ('". implode("', '", array_column($this->data['options_stock'], 'id')) ."');"
+        and id not in ('". implode("', '", array_column($this->data['stock_options'], 'id')) ."');"
       );
 
     // Update stock options
-      if (!empty($this->data['options_stock'])) {
+      if (!empty($this->data['stock_options'])) {
         $i = 0;
-        foreach (array_keys($this->data['options_stock']) as $key) {
-          if (empty($this->data['options_stock'][$key]['id'])) {
+        foreach (array_keys($this->data['stock_options']) as $key) {
+          if (empty($this->data['stock_options'][$key]['id'])) {
             database::query(
-              "insert into ". DB_TABLE_PREFIX ."products_options_stock
+              "insert into ". DB_TABLE_PREFIX ."products_stock_options
               (product_id, date_created)
               values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
-            $this->data['options_stock'][$key]['id'] = database::insert_id();
+            $this->data['stock_options'][$key]['id'] = database::insert_id();
           }
 
-        // Ascending option combination
-          $combinations = explode(',', $this->data['options_stock'][$key]['combination']);
+        // Ascending attributes
+          $attributes = explode(',', $this->data['stock_options'][$key]['attributes']);
 
-          usort($combinations, function($a, $b) {
+          usort($attributes, function($a, $b) {
             $a = explode('-', $a);
             $b = explode('-', $b);
             if ($a[0] == $b[0]) {
@@ -529,22 +415,22 @@
             return ($a[0] < $b[0]) ? -1 : 1;
           });
 
-          $this->data['stock_options'][$key]['combination'] = implode(',', $combinations);
+          $this->data['stock_options'][$key]['attributes'] = implode(',', $attributes);
 
           database::query(
-            "update ". DB_TABLE_PREFIX ."products_options_stock
-            set combination = '". database::input($this->data['options_stock'][$key]['combination']) ."',
-            sku = '". database::input($this->data['options_stock'][$key]['sku']) ."',
-            weight = '". database::input($this->data['options_stock'][$key]['weight']) ."',
-            weight_class = '". database::input($this->data['options_stock'][$key]['weight_class']) ."',
-            dim_x = '". database::input($this->data['options_stock'][$key]['dim_x']) ."',
-            dim_y = '". database::input($this->data['options_stock'][$key]['dim_y']) ."',
-            dim_z = '". database::input($this->data['options_stock'][$key]['dim_z']) ."',
-            dim_class = '". database::input($this->data['options_stock'][$key]['dim_class']) ."',
+            "update ". DB_TABLE_PREFIX ."products_stock_options
+            set attributes = '". database::input($this->data['stock_options'][$key]['attributes']) ."',
+            sku = '". database::input($this->data['stock_options'][$key]['sku']) ."',
+            weight = '". database::input($this->data['stock_options'][$key]['weight']) ."',
+            weight_class = '". database::input($this->data['stock_options'][$key]['weight_class']) ."',
+            length = '". database::input($this->data['stock_options'][$key]['length']) ."',
+            width = '". database::input($this->data['stock_options'][$key]['width']) ."',
+            height = '". database::input($this->data['stock_options'][$key]['height']) ."',
+            length_unit = '". database::input($this->data['stock_options'][$key]['length_unit']) ."',
             priority = '". $i++ ."',
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['options_stock'][$key]['id'] ."
+            and id = ". (int)$this->data['stock_options'][$key]['id'] ."
             limit 1;"
           );
         }
@@ -621,15 +507,15 @@
       );
 
     // If new total quantity is set
-      if (!empty($this->data['options_stock'])) {
+      if (!empty($this->data['stock_options'])) {
 
-        foreach ($this->data['options_stock'] as $key => $stock_option) {
-          if (empty($this->data['options_stock'][$key]['quantity_adjustment']) && (empty($this->previous['options_stock'][$key]) || (float)$this->data['options_stock'][$key]['quantity'] != (float)$this->previous['options_stock'][$key]['quantity'])) {
-            $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
+        foreach ($this->data['stock_options'] as $key => $stock_option) {
+          if (empty($this->data['stock_options'][$key]['quantity_adjustment']) && (empty($this->previous['stock_options'][$key]) || (float)$this->data['stock_options'][$key]['quantity'] != (float)$this->previous['stock_options'][$key]['quantity'])) {
+            $this->data['stock_options'][$key]['quantity_adjustment'] = (float)$this->data['stock_options'][$key]['quantity'] - (float)$this->previous['stock_options'][$key]['quantity'];
           }
         }
 
-        $this->data['quantity'] = array_sum(array_column($this->data['options_stock'], 'quantity_adjust'));
+        $this->data['quantity'] = array_sum(array_column($this->data['stock_options'], 'quantity_adjust'));
 
       } else {
         if (empty($this->data['quantity_adjustment']) && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
@@ -638,18 +524,18 @@
       }
 
     // If stock quantity adjustment is set
-      if (!empty($this->data['options_stock'])) {
+      if (!empty($this->data['stock_options'])) {
 
-        foreach (array_keys($this->data['options_stock']) as $key) {
-          if (!empty($this->data['options_stock'][$key]['quantity_adjustment']) && (float)$this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
-            $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
-            unset($this->data['options_stock'][$key]['quantity_adjustment']);
+        foreach (array_keys($this->data['stock_options']) as $key) {
+          if (!empty($this->data['stock_options'][$key]['quantity_adjustment']) && (float)$this->data['stock_options'][$key]['quantity_adjustment'] != 0) {
+            $this->adjust_quantity($this->data['stock_options'][$key]['quantity_adjustment'], $this->data['stock_options'][$key]['combination']);
+            unset($this->data['stock_options'][$key]['quantity_adjustment']);
           }
         }
 
         database::query(
           "update ". DB_TABLE_PREFIX ."products
-          set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
+          set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['stock_options'], 'quantity'))) ."
           where id = ". (int)$this->data['id'] ."
           limit 1;"
         );
@@ -668,25 +554,24 @@
       cache::clear_cache('products');
     }
 
-    public function adjust_quantity($quantity_adjustment, $combination='') {
+    public function adjust_quantity($quantity_adjustment, $stock_option_id='') {
 
       if ((float)$quantity_adjustment == 0) return;
 
       if (empty($this->data['id'])) $this->save();
 
-      if (!empty($combination)) {
+      if (!empty($stock_option_id)) {
         database::query(
-          "update ". DB_TABLE_PREFIX ."products_options_stock
+          "update ". DB_TABLE_PREFIX ."products_stock_options
           set quantity = quantity + ". (float)$quantity_adjustment ."
           where product_id = ". (int)$this->data['id'] ."
-          and combination = '". database::input($combination) ."'
+          and id = ". (int)$stock_option_id ."
           limit 1;"
         );
 
         if (!database::affected_rows()) {
-          trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .', Combination: '. $combination .')', E_USER_WARNING);
+          trigger_error('Could not adjust stock for product (ID: '. $this->data['id'] .', Stock Option: '. $stock_option_id .')', E_USER_WARNING);
         }
-
       }
 
       database::query(
@@ -767,9 +652,7 @@
         left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
         left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
         left join ". DB_TABLE_PREFIX ."products_campaigns pc on (pc.product_id = p.id)
-        left join ". DB_TABLE_PREFIX ."products_options po on (po.product_id = p.id)
-        left join ". DB_TABLE_PREFIX ."products_options_values pov on (pov.product_id = p.id)
-        left join ". DB_TABLE_PREFIX ."products_options_stock pos on (pos.product_id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_stock_options pos on (pos.product_id = p.id)
         left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
         where p.id = ". (int)$this->data['id'] .";"
       );

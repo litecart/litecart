@@ -394,7 +394,7 @@ CREATE TABLE `lc_orders_items` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `combination` VARCHAR(32) NOT NULL DEFAULT '',
+  `stock_option_id` INT(11) NOT NULL DEFAULT '',
   `options` VARCHAR(4096) NOT NULL DEFAULT '',
   `name` VARCHAR(128) NOT NULL DEFAULT '',
   `data` VARCHAR(1024) NOT NULL DEFAULT '',
@@ -414,7 +414,7 @@ CREATE TABLE `lc_orders_items` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `product_id` (`product_id`),
-  KEY `combination` (`combination`)
+  KEY `stock_option_id` (`stock_option_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses` (
@@ -595,53 +595,23 @@ CREATE TABLE `lc_products_info` (
   FULLTEXT KEY `description` (`description`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_products_options` (
+CREATE TABLE `lc_products_stock_options` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `function` VARCHAR(32) NOT NULL DEFAULT '',
-  `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-  `sort` VARCHAR(16) NOT NULL DEFAULT '',
-  `priority` INT(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `product_option` (`product_id`, `group_id`),
-  INDEX `product_id` (`product_id`),
-  INDEX `priority` (`priority`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_products_options_values` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `custom_value` VARCHAR(64) NOT NULL DEFAULT '',
-  `price_operator` VARCHAR(1) NOT NULL DEFAULT '',
-  `USD` DECIMAL(11,4) NOT NULL DEFAULT '0',
-  `EUR` DECIMAL(11,4) NOT NULL DEFAULT '0',
-  `priority` INT(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`, `custom_value`),
-  INDEX `product_id` (`product_id`),
-  INDEX `priority` (`priority`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_products_options_stock` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `combination` VARCHAR(64) NOT NULL DEFAULT '',
+  `attributes` VARCHAR(64) NOT NULL DEFAULT '',
   `sku` VARCHAR(64) NOT NULL DEFAULT '',
   `weight` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `weight_class` VARCHAR(2) NOT NULL DEFAULT '',
-  `dim_x` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `dim_y` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `dim_z` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `dim_class` VARCHAR(2) NOT NULL DEFAULT '',
+  `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+  `length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
+  `width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
+  `height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
+  `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
   `quantity` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `priority` INT(11) NOT NULL DEFAULT '0',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `product_option_stock` (`product_id`, `combination`),
+  UNIQUE KEY `stock_option` (`product_id`, `attributes`),
   KEY `product_id` (`product_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------

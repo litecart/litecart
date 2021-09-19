@@ -556,6 +556,72 @@
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."manufacturers_info` DROP INDEX `brand_info`;");
   }
 
+
+// Separate product configurations from stock options
+  $stock_options_query = database::query(
+    "select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+  );
+
+  while ($stock_option = database::fetch($stock_options_query )) {
+    foreach (explode(',', $stock_option['attributes']) as $pair) {
+
+      list($group_id, $value_id) = explode('-', $pair);
+
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_configurations_values
+        where product_id = ". (int)$stock_option['product_id'] ."
+        and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
+      );
+
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."products_configurations
+        where product_id = ". (int)$stock_option['product_id'] ."
+        and group_id = ". (int)$group_id ."
+        and product_id not in (
+          select product_id from ". DB_TABLE_PREFIX ."products_configurations_values
+          where product_id = ". (int)$stock_option['product_id'] ."
+          and group_id = ". (int)$group_id ."
+        );"
+      );
+    }
+  }
+
+  database::query(
+    "ALTER TABLE `lc_orders_items`
+    DROP COLUMN `attributes`;"
+  );
+
+ // Migrate PHP serialized configurations to JSON
+  $order_items_query = database::query(
+    "select * from ". DB_TABLE_PREFIX ."orders_items;"
+  );
+
+  while ($item = database::fetch($order_items_query)) {
+    $item['data'] = unserialize($item['data']);
+
+    database::query(
+      "update ". DB_TABLE_PREFIX ."orders_items
+      set data = '". (!empty($item['data']) ? json_encode($item['data'], JSON_UNESCAPED_SLASHES) : '') ."'
+      where id = ". (int)$item['id'] ."
+      limit 1;"
+    );
+  }
+
+// Download Product Configurations Add-On
+  if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products_configurations;"))) {
+
+    // ...
+
+// Remove Product Configurations
+  } else {
+    database::query(
+      "drop table ". DB_TABLE_PREFIX ."products_configurations;"
+    );
+    database::query(
+      "drop table ". DB_TABLE_PREFIX ."products_configurations_values;"
+    );
+  }
+
 // Set subtotal for all previous orders
   database::query(
     "update `". DB_TABLE_PREFIX ."`orders o

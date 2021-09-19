@@ -1587,6 +1587,23 @@ END;
     }
   }
 
+  function form_draw_product_stock_options_list($name, $product_id, $input=true, $parameters='') {
+
+    $product = reference::product($product_id);
+
+    $options = [];
+    foreach ($product->stock_options as $stock_option) {
+      $options[] = [$stock_option['id'], $stock_option['name'], 'data-sku="'. htmlspecialchars($stock_option['sku']) .'" data-weight="'. htmlspecialchars($stock_option['weight']) .'" data-weight-unit="'. htmlspecialchars($stock_option['weight_unit']) .'" data-length="'. htmlspecialchars($stock_option['length']) .'" data-width="'. htmlspecialchars($stock_option['width']) .'" data-height="'. htmlspecialchars($stock_option['height']) .'" data-length-unit="'. htmlspecialchars($stock_option['length_unit']) .'" '];
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_dropdown_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      return form_draw_dropdown_field($name, $options, $input, $parameters);
+    }
+  }
+
   function form_draw_quantity_units_list($name, $input=true, $parameters='') {
 
     if (count($args = func_get_args()) > 2 && is_bool($args[2])) {

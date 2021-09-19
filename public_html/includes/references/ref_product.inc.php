@@ -228,133 +228,12 @@
 
           break;
 
-        case 'options':
+        case 'stock_options':
 
-          $this->_data['options'] = [];
-
-          $products_options_query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_options
-            where product_id = ". (int)$this->_data['id'] ."
-            order by priority;"
-          );
-
-          while ($option = database::fetch($products_options_query)) {
-
-          // Group
-            $attribute_group_info_query = database::query(
-              "select * from ". DB_TABLE_PREFIX ."attribute_groups_info pcgi
-              where group_id = ". (int)$option['group_id'] ."
-              and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-              order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-            );
-
-            while ($attribute_group_info = database::fetch($attribute_group_info_query)) {
-              foreach ($attribute_group_info as $k => $v) {
-                if (in_array($k, ['id', 'group_id', 'language_code'])) continue;
-                if (empty($option[$k])) $option[$k] = $v;
-              }
-            }
-
-          // Values
-            $option['values'] = [];
-
-            $option_values_query = database::query(
-              "select * from ". DB_TABLE_PREFIX ."products_options_values
-              where product_id = ". (int)$this->_data['id'] ."
-              and group_id = ". (int)$option['group_id'] ."
-              order by priority;"
-            );
-
-            while ($value = database::fetch($option_values_query)) {
-
-              if (!empty($value['value_id'])) {
-
-                $attribute_values_info_query = database::query(
-                  "select * from ". DB_TABLE_PREFIX ."attribute_values_info pcvi
-                  where value_id = ". (int)$value['value_id'] ."
-                  and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                  order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-                );
-
-                while ($attribute_value_info = database::fetch($attribute_values_info_query)) {
-                  foreach ($attribute_value_info as $k => $v) {
-                    if (in_array($k, ['id', 'value_id', 'language_code'])) continue;
-                    if (empty($value[$k])) $value[$k] = $v;
-                  }
-                }
-
-              } else {
-                $value['name'] = $value['custom_value'];
-              }
-
-            // Price Adjust
-              $value['price_adjust'] = 0;
-
-              if ((!empty($value[$this->_currency_code]) && (float)$value[$this->_currency_code] != 0) || (!empty($value[settings::get('store_currency_code')]) && (float)$value[settings::get('store_currency_code')] != 0)) {
-
-                switch ($value['price_operator']) {
-
-                  case '+':
-
-                    if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = (float)currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
-                    } else {
-                      $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
-                    }
-                    break;
-
-                  case '%':
-                    if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $this->price * ((float)$value[$this->_currency_code] / 100);
-                    } else {
-                      $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')] / 100;
-                    }
-                    break;
-
-                  case '*':
-                    if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $this->price * $value[$this->_currency_code];
-                    } else {
-                      $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
-                    }
-                    break;
-
-                  case '=':
-                    if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $value[$this->_currency_code] - $this->price;
-                    } else {
-                      $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
-                    }
-                    break;
-
-                  default:
-                    trigger_error('Unknown price operator for option', E_USER_WARNING);
-                    break;
-                }
-              }
-
-              $option['values'][$value['id']] = $value;
-            }
-
-            if ($option['sort'] == 'alphabetically') {
-              uasort($option['values'], function($a, $b){
-                if ($a['name'] == $b['name']) return 0;
-                return ($a['name'] < $b['name']) ? -1 : 1;
-              });
-              break;
-            }
-
-            $this->_data['options'][$option['group_id']] = $option;
-          }
-
-          break;
-
-        case 'options_stock':
-
-          $this->_data['options_stock'] = [];
+          $this->_data['stock_options'] = [];
 
           $query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_options_stock
+            "select * from ". DB_TABLE_PREFIX ."products_stock_options
             where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by priority asc;"
@@ -375,40 +254,35 @@
               $row['weight_class'] = $this->weight_class;
             }
 
-            if (empty($row['dim_x'])) {
-              $row['dim_x'] = $this->dim_x;
-              $row['dim_y'] = $this->dim_y;
-              $row['dim_z'] = $this->dim_z;
-              $row['dim_class'] = $this->dim_class;
+            if (empty($row['length'])) {
+              $row['length'] = $this->length;
+              $row['width'] = $this->width;
+              $row['height'] = $this->height;
+              $row['length_unit'] = $this->length_unit;
             }
 
             $row['name'] = [];
 
-            foreach (explode(',', $row['combination']) as $combination) {
-              list($group_id, $value_id) = explode('-', $combination);
+            foreach (preg_split('#\s*,\s*#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $pair) {
+              list($group_id, $value_id) = explode('-', $pair);
 
-              $options_values_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."products_options_values pov
-                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
-                where pov.value_id = ". (int)$value_id ."
+              $attribute_values_query = database::query(
+                "select * from ". DB_TABLE_PREFIX ."attribute_values av
+                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id)
+                where av.id = ". (int)$value_id ."
                 and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
                 order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
               );
 
-              while ($option_value_info = database::fetch($options_values_query)) {
-                foreach ($option_value_info as $key => $value) {
-                  if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-                  if (!is_array(empty($row[$key][$option_value_info['value_id']]))) continue;
-                  if (empty($row[$key][$option_value_info['value_id']])) {
-                    $row[$key][$option_value_info['value_id']] = $value;
-                  }
-                }
+              while ($attribute_value_info = database::fetch($attribute_values_query)) {
+                $row[$key]['name'][] = $attribute_value_info['name'];
               }
             }
 
             $row['name'] = implode(',', $row['name']);
+            $row['price_adjust'] = 0;
 
-            $this->_data['options_stock'][$row['id']] = $row;
+            $this->_data['stock_options'][$row['id']] = $row;
           }
 
           break;

@@ -678,7 +678,7 @@ body.dark-mode #box-comments {
                   <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['.$key.'][combination]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('items['.$key.'][stock_option_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][data]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?>
@@ -690,27 +690,6 @@ body.dark-mode #box-comments {
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][width]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][height]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['. $key .'][length_unit]', true); ?>
-<?php
-      if (!empty($_POST['items'][$key]['options'])) {
-        foreach (array_keys($_POST['items'][$key]['options']) as $field) {
-          echo '<div>' . PHP_EOL
-             . ' - '. $field .': ' . PHP_EOL;
-          if (is_array($_POST['items'][$key]['options'][$field])) {
-            $use_comma = false;
-            foreach (array_keys($_POST['items'][$key]['options'][$field]) as $k) {
-              echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']['.$k.']', true) . $_POST['items'][$key]['options'][$field][$k];
-              if ($use_comma) echo ', ';
-              $use_comma = true;
-            }
-          } else {
-            echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']', true) . $_POST['items'][$key]['options'][$field];
-          }
-          echo '</div>' . PHP_EOL;
-        }
-      } else {
-        echo functions::form_draw_hidden_field('items['.$key.'][options]', '');
-      }
-?>
                 </td>
                 <td class="grabable sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
                 <td class="grabable">
@@ -735,7 +714,7 @@ body.dark-mode #box-comments {
                 <td colspan="9">
                   <?php echo functions::form_draw_button('return', language::translate('title_return_items', 'Return Items')); ?>
                   <?php echo functions::form_draw_button('split', language::translate('title_split_order', 'Split Order')); ?>
-                  <a class="btn btn-default add-product" href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" data-toggle="lightbox" data-width="" data-href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                  <a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
                 </td>
               </tr>
@@ -1218,7 +1197,7 @@ body.dark-mode #box-comments {
       }
     }
 
-    $('.add-product').attr('href', $('.add-product').data('href') +'?'+ $.param(params));
+    $('.add-product').attr('href', '<?php echo document::ilink('catalog/product_picker'); ?>?'+ $.param(params));
   });
 
   $(':input[name^="customer"]').first().trigger('input');
@@ -1289,6 +1268,37 @@ body.dark-mode #box-comments {
       $(modal).find(':input[name="'+field+'"]').val(value);
     });
   });
+
+  // Callback handler for product picker modal
+  var selectProduct = function(product) {
+
+    var params = {
+      product_id: product.id,
+      language_code: $('select[name="language_code"]').val(),
+      currency_code: $('select[name="currency_code"]').val(),
+      currency_value: $('input[name="currency_value"]').val(),
+      customer: {
+        id: $(':input[name="customer[id]"]').val(),
+        tax_id: $('input[name="customer[tax_id]"]').val(),
+        company: $('input[name="customer[company]"]').val(),
+        country_code: $('select[name="customer[country_code]"]').val(),
+        zone_code: $('select[name="customer[zone_code]"]').val(),
+        city: $('select[name="customer[city]"]').val(),
+        shipping_address: {
+          company: $('input[name="customer[shipping_address][company]"]').val(),
+          country_code: $('select[name="customer[shipping_address][country_code]"]').val(),
+          zone_code: $('select[name="customer[shipping_address][zone_code]"]').val(),
+          city: $('select[name="customer[shipping_address][city]"]').val(),
+        }
+      }
+    }
+
+    var url = '<?php echo document::ilink(__APP__.'/add_product'); ?>?' + $.param(params);
+
+    $.get(url, function(content) {
+      $('.featherlight-modal').html(content);
+    }, 'html');
+  }
 
   $('#order-items .add-custom-item').click(function(){
     $.featherlight('#modal-add-order-item');
@@ -1379,8 +1389,7 @@ body.dark-mode #box-comments {
                + '    <td class="grabable">' + item.name
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][combination]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][options]', '')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][stock_option_id]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][description]', '')); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][data]', '')); ?>'
@@ -1415,8 +1424,8 @@ body.dark-mode #box-comments {
 
     var row = $('#order-items tbody tr.item').last();
     $(row).find('*[name$="[product_id]"]').val(item.product_id);
+    $(row).find('*[name$="[stock_option_id]"]').val(item.stock_option_id);
     $(row).find('*[name$="[sku]"]').val(item.sku);
-    $(row).find('*[name$="[combination]"]').val(item.combination);
     $(row).find('*[name$="[name]"]').val(item.name);
     $(row).find('*[name$="[gtin]"]').val(item.gtin);
     $(row).find('*[name$="[taric]"]').val(item.taric);
@@ -1437,24 +1446,6 @@ body.dark-mode #box-comments {
     $(row).find('.width').text(String(item.width).trim('.0'));
     $(row).find('.height').text(String(item.height).trim('.0'));
     $(row).find('.length_unit').text(item.length_unit);
-
-    if (item.options) {
-      var product_options = '';
-      $.each(item.options, function(group, value) {
-        product_options += '<div>'
-                         + '  - '+ group +': ';
-        if ($.isArray(value)) {
-          $.each(value, function(i, array_value) {
-            product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'" />' + array_value +', ';
-          });
-          product_options = product_options.substring(0, product_options.length - 2);
-        } else {
-          product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'" />' + value;
-        }
-        product_options += '</div>';
-      });
-      $(row).find('input[type="hidden"][name$="[options]"]').replaceWith(product_options);
-    }
 
     calculate_total();
   }

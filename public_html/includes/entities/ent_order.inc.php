@@ -306,7 +306,7 @@
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
           $product = new ent_product($previous_order_item['product_id']);
-          $product->adjust_quantity($previous_order_item['quantity'], $previous_order_item['combination']);
+          $product->adjust_quantity($previous_order_item['quantity'], $previous_order_item['stock_option_id']);
         }
       }
 
