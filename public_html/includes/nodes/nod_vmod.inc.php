@@ -72,8 +72,9 @@
       $checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-          list($short_file, $modified_file, $checksum) = explode(';', $line);
-          if (!is_file(FS_DIR_APP . $short_file) || filemtime(FS_DIR_STORAGE . $modified_file) > filemtime(FS_DIR_APP . $short_file)) {
+          list($short_file, $modified_short_file, $checksum) = explode(';', $line);
+          if (is_file(FS_DIR_APP . $short_file) && is_file(FS_DIR_STORAGE . $modified_short_file) && filemtime(FS_DIR_STORAGE . $modified_short_file) > filemtime(FS_DIR_APP . $short_file)) {
+            self::$_checked[$short_file] = FS_DIR_STORAGE . $modified_short_file;
             self::$_checksums[$short_file] = $checksum;
           }
         }
@@ -158,7 +159,7 @@
       }
 
     // Return modified file if checksum matches
-      if (!empty(self::$_checksums[$short_file]) && !empty(self::$_checked[$short_file]) && file_exists(self::$_checked[$short_file]) && self::$_checksums[$short_file] == $checksum) {
+      if (!empty(self::$_checksums[$short_file]) && !empty(self::$_checked[$short_file]) && file_exists(FS_DIR_APP . self::$_checked[$short_file]) && self::$_checksums[$short_file] == $checksum) {
         self::$time_elapsed += microtime(true) - $timestamp;
         return self::$_checked[$short_file] = $modified_file;
       }
@@ -351,7 +352,6 @@
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
         $aliases[$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
       }
-
 
       if (empty($dom->getElementsByTagName('file'))) {
         throw new \Exception('File has no defined files to modify');
