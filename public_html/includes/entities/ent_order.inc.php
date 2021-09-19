@@ -23,43 +23,20 @@
 
       while ($field = database::fetch($fields_query)) {
 
-        switch ($field['Field']) {
-          case 'customer_id':
-          case 'customer_email':
-          case 'customer_tax_id':
-          case 'customer_company':
-          case 'customer_firstname':
-          case 'customer_lastname':
-          case 'customer_address1':
-          case 'customer_address2':
-          case 'customer_postcode':
-          case 'customer_city':
-          case 'customer_country_code':
-          case 'customer_zone_code':
-          case 'customer_phone':
+        switch (true) {
+          case (preg_match('#^customer_#', $field['Field'])):
             $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = null;
             break;
 
-          case 'shipping_company':
-          case 'shipping_firstname':
-          case 'shipping_lastname':
-          case 'shipping_address1':
-          case 'shipping_address2':
-          case 'shipping_postcode':
-          case 'shipping_city':
-          case 'shipping_country_code':
-          case 'shipping_zone_code':
-          case 'shipping_phone':
+          case (preg_match('#^shipping_(?!option)#', $field['Field'])):
             $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = null;
             break;
 
-          case 'payment_option_id':
-          case 'payment_option_name':
+          case (preg_match('#^payment_option#', $field['Field'])):
             $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = null;
             break;
 
-          case 'shipping_option_id':
-          case 'shipping_option_name':
+          case (preg_match('#^shipping_option#', $field['Field'])):
             $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = null;
             break;
 
@@ -112,44 +89,20 @@
       }
 
       foreach ($order as $field => $value) {
-
-        switch ($field) {
-          case 'customer_id':
-          case 'customer_email':
-          case 'customer_tax_id':
-          case 'customer_company':
-          case 'customer_firstname':
-          case 'customer_lastname':
-          case 'customer_address1':
-          case 'customer_address2':
-          case 'customer_postcode':
-          case 'customer_city':
-          case 'customer_country_code':
-          case 'customer_zone_code':
-          case 'customer_phone':
+        switch (true) {
+          case (preg_match('#^customer_#', $field)):
             $this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
             break;
 
-          case 'shipping_company':
-          case 'shipping_firstname':
-          case 'shipping_lastname':
-          case 'shipping_address1':
-          case 'shipping_address2':
-          case 'shipping_postcode':
-          case 'shipping_city':
-          case 'shipping_country_code':
-          case 'shipping_zone_code':
-          case 'shipping_phone':
+          case (preg_match('#^shipping_(?!option)#', $field)):
             $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
             break;
 
-          case 'payment_option_id':
-          case 'payment_option_name':
+          case (preg_match('#^payment_option#', $field)):
             $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field)] = $value;
             break;
 
-          case 'shipping_option_id':
-          case 'shipping_option_name':
+          case (preg_match('#^shipping_option#', $field)):
             $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field)] = $value;
             break;
         }
