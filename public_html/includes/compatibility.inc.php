@@ -7,7 +7,7 @@
 
   if (version_compare(phpversion(), '5.5.0', '<') == true) {
 
-  // Emulate array_column() as of PHP 5.5
+  // Polyfill for array_column() as of PHP 5.5
     if (!function_exists('array_column')) {
       function array_column(array $array, $column_key, $index_key=null) {
         $result = [];
@@ -29,7 +29,7 @@
       }
     }
 
-  // Emulate password functions as of PHP 5.5 - Copyright (c) 2012 Anthony Ferrara
+  // Polyfill for password functions as of PHP 5.5 - Copyright (c) 2012 Anthony Ferrara
     if (!defined('PASSWORD_BCRYPT')) {
       define('PASSWORD_BCRYPT', 1);
       define('PASSWORD_DEFAULT', PASSWORD_BCRYPT);
@@ -219,7 +219,7 @@
     ini_set('serialize_precision', -1);
   }
 
-// Emulate getallheaders() on non-Apache machines
+// Polyfill for getallheaders() on non-Apache machines
   if (!function_exists('getallheaders')) {
     function getallheaders() {
       $headers = [];
@@ -235,7 +235,7 @@
 // Fix Windows paths
   $_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
 
-// Emulate some $_SERVER variables
+// Polyfill for some $_SERVER variables in CLI
   if (php_sapi_name() === 'cli') {
     $_SERVER['DOCUMENT_ROOT'] = rtrim(FS_DIR_APP, '/');
     $_SERVER['REMOTE_ADDR'] = '127.0.0.1';

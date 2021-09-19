@@ -10,8 +10,8 @@
 
       database::query(
         "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
-        (email, date_created)
-        values ('". database::input($_POST['email']) ."', '". date('c') ."');"
+        (email, client_ip, date_created)
+        values ('". database::input($_POST['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('c') ."');"
       );
 
       if (empty(customer::$data['email'])) {

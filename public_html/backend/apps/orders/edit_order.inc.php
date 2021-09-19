@@ -348,9 +348,30 @@ body.dark-mode #box-comments {
 
           <div class="row">
             <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
+              <?php echo functions::form_draw_order_statuses_list('order_status_id', true); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_language', 'Language'); ?></label>
+              <?php echo functions::form_draw_languages_list('language_code', true); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
+              <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_currency_value', 'Currency Value'); ?></label>
+              <?php echo functions::form_draw_decimal_field('currency_value', true, 6); ?>
+            </div>
+
+            <div class="form-group col-md-6">
               <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
-              <div class="form-input">
-                <?php echo $order->data['client_ip']; ?> <a href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+              <div class="input-group">
+                <div class="form-input"><?php echo $order->data['client_ip']; ?></div>
+                <a class="btn btn-primary" href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
               </div>
             </div>
 
@@ -368,28 +389,7 @@ body.dark-mode #box-comments {
             </div>
           </div>
 
-
-          <div class="row">
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
-              <?php echo functions::form_draw_order_status_list('order_status_id', true); ?>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_code', true); ?>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-              <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_currency_value', 'Currency Value'); ?></label>
-              <?php echo functions::form_draw_decimal_field('currency_value', true, 6); ?>
-            </div>
-          </div>
+          <hr />
 
           <div id="customer-details">
 
