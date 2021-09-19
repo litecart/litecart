@@ -60,6 +60,9 @@
         'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
       ]);
 
+      $this->data['shipping_option']['userdata'] = [];
+      $this->data['payment_option']['userdata'] = [];
+
       $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
       $this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
 
@@ -108,6 +111,9 @@
         }
       }
 
+      $this->data['shipping_option']['userdata'] = @json_decode($this->data['shipping_option']['userdata'], true);
+      $this->data['payment_option']['userdata'] = @json_decode($this->data['payment_option']['userdata'], true);
+
       $order_items_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."orders_items
         where order_id = ". (int)$order_id ."
@@ -147,12 +153,16 @@
       $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
       $this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
 
-      if (!empty($this->data['shipping'])) {
-        $this->shipping = new mod_shipping();
+      $this->shipping = new mod_shipping();
+      if (!empty($this->data['shipping_option']['id'])) {
+        list($module_id, $option_id) = explode(':', $this->data['shipping_option']['id']);
+        $this->shipping->select($module_id, $option_id, $this->data['shipping_option']['userdata']);
       }
 
-      if (!empty($this->data['payment'])) {
-        $this->payment = new mod_payment();
+      $this->payment = new mod_payment();
+      if (!empty($this->data['payment_option']['id'])) {
+        list($module_id, $option_id) = explode(':', $this->data['payment_option']['id']);
+        $this->payment->select($module_id, $option_id, $this->data['payment_option']['userdata']);
       }
 
       $this->order_total = new mod_order_total();
@@ -232,10 +242,12 @@
           shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
           shipping_option_id = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['id']) : '') ."',
           shipping_option_name = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['name']) : '') ."',
+          shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(json_encode($this->shipping->selected['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
           shipping_tracking_id = '". database::input($this->data['shipping_tracking_id']) ."',
           shipping_tracking_url = '". database::input($this->data['shipping_tracking_url']) ."',
           payment_option_id = '". (!empty($this->payment->selected['id']) ? database::input($this->payment->selected['id']) : '') ."',
           payment_option_name = '". (!empty($this->payment->selected['id']) ? database::input($this->payment->selected['id']) : '') ."',
+          payment_option_userdata = '". (!empty($this->payment->selected['userdata']) ? database::input(json_encode($this->payment->selected['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
           payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
           reference = '". database::input($this->data['reference']) ."',
           language_code = '". database::input($this->data['language_code']) ."',
