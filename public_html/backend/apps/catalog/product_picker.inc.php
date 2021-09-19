@@ -16,7 +16,7 @@
       <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
-    <div class="form-group results table-responsive">
+    <div class="form-group table-responsive">
       <table class="table table-striped table-hover data-table">
         <thead>
           <tr>
@@ -28,8 +28,7 @@
             <th><?php echo language::translate('title_date_created', 'Date Created'); ?></th>
           </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody />
       </table>
     </div>
   </div>
@@ -39,11 +38,13 @@
 <script>
   var xhr_product_picker = null;
   $('#modal-product-picker input[name="query"]').bind('propertyChange input', function(){
+
     if ($(this).val() == '') {
-      $('#modal-product-picker .results tbody').html('');
+      $('#modal-product-picker tbody').html('');
       xhr_product_picker = null;
       return;
     }
+
     xhr_product_picker = $.ajax({
       type: 'get',
       async: true,
@@ -57,37 +58,55 @@
         console.error(textStatus + ': ' + errorThrown);
       },
       success: function(json) {
-        $('#modal-product-picker .results tbody').html('');
+
+        $('#modal-product-picker tbody').html('');
+
+        if (!json) {
+          $('#modal-product-picker tbody').html(
+            '<tr>' +
+            '  <td colspan="6"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td>' +
+            '</tr>'
+          );
+        }
+
         $.each(json, function(i, row){
-          if (row) {
-            $('#modal-product-picker .results tbody').append(
-              '<tr>' +
-              '  <td class="id">' + row.id + '</td>' +
-              '  <td class="name">' + row.name + '</td>' +
-              '  <td class="sku">' + row.sku + '</td>' +
-              '  <td class="quantity text-end">' + row.quantity + '</td>' +
-              '  <td class="price text-end">' + row.price.formatted + '</td>' +
-              '  <td class="date-created">' + row.date_created + '</td>' +
-              '</tr>'
-            );
+          $('#modal-product-picker tbody').append(
+            '<tr>' +
+            '  <td class="id">' + row.id + '</td>' +
+            '  <td class="name">' + row.name + '</td>' +
+            '  <td class="sku">' + row.sku + '</td>' +
+            '  <td class="quantity text-end">' + row.quantity + '</td>' +
+            '  <td class="price text-end">' + row.price.formatted + '</td>' +
+            '  <td class="date-created">' + row.date_created + '</td>' +
+            '</tr>'
+          );
+        });
+
+        $('#modal-product-picker tbody').on('click', 'td', function() {
+
+          var callback = $.featherlight.current().$currentTarget.data('callback');
+
+          var $tr = $(this).closest('tr');
+
+          var product = {
+            id: $tr.find('.id').text(),
+            name: $tr.find('.name').text(),
+            sku: $tr.find('.sku').text(),
+            quantity: $tr.find('.quantity').text(),
+            price: $tr.find('.price').text(),
+          }
+
+          if (callback) {
+            window[callback](product);
+          } else if ($.featherlight.current().$currentTarget[0].closest('.input-group').length) {
+            var field = $.featherlight.current().$currentTarget[0].closest('.input-group');
+            $(field).find(':input').val(product.id).trigger('change');
+            $(field).find('.name').text(product.name);
+            $.featherlight.close();
           }
         });
-        if ($('#modal-product-picker .results tbody').html() == '') {
-          $('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
-        }
+
       },
     });
   }).focus();
-
-  $('#modal-product-picker tbody').on('click', 'td', function() {
-    var row = $(this).closest('tr');
-
-    var id = $(row).find('.id').text();
-    if (!id) return;
-
-    var url = String('<?php echo document::ilink(__APP__.'/add_product', ['product_id' => '__id__']); ?>').replace(/__id__/, id);
-    $.get(url, function(data) {
-      $('.featherlight-content').html(data);
-    }, 'html');
-  });
 </script>

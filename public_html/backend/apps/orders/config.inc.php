@@ -35,7 +35,6 @@
       'order_statuses' => 'order_statuses.inc.php',
       'edit_order_status' => 'edit_order_status.inc.php',
       'add_product' => 'add_product.inc.php',
-      'product_picker' => 'product_picker.inc.php',
       'shopping_carts' => 'shopping_carts.inc.php',
       'edit_shopping_cart' => 'edit_shopping_cart.inc.php',
     ],
