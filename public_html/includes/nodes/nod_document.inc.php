@@ -19,7 +19,7 @@
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
       header('X-Powered-By: '. PLATFORM_NAME);
 
-    // Set template
+    // Default to AJAX layout on AJAX request
       if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         self::$layout = 'ajax';
       }
@@ -96,7 +96,7 @@
       if (!empty(user::$data['id'])) {
         self::$jsenv['user'] = [
           'id' => user::$data['id'],
-          'name' => user::$data['username'],
+          'username' => user::$data['username'],
           'email' => !empty(user::$data['email']) ? user::$data['email'] : null,
         ];
       }
@@ -144,12 +144,12 @@
         return implode($replace, explode($search, $subject, 2));
       };
 
-    // Extract and group in content stylesheets
+    // Remove HTML comments
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $GLOBALS['output'] = preg_replace('#(<html(?:[^>]+)?>).*(</html>)#is', '$1'. addcslashes(preg_replace('#<!--.*?-->#ms', '', $matches[1]), '\\$') .'$2', $GLOBALS['output']);
       }
 
-    // Static Domain
+    // Static domain
       if ($static_domain = settings::get('static_domain')) {
         $GLOBALS['output'] = preg_replace('# (src|href)="(/[^"]+\.(css|eot|gif|ico|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?[^"]+)?)"#', ' $1="'. rtrim($static_domain, '/') .'$2"', $GLOBALS['output']);
         $GLOBALS['output'] = preg_replace('# (src|href)="(https?://'. preg_quote($_SERVER['HTTP_HOST'], '#') .')(/[^"]+\.(css|eot|gif|ico|jpe?g|js|otf|png|svg|ttf|woff2?)(\?[^"]+)?)"#', ' $1="'. rtrim($static_domain, '/') .'$3"', $GLOBALS['output']);

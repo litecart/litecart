@@ -34,7 +34,7 @@
       limit 1;"
     );
 
-    $url = document::ilink('push_jobs');
+    $url = document::ilink('f:push_jobs');
     $disabled_functions = preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY);
 
     if (!in_array('exec', $disabled_functions)) {

@@ -371,7 +371,7 @@ body.dark-mode #box-comments {
               <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
               <div class="input-group">
                 <div class="form-input"><?php echo $order->data['client_ip']; ?></div>
-                <a class="btn btn-primary" href="https://geoiptool.com/en/?ip=<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+                <a class="btn btn-primary" href="ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
               </div>
             </div>
 
@@ -388,8 +388,6 @@ body.dark-mode #box-comments {
               </div>
             </div>
           </div>
-
-          <hr />
 
           <div id="customer-details">
 
@@ -712,10 +710,10 @@ body.dark-mode #box-comments {
             <tfoot>
               <tr>
                 <td colspan="9">
+                  <a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-width="" data-callback="selectProduct"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+                  <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
                   <?php echo functions::form_draw_button('return', language::translate('title_return_items', 'Return Items')); ?>
                   <?php echo functions::form_draw_button('split', language::translate('title_split_order', 'Split Order')); ?>
-                  <a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
-                  <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
                 </td>
               </tr>
             </tfoot>
