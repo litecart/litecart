@@ -25,13 +25,13 @@
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
       $fields = [
+        'stage',
         'icon',
         'color',
         'is_sale',
         'is_archived',
         'notify',
         'is_trackable',
-        'priority',
         'name',
         'description',
         'email_subject',
@@ -68,6 +68,21 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
+  $stages = [
+    'created' => language::translate('title_created', 'Created'),
+    'on_hold' => language::translate('title_on_hold', 'On Hold'),
+    'ready' => language::translate('title_ready', 'Ready'),
+    'delayed' => language::translate('title_delayed', 'Delayed'),
+    'processing' => language::translate('title_processing', 'Processing'),
+    'dispatched' => language::translate('title_dispatched', 'Dispatched'),
+    'in_transit' => language::translate('title_in_transit', 'In Transit'),
+    'delivered' => language::translate('title_delivered', 'Delivered'),
+    'returning' => language::translate('title_returning', 'Returning'),
+    'returned' => language::translate('title_returned', 'Returned'),
+    'cancelled' => language::translate('title_cancelled', 'Cancelled'),
+  ];
+
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -85,6 +100,11 @@
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_name', 'Name'); ?></label>
               <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_status_stage', 'Stage'); ?></label>
+              <?php echo functions::form_draw_select_field('stage', $stages, true); ?>
             </div>
           </div>
 

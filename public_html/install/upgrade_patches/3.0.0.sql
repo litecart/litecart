@@ -133,7 +133,9 @@ ADD INDEX `stock_option_id` (`stock_option_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
-DROP COLUMN `keywords`;
+ADD COLUMN `stage` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '' AFTER `id`,
+DROP COLUMN `keywords`,
+DROP COLUMN `priority`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_stock_options`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',

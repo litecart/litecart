@@ -99,7 +99,7 @@
       $sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
       break;
     case 'order_status':
-      $sql_sort = "o.starred desc, os.name asc";
+      $sql_sort = "o.starred desc, field(stage,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled'), os.name asc";
       break;
     case 'payment_method':
       $sql_sort = "o.starred desc, o.payment_option_name asc";

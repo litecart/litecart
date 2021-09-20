@@ -9,9 +9,9 @@
   $order_statuses = [];
 
   $order_statuses_query = database::query(
-    "select os.*, osi.name, os.priority from ". DB_TABLE_PREFIX ."order_statuses os
+    "select os.*, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
-    order by os.priority, osi.name asc;"
+    order by field(stage,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
   );
 
   if ($_GET['page'] > 1) database::seek($order_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -31,6 +31,21 @@
 
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+  $stages = [
+    'created' => language::translate('title_created', 'Created'),
+    'on_hold' => language::translate('title_on_hold', 'On Hold'),
+    'ready' => language::translate('title_ready', 'Ready'),
+    'delayed' => language::translate('title_delayed', 'Delayed'),
+    'processing' => language::translate('title_processing', 'Processing'),
+    'dispatched' => language::translate('title_dispatched', 'Dispatched'),
+    'in_transit' => language::translate('title_in_transit', 'In Transit'),
+    'delivered' => language::translate('title_delivered', 'Delivered'),
+    'returning' => language::translate('title_returning', 'Returning'),
+    'returned' => language::translate('title_returned', 'Returned'),
+    'cancelled' => language::translate('title_cancelled', 'Cancelled'),
+  ];
+
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -50,42 +65,42 @@
     <table class="table table-striped table-hover data-table">
       <thead>
         <tr>
-        <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-        <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th></th>
-        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
-        <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
-        <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
-        <th><?php echo language::translate('title_track', 'Track'); ?></th>
-        <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-        <th>&nbsp;</th>
-      </tr>
-    </thead>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
+          <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
+          <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
+          <th><?php echo language::translate('title_track', 'Track'); ?></th>
+          <th><?php echo language::translate('title_stage', 'Stage'); ?></th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <?php foreach ($order_statuses as $order_status) { ?>
-      <tr>
-        <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
-        <td><?php echo $order_status['id']; ?></td>
-        <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
-        <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
-        <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-        <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
-        <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-        <td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-        <td class="text-center"><?php echo $order_status['priority']; ?></td>
-        <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
-      </tr>
-      <?php } ?>
-    </tbody>
+      <tbody>
+        <?php foreach ($order_statuses as $order_status) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
+          <td><?php echo $order_status['id']; ?></td>
+          <td class="text-center"><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
+          <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
+          <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td><?php echo strtr($order_status['stage'], $stages); ?></td>
+          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-    <tfoot>
-      <tr>
-      <td colspan="10"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
-      </tr>
-    </tfoot>
-  </table>
+      <tfoot>
+        <tr>
+        <td colspan="10"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
   <?php echo functions::form_draw_form_end(); ?>
 

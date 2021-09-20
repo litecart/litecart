@@ -269,21 +269,35 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'fa-money', '#c0c0c0', 0, 0, 0, 10, NOW(), NOW()),
-(2, 'fa-clock-o', '#d7d96f', 1, 0, 0, 20, NOW(), NOW()),
-(3, 'fa-cog', '#ffa851', 1, 0, 0, 30, NOW(), NOW()),
-(4, 'fa-truck', '#99cc66', 1, 0, 1, 40, NOW(), NOW()),
-(5, 'fa-times', '#ff6666', 0, 1, 0, 50, NOW(), NOW()),
-(5, 'fa-check', '#99cc66', 1, 1, 0, 60, NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `stage`, `icon`, `color`, `is_sale`, `is_archived`, `track_shipping`, `date_updated`, `date_created`) VALUES
+(1, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
+(2, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
+(3, 'on_hold', 'fa-hourglass-start', '#c0c0c0', 1, 0, 0, NOW(), NOW()),
+(4, 'ready', 'fa-clock-o', '#d7d96f', 1, 0, 0, NOW(), NOW()),
+(5, 'delayed', 'fa-hourglass-half', '#ffa851', 1, 0, 0, NOW(), NOW()),
+(6, 'processing', 'fa-cog', '#ffa851', 1, 0, 0, NOW(), NOW()),
+(7, 'dispatched', 'fa-truck', '#99cc66', 1, 1, 1, NOW(), NOW()),
+(8, 'in_transit', 'fa-truck', '#ffa851', 1, 0, 1, NOW(), NOW()),
+(9, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, NOW(), NOW()),
+(10, 'returning', 'fa-undo', '#ffa851', 1, 0, 1, NOW(), NOW()),
+(11, 'returned', 'fa-building', '#99cc66', 1, 1, 0, NOW(), NOW()),
+(12, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, NOW(), NOW()),
+(13, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Awaiting payment', ''),
-(2, 2, 'en', 'Pending', ''),
-(3, 3, 'en', 'Processing', ''),
-(4, 4, 'en', 'Dispatched', ''),
-(5, 5, 'en', 'Cancelled', ''),
-(6, 6, 'en', 'Delivered', '');
+(1, 1, 'en', 'Created', ''),
+(2, 2, 'en', 'Awaiting payment', ''),
+(3, 3, 'en', 'On hold', ''),
+(4, 4, 'en', 'Ready', ''),
+(5, 5, 'en', 'Delayed', ''),
+(6, 6, 'en', 'Processing', ''),
+(7, 7, 'en', 'Dispatched', ''),
+(8, 8, 'en', 'In Transit', ''),
+(9, 9, 'en', 'Delivered', ''),
+(10, 10, 'en', 'Returning', ''),
+(11, 11, 'en', 'Returned', ''),
+(12, 12, 'en', 'Cancelled', ''),
+(13, 13, 'en', 'Fraud', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 0, NOW(), NOW());
