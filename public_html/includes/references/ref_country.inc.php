@@ -105,7 +105,7 @@
 
       $args = func_get_args();
 
-      if (is_numeric($args[1]) || (is_array($args[1]) && is_numeric($args[1][0]))) {
+      if (is_numeric($args[1]) || (is_array($args[1]) && is_numeric(implode('', $args[1])))) {
         trigger_error('Passing geo zone last preceeded by zone is deprecated. Instead do \$country->in_geo_zones($geo_zones, $address)', E_USER_DEPRECATED);
         list($zone_code, $geo_zones) = $args;
         $address = [
