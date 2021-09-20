@@ -23,11 +23,12 @@
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
-      if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
+      if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_your_username_or_email', 'You must enter your username or email address'));
 
       $user_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
-        where lower(username) = lower('". database::input($_POST['username']) ."')
+        where (username != '' and lower(username) = lower('". database::input($_POST['username']) ."'))
+        or (email != '' and lower(email) = lower('". database::input($_POST['username']) ."'))
         limit 1;"
       );
 
