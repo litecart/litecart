@@ -24,7 +24,7 @@
           </div>
 
           <div class="form-group">
-            <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+            <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
           </div>
 
           <div class="checkbox">

@@ -46,6 +46,8 @@
 
       if (!empty($_POST['password'])) $user->set_password($_POST['password']);
 
+      $user->data['user_security_timestamp'] = date('Y-m-d H:i:s');
+
       $user->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

@@ -30,6 +30,9 @@ ADD COLUMN `quantity_step` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTE
 ALTER TABLE `lc_languages`
 ADD COLUMN `direction` ENUM('ltr','rtl') NOT NULL DEFAULT 'ltr' AFTER `name`;
 -- --------------------------------------------------------
+ALTER TABLE `lc_users`
+ADD COLUMN `date_expire_sessions` TIMESTAMP NULL DEFAULT NULL AFTER `total_logins`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_zones_to_geo_zones`
 ADD COLUMN `city` VARCHAR(32) NOT NULL DEFAULT '' AFTER `zone_code`,
 DROP INDEX `region`,

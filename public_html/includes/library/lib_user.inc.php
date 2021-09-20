@@ -13,56 +13,29 @@
     // Bind user to session
       self::$data = &session::$data['user'];
 
-      if (!empty(self::$data['id'])) {
-
-        ini_set('display_errors', 'On');
-
-        database::query(
-          "update ". DB_TABLE_PREFIX ."users
-          set date_active = '". date('Y-m-d H:i:s') ."'
-          where id = ". (int)self::$data['id'] ."
-          limit 1;"
-        );
-
-        self::load(self::$data['id']);
-      }
-
+    // Login remembered user automatically
       if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST)) {
-        list($username, $key) = explode(':', $_COOKIE['remember_me']);
 
-        $user_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."users
-          where lower(username) = lower('". database::input($username) ."')
-          and status
-          and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
-          and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
-          limit 1;"
-        );
+        try {
 
-        if ($user = database::fetch($user_query)) {
+          list($username, $key) = explode(':', $_COOKIE['remember_me']);
+
+          $user_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."users
+            where lower(username) = lower('". database::input($username) ."')
+            and status
+            and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
+            and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
+            limit 1;"
+          );
+
+          if (!$user = database::fetch($user_query)) {
+            throw new Exception('Invalid email or the account has been removed');
+          }
+
           $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
 
-          if ($checksum == $key) {
-
-            self::load($user['id']);
-
-            database::query(
-              "update ". DB_TABLE_PREFIX ."users
-              set
-                last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-                last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-                login_attempts = 0,
-                total_logins = total_logins + 1,
-                date_login = '". date('Y-m-d H:i:s') ."'
-              where id = ". (int)$user['id'] ."
-              limit 1;"
-            );
-
-          } else {
-
-            if (!empty($_COOKIE['remember_me'])) {
-              header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
-            }
+          if ($checksum != $key) {
 
             if (++$user['login_attempts'] < 3) {
               database::query(
@@ -80,10 +53,65 @@
                 limit 1;"
               );
             }
+
+            throw new Exception('Invalid checksum for cookie');
           }
 
-        } else {
+          self::load($user['id']);
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."users
+            set
+              last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+              last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+              login_attempts = 0,
+              total_logins = total_logins + 1,
+              date_login = '". date('Y-m-d H:i:s') ."'
+            where id = ". (int)$user['id'] ."
+            limit 1;"
+          );
+
+        } catch (Exception $e) {
           header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
+        }
+      }
+
+      if (!empty(self::$data['id'])) {
+
+        $user_query = database::query(
+          "select * from ". DB_TABLE_PREFIX ."customers
+          where id = ". (int)self::$data['id'] ."
+          limit 1;"
+        );
+
+        if (!$customer = database::fetch($user_query)) {
+          die('The account has been removed');
+        }
+
+        if (!$customer['status']) {
+          if (!empty($_COOKIE['customer_remember_me'])) {
+            header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
+          }
+          self::reset();
+          die('Your account is disabled');
+        }
+
+        ini_set('display_errors', 'On');
+
+        database::query(
+          "update ". DB_TABLE_PREFIX ."users
+          set date_active = '". date('Y-m-d H:i:s') ."'
+          where id = ". (int)self::$data['id'] ."
+          limit 1;"
+        );
+
+        if (!empty($customer['date_expire_sessions'])) {
+          if (!isset(session::$data['user_security_timestamp']) || session::$data['user_security_timestamp'] < strtotime($customer['date_expire_sessions'])) {
+            self::reset();
+            notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+            header('Location: '. document::ilink('login'));
+            exit;
+          }
         }
       }
     }

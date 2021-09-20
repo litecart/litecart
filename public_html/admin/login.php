@@ -118,6 +118,7 @@
 
       user::load($user['id']);
 
+      session::$data['user_security_timestamp'] = time();
       session::regenerate_id();
 
       if (!empty($_POST['remember_me'])) {
