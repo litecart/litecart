@@ -155,7 +155,7 @@ th:not(:last-child) {
             <tr>
               <td>
                 <code class="code"><?php echo $translation['code']; ?></code><br />
-                <label style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $translation['code'] .'][html]', '1', (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?> <?php echo language::translate('text_enable_html', 'Enable HTML'); ?></label>
+                <span style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $translation['code'] .'][html]', ['1', language::translate('text_enable_html', 'Enable HTML')], (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?></span>
               </td>
               <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
               <td>

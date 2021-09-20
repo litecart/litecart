@@ -57,9 +57,7 @@
           <ul class="dropdown-menu">
             <?php foreach ($brands as $brand) { ?>
             <li>
-              <label class="option"><?php echo functions::form_draw_checkbox('brands[]', $brand['id'], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?>
-                <span class="title"><?php echo $brand['name']; ?></span>
-              </label>
+              <?php echo functions::form_draw_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?>
             </li>
             <?php } ?>
           </ul>
@@ -76,9 +74,7 @@
           <ul class="dropdown-menu">
             <?php foreach ($group['values'] as $value) { ?>
             <li>
-              <label class="option"><?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"'); ?>
-                <span class="title"><?php echo $value['value']; ?></span>
-              </label>
+              <?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"'); ?>
             </li>
             <?php } ?>
           </ul>
@@ -94,10 +90,7 @@
           <ul class="dropdown-menu">
             <?php foreach ($sort_alternatives as $key => $title) { ?>
             <li>
-              <label class="option">
-                <?php echo functions::form_draw_radio_button('sort', $key, true); ?>
-                <span class="title"><?php echo $title; ?></span>
-              </label>
+              <?php echo functions::form_draw_radio_button('sort', [$key, $title], true); ?>
             </li>
             <?php } ?>
           </ul>

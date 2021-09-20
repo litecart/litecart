@@ -1,3 +1,9 @@
+<style>
+#box-checkout-summary tr td:first-child {
+  width: 75px;
+}
+</style>
+
 <section id="box-checkout-summary" class="box">
   <h2 class="title"><?php echo language::translate('title_order_summary', 'Order Summary'); ?></h2>
 
@@ -5,7 +11,7 @@
     <tbody>
       <?php foreach ($order['items'] as $item) { ?>
       <tr>
-        <td class="text-start"><?php echo $item['quantity']; ?></td>
+        <td class="text-end"><?php echo (float)$item['quantity']; ?> x</td>
         <td class="text-start"><?php echo $item['name']; ?></td>
         <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']); ?></td>
         <td class="text-end"><?php echo currency::format((!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price']) * $item['quantity'], false, $order['currency_code'], $order['currency_value']); ?></td>
