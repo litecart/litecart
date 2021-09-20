@@ -5,7 +5,7 @@ ALTER TABLE `lc_products_prices` ADD `GBP` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_campaigns` ADD `GBP` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
-ALTER TABLE `lc_products_options_values` ADD `GBP` DECIMAL(11,4) NOT NULL;
+ALTER TABLE `lc_products_stock_options` ADD `GBP` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = 'GBP' WHERE `key` in ('site_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
