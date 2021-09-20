@@ -110,9 +110,11 @@ CHANGE COLUMN `payment_due` `total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `tax_total` `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 ADD COLUMN `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
 ADD COLUMN `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
-ADD COLUMN `shipping_progress` TINYINT(3) NOT NULL DEFAULT 0 AFTER `shipping_tracking_url`,
+ADD COLUMN `shipping_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `shipping_option_name`,
+ADD COLUMN `shipping_progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 AFTER `shipping_tracking_url`,
 ADD COLUMN `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_progress`,
 ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_current_status`,
+ADD COLUMN `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `payment_option_name`,
 ADD INDEX `uid` (`uid`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
