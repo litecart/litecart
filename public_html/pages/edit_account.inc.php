@@ -54,9 +54,9 @@
       }
 
       $customer->data['date_expire_sessions'] = date('Y-m-d H:i:s');
-
       $customer->save();
-      customer::$data = $customer->data;
+
+      customer::load($customer->data['id']);
 
       session::regenerate_id();
       session::$data['customer_security_timestamp'] = strtotime($customer->data['date_expire_sessions']);
