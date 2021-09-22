@@ -102,7 +102,7 @@
           'default_value' => '',
           'title' => language::translate('title_geo_zone_limitation', 'Geo Zone Limitation'),
           'description' => language::translate('modules:description_geo_zone', 'Limit this module to the selected geo zone. Otherwise leave blank.'),
-          'function' => 'geo_zones()',
+          'function' => 'geo_zone()',
         ],
         [
           'key' => 'priority',
