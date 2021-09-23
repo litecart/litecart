@@ -29,6 +29,11 @@
         document::$snippets['head_tags']['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css" />';
         return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
+    // Material Design Icons
+      case (substr($class, 0, 4) == 'mdi-'):
+        document::$snippets['head_tags']['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css" />';
+        return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+
       default:
         trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);
         return;
