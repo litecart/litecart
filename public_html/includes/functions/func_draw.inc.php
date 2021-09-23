@@ -127,8 +127,8 @@
 
     $selector = str_replace("'", '"', $selector);
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/featherlight/featherlight.min.css" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_APP .'ext/featherlight/featherlight.min.js"></script>';
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP . 'ext/featherlight/featherlight.min.css') .'" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'ext/featherlight/featherlight.min.js') .'"></script>';
     document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL
@@ -141,17 +141,21 @@
       $js = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
     }
 
-    foreach ($params as $key => $value) {
-      switch (gettype($params[$key])) {
+    foreach ($parameters as $key => $value) {
+      switch (gettype($parameters[$key])) {
+
         case 'NULL':
           $js .= '    '. $key .': null,' . PHP_EOL;
           break;
+
         case 'boolean':
           $js .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
           break;
+
         case 'integer':
           $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           break;
+
         case 'string':
           if (preg_match('#^function\s?\(#', $value)) {
             $js .= '    '. $key .': '. $value .',' . PHP_EOL;
@@ -161,6 +165,7 @@
             $js .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
           }
           break;
+
         case 'array':
           $js .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
           break;
