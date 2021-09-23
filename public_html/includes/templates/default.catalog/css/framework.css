@@ -842,32 +842,26 @@ html[dir="rtl"] .float-end {
   max-width: 1440px;
   margin: 0 auto;
 }
-.grid,
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: calc(var(--gutter-size)/2);
   margin-bottom: calc(var(--gutter-size)/2);
 }
-.grid.column,
 .row.column {
   flex-direction: column;
 }
-.grid.nowrap,
 .row.nowrap {
   grid-auto-flow: column;
 }
-.grid.center,
 .row.center {
   justify-items: center;
   align-items: center;
 }
-.grid [class*="col-"],
 .row [class*="col-"] {
   grid-column: span 12;
 }
 @media (min-width: 768px) {
-  .grid,
   .row {
     grid-gap: var(--gutter-size);
     margin-bottom: var(--gutter-size);
