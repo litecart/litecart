@@ -286,4 +286,13 @@
     public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
       return htmlspecialchars(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
     }
+
+    public static function rlink($resource) {
+      $timestamp = filemtime($resource);
+      return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => $timestamp]);
+    }
+
+    public static function href_rlink($resource) {
+      return htmlspecialchars(self::rlink($resource));
+    }
   }
