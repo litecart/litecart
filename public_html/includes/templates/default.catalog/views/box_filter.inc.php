@@ -113,6 +113,13 @@
         </div>
       </div>
 
+      <div>
+        <div class="btn-group btn-group-inline float-end" data-toggle="buttons">
+          <label class="btn btn-default<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-large'); ?></label>
+          <label class="btn btn-default<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-bars'); ?></label>
+        </div>
+      </div>
+
     </div>
 
     <div class="tokens"></div>

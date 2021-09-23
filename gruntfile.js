@@ -32,7 +32,7 @@ module.exports = function(grunt) {
     },
 
     less: {
-      litecart_admin_template_minified: {
+      backend_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -47,7 +47,8 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.admin/css/printable.min.css' : 'public_html/includes/templates/default.admin/less/printable.less',
         }
       },
-      litecart_catalog_template: {
+
+      frontend: {
         options: {
           compress: false,
           sourceMap: false,
@@ -58,9 +59,11 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/css/checkout.css'  : 'public_html/includes/templates/default.catalog/less/checkout.less',
           'public_html/includes/templates/default.catalog/css/framework.css' : 'public_html/includes/templates/default.catalog/less/framework.less',
           'public_html/includes/templates/default.catalog/css/printable.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
+          'public_html/includes/templates/default.catalog/css/variables.css' : 'public_html/includes/templates/default.catalog/less/variables.less',
         }
       },
-      litecart_catalog_template_minified: {
+
+      frontend_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -76,6 +79,7 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/css/printable.min.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
         }
       },
+
       featherlight_minified: {
         options: {
           compress: true,
@@ -141,6 +145,7 @@ module.exports = function(grunt) {
         ],
         tasks: ['replace']
       },
+
       less: {
         files: [
           'public_html/ext/featherlight/featherlight.less',
@@ -148,6 +153,7 @@ module.exports = function(grunt) {
         ],
         tasks: ['less']
       },
+
       javascripts: {
         files: [
           'public_html/ext/featherlight/featherlight.js',
@@ -155,6 +161,7 @@ module.exports = function(grunt) {
         ],
         tasks: ['uglify']
       },
+
       sass: {
         files: [
           'public_html/ext/trumbowyg/ui/trumbowyg.scss',

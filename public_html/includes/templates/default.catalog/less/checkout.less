@@ -1,11 +1,9 @@
-// Variables
-@import "variables.less";
+@import "framework/media.less";
 
 #content {
-  width: 100%;
-  padding: @default-gutter-size/2;
+  padding: ~"calc(var(--gutter-size)/2)";
   @media(min-width: @media-breakpoint-sm) {
-    padding: @default-gutter-size;
+    padding: var(--gutter-size);
   }
 }
 
@@ -45,20 +43,20 @@
   }
   .headings {
     font-weight: 600;
-    padding: @default-gutter-size/2 @default-gutter-size;
-    border-bottom: 2px solid @default-border-color;
+    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+    border-bottom: 2px solid var(--default-border-color);
   }
   .items {
     margin-bottom: 1em;
   }
   .item {
-    padding: @default-gutter-size/2 @default-gutter-size;
+    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
     border-bottom: 1px solid #e0e0e0;
     &:nth-child(odd) {
-      background: @table-striped-row-background-odd;
+      background: var(--table-striped-row-background-odd);
     }
     &:nth-child(even) {
-      background: @table-striped-row-background-even;
+      background: var(--table-striped-row-background-even);
     }
   }
   .name {
@@ -130,8 +128,8 @@
     .price {
       position: absolute;
       display: inline-block;
-      top: @default-gutter-size/2;
-      right: @default-gutter-size/2;
+      top: ~"calc(var(--gutter-size)/2)";
+      right: ~"calc(var(--gutter-size)/2)";
     }
   }
 }

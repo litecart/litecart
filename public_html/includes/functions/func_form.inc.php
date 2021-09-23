@@ -386,8 +386,7 @@
       }
     }
 
-    $html = '<div class="select-wrapper">' . PHP_EOL
-          . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($options as $option) {
 
@@ -399,11 +398,10 @@
         $option_input = $input;
       }
 
-      $html .= '    <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
     }
 
-    $html .= '  </select>'
-           . '</div>';
+    $html .= '</select>';
 
     return $html;
   }
@@ -435,8 +433,7 @@
   function form_draw_select_optgroup_field($name, $groups=[], $input=true, $multiple=false, $parameters='') {
     if (!is_array($groups)) $groups = [$groups];
 
-    $html = '<div class="select-wrapper'. ($multiple ? ' multiple' : '') .'">' . PHP_EOL
-          . '  <select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
       $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
@@ -446,13 +443,12 @@
         } else {
           $option_input = $input;
         }
-        $html .= '      <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+        $html .= '    <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
       }
-      $html .= '    </optgroup>' . PHP_EOL;
+      $html .= '  </optgroup>' . PHP_EOL;
     }
 
-    $html .= '  </select>' . PHP_EOL
-           . '</div>';
+    $html .= '</select>';
 
     return $html;
   }
@@ -780,7 +776,7 @@
 
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_WARNING);
-        return form_draw_hidden_field($name, $input, $parameters);
+        return form_draw_text_field($name, $input, $parameters);
         break;
     }
   }

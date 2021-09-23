@@ -5,7 +5,7 @@
 
     <h1 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h1>
 
-    <div class="listing products">
+    <div class="listing products columns">
 
       <?php foreach ($manufacturers as $manufacturer) { ?>
       <article class="manufacturer hover-light">
