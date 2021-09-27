@@ -90,11 +90,11 @@
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
             <th></th>
-            <th><?php echo language::translate('title_username', 'Username'); ?></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_username', 'Username'); ?></th>
             <th class="main"></th>
-            <th><?php echo language::translate('title_access', 'Access'); ?></th>
-            <th><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-            <th><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_access', 'Access'); ?></th>
             <th></th>
           </tr>
         </thead>
@@ -107,9 +107,9 @@
             <td class="warning"><?php echo !empty($user['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($user['warning']) .'"') : ''; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
             <td><?php echo $user['email']; ?></td>
-            <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : language::translate('title_full_access', 'Full Access'); ?></td>
             <td><?php echo ($user['date_valid_from'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from'])) : '-'; ?></td>
             <td><?php echo ($user['date_valid_to'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to'])) : '-'; ?></td>
+            <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : language::translate('title_full_access', 'Full Access'); ?></td>
             <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php }?>
