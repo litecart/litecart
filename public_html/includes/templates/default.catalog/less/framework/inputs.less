@@ -179,6 +179,9 @@ select.form-control {
     background: none;
     border: none;
   }
+  .btn {
+    margin: -1px;
+  }
   .input-group-addon {
     flex: 1 0 auto;
     margin: 0 -1px;
@@ -197,11 +200,11 @@ select.form-control {
     margin-inline-end: -12px;
     align-self: center;
   }
-  .form-control:first-child,
+  .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
   .input-group-text:first-child {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
-  .form-control:last-child,
+  .form-control:last-child, .input-group-btn:last-child .btn,
   .input-group-text:last-child {
     margin-inline-end: -1px;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;

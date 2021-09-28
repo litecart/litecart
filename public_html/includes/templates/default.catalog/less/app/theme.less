@@ -15,7 +15,6 @@ html {
   grid-template-columns: auto auto;
   align-items: center;
   padding: ~"calc(var(--gutter-size)/2)";
-  background-color: var(--header-background-color);
   @media (min-width: (@media-breakpoint-sm)) {
     padding: var(--gutter-size);
   }
@@ -152,6 +151,7 @@ html {
 }
 
 #content {
+  width: 100%;
   grid-area: content;
   grid-gap: ~"calc(var(--gutter-size)/2)";
   @media (min-width: (@media-breakpoint-sm)) {

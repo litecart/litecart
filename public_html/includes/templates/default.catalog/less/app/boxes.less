@@ -10,7 +10,6 @@
     background: #fff;
   }
   &.border {
-    margin: var(--gutter-size);
     padding: var(--gutter-size);
     border: 1px solid var(--default-border-color);
     border-radius: var(--border-radius);
@@ -22,13 +21,13 @@
 }
 
 #box-cookie-notice {
-  background: rgba(75, 75, 75, .85);
+  background: rgba(190, 190, 190, .5);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 1em;
-  color: #fff;
+  backdrop-filter: saturate(200%) blur(5px);
   z-index: 999;
   .notice {
     margin-bottom: 1em;

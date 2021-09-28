@@ -1287,6 +1287,9 @@ select.form-control.multiple option {
   background: none;
   border: none;
 }
+.input-group .btn {
+  margin: -1px;
+}
 .input-group .input-group-addon {
   flex: 1 0 auto;
   margin: 0 -1px;
@@ -1306,10 +1309,13 @@ select.form-control.multiple option {
   align-self: center;
 }
 .input-group .form-control:first-child,
+.input-group .btn:first-child,
+.input-group .input-group-btn:first-child .btn,
 .input-group .input-group-text:first-child {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 .input-group .form-control:last-child,
+.input-group .input-group-btn:last-child .btn,
 .input-group .input-group-text:last-child {
   margin-inline-end: -1px;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;

@@ -248,52 +248,57 @@
       <div class="row">
         <div class="col-lg-8">
 
-          <h2><?php echo language::translate('title_order_information', 'Order Information'); ?></h2>
-
-          <div class="row">
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_date', 'Date'); ?></label>
-              <div class="form-control-static"><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title"><?php echo language::translate('title_order_information', 'Order Information'); ?></h2>
             </div>
 
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
-              <div class="form-control-static"><?php echo $order->data['client_ip']; ?> <a href="https://ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
-            </div>
+            <div class="panel-body">
+              <div class="row">
 
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_reference', 'Reference'); ?></label>
-              <?php echo functions::form_draw_text_field('reference', true); ?>
-            </div>
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
+                  <?php echo functions::form_draw_order_status_list('order_status_id', true); ?>
+                </div>
 
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
-              <div class="btn-group btn-block" data-toggle="buttons">
-                <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-                <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_language', 'Language'); ?></label>
+                  <?php echo functions::form_draw_languages_list('language_code', true); ?>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
+                  <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_currency_value', 'Currency Value'); ?></label>
+                  <?php echo functions::form_draw_decimal_field('currency_value', true, 6); ?>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_date', 'Date'); ?></label>
+                  <div class="form-control" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
+                  <div class="form-control" readonly><?php echo $order->data['client_ip']; ?> <a href="https://ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_reference', 'Reference'); ?></label>
+                  <?php echo functions::form_draw_text_field('reference', true); ?>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
+                  <div class="btn-group btn-block" data-toggle="buttons">
+                    <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
+                    <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
-              <?php echo functions::form_draw_order_status_list('order_status_id', true); ?>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_language', 'Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_code', true); ?>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-              <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_currency_value', 'Currency Value'); ?></label>
-              <?php echo functions::form_draw_decimal_field('currency_value', true, 6); ?>
             </div>
           </div>
 

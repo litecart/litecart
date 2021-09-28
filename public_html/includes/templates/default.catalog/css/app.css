@@ -13,7 +13,6 @@ html {
   grid-template-columns: auto auto;
   align-items: center;
   padding: calc(var(--gutter-size)/2);
-  background-color: var(--header-background-color);
 }
 @media (min-width: 768px) {
   #header {
@@ -154,6 +153,7 @@ html {
   }
 }
 #content {
+  width: 100%;
   grid-area: content;
   grid-gap: calc(var(--gutter-size)/2);
 }
@@ -229,7 +229,6 @@ html {
   background: #fff;
 }
 .box.border {
-  margin: var(--gutter-size);
   padding: var(--gutter-size);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
@@ -238,13 +237,13 @@ html {
   margin-top: 0;
 }
 #box-cookie-notice {
-  background: rgba(75, 75, 75, 0.85);
+  background: rgba(190, 190, 190, 0.5);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 1em;
-  color: #fff;
+  backdrop-filter: saturate(200%) blur(5px);
   z-index: 999;
 }
 #box-cookie-notice .notice {

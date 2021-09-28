@@ -5,8 +5,8 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=1600">
-<link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
+<link rel="stylesheet" href="<?php echo document::rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>" />
 {snippet:head_tags}
 {snippet:style}
 </head>
@@ -127,7 +127,7 @@
 </div>
 
 {snippet:foot_tags}
-<script src="{snippet:template_path}js/app.min.js"></script>
+<script src="<?php echo document::rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>
 {snippet:javascript}
 </body>
 </html>
