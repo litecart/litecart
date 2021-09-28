@@ -36,12 +36,15 @@
         }
       }
 
-      if (empty($_GET['redirect_url'])) {
+      if (!empty($_GET['redirect_url'])) {
+        $redirect_url = new ent_link($_GET['redirect_url']);
+        $redirect_url->host = '';
+      } else {
         $_GET['redirect_url'] = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. $_GET['redirect_url']);
+      header('Location: '. $redirect_url);
       exit;
 
     } catch (Exception $e) {

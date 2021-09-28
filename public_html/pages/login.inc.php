@@ -12,7 +12,6 @@
   }
 
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
-  if (empty($_REQUEST['redirect_url'])) $_REQUEST['redirect_url'] = document::ilink('');
 
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
 
@@ -121,7 +120,14 @@
         '%lastname' => customer::$data['lastname'],
       ]));
 
-      header('Location: '. $_REQUEST['redirect_url']);
+      if (!empty($_POST['redirect_url'])) {
+        $redirect_url = new ent_link($_POST['redirect_url']);
+        $redirect_url->host = '';
+      } else {
+        $redirect_url = document::ilink('');
+      }
+
+      header('Location: '. $redirect_url);
       exit;
 
     } catch (Exception $e) {

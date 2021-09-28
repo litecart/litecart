@@ -128,12 +128,15 @@
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
-      if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
-        $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
+      if (!empty($_POST['redirect_url']) && !preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
+        $redirect_url = new ent_link($_POST['redirect_url']);
+        $redirect_url->host = '';
+      } else {
+        $redirect_url = document::ilink('');
       }
 
       notices::add('success', str_replace(['%username'], [user::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
-      header('Location: '. $_POST['redirect_url']);
+      header('Location: '. $redirect_url);
       exit;
 
     } catch (Exception $e) {
