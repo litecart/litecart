@@ -138,7 +138,8 @@
       }
 
       if (!empty($_GET['redirect_url'])) {
-        $redirect_url = $_GET['redirect_url'];
+        $redirect_url = new ent_link($_GET['redirect_url']);
+        $redirect_url->host = '';
       } else {
         $redirect_url = document::link(WS_DIR_ADMIN, array('app' => $_GET['app'], 'doc' => 'orders'));
       }
