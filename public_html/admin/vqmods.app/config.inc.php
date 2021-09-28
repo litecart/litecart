@@ -1,18 +1,18 @@
 <?php
 
-  return $app_config = array(
+  return $app_config = [
     'name' => language::translate('title_vqmods', 'vQmods'),
     'default' => 'vqmods',
     'priority' => 0,
-    'theme' => array(
+    'theme' => [
       'color' => '#77d2cd',
       'icon' => 'fa-plug',
-    ),
-    'menu' => array(),
-    'docs' => array(
+    ],
+    'menu' => [],
+    'docs' => [
       'view' => 'view.inc.php',
       'download' => 'download.inc.php',
       'vqmods' => 'vqmods.inc.php',
       'test' => 'test.inc.php',
-    ),
-  );
+    ],
+  ];

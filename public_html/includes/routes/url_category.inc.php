@@ -2,16 +2,16 @@
   class url_category {
 
     function routes() {
-      return array(
-        array(
+      return [
+        [
           'pattern' => '#^.*-c-([0-9]+)/?$#',
           'page' => 'category',
           'params' => 'category_id=$1',
-          'options' => array(
+          'options' => [
             'redirect' => true,
-          ),
-        ),
-      );
+          ],
+        ],
+      ];
     }
 
     function rewrite(ent_link $link, $language_code) {

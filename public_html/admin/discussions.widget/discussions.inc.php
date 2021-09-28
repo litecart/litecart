@@ -1,5 +1,5 @@
 <?php
-  $widget_discussions_cache_token = cache::token('widget_discussions', array('language'), 'file', 43200);
+  $widget_discussions_cache_token = cache::token('widget_discussions', ['language'], 'file', 43200);
   if (cache::capture($widget_discussions_cache_token, 43200, true)) {
 
     try {
@@ -19,7 +19,7 @@
 
       if (!empty($rss->channel->item)) {
 
-        $discussions = array();
+        $discussions = [];
         foreach ($rss->channel->item as $item) {
           $discussions[] = $item;
           if (count($discussions) == 16) break;
@@ -32,7 +32,12 @@
 </style>
 
 <div id="widget-discussions" class="widget panel panel-default">
-  <h3 class="panel-heading"><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></h3>
+  <div class="panel-heading">
+    <div class="panel-title">
+      <?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
+    </div>
+  </div>
+
   <div class="panel-body">
       <div class="row">
       <?php foreach ($discussions as $item) { ?>

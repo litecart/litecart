@@ -44,28 +44,28 @@
 
     function settings() {
 
-      return array(
-        array(
+      return [
+        [
           'key' => 'status',
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
-        ),
-        array(
+        ],
+        [
           'key' => 'frequency',
           'default_value' => 'Monthly',
           'title' => language::translate(__CLASS__.':title_frequency', 'Frequency'),
           'description' => language::translate(__CLASS__.':description_frequency', 'How often the job should be processed.'),
           'function' => 'radio("Daily","Weekly","Monthly")',
-        ),
-        array(
+        ],
+        [
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
           'function' => 'number()',
-        ),
-      );
+        ],
+      ];
     }
   }

@@ -5,33 +5,83 @@
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_import_export_csv', 'Import/Export CSV'));
 
-  if (isset($_POST['import'])) {
+  if (isset($_POST['import']) || isset($_GET['resume'])) {
 
     try {
 
-      if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+      ini_set('memory_limit', -1);
 
-      if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-        throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      ob_clean();
+
+      header('Content-Type: text/plain; charset='. language::$selected['charset']);
+
+      if (isset($_GET['resume'])) {
+
+        if (empty(session::$data['csv_batch'])) {
+          throw new Exception('Missing batch to resume');
+        }
+
+        $batch = &session::$data['csv_batch'];
+
+        $progress = round(($batch['total_lines'] - count($batch['rows'])) / $batch['total_lines'] * 100, 2, PHP_ROUND_HALF_DOWN);
+        $time_elapsed = round(microtime(true) - $batch['time_start'], 2);
+        $time_remaining = round($time_elapsed / $progress * 100, 2) - $time_elapsed;
+        $memory_usage = round(memory_get_usage() / 1024 / 1024, 3);
+
+        echo $progress .'% complete' .' - Estimated time remaining: '. $time_remaining .' s - Memory usage: '. $memory_usage .' MB' . PHP_EOL . PHP_EOL;
+
+      } else {
+
+        if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
+
+        if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+          throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+        }
+
+        $csv = file_get_contents($_FILES['file']['tmp_name']);
+
+        if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+          throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
+        }
+
+        echo 'Creating a batch of '. count($csv) .' lines for processing' . PHP_EOL . PHP_EOL;
+
+        session::$data['csv_batch'] = [
+          'type' => $_POST['type'],
+          'time_start' => microtime(true),
+          'rows' => $csv,
+          'total_lines' => count($csv),
+          'insert' => !empty($_POST['insert']),
+          'overwrite' => !empty($_POST['overwrite']),
+          'counters' => [
+            'updated' => 0,
+            'inserted' => 0,
+            'line' => 1,
+          ],
+        ];
+
+        $batch = &session::$data['csv_batch'];
       }
 
-      echo 'CSV Import' . PHP_EOL
-         . '----------' . PHP_EOL;
+      $time_start = microtime(true);
 
-      $csv = file_get_contents($_FILES['file']['tmp_name']);
+      ignore_user_abort(true);
 
-      if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
-        throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
-      }
+      echo 'Processing batch...' . PHP_EOL . PHP_EOL;
 
-      $updated = 0;
-      $inserted = 0;
-      $line = 1;
+      while ($row = array_shift($batch['rows'])) {
 
-      foreach ($csv as $row) {
-        $line++;
+        if (round(microtime(true) - $time_start) > 5) {
+          echo PHP_EOL . 'Resuming '. number_format(count($batch['rows']), 0, '', ' ') .' remaining lines for processing...' . PHP_EOL . PHP_EOL;
+          header('Refresh: 0; url='. document::link(null, ['resume' => 'true']));
+          exit;
+        }
 
-        switch ($_POST['type']) {
+        if (connection_aborted()) {
+          throw new Exception('Connection aborted');
+        }
+
+        switch ($batch['type']) {
 
           case 'attributes':
 
@@ -48,23 +98,23 @@
 
             if (!empty($attribute_group->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing attribute group on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Updating existing attribute group on line $line" . PHP_EOL;
-              $updated++;
+              echo 'Updating existing attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new attribute group on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Inserting new attribute group on line $line" . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new attribute group on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['group_id'])) {
                 database::query(
@@ -95,11 +145,11 @@
             if (!empty($value_key)) {
               $attribute_group->data['values'][$value_key]['name'][$row['language_code']] = $row['value_name'];
             } else {
-              $attribute_group->data['values'][] = array(
-                'name' => array(
+              $attribute_group->data['values'][] = [
+                'name' => [
                   $row['language_code'] => $row['value_name'],
-                ),
-              );
+                ],
+              ];
             }
 
           // Sort values
@@ -129,23 +179,23 @@
 
             if (!empty($campaign['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing campaign on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Updating existing campaign on line $line" . PHP_EOL;
-              $updated++;
+              echo 'Updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new campaign on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo "Inserting new campaign on line $line" . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
@@ -178,39 +228,37 @@
           case 'categories':
 
           // Find category
-            if (!empty($row['id']) && $category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
               $category = new ent_category($category['id']);
 
-            } elseif (!empty($row['code']) && $category = database::fetch(database::query("select id from ". DB_TABLE_CATEGORIES ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } elseif (!empty($row['code']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
               $category = new ent_category($category['id']);
 
-            } elseif (!empty($row['name']) && !empty($row['language_code']) && $category = database::fetch(database::query("select category_id as id from ". DB_TABLE_CATEGORIES_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-              $category = new ent_category($category['id']);
             }
 
             if (!empty($category->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing category on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing category on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing category '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new category on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new category on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new category: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new category: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
-                  "insert into ". DB_TABLE_CATEGORIES ." (id, date_created)
+                  "insert into ". DB_TABLE_PREFIX ."categories (id, date_created)
                   values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
                 );
                 $category = new ent_category($row['id']);
@@ -220,14 +268,14 @@
             }
 
           // Set new category data
-            $fields = array(
+            $fields = [
               'parent_id',
               'status',
               'code',
               'keywords',
               'image',
               'priority',
-            );
+            ];
 
             foreach ($fields as $field) {
               if (isset($row[$field])) $category->data[$field] = $row[$field];
@@ -235,14 +283,14 @@
 
           // Set category info data
             if (!empty($row['language_code'])) {
-              $fields = array(
+              $fields = [
                 'name',
                 'short_description',
                 'description',
                 'head_title',
                 'h1_title',
                 'meta_description',
-              );
+              ];
 
               foreach ($fields as $field) {
                 if (isset($row[$field])) $category->data[$field][$row['language_code']] = $row[$field];
@@ -257,7 +305,7 @@
 
             if (!empty($row['date_created'])) {
               database::query(
-                "update ". DB_TABLE_CATEGORIES ."
+                "update ". DB_TABLE_PREFIX ."categories
                 set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
                 where id = ". (int)$category->data['id'] ."
                 limit 1;"
@@ -269,39 +317,39 @@
           case 'manufacturers':
 
           // Find manufacturer
-            if (!empty($row['id']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id = ". (int)$row['id'] ." limit 1;"))) {
               $manufacturer = new ent_manufacturer($manufacturer['id']);
 
-            } else if (!empty($row['code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } else if (!empty($row['code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where code = '". database::input($row['code']) ."' limit 1;"))) {
               $manufacturer = new ent_manufacturer($manufacturer['id']);
 
-            } else if (!empty($row['name']) && !empty($row['language_code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where name = '". database::input($row['name']) ."' limit 1;"))) {
+            } else if (!empty($row['name']) && !empty($row['language_code']) && $manufacturer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where name = '". database::input($row['name']) ."' limit 1;"))) {
               $manufacturer = new ent_manufacturer($manufacturer['id']);
             }
 
             if (!empty($manufacturer->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing manufacturer on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing manufacturer '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new manufacturer on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new manufacturer on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
-                  "insert into ". DB_TABLE_MANUFACTURERS ." (id, date_created)
+                  "insert into ". DB_TABLE_PREFIX ."manufacturers (id, date_created)
                   values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
                 );
                 $manufacturer = new ent_manufacturer($row['id']);
@@ -311,14 +359,14 @@
             }
 
           // Set new manufacturer data
-            $fields = array(
+            $fields = [
               'status',
               'code',
               'name',
               'keywords',
               'image',
               'priority',
-            );
+            ];
 
             foreach ($fields as $field) {
               if (isset($row[$field])) $manufacturer->data[$field] = $row[$field];
@@ -326,13 +374,13 @@
 
           // Set manufacturer info data
             if (!empty($row['language_code'])) {
-              $fields = array(
+              $fields = [
                 'short_description',
                 'description',
                 'head_title',
                 'h1_title',
                 'meta_description',
-              );
+              ];
 
               foreach ($fields as $field) {
                 if (isset($row[$field])) $manufacturer->data[$field][$row['language_code']] = $row[$field];
@@ -347,7 +395,7 @@
 
             if (!empty($row['date_created'])) {
               database::query(
-                "update ". DB_TABLE_MANUFACTURERS ."
+                "update ". DB_TABLE_PREFIX ."manufacturers
                 set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
                 where id = ". (int)$manufacturer->data['id'] ."
                 limit 1;"
@@ -359,48 +407,46 @@
           case 'products':
 
           // Find product
-            if (!empty($row['id']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['code']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } elseif (!empty($row['code']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+            } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+            } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PRODUCTS ." where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+            } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['name']) && !empty($row['language_code']) && $product = database::fetch(database::query("select product_id as id from ". DB_TABLE_PRODUCTS_INFO ." where name = '". database::input($row['name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
-              $product = new ent_product($product['id']);
             }
 
             if (!empty($product->data['id'])) {
 
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing product on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing product on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing product '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new product on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new product on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new product: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new product: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
-                  "insert into ". DB_TABLE_PRODUCTS ." (id, date_created)
+                  "insert into ". DB_TABLE_PREFIX ."products (id, date_created)
                   values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
                 );
                 $product = new ent_product($row['id']);
@@ -411,7 +457,7 @@
 
             if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
               $manufacturers_query = database::query(
-                "select * from ". DB_TABLE_MANUFACTURERS ."
+                "select * from ". DB_TABLE_PREFIX ."manufacturers
                 where name = '". database::input($row['manufacturer_name']) ."'
                 limit 1;"
               );
@@ -428,7 +474,7 @@
 
             if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
               $suppliers_query = database::query(
-                "select * from ". DB_TABLE_SUPPLIERS ."
+                "select * from ". DB_TABLE_PREFIX ."suppliers
                 where name = '". database::input($row['supplier_name']) ."'
                 limit 1;"
               );
@@ -442,7 +488,7 @@
               }
             }
 
-            $fields = array(
+            $fields = [
               'status',
               'manufacturer_id',
               'supplier_id',
@@ -467,7 +513,7 @@
               'sold_out_status_id',
               'date_valid_from',
               'date_valid_to',
-            );
+            ];
 
           // Set new product data
             foreach ($fields as $field) {
@@ -485,14 +531,14 @@
           // Set product info data
             if (!empty($row['language_code'])) {
 
-              $fields = array(
+              $fields = [
                 'name',
                 'short_description',
                 'description',
                 'technical_data',
                 'head_title',
                 'meta_description',
-              );
+              ];
 
               foreach ($fields as $field) {
                 if (isset($row[$field])) $product->data[$field][$row['language_code']] = $row[$field];
@@ -503,8 +549,8 @@
             if (isset($row['images'])) {
               $row['images'] = explode(';', $row['images']);
 
-              $product_images = array();
-              $current_images = array();
+              $product_images = [];
+              $current_images = [];
               foreach ($product->data['images'] as $key => $image) {
                 if (in_array($image['filename'], $row['images'])) {
                   $product_images[$key] = $image;
@@ -515,7 +561,7 @@
               $i=0;
               foreach ($row['images'] as $image) {
                 if (!in_array($image, $current_images)) {
-                  $product_images['new'.++$i] = array('filename' => $image);
+                  $product_images['new'.++$i] = ['filename' => $image];
                 }
               }
 
@@ -547,35 +593,35 @@
 
           // Set attributes
             if (isset($row['attributes'])) {
-              $product->data['attributes'] = array();
+              $product->data['attributes'] = [];
 
               foreach (preg_split('#\R+#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $attribute_row) {
 
                 if (preg_match('#^([0-9]+):([0-9]+)$#', $attribute_row, $matches)) {
-                  $attribute = array(
+                  $attribute = [
                     'group_id' => $matches[1],
                     'value_id' => $matches[2],
                     'custom_value' => '',
-                  );
+                  ];
 
                 } else if (preg_match('#^([0-9]+):"([^"]*)"#', $attribute_row, $matches)) {
-                  $attribute = array(
+                  $attribute = [
                     'group_id' => $matches[1],
                     'value_id' => 0,
                     'custom_value' => $matches[2],
-                  );
+                  ];
 
                 } else {
                   echo " - Skipping unknown attribute $attribute_row" . PHP_EOL;
                   continue;
                 }
 
-                $product->data['attributes'][] = array(
+                $product->data['attributes'][] = [
                   'id' => isset($product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]) ? $product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]['id'] : null,
                   'group_id' => $attribute['group_id'],
                   'value_id' => $attribute['value_id'],
                   'custom_value' => $attribute['custom_value'],
-                );
+                ];
               }
             }
 
@@ -583,7 +629,7 @@
 
             if (!empty($row['date_created'])) {
               database::query(
-                "update ". DB_TABLE_PRODUCTS ."
+                "update ". DB_TABLE_PREFIX ."products
                 set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
                 where id = ". (int)$product->data['id'] ."
                 limit 1;"
@@ -595,34 +641,34 @@
           case 'suppliers':
 
           // Find supplier
-            if (!empty($row['id']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
               $supplier = new ent_supplier($supplier['id']);
 
-            } else if (!empty($row['code']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_SUPPLIERS ." where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } else if (!empty($row['code']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
               $supplier = new ent_supplier($supplier['id']);
             }
 
             if (!empty($supplier->data['id'])) {
-              if (empty($_POST['overwrite'])) {
-                echo "Skip updating existing supplier on line $line" . PHP_EOL;
+              if (empty($batch['overwrite'])) {
+                echo 'Skip updating existing supplier on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
-              echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $updated++;
+              echo 'Updating existing supplier '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['updated']++;
 
             } else {
 
-              if (empty($_POST['insert'])) {
-                echo "Skip inserting new supplier on line $line" . PHP_EOL;
+              if (empty($batch['insert'])) {
+                echo 'Skip inserting new supplier on line '. $batch['counters']['line'] . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new supplier: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
-              $inserted++;
+              echo 'Inserting new supplier: '. (!empty($row['name']) ? $row['name'] : 'on line '. $batch['counters']['line']) . PHP_EOL;
+              $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
                 database::query(
-                  "insert into ". DB_TABLE_SUPPLIERS ." (id, date_created)
+                  "insert into ". DB_TABLE_PREFIX ."suppliers (id, date_created)
                   values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
                 );
                 $supplier = new ent_supplier($row['id']);
@@ -632,7 +678,7 @@
             }
 
           // Set new supplier data
-            $fields = array(
+            $fields = [
               'status',
               'code',
               'name',
@@ -640,7 +686,7 @@
               'email',
               'phone',
               'link',
-            );
+            ];
 
             foreach ($fields as $field) {
               if (isset($row[$field])) $supplier->data[$field] = $row[$field];
@@ -650,7 +696,7 @@
 
             if (!empty($row['date_created'])) {
               database::query(
-                "update ". DB_TABLE_SUPPLIERS ."
+                "update ". DB_TABLE_PREFIX ."suppliers
                 set date_created = '". date('Y-m-d H:i:s', strtotime($row['date_created'])) ."'
                 where id = ". (int)$supplier->data['id'] ."
                 limit 1;"
@@ -664,12 +710,20 @@
         }
       }
 
-      header('Content-Type: text/plain; charset='. language::$selected['charset']);
-      echo ob_get_clean();
+      unset(session::$data['csv_batch']);
+
+      echo PHP_EOL . 'Completed!';
+
+      notices::add('success', language::translate('success_import_completed', 'Import completed'));
+
+      header('Refresh: 5; url='. document::link(null, [], ['app', 'doc'], 'resume'));
       exit;
 
     } catch (Exception $e) {
+      unset(session::$data['csv_batch']);
       notices::add('errors', $e->getMessage());
+      header('Location: '. document::link(null, [], ['app', 'doc'], 'resume'));
+      exit;
     }
   }
 
@@ -677,9 +731,11 @@
 
     try {
 
+      ini_set('memory_limit', -1);
+
       if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
 
-      $csv = array();
+      $csv = [];
 
         switch ($_POST['type']) {
 
@@ -688,10 +744,10 @@
             if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
             $attributes_query = database::query(
-                "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_ATTRIBUTE_VALUES ." av
-                left join ". DB_TABLE_ATTRIBUTE_GROUPS ." ag on (ag.id = av.group_id)
-                left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
-                left join ". DB_TABLE_ATTRIBUTE_VALUES_INFO ." avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
+                "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_PREFIX ."attribute_values av
+                left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
+                left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
+                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
                 order by agi.name, av.priority;"
             );
 
@@ -729,11 +785,11 @@
 
             if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-            $categories_query = database::query("select id from ". DB_TABLE_CATEGORIES ." order by parent_id;");
+            $categories_query = database::query("select id from ". DB_TABLE_PREFIX ."categories order by parent_id;");
             while ($category = database::fetch($categories_query)) {
               $category = new ref_category($category['id'], $_POST['language_code']);
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $category->id,
                 'status' => $category->status,
                 'parent_id' => $category->parent_id,
@@ -748,7 +804,7 @@
                 'image' => $category->image,
                 'priority' => $category->priority,
                 'language_code' => $_POST['language_code'],
-              );
+              ];
             }
 
             break;
@@ -757,11 +813,11 @@
 
             if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-            $manufacturers_query = database::query("select id from ". DB_TABLE_MANUFACTURERS ." order by id;");
+            $manufacturers_query = database::query("select id from ". DB_TABLE_PREFIX ."manufacturers order by id;");
             while ($manufacturer = database::fetch($manufacturers_query)) {
               $manufacturer = new ref_manufacturer($manufacturer['id'], $_POST['language_code']);
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $manufacturer->id,
                 'status' => $manufacturer->status,
                 'code' => $manufacturer->code,
@@ -775,7 +831,7 @@
                 'image' => $manufacturer->image,
                 'priority' => $manufacturer->priority,
                 'language_code' => $_POST['language_code'],
-              );
+              ];
             }
 
             break;
@@ -786,8 +842,8 @@
             if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
 
             $products_query = database::query(
-              "select p.id from ". DB_TABLE_PRODUCTS ." p
-              left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
+              "select p.id from ". DB_TABLE_PREFIX ."products p
+              left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
               order by pi.name;"
             );
 
@@ -802,7 +858,7 @@
                 }
               };
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $product->id,
                 'status' => $product->status,
                 'categories' => implode(',', array_keys($product->categories)),
@@ -841,18 +897,18 @@
                 'currency_code' => $_POST['currency_code'],
                 'date_valid_from' => $product->date_valid_from,
                 'date_valid_to' => $product->date_valid_to,
-              );
+              ];
             }
 
             break;
 
           case 'suppliers':
 
-            $suppliers_query = database::query("select id from ". DB_TABLE_SUPPLIERS ." order by id;");
+            $suppliers_query = database::query("select id from ". DB_TABLE_PREFIX ."suppliers order by id;");
             while ($supplier = database::fetch($suppliers_query)) {
               $supplier = reference::supplier($supplier['id']);
 
-              $csv[] = array(
+              $csv[] = [
                 'id' => $supplier->id,
                 'status' => $supplier->status,
                 'code' => $supplier->code,
@@ -862,7 +918,7 @@
                 'email' => $supplier->email,
                 'phone' => $supplier->phone,
                 'link' => $supplier->link,
-              );
+              ];
             }
 
             break;
@@ -936,17 +992,17 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', array(array(language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''), array(','),  array(';'), array('TAB', "\t"), array('|')), true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [[language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ''], [','],  [';'], ['TAB', "\t"], ['|']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
@@ -999,17 +1055,17 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', array(array(', ('. language::translate('text_default', 'default') .')', ','), array(';'), array('TAB', "\t"), array('|')), true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', array(array('" ('. language::translate('text_default', 'default') .')', '"')), true); ?>
+                <?php echo functions::form_draw_select_field('enclosure', [['" ('. language::translate('text_default', 'default') .')', '"']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', array(array('" ('. language::translate('text_default', 'default') .')', '"'), array('\\', '\\')), true); ?>
+                <?php echo functions::form_draw_select_field('escapechar', [['" ('. language::translate('text_default', 'default') .')', '"'], ['\\', '\\']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
@@ -1019,12 +1075,12 @@
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-                <?php echo functions::form_draw_select_field('eol', array(array('Win'), array('Mac'), array('Linux')), true); ?>
+                <?php echo functions::form_draw_select_field('eol', [['Win'], ['Mac'], ['Linux']], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_output', 'Output'); ?></label>
-                <?php echo functions::form_draw_select_field('output', array(array(language::translate('title_file', 'File'), 'file'), array(language::translate('title_screen', 'Screen'), 'screen')), true); ?>
+                <?php echo functions::form_draw_select_field('output', [[language::translate('title_file', 'File'), 'file'], [language::translate('title_screen', 'Screen'), 'screen']], true); ?>
               </div>
             </div>
 

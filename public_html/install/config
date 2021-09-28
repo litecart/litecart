@@ -7,13 +7,13 @@
   define('BACKEND_ALIAS', '{ADMIN_FOLDER}');
 
 // File System
-  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/'));
+  define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));
 
-  define('FS_DIR_APP',         DOCUMENT_ROOT . rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');
   define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');
 
 // Web System
-  define('WS_DIR_APP',         rtrim(str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', realpath(__DIR__.'/..'))), '/') . '/');
+  define('WS_DIR_APP',         preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
   define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');
 
 ######################################################################
@@ -58,7 +58,7 @@
   define('DB_CONNECTION_CHARSET', 'utf8');
   define('DB_PERSISTENT_CONNECTIONS', 'false');
 
-// Database tables
+// Database Tables - Backwards Compatibility (LiteCart <2.3)
   define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');
   define('DB_TABLE_ATTRIBUTE_GROUPS_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups_info`');
   define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');

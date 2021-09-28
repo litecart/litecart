@@ -5,7 +5,7 @@
     $output = '';
 
   // Collect columns
-    $columns = array();
+    $columns = [];
     foreach ($array as $row) {
       foreach (array_keys($row) as $column) {
         if (!in_array($column, $columns)) $columns[] = $column;
@@ -14,7 +14,7 @@
 
   // Collect rows and order by column order
     foreach (array_keys($array) as $row) {
-      $line = array();
+      $line = [];
       foreach ($columns as $column) {
         $line[$column] = isset($array[$row][$column]) ? $array[$row][$column] : '';
       }
@@ -42,7 +42,7 @@
 
   function csv_decode($string, $delimiter='', $enclosure='"', $escape='"', $charset='utf-8') {
 
-    $output = array();
+    $output = [];
 
   // Remove Byte Order Mark (BOM) if any
     $string = preg_replace("#^(\xEF\xBB\xBF)+#", '', $string);
@@ -60,7 +60,7 @@
   // Auto-detect delimiter
     if (empty($delimiter)) {
       preg_match('#^.*$#m', $string, $matches);
-      foreach (array(',', ';', "\t", '|', chr(124)) as $char) {
+      foreach ([',', ';', "\t", '|', chr(124)] as $char) {
         if (strpos($matches[0], $char) !== false) {
           $delimiter = $char;
           break;

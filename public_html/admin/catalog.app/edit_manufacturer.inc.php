@@ -15,7 +15,7 @@
   document::$snippets['title'][] = !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link(WS_DIR_ADMIN, array('doc' => 'manufacturers'), array('app')));
+  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
   breadcrumbs::add(!empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer'));
 
   if (isset($_POST['save'])) {
@@ -23,9 +23,9 @@
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
 
-      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_MANUFACTURERS ." where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
 
-      $fields = array(
+      $fields = [
         'status',
         'featured',
         'code',
@@ -37,7 +37,7 @@
         'h1_title',
         'meta_description',
         'link',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $manufacturer->data[$field] = $_POST[$field];
@@ -52,7 +52,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'manufacturers'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -68,7 +68,7 @@
       $manufacturer->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'manufacturers'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'manufacturers'], ['app']));
       exit;
 
     } catch (Exception $e) {

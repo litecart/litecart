@@ -3,7 +3,7 @@
 
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div style="float:right">
-    <a href="<?php echo document::ilink('login', array('redirect_url' => document::ilink('checkout'))) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
+    <a href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout')]) ?>" data-toggle="lightbox" data-require-window-width="768"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
   </div>
   <?php } ?>
 
@@ -171,6 +171,12 @@
   <p><?php echo functions::form_draw_checkbox('save_to_account', '1', true, 'style="margin: 0px;"'); ?> <?php echo language::translate('title_save_details_to_my_account', 'Save details to my account'); ?></p>
   <?php } ?>
 
+  <?php if (!$subscribed_to_newsletter) { ?>
+  <div class="form-group">
+    <label class="checkbox"><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.'); ?></label>
+  </div>
+  <?php } ?>
+
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div class="account">
 
@@ -215,7 +221,7 @@
 
 <script>
   <?php if (!empty(notices::$data['errors'])) { ?>
-  alert("<?php echo functions::general_escape_js(notices::$data['errors'][0]); notices::$data['errors'] = array(); ?>");
+  alert("<?php echo functions::general_escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
   <?php } ?>
 
 // Initiate fields

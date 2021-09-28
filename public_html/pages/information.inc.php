@@ -7,11 +7,23 @@
     $page = reference::page($_GET['page_id']);
 
     if (empty($page->id)) {
-      throw new Exception(language::translate('error_410_gone', 'The requested page is no longer available'), 410);
+      http_response_code(410);
+      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      return;
     }
 
     if (empty($page->status)) {
-      throw new Exception(language::translate('error_404_not_found', 'The requested file could not be found'), 404);
+      http_response_code(404);
+      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      return;
+    }
+
+    $mother_page = array_values($page->path)[0];
+    if (!in_array('information', $page->dock) && !in_array('information', $mother_page->dock)
+     && !in_array('site_menu', $page->dock) && !in_array('site_menu', $mother_page->dock)) {
+      http_response_code(404);
+      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      return;
     }
 
     document::$snippets['title'][] = !empty($page->head_title) ? $page->head_title : $page->title;
@@ -19,16 +31,16 @@
 
     breadcrumbs::add(language::translate('title_information', 'Information'));
     foreach (array_slice($page->path, 0, -1, true) as $crumb) {
-      breadcrumbs::add($crumb->title, document::ilink('information', array('page_id' => $crumb->id)));
+      breadcrumbs::add($crumb->title, document::ilink('information', ['page_id' => $crumb->id]));
     }
     breadcrumbs::add($page->title);
 
     $_page = new ent_view();
 
-    $_page->snippets = array(
+    $_page->snippets = [
       'title' => $page->title,
       'content' => $page->content,
-    );
+    ];
 
     echo $_page->stitch('pages/information');
 

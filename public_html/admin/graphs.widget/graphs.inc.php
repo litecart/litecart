@@ -1,18 +1,18 @@
 <?php
 
-  document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/chartist/chartist.min.css" />';
-  document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_APP .'ext/chartist/chartist.min.js"></script>';
+  document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'ext/chartist/chartist.min.css') .'" />';
+  document::$snippets['foot_tags']['chartist'] = '<script src="'. document::href_rlink(FS_DIR_APP .'ext/chartist/chartist.min.js') .'"></script>';
 
-  $widget_graphs_cache_token = cache::token('widget_graphs', array('site', 'language'), 'file', 300);
+  $widget_graphs_cache_token = cache::token('widget_graphs', ['site', 'language'], 'file', 300);
   if (cache::capture($widget_graphs_cache_token)) {
 
   // Monthly Sales
 
     $orders_query = database::query(
       "select sum(payment_due - tax_total) as total_sales, date_format(date_created, '%Y') as year, date_format(date_created, '%m') as month
-      from ". DB_TABLE_ORDERS ."
+      from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
-        select id from ". DB_TABLE_ORDER_STATUSES ."
+        select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
       )
       and date_created between '". date('Y-m-01 00:00:00', strtotime('-36 months')) ."' and '". date('Y-m-t 23:59:59') ."'
@@ -20,7 +20,7 @@
       order by year, month asc;"
     );
 
-    $monthly_sales = array();
+    $monthly_sales = [];
     while ($orders = database::fetch($orders_query)) {
       settype($orders['total_sales'], 'float');
       $monthly_sales[$orders['year']][$orders['month']] = $orders;
@@ -45,25 +45,25 @@
 
      // Western Week
       case (class_exists('IntlCalendar', false) && IntlCalendar::createInstance(null, language::$selected['locale'])->getFirstDayOfWeek() == IntlCalendar::DOW_SUNDAY):
-        $daily_sales = array(7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array());
+        $daily_sales = [7 => [], 1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => []];
         break;
 
     // Middle-Eastern Week
       case (class_exists('IntlCalendar', false) && IntlCalendar::createInstance(null, language::$selected['locale'])->getFirstDayOfWeek() == IntlCalendar::DOW_SATURDAY):
-        $daily_sales = array(6 => array(), 7 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array());
+        $daily_sales = [6 => [], 7 => [], 1 => [], 2 => [], 3 => [], 4 => [], 5 => []];
         break;
 
     // ISO-8601 Week
       default:
-        $daily_sales = array(1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array(), 7 => array());
+        $daily_sales = [1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => []];
         break;
     }
 
     $orders_query = database::query(
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as total_sales, tax_total as total_tax, weekday(date_created)+1 as weekday
-      from ". DB_TABLE_ORDERS ."
+      from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
-        select id from ". DB_TABLE_ORDER_STATUSES ."
+        select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
       )
       and (date_created >= '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
@@ -77,9 +77,9 @@
 
     $orders_query = database::query(
       "select round(sum(payment_due - tax_total) / count(distinct(date(date_created))), 2) as average_sales, tax_total as total_tax, weekday(date_created)+1 as weekday, group_concat(payment_due - tax_total)
-      from ". DB_TABLE_ORDERS ."
+      from ". DB_TABLE_PREFIX ."orders
       where order_status_id in (
-        select id from ". DB_TABLE_ORDER_STATUSES ."
+        select id from ". DB_TABLE_PREFIX ."order_statuses
         where is_sale
       )
       and (date_created > '". date('Y-m-d H:i:s', strtotime('-3 months', strtotime('Monday this week'))) ."' and date_created < '". date('Y-m-d 00:00:00', strtotime('Monday this week')) ."')
@@ -158,7 +158,7 @@
 // Monthly Sales
   var data = {
     labels: <?php echo json_encode(array_column($monthly_sales[date('Y')], 'label'), JSON_UNESCAPED_SLASHES); ?>,
-    series: <?php echo json_encode(array(array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
+    series: <?php echo json_encode([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {
@@ -184,7 +184,7 @@
 
   var data = {
     labels: <?php echo json_encode(array_column($daily_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
-    series: <?php echo json_encode(array(array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')), JSON_UNESCAPED_SLASHES); ?>
+    series: <?php echo json_encode([array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
   var options = {

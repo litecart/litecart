@@ -15,10 +15,10 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_ATTRIBUTE_GROUPS .";"
+        "show fields from ". DB_TABLE_PREFIX ."attribute_groups;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -26,19 +26,19 @@
       }
 
       $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_ATTRIBUTE_GROUPS_INFO .";"
+        "show fields from ". DB_TABLE_PREFIX ."attribute_groups_info;"
       );
 
       while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], array('id', 'group_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'group_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
       }
 
-      $this->data['values'] = array();
+      $this->data['values'] = [];
 
       $this->previous = $this->data;
     }
@@ -50,7 +50,7 @@
       $this->reset();
 
       $group_query = database::query(
-        "select * from ". DB_TABLE_ATTRIBUTE_GROUPS ."
+        "select * from ". DB_TABLE_PREFIX ."attribute_groups
         where id = ". (int)$group_id ."
         limit 1;"
       );
@@ -62,7 +62,7 @@
       }
 
       $group_info_query = database::query(
-        "select name, language_code from ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ."
+        "select name, language_code from ". DB_TABLE_PREFIX ."attribute_groups_info
         where group_id = ". (int)$group_id .";"
       );
 
@@ -71,7 +71,7 @@
       }
 
       $values_query = database::query(
-        "select * from ". DB_TABLE_ATTRIBUTE_VALUES ."
+        "select * from ". DB_TABLE_PREFIX ."attribute_values
         where group_id = ". (int)$group_id ."
         order by priority;"
       );
@@ -80,19 +80,19 @@
         $this->data['values'][$value['id']] = $value;
 
         $values_info_query = database::query(
-          "select * from ". DB_TABLE_ATTRIBUTE_VALUES_INFO ."
+          "select * from ". DB_TABLE_PREFIX ."attribute_values_info
           where value_id = ". (int)$value['id'] .";"
         );
 
         while ($value_info = database::fetch($values_info_query)) {
           foreach (array_keys($value_info) as $key) {
-            if (in_array($key, array('id', 'value_id', 'language_code'))) continue;
+            if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
             $this->data['values'][$value['id']][$key][$value_info['language_code']] = $value_info[$key];
           }
         }
 
         $product_option_values_query = database::query(
-          "select id from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
+          "select id from ". DB_TABLE_PREFIX ."products_options_values
           where value_id = ". (int)$value['id'] ."
           limit 1;"
         );
@@ -108,7 +108,7 @@
     // Group
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_ATTRIBUTE_GROUPS ."
+          "insert into ". DB_TABLE_PREFIX ."attribute_groups
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -116,7 +116,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_ATTRIBUTE_GROUPS ." set
+        "update ". DB_TABLE_PREFIX ."attribute_groups set
           code = '". database::input($this->data['code']) ."',
           sort = '". database::input($this->data['sort']) ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -128,7 +128,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $group_info_query = database::query(
-          "select id from ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ."
+          "select id from ". DB_TABLE_PREFIX ."attribute_groups_info
           where group_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -136,7 +136,7 @@
 
         if (!$group_info = database::fetch($group_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ."
+            "insert into ". DB_TABLE_PREFIX ."attribute_groups_info
             (group_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
@@ -144,7 +144,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ."
+          "update ". DB_TABLE_PREFIX ."attribute_groups_info
           set name = '". database::input($this->data['name'][$language_code]) ."'
           where id = ". (int)$group_info['id'] ."
           and group_id = ". (int)$this->data['id'] ."
@@ -155,7 +155,7 @@
 
     // Delete values
       $values_query = database::query(
-        "select id from ". DB_TABLE_ATTRIBUTE_VALUES ."
+        "select id from ". DB_TABLE_PREFIX ."attribute_values
         where group_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['values'], 'id')) ."');"
       );
@@ -163,7 +163,7 @@
       while ($value = database::fetch($values_query)) {
 
         $products_attributes_query = database::query(
-          "select id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+          "select id from ". DB_TABLE_PREFIX ."products_attributes
           where value_id = ". (int)$value['id'] ."
           limit 1;"
         );
@@ -171,7 +171,7 @@
         if (database::num_rows($products_attributes_query)) throw new Exception('Cannot delete value linked to product attributes');
 
         $products_options_query = database::query(
-          "select id from ". DB_TABLE_PRODUCTS_OPTIONS_VALUES ."
+          "select id from ". DB_TABLE_PREFIX ."products_options_values
           where value_id = ". (int)$value['id'] ."
           limit 1;"
         );
@@ -179,14 +179,14 @@
         if (database::num_rows($products_options_query)) throw new Exception('Cannot delete value linked to product options');
 
         database::query(
-          "delete from ". DB_TABLE_ATTRIBUTE_VALUES ."
+          "delete from ". DB_TABLE_PREFIX ."attribute_values
           where group_id = ". (int)$this->data['id'] ."
           and id = ". (int)$value['id'] ."
           limit 1;"
         );
 
         database::query(
-          "delete from ". DB_TABLE_ATTRIBUTE_VALUES_INFO ."
+          "delete from ". DB_TABLE_PREFIX ."attribute_values_info
           where value_id = ". (int)$value['id'] .";"
         );
       }
@@ -197,7 +197,7 @@
 
         if (empty($value['id'])) {
           database::query(
-            "insert into ". DB_TABLE_ATTRIBUTE_VALUES ."
+            "insert into ". DB_TABLE_PREFIX ."attribute_values
             (group_id, date_created)
             values (". (int)$this->data['id'] .", '". ($this->data['values'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
           );
@@ -205,7 +205,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_ATTRIBUTE_VALUES ." set
+          "update ". DB_TABLE_PREFIX ."attribute_values set
             priority = ". (int)$i++ .",
             date_updated = '". ($this->data['values'][$key]['date_updated'] = date('Y-m-d H:i:s')) ."'
           where id = ". (int)$value['id'] ."
@@ -215,7 +215,7 @@
         foreach (array_keys(language::$languages) as $language_code) {
 
           $value_info_query = database::query(
-            "select id from ". DB_TABLE_ATTRIBUTE_VALUES_INFO ."
+            "select id from ". DB_TABLE_PREFIX ."attribute_values_info
             where value_id = ". (int)$value['id'] ."
             and language_code = '". database::input($language_code) ."'
             limit 1;"
@@ -223,7 +223,7 @@
 
           if (!$value_info = database::fetch($value_info_query)) {
             database::query(
-              "insert into ". DB_TABLE_ATTRIBUTE_VALUES_INFO ."
+              "insert into ". DB_TABLE_PREFIX ."attribute_values_info
               (value_id, language_code)
               values ('". $value['id'] ."', '". database::input($language_code) ."');"
             );
@@ -231,7 +231,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_ATTRIBUTE_VALUES_INFO ."
+            "update ". DB_TABLE_PREFIX ."attribute_values_info
             set name = '". database::input($value['name'][$language_code]) ."'
             where id = ". (int)$value_info['id'] ."
             and value_id = ". (int)$value['id'] ."
@@ -252,7 +252,7 @@
 
     // Check products for attribute
       $products_attributes_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+        "select id from ". DB_TABLE_PREFIX ."products_attributes
         where group_id = ". (int)$this->data['id'] .";"
       );
 
@@ -260,24 +260,24 @@
 
     // Check products for options
       $products_options_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_ATTRIBUTES ."
+        "select id from ". DB_TABLE_PREFIX ."products_attributes
         where group_id = ". (int)$this->data['id'] .";"
       );
 
       if (database::num_rows($products_options_query)) throw new Exception('Cannot delete group linked to products');
 
-      $this->data['values'] = array();
+      $this->data['values'] = [];
       $this->save();
 
     // Delete attribute
       database::query(
-        "delete from ". DB_TABLE_ATTRIBUTE_GROUPS ."
+        "delete from ". DB_TABLE_PREFIX ."attribute_groups
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "delete from ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ."
+        "delete from ". DB_TABLE_PREFIX ."attribute_groups_info
         where group_id = ". (int)$this->data['id'] .";"
       );
 

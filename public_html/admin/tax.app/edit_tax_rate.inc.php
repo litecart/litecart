@@ -18,7 +18,7 @@
 
   document::$snippets['title'][] = !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate');
 
-  breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::link(WS_DIR_ADMIN, array('doc' => 'tax_rates'), array('app')));
+  breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'), document::link(WS_DIR_ADMIN, ['doc' => 'tax_rates'], ['app']));
   breadcrumbs::add(!empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'));
 
   if (isset($_POST['save'])) {
@@ -34,7 +34,7 @@
       if (empty($_POST['rule_individuals_with_tax_id'])) $_POST['rule_individuals_with_tax_id'] = 0;
       if (empty($_POST['rule_individuals_without_tax_id'])) $_POST['rule_individuals_without_tax_id'] = 0;
 
-      $fields = array(
+      $fields = [
         'tax_class_id',
         'geo_zone_id',
         'code',
@@ -47,7 +47,7 @@
         'rule_companies_without_tax_id',
         'rule_individuals_with_tax_id',
         'rule_individuals_without_tax_id',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $tax_rate->data[$field] = $_POST[$field];
@@ -56,7 +56,7 @@
       $tax_rate->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_rates'), true, array('tax_rate_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'tax_rates'], true, ['tax_rate_id']));
       exit;
 
     } catch (Exception $e) {
@@ -72,7 +72,7 @@
       $tax_rate->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'tax_rates'), true, array('tax_rate_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'tax_rates'], true, ['tax_rate_id']));
       exit;
 
     } catch (Exception $e) {
@@ -122,7 +122,7 @@
           <label><?php echo language::translate('title_rate', 'Rate'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_decimal_field('rate', true, 4); ?>
-            <span class="input-group-btn"><?php echo functions::form_draw_select_field('type', array(array('percent'), array('fixed')), true, 'style="width: 150px;"'); ?></span>
+            <span class="input-group-btn"><?php echo functions::form_draw_select_field('type', [['percent'], ['fixed']], true, 'style="width: 150px;"'); ?></span>
           </div>
         </div>
       </div>

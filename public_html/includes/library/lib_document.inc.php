@@ -4,20 +4,21 @@
 
     public static $template = '';
     public static $layout = 'default';
-    public static $snippets = array();
-    public static $settings = array();
-    public static $jsenv = array();
+    public static $snippets = [];
+    public static $settings = [];
+    public static $jsenv = [];
 
     public static function init() {
-      event::register('before_capture', array(__CLASS__, 'before_capture'));
-      event::register('prepare_output', array(__CLASS__, 'prepare_output'));
-      event::register('before_output',  array(__CLASS__, 'before_output'));
+      event::register('before_capture', [__CLASS__, 'before_capture']);
+      event::register('prepare_output', [__CLASS__, 'prepare_output']);
+      event::register('before_output',  [__CLASS__, 'before_output']);
     }
 
     public static function before_capture() {
 
       header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
       header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
+      header('Access-Control-Allow-Origin: '. document::ilink('')); // Only allow HTTP POST data data from own domain
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template
@@ -37,23 +38,14 @@
 
     // Set some snippets
       self::$snippets['language'] = language::$selected['code'];
-      self::$snippets['text_direction'] = in_array(language::$selected['code'], array('ar', 'he')) ? 'rtl' : 'ltr';
+      self::$snippets['text_direction'] = language::$selected['direction'];
       self::$snippets['charset'] = language::$selected['charset'];
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
-
-      self::$snippets['title'] = array(settings::get('store_name'));
-
+      self::$snippets['title'] = [settings::get('store_name')];
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_APP . 'favicon.ico">';
-
-    // CDN content
-      //self::$snippets['head_tags']['dns-prefetch-jsdelivr'] = '<link rel="dns-prefetch" href="//cdn.jsdelivr.net">';
-      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css" />';
-      //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>';
-
-    // Local content
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/fontawesome/font-awesome.min.css" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_APP .'ext/jquery/jquery-3.5.1.min.js"></script>';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'" />';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.6.0.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$route['page'])) {
@@ -61,7 +53,7 @@
         foreach (language::$languages as $language) {
           if ($language['url_type'] == 'none') continue;
           if ($language['code'] == language::$selected['code']) continue;
-          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink(route::$route['page'], array(), true, array('page', 'sort'), $language['code']) .'" />' . PHP_EOL;
+          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink(route::$route['page'], [], true, ['page', 'sort'], $language['code']) .'" />' . PHP_EOL;
         }
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
@@ -70,7 +62,7 @@
       $template_config = include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php');
       if (!is_array($template_config)) include vmod::check(FS_DIR_APP .'includes/templates/'. settings::get('store_template_catalog') .'/config.inc.php'); // Backwards compatibility
 
-      self::$settings = settings::get('store_template_catalog_settings') ? json_decode(settings::get('store_template_catalog_settings'), true) : array();
+      self::$settings = settings::get('store_template_catalog_settings') ? json_decode(settings::get('store_template_catalog_settings'), true) : [];
 
       foreach (array_keys($template_config) as $i) {
         if (!isset(self::$settings[$template_config[$i]['key']])) {
@@ -82,35 +74,41 @@
     public static function prepare_output() {
 
     // JavaScript Environment
-      self::$jsenv['platform'] = array(
+      self::$jsenv['platform'] = [
         'path' => WS_DIR_APP,
         'url' => document::ilink(''),
-      );
+      ];
 
-      self::$jsenv['session'] = array(
+      self::$jsenv['session'] = [
         'language_code' => language::$selected['code'],
         'country_code' => customer::$data['country_code'],
         'currency_code' => currency::$selected['code'],
-      );
+      ];
 
-      self::$jsenv['template'] = array(
+      self::$jsenv['template'] = [
         'url' => document::link(WS_DIR_TEMPLATE),
         'settings' => self::$settings,
-      );
+      ];
 
-      self::$jsenv['customer'] = array(
+      self::$jsenv['customer'] = [
         'id' => !empty(customer::$data['id']) ? customer::$data['id'] : null,
         'name' => !empty(customer::$data['firstname']) ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
         'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
-      );
+      ];
 
       self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .", config = _env;</script>";
 
     // Prepare title
       if (!empty(self::$snippets['title'])) {
-        if (!is_array(self::$snippets['title'])) self::$snippets['title'] = array(self::$snippets['title']);
+        if (!is_array(self::$snippets['title'])) self::$snippets['title'] = [self::$snippets['title']];
         self::$snippets['title'] = array_filter(self::$snippets['title']);
         self::$snippets['title'] = implode(' | ', array_reverse(self::$snippets['title']));
+      }
+
+    // Add meta description
+      if (!empty(self::$snippets['description'])) {
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. htmlspecialchars(self::$snippets['description']) .'" />';
+        unset(self::$snippets['description']);
       }
 
     // Prepare styles
@@ -145,7 +143,7 @@
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
-        $stylesheets = array();
+        $stylesheets = [];
         if (preg_match_all('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
             if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
@@ -167,7 +165,7 @@
       if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
-        $styles = array();
+        $styles = [];
         if (preg_match_all('#<style>(.*?)</style>\R?#is', $content, $matches, PREG_SET_ORDER)) {
           foreach ($matches as $match) {
             if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
@@ -193,7 +191,7 @@
       if (preg_match('#<body(?:[^>]+)?>(.*)</body>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
-        $js_resources = array();
+        $js_resources = [];
         if (preg_match_all('#\R?(<script[^>]+></script>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
@@ -216,7 +214,7 @@
       if (preg_match('#<body(?:[^>]+)?>(.*)</body>#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
 
-        $javascript = array();
+        $javascript = [];
         if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
           foreach ($matches as $match) {
@@ -260,7 +258,7 @@
       }
     }
 
-    public static function ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+    public static function ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
       if ($route === null) {
         $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -272,11 +270,11 @@
       return (string)route::create_link($route, $new_params, $inherit_params, $skip_params, $language_code, true);
     }
 
-    public static function href_ilink($route=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+    public static function href_ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
       return htmlspecialchars(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
-    public static function link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+    public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
       if (empty($path)) {
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -286,7 +284,16 @@
       return (string)route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
-    public static function href_link($path=null, $new_params=array(), $inherit_params=null, $skip_params=array(), $language_code=null) {
+    public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
       return htmlspecialchars(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
+    }
+
+    public static function rlink($resource) {
+      $timestamp = filemtime($resource);
+      return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => $timestamp]);
+    }
+
+    public static function href_rlink($resource) {
+      return htmlspecialchars(self::rlink($resource));
     }
   }

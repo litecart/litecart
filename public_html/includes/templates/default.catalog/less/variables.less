@@ -1,42 +1,112 @@
-@default-color: #f9f9f9;
-@primary-color: #2e9cd4;
-@info-color: #5bc0de;
-@success-color: #98cc34;
-@warning-color: #f0ad4e;
-@danger-color: #d9534f;
+@import "framework/media.less";
 
-@site-background: #f0f0f0;
-@page-background: #fff;
-@menu-background-gradient-from: #f0f0f0;
-@menu-background-gradient-to: #f0f0f0;
-@menu-text-color: @default-text-color;
+/* Fonts */
 
-@default-border-color: rgba(0,0,0,0.1);
-@default-border-radius: 4px;
-@default-gutter-size: 20px;
-@default-line-height: 1.333333;
-@default-link-color: #2e9cd4;
-@default-shadow-color: rgba(0, 0, 0, 0.3);
-@default-sidebar-width: 300px;
-@default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-@default-text-color: #333;
-@default-text-size: 15px;
+/*@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap');*/
 
-@default-title-border-color: #e5e5e5;
-@default-title-color: @default-text-color;
+/* Variables */
 
-@breadcrumbs-background-color: #f3f3f3;
+:root {
+  --border-radius: 4px;
+  --gutter-size: 20px;
+  --link-text-color: #2e9cd4;
+  --shadow-color: rgba(0, 0, 0, .3);
+  --whitespace-color: #fff;
 
-@form-input-background: #fff;
-@form-input-padding: .5em;
+  --site-background-color: #f0f0f0;
+  --page-background-color: #fff;
 
-@image-whitespace-color: #fff;
+  --sidebar-width: 300px;
 
-@table-striped-row-background-odd: #f9f9f9;
-@table-striped-row-background-even: #fff;
-@table-row-hover-background: #ececec;
+  --navigation-background-color: #f0f0f0;
+  --navigation-text-color: var(--default-text-color);
 
-@media-breakpoint-xs: 480px;
-@media-breakpoint-sm: 768px;
-@media-breakpoint-md: 992px;
-@media-breakpoint-lg: 1200px;
+  --default-background-color: #f9f9f9;
+  --default-background-color-hover: #d8d8d8;
+  --default-background-color-active: #fff;
+  --default-border-color: #eee;
+  --default-line-height: 1.3333;
+  --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --default-text-color: #333;
+  --default-text-size: 12px;
+  --default-title-color: var(--default-text-color);
+  --default-title-border-color: #e5e5e5;
+  --default-notice-background-color: #e5e5e5;
+  --default-notice-text-color: #000;
+
+  --primary-background-color: #2e9cd4;
+  --primary-background-color-hover: #ddd;
+  --primary-background-color-active: #bdbdbd;
+  --primary-text-color: #fff;
+  --primary-notice-background-color: #3ba5c6;
+  --primary-notice-text-color: #fff;
+
+  --success-background-color: #98cc34;
+  --success-background-color-hover: #9dcf3e;
+  --success-background-color-active: #89b82e;
+  --success-border-color: rgba(0,0,0,0.1);
+  --success-text-color: #fff;
+  --success-notice-background-color: #98cc34;
+  --success-notice-text-color: #fff;
+
+  --warning-background-color: #f0ad4e;
+  --warning-background-color-hover: #f2b866;
+  --warning-background-color-active: #f1b25a;
+  --warning-border-color: rgba(0,0,0,0.1);
+  --warning-text-color: #aa0000;
+  --warning-notice-background-color: #ffcc66;
+  --warning-notice-text-color: #aa0000;
+
+  --danger-background-color: #d9534f;
+  --danger-background-color-hover: #de6764;
+  --danger-background-color-active: #db5d59;
+  --danger-border-color: rgba(0,0,0,0.1);
+  --danger-text-color: #fff;
+  --danger-notice-background-color: #d9534f;
+  --danger-notice-text-color: #fff;
+
+  --breadcrumbs-background-color: #f3f3f3;
+  --breadcrumbs-text-color: #333;
+  --breadcrumbs-border-color: transparent;
+
+  --input-background-color: #fff;
+  --input-padding-x: 1em;
+  --input-padding-y: .5em;
+  --input-text-color: #000;
+
+  --pills-background-color: #f3f3f3;
+  --pills-background-color-active: #cdcdcd;
+  --pills-text-color: #333;
+  --pills-text-color-active: var(--pills-text-color);
+
+  --tabs-background-color: #f3f3f3;
+  --tabs-background-color-active: #fff;
+  --tabs-borde-color: var(--default-border-color);
+  --tabs-text-color: #333;
+  --tabs-text-color-active: var(--tabs-text-color);
+
+  --table-striped-row-background-odd: #f9f9f9;
+  --table-striped-row-background-even: #fff;
+  --table-row-hover-background: #ececec;
+
+  --pagination-background-color: var(--default-background-color);
+  --pagination-text-color: var(--default-text-color);
+  --pagination-border-color: var(--default-border-color);
+  --pagination-active-background-color: #cdcdcd;
+  --pagination-active-text-color: var(--default-text-color);;
+  --pagination-hover-background-color: #f3f3f3;
+  --pagination-hover-text-color: var(--default-text-color);;
+
+  --footer-background-color: #fff;
+  --footer-title-color: #333;
+  --footer-text-color: #333;
+
+  --copyright-background-color: #fff;
+  --copyright-text-color: #333;
+}
+
+@media (min-width: @media-breakpoint-lg) {
+  :root {
+    --default-text-size: 16px;
+  }
+}

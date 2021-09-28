@@ -10,14 +10,14 @@
   <section id="box-search-results" class="box">
 
     <?php if ($products) { ?>
-    <div class="btn-group pull-right hidden-xs">
+    <div class="btn-group float-end hidden-xs">
 <?php
   $separator = false;
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {
       echo '<span class="btn btn-default active">'. $value .'</span>';
     } else {
-      echo '<a class="btn btn-default" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a>';
+      echo '<a class="btn btn-default" href="'. document::href_ilink(null, ['sort' => $key], true) .'">'. $value .'</a>';
     }
   }
 ?>
@@ -27,8 +27,8 @@
     <h1 class="title"><?php echo $title; ?></h1>
 
     <?php if ($products) { ?>
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
+    <section class="listing products columns">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
     </section>
     <?php } else { ?>
     <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>

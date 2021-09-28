@@ -1,9 +1,9 @@
 <?php
 
 // Delete old files
-  $deleted_files = array(
+  $deleted_files = [
     FS_DIR_APP . 'includes/modules/customers/cm_local_database.inc.php',
-  );
+  ];
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {

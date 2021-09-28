@@ -169,7 +169,6 @@ CREATE TABLE `lc_customers` (
   `shipping_country_code` VARCHAR(4) NOT NULL DEFAULT '',
   `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
   `shipping_phone` VARCHAR(24) NOT NULL DEFAULT '',
-  `newsletter` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
   `notes` TEXT NOT NULL DEFAULT '',
   `password_reset_token` VARCHAR(128) NOT NULL DEFAULT '',
   `num_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -240,6 +239,7 @@ CREATE TABLE `lc_languages` (
   `code` VARCHAR(2) NOT NULL DEFAULT '',
   `code2` VARCHAR(3) NOT NULL DEFAULT '',
   `name` VARCHAR(32) NOT NULL DEFAULT '',
+  `direction` ENUM('ltr','rtl') NOT NULL DEFAULT 'ltr',
   `locale` VARCHAR(64) NOT NULL DEFAULT '',
   `charset` VARCHAR(16) NOT NULL DEFAULT '',
   `url_type` VARCHAR(16) NOT NULL DEFAULT '',
@@ -307,6 +307,14 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   UNIQUE KEY `module_id` (`module_id`),
   KEY `type` (`type`),
   KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_newsletter_recipients` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(128) NOT NULL DEFAULT '',
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders` (
@@ -487,6 +495,9 @@ CREATE TABLE `lc_products` (
   `gtin` VARCHAR(32) NOT NULL DEFAULT '',
   `taric` VARCHAR(16) NOT NULL DEFAULT '',
   `quantity` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `quantity_min` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+  `quantity_max` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+  `quantity_step` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `weight` DECIMAL(10,4) UNSIGNED NOT NULL DEFAULT '0',
   `weight_class` VARCHAR(2) NOT NULL DEFAULT '',
@@ -840,11 +851,13 @@ CREATE TABLE `lc_zones_to_geo_zones` (
   `geo_zone_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `country_code` VARCHAR(2) NOT NULL DEFAULT '',
   `zone_code` VARCHAR(8) NOT NULL DEFAULT '',
+  `city` VARCHAR(32) NOT NULL DEFAULT '',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `region` (`geo_zone_id`, `country_code`, `zone_code`),
+  UNIQUE KEY `region` (`geo_zone_id`, `country_code`, `zone_code`, `city`),
   KEY `geo_zone_id` (`geo_zone_id`),
   KEY `country_code` (`country_code`),
-  KEY `zone_code` (`zone_code`)
+  KEY `zone_code` (`zone_code`),
+  KEY `city` (`city`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};

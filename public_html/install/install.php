@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.2.12\n"
+      echo "\nLiteCart® 2.3.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -23,10 +23,10 @@
       exit;
     }
 
-    $options = array(
+    $options = [
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
       'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
-    );
+    ];
     $_REQUEST = getopt(null, $options);
     $_REQUEST['install'] = true;
   } else {
@@ -152,7 +152,7 @@
 
     echo '<p>Checking for PHP extensions... ';
 
-    $extensions = array('apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'SimpleXML', 'zip');
+    $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'SimpleXML', 'zip'];
 
     if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
       echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
@@ -164,8 +164,8 @@
 
     echo '<p>Checking available PHP functions... ';
 
-    $critical_functions = array('error_log', 'ini_set');
-    $important_functions = array('allow_url_fopen', 'shell_exec', 'exec', 'apache_get_modules');
+    $critical_functions = ['error_log', 'ini_set'];
+    $important_functions = ['allow_url_fopen', 'shell_exec', 'exec', 'apache_get_modules'];
 
     if ($disabled_functions = array_intersect($critical_functions, preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY))) {
       throw new Exception('<span class="error">[Error] Critical functions are disabled ('. implode(', ', $disabled_functions) .'). You need to unblock them in php.ini</span></p>' . PHP_EOL . PHP_EOL);
@@ -179,7 +179,7 @@
 
     echo '<p>Checking PHP display_errors... ';
 
-    if (in_array(strtolower(ini_get('display_errors')), array('1', 'true', 'on', 'yes'))) {
+    if (in_array(strtolower(ini_get('display_errors')), ['1', 'true', 'on', 'yes'])) {
       echo ini_get('display_errors') . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ini_get('display_errors') . ' <span class="warning">[Warning] Missing permissions to display errors?</span></p>' . PHP_EOL . PHP_EOL;
@@ -258,7 +258,7 @@
 
     $config = file_get_contents('config');
 
-    $map = array(
+    $map = [
       '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
       '{DB_TYPE}' => 'mysql',
       '{DB_SERVER}' => $_REQUEST['db_server'],
@@ -270,7 +270,7 @@
       '{DB_PERSISTENT_CONNECTIONS}' => 'false',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
       '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
-    );
+    ];
 
     $config = strtr($config, $map);
 
@@ -310,11 +310,11 @@
       str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
     }
 
-    $map = array(
+    $map = [
       '`lc_' => '`'.$_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{DB_DATABASE_COLLATION}' => $_REQUEST['db_collation'],
-    );
+    ];
 
     foreach ($map as $search => $replace) {
       $sql = str_replace($search, $replace, $sql);
@@ -334,12 +334,12 @@
     $sql = file_get_contents('data.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
-    $map = array(
+    $map = [
       '{STORE_NAME}' => $_REQUEST['store_name'],
       '{STORE_EMAIL}' => $_REQUEST['store_email'],
       '{STORE_TIME_ZONE}' => $_REQUEST['store_time_zone'],
       '{STORE_COUNTRY_CODE}' => $_REQUEST['country_code'],
-    );
+    ];
 
     foreach ($map as $search => $replace) {
       $sql = str_replace($search, database::input($replace), $sql);
@@ -369,10 +369,10 @@
 
     $htaccess = file_get_contents('htaccess');
 
-    $htaccess = strtr($htaccess, array(
+    $htaccess = strtr($htaccess, [
       '{BASE_DIR}' => WS_DIR_APP,
       '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'],
-    ));
+    ]);
 
     if (file_put_contents('../.htaccess', $htaccess)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -539,12 +539,12 @@
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-      $files_to_delete = array(
+      $files_to_delete = [
         '../includes/templates/default.catalog/css/app.css',
         '../includes/templates/default.catalog/css/checkout.css',
         '../includes/templates/default.catalog/css/framework.css',
         '../includes/templates/default.catalog/css/printable.css',
-      );
+      ];
 
       foreach ($files_to_delete as $file) {
         file_delete($file);
@@ -552,13 +552,13 @@
 
     } else {
 
-      $files_to_delete = array(
+      $files_to_delete = [
         '../includes/templates/default.catalog/css/*.min.css',
         '../includes/templates/default.catalog/css/*.min.css.map',
         '../includes/templates/default.catalog/js/*.min.js',
         '../includes/templates/default.catalog/js/*.min.js.map',
         '../includes/templates/default.catalog/less/',
-      );
+      ];
 
       foreach ($files_to_delete as $file) {
         file_delete($file);
@@ -567,13 +567,13 @@
       foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
         echo 'Modify '. $file .'<br />'. PHP_EOL;
         $contents = file_get_contents($file);
-        $search_replace = array(
+        $search_replace = [
           'app.min.css' => 'app.css',
           'checkout.min.css'  => 'checkout.css',
           'framework.min.css' => 'framework.css',
           'printable.min.css' => 'printable.css',
           'app.min.js' => 'app.js',
-        );
+        ];
         file_put_contents($file, strtr($contents, $search_replace));
       }
     }

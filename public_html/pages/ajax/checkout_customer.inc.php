@@ -8,6 +8,20 @@
 
   if (empty(cart::$items)) return;
 
+  if (!empty(customer::$data['email'])) {
+    $newsletter_recipient_query = database::query(
+      "select id from ". DB_TABLE_PREFIX ."newsletter_recipients
+      where email = '". database::input(customer::$data['email']) ."'
+      limit 1;"
+    );
+
+    if (database::num_rows($newsletter_recipient_query)) {
+      customer::$data['newsletter'] = true;
+    } else {
+      customer::$data['newsletter'] = false;
+    }
+  }
+
   if (file_get_contents('php://input') == '') {
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
@@ -28,7 +42,7 @@
 
         if (!functions::validate_email($_POST['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
 
-        if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+        if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
           if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
           if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
         }
@@ -39,7 +53,7 @@
       }
 
     // Billing address
-      $fields = array(
+      $fields = [
         'email',
         'tax_id',
         'company',
@@ -53,14 +67,14 @@
         'zone_code',
         'phone',
         'different_shipping_address',
-      );
+      ];
 
       foreach ($fields as $field) {
         customer::$data[$field] = isset($_POST[$field]) ? $_POST[$field] : '';
       }
 
     // Shipping address
-      $fields = array(
+      $fields = [
         'company',
         'firstname',
         'lastname',
@@ -71,7 +85,7 @@
         'country_code',
         'zone_code',
         'phone',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (!empty(customer::$data['different_shipping_address'])) {
@@ -91,7 +105,7 @@
     // Create account
       if (settings::get('accounts_enabled') && empty(customer::$data['id'])) {
         if (!empty($_POST['create_account']) && !empty(customer::$data['email'])) {
-          if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
 
             $customer = new ent_customer();
             foreach (array_keys($customer->data) as $key) {
@@ -104,7 +118,7 @@
             $customer->save();
 
             database::query(
-              "update ". DB_TABLE_CUSTOMERS ."
+              "update ". DB_TABLE_PREFIX ."customers
               set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
                   last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
                   last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
@@ -112,13 +126,13 @@
               limit 1;"
             );
 
-            $aliases = array(
+            $aliases = [
               '%store_name' => settings::get('store_name'),
               '%store_link' => document::ilink(''),
               '%customer_firstname' => $_POST['firstname'],
               '%customer_lastname' => $_POST['lastname'],
               '%customer_email' => $_POST['email'],
-            );
+            ];
 
             $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
             $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
@@ -136,6 +150,14 @@
         }
       }
 
+      if (!empty($_POST['newsletter'])) {
+        database::query(
+          "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
+          (email, client_ip, date_created)
+          values ('". database::input($_POST['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
+        );
+      }
+
     } catch(Exception $e) {
       notices::add('errors', $e->getMessage());
     }
@@ -143,13 +165,19 @@
 
   $account_exists = false;
   if (settings::get('accounts_enabled')) {
-    if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
+    if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
       $account_exists = true;
     }
   }
 
+  $subscribed_to_newsletter = false;
+  if (!empty($order->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($order->data['customer']['email']) ."');"))) {
+    $subscribed_to_newsletter = true;
+  }
+
   $box_checkout_customer = new ent_view();
-  $box_checkout_customer->snippets = array(
+  $box_checkout_customer->snippets = [
     'account_exists' => $account_exists,
-  );
+    'subscribed_to_newsletter' => $subscribed_to_newsletter,
+  ];
   echo $box_checkout_customer->stitch('views/box_checkout_customer');

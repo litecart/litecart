@@ -35,10 +35,10 @@
   }
 
 // Table Rows
-  $languages = array();
+  $languages = [];
 
   $languages_query = database::query(
-    "select * from ". DB_TABLE_LANGUAGES ."
+    "select * from ". DB_TABLE_PREFIX ."languages
     order by field(status, 1, -1, 0), priority, name;"
   );
 
@@ -69,7 +69,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_language'), true), language::translate('title_add_new_language', 'Add New Language'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_language'], true), language::translate('title_add_new_language', 'Add New Language'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -84,9 +84,9 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_code', 'Code'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_url_type', 'URL Type'); ?></th>
             <th><?php echo language::translate('title_default_language', 'Default Language'); ?></th>
             <th><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
+            <th><?php echo language::translate('title_url_type', 'URL Type'); ?></th>
             <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
             <th>&nbsp;</th>
           </tr>
@@ -99,12 +99,12 @@
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $language['status_color'] .';"'); ?></td>
             <td><?php echo $language['id']; ?></td>
             <td><?php echo $language['code']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
-            <td><?php echo $language['url_type']; ?></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>"><?php echo $language['name']; ?></a></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+            <td><?php echo strtr($language['url_type'], ['none' => language::translate('title_none', 'None'), 'path' => language::translate('title_path_prefix', 'Path Prefix'), 'domain' => language::translate('title_domain', 'Domain')]); ?></td>
             <td class="text-center"><?php echo $language['priority']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

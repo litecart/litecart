@@ -26,7 +26,7 @@
       if (empty($_POST['iso_code_3'])) throw new Exception(language::translate('error_missing_code', 'You must enter a code'));
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-      if (empty($_POST['zones'])) $_POST['zones'] = array();
+      if (empty($_POST['zones'])) $_POST['zones'] = [];
 
       foreach ($_POST['zones'] as $zone) {
         if (empty($zone['code']) || empty($zone['name'])) throw new Exception(language::translate('error_zone_must_have_name_and_code', 'A zone/state/province must have a name and code'));
@@ -35,7 +35,7 @@
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
       $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
 
-      $fields = array(
+      $fields = [
         'status',
         'iso_code_1',
         'iso_code_2',
@@ -49,7 +49,7 @@
         'currency_code',
         'phone_code',
         'zones',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $country->data[$field] = $_POST[$field];
@@ -58,7 +58,7 @@
       $country->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'countries'), true, array('country_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'countries'], true, ['country_id']));
       exit;
 
     } catch (Exception $e) {
@@ -74,7 +74,7 @@
       $country->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'countries'), true, array('country_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'countries'], true, ['country_id']));
       exit;
 
     } catch (Exception $e) {
@@ -165,7 +165,7 @@
         <thead>
           <tr>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th style="padding-right: 50px;"><?php echo language::translate('title_code', 'Code'); ?></th>
+            <th style="padding-inline-end: 50px;"><?php echo language::translate('title_code', 'Code'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th>&nbsp;</th>
           </tr>
@@ -176,7 +176,7 @@
             <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][code]', true); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][name]', true); ?></td>
-            <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+            <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
@@ -218,7 +218,7 @@
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][code]', '')); ?></td>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][name]', '')); ?></td>'
-               + '      <td style="text-align: right;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <td style="text-align: end;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '    </tr>';
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
     output = output.replace(/new_zone_code/g, $('input[name="zone[code]"]').val());

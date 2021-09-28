@@ -8,7 +8,7 @@
 
 // Stitch content
   $_page = new ent_view();
-  $_page->snippets = array('content' => $GLOBALS['content']);
+  $_page->snippets = ['content' => $GLOBALS['content']];
   $GLOBALS['output'] = $_page->stitch('layouts/'.document::$layout);
   unset($GLOBALS['content']);
 
@@ -37,7 +37,7 @@
       // To avoid this push method, set up a cron job calling www.yoursite.com/index.php/push_jobs
 
       database::query(
-        "update ". DB_TABLE_SETTINGS ."
+        "update ". DB_TABLE_PREFIX ."settings
         set `value` = '". date('Y-m-d H:i:s') ."'
         where `key` = 'jobs_last_push'
         limit 1;"

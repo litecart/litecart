@@ -3,16 +3,16 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/variables.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>" />
 {snippet:head_tags}
 {snippet:style}
 </head>
 <body>
 
-<div id="page" class="twelve-eighty">
+<div id="page" class="fourteen-forty">
 
   <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
 
@@ -25,7 +25,7 @@
       <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_region.inc.php'); ?>
     </div>
 
-    <div class="text-right">
+    <div class="text-end">
       <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_cart.inc.php'); ?>
     </div>
   </header>
@@ -45,7 +45,7 @@
 </a>
 
 {snippet:foot_tags}
-<script src="{snippet:template_path}js/app.min.js"></script>
+<script src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>
 {snippet:javascript}
 </body>
 </html>

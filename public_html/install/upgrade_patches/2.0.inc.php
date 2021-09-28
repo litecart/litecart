@@ -1,7 +1,7 @@
 <?php
 
 // Delete old files
-  $deleted_files = array(
+  $deleted_files = [
     FS_DIR_ADMIN . 'orders.app/printable_packing_slip.php',
     FS_DIR_ADMIN . 'orders.app/printable_order_copy.php',
     FS_DIR_ADMIN . 'sales.widget/',
@@ -58,7 +58,7 @@
     FS_DIR_APP . 'includes/templates/default.catalog/views/printable_order_copy.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/printable_packing_slip.inc.php',
     FS_DIR_APP . 'includes/column_left.inc.php',
-  );
+  ];
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
@@ -67,9 +67,9 @@
   }
 
 // Copy new files
-  $copy_files = array(
+  $copy_files = [
     'data/default/public_html/images/no_image.png' => FS_DIR_APP . 'images/no_image.png',
-  );
+  ];
 
   foreach ($copy_files as $source => $destination) {
     if (!file_xcopy($source, $destination)) {
@@ -78,41 +78,41 @@
   }
 
 // Modify some files
-  $modified_files = array(
-    array(
+  $modified_files = [
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL,
       'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL
                  . "  define('WS_DIR_LOGS',        WS_DIR_APP . 'logs/');" . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  ini_set('error_log', FS_DIR_APP . 'data/errors.log');" . PHP_EOL,
       'replace' => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');" . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');",
       'replace' => "  define('DB_TABLE_MANUFACTURERS_INFO',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'manufacturers_info`');" . PHP_EOL
                  . "  define('DB_TABLE_MODULES',                           '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'modules`');",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');",
       'replace' => "  define('DB_TABLE_SLIDES',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides`');" . PHP_EOL
                  . "  define('DB_TABLE_SLIDES_INFO',                       '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'slides_info`');",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . '.htaccess',
       'search'  => '<FilesMatch "\.(css|js)$">',
       'replace' => '<FilesMatch "\.(css|js|svg)$">',
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . '.htaccess',
       'search'  => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|ttf)$">',
       'replace' => '<FilesMatch "\.(css|gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
-    )
-  );
+    ]
+  ];
 
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
@@ -122,18 +122,18 @@
 
 // Delete Deprecated Modules
   $module_types_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS ."
+    "select * from ". DB_TABLE_PREFIX ."settings
     where `key` in ('order_action_modules', 'order_success_modules');"
   );
   while ($module_type = database::fetch($module_types_query)) {
     foreach (explode(';', $module_type['value']) as $module) {
       database::query(
-        "delete from ". DB_TABLE_SETTINGS ."
+        "delete from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module) ."';"
       );
     }
     database::query(
-      "delete from ". DB_TABLE_SETTINGS ."
+      "delete from ". DB_TABLE_PREFIX ."settings
       where `key` = '". database::input($module_type['key']) ."'
       limit 1;"
     );
@@ -141,13 +141,13 @@
 
 // Migrate Modules
   database::query(
-    "update ". DB_TABLE_SETTINGS ."
+    "update ". DB_TABLE_PREFIX ."settings
     set `key` = 'job_modules'
     where `key` = 'jobs_modules';"
   );
 
   $installed_modules_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS ."
+    "select * from ". DB_TABLE_PREFIX ."settings
     where `key` in ('job_modules', 'customer_modules', 'order_modules', 'order_total_modules', 'shipping_modules', 'payment_modules');"
   );
 
@@ -155,7 +155,7 @@
     foreach (explode(';', $installed_modules['value']) as $module) {
 
       $module_query = database::query(
-        "select * from ". DB_TABLE_SETTINGS ."
+        "select * from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module) ."'
         limit 1;"
       );
@@ -166,7 +166,7 @@
       $module['settings'] = unserialize($module['value']);
 
       if (isset($module['settings']['status'])) {
-        $status = in_array(strtolower($module['settings']['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? 1 : 0;
+        $status = in_array(strtolower($module['settings']['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes']) ? 1 : 0;
       } else {
         $status = 1;
       }
@@ -188,7 +188,7 @@
       );
 
       database::query(
-        "delete from ". DB_TABLE_SETTINGS ."
+        "delete from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module['key']) ."'
         limit 1;"
       );
@@ -197,25 +197,25 @@
 
 // Collect all languages
   $languages_query = database::query(
-    "select * from ". DB_TABLE_LANGUAGES ."
+    "select * from ". DB_TABLE_PREFIX ."languages
     where status
     order by priority, name;"
   );
 
-  $all_languages = array();
+  $all_languages = [];
   while ($row = database::fetch($languages_query)) {
     $all_languages[] = $row['code'];
   }
 
 // Update slides
   $slides_query = database::query(
-    "select * from ". DB_TABLE_SLIDES .";"
+    "select * from ". DB_TABLE_PREFIX ."slides;"
   );
 
   while ($slide = database::fetch($slides_query)) {
 
     if (!empty($slide['language_code'])) {
-      $languages = array($slide['language_code']);
+      $languages = [$slide['language_code']];
     } else {
       $languages = $all_languages;
     }
@@ -229,4 +229,4 @@
     }
   }
 
-  database::query("alter table ". DB_TABLE_SLIDES ." change column `language_code` `languages` varchar(32) not null, drop column `caption`, drop column `link`;");
+  database::query("alter table ". DB_TABLE_PREFIX ."slides change column `language_code` `languages` varchar(32) not null, drop column `caption`, drop column `link`;");

@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.2.12
+ * LiteCart® 2.3.0
  *
  * Online Catalog and Shopping Cart Platform
  *
@@ -17,11 +17,11 @@
 
   if (settings::get('maintenance_mode')) {
     if (!empty(user::$data['id'])) {
-      notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', array(
+      notices::add('notices', strtr('%message [<a href="%link">%preview</a>]', [
         '%message' => language::translate('reminder_store_in_maintenance_mode', 'The store is in maintenance mode.'),
         '%preview' => language::translate('title_preview', 'Preview'),
         '%link' => document::href_ilink('maintenance_mode'),
-      )), 'maintenance_mode');
+      ]), 'maintenance_mode');
     } else {
       http_response_code(503);
       include vmod::check(FS_DIR_APP . 'pages/maintenance_mode.inc.php');

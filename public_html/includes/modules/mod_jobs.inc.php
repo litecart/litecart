@@ -11,7 +11,7 @@
       if (empty($this->modules)) return;
 
       if (empty($modules)) $modules = array_keys($this->modules);
-      if (!is_array($modules)) $modules = array($modules);
+      if (!is_array($modules)) $modules = [$modules];
 
       $output = '';
 
@@ -23,7 +23,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_MODULES ." set
+          "update ". DB_TABLE_PREFIX ."modules set
           date_pushed = '". date('Y-m-d H:i:s') ."'
           where module_id = '". database::input($module_id) ."'
           limit 1;"
@@ -48,7 +48,7 @@
                . str_repeat('#', 72) . PHP_EOL;
 
           database::query(
-            "update ". DB_TABLE_MODULES ." set
+            "update ". DB_TABLE_PREFIX ."modules set
             last_log = '". database::input($log) ."'
             where module_id = '". database::input($module_id) ."'
             limit 1;"
@@ -57,7 +57,7 @@
           $output .= $log . PHP_EOL;
 
           database::query(
-            "update ". DB_TABLE_MODULES ." set
+            "update ". DB_TABLE_PREFIX ."modules set
             last_log = '". database::input($log) ."',
             date_processed = '". date('Y-m-d H:i:s') ."'
             where module_id = '". database::input($module_id) ."'
@@ -71,7 +71,7 @@
 
     public function run($method_name, $module_id) {
       if (method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
+        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
       }
     }
   }

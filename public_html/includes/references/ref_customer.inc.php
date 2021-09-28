@@ -2,7 +2,7 @@
 
   class ref_customer {
 
-    private $_data = array();
+    private $_data = [];
 
     function __construct($customer_id) {
       $this->_data['id'] = (int)$customer_id;
@@ -35,14 +35,14 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_TABLE_CUSTOMERS ."
+            "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
 
           if (!$row = database::fetch($query)) return;
 
-          $remap_keys = array(
+          $remap_keys = [
             'shipping_company' => 'company',
             'shipping_firstname' => 'firstname',
             'shipping_lastname' => 'lastname',
@@ -53,7 +53,7 @@
             'shipping_country_code' => 'country_code',
             'shipping_zone_code' => 'zone_code',
             'shipping_phone' => 'phone',
-          );
+          ];
 
           foreach ($row as $key => $value) {
             if (in_array($key, array_keys($remap_keys))) continue;

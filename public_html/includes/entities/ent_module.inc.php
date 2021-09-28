@@ -59,17 +59,17 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_MODULES .";"
+        "show fields from ". DB_TABLE_PREFIX ."modules;"
       );
 
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['settings'] = array();
+      $this->data['settings'] = [];
     }
 
     public function load($module_id, $type) {
@@ -77,7 +77,7 @@
       $this->reset();
 
       $modules_query = database::query(
-        "select * from ". DB_TABLE_MODULES ."
+        "select * from ". DB_TABLE_PREFIX ."modules
         where type = '". database::input($type) ."'
         and module_id = '". database::input($module_id) ."'
         limit 1;"
@@ -115,7 +115,7 @@
       if (empty($this->data['id'])) {
 
         database::query(
-          "insert into ". DB_TABLE_MODULES ."
+          "insert into ". DB_TABLE_PREFIX ."modules
           (module_id, type, date_created)
           values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -133,7 +133,7 @@
         }
       }
 
-      if (isset($this->data['settings']['status']) && in_array(strtolower($this->data['settings']['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+      if (isset($this->data['settings']['status']) && in_array(strtolower($this->data['settings']['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
         $this->data['status'] = 1;
       } else {
         $this->data['status'] = 0;
@@ -142,7 +142,7 @@
       $this->data['priority'] = (int)$this->data['settings']['priority'];
 
       database::query(
-        "update ". DB_TABLE_MODULES ."
+        "update ". DB_TABLE_PREFIX ."modules
         set
           module_id = '". database::input($this->data['module_id']) ."',
           type = '". database::input($this->data['type']) ."',
@@ -166,7 +166,7 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_MODULES ."
+        "delete from ". DB_TABLE_PREFIX ."modules
         where module_id = '". database::input($this->data['module_id']) ."'
         limit 1;"
       );

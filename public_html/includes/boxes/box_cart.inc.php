@@ -2,12 +2,12 @@
   if (settings::get('catalog_only_mode')) return;
 
   $box_cart = new ent_view();
-  $box_cart->snippets = array(
-    'items' => array(),
+  $box_cart->snippets = [
+    'items' => [],
     'link' => document::ilink('checkout'),
     'num_items' => cart::$total['items'],
     'cart_total' => null,
-  );
+  ];
 
   foreach (cart::$items as $key => $item) {
     $item['thumbnail'] = functions::image_thumbnail(FS_DIR_APP . 'images/' . $item['image'], 64, 64, 'FIT_USE_WHITESPACING');

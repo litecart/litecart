@@ -17,25 +17,25 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_EMAILS .";"
+        "show fields from ". DB_TABLE_PREFIX ."emails;"
       );
 
       while ($field = database::fetch($fields_query)) {
         $this->data[$field['Field']] = null;
       }
 
-      $this->data['sender'] = array(
+      $this->data['sender'] = [
         'email' => settings::get('store_email'),
         'name' => settings::get('store_name'),
-      );
+      ];
 
-      $this->data['recipients'] = array();
-      $this->data['ccs'] = array();
-      $this->data['bccs'] = array();
-      $this->data['multiparts'] = array();
+      $this->data['recipients'] = [];
+      $this->data['ccs'] = [];
+      $this->data['bccs'] = [];
+      $this->data['multiparts'] = [];
 
       $this->previous = $this->data;
 
@@ -49,7 +49,7 @@
       $this->reset();
 
       $email_query = database::query(
-        "select * from ". DB_TABLE_EMAILS ."
+        "select * from ". DB_TABLE_PREFIX ."emails
         where id = ". (int)$email_id ."
         limit 1;"
       );
@@ -75,7 +75,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_EMAILS ."
+          "insert into ". DB_TABLE_PREFIX ."emails
           (status, code, date_created) values
           ('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -84,7 +84,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_EMAILS ." set
+        "update ". DB_TABLE_PREFIX ."emails set
         status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
         code = '". database::input($this->data['code']) ."',
         charset = '". database::input($this->data['charset']) ."',
@@ -116,10 +116,10 @@
 
       if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
-      $this->data['sender'] = array(
+      $this->data['sender'] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -144,11 +144,12 @@
         trigger_error('Cannot add an email body with empty content', E_USER_WARNING);
         return $this;
       }
+
       if (!$charset) $charset = $this->data['charset'];
 
       $this->data['multiparts'][] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. $charset . "\r\n"
-                                   . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
-                                   . trim($content);
+                                  . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
+                                  . trim($content);
 
       return $this;
     }
@@ -184,10 +185,10 @@
 
       if (!functions::validate_email($email)) throw new Exception('Invalid email address ('. $email .')');
 
-      $this->data['recipients'][] = array(
+      $this->data['recipients'][] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -201,10 +202,10 @@
 
       if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
-      $this->data['ccs'][] = array(
+      $this->data['ccs'][] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -218,10 +219,10 @@
 
       if (!functions::validate_email($email)) trigger_error('Invalid email address ('. $email .')', E_USER_ERROR);
 
-      $this->data['bccs'][] = array(
+      $this->data['bccs'][] = [
         'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         'name' => $name,
-      );
+      ];
 
       return $this;
     }
@@ -246,7 +247,7 @@
     public function cleanup($time_ago='-30 days') {
 
       database::query(
-        "delete from ". DB_TABLE_EMAILS ."
+        "delete from ". DB_TABLE_PREFIX ."emails
         where status in ('sent', 'error')
         and date_updated < '". date('Y-m-d H:i:s', strtotime($time_ago)) ."';"
       );
@@ -266,18 +267,18 @@
       }
 
     // Prepare headers
-      $headers = array(
+      $headers = [
         'Date' => date('r'),
         'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
         'Reply-To' => $this->format_contact($this->data['sender']),
         'Return-Path' => settings::get('store_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
-      );
+      ];
 
     // Add "To"
       if (!empty($this->data['recipients'])) {
-        $tos = array();
+        $tos = [];
         foreach ($this->data['recipients'] as $to) {
           $tos[] = $this->format_contact($to);
         }
@@ -286,7 +287,7 @@
 
     // Add "Cc"
       if (!empty($this->data['ccs'])) {
-        $ccs = array();
+        $ccs = [];
         foreach ($this->data['ccs'] as $cc) {
           $ccs[] = $this->format_contact($cc);
         }
@@ -335,7 +336,7 @@
 
           $smtp->connect();
 
-          $recipients = array();
+          $recipients = [];
 
           foreach ($this->data['recipients'] as $recipient) {
             $recipients[] = $recipient['email'];
@@ -368,14 +369,14 @@
 
       // PHP mail() needs a header for BCCs
         if (!empty($this->data['bccs'])) {
-          $bccs = array();
+          $bccs = [];
           foreach ($this->data['bccs'] as $bcc) {
             $bccs[] = $this->format_contact($bcc);
           }
           $headers .= 'Bcc: '. implode(', ', $bccs) . "\r\n";
         }
 
-        $recipients = array();
+        $recipients = [];
         foreach ($this->data['recipients'] as $recipient) {
           $recipients[] = $this->format_contact($recipient);
         }
@@ -403,7 +404,7 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_EMAILS ."
+        "delete from ". DB_TABLE_PREFIX ."emails
         where id = ". (int)$this->data['id'] .";"
       );
 

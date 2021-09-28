@@ -27,13 +27,13 @@
 
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_CATEGORIES ." where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) {
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."categories where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) {
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       }
 
-      if (empty($_POST['filters'])) $_POST['filters'] = array();
+      if (empty($_POST['filters'])) $_POST['filters'] = [];
 
-      $fields = array(
+      $fields = [
         'status',
         'parent_id',
         'code',
@@ -49,7 +49,7 @@
         'meta_description',
         'filters',
         'priority',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $category->data[$field] = $_POST[$field];
@@ -64,7 +64,7 @@
       $category->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -80,7 +80,7 @@
       $category->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'catalog', 'category_id' => $_POST['parent_id']], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -156,10 +156,10 @@
               <div class="form-group">
                 <label><?php echo language::translate('title_list_style', 'List Style'); ?></label>
 <?php
-  $options = array(
-    array(language::translate('title_columns', 'Columns'), 'columns'),
-    array(language::translate('title_rows', 'Rows'), 'rows'),
-  );
+  $options = [
+    [language::translate('title_columns', 'Columns'), 'columns'],
+    [language::translate('title_rows', 'Rows'), 'rows'],
+  ];
   echo functions::form_draw_select_field('list_style', $options, true);
 ?>
               </div>
@@ -254,7 +254,7 @@
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
                 <td class="grabable"><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
                 <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
-                <td class="text-right">
+                <td class="text-end">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                   <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
                   <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
@@ -333,7 +333,7 @@
                + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
                + '  <td>new_attribute_group_name</td>'
                + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
-               + '  <td class="text-right">'
+               + '  <td class="text-end">'
                + '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
                + '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
                + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'

@@ -60,7 +60,7 @@
 
       <?php if (settings::get('accounts_enabled')) { ?>
       <li class="account dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? htmlspecialchars(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php if (!empty(customer::$data['id'])) { ?>
             <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>

@@ -17,7 +17,7 @@
 
       if (empty($this->settings['status'])) return;
 
-      $output = array();
+      $output = [];
       $value = 0;
       $tax = 0;
 
@@ -28,33 +28,33 @@
         }
       }
 
-      $output[] = array(
+      $output[] = [
         'title' => $this->name,
         'value' => $value,
         'tax' => $tax,
         'calculate' => false,
-      );
+      ];
 
       return $output;
     }
 
     function settings() {
-      return array(
-        array(
+      return [
+        [
           'key' => 'status',
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_status', 'Status'),
           'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
           'function' => 'toggle("e/d")',
-        ),
-        array(
+        ],
+        [
           'key' => 'priority',
           'default_value' => '1',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module by the given priority value.'),
           'function' => 'number()',
-        ),
-      );
+        ],
+      ];
     }
 
     public function install() {}

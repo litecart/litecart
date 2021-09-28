@@ -15,10 +15,10 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $manufacturer_query = database::query(
-        "show fields from ". DB_TABLE_MANUFACTURERS .";"
+        "show fields from ". DB_TABLE_PREFIX ."manufacturers;"
       );
 
       while ($field = database::fetch($manufacturer_query)) {
@@ -26,12 +26,12 @@
       }
 
       $manufacturer_info_query = database::query(
-        "show fields from ". DB_TABLE_MANUFACTURERS_INFO .";"
+        "show fields from ". DB_TABLE_PREFIX ."manufacturers_info;"
       );
       while ($field = database::fetch($manufacturer_info_query)) {
-        if (in_array($field['Field'], array('id', 'manufacturer_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'manufacturer_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -47,7 +47,7 @@
       $this->reset();
 
       $manufacturers_query = database::query(
-        "select * from ". DB_TABLE_MANUFACTURERS ."
+        "select * from ". DB_TABLE_PREFIX ."manufacturers
         where id = ". (int)$manufacturer_id ."
         limit 1;"
       );
@@ -59,13 +59,13 @@
       }
 
       $manufacturers_info_query = database::query(
-        "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
+        "select * from ". DB_TABLE_PREFIX ."manufacturers_info
         where manufacturer_id = ". (int)$manufacturer_id .";"
       );
 
       while ($manufacturer_info = database::fetch($manufacturers_info_query)) {
         foreach ($manufacturer_info as $key => $value) {
-          if (in_array($key, array('id', 'manufacturer_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'manufacturer_id', 'language_code'])) continue;
           $this->data[$key][$manufacturer_info['language_code']] = $value;
         }
       }
@@ -77,7 +77,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_MANUFACTURERS ."
+          "insert into ". DB_TABLE_PREFIX ."manufacturers
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -89,7 +89,7 @@
       $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
-        "update ". DB_TABLE_MANUFACTURERS ." set
+        "update ". DB_TABLE_PREFIX ."manufacturers set
         status = ". (int)$this->data['status'] .",
         featured = ". (int)$this->data['featured'] .",
         code = '". database::input($this->data['code']) ."',
@@ -103,7 +103,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $manufacturers_info_query = database::query(
-          "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
+          "select * from ". DB_TABLE_PREFIX ."manufacturers_info
           where manufacturer_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -111,14 +111,14 @@
 
         if (!$manufacturer_info = database::fetch($manufacturers_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_MANUFACTURERS_INFO ."
+            "insert into ". DB_TABLE_PREFIX ."manufacturers_info
             (manufacturer_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
         }
 
         database::query(
-          "update ". DB_TABLE_MANUFACTURERS_INFO ." set
+          "update ". DB_TABLE_PREFIX ."manufacturers_info set
           short_description = '". database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
@@ -163,7 +163,7 @@
       $image->write(FS_DIR_APP . 'images/' . $filename, 90);
 
       database::query(
-        "update ". DB_TABLE_MANUFACTURERS ."
+        "update ". DB_TABLE_PREFIX ."manufacturers
         set image = '". database::input($filename) ."'
         where id = ". (int)$this->data['id'] .";"
       );
@@ -180,7 +180,7 @@
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $this->data['image']);
 
       database::query(
-        "update ". DB_TABLE_MANUFACTURERS ."
+        "update ". DB_TABLE_PREFIX ."manufacturers
         set image = ''
         where id = ". (int)$this->data['id'] .";"
       );
@@ -193,7 +193,7 @@
       if (empty($this->data['id'])) return;
 
       $products_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS ."
+        "select id from ". DB_TABLE_PREFIX ."products
         where manufacturer_id = ". (int)$this->data['id'] ."
         limit 1;"
       );
@@ -209,13 +209,13 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_MANUFACTURERS ."
+        "delete from ". DB_TABLE_PREFIX ."manufacturers
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
       database::query(
-        "delete from ". DB_TABLE_MANUFACTURERS_INFO ."
+        "delete from ". DB_TABLE_PREFIX ."manufacturers_info
         where manufacturer_id = ". (int)$this->data['id'] .";"
       );
 

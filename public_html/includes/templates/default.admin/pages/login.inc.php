@@ -21,7 +21,7 @@ body {
   top: 50%;
   left: 50%;
   margin-top: -64px;
-  margin-left: -64px;
+  margin-inline-start: -64px;
 }
 
 #box-login-wrapper {
@@ -66,7 +66,7 @@ body {
   border-top: 1px solid rgba(255,255,255,0.8);
   background: #f6f6f6;
   padding: 10px;
-  text-align: right;
+  text-align: end;
   border-radius: 0px 0px 0px 25px;
 }
 </style>
@@ -95,7 +95,7 @@ body {
         </div>
 
         <div class="form-group">
-          <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+          <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
         </div>
 
         <div class="form-group checkbox">

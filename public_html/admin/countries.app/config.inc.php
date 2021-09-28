@@ -1,16 +1,16 @@
 <?php
 
-  return $app_config = array(
+  return $app_config = [
     'name' => language::translate('title_countries', 'Countries'),
     'default' => 'countries',
     'priority' => 0,
-    'theme' => array(
+    'theme' => [
       'color' => '#43bbe7',
       'icon' => 'fa-flag',
-    ),
-    'menu' => array(),
-    'docs' => array(
+    ],
+    'menu' => [],
+    'docs' => [
       'countries' => 'countries.inc.php',
       'edit_country' => 'edit_country.inc.php',
-    ),
-  );
+    ],
+  ];

@@ -27,7 +27,7 @@
     display: none;
     transition: .6s ease-in-out left;
     img {
-      border-radius: @default-border-radius;
+      border-radius: var(--border-radius);
     }
   }
 
@@ -90,13 +90,13 @@
 .carousel-caption {
   position: absolute;
   right: 15%;
-  bottom: @default-gutter-size * 2;
+  bottom: ~"calc(var(--gutter-size)*2)";
   left: 15%;
   z-index: 10;
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
-  line-height: @default-line-height;
+  line-height: var(--default-line-height);
   .btn {
     text-shadow: none;
   }
@@ -123,13 +123,13 @@
   &.left:hover, &.right:hover {
     filter: alpha(opacity=75);
     opacity: .75;
-    border-radius: @default-border-radius 0 0 @default-border-radius;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
   &.right {
     right: 0;
     left: auto;
     background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25));
-    border-radius: 0 @default-border-radius @default-border-radius 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
   &:hover {
     color: #fff;
@@ -147,11 +147,11 @@
   }
   .icon-prev {
     left: 50%;
-    margin-left: -10px;
+    margin-inline-start: -10px;
   }
   .icon-next {
     right: 50%;
-    margin-right: -10px;
+    margin-inline-end: -10px;
   }
   .icon-prev,
   .icon-next {
@@ -170,22 +170,22 @@
       font-size: 30px;
     }
     .icon-prev {
-      margin-left: -10px;
+      margin-inline-start: -10px;
     }
     .icon-next {
-      margin-right: -10px;
+      margin-inline-end: -10px;
     }
   }
 }
 
 .carousel-indicators {
   position: absolute;
-  bottom: @default-gutter-size;
+  bottom: var(--gutter-size);
   left: 50%;
   z-index: 15;
   width: 60%;
-  padding-left: 0;
-  margin-left: -30%;
+  padding-inline-start: 0;
+  margin-inline-start: -30%;
   text-align: center;
   list-style: none;
 

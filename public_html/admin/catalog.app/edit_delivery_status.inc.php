@@ -15,7 +15,7 @@
   document::$snippets['title'][] = !empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::link(WS_DIR_ADMIN, array('doc' => 'delivery_statuses'), array('app')));
+  breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'), document::link(WS_DIR_ADMIN, ['doc' => 'delivery_statuses'], ['app']));
   breadcrumbs::add(!empty($delivery_status->data['id']) ? language::translate('title_edit_delivery_status', 'Edit Delivery Status') : language::translate('title_create_new_delivery_status', 'Create New Delivery Status'));
 
   if (isset($_POST['save'])) {
@@ -23,10 +23,10 @@
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
 
-      $fields = array(
+      $fields = [
         'name',
         'description',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $delivery_status->data[$field] = $_POST[$field];
@@ -35,7 +35,7 @@
       $delivery_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'delivery_statuses'], true, ['delivery_status_id']));
       exit;
 
     } catch (Exception $e) {
@@ -51,7 +51,7 @@
       $delivery_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'delivery_statuses'), true, array('delivery_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'delivery_statuses'], true, ['delivery_status_id']));
       exit;
 
     } catch (Exception $e) {

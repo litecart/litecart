@@ -15,10 +15,10 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_COUNTRIES .";"
+        "show fields from ". DB_TABLE_PREFIX ."countries;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -35,7 +35,7 @@
       $this->reset();
 
       $country_query = database::query(
-        "select * from ". DB_TABLE_COUNTRIES ."
+        "select * from ". DB_TABLE_PREFIX ."countries
         ". (preg_match('#^[0-9]+$#', $country_code) ? "where id = '". (int)$country_code ."'" : "") ."
         ". (preg_match('#^[A-Z]{2}$#', $country_code) ? "where iso_code_2 = '". database::input($country_code) ."'" : "") ."
         ". (preg_match('#^[A-Z]{3}$#', $country_code) ? "where iso_code_3 = '". database::input($country_code) ."'" : "") ."
@@ -49,12 +49,12 @@
       }
 
       $zones_query = database::query(
-        "select * from ". DB_TABLE_ZONES ."
+        "select * from ". DB_TABLE_PREFIX ."zones
         where country_code = '". database::input($this->data['iso_code_2']) ."'
         order by name;"
       );
 
-      $this->data['zones'] = array();
+      $this->data['zones'] = [];
       while ($zone = database::fetch($zones_query)) {
         $this->data['zones'][$zone['id']] = $zone;
       }
@@ -73,7 +73,7 @@
       }
 
       $country_query = database::query(
-        "select id from ". DB_TABLE_COUNTRIES ."
+        "select id from ". DB_TABLE_PREFIX ."countries
         where id != ". $this->data['id'] ."
         and (
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."'
@@ -89,7 +89,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_COUNTRIES ."
+          "insert into ". DB_TABLE_PREFIX ."countries
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -97,7 +97,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_COUNTRIES ."
+        "update ". DB_TABLE_PREFIX ."countries
         set
           status = ". (int)$this->data['status'] .",
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."',
@@ -117,7 +117,7 @@
       );
 
       database::query(
-        "delete from ". DB_TABLE_ZONES ."
+        "delete from ". DB_TABLE_PREFIX ."zones
         where country_code = '". database::input($this->data['iso_code_2']) ."'
         and id not in ('". implode("', '", array_column($this->data['zones'], 'id')) ."');"
       );
@@ -126,7 +126,7 @@
         foreach ($this->data['zones'] as $zone) {
           if (empty($zone['id'])) {
             database::query(
-              "insert into ". DB_TABLE_ZONES ."
+              "insert into ". DB_TABLE_PREFIX ."zones
               (country_code, date_created)
               values ('". database::input($this->data['iso_code_2']) ."', '". date('Y-m-d H:i:s') ."');"
             );
@@ -134,7 +134,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_ZONES ."
+            "update ". DB_TABLE_PREFIX ."zones
             set code = '". database::input($zone['code']) ."',
             name = '". database::input($zone['name']) ."',
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -161,12 +161,12 @@
       }
 
       database::query(
-        "delete from ". DB_TABLE_ZONES ."
+        "delete from ". DB_TABLE_PREFIX ."zones
         where code = '". database::input($this->data['iso_code_2']) ."';"
       );
 
       database::query(
-        "delete from ". DB_TABLE_COUNTRIES ."
+        "delete from ". DB_TABLE_PREFIX ."countries
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

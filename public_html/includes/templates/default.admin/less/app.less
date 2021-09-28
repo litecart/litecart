@@ -14,7 +14,7 @@
 
 #main {
   flex: 1 1 auto;
-  background: #fff;
+  background: @main-background-color;
   box-shadow: 0 0px 10px rgba(0, 0, 0, .15);
   transition: all 150ms ease-out;
 }
@@ -129,14 +129,12 @@
 #box-apps-menu {
   margin: 0 5px;
   padding: 0;
-  border-top: 1px #dfdfdf solid;
   display: block;
 
   .app {
     position: relative;
     display: block;
     padding: 0;
-    border-bottom: 1px #dfdfdf solid;
     font-weight: normal;
 
     a {
@@ -160,9 +158,9 @@
   }
 
   ul {
-    padding-left: @default-gutter-size;
+    padding-inline-start: @default-gutter-size;
     border: none;
-    margin-left: 15px;
+    margin-inline-start: 15px;
     li {
       border: none;
       margin-bottom: 2px 0;

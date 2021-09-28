@@ -8,7 +8,7 @@
 
     public function actions() {
 
-      $actions = array();
+      $actions = [];
 
       if (empty($this->modules)) return;
 
@@ -20,21 +20,21 @@
 
         if (empty($result)) continue;
 
-        $actions[$module->id] = array(
+        $actions[$module->id] = [
           'id' => $result['id'],
           'name' => $result['name'],
           'description' => @$result['description'],
-          'actions' => array(),
-        );
+          'actions' => [],
+        ];
 
         foreach ($result['actions'] as $action) {
-          $actions[$module->id]['actions'][$action['id']] = array(
+          $actions[$module->id]['actions'][$action['id']] = [
             'id' => $action['id'],
             'title' => $action['title'],
             'description' => @$action['description'],
             'function' => $action['function'],
             'target' => !empty($action['target']) ? $action['target'] : '_self',
-          );
+          ];
         }
       }
 
@@ -101,14 +101,14 @@
       if (empty($this->modules)) return;
 
       if (!empty($module_id)) {
-        $module_ids = array($module_id);
+        $module_ids = [$module_id];
       } else {
         $module_ids = array_keys($this->modules);
       }
 
       foreach ($module_ids as $module_id) {
         if (method_exists($this->modules[$module_id], $method_name)) {
-          call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
+          call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
         }
       }
     }

@@ -33,20 +33,20 @@
       max-width: none;
     }
     li > a {
-      padding-top: @default-gutter-size/2;
-      padding-bottom: @default-gutter-size/2;
+      padding-top: ~"calc(var(--gutter-size)/2)";
+      padding-bottom: ~"calc(var(--gutter-size)/2)";
     }
     > ul {
       list-style: none;
       padding: 0;
       > li > a {
-        padding-left: 30px;
+        padding-inline-start: 30px;
       }
       > li > ul > li > a {
-        padding-left: 45px;
+        padding-inline-start: 45px;
       }
       > li > ul > li > ul > li > a {
-        padding-left: 60px;
+        padding-inline-start: 60px;
       }
     }
   }
@@ -55,7 +55,7 @@
     > li {
       flex: 1 0 auto;
       > a {
-        margin-right: 0;
+        margin-inline-end: 0;
         text-align: center;
         @media (min-width: @media-breakpoint-sm) {
           margin-bottom: 0;
@@ -70,7 +70,7 @@
     li {
       display: block;
       + li > a {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
   }
@@ -80,50 +80,57 @@
   display: inline-flex;
   li a {
     margin: 1px 0;
-    background: #f3f3f3;
-    padding-top: @default-gutter-size/2;
-    padding-bottom: @default-gutter-size/2;
-    border-radius: @default-border-radius;
+    background: var(--pills-background-color);
+    padding-top: ~"calc(var(--gutter-size)/2)";
+    padding-bottom: ~"calc(var(--gutter-size)/2)";
+    border-radius: var(--border-radius);
     transition: all 125ms linear;
+    color: var(--pills-text-color);
     &:hover {
       background: darken(#f3f3f3, 5%);
     }
   }
   li.active > a {
-    background: @primary-color;
-    color: #fff;
+    background: var(--pills-background-color-active);
+    color: var(--pills-text-color-active);
   }
   li + li > a {
-    margin-left: 2px;
+    margin-inline-start: 2px;
   }
 }
 
 .nav-tabs {
-  background: #f3f3f3;
-  border-bottom: 1px solid @default-border-color;
-  padding: @default-gutter-size/4;
+  background: var(--tabs-background-color);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  border-bottom: 1px solid var(--tabs-border-color);
+  padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size) 0 var(--gutter-size);
+  color: var(--tabs-text-color);
   padding-bottom: 0;
   > li {
+    flex: 0 0 auto;
     > a {
-      margin-right: 2px;
+      margin-inline-end: ~"calc(var(--gutter-size)/2)";
       line-height: 1.42857143;
-      border-radius: @default-border-radius @default-border-radius 0 0;
-      padding: @default-gutter-size/2 @default-gutter-size;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+      background-color: rgba(255, 255, 255, .5);
     }
     &:hover a {
-      background: rgba(255, 255, 255, .5);
+      background-color: rgba(255, 255, 255, .75);
     }
     &.active a {
-      background: #fff;
+      background: var(--tabs-background-color-active);
+      color: var(--tabs-text-color-active);
       margin-bottom: -1px;
-      border: 1px solid @default-border-color;
+      border: 1px solid var(--tabs-border-color);
       border-bottom-color: #fff;
     }
   }
 }
 
 .tab-content {
-  padding: @default-gutter-size 0;
+  padding: var(--gutter-size) 0;
   .tab-pane {
     > .title {
      margin-top: 0;

@@ -1,25 +1,25 @@
 <?php
 
   class mod_shipping extends abs_module {
-    public $data = array();
-    public $items = array();
+    public $data = [];
+    public $items = [];
 
     public function __construct($type='session') {
 
       if ($type == 'session') {
         if (!isset(session::$data['shipping']) || !is_array(session::$data['shipping'])) {
-          session::$data['shipping'] = array();
+          session::$data['shipping'] = [];
         }
 
         $this->data = &session::$data['shipping'];
       }
 
       if (empty($this->data['selected'])) {
-        $this->data['selected'] = array();
+        $this->data['selected'] = [];
       }
 
       if (!isset($this->data['userdata'])) {
-        $this->data['userdata'] = array();
+        $this->data['userdata'] = [];
       }
 
     // Load modules
@@ -34,18 +34,18 @@
 
     public function options($items=null, $currency_code=null, $customer=null) {
 
-      if (empty($items) || empty($this->modules)) return array();
+      if (empty($items) || empty($this->modules)) return [];
 
       if ($currency_code === null) $currency_code = currency::$selected['code'];
       if ($customer === null) $customer = customer::$data;
 
-      $subtotal = array('amount' => 0, 'tax' => 0);
+      $subtotal = ['amount' => 0, 'tax' => 0];
       foreach ($items as $item) {
         $subtotal['amount'] += $item['price'] * $item['quantity'];
         $subtotal['tax'] += $item['tax'] * $item['quantity'];
       }
 
-      $this->data['options'] = array();
+      $this->data['options'] = [];
 
       foreach ($this->modules as $module) {
 
@@ -55,11 +55,10 @@
 
         $this->data['options'][$module->id] = $module_options;
         $this->data['options'][$module->id]['id'] = $module->id;
-        $this->data['options'][$module->id]['options'] = array();
+        $this->data['options'][$module->id]['options'] = [];
 
         foreach ($module_options['options'] as $option) {
-
-          $this->data['options'][$module->id]['options'][$option['id']] = array(
+          $this->data['options'][$module->id]['options'][$option['id']] = [
             'id' => $option['id'],
             'icon' => $option['icon'],
             'title' => !empty($option['title']) ? $option['title'] : $this->data['options'][$module->id]['title'],
@@ -70,7 +69,7 @@
             'tax_class_id' => (int)$option['tax_class_id'],
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
             'error' => !empty($option['error']) ? $option['error'] : false,
-          );
+          ];
         }
       }
 
@@ -79,7 +78,7 @@
 
     public function select($module_id, $option_id, $userdata=null) {
 
-      $this->data['selected'] = array();
+      $this->data['selected'] = [];
 
       if (!isset($this->data['options'][$module_id]['options'][$option_id])) {
         //notices::add('errors', language::translate('error_invalid_shipping_option', 'Cannot set an invalid shipping option.'));
@@ -95,14 +94,14 @@
         $this->data['userdata'][$module_id] = $userdata;
       }
 
-      $this->data['selected'] = array(
+      $this->data['selected'] = [
         'id' => $module_id.':'.$option_id,
         'icon' => $this->data['options'][$module_id]['options'][$option_id]['icon'],
         'title' => $this->data['options'][$module_id]['options'][$option_id]['title'],
         'name' => $this->data['options'][$module_id]['options'][$option_id]['name'],
         'cost' => $this->data['options'][$module_id]['options'][$option_id]['cost'],
         'tax_class_id' => $this->data['options'][$module_id]['options'][$option_id]['tax_class_id'],
-      );
+      ];
     }
 
     public function cheapest($items=null, $currency_code=null, $customer=null) {
@@ -118,12 +117,12 @@
           if (!empty($option['error'])) continue;
           if (!empty($option['exclude_cheapest'])) continue;
           if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
-            $cheapest = array(
+            $cheapest = [
               'module_id' => $module['id'],
               'option_id' => $option['id'],
               'cost' => $option['cost'],
               'tax_class_id' => $option['tax_class_id'],
-            );
+            ];
           }
         }
       }
@@ -133,12 +132,12 @@
           foreach ($module['options'] as $option) {
             if (!empty($option['error'])) continue;
             if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
-              $cheapest = array(
+              $cheapest = [
                 'module_id' => $module['id'],
                 'option_id' => $option['id'],
                 'cost' => $option['cost'],
                 'tax_class_id' => $option['tax_class_id'],
-              );
+              ];
             }
           }
         }
@@ -168,7 +167,7 @@
       }
 
       if (!empty($this->modules[$module_id]) && method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array(array($this->modules[$module_id], $method_name), array_slice(func_get_args(), 2));
+        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
       }
     }
   }

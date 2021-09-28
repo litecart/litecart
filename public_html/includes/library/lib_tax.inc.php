@@ -2,7 +2,7 @@
 
   class tax {
 
-    private static $_cache = array();
+    private static $_cache = [];
 
     ######################################################################
 
@@ -41,15 +41,15 @@
 
       if ((float)$value == 0) return 0;
 
-      $tax_rates = array();
+      $tax_rates = [];
 
       foreach (self::get_rates($tax_class_id, $customer) as $tax_rate) {
         if (!isset($tax_rates[$tax_rate['id']])) {
-          $tax_rates[$tax_rate['id']] = array(
+          $tax_rates[$tax_rate['id']] = [
             'id' => $tax_rate['id'],
             'name' => $tax_rate['name'],
             'tax' => 0,
-          );
+          ];
         }
 
         switch($tax_rate['type']) {
@@ -67,7 +67,7 @@
 
     public static function get_rates($tax_class_id, $customer=null) {
 
-      if (empty($tax_class_id)) return array();
+      if (empty($tax_class_id)) return [];
 
       if (empty($customer)) $customer = 'customer';
 
@@ -76,38 +76,43 @@
         switch(strtolower($customer)) {
 
           case 'store':
-            $customer = array(
+            $customer = [
               'tax_id' => false,
               'company' => false,
               'country_code' => settings::get('store_country_code'),
               'zone_code' => settings::get('store_zone_code'),
-              'shipping_address' => array(
+              'city' => '',
+              'shipping_address' => [
                 'company' => false,
                 'country_code' => settings::get('store_country_code'),
                 'zone_code' => settings::get('store_zone_code'),
-              ),
-            );
+                'city' => '',
+              ],
+            ];
             break;
 
           case 'customer':
-            $customer = array(
+            $customer = [
               'tax_id' => !empty(customer::$data['tax_id']) ? true : false,
               'company' => !empty(customer::$data['company']) ? true : false,
               'country_code' => customer::$data['country_code'],
               'zone_code' => customer::$data['zone_code'],
-              'shipping_address' => array(
+              'city' => customer::$data['city'],
+              'shipping_address' => [
                 'company' => customer::$data['shipping_address']['company'],
                 'country_code' => customer::$data['shipping_address']['country_code'],
                 'zone_code' => customer::$data['shipping_address']['zone_code'],
-              ),
-            );
+                'city' => customer::$data['shipping_address']['city'],
+              ],
+            ];
 
             if (empty(customer::$data['different_shipping_address'])) {
-              $customer['shipping_address'] = array(
+              $customer['shipping_address'] = [
                 'company' => customer::$data['company'],
                 'country_code' => customer::$data['country_code'],
                 'zone_code' => customer::$data['zone_code'],
-              );
+                'city' => customer::$data['city'],
+              ];
             }
             break;
 
@@ -130,22 +135,24 @@
       if (isset(self::$_cache['rates'][$tax_class_id][$checksum])) return self::$_cache['rates'][$tax_class_id][$checksum];
 
       $tax_rates_query = database::query(
-        "select * from ". DB_TABLE_TAX_RATES ."
+        "select * from ". DB_TABLE_PREFIX ."tax_rates
         where tax_class_id = ". (int)$tax_class_id ."
         and (
           (
             address_type = 'payment'
             and geo_zone_id in (
-              select geo_zone_id from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+              select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['country_code']) ."'
               and (zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
+              and (city = '' or city like '". database::input($customer['city']) ."')
             )
           ) or (
             address_type = 'shipping'
             and geo_zone_id in (
-              select geo_zone_id from ". DB_TABLE_ZONES_TO_GEO_ZONES ."
+              select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['shipping_address']['country_code']) ."'
               and (zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
+              and (city = '' or city like '". database::input($customer['shipping_address']['city']) ."')
             )
           )
         )
@@ -156,7 +163,7 @@
         ;"
       );
 
-      $tax_rates = array();
+      $tax_rates = [];
       while ($rate = database::fetch($tax_rates_query)) {
         $tax_rates[$rate['id']] = $rate;
       }
@@ -169,7 +176,7 @@
     public static function get_class_name($tax_class_id) {
 
       $tax_class_query = database::query(
-        "select name from ". DB_TABLE_TAX_CLASSES ."
+        "select name from ". DB_TABLE_PREFIX ."tax_classes
         where id = " . (int)$tax_class_id . "
         limit 1;"
       );
@@ -184,7 +191,7 @@
     public static function get_rate_name($tax_rate_id) {
 
       $tax_rates_query = database::query(
-        "select name from ". DB_TABLE_TAX_RATES ."
+        "select name from ". DB_TABLE_PREFIX ."tax_rates
         where id = " . (int)$tax_rate_id . "
         limit 1;"
       );

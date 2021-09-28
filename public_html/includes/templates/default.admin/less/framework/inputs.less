@@ -18,10 +18,10 @@ input, button, select, textarea {
 }
 
 input[data-type="currency"], input[data-type="number"], input[data-type="decimal"] {
-  text-align: right;
+  text-align: end;
 }
 input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]::-webkit-inner-spin-button {
-  margin-left: @form-input-padding;
+  margin-inline-start: @form-input-padding;
 }
 
 .form-group {
@@ -89,7 +89,7 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding-right: @default-gutter-size * 2;
+    padding-inline-end: @default-gutter-size * 2;
   }
 }
 
@@ -122,7 +122,7 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
     box-shadow: none;
     border-radius: 0;
     border: none;
-    margin-left: -1px;
+    margin-inline-start: -1px;
   }
   .input-group-addon {
     flex: 1 0 auto;
@@ -151,7 +151,7 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   .input-group-icon {
     flex: 1 0 auto;
     padding: @form-input-padding @form-input-padding * 2;
-    margin-right: -12px;
+    margin-inline-end: -12px;
   }
   .input-group-btn {
     flex: 1 0 auto;
@@ -175,7 +175,7 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   .input-group-btn:last-child > .btn,
   .input-group-btn:last-child > .btn-group > .btn,
   .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-    margin-right: -1px;
+    margin-inline-end: -1px;
     border-radius: 0 @default-border-radius @default-border-radius 0;
   }
   + .input-group {

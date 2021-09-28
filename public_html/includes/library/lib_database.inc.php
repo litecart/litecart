@@ -1,10 +1,10 @@
 <?php
 
   class database {
-    private static $_links = array();
+    private static $_links = [];
 
     public static function init() {
-      event::register('shutdown', array(__CLASS__, 'disconnect'));
+      event::register('shutdown', [__CLASS__, 'disconnect']);
     }
 
     public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset=DB_CONNECTION_CHARSET) {
@@ -36,14 +36,14 @@
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
       $sql_mode = preg_split('#\s*,\s*#', $sql_mode, -1, PREG_SPLIT_NO_EMPTY);
 
-      $undesired_modes = array(
+      $undesired_modes = [
         'TRADITIONAL',         // Shortcut flag for a bunch of other flags like below
         'STRICT_ALL_TABLES',   // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
         'STRICT_TRANS_TABLES', // Strict mode [MySQL 5.7+, MariaDB 10.2.4+]
         'ONLY_FULL_GROUP_BY',  // Requiring an undesired amount of columns in group by clause [MySQL 5.7+]
         'NO_ZERO_DATE',        // Prevents us from sending in empty dates [MySQL 5.7+]
         'NO_ZERO_IN_DATE',     // Prevents us from sending in a zero date 0000-00-00 [MySQL 5.7+]
-      );
+      ];
 
       foreach ($undesired_modes as $mode) {
         if (($key = array_search($mode, $sql_mode)) !== false) {
@@ -76,7 +76,7 @@
 
       $charset = strtolower($charset);
 
-      $charset_to_mysql_character_set = array(
+      $charset_to_mysql_character_set = [
         'euc-kr' => 'euckr',
         'iso-8859-1' => 'latin1',
         'iso-8859-2' => 'latin2',
@@ -98,7 +98,7 @@
         'windows-1252' => 'latin1',
         'windows-1256' => 'cp1256',
         'windows-1257' => 'cp1257',
-      );
+      ];
 
       $charset = strtr($charset, $charset_to_mysql_character_set);
 
@@ -117,7 +117,7 @@
     public static function disconnect($link=null) {
 
       if (!empty($link)) {
-        $links = array(self::$_links[$link]);
+        $links = [self::$_links[$link]];
       } else {
         $links = self::$_links;
       }

@@ -11,25 +11,25 @@
 
 .thumbnail {
   display: block;
-  padding: @default-gutter-size/4;
-  line-height: @default-line-height;
+  padding: ~"calc(var(--gutter-size)/4)";
+  line-height: var(--default-line-height);
   background-color: #fff;
-  border: 1px solid @default-border-color;
-  border-radius: @default-border-radius;
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
   transition: border .2s ease-in-out;
   > img,
   a > img {
-    margin-right: auto;
-    margin-left: auto;
+    margin-inline-end: auto;
+    margin-inline-start: auto;
   }
 }
 
 .img-thumbnail {
-  padding: @default-gutter-size/4;
+  padding: ~"calc(var(--gutter-size)/4)";
   max-width: 100%;
   height: auto;
   background-color: #fff;
-  border: 1px solid @default-border-color;
-  border-radius: @default-border-radius;
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
   transition: all .1s ease-in-out;
 }

@@ -1,21 +1,21 @@
 <?php
 
-  $widget_stats_cache_token = cache::token('widget_stats', array('site', 'language'), 'file', 300);
+  $widget_stats_cache_token = cache::token('widget_stats', ['site', 'language'], 'file', 300);
   if (cache::capture($widget_stats_cache_token)) {
 
-    $order_statuses = array();
+    $order_statuses = [];
     $orders_status_query = database::query(
-      "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
+      "select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale;"
     );
     while ($order_status = database::fetch($orders_status_query)) {
       $order_statuses[] = (int)$order_status['id'];
     }
 
-    $stats = array();
+    $stats = [];
 
   // Total Sales
     $orders_query = database::query(
-      "select count(id) as num_orders, max(payment_due) as max_order_amount, sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
+      "select count(id) as num_orders, max(payment_due) as max_order_amount, sum(payment_due - tax_total) as total_sales from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."');"
     );
     $orders = database::fetch($orders_query);
@@ -25,7 +25,7 @@
 
   // Total Sales Year
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales_year from ". DB_TABLE_ORDERS ."
+      "select sum(payment_due - tax_total) as total_sales_year from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) ."';"
     );
@@ -34,7 +34,7 @@
 
   // Total Sales Month
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales_month from ". DB_TABLE_ORDERS ."
+      "select sum(payment_due - tax_total) as total_sales_month from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) ."';"
     );
@@ -43,7 +43,7 @@
 
   // Average order amount
     $orders_query = database::query(
-      "select count(id) as num_orders, sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
+      "select count(id) as num_orders, sum(payment_due - tax_total) as total_sales from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."';"
     );
@@ -52,7 +52,7 @@
 
   // Average order count
     $orders_query = database::query(
-      "select count(id) as num_orders, date_format(date_created, '%Y-%m') as month from ". DB_TABLE_ORDERS ."
+      "select count(id) as num_orders, date_format(date_created, '%Y-%m') as month from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."'
       group by date_format(date_created, '%Y-%m');"
@@ -65,14 +65,14 @@
 
   // Num customers
     $customers_query = database::query(
-      "select count(id) as num_customers from ". DB_TABLE_CUSTOMERS .";"
+      "select count(id) as num_customers from ". DB_TABLE_PREFIX ."customers;"
     );
     $customers = database::fetch($customers_query);
     $stats['num_customers'] = $customers['num_customers'];
 
   // Num products
     $products_query = database::query(
-      "select count(id) as num_products from ". DB_TABLE_PRODUCTS .";"
+      "select count(id) as num_products from ". DB_TABLE_PREFIX ."products;"
     );
     $products = database::fetch($products_query);
     $stats['num_products'] = $products['num_products'];
@@ -80,8 +80,8 @@
   // Total Stock Value
     $stock_query = database::query(
       "select sum(p.quantity * p.purchase_price * c.value) as total_value
-      from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_CURRENCIES ." c on (c.code = p.purchase_price_currency_code);"
+      from ". DB_TABLE_PREFIX ."products p
+      left join ". DB_TABLE_PREFIX ."currencies c on (c.code = p.purchase_price_currency_code);"
     );
 
     $stock = database::fetch($stock_query);
@@ -90,7 +90,7 @@
 <div class="widget">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title"><?php echo language::translate('title_statistics', 'Statistics'); ?></h3>
+      <div class="panel-title"><?php echo language::translate('title_statistics', 'Statistics'); ?></div>
     </div>
 
     <div class="panel-body table-responsive">
@@ -100,23 +100,23 @@
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
+                <td style="text-align: end;"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
+                <td style="text-align: end;"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
+                <td style="text-align: end;"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_total_stock_value', 'Total Stock Value'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['total_stock_value'], false, settings::get('store_currency_code')); ?></td>
+                <td style="text-align: end;"><?php echo currency::format($stats['total_stock_value'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>
-                <td style="text-align: right;"><?php echo language::number_format($stats['num_customers'], 0); ?></td>
+                <td style="text-align: end;"><?php echo language::number_format($stats['num_customers'], 0); ?></td>
               </tr>
             </tbody>
           </table>
@@ -126,19 +126,19 @@
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
-                <td style="text-align: right;"><?php echo language::number_format($stats['num_orders'], 0); ?></td>
+                <td style="text-align: end;"><?php echo language::number_format($stats['num_orders'], 0); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders'); ?>:</td>
-                <td style="text-align: right;"><?php echo language::number_format($stats['average_order_count'], 0); ?></td>
+                <td style="text-align: end;"><?php echo language::number_format($stats['average_order_count'], 0); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_highest_order_amount', 'Highest Order Amount'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')); ?></td>
+                <td style="text-align: end;"><?php echo currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')); ?></td>
               </tr>
               <tr>
                 <td><?php echo language::translate('title_average_order_amount', 'Average Order Amount'); ?>:</td>
-                <td style="text-align: right;"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
+                <td style="text-align: end;"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
               </tr>
             </tbody>
           </table>

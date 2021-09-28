@@ -7,7 +7,7 @@
     public static function init() {
 
     // Bind selected to session
-      if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) session::$data['currency'] = array();
+      if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) session::$data['currency'] = [];
       self::$selected = &session::$data['currency'];
 
     // Load currencies
@@ -21,11 +21,11 @@
 
     public static function load() {
 
-      self::$currencies = array();
+      self::$currencies = [];
 
     // Get currencies from database
       $currencies_query = database::query(
-        "select * from ". DB_TABLE_CURRENCIES ."
+        "select * from ". DB_TABLE_PREFIX ."currencies
         where status
         order by priority;"
       );
@@ -54,7 +54,7 @@
 
       $all_currencies = array_keys(self::$currencies);
 
-      $enabled_currencies = array();
+      $enabled_currencies = [];
       foreach (self::$currencies as $currency) {
         if (!empty(user::$data['id']) || $currency['status'] == 1) $enabled_currencies[] = $currency['code'];
       }
@@ -82,7 +82,7 @@
     // Get currency from country
       if (!empty(customer::$data['country_code'])) {
         $countries_query = database::query(
-          "select * from ". DB_TABLE_COUNTRIES ."
+          "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(customer::$data['country_code']) ."'
           limit 1;"
         );

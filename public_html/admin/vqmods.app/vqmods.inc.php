@@ -84,17 +84,17 @@
   }
 
 // Table Rows
-  $vqmods = array();
+  $vqmods = [];
 
   foreach (glob(FS_DIR_APP . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE) as $file) {
     $xml = simplexml_load_file($file);
-    $vqmods[] = array(
+    $vqmods[] = [
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'enabled' => preg_match('#\.xml$#', $file) ? true : false,
       'id' => (string)$xml->id,
       'version' => (string)$xml->version,
       'author' => (string)$xml->author,
-    );
+    ];
   }
 
 // Number of Rows
@@ -128,12 +128,12 @@
           <tr class="<?php echo $vqmod['enabled'] ? null : 'semi-transparent'; ?>">
             <td><?php echo functions::form_draw_checkbox('vqmods['. $vqmod['filename'] .']', $vqmod['filename']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($vqmod['enabled'] ? '#88cc44' : '#ff6644') .';"'); ?></td>
-            <td><a href="<?php echo document::link(null,  array('doc' => 'view', 'vqmod' => $vqmod['filename']), true); ?>"><?php echo $vqmod['filename']; ?></a></td>
+            <td><a href="<?php echo document::link(null,  ['doc' => 'view', 'vqmod' => $vqmod['filename']], true); ?>"><?php echo $vqmod['filename']; ?></a></td>
             <td><?php echo $vqmod['id']; ?></td>
-            <td><a href="<?php echo document::href_link(null, array('doc' => 'test', 'vqmod' => $vqmod['filename']), true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+            <td><a href="<?php echo document::href_link(null, ['doc' => 'test', 'vqmod' => $vqmod['filename']], true); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
             <td><?php echo !empty($vqmod['version']) ? $vqmod['version'] : date('Y-m-d', filemtime(FS_DIR_APP . 'vqmod/xml/' . $vqmod['filename'])); ?></td>
             <td><?php echo $vqmod['author']; ?></td>
-            <td><a href="<?php echo document::href_link(null, array('doc' => 'download', 'vqmod' => $vqmod['filename']), true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download fa-lg'); ?></a></td>
+            <td><a href="<?php echo document::href_link(null, ['doc' => 'download', 'vqmod' => $vqmod['filename']], true); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download fa-lg'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

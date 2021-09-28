@@ -65,8 +65,8 @@
 							'  <td class="id">' + row.id + '</td>' +
 							'  <td class="name">' + row.name + '</td>' +
 							'  <td class="sku">' + row.sku + '</td>' +
-							'  <td class="quantity text-right">' + row.quantity + '</td>' +
-							'  <td class="price text-right">' + row.price.formatted + '</td>' +
+							'  <td class="quantity text-end">' + row.quantity + '</td>' +
+							'  <td class="price text-end">' + row.price.formatted + '</td>' +
 							'  <td class="date-created">' + row.date_created + '</td>' +
 							'</tr>'
 						);

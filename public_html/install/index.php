@@ -16,7 +16,7 @@
     return $number;
   }
 
-  $countries = array(
+  $countries = [
     'AF' => 'Afghanistan',
     'AL' => 'Albania',
     'DZ' => 'Algeria',
@@ -255,7 +255,7 @@
     'YE' => 'Yemen',
     'ZM' => 'Zambia',
     'ZW' => 'Zimbabwe',
-  );
+  ];
 
 ?>
 
@@ -268,7 +268,7 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="../ext/jquery/jquery-3.5.1.min.js"></script>
+<script src="../ext/jquery/jquery-3.6.0.min.js"></script>
 <script src="../ext/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
@@ -319,14 +319,14 @@ input[name="development_type"]:checked + div {
         <ul>
           <li>Settings
             <ul>
-              <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
+              <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
               <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
               <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
             </ul>
           </li>
           <li>Extensions
             <ul>
-              <li>apcu <?php echo extension_loaded('apcu') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+              <li>apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
               <li>dom <?php echo extension_loaded('dom') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
               <li>gd / imagick <?php echo extension_loaded('imagick') ? '<span class="ok">[OK]</span>' : (extension_loaded('gd') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'); ?></li>
               <li>intl <?php echo extension_loaded('intl') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
@@ -367,7 +367,7 @@ input[name="development_type"]:checked + div {
 
     <ul class="list-unstyled">
 <?php
-  $paths = array(
+  $paths = [
     'admin/.htaccess',
     'admin/.htpasswd',
     'cache/',
@@ -380,7 +380,7 @@ input[name="development_type"]:checked + div {
     'vqmod/checked.cache',
     'vqmod/mods.cache',
     '.htaccess',
-  );
+  ];
   foreach ($paths as $path) {
     if (file_exists($path) && is_writable('../' . $path)) {
       echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
@@ -508,7 +508,7 @@ input[name="development_type"]:checked + div {
 <?php
   foreach (timezone_identifiers_list() as $timezone) {
     $timezone = explode('/', $timezone);
-    if (!in_array($timezone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) continue;
+    if (!in_array($timezone[0], ['Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'])) continue;
     if (empty($timezone[1])) continue;
     echo '<option>'. implode('/', $timezone)  .'</option>';
   }

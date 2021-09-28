@@ -28,7 +28,7 @@
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
 
       $user_query = database::query(
-        "select * from ". DB_TABLE_USERS ."
+        "select * from ". DB_TABLE_PREFIX ."users
         where lower(username) = lower('". database::input($_POST['username']) ."')
         limit 1;"
       );
@@ -56,7 +56,7 @@
 
       // Migrate password
         database::query(
-          "update ". DB_TABLE_USERS ."
+          "update ". DB_TABLE_PREFIX ."users
           set password_hash = '". database::input($user['password_hash'] = password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
           where id = ". (int)$user['id'] ."
           limit 1;"
@@ -67,7 +67,7 @@
         if (++$user['login_attempts'] < 3) {
 
           database::query(
-            "update ". DB_TABLE_USERS ."
+            "update ". DB_TABLE_PREFIX ."users
             set login_attempts = login_attempts + 1
             where id = ". (int)$user['id'] ."
             limit 1;"
@@ -78,7 +78,7 @@
         } else {
 
           database::query(
-            "update ". DB_TABLE_USERS ."
+            "update ". DB_TABLE_PREFIX ."users
             set login_attempts = 0,
             date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
             where id = ". (int)$user['id'] ."
@@ -93,7 +93,7 @@
 
       if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
         database::query(
-          "update ". DB_TABLE_USERS ."
+          "update ". DB_TABLE_PREFIX ."users
           set password_hash = '". database::input(password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
           where id = ". (int)$user['id'] ."
           limit 1;"
@@ -101,11 +101,11 @@
       }
 
       if (!empty($user['last_host']) && $user['last_host'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
-        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), array('%hostname' => $user['last_host'])));
+        notices::add('warnings', strtr(language::translate('warning_account_previously_used_by_another_host', 'Your account was previously used by another location or hostname (%hostname). If this was not you then your login credentials might be compromised.'), ['%hostname' => $user['last_host']]));
       }
 
       database::query(
-        "update ". DB_TABLE_USERS ."
+        "update ". DB_TABLE_PREFIX ."users
         set
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
@@ -118,6 +118,7 @@
 
       user::load($user['id']);
 
+      session::$data['user_security_timestamp'] = time();
       session::regenerate_id();
 
       if (!empty($_POST['remember_me'])) {
@@ -134,7 +135,7 @@
         $redirect_url = document::ilink('');
       }
 
-      notices::add('success', str_replace(array('%username'), array(user::$data['username']), language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
+      notices::add('success', str_replace(['%username'], [user::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
       header('Location: '. $redirect_url);
       exit;
 

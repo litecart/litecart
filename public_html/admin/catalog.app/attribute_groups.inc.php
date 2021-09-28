@@ -7,11 +7,11 @@
   breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'));
 
 // Table Rows
-  $attribute_groups = array();
+  $attribute_groups = [];
 
   $attribute_groups_query = database::query(
-    "select ag.id, ag.code, agi.name from ". DB_TABLE_ATTRIBUTE_GROUPS ." ag
-    left join ". DB_TABLE_ATTRIBUTE_GROUPS_INFO ." agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
+    "select ag.id, ag.code, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
+    left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
     order by agi.name asc;"
   );
 
@@ -36,7 +36,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc'=> 'edit_attribute_group'), array('app')), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc'=> 'edit_attribute_group'], ['app']), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -62,9 +62,9 @@
             <td><?php echo functions::form_draw_checkbox('attributes['. $attribute_group['id'] .']', $attribute_group['id']); ?></td>
             <td style="text-align: center;"><?php echo $attribute_group['id']; ?></td>
             <td><?php echo $attribute_group['code']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']), array('app')); ?>"><?php echo $attribute_group['name']; ?></a></td>
-            <td style="text-align: center;"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ATTRIBUTE_VALUES ." where group_id = ". (int)$attribute_group['id'] .";")); ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], ['app']); ?>"><?php echo $attribute_group['name']; ?></a></td>
+            <td style="text-align: center;"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where group_id = ". (int)$attribute_group['id'] .";")); ?></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_attribute_group', 'group_id' => $attribute_group['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

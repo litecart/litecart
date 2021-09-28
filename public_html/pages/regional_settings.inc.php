@@ -40,7 +40,7 @@
         $redirect_url = new ent_link($_GET['redirect_url']);
         $redirect_url->host = '';
       } else {
-        $_GET['redirect_url'] = document::ilink('', array(), null, array(), !empty($_POST['language_code']) ? $_POST['language_code'] : '');
+        $_GET['redirect_url'] = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -54,10 +54,10 @@
 
   $_page = new ent_view();
 
-  $_page->snippets = array(
-    'currencies' => array(),
-    'languages' => array(),
-  );
+  $_page->snippets = [
+    'currencies' => [],
+    'languages' => [],
+  ];
 
   foreach (currency::$currencies as $currency) {
     if (!empty(user::$data['id']) || $currency['status'] == 1) $_page->snippets['currencies'][] = $currency;

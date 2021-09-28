@@ -10,7 +10,7 @@
 
   if (empty($_POST)) {
 
-    $fields = array(
+    $fields = [
       'name',
       'sku',
       'gtin',
@@ -23,7 +23,7 @@
       'dim_class',
       'price',
       'tax',
-    );
+    ];
 
     foreach ($fields as $field) {
       if (isset($product->$field)) $_POST[$field] = $product->$field;
@@ -134,7 +134,7 @@
 
         case 'select':
 
-          $options = array(array('-- '. language::translate('title_select', 'Select') .' --', ''));
+          $options = [['-- '. language::translate('title_select', 'Select') .' --', '']];
 
           foreach ($group['values'] as $value) {
 
@@ -147,7 +147,7 @@
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
+            $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
           }
 
           echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required' : ''));
@@ -262,7 +262,7 @@
           <tfoot>
             <tr>
               <td colspan="2"></td>
-              <td class="text-right"><strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?></td>
+              <td class="text-end"><strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?></td>
             </tr>
           </tfoot>
         </table>

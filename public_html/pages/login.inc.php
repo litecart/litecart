@@ -28,7 +28,7 @@
       }
 
       $customer_query = database::query(
-        "select * from ". DB_TABLE_CUSTOMERS ."
+        "select * from ". DB_TABLE_PREFIX ."customers
         where lower(email) = lower('". database::input($_POST['email']) ."')
         limit 1;"
       );
@@ -50,7 +50,7 @@
 
       // Migrate password
         database::query(
-          "update ". DB_TABLE_CUSTOMERS ."
+          "update ". DB_TABLE_PREFIX ."customers
           set password_hash = '". database::input($customer['password_hash'] = password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
           where id = ". (int)$customer['id'] ."
           limit 1;"
@@ -58,12 +58,35 @@
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
-        throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
+
+        if (++$customer['login_attempts'] < 3) {
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."customers
+            set login_attempts = login_attempts + 1
+            where id = ". (int)$customer['id'] ."
+            limit 1;"
+          );
+
+          throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
+
+        } else {
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."customers
+            set login_attempts = 0,
+            date_blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+            where id = ". (int)$customer['id'] ."
+            limit 1;"
+          );
+
+          throw new Exception(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+        }
       }
 
       if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
         database::query(
-          "update ". DB_TABLE_CUSTOMERS ."
+          "update ". DB_TABLE_PREFIX ."customers
           set password_hash = '". database::input(password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
           where id = ". (int)$customer['id'] ."
           limit 1;"
@@ -71,7 +94,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_CUSTOMERS ." set
+        "update ". DB_TABLE_PREFIX ."customers set
           num_logins = num_logins + 1,
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
@@ -83,6 +106,7 @@
 
       customer::load($customer['id']);
 
+      session::$data['customer_security_timestamp'] = time();
       session::regenerate_id();
 
       if (!empty($_POST['remember_me'])) {
@@ -90,11 +114,11 @@
         header('Set-Cookie: customer_remember_me='. $customer['email'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Lax', false);
       }
 
-      notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), array(
+      notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), [
         '%email' => customer::$data['email'],
         '%firstname' => customer::$data['firstname'],
         '%lastname' => customer::$data['lastname'],
-      )));
+      ]));
 
       if (!empty($_POST['redirect_url'])) {
         $redirect_url = new ent_link($_POST['redirect_url']);

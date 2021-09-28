@@ -1,7 +1,7 @@
 <?php
 
 // Delete old files
-  $deleted_files = array(
+  $deleted_files = [
     FS_DIR_ADMIN . 'orders.app/add_custom_item.inc.php',
     FS_DIR_ADMIN . 'orders.app/get_address.json.inc.php',
     FS_DIR_APP . 'data/bad_urls.txt',
@@ -58,7 +58,7 @@
     FS_DIR_APP . 'pages/ajax/checkout_payment.html.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_shipping.html.inc.php',
     FS_DIR_APP . 'pages/ajax/checkout_summary.html.inc.php',
-  );
+  ];
 
   foreach ($deleted_files as $pattern) {
     if (!file_delete($pattern)) {
@@ -73,38 +73,38 @@
   }
 
 // Modify some files
-  $modified_files = array(
-    array(
+  $modified_files = [
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "## Files and Directory  ##############################################",
       'replace' => "## Files and Directories #############################################",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "    //if (is_writable(__FILE__)) chmod(__FILE__, 0444);" . PHP_EOL . PHP_EOL,
       'replace' => "",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '{ADMIN_FOLDER}/');" . PHP_EOL,
       'replace' => '',
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_AJAX',        WS_DIR_APP . 'ajax/');" . PHP_EOL,
       'replace' => '',
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  ini_set('error_log', FS_DIR_HTTP_ROOT . WS_DIR_LOGS . 'errors.log');",
       'replace' => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'install/.htaccess',
       'search'  => '<FilesMatch "\.(gif|ico|jpg|jpeg|js|pdf|png|svg|ttf)$">',
       'replace' => '<FilesMatch "\.(eot|gif|ico|jpg|jpeg|js|otf|pdf|png|svg|ttf|woff|woff2)$">',
-    ),
-  );
+    ],
+  ];
 
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
@@ -113,13 +113,13 @@
   }
 
 // Modify some files
-  $modified_files = array(
-    array(
+  $modified_files = [
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_HTTP_HOME . '". $admin_folder_name ."/');" . PHP_EOL,
       'replace' => "",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "## Files and Directories #############################################" . PHP_EOL
                  . "######################################################################" . PHP_EOL,
@@ -142,14 +142,14 @@
                  . "## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######" . PHP_EOL
                  . "######################################################################" . PHP_EOL
                  . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/');" . PHP_EOL,
       'replace' => "  define('WS_DIR_CONTROLLERS', WS_DIR_INCLUDES  . 'controllers/'); // Deprecated in favour of Entities" . PHP_EOL
                  . "  define('WS_DIR_ENTITIES',    WS_DIR_INCLUDES  . 'entities/');" . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_ATTRIBUTE_GROUPS',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_groups`');" . PHP_EOL
@@ -157,47 +157,47 @@
                  . "  define('DB_TABLE_ATTRIBUTE_VALUES',                  '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values`');" . PHP_EOL
                  . "  define('DB_TABLE_ATTRIBUTE_VALUES_INFO',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'attribute_values_info`');" . PHP_EOL
                  . "  define('DB_TABLE_CART_ITEMS',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'cart_items`');" . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_CATEGORIES',                        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories`');" . PHP_EOL
                  . "  define('DB_TABLE_CATEGORIES_FILTERS',                '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_filters`');" . PHP_EOL
                  . "  define('DB_TABLE_CATEGORIES_IMAGES',                 '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'categories_images`');" . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_DELIVERY_STATUSES_INFO',            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'delivery_statuses_info`');" . PHP_EOL
                  . "  define('DB_TABLE_EMAILS',                            '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'emails`');" . PHP_EOL,
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS',                    '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups`');" . PHP_EOL,
       'replace' => "",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_INFO',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_info`');" . PHP_EOL,
       'replace' => "",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES',             '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values`');" . PHP_EOL,
       'replace' => "",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCT_GROUPS_VALUES_INFO',        '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'product_groups_values_info`');" . PHP_EOL,
       'replace' => "",
-    ),
-    array(
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL,
       'replace' => "  define('DB_TABLE_PRODUCTS',                          '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products`');" . PHP_EOL
                  . "  define('DB_TABLE_PRODUCTS_ATTRIBUTES',               '`'. DB_DATABASE .'`.`'. DB_TABLE_PREFIX . 'products_attributes`');" . PHP_EOL,
-    ),
-  );
+    ],
+  ];
 
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {
@@ -207,7 +207,7 @@
 
 // Complete Order Items
   $order_items_query = database::query(
-    "select * from ". DB_TABLE_ORDERS_ITEMS .";"
+    "select * from ". DB_TABLE_PREFIX ."orders_items;"
   );
 
   while ($order_item = database::fetch($order_items_query)) {
@@ -216,7 +216,7 @@
   // Get stock option
     if (!empty($order_item['option_stock_combination'])) {
       $stock_options_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        "select * from ". DB_TABLE_PREFIX ."products_options_stock
         where combination = '". database::input($order_item['option_stock_combination']) ."'
         limit 1;"
       );
@@ -226,7 +226,7 @@
 
     if (empty($stock_option)) {
       $stock_options_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        "select * from ". DB_TABLE_PREFIX ."products_options_stock
         where sku = '". database::input($order_item['sku']) ."'
         limit 1;"
       );
@@ -236,14 +236,14 @@
 
   // Product
     $products_query = database::query(
-      "select * from ". DB_TABLE_PRODUCTS ."
+      "select * from ". DB_TABLE_PREFIX ."products
       where id = ". (!empty($stock_option['product_id']) ? $stock_option['product_id'] : (int)$order_item['product_id']) ."
       limit 1;"
     );
 
     if (!$product = database::fetch($products_query)) {
       $products_query = database::query(
-        "select * from ". DB_TABLE_PRODUCTS ."
+        "select * from ". DB_TABLE_PREFIX ."products
         where sku = '". database::input($order_item['sku']) ."'
         limit 1;"
       );
@@ -253,7 +253,7 @@
 
   // Update order item
     database::query(
-      "update ". DB_TABLE_ORDERS_ITEMS ."
+      "update ". DB_TABLE_PREFIX ."orders_items
       set
         gtin = '". database::input($product['gtin']) ."',
         taric = '". database::input($product['taric']) ."',
@@ -275,7 +275,7 @@
   );
 
   $orders_query = database::query(
-    "select * from ". DB_TABLE_ORDERS ."
+    "select * from ". DB_TABLE_PREFIX ."orders
     where public_key = '';"
   );
 
@@ -284,30 +284,30 @@
     $public_key = md5($order['id'] . $order['uid'] . $order['customer_email'] . $order['date_created']);
 
     database::query(
-      "update ". DB_TABLE_ORDERS ."
+      "update ". DB_TABLE_PREFIX ."orders
       set public_key = '". database::input($public_key) ."'
       where id = ". (int)$order['id'] .";"
     );
   }
 
 // Fix unique indexes (ALTER IGNORE is deprecated)
-  $tables = array(
-    array('table' => DB_TABLE_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'manufacturers_info',         'index' => 'manufacturer_info',        'columns' => '`manufacturer_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'option_groups_info',         'index' => 'option_group_info',        'columns' => '`group_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'option_values_info',         'index' => 'option_value_info',        'columns' => '`value_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'order_statuses_info',        'index' => 'order_status_info',        'columns' => '`order_status_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'pages_info',                 'index' => 'page_info',                'columns' => '`page_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'products_info',              'index' => 'product_info',             'columns' => '`product_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'),
-    array('table' => DB_TABLE_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'),
-    array('table' => DB_TABLE_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'),
-    array('table' => DB_TABLE_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'),
-    array('table' => DB_TABLE_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'),
-  );
+  $tables = [
+    ['table' => DB_TABLE_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'manufacturers_info',         'index' => 'manufacturer_info',        'columns' => '`manufacturer_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'option_groups_info',         'index' => 'option_group_info',        'columns' => '`group_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'option_values_info',         'index' => 'option_value_info',        'columns' => '`value_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'order_statuses_info',        'index' => 'order_status_info',        'columns' => '`order_status_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'pages_info',                 'index' => 'page_info',                'columns' => '`page_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'products_info',              'index' => 'product_info',             'columns' => '`product_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'],
+    ['table' => DB_TABLE_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'],
+    ['table' => DB_TABLE_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'],
+    ['table' => DB_TABLE_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'],
+    ['table' => DB_TABLE_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'],
+  ];
 
   foreach ($tables as $table) {
     $index_query = database::query(

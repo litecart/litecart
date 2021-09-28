@@ -15,28 +15,28 @@
   document::$snippets['title'][] = !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
-  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+  breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
   breadcrumbs::add(!empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group'));
 
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['values'])) $_POST['values'] = array();
+      if (empty($_POST['values'])) $_POST['values'] = [];
 
       foreach ($_POST['values'] as $value) {
         foreach ($value['name'] as $name) {
           if (preg_match('#(["\',\[\]<>])#', $name, $matches)) {
-            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), array('%char' => $matches[1])));
+            throw new Exception(strtr(language::translate('error_attribute_value_contains_forbidden_character', 'An attribute value contains a forbidden character (%char)'), ['%char' => $matches[1]]));
           }
         }
       }
 
-      $fields = array(
+      $fields = [
         'code',
         'sort',
         'name',
         'values',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $attribute_group->data[$field] = $_POST[$field];
@@ -45,7 +45,7 @@
       $attribute_group->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -61,7 +61,7 @@
       $attribute_group->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'attribute_groups'), array('app')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'attribute_groups'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -69,10 +69,10 @@
     }
   }
 
-  $option_sort_options = array(
-    array(language::translate('title_list_order', 'List Order'), 'priority'),
-    array(language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'),
-  );
+  $option_sort_options = [
+    [language::translate('title_list_order', 'List Order'), 'priority'],
+    [language::translate('title_alphabetical', 'Alphabetical'), 'alphabetical'],
+  ];
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
@@ -117,7 +117,7 @@
               <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
               <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, ''); ?></td>
               <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
-              <td class="text-right"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"') .'</a>' : false; ?></td>
+              <td class="text-end"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"') .'</a>' : false; ?></td>
             </tr>
             <?php } ?>
           </tbody>
@@ -153,7 +153,7 @@
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
                + '  <td><?php echo functions::general_escape_js($name_fields); ?></td>'
                + '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>'
-               + '  <td class="text-right"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     output = output.replace(/new_value_index/g, 'new_' + new_value_index);
     $(this).closest('table').find('tbody').append(output);

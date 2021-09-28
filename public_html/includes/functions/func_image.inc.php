@@ -3,18 +3,18 @@
   function image_scale_by_width($width, $ratio) {
     switch($ratio) {
       case '2:3':
-        return array($width, round($width/2*3));
+        return [$width, round($width/2*3)];
       case '3:2':
-        return array($width, round($width/3*2));
+        return [$width, round($width/3*2)];
       case '3:4':
-        return array($width, round($width/3*4));
+        return [$width, round($width/3*4)];
       case '4:3':
-        return array($width, round($width/4*3));
+        return [$width, round($width/4*3)];
       case '16:9':
-        return array($width, round($width/16*9));
+        return [$width, round($width/16*9)];
       case '1:1':
       default:
-        return array($width, $width);
+        return [$width, $width];
     }
   }
 
@@ -24,7 +24,7 @@
 
       if (!is_file($source)) $source = FS_DIR_APP . 'images/no_image.png';
 
-      $options = array(
+      $options = [
         'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_APP . 'cache/',
         'width' => !empty($options['width']) ? $options['width'] : 0,
         'height' => !empty($options['height']) ? $options['height'] : 0,
@@ -34,7 +34,7 @@
         'interlaced' => !empty($options['interlaced']) ? true : false,
         'overwrite' => !empty($options['overwrite']) ? $options['overwrite'] : false,
         'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
-      );
+      ];
 
     // If destination is a directory
       if (is_dir($options['destination'])) {
@@ -76,14 +76,14 @@
 
   function image_resample($source, $destination, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $quality=null) {
 
-    return image_process($source, array(
+    return image_process($source, [
       'destination' => $destination,
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,
       'trim' => false,
       'quality' => $quality,
-    ));
+    ]);
   }
 
   function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=false) {
@@ -162,7 +162,7 @@
       }
     }
 
-    return image_process($source, array(
+    return image_process($source, [
       'destination' => $cache_file,
       'width' => $width,
       'height' => $height,
@@ -170,7 +170,7 @@
       'trim' => !empty($trim) ? $trim : false,
       'quality' => settings::get('image_thumbnail_quality'),
       'interlaced' => settings::get('image_thumbnail_interlaced'),
-    ));
+    ]);
   }
 
   function image_delete_cache($file) {

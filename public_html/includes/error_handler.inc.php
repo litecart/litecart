@@ -47,15 +47,15 @@
       }
     }
 
-    if (in_array(strtolower(ini_get('display_errors')), array('1', 'on', 'true'))) {
-      if (in_array(strtolower(ini_get('html_errors')), array('0', 'off', 'false')) || PHP_SAPI == 'cli') {
+    if (in_array(strtolower(ini_get('display_errors')), ['1', 'on', 'true'])) {
+      if (in_array(strtolower(ini_get('html_errors')), ['0', 'off', 'false']) || PHP_SAPI == 'cli') {
         echo strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
       } else {
         echo $output . (isset($_GET['debug']) ? $backtrace_output : '');
       }
     }
 
-    if (in_array(strtolower(ini_get('log_errors')), array('1', 'on', 'true'))) {
+    if (in_array(strtolower(ini_get('log_errors')), ['1', 'on', 'true'])) {
       error_log(
         strip_tags($output . $backtrace_output) .
         "Request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']} {$_SERVER['SERVER_PROTOCOL']}" . PHP_EOL .
@@ -66,7 +66,7 @@
       );
     }
 
-    if (in_array($errno, array(E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, E_USER_ERROR))) {
+    if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, E_USER_ERROR])) {
       http_response_code(500);
       exit;
     }

@@ -8,7 +8,7 @@
   $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : date('Y-01-01 00:00:00');
   $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = array($_GET['date_to'], $_GET['date_from']);
+  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
   if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
   if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
@@ -16,7 +16,7 @@
   if (empty($_GET['page']) || !is_numeric($_GET['page'])) $_GET['page'] = 1;
 
 // Table Rows
-  $rows = array();
+  $rows = [];
 
   $order_items_query = database::query(
     "select
@@ -26,10 +26,10 @@
       sum(oi.quantity) as total_quantity,
       sum(oi.price * oi.quantity) as total_sales,
       sum(oi.tax * oi.quantity) as total_tax
-    from ". DB_TABLE_ORDERS_ITEMS ." oi
-    left join ". DB_TABLE_ORDERS ." o on (o.id = oi.order_id)
+    from ". DB_TABLE_PREFIX ."orders_items oi
+    left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
     where o.order_status_id in (
-      select id from ". DB_TABLE_ORDER_STATUSES ."
+      select id from ". DB_TABLE_PREFIX ."order_statuses
       where is_sale
     )
     and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
@@ -107,8 +107,8 @@ form[name="filter_form"] li {
         <tr>
           <td><?php echo $row['name']; ?></td>
           <td style="text-align: center;" class="border-left"><?php echo (float)$row['total_quantity']; ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
-          <td style="text-align: right;" class="border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
+          <td style="text-align: end;" class="border-left"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
+          <td style="text-align: end;" class="border-left"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
         </tr>
         <?php } ?>
       </tbody>

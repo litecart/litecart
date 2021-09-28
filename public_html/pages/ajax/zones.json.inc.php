@@ -4,18 +4,18 @@
   if (!isset($_GET['country_code'])) exit;
 
   $zones_query = database::query(
-    "select * from ". DB_TABLE_ZONES ."
+    "select * from ". DB_TABLE_PREFIX ."zones
     where country_code = '". database::input($_GET['country_code']) ."'
     order by name asc;"
   );
 
-  $json = array();
+  $json = [];
 
   while ($zone = database::fetch($zones_query)) {
-    $json[] = array(
+    $json[] = [
       'code' => $zone['code'],
       'name' => $zone['name'],
-    );
+    ];
   }
 
   language::convert_characters($json, language::$selected['charset'], 'UTF-8');

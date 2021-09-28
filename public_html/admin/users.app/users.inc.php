@@ -27,10 +27,10 @@
   }
 
 // Table Rows
-  $users = array();
+  $users = [];
 
   $users_query = database::query(
-    "select * from ". DB_TABLE_USERS ."
+    "select * from ". DB_TABLE_PREFIX ."users
     order by username;"
   );
 
@@ -43,11 +43,11 @@
       $user['warning'] = null;
 
       if ($user['date_valid_from'] > date('Y-m-d H:i:s')) {
-        throw new Exception(strtr(language::translate('text_acount_cannot_be_used_until_x', 'The account cannot be used until %datetime'), array('%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from'])))));
+        throw new Exception(strtr(language::translate('text_acount_cannot_be_used_until_x', 'The account cannot be used until %datetime'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))]));
       }
 
       if ($user['date_valid_to'] > 1970 && $user['date_valid_to'] < date('Y-m-d H:i:s')) {
-        throw new Exception(strtr(language::translate('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), array('%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to'])))));
+        throw new Exception(strtr(language::translate('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))]));
       }
 
     } catch (Exception $e) {
@@ -77,7 +77,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_user'), true), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_user'], true), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -90,11 +90,11 @@
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
             <th></th>
-            <th><?php echo language::translate('title_username', 'Username'); ?></th>
-            <th class="main"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
-            <th></th>
-            <th><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
-            <th><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_username', 'Username'); ?></th>
+            <th class="main"></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
+            <th style="min-width: 200px;"><?php echo language::translate('title_access', 'Access'); ?></th>
             <th></th>
           </tr>
         </thead>
@@ -105,12 +105,12 @@
             <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td class="warning"><?php echo !empty($user['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($user['warning']) .'"') : ''; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
             <td><?php echo $user['email']; ?></td>
-            <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : language::translate('title_administrator', 'Administrator'); ?></td>
             <td><?php echo ($user['date_valid_from'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from'])) : '-'; ?></td>
             <td><?php echo ($user['date_valid_to'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to'])) : '-'; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : language::translate('title_full_access', 'Full Access'); ?></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php }?>
         </tbody>

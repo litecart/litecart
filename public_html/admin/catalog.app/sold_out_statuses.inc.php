@@ -6,11 +6,11 @@
   breadcrumbs::add(language::translate('title_sold_out_statuses', 'Sold-Out Statuses'));
 
 // Table Rows
-  $sold_out_statuses = array();
+  $sold_out_statuses = [];
 
   $sold_out_status_query = database::query(
-    "select sos.id, sos.hidden, sos.orderable, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
-    left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". database::input(language::$selected['code']) ."')
+    "select sos.id, sos.hidden, sos.orderable, sosi.name from ". DB_TABLE_PREFIX ."sold_out_statuses sos
+    left join ". DB_TABLE_PREFIX ."sold_out_statuses_info sosi on (sos.id = sosi.sold_out_status_id and sosi.language_code = '". database::input(language::$selected['code']) ."')
     order by sosi.name asc;"
   );
 
@@ -35,7 +35,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_sold_out_status'), true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_sold_out_status'], true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -59,10 +59,10 @@
           <tr>
             <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $sold_out_status['id'] .']', $sold_out_status['id']); ?></td>
             <td><?php echo $sold_out_status['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
             <td class="text-center"><?php echo !empty($sold_out_status['hidden']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
             <td class="text-center"><?php echo !empty($sold_out_status['orderable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td style="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td style="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

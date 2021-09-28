@@ -1,4 +1,20 @@
 /* Grid - Bootstrap Compatible */
+.float-start {
+  float: left;
+}
+.float-end {
+  float: right;
+}
+
+/* Workaround as inline-start and inline-end are not yet supported by browsers */
+html[dir="rtl"] {
+  .float-start {
+    float: right;
+  }
+  .float-end {
+    float: left;
+  }
+}
 
 .twelve-eighty {
   min-width: 320px;
@@ -6,18 +22,18 @@
   margin: 0 auto;
 }
 
-.pull-left {
-  float: left;
+.container, .fourteen-forty {
+  min-width: 320px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
-.pull-right {
-  float: right;
-}
+
 
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: @default-gutter-size/2;
-  margin-bottom: @default-gutter-size/2;
+  grid-gap: ~"calc(var(--gutter-size)/2)";
+  margin-bottom: ~"calc(var(--gutter-size)/2)";
   &.column {
     flex-direction: column;
   }
@@ -32,8 +48,8 @@
     grid-column: span 12;
   }
   @media (min-width: @media-breakpoint-sm) {
-    grid-gap: @default-gutter-size;
-    margin-bottom: @default-gutter-size;
+    grid-gap: var(--gutter-size);
+    margin-bottom: var(--gutter-size);
   }
 }
 
@@ -66,19 +82,27 @@
   .make-grid-columns(lg);
 }
 
+@media (min-width: @media-breakpoint-xl) {
+  .make-grid-columns(xl);
+}
+
+@media (min-width: @media-breakpoint-xxl) {
+  .make-grid-columns(xxl);
+}
+
 // Hidden
 
 @media (max-width: (@media-breakpoint-sm - 1px)) {
   .hidden-xs { display: none !important; }
 }
 @media (min-width: (@media-breakpoint-sm)) and (max-width: (@media-breakpoint-md - 1px)) {
-  .hidden-sm { display: none; }
+  .hidden-sm { display: none !important; }
 }
 @media (min-width: @media-breakpoint-md) and (max-width: (@media-breakpoint-lg - 1px)) {
-  .hidden-md { display: none; }
+  .hidden-md { display: none !important; }
 }
 @media (min-width: @media-breakpoint-lg) {
-  .hidden-lg { display: none; }
+  .hidden-lg { display: none !important; }
 }
 
 @media print {

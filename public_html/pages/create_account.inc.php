@@ -34,11 +34,12 @@
       }
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
-      if (database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
+      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
 
       if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
-      if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
-      if (isset($_POST['password']) && isset($_POST['confirmed_password']) && $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+      if (!functions::password_validate($_POST['password'], 8, 1, 1, 1, 0)) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough. It must consist of at least 8 lowercases, uppercases, and numbers'));
+      if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password'));
+      if ($_POST['confirmed_password'] != $_POST['password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 
       if (empty($_POST['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
       if (empty($_POST['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
@@ -68,7 +69,7 @@
 
       $customer->data['status'] = 1;
 
-      $fields = array(
+      $fields = [
         'email',
         'tax_id',
         'company',
@@ -82,7 +83,7 @@
         'zone_code',
         'phone',
         'newsletter',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $customer->data[$field] = $_POST[$field];
@@ -93,7 +94,7 @@
       $customer->save();
 
       database::query(
-        "update ". DB_TABLE_CUSTOMERS ."
+        "update ". DB_TABLE_PREFIX ."customers
         set last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
             last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
             last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
@@ -103,14 +104,14 @@
 
       customer::load($customer->data['id']);
 
-      $aliases = array(
+      $aliases = [
         '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
         '%customer_id' => $customer->data['id'],
         '%customer_firstname' => $customer->data['firstname'],
         '%customer_lastname' => $customer->data['lastname'],
         '%customer_email' => $customer->data['email'],
-      );
+      ];
 
       $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');
       $message = strtr(language::translate('email_account_created', "Welcome %customer_firstname %customer_lastname to %store_name!\r\n\r\nYour account has been created. You can now make purchases in our online store and keep track of history.\r\n\r\nLogin using your email address %customer_email.\r\n\r\n%store_name\r\n\r\n%store_link"), $aliases);
@@ -132,15 +133,15 @@
 
   $_page = new ent_view();
 
-  $_page->snippets = array(
+  $_page->snippets = [
     'consent' => null,
-  );
+  ];
 
   if ($privacy_policy_id = settings::get('privacy_policy')) {
 
-      $aliases = array(
-        '%privacy_policy_link' => document::href_ilink('information', array('page_id' => $privacy_policy_id)),
-      );
+      $aliases = [
+        '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+      ];
 
       $_page->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
   }

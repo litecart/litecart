@@ -1,11 +1,11 @@
 <?php
-  $modified_files = array(
-    array(
+  $modified_files = [
+    [
       'file'    => FS_DIR_APP . '.htaccess',
       'search'  => "864000",
       'replace' => "86400",
-    ),
-  );
+    ],
+  ];
 
   foreach ($modified_files as $modification) {
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'])) {

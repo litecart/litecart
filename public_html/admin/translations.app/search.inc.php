@@ -22,7 +22,7 @@
         $sql_update_fields .= "text_".database::input($language_code) ." = '". database::input(trim($translation['text_'.database::input($language_code)]), !empty($translation['html']) ? true : false) ."', " . PHP_EOL;
       }
       database::query(
-        "update ". DB_TABLE_TRANSLATIONS ."
+        "update ". DB_TABLE_PREFIX ."translations
         set
         html = ". (!empty($translation['html']) ? 1 : 0) .",
           ". $sql_update_fields ."
@@ -36,47 +36,47 @@
 
     notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
-    header('Location: '. document::link(WS_DIR_ADMIN, array(), true));
+    header('Location: '. document::link(WS_DIR_ADMIN, [], true));
     exit;
   }
 
   if (isset($_POST['delete']) && !empty($_POST['translation_id'])) {
 
     database::query(
-      "delete from ". DB_TABLE_TRANSLATIONS ."
+      "delete from ". DB_TABLE_PREFIX ."translations
       where id = '". database::input($_POST['translation_id']) ."'
       limit 1;"
     );
 
     cache::clear_cache('translations');
 
-    echo json_encode(array('status' => 'ok'));
+    echo json_encode(['status' => 'ok']);
     exit;
   }
 
 // Languages
   $languages_query = database::query(
-    "select * from ". DB_TABLE_LANGUAGES ."
+    "select * from ". DB_TABLE_PREFIX ."languages
     where code in ('". implode("', '", database::input($_GET['languages'])) ."')
     order by priority;"
   );
 
-  $languages = array();
+  $languages = [];
   while ($language = database::fetch($languages_query)) {
     $languages[$language['code']] = $language;
   }
 
 // Table Rows
-  $translations = array();
+  $translations = [];
 
   $translations_query = database::query(
-    "select * from ". DB_TABLE_TRANSLATIONS ."
+    "select * from ". DB_TABLE_PREFIX ."translations
     where code != ''
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : null) ."
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : null) ."
     ". (!empty($_GET['query']) ? "and (code like '%". str_replace('%', "\\%", database::input($_GET['query'])) ."%' or `text_". implode("` like '%". database::input($_GET['query']) ."%' or `text_", database::input($_GET['languages'])) ."` like '%". database::input($_GET['query']) ."%')" : null) ."
     ". (!empty($_GET['untranslated']) ? "and (`text_". implode("` = '' or `text_", database::input($_GET['languages'])) ."` = '')" : null) ."
-    ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", array('cm', 'job', 'om', 'ot', 'pm', 'sm')) ."_%:%')" : null) ."
+    ". (empty($_GET['modules']) ? "and (code not like '". implode("_%:%' and code not like '", ['cm', 'job', 'om', 'ot', 'pm', 'sm']) ."_%:%')" : null) ."
     order by date_updated desc;"
   );
 
@@ -121,7 +121,7 @@ th:not(:last-child) {
       </div>
       <?php } ?>
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <div><?php echo functions::form_draw_select_field('endpoint', array(array('-- '. language::translate('title_all', 'All') .' --', ''), array(language::translate('title_frontend', 'Frontend'), 'frontend'), array(language::translate('title_backend', 'Backend'), 'backend'))); ?></div>
+      <div><?php echo functions::form_draw_select_field('endpoint', [['-- '. language::translate('title_all', 'All') .' --', ''], [language::translate('title_frontend', 'Frontend'), 'frontend'], [language::translate('title_backend', 'Backend'), 'backend']]); ?></div>
       <div>
         <label><?php echo functions::form_draw_checkbox('modules', 'true'); ?> <?php echo language::translate('text_inlcude_modules', 'Include modules'); ?></label><br />
         <label><?php echo functions::form_draw_checkbox('untranslated', 'true'); ?> <?php echo language::translate('text_only_untranslated', 'Only untranslated'); ?></label>
@@ -156,10 +156,10 @@ th:not(:last-child) {
               <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
               <td>
                 <?php echo functions::form_draw_hidden_field('translations['. $translation['code'] .'][id]', $translation['id']); ?>
-                <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
+                <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
               </td>
               <?php } ?>
-              <td style="text-align: right;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+              <td style="text-align: end;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
             </tr>
             <?php } ?>
           </tbody>
@@ -190,9 +190,9 @@ th:not(:last-child) {
       <div class="form-group">
         <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
 <?php
-  $options = array(array('-- '. language::translate('title_select', 'Select') .' --'));
+  $options = [['-- '. language::translate('title_select', 'Select') .' --']];
   foreach ($_GET['languages'] as $language_code) {
-    $options[] = array(language::$languages[$language_code]['name'], $language_code);
+    $options[] = [language::$languages[$language_code]['name'], $language_code];
   }
 ?>
         <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>

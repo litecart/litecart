@@ -14,7 +14,7 @@
 
   document::$snippets['title'][] = !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page');
 
-  breadcrumbs::add(language::translate('title_pages', 'Pages'), document::link(WS_DIR_ADMIN, array('doc' => 'pages'), array('app')));
+  breadcrumbs::add(language::translate('title_pages', 'Pages'), document::link(WS_DIR_ADMIN, ['doc' => 'pages'], ['app']));
   breadcrumbs::add(!empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page'));
 
   if (isset($_POST['save'])) {
@@ -23,9 +23,9 @@
       if (empty($_POST['title'])) throw new Exception(language::translate('error_missing_title', 'You must enter a title.'));
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
-      if (empty($_POST['dock'])) $_POST['dock'] = array();
+      if (empty($_POST['dock'])) $_POST['dock'] = [];
 
-      $fields = array(
+      $fields = [
         'status',
         'parent_id',
         'title',
@@ -34,7 +34,7 @@
         'priority',
         'head_title',
         'meta_description',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $page->data[$field] = $_POST[$field];
@@ -43,7 +43,7 @@
       $page->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'pages'), true, array('page_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'pages'], true, ['page_id']));
       exit;
 
     } catch (Exception $e) {
@@ -59,7 +59,7 @@
       $page->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'pages'), true, array('page_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'pages'], true, ['page_id']));
       exit;
 
     } catch (Exception $e) {

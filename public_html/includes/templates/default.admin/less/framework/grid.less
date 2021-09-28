@@ -1,10 +1,20 @@
 /* Grid - Bootstrap Compatible */
 
-.pull-left {
+.float-start {
   float: left;
 }
-.pull-right {
+.float-end {
   float: right;
+}
+
+/* Workaround as inline-start and inline-end are not yet supported by browsers */
+html[dir="rtl"] {
+  .float-start {
+    float: right;
+  }
+  .float-end {
+    float: left;
+  }
 }
 
 .row {

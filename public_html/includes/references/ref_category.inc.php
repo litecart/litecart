@@ -3,18 +3,18 @@
   class ref_category {
 
     private $_language_codes;
-    private $_data = array();
+    private $_data = [];
 
     function __construct($category_id, $language_code=null) {
 
       if (empty($language_code)) $language_code = language::$selected['code'];
 
       $this->_data['id'] = (int)$category_id;
-      $this->_language_codes = array_unique(array(
+      $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('store_language_code'),
-      ));
+      ]);
     }
 
     public function &__get($name) {
@@ -48,10 +48,10 @@
         case 'meta_description':
         case 'h1_title':
 
-          $this->_data['info'] = array();
+          $this->_data['info'] = [];
 
           $query = database::query(
-            "select * from ". DB_TABLE_CATEGORIES_INFO ."
+            "select * from ". DB_TABLE_PREFIX ."categories_info
             where category_id = ". (int)$this->_data['id'] ."
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
@@ -59,7 +59,7 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              if (in_array($key, array('id', 'category_id', 'language_code'))) continue;
+              if (in_array($key, ['id', 'category_id', 'language_code'])) continue;
               if (empty($this->_data[$key])) $this->_data[$key] = $row[$key];
             }
           }
@@ -78,7 +78,7 @@
 
         case 'path':
 
-          $this->_data['path'] = array($this->id => $this);
+          $this->_data['path'] = [$this->id => $this];
 
           $current = $this;
           while ($current->parent_id) {
@@ -93,17 +93,17 @@
 
         case 'products':
 
-          $this->_data['products'] = array();
+          $this->_data['products'] = [];
 
           $query = database::query(
-            "select id from ". DB_TABLE_PRODUCTS ."
+            "select id from ". DB_TABLE_PREFIX ."products
             where status
             and id in (
-              select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
               where category_id = ". (int)$this->_data['id'] ."
             )
             and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -141,15 +141,15 @@
           }
 
           $query = database::query(
-            "select count(id) as num_products from ". DB_TABLE_PRODUCTS ."
+            "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
             where status
             and id in (
-              select product_id from ". DB_TABLE_PRODUCTS_TO_CATEGORIES ."
+              select product_id from ". DB_TABLE_PREFIX ."products_to_categories
               where category_id = ". $this->_data['id'] ."
               ". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
             )
             and (quantity > 0 or sold_out_status_id in (
-              select id from ". DB_TABLE_SOLD_OUT_STATUSES ."
+              select id from ". DB_TABLE_PREFIX ."sold_out_statuses
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -162,12 +162,12 @@
 
         case 'siblings':
 
-          $this->_data['siblings'] = array();
+          $this->_data['siblings'] = [];
 
           if (empty($this->parent_id)) return;
 
           $query = database::query(
-            "select id from ". DB_TABLE_CATEGORIES ."
+            "select id from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id = ". (int)$this->parent_id ."
             and id != ". (int)$this->_data['id'] ."
@@ -182,10 +182,10 @@
 
         case 'descendants':
 
-          $this->_data['descendants'] = array();
+          $this->_data['descendants'] = [];
 
           $categories_query = database::query(
-            "select id, parent_id from ". DB_TABLE_CATEGORIES ."
+            "select id, parent_id from ". DB_TABLE_PREFIX ."categories
             join (select @parent_id := ". $this->_data['id'] .") tmp
             where find_in_set(parent_id, @parent_id)
             and length(@parent_id := concat(@parent_id, ',', id));"
@@ -200,10 +200,10 @@
         case 'subcategories': // To be deprecated
         case 'children':
 
-          $this->_data['subcategories'] = array();
+          $this->_data['subcategories'] = [];
 
           $query = database::query(
-            "select id from ". DB_TABLE_CATEGORIES ."
+            "select id from ". DB_TABLE_PREFIX ."categories
             where status
             and parent_id = ". (int)$this->_data['id'] ."
             order by priority;"
@@ -220,7 +220,7 @@
         default:
 
           $query = database::query(
-            "select * from ". DB_TABLE_CATEGORIES ."
+            "select * from ". DB_TABLE_PREFIX ."categories
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
           );

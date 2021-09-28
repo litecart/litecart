@@ -37,7 +37,7 @@
           $reflect = new ReflectionClass($class_name);
           self::$_cache[$resource][$checksum] = $reflect->newInstanceArgs($arguments);
 
-          call_user_func_array(array(self::$_cache[$resource][$checksum], '__construct'), $arguments);
+          call_user_func_array([self::$_cache[$resource][$checksum], '__construct'], $arguments);
 
           return self::$_cache[$resource][$checksum];
 

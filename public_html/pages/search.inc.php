@@ -19,28 +19,29 @@
   functions::draw_lightbox();
 
   $_page = new ent_view();
-  $_page->snippets = array(
+  $_page->snippets = [
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
-    'products' => array(),
-    'sort_alternatives' => array(
+    'products' => [],
+    'sort_alternatives' => [
       'relevance' => language::translate('title_relevance', 'Relevance'),
       'name' => language::translate('title_name', 'Name'),
       'price' => language::translate('title_price', 'Price'),
       'popularity' => language::translate('title_popularity', 'Popularity'),
       'date' => language::translate('title_date', 'Date'),
-    ),
+    ],
     'pagination' => null,
-  );
+  ];
 
   $code_regex = functions::format_regex_code($_GET['query']);
+  $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
   $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
     (
       if(p.id = '". database::input($_GET['query']) ."', 10, 0)
-      + (match(pi.name) against ('". database::input($_GET['query']) ."' in boolean mode))
-      + (match(pi.short_description) against ('". database::input($_GET['query']) ."' in boolean mode) / 2)
-      + (match(pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) / 3)
+      + (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
+      + (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
+      + (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
       + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
       + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
       + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
@@ -50,37 +51,37 @@
       + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
       + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
       + if (p.id in (
-        select product_id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        select product_id from ". DB_TABLE_PREFIX ."products_options_stock
         where sku regexp '". database::input($code_regex) ."'
       ), 5, 0)
     ) as relevance
 
     from (
       select id, code, mpn, gtin, sku, manufacturer_id, default_category_id, keywords, image, recommended_price, tax_class_id, quantity, sold_out_status_id, views, purchases, date_updated, date_created
-      from ". DB_TABLE_PRODUCTS ."
+      from ". DB_TABLE_PREFIX ."products
       where status
       and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
       and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."')
     ) p
 
-    left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+    left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 
-    left join ". DB_TABLE_MANUFACTURERS ." m on (m.id = p.manufacturer_id)
+    left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
 
     left join (
       select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
-      from ". DB_TABLE_PRODUCTS_PRICES ."
+      from ". DB_TABLE_PREFIX ."products_prices
     ) pp on (pp.product_id = p.id)
 
     left join (
       select product_id, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`)) as campaign_price
-      from ". DB_TABLE_PRODUCTS_CAMPAIGNS ."
+      from ". DB_TABLE_PREFIX ."products_campaigns
       where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
       and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
       group by product_id
     ) pc on (pc.product_id = p.id)
 
-    left join ". DB_TABLE_SOLD_OUT_STATUSES ." ss on (p.sold_out_status_id = ss.id)
+    left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
     where (p.quantity > 0 or ss.hidden != 1)
 
@@ -113,7 +114,7 @@
 
   if (database::num_rows($products_query) == 1) {
     $product = database::fetch($products_query);
-    header('Location: '. document::ilink('product', array('product_id' => $product['id'])), true, 302);
+    header('Location: '. document::ilink('product', ['product_id' => $product['id']]), true, 302);
     exit;
   }
 

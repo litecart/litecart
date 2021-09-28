@@ -6,10 +6,10 @@
   breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'));
 
 // Table Rows
-  $tax_classes = array();
+  $tax_classes = [];
 
   $tax_classses_query = database::query(
-    "select * from ". DB_TABLE_TAX_CLASSES ."
+    "select * from ". DB_TABLE_PREFIX ."tax_classes
     order by name asc;"
   );
 
@@ -34,7 +34,7 @@
 
   <div class="panel-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, array('doc' => 'edit_tax_class'), true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
+      <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_tax_class'], true), language::translate('title_add_new_tax_class', 'Add New Tax Class'), '', 'add'); ?></li>
     </ul>
   </div>
 
@@ -57,9 +57,9 @@
           <tr>
             <td><?php echo functions::form_draw_checkbox('tax_classes['. $tax_class['id'] .']', $tax_class['id']); ?></td>
             <td><?php echo $tax_class['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>"><?php echo $tax_class['name']; ?></a></td>
+            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
             <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

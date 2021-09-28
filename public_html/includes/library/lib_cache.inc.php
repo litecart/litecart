@@ -2,7 +2,7 @@
 
   class cache {
 
-    private static $_recorders = array();
+    private static $_recorders = [];
     private static $_data;
     public static $enabled = true;
 
@@ -10,14 +10,14 @@
 
       self::$enabled = settings::get('cache_enabled') ? true : false;
 
-      if (!isset(session::$data['cache'])) session::$data['cache'] = array();
+      if (!isset(session::$data['cache'])) session::$data['cache'] = [];
       self::$_data = &session::$data['cache'];
 
       if (settings::get('cache_clear')) {
         self::clear_cache();
 
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_TABLE_PREFIX ."settings
           set value = '0'
           where `key` = 'cache_clear'
           limit 1;"
@@ -36,7 +36,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_TABLE_PREFIX ."settings
           set value = '0'
           where `key` = 'cache_clear_thumbnails'
           limit 1;"
@@ -57,9 +57,9 @@
       return;
     }
 
-    public static function token($keyword, $dependencies=array(), $storage='memory', $ttl=900) {
+    public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
 
-      if (!in_array($storage, array('file', 'memory', 'session'))) {
+      if (!in_array($storage, ['file', 'memory', 'session'])) {
         trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
         return;
       }
@@ -67,7 +67,7 @@
       $hash_string = $keyword;
 
       if (!is_array($dependencies)) {
-        $dependencies = array($dependencies);
+        $dependencies = [$dependencies];
       }
 
       $dependencies[] = 'site';
@@ -166,11 +166,11 @@
         }
       }
 
-      return array(
+      return [
         'id' => md5($hash_string) .'_'. $keyword,
         'storage' => $storage,
         'ttl' => $ttl,
-      );
+      ];
     }
 
     public static function get($token, $max_age=900, $force_cache=false) {
@@ -284,10 +284,10 @@
 
         case 'session':
 
-          self::$_data[$token['id']] = array(
+          self::$_data[$token['id']] = [
             'mtime' => time(),
             'data' => $data,
-          );
+          ];
 
           return true;
 
@@ -314,10 +314,10 @@
         return false;
       }
 
-      self::$_recorders[$token['id']] = array(
+      self::$_recorders[$token['id']] = [
         'id' => $token['id'],
         'storage' => $token['storage'],
-      );
+      ];
 
       ob_start();
 
@@ -392,7 +392,7 @@
 
     // Set breakpoint (for all session cache)
       database::query(
-        "update ". DB_TABLE_SETTINGS ."
+        "update ". DB_TABLE_PREFIX ."settings
         set value = '". date('Y-m-d H:i:s') ."'
         where `key` = 'cache_system_breakpoint'
         limit 1;"

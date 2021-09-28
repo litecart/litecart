@@ -31,10 +31,10 @@
       ob_end_clean();
 
       if (!empty($_POST['comments'])) {
-        $order->data['comments']['session'] = array(
+        $order->data['comments']['session'] = [
           'author' => 'customer',
           'text' => $_POST['comments'],
-        );
+        ];
       }
 
       if ($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
@@ -43,11 +43,11 @@
         }
 
         if ($payment_error = $payment->pre_check($order)) {
-          $order->data['comments'][] = array(
+          $order->data['comments'][] = [
             'author' => 'system',
             'text' => 'Payment Precheck Error: '. $payment_error,
             'hidden' => true,
-          );
+          ];
           throw new Exception($payment_error);
         }
 
@@ -59,11 +59,11 @@
         if ($gateway = $payment->transfer($order)) {
 
           if (!empty($gateway['error'])) {
-            $order->data['comments'][] = array(
+            $order->data['comments'][] = [
               'author' => 'system',
               'text' => 'Payment Transfer Error: '. $gateway['error'],
               'hidden' => true,
-            );
+            ];
 
             throw new Exception($gateway['error']);
           }
@@ -102,9 +102,11 @@
                 exit;
 
               case 'GET':
-              default:
                 header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')));
                 exit;
+
+              default:
+                throw new Exception('Undefined method ('. $gateway['method'] .')');
             }
           }
         }
@@ -122,11 +124,11 @@
 
     // If payment error
       if (!empty($result['error'])) {
-        $order->data['comments'][] = array(
+        $order->data['comments'][] = [
           'author' => 'system',
           'text' => 'Payment Validation Error: '. $result['error'],
           'hidden' => true,
-        );
+        ];
 
         throw new Exception($result['error']);
       }
@@ -145,7 +147,7 @@
 
   // Send order confirmation email
     if (settings::get('send_order_confirmation')) {
-      $bccs = array();
+      $bccs = [];
 
       if (settings::get('email_order_copy')) {
         foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
@@ -164,7 +166,7 @@
     $order_process = new mod_order();
     $order_process->after_process($order);
 
-    header('Location: '. document::ilink('order_success', array('order_id' => $order->data['id'], 'public_key' => $order->data['public_key'])));
+    header('Location: '. document::ilink('order_success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
     unset(session::$data['order']);
     exit;
 

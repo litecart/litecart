@@ -31,6 +31,7 @@
 
   $_page = new ent_view();
   $_page->snippets['order'] = $order->data;
+  $_page->snippets['text_direction'] = !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr';
   echo $_page->stitch('pages/printable_packing_slip');
 
   language::set($session_language);

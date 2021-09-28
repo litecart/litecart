@@ -14,7 +14,7 @@
 
   document::$snippets['title'][] = !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status');
 
-  breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::link(WS_DIR_ADMIN, array('doc' => 'order_statuses'), array('app')));
+  breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'), document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], ['app']));
   breadcrumbs::add(!empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status'));
 
   if (isset($_POST['save'])) {
@@ -26,7 +26,7 @@
       if (empty($_POST['is_sale'])) $_POST['is_sale'] = 0;
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
-      $fields = array(
+      $fields = [
         'icon',
         'color',
         'keywords',
@@ -38,7 +38,7 @@
         'description',
         'email_subject',
         'email_message',
-      );
+      ];
 
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $order_status->data[$field] = $_POST[$field];
@@ -47,7 +47,7 @@
       $order_status->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'order_statuses'), true, array('order_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], true, ['order_status_id']));
       exit;
 
     } catch (Exception $e) {
@@ -63,7 +63,7 @@
       $order_status->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array('doc' => 'order_statuses'), true, array('order_status_id')));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'order_statuses'], true, ['order_status_id']));
       exit;
 
     } catch (Exception $e) {

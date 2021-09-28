@@ -9,13 +9,13 @@
 
   <article id="box-manufacturer" class="box">
     <?php if ($products) { ?>
-    <div class="btn-group pull-right hidden-xs">
+    <div class="btn-group float-end hidden-xs">
 <?php
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {
       echo '<span class="btn btn-default active">'. $value .'</span>';
     } else {
-      echo '<a class="btn btn-default" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a>';
+      echo '<a class="btn btn-default" href="'. document::href_ilink(null, ['sort' => $key], true) .'">'. $value .'</a>';
     }
   }
 ?>
@@ -29,8 +29,8 @@
     <?php } ?>
 
     <?php if ($products) { ?>
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', array('manufacturer_id')); ?>
+    <section class="listing products columns">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['manufacturer_id']); ?>
     </section>
     <?php } ?>
 

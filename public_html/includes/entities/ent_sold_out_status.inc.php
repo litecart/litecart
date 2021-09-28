@@ -15,10 +15,10 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $sold_out_status_query = database::query(
-        "show fields from ". DB_TABLE_SOLD_OUT_STATUSES .";"
+        "show fields from ". DB_TABLE_PREFIX ."sold_out_statuses;"
       );
 
       while ($field = database::fetch($sold_out_status_query)) {
@@ -26,13 +26,13 @@
       }
 
       $sold_out_status_info_query = database::query(
-        "show fields from ". DB_TABLE_SOLD_OUT_STATUSES_INFO .";"
+        "show fields from ". DB_TABLE_PREFIX ."sold_out_statuses_info;"
       );
 
       while ($field = database::fetch($sold_out_status_info_query)) {
-        if (in_array($field['Field'], array('id', 'sold_out_status_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'sold_out_status_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -48,7 +48,7 @@
       $this->reset();
 
       $sold_out_status_query = database::query(
-        "select * from ". DB_TABLE_SOLD_OUT_STATUSES ."
+        "select * from ". DB_TABLE_PREFIX ."sold_out_statuses
         where id = ". (int)$sold_out_status_id ."
         limit 1;"
       );
@@ -60,13 +60,13 @@
       }
 
       $sold_out_status_info_query = database::query(
-        "select * from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
+        "select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
         where sold_out_status_id = ". (int)$this->data['id'] .";"
       );
 
       while ($sold_out_status_info = database::fetch($sold_out_status_info_query)) {
         foreach ($sold_out_status_info as $key => $value) {
-          if (in_array($key, array('id', 'sold_out_status_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'sold_out_status_id', 'language_code'])) continue;
           $this->data[$key][$sold_out_status_info['language_code']] = $value;
         }
       }
@@ -78,7 +78,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_SOLD_OUT_STATUSES ."
+          "insert into ". DB_TABLE_PREFIX ."sold_out_statuses
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -86,7 +86,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_SOLD_OUT_STATUSES ."
+        "update ". DB_TABLE_PREFIX ."sold_out_statuses
         set orderable = ". (int)$this->data['orderable'] .",
           hidden = ". (int)$this->data['hidden'] .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -97,7 +97,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $sold_out_status_info_query = database::query(
-          "select * from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
+          "select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
           where sold_out_status_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -105,7 +105,7 @@
 
         if (!$sold_out_status_info = database::fetch($sold_out_status_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
+            "insert into ". DB_TABLE_PREFIX ."sold_out_statuses_info
             (sold_out_status_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
@@ -113,7 +113,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
+          "update ". DB_TABLE_PREFIX ."sold_out_statuses_info
           set
             name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."'
@@ -131,17 +131,17 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PRODUCTS ." where sold_out_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
+      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where sold_out_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
         throw new Exception('Cannot delete the sold out status because there are products using it');
       }
 
       database::query(
-        "delete from ". DB_TABLE_SOLD_OUT_STATUSES_INFO ."
+        "delete from ". DB_TABLE_PREFIX ."sold_out_statuses_info
         where sold_out_status_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_SOLD_OUT_STATUSES ."
+        "delete from ". DB_TABLE_PREFIX ."sold_out_statuses
         where id = ". (int)$this->data['id'] .";"
       );
 

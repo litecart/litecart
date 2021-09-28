@@ -37,8 +37,8 @@ INSERT INTO `lc_categories_info` (`id`, `category_id`, `language_code`, `name`, 
 INSERT INTO `lc_categories_filters` (`id`, `category_id`, `select_multiple`, `attribute_group_id`, `priority`) VALUES
 (1, 1, 1, 1, 1);
 -- --------------------------------------------------------
-INSERT INTO `lc_customers` (`id`, `code`, `status`, `email`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `newsletter`, `date_updated`, `date_created`) VALUES
-(1, '', 1, 'user@email.com', '0000000000', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', '12345', 'Newtown', 'US', 'CA', '1-555-123-4567', 0, '', '', '', '', '', '', '', '', '', '', 0, NOW(), NOW());
+INSERT INTO `lc_customers` (`id`, `code`, `status`, `email`, `tax_id`, `company`, `firstname`, `lastname`, `address1`, `address2`, `postcode`, `city`, `country_code`, `zone_code`, `phone`, `different_shipping_address`, `shipping_company`, `shipping_firstname`, `shipping_lastname`, `shipping_address1`, `shipping_address2`, `shipping_city`, `shipping_postcode`, `shipping_country_code`, `shipping_zone_code`, `shipping_phone`, `date_updated`, `date_created`) VALUES
+(1, '', 1, 'user@email.com', '0000000000', 'ACME Corp.', 'John', 'Doe', 'Longway Street 1', '', '12345', 'Newtown', 'US', 'CA', '1-555-123-4567', 0, '', '', '', '', '', '', '', '', '', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_manufacturers` (`id`, `status`, `featured`, `code`, `name`, `keywords`, `image`, `date_updated`, `date_created`) VALUES
 (1, 1, 1, 'acme', 'ACME Corp.', '', 'manufacturers/1-acme-corp.png', NOW(), NOW());

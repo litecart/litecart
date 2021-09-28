@@ -11,7 +11,7 @@
 
       foreach (array_keys($_POST['settings']) as $key) {
         $settings_query = database::query(
-          "select * from ". DB_TABLE_SETTINGS ."
+          "select * from ". DB_TABLE_PREFIX ."settings
           where `key` = '". database::input($key) ."';"
         );
 
@@ -19,14 +19,14 @@
           throw new Exception(language::translate('error_setting_key_does_not_exist', 'The settings key does not exist'));
         }
 
-        $values_required_for_keys = array(
+        $values_required_for_keys = [
           'store_language_code',
           'store_currency_code',
           'store_weight_class',
           'store_length_class',
           'default_language_code',
           'default_currency_code',
-        );
+        ];
 
         if (in_array($key, $values_required_for_keys) && empty($_POST['settings'][$key])) {
           throw new Exception(language::translate('error_cannot_set_empty_value_for_setting', 'You cannot set an empty value for this setting'));
@@ -39,7 +39,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_TABLE_PREFIX ."settings
           set
             `value` = '". database::input($value) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -49,7 +49,7 @@
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link(WS_DIR_ADMIN, array(), true, array('action')));
+      header('Location: '. document::link(WS_DIR_ADMIN, [], true, ['action']));
       exit;
 
     } catch (Exception $e) {
@@ -58,7 +58,7 @@
   }
 
   $settings_groups_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS_GROUPS ."
+    "select * from ". DB_TABLE_PREFIX ."settings_groups
     ". (!empty($_GET['doc']) ? "where `key` = '". database::input($_GET['doc']) ."'" : "") ."
     order by priority, `key`;"
   );
@@ -68,10 +68,10 @@
   }
 
 // Table Rows
-  $settings = array();
+  $settings = [];
 
   $settings_query = database::query(
-    "select * from ". DB_TABLE_SETTINGS ."
+    "select * from ". DB_TABLE_PREFIX ."settings
     where `setting_group_key` = '". database::input($settings_group['key']) ."'
     order by priority, `key` asc;"
   );
@@ -108,9 +108,9 @@
           break;
 
         case (substr($setting['function'], 0, 6) == 'toggle'):
-          if (in_array(($setting['value']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) {
+          if (in_array(($setting['value']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
            $setting['value'] = language::translate('title_true', 'True');
-          } else if (in_array(($setting['value']), array('', '0', 'inactive', 'disabled', 'off', 'false', 'no'))) {
+          } else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
            $setting['value'] = language::translate('title_false', 'False');
           }
           break;
@@ -153,7 +153,7 @@
               <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
             </td>
             <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>
-            <td class="text-right">
+            <td class="text-end">
               <div class="btn-group">
                 <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
                 <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
@@ -162,13 +162,13 @@
           </tr>
           <?php } else { ?>
           <tr>
-            <td class="text-left"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
+            <td class="text-start"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
             <td style="white-space: normal;">
               <div style="max-height: 200px; overflow-y: auto;" title="<?php echo htmlspecialchars(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
                 <?php echo $setting['value']; ?>
               </div>
             </td>
-            <td class="text-right"><a href="<?php echo document::href_link('', array('action' => 'edit', 'key' => $setting['key']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+            <td class="text-end"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
           <?php } ?>

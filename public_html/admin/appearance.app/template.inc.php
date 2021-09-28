@@ -13,7 +13,7 @@
 
       if ($_POST['template_catalog'] != settings::get('store_template_catalog')) {
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_TABLE_PREFIX ."settings
           set
             `value` = '". database::input($_POST['template_catalog']) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -26,13 +26,13 @@
         if (!is_array($template_config)) include vmod::check(FS_DIR_APP . 'includes/templates/' . basename($_POST['template_catalog']) .'/config.inc.php'); // Backwards compatibility
 
       // Set template default settings
-        $settings = array();
+        $settings = [];
         foreach (array_keys($template_config) as $i) {
           $settings[$template_config[$i]['key']] = $template_config[$i]['default_value'];
         }
 
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_TABLE_PREFIX ."settings
           set
             `value` = '". database::input(json_encode($settings, JSON_UNESCAPED_SLASHES)) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -47,7 +47,7 @@
 
       if ($_POST['template_admin'] != settings::get('store_template_admin')) {
         database::query(
-          "update ". DB_TABLE_SETTINGS ."
+          "update ". DB_TABLE_PREFIX ."settings
           set
             `value` = '". database::input($_POST['template_admin']) ."',
             date_updated = '". date('Y-m-d H:i:s') ."'
@@ -61,7 +61,7 @@
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
       if (!empty($redirect_to_settings)) {
-        $redirect_url = document::link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app'));
+        $redirect_url = document::link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']);
       } else {
         $redirect_url = document::link();
       }
@@ -88,7 +88,7 @@
           <div class="input-group">
             <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?>
             <span class="input-group-btn">
-              <a class="btn btn-default" href="<?php echo document::href_link(WS_DIR_ADMIN, array('doc' => 'template_settings'), array('app')); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
+              <a class="btn btn-default" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
             </span>
           </div>
       </div>

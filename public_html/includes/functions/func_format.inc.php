@@ -3,7 +3,7 @@
   function format_address($address) {
 
     $country_query = database::query(
-      "select * from ". DB_TABLE_COUNTRIES ."
+      "select * from ". DB_TABLE_PREFIX ."countries
       where iso_code_2 = '". database::input($address['country_code']) ."'
       limit 1;"
     );
@@ -14,6 +14,11 @@
     }
 
     return reference::country($address['country_code'])->format_address($address);
+  }
+
+  function format_mysql_fulltext($string) {
+    $string = strip_tags($string);
+    return preg_replace('#[+\-<>\(\)~*\"@;]+#', ' ', $string);
   }
 
   function format_regex_code($string) {

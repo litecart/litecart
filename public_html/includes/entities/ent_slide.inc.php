@@ -15,10 +15,10 @@
 
     public function reset() {
 
-      $this->data = array();
+      $this->data = [];
 
       $fields_query = database::query(
-        "show fields from ". DB_TABLE_SLIDES .";"
+        "show fields from ". DB_TABLE_PREFIX ."slides;"
       );
 
       while ($field = database::fetch($fields_query)) {
@@ -26,15 +26,15 @@
       }
 
       $info_fields_query = database::query(
-        "show fields from ". DB_TABLE_SLIDES_INFO .";"
+        "show fields from ". DB_TABLE_PREFIX ."slides_info;"
       );
 
-      $this->data['languages'] = array();
+      $this->data['languages'] = [];
 
       while ($field = database::fetch($info_fields_query)) {
-        if (in_array($field['Field'], array('id', 'slide_id', 'language_code'))) continue;
+        if (in_array($field['Field'], ['id', 'slide_id', 'language_code'])) continue;
 
-        $this->data[$field['Field']] = array();
+        $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
           $this->data[$field['Field']][$language_code] = null;
         }
@@ -50,7 +50,7 @@
       $this->reset();
 
       $slide_query = database::query(
-        "select * from ". DB_TABLE_SLIDES ."
+        "select * from ". DB_TABLE_PREFIX ."slides
         where id = ". (int)$slide_id ."
         limit 1;"
       );
@@ -64,13 +64,13 @@
       $this->data['languages'] = explode(',', $this->data['languages']);
 
       $slide_info_query = database::query(
-        "select * from ". DB_TABLE_SLIDES_INFO ."
+        "select * from ". DB_TABLE_PREFIX ."slides_info
         where slide_id = ". (int)$this->data['id'] .";"
         );
 
       while ($slide_info = database::fetch($slide_info_query)) {
         foreach ($slide_info as $key => $value) {
-          if (in_array($key, array('id', 'slide_id', 'language_code'))) continue;
+          if (in_array($key, ['id', 'slide_id', 'language_code'])) continue;
           $this->data[$key][$slide_info['language_code']] = $value;
         }
       }
@@ -82,7 +82,7 @@
 
       if (empty($this->data['id'])) {
         database::query(
-          "insert into ". DB_TABLE_SLIDES ."
+          "insert into ". DB_TABLE_PREFIX ."slides
           (date_created)
           values ('". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
@@ -90,7 +90,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_SLIDES ."
+        "update ". DB_TABLE_PREFIX ."slides
         set
           status = ". (int)$this->data['status'] .",
           languages = '". database::input(implode(',', database::input($this->data['languages']))) ."',
@@ -107,7 +107,7 @@
       foreach (array_keys(language::$languages) as $language_code) {
 
         $slide_info_query = database::query(
-          "select * from ". DB_TABLE_SLIDES_INFO ."
+          "select * from ". DB_TABLE_PREFIX ."slides_info
           where slide_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"
@@ -115,7 +115,7 @@
 
         if (!$slide_info = database::fetch($slide_info_query)) {
           database::query(
-            "insert into ". DB_TABLE_SLIDES_INFO ."
+            "insert into ". DB_TABLE_PREFIX ."slides_info
             (slide_id, language_code)
             values (". (int)$this->data['id'] .", '". database::input($language_code) ."');"
           );
@@ -123,7 +123,7 @@
         }
 
         database::query(
-          "update ". DB_TABLE_SLIDES_INFO ."
+          "update ". DB_TABLE_PREFIX ."slides_info
           set
             caption = '". database::input($this->data['caption'][$language_code], true) ."',
             link = '". database::input($this->data['link'][$language_code]) ."'
@@ -174,7 +174,7 @@
       }
 
       database::query(
-        "update ". DB_TABLE_SLIDES ."
+        "update ". DB_TABLE_PREFIX ."slides
         set image = '" . database::input($filename) . "'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
@@ -186,12 +186,12 @@
     public function delete() {
 
       database::query(
-        "delete from ". DB_TABLE_SLIDES_INFO ."
+        "delete from ". DB_TABLE_PREFIX ."slides_info
         where slide_id = ". (int)$this->data['id'] .";"
       );
 
       database::query(
-        "delete from ". DB_TABLE_SLIDES ."
+        "delete from ". DB_TABLE_PREFIX ."slides
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

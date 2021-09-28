@@ -11,7 +11,7 @@
 
   if (!empty($result['error'])) die('{}');
 
-  $json = array(
+  $json = [
     'tax_id' => isset($result['tax_id']) ? $result['tax_id'] : '',
     'company' => isset($result['company']) ? $result['company'] : '',
     'firstname' => isset($result['firstname']) ? $result['firstname'] : '',
@@ -25,7 +25,7 @@
     'phone' => isset($result['phone']) ? $result['phone'] : '',
     'email' => isset($result['email']) ? $result['email'] : '',
     'alert' => isset($result['alert']) ? $result['alert'] : '',
-  );
+  ];
 
   language::convert_characters($json, language::$selected['charset'], 'UTF-8');
   $json = json_encode($json, JSON_UNESCAPED_SLASHES);

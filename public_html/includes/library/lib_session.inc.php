@@ -16,7 +16,7 @@
       ini_set('session.cookie_path', WS_DIR_APP);
       ini_set('session.cookie_samesite', 'Lax');
 
-      register_shutdown_function(array('session', 'close'));
+      register_shutdown_function(['session', 'close']);
 
       if (!self::start()) trigger_error('Failed to start a session', E_USER_WARNING);
 
