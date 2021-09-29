@@ -1,10 +1,7 @@
 <main id="main">
   <div id="sidebar">
     <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_category_tree.inc.php'); ?>
-
     <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
-
-    <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_newsletter_subscribe.inc.php'); ?>
   </div>
 
   <div id="content">

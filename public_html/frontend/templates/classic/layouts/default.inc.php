@@ -27,7 +27,7 @@
     </div>
 
     <div class="text-end">
-      <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_cart.inc.php'); ?>
+      <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_shopping_cart.inc.php'); ?>
     </div>
   </header>
 

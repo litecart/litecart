@@ -59,9 +59,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_country'), language::translate('title_create_new_country', 'Create New Country'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_country'), language::translate('title_create_new_country', 'Create New Country'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('countries_form', 'post'); ?>
@@ -77,7 +75,7 @@
           <th>Alpha 2</th>
           <th>Alpha-3</th>
           <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 

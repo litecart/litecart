@@ -217,12 +217,6 @@
 
     $selector = str_replace("'", '"', $selector);
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP . 'assets/featherlight/featherlight.min.css') .'" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/featherlight/featherlight.min.js') .'"></script>';
-    document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
-                                                      . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
-                                                      . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL
-                                                      . '  $.featherlight.defaults.targetAttr = \'data-target\';';
     if (empty($selector)) return;
 
     if (preg_match('#^(https?:)?//#', $selector)) {
@@ -280,7 +274,7 @@
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
 
-    $pagination = new ent_view();
+    $pagination = new ent_view('views/pagination.inc.php');
 
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']-1,
@@ -338,7 +332,5 @@
       'active' => false,
     ];
 
-    $html = $pagination->stitch('views/pagination.inc.php');
-
-    return $html;
+    return (string)$pagination;
   }

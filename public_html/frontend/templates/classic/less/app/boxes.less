@@ -1,12 +1,12 @@
 #box-cookie-notice {
-  background: rgba(0,0,0,0.85);
+  background: rgba(50, 50, 75, .85);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1;
   padding: 1em;
   color: #fff;
+  z-index: 999;
   .notice {
     margin-bottom: 1em;
   }
@@ -19,17 +19,11 @@
   }
 }
 
-#box-information {
-  li {
-    a {
-      color: inherit;
-      line-height: 175%;
-      &.active {
-        color: var(--link-text-color);
-      }
-      &:hover {
-        color: var(--link-text-color);
-      }
+#box-filter {
+  .manufacturers {
+    ul {
+      max-height: 200px;
+      overflow-y: auto;
     }
   }
 }

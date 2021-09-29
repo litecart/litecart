@@ -37,9 +37,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_attribute_group'), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_attribute_group'), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('attributes_form', 'post'); ?>
@@ -52,7 +50,7 @@
           <th class="text-center"><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_values', 'Values'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -78,7 +76,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

@@ -113,7 +113,7 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_in_use', 'In Use'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

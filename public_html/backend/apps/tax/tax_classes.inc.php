@@ -35,9 +35,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_tax_class'), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_tax_class'), language::translate('title_create_new_tax_class', 'Create New Tax Class'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('tax_classs_form', 'post'); ?>
@@ -49,7 +47,7 @@
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th><?php echo language::translate('title_name', 'Name'); ?></th>
           <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -74,7 +72,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

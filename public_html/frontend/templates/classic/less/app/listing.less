@@ -99,6 +99,7 @@
   }
 
   .product {
+    position: relative;
 
     .link {
       text-decoration: none;
@@ -118,7 +119,6 @@
         font-weight: bold;
         text-align: center;
         text-transform: uppercase;
-        line-height: 100%;
         transform: rotate(-45deg);
         &.new {
           background: rgba(251, 184, 41, 0.9);
@@ -208,7 +208,7 @@
     }
 
     .description {
-      font-size: .9em;
+      display: none;
     }
 
     .price-wrapper {
@@ -222,9 +222,7 @@
     .info {
       position: absolute;
       top: 0;
-      left: ~"calc(100px + var(--gutter-size))";
-      right: 0;
-      bottom: 0;
+      left: ~"calc(var(--gutter-size) + 100px)";
       padding: ~"calc(var(--gutter-size)/2)";
       @media (min-width: (@media-breakpoint-sm)) {
         left: ~"calc(160px + var(--gutter-size))";

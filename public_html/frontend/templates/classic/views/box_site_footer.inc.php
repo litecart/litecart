@@ -63,7 +63,7 @@
         </ul>
 
         <ul class="social-bookmarks list-inline text-center">
-          <?php foreach ($social as $bookmark) { ?>
+          <?php foreach ($social_bookmarks as $bookmark) { ?>
           <li><a href="<?php echo htmlspecialchars($bookmark['link']); ?>" class="thumbnail"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. htmlspecialchars($bookmark['title']) .'"'); ?></a></li>
           <?php } ?>
         </ul>

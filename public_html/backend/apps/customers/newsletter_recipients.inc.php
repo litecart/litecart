@@ -124,7 +124,7 @@
           <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
           <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
           <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -156,9 +156,11 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
 
 <div id="modal-add-recipients" class="modal fade" style="width: 640px; display: none;">

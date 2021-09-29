@@ -171,7 +171,7 @@
                 <th><?php echo language::translate('title_id', 'ID'); ?></th>
                 <th style="padding-inline-end: 50px;"><?php echo language::translate('title_code', 'Code'); ?></th>
                 <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-                <th>&nbsp;</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>

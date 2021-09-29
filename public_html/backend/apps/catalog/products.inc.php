@@ -214,9 +214,7 @@ table .thumbnail {
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_product'), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_product'), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
@@ -233,14 +231,14 @@ table .thumbnail {
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-          <th>&nbsp;</th>
-          <th>&nbsp;</th>
-          <th>&nbsp;</th>
+          <th></th>
+          <th></th>
+          <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -261,31 +259,35 @@ table .thumbnail {
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="9"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="9"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows, 0); ?></td>
         </tr>
       </tfoot>
     </table>
 
-    <ul class="list-inline">
-      <li>
-        <div class="btn-group">
-          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-        </div>
-      </li>
-      <li>
-        <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'fa-copy'); ?>
-      </li>
-      <li>
-        <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
-      </li>
-    </ul>
+    <div class="card-body">
+      <ul class="list-inline">
+        <li>
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          </div>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'fa-copy'); ?>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
+        </li>
+      </ul>
+    </div>
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
 
 <script>

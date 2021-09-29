@@ -105,9 +105,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('vmods_form', 'post'); ?>
@@ -122,10 +120,10 @@
           <th><?php echo language::translate('title_version', 'Version'); ?></th>
           <th><?php echo language::translate('title_author', 'Author'); ?></th>
           <th></th>
-          <th>&nbsp;</th>
-          <th>&nbsp;</th>
-          <th>&nbsp;</th>
-          <th>&nbsp;</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
 

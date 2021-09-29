@@ -130,10 +130,10 @@
 <script>
   $('input[name="dark_mode"]').click(function(){
     if ($(this).val() == 1) {
-      document.cookie = 'dark_mode=1;path=/;expires=<?php echo date('r', strtotime('+ 3 months')); ?>';
+      document.cookie = 'dark_mode=1;path=/;max-age=2592000';
       $('html').addClass('dark-mode');
     } else {
-      document.cookie = 'dark_mode=0;path=/;expires=<?php echo date('r', strtotime('+ 3 months')); ?>';
+      document.cookie = 'dark_mode=0;path=/;max-age=2592000';
       $('html').removeClass('dark-mode');
     }
   });

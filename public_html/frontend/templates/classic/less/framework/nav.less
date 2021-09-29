@@ -6,7 +6,6 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  line-height: 2em;
   li {
     position: relative;
     flex: 0 0 100%;
@@ -82,8 +81,7 @@
   li a {
     margin: 1px 0;
     background: #f3f3f3;
-    padding-top: ~"calc(var(--gutter-size)/2)";
-    padding-bottom: ~"calc(var(--gutter-size)/2)";
+    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
     border-radius: var(--border-radius);
     transition: all 125ms linear;
     &:hover {
@@ -101,12 +99,17 @@
 .nav-tabs {
   background: #f3f3f3;
   border-bottom: 1px solid var(--default-border-color);
+  padding: ~"calc(var(--gutter-size)/4)";
+  padding-bottom: 0;
   > li {
     > a {
       margin-inline-end: 2px;
       line-height: 1.42857143;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+    }
+    &:hover a {
+      background: rgba(255, 255, 255, .5);
     }
     &.active a {
       background: #fff;

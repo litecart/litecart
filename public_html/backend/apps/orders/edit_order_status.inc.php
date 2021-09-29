@@ -30,8 +30,8 @@
         'color',
         'is_sale',
         'is_archived',
-        'notify',
         'is_trackable',
+        'notify',
         'name',
         'description',
         'email_subject',
@@ -157,7 +157,7 @@
         <div class="col-md-6">
           <fieldset>
             <legend>
-              <label><?php echo functions::form_draw_checkbox('notify', '1', empty($_POST['notify']) ? '0' : '1'); ?> <?php echo language::translate('title_email_notification', 'Email Notification'); ?></label>
+              <?php echo functions::form_draw_checkbox('notify', ['1', language::translate('title_email_notification', 'Email Notification')], empty($_POST['notify']) ? '0' : '1'); ?>
             </legend>
 
             <ul class="nav nav-tabs">

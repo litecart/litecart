@@ -64,9 +64,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_language'), language::translate('title_create_new_language', 'Create New Language'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_language'), language::translate('title_create_new_language', 'Create New Language'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('languages_form', 'post'); ?>
@@ -84,7 +82,7 @@
           <th><?php echo language::translate('title_default_language', 'Default Language'); ?></th>
           <th><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
           <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -122,7 +120,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

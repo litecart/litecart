@@ -191,21 +191,19 @@ table .fa-star:hover {
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <div><?php echo functions::form_draw_order_statuses_list('order_status_id', true); ?></div>
+      <?php echo functions::form_draw_order_statuses_list('order_status_id', true); ?>
       <div class="input-group" style="max-width: 380px;">
         <?php echo functions::form_draw_date_field('date_from', true); ?>
         <span class="input-group-text"> - </span>
         <?php echo functions::form_draw_date_field('date_to', true); ?>
       </div>
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+      <?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
@@ -215,9 +213,9 @@ table .fa-star:hover {
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
           <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
           <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
           <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
           <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
@@ -225,7 +223,7 @@ table .fa-star:hover {
           <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
           <th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
           <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -276,9 +274,11 @@ table .fa-star:hover {
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
 
 <script>

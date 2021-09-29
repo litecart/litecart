@@ -86,16 +86,14 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_page'), language::translate('title_create_new_page', 'Create New Page'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <div><?php echo functions::form_draw_select_field('dock', $dock_options, true); ?></div>
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+      <div class="max-width: max-content;"><?php echo functions::form_draw_select_field('dock', $dock_options, true); ?></div>
+      <?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
@@ -111,7 +109,7 @@
           <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
           <th><?php echo language::translate('title_information', 'Information'); ?></th>
           <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -165,7 +163,7 @@
       }
     }
 
-    $num_pages = database::num_rows($pages_query);
+    $num_rows = database::num_rows($pages_query);
 
   } else {
 
@@ -181,7 +179,7 @@
 
       if (empty($parent_id)) {
         if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-        $num_pages = database::num_rows($pages_query);
+        $num_rows = database::num_rows($pages_query);
       }
 
       $page_items = 0;
@@ -230,8 +228,8 @@
       }
     };
 
-    $num_pages = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages;"));
-    $num_root_pages = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;"));
+    $num_rows = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages;"));
+    $num_root_rows = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;"));
     $iterator(0, 0);
   }
 ?>
@@ -239,7 +237,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_pages; ?></td>
+          <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>
@@ -273,9 +271,12 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+
+  <?php if ($num_pages = (!empty($num_root_rows) ? $num_root_rows : $num_rows) / settings::get('data_table_rows_per_page')) { ?>
   <div class="card-footer">
-    <?php echo functions::draw_pagination(ceil((!empty($num_root_pages) ? $num_root_pages : $num_pages)/settings::get('data_table_rows_per_page'))); ?>
+    <?php echo functions::draw_pagination($num_rows); ?>
   </div>
+  <?php } ?>
 </div>
 
 <script>

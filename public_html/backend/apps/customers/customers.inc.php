@@ -100,15 +100,13 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink('customers/edit_customer'), language::translate('title_create_new_customer', 'Create New Customer'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+      <?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
@@ -124,7 +122,7 @@
           <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th data-sort="company" class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
           <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -164,7 +162,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

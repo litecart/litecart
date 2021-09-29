@@ -151,22 +151,22 @@
 
         <div class="col-md-4">
           <div class="form-group">
-            <label><?php echo functions::form_draw_checkbox('apps_toggle', '1', !empty($_POST['apps']) ? '1' : '0'); ?> <?php echo language::translate('title_apps', 'Apps'); ?></label>
+            <?php echo functions::form_draw_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
             <div class="form-input" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
-    echo '  <li>' . PHP_EOL
-       . '    <label>'. functions::form_draw_checkbox('apps['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
+    echo '<li>' . PHP_EOL
+       . '  '. functions::form_draw_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
     if (!empty($app['docs'])) {
-      echo '    <ul>' . PHP_EOL;
+      echo '  <ul>' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '      <li><label>'. functions::form_draw_checkbox('apps['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
+        echo '    <li>'. functions::form_draw_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) . PHP_EOL;
       }
-      echo '    </ul>' . PHP_EOL;
+      echo '  </ul>' . PHP_EOL;
     }
-    echo '  </li>' . PHP_EOL;
+    echo '</li>' . PHP_EOL;
   }
 ?>
               </ul>
@@ -174,15 +174,15 @@
           </div>
 
           <div class="form-group">
-            <label><?php echo functions::form_draw_checkbox('widgets_toggle', '1', !empty($_POST['widgets']) ? '1' : '0'); ?> <?php echo language::translate('title_widgets', 'Widgets'); ?></label>
+            <?php echo functions::form_draw_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
             <div class="form-input" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $widgets = functions::admin_get_widgets();
   foreach ($widgets as $widget) {
-    echo '  <li>' . PHP_EOL
-       . '    <label>'. functions::form_draw_checkbox('widgets['.$widget['code'].']', '1', true) .' '. $widget['name'] .'</label>' . PHP_EOL
-       . '  </li>' . PHP_EOL;
+    echo '<li>' . PHP_EOL
+       . '  '. functions::form_draw_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true) . PHP_EOL
+       . '</li>' . PHP_EOL;
   }
 ?>
               </ul>

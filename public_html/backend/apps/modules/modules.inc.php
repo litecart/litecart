@@ -116,9 +116,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>
@@ -129,12 +127,12 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
           <th><?php echo language::translate('title_version', 'Version'); ?></th>
           <th><?php echo language::translate('title_developer', 'Developer'); ?></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="text-center"><?php echo language::translate('title_priority', 'Priority'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 

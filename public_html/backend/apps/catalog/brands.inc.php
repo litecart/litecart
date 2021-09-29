@@ -63,9 +63,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('brands_form', 'post'); ?>
@@ -74,11 +72,11 @@
       <thead>
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-          <th>&nbsp;</th>
-          <th>&nbsp;</th>
+          <th></th>
+          <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_products', 'Products'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -108,7 +106,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

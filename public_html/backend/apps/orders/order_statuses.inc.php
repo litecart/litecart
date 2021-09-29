@@ -55,9 +55,7 @@
   </div>
 
   <div class="card-action">
-    <ul class="list-inline">
-      <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?></li>
-    </ul>
+    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
@@ -74,7 +72,7 @@
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
           <th><?php echo language::translate('title_track', 'Track'); ?></th>
           <th><?php echo language::translate('title_stage', 'Stage'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -104,7 +102,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

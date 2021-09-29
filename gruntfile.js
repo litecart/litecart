@@ -80,7 +80,24 @@ module.exports = function(grunt) {
         }
       },
 
-      frontend_minified: {
+      frontend_classic_minified: {
+        options: {
+          compress: true,
+          sourceMap: true,
+          sourceMapBasepath: 'public_html/frontend/templates/classic/less/',
+          sourceMapRootpath: '../less/',
+          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
+          relativeUrls: true
+        },
+        files: {
+          'public_html/frontend/templates/classic/css/app.min.css'       : 'public_html/frontend/templates/classic/less/app.less',
+          'public_html/frontend/templates/classic/css/checkout.min.css'  : 'public_html/frontend/templates/classic/less/checkout.less',
+          'public_html/frontend/templates/classic/css/framework.min.css' : 'public_html/frontend/templates/classic/less/framework.less',
+          'public_html/frontend/templates/classic/css/printable.min.css' : 'public_html/frontend/templates/classic/less/printable.less',
+        }
+      },
+
+      frontend_default_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -94,18 +111,13 @@ module.exports = function(grunt) {
           'public_html/frontend/templates/default/css/checkout.min.css'  : 'public_html/frontend/templates/default/less/checkout.less',
           'public_html/frontend/templates/default/css/framework.min.css' : 'public_html/frontend/templates/default/less/framework.less',
           'public_html/frontend/templates/default/css/printable.min.css' : 'public_html/frontend/templates/default/less/printable.less',
-
-          'public_html/frontend/templates/default/css/app.min.css'       : 'public_html/frontend/templates/default/less/app.less',
-          'public_html/frontend/templates/default/css/checkout.min.css'  : 'public_html/frontend/templates/default/less/checkout.less',
-          'public_html/frontend/templates/default/css/framework.min.css' : 'public_html/frontend/templates/default/less/framework.less',
-          'public_html/frontend/templates/default/css/printable.min.css' : 'public_html/frontend/templates/default/less/printable.less',
         }
       },
 
       featherlight_minified: {
         options: {
           compress: true,
-          sourceMap: true,
+          sourceMap: false,
           sourceMapBasepath: 'public_html/assets/featherlight/',
           sourceMapRootpath: './',
           sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
@@ -134,7 +146,7 @@ module.exports = function(grunt) {
     uglify: {
       featherlight: {
         options: {
-          sourceMap: true,
+          sourceMap: false,
         },
         files: {
           'public_html/assets/featherlight/featherlight.min.js'   : ['public_html/assets/featherlight/featherlight.js'],

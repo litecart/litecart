@@ -1,3 +1,4 @@
+/* Media Breakpoints */
 /* Variables */
 :root {
   --site-background-color: #f0f0f0;
@@ -71,13 +72,8 @@
   --shadow-color: rgba(0, 0, 0, 0.3);
   --image-whitespace-color: #fff;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   :root {
-    --default-text-size: 13px;
-  }
-}
-@media (min-width: 992px) {
-  :root {
-    --default-text-size: 14px;
+    --default-text-size: 16px;
   }
 }

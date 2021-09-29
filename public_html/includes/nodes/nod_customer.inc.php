@@ -50,7 +50,7 @@
     public static function after_capture() {
 
     // Load regional settings screen
-      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+      if (!preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'/#', route::$request)) {
         if (settings::get('regional_settings_screen')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             functions::draw_lightbox(document::ilink('regional_settings'));
@@ -61,7 +61,7 @@
 
     public static function before_output() {
 
-      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+      if (!preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'/#', route::$request)) {
         if (settings::get('regional_settings_screen')) {
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;

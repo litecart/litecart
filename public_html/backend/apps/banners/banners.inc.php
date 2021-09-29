@@ -82,7 +82,7 @@
           <th class="text-center"><?php echo language::translate('title_ratio', 'Ratio'); ?></th>
           <th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
           <th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -119,7 +119,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

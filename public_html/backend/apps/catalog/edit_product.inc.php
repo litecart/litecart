@@ -645,7 +645,7 @@
                 <tr>
                   <th style="width: 50%;"><?php echo language::translate('title_group', 'Group'); ?></th>
                   <th style="width: 50%;"><?php echo language::translate('title_value', 'Value'); ?></th>
-                  <th>&nbsp;</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>

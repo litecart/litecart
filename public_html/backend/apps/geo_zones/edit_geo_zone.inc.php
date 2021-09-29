@@ -96,7 +96,7 @@
           <th><?php echo language::translate('title_country', 'Country'); ?></th>
           <th><?php echo language::translate('title_zone', 'Zone'); ?></th>
           <th><?php echo language::translate('title_city', 'City'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 

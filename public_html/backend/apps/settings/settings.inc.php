@@ -140,7 +140,7 @@
         <tr>
           <th><?php echo language::translate('title_key', 'Key'); ?></th>
           <th><?php echo language::translate('title_value', 'Value'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
@@ -175,7 +175,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

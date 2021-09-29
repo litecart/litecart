@@ -110,7 +110,7 @@
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
-      if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
+      if (empty($_POST['redirect_url']) || preg_match('#^'. preg_quote(WS_DIR_APP .'/'. BACKEND_ALIAS .'/', '#') .'#', $_POST['redirect_url'])) {
         $_POST['redirect_url'] = document::ilink('');
       }
 

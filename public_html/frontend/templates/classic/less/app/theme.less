@@ -127,23 +127,6 @@ html {
   }
 }
 
-#cookies-acceptance {
-  /*position: sticky;*/
-  top: 0;
-  z-index: 999;
-  margin: 0 ~"calc(var(--gutter-size)/2)" 0 ~"calc(var(--gutter-size)/2)";
-  background: rgba(255, 255, 255, .9);
-  border: 1px var(--default-border-color) solid;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  padding: ~"calc(var(--gutter-size)/2)";
-  text-align: center;
-  @media (min-width: (@media-breakpoint-sm)) {
-    margin: 0 var(--gutter-size) 0 var(--gutter-size);
-    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
-  }
-}
-
 #main {
   flex-grow: 1;
   padding: 0 ~"calc(var(--gutter-size)/2)" var(--gutter-size) ~"calc(var(--gutter-size)/2)";
@@ -168,10 +151,6 @@ html {
   }
 }
 
-#main {
-  width: 100%;
-}
-
 #content {
   grid-area: content;
   grid-gap: ~"calc(var(--gutter-size)/2)";
@@ -189,7 +168,7 @@ html {
     padding: ~"calc(var(--gutter-size)*2)";
   }
 
-  a:hover {
+  a {
     color: inherit;
   }
 

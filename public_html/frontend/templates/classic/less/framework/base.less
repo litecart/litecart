@@ -13,16 +13,10 @@ html, body {
 h1, h2, h3, h4 {
   color: var(--default-title-color);
   margin: ~"calc(var(--gutter-size)/2)" 0;
-  border-bottom: 1px solid var(--default-border-color);
-  padding-bottom: ~"calc(var(--gutter-size)/4)";
   @media (min-width: @media-breakpoint-sm) {
     padding-bottom: ~"calc(var(--gutter-size)/2)";
     margin: var(--gutter-size) 0;
   }
-}
-
-p {
-  margin: var(--gutter-size) 0;
 }
 
 a {
