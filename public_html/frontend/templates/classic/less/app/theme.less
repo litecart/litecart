@@ -15,7 +15,6 @@ html {
   grid-template-columns: auto auto;
   align-items: center;
   padding: ~"calc(var(--gutter-size)/2)";
-
   @media (min-width: (@media-breakpoint-sm)) {
     padding: var(--gutter-size);
   }
@@ -152,6 +151,7 @@ html {
 }
 
 #content {
+  width: 100%;
   grid-area: content;
   grid-gap: ~"calc(var(--gutter-size)/2)";
   @media (min-width: (@media-breakpoint-sm)) {
@@ -189,6 +189,7 @@ html {
   .title {
     font-size: 1.5em;
     margin: 0 0 0.75em 0;
+    color: var(--footer-title-color);
   }
 
   ul.list-vertical {

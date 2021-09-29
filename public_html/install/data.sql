@@ -409,7 +409,7 @@ INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority
 (1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
-(1, 1, 'en', '', 'https://vheatris.tumblr.com/');
+(1, 1, 'en', '', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
 (1, 0, NOW(), NOW()),

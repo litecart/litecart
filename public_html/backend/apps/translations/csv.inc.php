@@ -215,7 +215,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_codes[]', true).' '; ?></td>
+              <?php echo functions::form_draw_languages_list('language_codes[]', true); ?></td>
             </div>
 
             <div class="row">

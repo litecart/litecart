@@ -230,7 +230,8 @@
       }
 
       if (!empty($_GET['redirect_url'])) {
-        $redirect_url = $_GET['redirect_url'];
+        $redirect_url = new ent_link($_GET['redirect_url']);
+        $redirect_url->host = '';
       } else {
         $redirect_url = document::ilink(__APP__.'/orders');
       }
@@ -346,6 +347,11 @@
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
               <?php echo functions::form_draw_order_statuses_list('order_status_id', true); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_date', 'Date'); ?></label>
+              <div class="form-control-static"><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
             </div>
 
             <div class="form-group col-md-3">

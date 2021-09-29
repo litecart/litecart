@@ -15,7 +15,7 @@
           echo '<div class="alert alert-warning">' . PHP_EOL
              . '  <a href="#" class="close" data-dismiss="alert">&times;</a>' . PHP_EOL
              . '  ' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice . PHP_EOL
-             . '</div>';;
+             . '</div>';
           break;
 
         case 'notices':

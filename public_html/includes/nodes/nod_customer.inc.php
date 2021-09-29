@@ -12,32 +12,97 @@
     // Bind customer to session
       self::$data = &session::$data['customer'];
 
+    // Login remembered customer automatically
       if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
-        list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
 
-        $customer_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."customers
-          where email = '". database::input($email) ."'
-          limit 1;"
-        );
+        try {
 
-        if ($customer = database::fetch($customer_query)) {
-          $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
+          list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
 
-          if ($checksum == $key) {
-            self::$data['id'] = $customer['id'];
-          } else if (!empty($_COOKIE['customer_remember_me'])) {
-            header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
+          $customer_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."customers
+            where email = '". database::input($email) ."'
+            limit 1;"
+          );
+
+          if (!$customer = database::fetch($customer_query)) {
+            throw new Exception('Invalid email or the account has been removed');
           }
+
+          if ($checksum != $key) {
+            if (++$customer['login_attempts'] < 3) {
+              database::query(
+                "update ". DB_TABLE_PREFIX ."customers
+                set login_attempts = login_attempts + 1
+                where id = ". (int)$customer['id'] ."
+                limit 1;"
+              );
+            } else {
+              database::query(
+                "update ". DB_TABLE_PREFIX ."customers
+                set login_attempts = 0,
+                date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+                where id = ". (int)$customer['id'] ."
+                limit 1;"
+              );
+            }
+
+            throw new Exception('Invalid checksum for cookie');
+          }
+
+          self::load($customer['id']);
+
+          database::query(
+            "update ". DB_TABLE_PREFIX ."customers
+            set
+              last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+              last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+              login_attempts = 0,
+              total_logins = total_logins + 1,
+              date_login = '". date('Y-m-d H:i:s') ."'
+            where id = ". (int)$customer['id'] ."
+            limit 1;"
+          );
+
+        } catch (Exception $e) {
+          header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
         }
       }
 
-      if (!empty(self::$data['id']) && !empty(self::$data['date_expire_sessions'])) {
-        if (!isset(session::$data['security.timestamp']) || session::$data['security.timestamp'] < strtotime(self::$data['date_expire_sessions'])) {
+      if (!empty(self::$data['id'])) {
+        try {
+          $customer_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."customers
+            where id = ". (int)self::$data['id'] ."
+            limit 1;"
+          );
+
+          if (!$customer = database::fetch($customer_query)) {
+            throw new Exception(language::translate('error_your_account_has_been_removed', 'Your account has been removed'));
+          }
+
+          if (!$customer['status']) {
+            throw new Exception(language::translate('error_your_account_is_disabled', 'Your account is disabled'));
+          }
+
+          if (!empty($customer['date_expire_sessions'])) {
+            if (!isset(session::$data['customer_security_timestamp']) || session::$data['customer_security_timestamp'] < strtotime($customer['date_expire_sessions'])) {
+              self::reset();
+              notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+              header('Location: '. document::ilink('login'));
+              exit;
+            }
+          }
+
+        } catch (Exception $e) {
+
           self::reset();
-          notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-          header('Location: '. document::ilink('login'));
-          exit;
+
+          if (!empty($_COOKIE['customer_remember_me'])) {
+            header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
+          }
+
+          notices::add('errors', $e->getMessage());
         }
       }
 
@@ -250,7 +315,8 @@
     public static function require_login() {
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        header('Location: ' . document::ilink('login', ['redirect_url' => $_SERVER['REQUEST_URI']]));
+        $redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+        header('Location: ' . document::ilink('login', ['redirect_url' => $redirect_url]));
         exit;
       }
     }

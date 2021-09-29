@@ -6,14 +6,14 @@
         <a href="<?php echo document::href_ilink(''); ?>"><?php echo settings::get('site_name'); ?></a>
       </div>
 
-      <button type="button" class="navbar-toggle">
+      <button type="button" class="navbar-toggle" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-menu">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
     </div>
 
-    <nav class="navbar-menu">
+    <nav id="default-menu" class="navbar-menu navbar-collapse collapse">
       <ul class="nav navbar-nav">
 
         <li class="search hidden-xs">

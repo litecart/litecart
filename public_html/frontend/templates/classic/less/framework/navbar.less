@@ -1,5 +1,148 @@
 /* Navbar - Bootstrap Compatible */
 
+.navbar {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: var(--border-radius);
+  background-color: var(--navigation-background-color);
+  color: var(--navigation-text-color);
+
+  .navbar-header {
+    display: flex;
+    width: 100%;
+    @media (min-width: @media-breakpoint-sm) {
+      float: left;
+      width: ~"calc(var(--sidebar-width) + var(--gutter-size)/4)";
+    }
+    > * {
+      flex: 1 1 auto;
+    }
+
+    .navbar-brand {
+      padding: var(--gutter-size);
+      font-size: 18px;
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+      > img {
+        display: block;
+      }
+    }
+
+    .navbar-toggle {
+      position: relative;
+      flex: 0 1 auto;
+      padding: ~"calc(var(--gutter-size)/4)";
+      margin: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" 0;
+      background-color: rgba(0, 0, 0, 0.05);
+      border: none;
+      border-radius: var(--border-radius);
+
+      &:focus {
+        outline: 0;
+      }
+
+      .icon-bar {
+        position: relative;
+        background-color: var(--navigation-text-color);
+        display: block;
+        width: 22px;
+        height: 2px;
+        transition: all 250ms ease-in-out;
+        + .icon-bar {
+          margin-top: 4px;
+        }
+        &:nth-of-type(2) {
+          top: 1px;
+        }
+        &:nth-of-type(3) {
+          top: 2px;
+        }
+      }
+
+      &:not(.collapsed) {
+        .icon-bar:nth-of-type(1) {
+          top: 6px;
+          transform: rotate(45deg);
+        }
+        .icon-bar:nth-of-type(2) {
+          background-color: transparent;
+        }
+        .icon-bar:nth-of-type(3) {
+          top: -6px;
+          transform: rotate(-45deg);
+        }
+      }
+
+      @media (min-width: @media-breakpoint-sm) {
+        display: none;
+      }
+    }
+  }
+
+  li.open > a {
+    background-color: rgba(0, 0, 0, .15) !important;
+  }
+  li:not(.open) > a:hover {
+    background-color: rgba(0, 0, 0, .05);
+  }
+
+  .navbar-nav {
+    > li > a {
+      color: inherit;
+      transition: all 125ms linear;
+    }
+  }
+
+  .navbar-form {
+    margin: ~"calc(var(--gutter-size)/4)";
+    @media (min-width: @media-breakpoint-sm) {
+      margin: 6px 6px 0 6px;
+    }
+  }
+
+  .dropdown-menu {
+    min-width: 100%;
+    margin-top: -1px;
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    li > a {
+      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+    }
+  }
+
+  @media (min-width: @media-breakpoint-sm) {
+    flex-direction: row;
+    .navbar-nav {
+      float: left;
+    }
+    @media (min-width: @media-breakpoint-sm) {
+      background-color: #fff;
+      border: none;
+    }
+  }
+
+  @media (max-width: (@media-breakpoint-sm - 1px)) {
+    .open .dropdown-menu {
+      position: static;
+      float: none;
+      width: auto;
+      margin-top: 0;
+      background-color: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+@media (min-width: @media-breakpoint-sm) {
+  .navbar-right {
+    float: right !important;
+  }
+}
+
 .collapsing {
   transition: height 0.5s;
   overflow: hidden;
@@ -31,153 +174,6 @@
     }
     &.in {
       overflow-y: visible;
-    }
-  }
-}
-
-.navbar {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  border-radius: var(--border-radius);
-  background-color: var(--navigation-background-color);
-  color: var(--navigation-text-color);
-
-  li.open > a {
-    background-color: rgba(0, 0, 0, .15) !important;
-  }
-  li:not(.open) > a:hover {
-    background-color: rgba(0, 0, 0, .05);
-  }
-
-  @media (min-width: @media-breakpoint-sm) {
-    .dropdown-menu {
-      background-color: #fff;
-      border: none;
-    }
-  }
-
-  .navbar-nav {
-    > li > a {
-      color: inherit;
-      transition: all 125ms linear;
-    }
-  }
-
-  .dropdown-menu {
-    min-width: 100%;
-    margin-top: -1px;
-    border-top: none;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    li > a {
-      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
-    }
-  }
-
-  @media (min-width: @media-breakpoint-sm) {
-    flex-direction: row;
-    .navbar-nav {
-      float: left;
-    }
-  }
-
-  @media (max-width: (@media-breakpoint-sm - 1px)) {
-    .open .dropdown-menu {
-      position: static;
-      float: none;
-      width: auto;
-      margin-top: 0;
-      background-color: transparent;
-      border: 0;
-      box-shadow: none;
-    }
-  }
-}
-
-.navbar-header {
-  display: flex;
-  width: 100%;
-  @media (min-width: @media-breakpoint-sm) {
-    float: left;
-    width: ~"calc(var(--sidebar-width) + var(--gutter-size)/4)";
-  }
-  > * {
-    flex: 1 1 auto;
-  }
-
-  .navbar-brand {
-    padding: var(--gutter-size);
-    font-size: 18px;
-    &:hover, &:focus {
-      text-decoration: none;
-    }
-    > img {
-      display: block;
-    }
-  }
-
-  .navbar-toggle {
-    position: relative;
-    flex: 0 1 auto;
-    padding: ~"calc(var(--gutter-size)/4)";
-    margin: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" 0;
-    background-color: rgba(0, 0, 0, 0.05);
-    background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-    border: none;
-    border-radius: var(--border-radius);
-    &:focus {
-      outline: 0;
-    }
-    @media (min-width: @media-breakpoint-sm) {
-      display: none;
-    }
-  }
-}
-
-@media (min-width: @media-breakpoint-sm) {
-  .navbar-right {
-    float: right !important;
-  }
-}
-
-.navbar-form {
-  margin: ~"calc(var(--gutter-size)/4)";
-  @media (min-width: @media-breakpoint-sm) {
-    margin: 6px 6px 0 6px;
-  }
-}
-
-.navbar-toggle {
-  .icon-bar {
-    position: relative;
-    background-color: var(--navigation-text-color);
-    display: block;
-    width: 22px;
-    height: 2px;
-    transition: all 250ms ease-in-out;
-    + .icon-bar {
-      margin-top: 4px;
-    }
-  }
-  .icon-bar:nth-of-type(2) {
-    top: 1px;
-  }
-  .icon-bar:nth-of-type(3) {
-    top: 2px;
-  }
-
-  &:not(.collapsed) {
-    .icon-bar:nth-of-type(1) {
-      top: 6px;
-      transform: rotate(45deg);
-    }
-    .icon-bar:nth-of-type(2) {
-      background-color: transparent;
-    }
-    .icon-bar:nth-of-type(3) {
-      top: -6px;
-      transform: rotate(-45deg);
     }
   }
 }

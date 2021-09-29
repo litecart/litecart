@@ -8,7 +8,6 @@
 <style>
 html {
   background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%);
-  font: 14px Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 body {

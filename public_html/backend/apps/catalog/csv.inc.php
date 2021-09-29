@@ -9,6 +9,8 @@
 
     try {
 
+      ini_set('memory_limit', -1);
+
       ob_clean();
 
       header('Content-Type: text/plain; charset='. mb_http_output());
@@ -728,6 +730,8 @@
   if (isset($_POST['export'])) {
 
     try {
+
+      ini_set('memory_limit', -1);
 
       if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
 

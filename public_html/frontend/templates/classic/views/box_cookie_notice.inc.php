@@ -2,11 +2,16 @@
   if (isset($_COOKIE['cookies_accepted']) && $_COOKIE['cookies_accepted'] != '') return;
   if (!settings::get('cookie_policy')) return;
 ?>
-<div id="box-cookie-notice" class="text-center">
-  <?php echo strtr(language::translate('text_cookie_notice', 'We rely on <a href="%url">cookies</a> for storing your shopping cart and regional settings between visits and to understand how our customers use our website.'), ['%url' => document::href_ilink('information', ['page_id' => settings::get('cookie_policy')])]); ?>
-  <div class="btn-group">
-    <?php echo functions::form_draw_button('accept_cookies', ['1', language::translate('text_i_accept', 'I accept')], 'button', 'style="font-weight: bold;"'); ?>
-    <?php echo functions::form_draw_button('decline_cookies', ['0', language::translate('text_i_decline', 'I decline')], 'button'); ?>
+<div id="box-cookie-notice">
+  <div class="fourteen-forty text-center">
+    <div class="notice">
+      <?php echo strtr(language::translate('text_cookie_notice', 'We rely on <a href="%url">cookies</a> for storing your shopping cart and regional settings between visits and to understand how our customers use our website.'), ['%url' => document::href_ilink('information', ['page_id' => settings::get('cookie_policy')])]); ?>
+    </div>
+
+    <div class="buttons">
+      <?php echo functions::form_draw_button('accept_cookies', ['1', language::translate('text_accept_cookies', 'Accept Cookies') .' ('. language::translate('text_recommended', 'recommended') .')'], 'button', 'style="font-weight: bold;"'); ?>
+      <?php echo functions::form_draw_button('decline_cookies', ['0', language::translate('text_decline_cookies', 'Decline Cookies')], 'button'); ?>
+    </div>
   </div>
 </div>
 

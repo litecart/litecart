@@ -1,4 +1,3 @@
-/* Media Breakpoints */
 html {
   background: var(--site-background-color);
 }
@@ -154,6 +153,7 @@ html {
   }
 }
 #content {
+  width: 100%;
   grid-area: content;
   grid-gap: calc(var(--gutter-size)/2);
 }
@@ -193,6 +193,7 @@ html {
 #footer .title {
   font-size: 1.5em;
   margin: 0 0 0.75em 0;
+  color: var(--footer-title-color);
 }
 #footer ul.list-vertical li {
   padding: 0;
@@ -293,7 +294,6 @@ html {
 }
 .listing .category,
 .listing .brand,
-.listing .product,
 .listing .product {
   position: relative;
   overflow: hidden;
@@ -308,7 +308,6 @@ html {
 @media (min-width: 768px) {
   .listing .category:hover,
   .listing .brand:hover,
-  .listing .product:hover,
   .listing .product:hover {
     box-shadow: 0 calc(var(--gutter-size)/4) calc(var(--gutter-size)/2) 0 rgba(0, 0, 0, 0.15);
     transform: scale(1.01);

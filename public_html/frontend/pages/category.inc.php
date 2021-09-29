@@ -15,6 +15,8 @@
 
   $category = reference::category($_GET['category_id']);
 
+  if (empty($_GET['list_style'])) $_GET['list_style'] = $category->list_style;
+
   if (empty($category->id)) {
     http_response_code(410);
     include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
@@ -56,6 +58,7 @@
       'image' => [],
       'subcategories' => [],
       'products' => [],
+      'list_style' => $category->list_style,
       'sort_alternatives' => [
         'name' => language::translate('title_name', 'Name'),
         'price' => language::translate('title_price', 'Price'),

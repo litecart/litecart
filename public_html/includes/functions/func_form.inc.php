@@ -987,7 +987,7 @@ END;
 
       default:
         trigger_error('Unknown function name ('. $function .')', E_USER_WARNING);
-        return form_draw_hidden_field($name, $input, $parameters);
+        return form_draw_text_field($name, $input, $parameters);
         break;
     }
   }
@@ -1097,7 +1097,7 @@ END;
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
            . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
-           . '    <ul class="dropdown-menu" style="padding: .5em; right: 0;"></ul>' . PHP_EOL
+           . '    <ul class="dropdown-menu" style="padding: 1em; right: 0;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';
 
