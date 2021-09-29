@@ -61,7 +61,7 @@
       <div>
         <div class="dropdown">
           <div class="form-control" data-toggle="dropdown">
-            <?php echo language::translate('title_manufacturers', 'Brands'); ?> <span class="caret right"></span>
+            <?php echo language::translate('title_manufacturers', 'Brands'); ?>
           </div>
           <ul class="dropdown-menu">
             <?php foreach ($manufacturers as $manufacturer) { ?>
@@ -80,7 +80,7 @@
       <div>
         <div class="dropdown">
           <div class="form-control" data-toggle="dropdown">
-            <?php echo $group['name']; ?> <span class="caret right"></span>
+            <?php echo $group['name']; ?>
           </div>
           <ul class="dropdown-menu">
             <?php foreach ($group['values'] as $value) { ?>
@@ -98,7 +98,7 @@
       <div>
         <div class="dropdown">
           <div class="form-control" data-toggle="dropdown">
-            <?php echo language::translate('title_sort_by', 'Sort By'); ?> <span class="caret right"></span>
+            <?php echo language::translate('title_sort_by', 'Sort By'); ?>
           </div>
           <ul class="dropdown-menu">
             <?php foreach ($sort_alternatives as $key => $title) { ?>
@@ -115,8 +115,8 @@
 
       <div>
         <div class="btn-group btn-group-inline float-end" data-toggle="buttons">
-          <label class="btn btn-default<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-large'); ?></label>
-          <label class="btn btn-default<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-bars'); ?></label>
+          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-large'); ?></label>
+          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-bars'); ?></label>
         </div>
       </div>
 

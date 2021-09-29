@@ -459,6 +459,8 @@ html {
   position: absolute;
   top: 0;
   left: calc(var(--gutter-size) + 100px);
+  right: 0;
+  bottom: 0;
   padding: calc(var(--gutter-size)/2);
 }
 @media (min-width: 768px) {
