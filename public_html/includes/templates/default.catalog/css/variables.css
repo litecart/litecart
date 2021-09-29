@@ -13,9 +13,9 @@
   --navigation-background-color: #f0f0f0;
   --navigation-text-color: var(--default-text-color);
   --default-background-color: #f9f9f9;
-  --default-background-color-hover: #d8d8d8;
+  --default-background-color-hover: #e4e4e4;
   --default-background-color-active: #fff;
-  --default-border-color: #eee;
+  --default-border-color: rgba(0, 0, 0, 0.075);
   --default-line-height: 1.3333;
   --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #333;

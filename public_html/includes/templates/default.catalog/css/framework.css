@@ -278,11 +278,10 @@ ul.breadcrumb li a {
   text-decoration: none;
 }
 .btn.btn-default:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--default-background-color-hover);
+  filter: brightness(95%);
 }
 .btn.btn-default.active {
-  background: var(--default-background-color-active);
-  border-color: var(--default-border-color);
+  filter: brightness(85%);
 }
 .btn.btn-primary {
   background: var(--primary-background-color);
@@ -290,11 +289,10 @@ ul.breadcrumb li a {
   text-decoration: none;
 }
 .btn.btn-primary:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--primary-background-color-hover);
+  filter: brightness(95%);
 }
 .btn.btn-primary.active {
-  background: var(--primary-background-color-active);
-  border-color: var(--primary-border-color);
+  filter: brightness(85%);
 }
 .btn.btn-success {
   background: var(--success-background-color);
@@ -302,11 +300,10 @@ ul.breadcrumb li a {
   text-decoration: none;
 }
 .btn.btn-success:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--success-background-color-hover);
+  filter: brightness(95%);
 }
 .btn.btn-success.active {
-  background: var(--success-background-color-active);
-  border-color: var(--success-border-color);
+  filter: brightness(85%);
 }
 .btn.btn-danger {
   background: var(--danger-background-color);
@@ -314,11 +311,10 @@ ul.breadcrumb li a {
   text-decoration: none;
 }
 .btn.btn-danger:hover:not(.active):not(.disabled):not([disabled]) {
-  background: var(--danger-background-color-hover);
+  filter: brightness(95%);
 }
 .btn.btn-danger.active {
-  background: var(--danger-background-color-active);
-  border-color: var(--danger-border-color);
+  filter: brightness(85%);
 }
 .btn.btn-sm {
   font-size: 0.8em;

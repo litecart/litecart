@@ -5,11 +5,10 @@
   color: ~"var(--@{type}-text-color)";
   text-decoration: none;
   &:hover:not(.active):not(.disabled):not([disabled]) {
-    background: ~"var(--@{type}-background-color-hover)";
+    filter: brightness(95%);
   }
   &.active {
-    background: ~"var(--@{type}-background-color-active)";
-    border-color: ~"var(--@{type}-border-color)";
+    filter: brightness(85%);
   }
 }
 
