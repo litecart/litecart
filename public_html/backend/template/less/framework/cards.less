@@ -56,7 +56,9 @@
   }
 
   .card-filter {
-    padding: 2em;
+    display: flex;
+    gap: ~"calc(var(--gutter-size) / 2)";
+    padding: var(--gutter-size);
     padding-top: 0;
     > * {
       &.expandable {

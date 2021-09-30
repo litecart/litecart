@@ -87,11 +87,11 @@
 
                 document::$template = 'blank';
 
-                echo '<p>'. language::translate('title_redirecting', 'Redirecting') .'...</p>' . PHP_EOL
+                echo '<div>'. language::translate('title_redirecting', 'Redirecting') .'...</div>' . PHP_EOL
                    . '<form name="gateway_form" method="post" action="'. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')) .'">' . PHP_EOL;
 
                 if (is_array($gateway['fields'])) {
-                  foreach ($gateway['fields'] as $key => $value) echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;
+                  foreach ($gateway['fields'] as $key => $value) echo functions::form_draw_hidden_field($key, $value) . PHP_EOL;
                 } else {
                   echo $gateway['fields'];
                 }

@@ -303,7 +303,7 @@ ul.breadcrumb li a {
 .btn {
   cursor: pointer;
   display: inline-block;
-  padding: 0.5em 1em;
+  padding: 0.5em 2em;
   text-decoration: none;
   font-weight: normal;
   line-height: 100%;
@@ -1181,7 +1181,7 @@ textarea {
   outline: 0;
 }
 input[type="number"] {
-  text-align: right;
+  text-align: end;
 }
 .form-group {
   margin-bottom: 1em;
@@ -1282,10 +1282,10 @@ input[type="number"] {
   background-repeat: no-repeat;
   background-position: right 1em center;
   background-size: 16px 12px;
-  cursor: default;
   padding-inline-end: 2.5em;
-  user-select: none;
   appearance: none;
+  cursor: default;
+  user-select: none;
 }
 .dropdown .form-select + .dropdown-menu > .active {
   font-weight: bold;
@@ -1353,6 +1353,7 @@ input[type="number"] {
 }
 .input-group .form-input {
   flex: 1 1 auto;
+  background: none;
   box-shadow: none;
   border-radius: 0;
   border: none;
@@ -1432,12 +1433,10 @@ fieldset[disabled] > :not(legend),
 }
 /* Lists - Bootstrap Compatible */
 ul.list-unstyled {
+  display: flex;
+  flex-flow: column wrap;
   margin: 0;
   padding: 0;
-}
-ul.list-unstyled li {
-  margin: 0;
-  padding: calc(var(--gutter-size)/4) 0;
   list-style: none;
 }
 ul.list-unstyled ul {
@@ -1445,14 +1444,15 @@ ul.list-unstyled ul {
   padding: 0;
 }
 ul.list-inline {
+  display: flex;
+  flex-flow: row wrap;
+  gap: calc(var(--gutter-size)/2);
   margin: 0;
   padding: 0;
-  display: inline-flex;
-  flex-wrap: wrap;
+  list-style: none;
 }
 ul.list-inline li {
-  padding: calc(var(--gutter-size)/4);
-  list-style: none;
+  flex: 0 1 auto;
 }
 .loader {
   display: inline-block;
@@ -1610,7 +1610,7 @@ ul.list-inline li {
 }
 .nav-tabs > li.active a {
   background: var(--tabs-background-color-active);
-  color: var(--tabs-text-color);
+  color: var(--tabs-text-color-active);
   margin-bottom: -1px;
   border-bottom-color: #fff;
 }
@@ -1929,6 +1929,12 @@ ul.list-inline li {
   font-weight: bold;
   color: #666;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+.mt-0 {
+  margin-top: 0;
+}
+.mb-0 {
+  margin-top: 0;
 }
 /* Tables - Bootstrap Compatible */
 .table {

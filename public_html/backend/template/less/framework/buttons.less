@@ -9,7 +9,7 @@
     background: ~"var(--button-@{type}-background-color-hover)";
   }
   &.active {
-    background: ~"var(--@{type}-background-color-active)";
+    background: ~"var(--button-@{type}-background-color-active)";
     border-color: ~"var(--button-@{type}-border-color)";
   }
 }
@@ -17,12 +17,11 @@
 .btn {
   cursor: pointer;
   display: inline-block;
-  padding: var(--input-padding-y) var(--input-padding-x);
+  padding: var(--input-padding-y) ~"calc(var(--input-padding-x) * 1.5)";
   text-decoration:  none;
   font-weight: normal;
-  border: none;
   border-radius: var(--border-radius);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+  box-shadow: 0 1px 0px rgba(0, 0, 0, .15);
   text-align: center;
   vertical-align: middle;
   white-space: nowrap;

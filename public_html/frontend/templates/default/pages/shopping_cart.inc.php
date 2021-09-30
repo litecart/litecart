@@ -47,7 +47,7 @@
                     <div class="row">
                       <div class="col-xs-4 col-md-2">
                         <a href="<?php echo htmlspecialchars($item['link']); ?>" class="thumbnail float-start" style="max-width: 64px; margin-inline-end: 1em;">
-                          <img src="<?php echo document::href_link($item['thumbnail']); ?>" alt="" />
+                          <img src="<?php echo document::href_link(WS_DIR_APP . $item['image']['thumbnail']); ?>" alt="" />
                         </a>
                       </div>
 

@@ -2,18 +2,18 @@
 
 .input-field() {
   width: 100%;
-  padding: var(--input-padding-y) var(--input-padding-x);
+  padding: ~"calc(var(--input-padding-y) + 1px)" ~"calc(var(--input-padding-x) + 1px)";
   position: relative;
   color: var(--input-text-color);
   background: var(--input-background-color);
-  border: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+  border: 1px solid var(--input-border-color);
+  //box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .10);
   border-radius: var(--border-radius);
 }
 
 fieldset {
   padding: var(--gutter-size);
-  border: 2px solid var(--input-border-color);
+  border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   > legend {
     font-size: 1.25em;
@@ -33,12 +33,12 @@ input[type="number"] {
 }
 
 .form-group {
+  margin-bottom: 1em;
   &.required label::after {
     content: ' *';
     color: #f00;
   }
   &:not([class*=col-]) {
-    margin-bottom: var(--gutter-size);
   }
   > label:not(.form-check) {
     display: block;
@@ -90,7 +90,7 @@ input[type="number"] {
 
 .form-input {
   .input-field();
-  display: block;
+
   color: var(--input-text-color);
   vertical-align: middle;
   overflow-y: auto;
@@ -121,6 +121,10 @@ input[type="number"] {
   background-size: 16px 12px;
   cursor: default;
 
+  option {
+    background: var(--input-background-color);
+  }
+
   user-select: none;
   appearance: none;
 }
@@ -133,7 +137,7 @@ input[type="number"] {
   border-radius: 2em;
   margin-top: .25em;
   vertical-align: top;
-  background-color: #fff;
+  background-color: var(--whitespace-color);
   background-repeat: no-repeat;
   background-size: contain;
   border: 1px solid rgba(0, 0, 0, .25);
@@ -185,16 +189,27 @@ input[type="number"] {
     flex: 0 1 auto;
     padding: var(--input-padding-y) var(--input-padding-x);
     background-color: var(--input-addon-background-color);
+    border-left: 1px solid var(--input-border-color);
+    border-right: 1px solid var(--input-border-color);
     color: var(--input-text-color);
     align-self: stretch;
     font-weight: normal;
     text-align: center;
     white-space: nowrap;
+    &:first-child {
+      border-left: none;
+    }
+    &:last-child {
+      border-right: none;
+    }
   }
   .input-group-icon {
     flex: 0 1 auto;
     padding: .5em 1em;
     margin-inline-end: -12px;
+  }
+  .btn {
+    margin: -1px; // Compensate for input border
   }
   //> *:first-child:is(.btn, .form-select, .form-input) {
   > *:first-child {
@@ -204,6 +219,22 @@ input[type="number"] {
   > *:last-child {
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
+}
+
+.form-input + .form-input,
+.form-input + .form-select,
+.form-input + .input-group,
+.form-select + .form-input,
+.form-select + .form-select,
+.form-select + .input-group,
+.input-group + .form-input,
+.input-group + .form-select,
+.input-group + .input-group {
+  margin-top: -1px; // Compensate for border
+}
+.table-striped .form-input,
+.table-striped .form-select {
+  background-color: var(--whitespace-color);
 }
 
 fieldset[disabled] > :not(legend),

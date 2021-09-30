@@ -17,7 +17,7 @@
     <section id="box-regional-settings">
       <h1 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
 
-      <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
+      <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>
 
         <div class="row">
           <?php if (count($languages) > 1) { ?>
@@ -45,14 +45,17 @@
           </div>
 
           <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
+            <?php echo functions::form_draw_text_field('postcode', customer::$data['postcode']); ?>
+          </div>
+
+          <div class="form-group col-md-6">
             <label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
             <?php echo functions::form_draw_toggle('display_prices_including_tax', customer::$data['display_prices_including_tax'], 'y/n'); ?>
           </div>
         </div>
 
-        <p class="btn-group btn-block">
-          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?>
-        </p>
+        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?>
 
       <?php echo functions::form_draw_form_end(); ?>
     </section>

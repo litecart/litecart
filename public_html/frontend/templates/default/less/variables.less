@@ -1,10 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap');
-
 @import "framework/media.less";
+
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap');
 
 /* Variables */
 
 :root {
+  --border-radius: 4px;
+  --gutter-size: .75rem;
+  --link-text-color: #5bc0de;
+  --shadow-color: rgba(0, 0, 0, .5);
+  --whitespace-color: #fff;
+
   --site-background-color: #f4f4f7;
   --header-background-color: #fff;
 
@@ -62,6 +70,11 @@
   --breadcrumbs-text-color: #000;
   --breadcrumbs-border-color: transparent;
 
+  --input-background-color: #f4f3f5;
+  --input-padding-x: 1em;
+  --input-padding-y: .5em;
+  --input-text-color: #000;
+
   --pills-background-color: #fff;
   --pills-background-color-active: #cdcdd4;
   --pills-text-color: #333;
@@ -88,16 +101,11 @@
   --footer-title-color: #333;
   --footer-text-color: #333;
 
+  --cookie-notice-background-color: rgba(50, 50, 75, .85);
+  --cookie-notice-text-color: #fff;
+
   --copyright-background-color: #d4d4dc;
   --copyright-text-color: var(--footer-text-color);
-
-  --border-radius: 4px;
-  --input-background-color: #f4f3f5;
-  --input-text-color: #000;
-  --link-text-color: #5bc0de;
-  --shadow-color: rgba(0,0,0,0.5);
-  --whitespace-color: #fff;
-  --gutter-size: .75rem;
 }
 
 @media (min-width: @media-breakpoint-sm) {

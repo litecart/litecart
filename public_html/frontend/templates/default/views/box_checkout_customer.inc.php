@@ -94,7 +94,7 @@
 
   <div class="address shipping-address">
 
-    <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
+    <h3><?php echo functions::form_draw_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
 
     <fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
 
@@ -178,7 +178,7 @@
 
     <?php } else { ?>
 
-    <h3><?php echo functions::form_draw_checkbox('create_account', '1', (!empty($_POST['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : false)); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
+    <h3><?php echo functions::form_draw_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : false)); ?></h3>
     <?php if (settings::get('register_guests')) echo functions::form_draw_hidden_field('create_account', '1'); ?>
 
     <fieldset<?php echo (empty($_POST['create_account'])) ? ' style="display: none;" disabled' : false; ?>>
@@ -213,7 +213,6 @@
   <div>
     <button class="btn btn-lg btn-default btn-block" name="save_customer_details" type="submit" disabled><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
   </div>
-
 </section>
 
 <script>

@@ -62,8 +62,9 @@
           database::query(
             "update ". DB_TABLE_PREFIX ."users
             set
-              last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-              last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+              last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+              last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+              last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
               login_attempts = 0,
               total_logins = total_logins + 1,
               date_login = '". date('Y-m-d H:i:s') ."'

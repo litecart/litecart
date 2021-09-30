@@ -25,7 +25,7 @@ input, button, select, textarea {
 }
 
 input[type="number"] {
-  text-align: right;
+  text-align: end;
 }
 
 .form-group {
@@ -118,10 +118,10 @@ input[type="number"] {
   background-repeat: no-repeat;
   background-position: right 1em center;
   background-size: 16px 12px;
-  cursor: default;
   padding-inline-end: 2.5em;
-  user-select: none;
   appearance: none;
+  cursor: default;
+  user-select: none;
 }
 
 .dropdown .form-select + .dropdown-menu {
@@ -187,6 +187,7 @@ input[type="number"] {
   padding: 0;
   .form-input {
     flex: 1 1 auto;
+    background: none;
     box-shadow: none;
     border-radius: 0;
     border: none;

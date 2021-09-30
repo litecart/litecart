@@ -115,7 +115,7 @@
 
             case 'imagick':
 
-              this->_data['type'] =$this->_image->getImageFormat();
+              $this->_data['type'] = $this->_image->getImageFormat();
 
               break 2;
 

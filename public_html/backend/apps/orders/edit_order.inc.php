@@ -351,12 +351,20 @@
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_date', 'Date'); ?></label>
-              <div class="form-control-static"><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
+              <div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
             </div>
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_language', 'Language'); ?></label>
               <?php echo functions::form_draw_languages_list('language_code', true); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
+              <div class="btn-group btn-block" data-toggle="buttons">
+                <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
+                <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+              </div>
             </div>
 
             <div class="form-group col-md-3">
@@ -380,14 +388,6 @@
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_reference', 'Reference'); ?></label>
               <?php echo functions::form_draw_text_field('reference', true); ?>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
-              <div class="btn-group btn-block" data-toggle="buttons">
-                <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-                <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
-              </div>
             </div>
           </div>
 

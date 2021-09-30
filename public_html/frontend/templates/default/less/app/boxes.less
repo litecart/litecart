@@ -1,5 +1,21 @@
 /* Boxes */
 
+#box-cookie-notice {
+  background: var(--cookie-notice-background-color);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1em;
+  line-height: 2em;
+  color: var(--cookie-notice-text-color);
+  z-index: 999;
+  backdrop-filter: saturate(200%) blur(5px);
+  .notice {
+    margin-bottom: 1em;
+  }
+}
+
 #box-also-purchased-products {
   @media(min-width: @media-breakpoint-md) {
     position: sticky;

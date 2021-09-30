@@ -43,7 +43,7 @@
 
       if (is_file($options['destination'])) {
         if (filemtime($options['destination']) >= filemtime($source)) {
-          return preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', $options['destination']);
+          return functions::image_path($options['destination']);
         } else {
           unlink($options['destination']);
         }
@@ -54,7 +54,7 @@
         if (!empty($options['overwrite'])) {
           unlink($options['destination']);
         } else {
-          return preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', functions::file_realpath($options['destination']));
+          return functions::image_path($options['destination']);
         }
       }
 
@@ -75,7 +75,7 @@
 
       if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
 
-      return preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', functions::file_realpath($options['destination']));
+      return functions::image_path($options['destination']);
 
     } catch (Exception $e) {
       trigger_error($e->getMessage() , E_USER_WARNING);
@@ -98,10 +98,10 @@
 
     if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
-    $path = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '',  functions::file_realpath($source));
+    $path = functions::image_path($source);
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
-      return preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', functions::file_realpath($source));
+      return $path;
     }
 
     if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
@@ -146,7 +146,7 @@
     }
 
     $filename = implode('', [
-      sha1(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', functions::file_realpath($source))),
+      sha1($path),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,
       $clipping_filename_flag,
@@ -158,7 +158,7 @@
 
     if (is_file($cache_file)) {
       if (filemtime($cache_file) >= filemtime($source)) {
-        return preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', $cache_file);
+        return functions::image_path($cache_file);
       } else {
         functions::image_delete_cache($source);
       }
@@ -182,11 +182,15 @@
     ]);
   }
 
+  function image_path($file) {
+    return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .'|'. preg_quote(DOCUMENT_ROOT, '#') .')#', '', functions::file_realpath($file));
+  }
+
   function image_delete_cache($file) {
 
-    $webpath = preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', functions::file_realpath($file));
+    $path = functions::image_path($file);
 
-    $cache_name = sha1($webpath);
+    $cache_name = sha1($path);
 
     foreach (glob(FS_DIR_STORAGE . 'cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*') as $file) {
       unlink($file);

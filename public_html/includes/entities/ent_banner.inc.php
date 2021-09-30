@@ -86,8 +86,8 @@
     public function save_image($file) {
 
       if (!empty($this->data['image'])) {
-        if (is_file(FS_DIR_APP . 'images/' . basename($this->data['image']))) {
-          unlink(FS_DIR_APP . 'images/' . basename($this->data['image']));
+        if (is_file(FS_DIR_STORAGE . 'images/' . basename($this->data['image']))) {
+          unlink(FS_DIR_STORAGE . 'images/' . basename($this->data['image']));
         }
         $this->data['image'] = '';
       }
@@ -100,10 +100,10 @@
 
       $filename = 'banners/' . functions::general_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type();
 
-      if (!file_exists(FS_DIR_APP . 'images/banners/')) mkdir(FS_DIR_APP . 'images/banners/', 0777);
-      if (file_exists(FS_DIR_APP . 'images/' . $filename)) unlink(FS_DIR_APP . 'images/' . $filename);
+      if (!file_exists(FS_DIR_STORAGE . 'images/banners/')) mkdir(FS_DIR_STORAGE . 'images/banners/', 0777);
+      if (file_exists(FS_DIR_STORAGE . 'images/' . $filename)) unlink(FS_DIR_STORAGE . 'images/' . $filename);
 
-      $image->write(FS_DIR_APP . 'images/' . $filename, $image->type());
+      $image->write(FS_DIR_STORAGE . 'images/' . $filename, $image->type());
 
       $this->data['image'] = $filename;
       $this->save();
@@ -117,7 +117,7 @@
         limit 1;"
       );
 
-      if (file_exists(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
+      if (file_exists(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
       $this->data['id'] = null;
 

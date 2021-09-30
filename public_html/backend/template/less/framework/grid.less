@@ -20,7 +20,6 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: var(--gutter-size);
-  margin-bottom: var(--gutter-size);
   &.column {
     flex-direction: column;
   }
@@ -46,6 +45,7 @@
   .col-@{device}-10 { grid-column: span 10 }
   .col-@{device}-11 { grid-column: span 11 }
   .col-@{device}-12 { grid-column: span 12 }
+  .col-@{device}-auto { grid-column: auto / span 2 }
 }
 
 .make-grid-columns(xs);
