@@ -1,3 +1,20 @@
+// Stylesheet Loader
+  $.loadStylesheet = function(url, callback, fallback) {
+    $('<link/>', {rel: 'stylesheet', href: url}).appendTo('head');
+  }
+
+// JavaScript Loader
+  $.loadScript = function(url, options) {
+
+    options = $.extend(options || {}, {
+      dataType: 'script',
+      cache: true,
+      url: url
+    });
+
+    return jQuery.ajax(options);
+  };
+
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();

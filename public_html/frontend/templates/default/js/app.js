@@ -1,24 +1,10 @@
-
-// JavaScript Loader
-  function require_js(url, callback, fallback) {
-
-    var script = document.createElement('script');
-
-    script.src = url;
-    script.async = true;
-
-    if (callback) {
-      script.onload = function(){ callback(); };
-    }
-
-    if (fallback) {
-      script.onerror = function() { fallback(); };
-    }
-
-    document.body.appendChild(script);
+// Stylesheet Loader
+  $.loadStylesheet = function(url, callback, fallback) {
+    $('<link/>', {rel: 'stylesheet', href: url}).appendTo('head');
   }
 
-  $.cachedScript = function(url, options) {
+// JavaScript Loader
+  $.loadScript = function(url, options) {
 
     options = $.extend(options || {}, {
       dataType: 'script',
@@ -29,9 +15,7 @@
     return jQuery.ajax(options);
   };
 
-  //$.cachedScript('ajax/test.js').done(function(script, textStatus) {
-  //  console.log(textStatus);
-  //});
+  //$.loadScript('...').done(function(script, textStatus) { ... });
 
 // Toggle Cart
   $('[data-toggle="cart"]').click(function(e){
