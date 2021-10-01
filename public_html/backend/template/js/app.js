@@ -15,6 +15,11 @@
     return jQuery.ajax(options);
   };
 
+// Load Fontawesome
+  if ($('[class^="fa "]').length) {
+    $.loadStylesheet(window._env.platform.path + 'assets/fontawesome/font-awesome.min.css');
+  }
+
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();

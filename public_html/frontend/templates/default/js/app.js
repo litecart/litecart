@@ -17,6 +17,11 @@
 
   //$.loadScript('...').done(function(script, textStatus) { ... });
 
+// Load Fontawesome
+  if ($('[class^="fa "]').length) {
+    $.loadStylesheet(window._env.platform.path + 'assets/fontawesome/font-awesome.min.css');
+  }
+
 // Toggle Cart
   $('[data-toggle="cart"]').click(function(e){
     e.preventDefault();
