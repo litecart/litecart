@@ -86,10 +86,12 @@
     $xml = simplexml_load_file($file);
     $vmods[] = [
       'filename' => pathinfo($file, PATHINFO_BASENAME),
+      'type' => ($xml->getName() == 'vmod') ? 'vMod' : 'VQmod',
       'enabled' => preg_match('#\.xml$#', $file) ? true : false,
       'title' => $xml->title,
       'version' => $xml->version,
       'author' => $xml->author,
+      'configurable' => !empty($xml->setting) ? true : false,
     ];
   }
 
@@ -115,10 +117,11 @@
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
-          <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_version', 'Version'); ?></th>
+          <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
           <th><?php echo language::translate('title_author', 'Author'); ?></th>
+          <th></th>
           <th></th>
           <th></th>
           <th></th>
@@ -132,14 +135,15 @@
         <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
           <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['filename']; ?></a></td>
-          <td><?php echo $vmod['title']; ?></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['title']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
+          <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
+          <td class="text-center"><?php echo $vmod['type']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/test', ['vmod' => $vmod['filename']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a></td>
+          <td><?php if ($vmod['configurable']) { ?><a href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
+          <td><?php if ($vmod['type'] == 'vMod') { ?><a href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
@@ -147,7 +151,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="12"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

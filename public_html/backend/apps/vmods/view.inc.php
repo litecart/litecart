@@ -17,6 +17,10 @@
 
     $xml = simplexml_load_file($file);
 
+    if ($xml->getName() != 'vmod') {
+      throw new Exception(language::translate('error_not_a_valid_vmod_file', 'Not a valid vMod file'));
+    }
+
     if (empty($xml->file)) {
       throw new Exception(language::translate('error_no_files_to_modify', 'No files to modify'));
     }
@@ -29,6 +33,7 @@
 
   } catch (Exception $e) {
     notices::add('errors', $e->getMessage());
+    return;
   }
 
   breadcrumbs::add(basename($_GET['vmod']));

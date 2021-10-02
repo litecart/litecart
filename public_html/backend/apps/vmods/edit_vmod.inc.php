@@ -207,7 +207,7 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 250px;"'); ?>
+                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
                   </div>
 
                   <div class="form-group">
@@ -215,7 +215,17 @@ textarea {
                     <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true); ?>
                   </div>
 
-                  <div class="row">
+                  <div class="row" style="font-size: .8em;">
+                    <div class="form-group col-md-3">
+                      <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][regex]', 'y/n', true); ?>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                      <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
+                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][trim]', 'y/n', true); ?>
+                    </div>
+
                     <div class="form-group col-md-2">
                       <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
                       <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-before]', true, 'placeholder="0"'); ?>
@@ -230,32 +240,22 @@ textarea {
                       <label><?php echo language::translate('title_index', 'Index'); ?></label>
                       <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
                     </div>
-
-                    <div class="form-group col-md-3">
-                      <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][regex]', 'y/n', true); ?>
-                    </div>
-
-                    <div class="form-group col-md-3">
-                      <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][trim]', 'y/n', true); ?>
-                    </div>
                   </div>
 
                   <h3><?php echo language::translate('title_ignore_if', 'Ignore If'); ?></h3>
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 120px;"'); ?>
+                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
                   </div>
 
-                  <div class="row">
-                    <div class="form-group col-md-6">
+                  <div class="row" style="font-size: .8em;">
+                    <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
                       <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][regex]', 'y/n', true); ?>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
                       <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][trim]', 'y/n', true); ?>
                     </div>
@@ -269,10 +269,10 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 250px;"'); ?>
+                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 375px;"'); ?>
                   </div>
 
-                  <div class="row">
+                  <div class="row" style="font-size: .8em;">
                     <div class="form-group col-md-4">
                       <label><?php echo language::translate('title_position', 'Position'); ?></label>
                       <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][insert][position]', $position_options, true); ?>
@@ -352,7 +352,7 @@ textarea {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][find][content]', true, 'style="height: 250px;"'); ?>
+          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][find][content]', true, 'style="height: 100px;"'); ?>
         </div>
 
         <div class="form-group ">
@@ -360,7 +360,7 @@ textarea {
           <?php echo functions::form_draw_select_field('files[tab_i][operations][new_operation_i][onerror]', $on_error_options, true); ?>
         </div>
 
-        <div class="row">
+        <div class="row" style="font-size: .8em;">
           <div class="form-group col-md-2">
             <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
             <?php echo functions::form_draw_text_field('files[tab_i][operations][new_operation_i][find][offset-before]', true, 'placeholder="0"'); ?>
@@ -391,10 +391,10 @@ textarea {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][ignoreif][content]', true, 'style="height: 120px;"'); ?>
+          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][ignoreif][content]', true, 'style="height: 50px;"'); ?>
         </div>
 
-        <div class="row">
+        <div class="row" style="font-size: .8em;">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
             <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][regex]', 'y/n', true); ?>
@@ -412,10 +412,10 @@ textarea {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][insert][content]', true, 'style="height: 250px;"'); ?>
+          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][insert][content]', true, 'style="height: 375px;"'); ?>
         </div>
 
-        <div class="row">
+        <div class="row" style="font-size: .8em;">
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_position', 'Position'); ?></label>
             <?php echo functions::form_draw_select_field('files[tab_i][operations][new_operation_i][insert][position]', $position_options, true); ?>

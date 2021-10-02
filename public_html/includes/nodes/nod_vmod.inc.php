@@ -337,6 +337,7 @@
       }
 
       $vmod = [
+        'type' => 'vmod',
         'id' => pathinfo($file, PATHINFO_FILENAME),
         'title' => $dom->getElementsByTagName('title')->item(0)->textContent,
         'files' => [],
@@ -491,12 +492,6 @@
                 $insert = addcslashes($insert, '\\$');
                 break;
 
-              case 'all':
-                $find = '#^.*$#s';
-                $indexes = '';
-                $insert = addcslashes($insert, '\\$');
-                break;
-
               default:
                 throw new \Exception("Unknown value \"$position\" for attribute position (replace|before|after|all)");
                 continue 2;
@@ -532,6 +527,7 @@
       }
 
       $mod = [
+        'type' => 'vqmod',
         'title' => $dom->getElementsByTagName('id')->item(0)->textContent,
         'files' => [],
       ];

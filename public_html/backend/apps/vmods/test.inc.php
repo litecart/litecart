@@ -43,7 +43,9 @@
     </div>
   </div>
 
-  <h2><?php echo htmlspecialchars($_GET['vmod']); ?></h2>
+  <div class="card-body">
+    <h2><?php echo htmlspecialchars($vmod['title']); ?></h2>
+  </div>
 
   <table class="table table-striped table-hover data-table">
     <thead>
