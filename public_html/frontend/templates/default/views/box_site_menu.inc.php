@@ -6,7 +6,7 @@
         <a href="<?php echo document::href_ilink(''); ?>"><?php echo settings::get('site_name'); ?></a>
       </div>
 
-      <button type="button" class="navbar-toggle" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-menu">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-menu">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -65,11 +65,22 @@
         </li>
       </ul>
 
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-end">
 
-        <?php if (count(currency::$currencies) > 1) { ?>
+        <li class="regional-settings">
+          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox">
+            <ul class="list-inline">
+              <li><?php echo functions::draw_fonticon('fa-globe'); ?></li>
+              <li class="language"><?php echo language::$selected['code']; ?></li>
+              <li class="country">/ <?php echo customer::$data['country_code']; ?></li>
+              <li class="currency">/ <?php echo currency::$selected['code']; ?></li>
+            </ul>
+          </a>
+        </li>
+
+        <?php /*if (count(currency::$currencies) > 1) { ?>
         <li class="currencies dropdown">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo currency::$selected['code']; ?> <span class="caret"></span></a>
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo currency::$selected['code']; ?> </a>
           <ul class="dropdown-menu list-unstyled">
             <?php foreach (currency::$currencies as $currency) { ?>
             <li><a href="<?php echo document::href_link(null, ['currency' => $currency['code']]); ?>" title="<?php echo currency::$selected['name']; ?>"><?php echo $currency['code']; ?></a></li>
@@ -80,14 +91,14 @@
 
         <?php if (count(language::$languages) > 1) { ?>
         <li class="languages dropdown" title="<?php echo language::$selected['name']; ?>">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_APP . 'assets/languages/' . language::$selected['code'] . '.png'); ?>" alt="<?php echo language::$selected['name']; ?>" /> <span class="hidden-md hidden-lg"><?php echo language::$selected['name']; ?></span> <span class="caret"></span></a>
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_APP . 'assets/languages/' . language::$selected['code'] . '.png'); ?>" alt="<?php echo language::$selected['name']; ?>" /> <span class="hidden-md hidden-lg"><?php echo language::$selected['name']; ?></span></a>
           <ul class="dropdown-menu">
             <?php foreach (language::$languages as $language) { ?>
             <li><a href="<?php echo document::href_ilink(null, [], true, [], $language['code']); ?>"><img src="<?php echo document::href_link(WS_DIR_APP . 'assets/languages/' . $language['code'] . '.png'); ?>" alt="<?php echo $language['name']; ?>" /> <?php echo $language['name']; ?></a></li>
             <?php } ?>
           </ul>
         </li>
-        <?php } ?>
+        <?php }*/ ?>
 
         <?php if (settings::get('accounts_enabled')) { ?>
         <li class="account dropdown">
@@ -131,18 +142,18 @@
         </li>
         <?php } ?>
 
-        <li class="shopping-cart<?php if (!empty($cart['items'])) echo ' filled'; ?> dropdown">
+        <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
           <a href="#" data-toggle="dropdown" class="dropdown-toggle">
             <?php echo functions::draw_fonticon('fa-shopping-basket fa-lg'); ?> <span class="hidden-sm hidden-md hidden-lg hidden-xl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
 
-            <?php if (!empty($cart['items'])) { ?>
-            <span class="badge"><?php echo $cart['num_items']; ?></span>
+            <?php if (!empty($shopping_cart['items'])) { ?>
+            <span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
             <?php } ?>
           </a>
 
           <ul class="dropdown-menu">
-            <?php if (!empty($cart['items'])) { ?>
-            <?php foreach ($cart['items'] as $item) { ?>
+            <?php if (!empty($shopping_cart['items'])) { ?>
+            <?php foreach ($shopping_cart['items'] as $item) { ?>
             <li><a href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" /> <?php echo $item['name']; ?></a></li>
             <?php } ?>
             <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
@@ -157,6 +168,9 @@
 </div>
 
 <script>
+  $('.navbar .navbar-toggle').click(function(){
+    $(this).closest('.navbar').toggleClass('expanded');
+  });
   $('#site-menu .search').click(function(){
     $(this).find('input[name="query"]').focus();
   });
