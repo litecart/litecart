@@ -317,9 +317,7 @@
                     <div class="input-group">
                       <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
                       <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
-                      <span class="input-group-btn">
-                        <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
-                      </span>
+                      <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
                     </div>
                   </div>
 
@@ -711,7 +709,7 @@
                 <td class="text-end"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'class="form-control text-end"'); ?></td>
                 <td class="text-end">
                   <div class="input-group">
-                    <span class="input-group-addon"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
+                    <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'disabled title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')).'"'); ?></span>
                     <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="text-align: end;"'); ?>
                   </div>
                 </td>
@@ -728,7 +726,7 @@
                 <td class="text-end"><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'style="text-align: end;"'); ?></td>
                 <td class="text-end">
                   <div class="input-group">
-                  <span class="input-group-addon"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
+                  <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', '1', true, 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
                   <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][value]', true, 'style="text-align: end;"'); ?>
                   </div>
                 </td>
@@ -846,7 +844,7 @@
         <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
         <div class="input-group">
           <?php echo functions::form_draw_decimal_field('weight', '', 2, 0); ?>
-          <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', settings::get('store_weight_class'), false, 'style="width: auto;"'); ?></span>
+          <?php echo functions::form_draw_weight_classes_list('weight_class', settings::get('store_weight_class'), false, 'style="width: auto;"'); ?>
         </div>
       </div>
 
@@ -854,13 +852,11 @@
         <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
         <div class="input-group">
           <?php echo functions::form_draw_decimal_field('dim_x', '', 1, 0); ?>
-          <span class="input-group-addon">x</span>
+          <span class="input-group-text">x</span>
           <?php echo functions::form_draw_decimal_field('dim_y', '', 1, 0); ?>
-          <span class="input-group-addon">x</span>
+          <span class="input-group-text">x</span>
           <?php echo functions::form_draw_decimal_field('dim_z', '', 1, 0); ?>
-          <span class="input-group-addon">
-            <?php echo functions::form_draw_length_classes_list('dim_class', settings::get('store_length_class'), false, 'style="width: auto;"'); ?>
-          </span>
+          <?php echo functions::form_draw_length_classes_list('dim_class', settings::get('store_length_class'), false, 'style="width: auto;"'); ?>
         </div>
       </div>
     </div>
@@ -929,7 +925,7 @@
         <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
         <div class="input-group">
           <?php echo functions::form_draw_decimal_field('weight', '', 2, 0); ?>
-          <span class="input-group-addon"><?php echo functions::form_draw_weight_classes_list('weight_class', '', false, 'style="width: auto;"'); ?></span>
+          <?php echo functions::form_draw_weight_classes_list('weight_class', '', false, 'style="width: auto;"'); ?>
         </div>
       </div>
 
@@ -937,13 +933,11 @@
         <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
         <div class="input-group">
           <?php echo functions::form_draw_decimal_field('dim_x', '', 1, 0); ?>
-          <span class="input-group-addon">x</span>
+          <span class="input-group-text">x</span>
           <?php echo functions::form_draw_decimal_field('dim_y', '', 1, 0); ?>
-          <span class="input-group-addon">x</span>
+          <span class="input-group-text">x</span>
           <?php echo functions::form_draw_decimal_field('dim_z', '', 1, 0); ?>
-          <span class="input-group-addon">
-            <?php echo functions::form_draw_length_classes_list('dim_class', '', false, 'style="width: auto;"'); ?>
-          </span>
+          <?php echo functions::form_draw_length_classes_list('dim_class', '', false, 'style="width: auto;"'); ?>
         </div>
       </div>
     </div>
@@ -977,7 +971,7 @@
 
   $('select[name="currency_code"]').change(function(e){
     $('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
-    $('input[data-type="currency"]').closest('.input-group').find('.input-group-addon').text($(this).val());
+    $('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
     calculate_total();
   });
 
@@ -1365,7 +1359,7 @@
     $(row).find('*[name$="[price]"]').val(item.price);
     $(row).find('*[name$="[tax]"]').val(item.tax);
 
-    $(row).find('[data-type="currency"]').parent().find('.input-group-addon').text($(':input[name="currency_code"]').val());
+    $(row).find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
     $(row).find('.weight').text(String(item.weight).trim('.0'));
     $(row).find('.weight_class').text(item.weight_class);
     $(row).find('.dim_x').text(String(item.dim_x).trim('.0'));
@@ -1411,7 +1405,7 @@
                + '    <td class="text-end"><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: end;"')); ?></td>'
                + '    <td class="text-end">'
                + '      <div class="input-group">'
-               + '        <span class="input-group-addon"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
+               + '        <span class="input-group-text"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
                + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', '0', 'style="text-align: end;"')); ?>'
                + '      </div>'
                + '    </td>'

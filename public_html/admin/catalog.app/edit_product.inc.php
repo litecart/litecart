@@ -246,22 +246,22 @@
 
               <div class="form-group">
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('sku', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('mpn', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('gtin', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('taric', true); ?>
                 </div>
               </div>
@@ -312,7 +312,7 @@
 
                     <div class="input-group">
                       <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
-                      <div class="input-group-addon">
+                      <div class="input-group-text">
                         <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
@@ -330,7 +330,7 @@
 
                     <div class="input-group">
                       <?php echo functions::form_draw_file_field('new_images[]'); ?>
-                      <div class="input-group-addon">
+                      <div class="input-group-text">
                         <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
@@ -441,9 +441,7 @@
                 <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
                 <div class="input-group">
                   <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 0, null); ?>
-                  <span class="input-group-addon">
-                    <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
-                  </span>
+                  <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
                 </div>
               </div>
 
@@ -709,9 +707,7 @@
                   <td>
                     <div class="input-group">
                       <?php echo functions::form_draw_decimal_field('weight', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_weight_classes_list('weight_class', true); ?>
                     </div>
                   </td>
                   <td>
@@ -719,15 +715,13 @@
                       <?php echo functions::form_draw_decimal_field('dim_x', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('dim_y', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('dim_z', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
                     </div>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, null, null, 'data-quantity="'. (float)$product->data['quantity'] .'"' . (!empty($_POST['options_stock']) ? ' readonly' : '')); ?></td>
                   <td>
                     <div class="input-group">
-                      <span class="input-group-addon">&plusmn;</span>
+                      <span class="input-group-text">&plusmn;</span>
                       <?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2, null, null, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>
                     </div>
                   </td>
@@ -742,9 +736,7 @@
                   <td>
                     <div class="input-group">
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true); ?>
                     </div>
                   </td>
                   <td>
@@ -752,15 +744,13 @@
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?>
                     </div>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true, 2, null, null, 'data-quantity="'. (isset($product->data['options_stock'][$key]['quantity']) ? (float)$product->data['options_stock'][$key]['quantity'] : '0') .'"'); ?></td>
                   <td>
                     <div class="input-group">
-                      <span class="input-group-addon">&plusmn;</span>
+                      <span class="input-group-text">&plusmn;</span>
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity_adjustment]', true); ?>
                     </div>
                   </td>
@@ -896,7 +886,7 @@
                + '  '
                + '  <div class="input-group">'
                + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
-               + '    <div class="input-group-addon">'
+               + '    <div class="input-group-text">'
                + '      <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
                + '      <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
                + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
@@ -1633,9 +1623,7 @@
                + '  <td>'
                + '    <div class="input-group">'
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
-               + '      <span class="input-group-addon">'
-               + '        <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '', false, 'style="width: auto;"')); ?>'
-               + '      </span>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td>'
@@ -1643,15 +1631,13 @@
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 4, 0)); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 4, 0)); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 4, 0)); ?>'
-               + '      <span class="input-group-addon">'
-               + '        <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '', false, 'style="width: auto;"')); ?>'
-               + '      </span>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity]', '0', 2, null, null, 'data-quantity="0"')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <span class="input-group-addon">&plusmn;</span>'
+               + '      <span class="input-group-text">&plusmn;</span>'
                + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity_adjustment]', '0')); ?>'
                + '    </div>'
                + '  </td>'

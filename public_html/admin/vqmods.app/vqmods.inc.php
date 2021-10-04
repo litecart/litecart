@@ -166,7 +166,7 @@
         <label><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</label>
         <div class="input-group">
           <?php echo functions::form_draw_file_field('vqmod', 'accept="application/xml"'); ?>
-          <span class="input-group-btn"><?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?></span>
+          <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
         </div>
       </div>
     <?php echo functions::form_draw_form_end(); ?>

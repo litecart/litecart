@@ -45,7 +45,7 @@ input[type="radio"] {
   height: 1.25em;
   width: 1.25em;
   border: 1px solid var(--default-border-color);
-  border-radius: 50%;
+  border-radius: 20%;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
   vertical-align: text-bottom;
   margin-inline-end: .25em;
@@ -166,21 +166,18 @@ select.form-control {
   .input-field();
   display: flex;
   .form-control {
-    background: none;
-    box-shadow: none;
-    border-radius: 0;
-    border: none;
-  }
-  select.form-control {
+    flex: 1 1 auto;
     width: auto;
     background: none;
     border: none;
+    border-radius: 0;
+    box-shadow: none;
   }
   .btn {
     margin: -1px;
   }
-  .input-group-addon {
-    flex: 1 0 auto;
+  .input-group-text {
+    flex: 0 1 auto;
     margin: 0 -1px;
     padding: var(--input-padding-y) var(--input-padding-x);
     background-color: var(--default-background-color);
@@ -192,7 +189,7 @@ select.form-control {
     text-align: center;
   }
   .input-group-icon {
-    flex: 1 0 auto;
+    flex: 0 1 auto;
     padding: var(--input-padding-y) var(--input-padding-x);
     margin-inline-end: -12px;
     align-self: center;
