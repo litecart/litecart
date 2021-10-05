@@ -115,7 +115,7 @@
 
             <div class="form-group">
               <label><?php echo ((isset($brand->data['image']) && $brand->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
-              <?php echo functions::form_draw_file_field('image', ''); ?>
+              <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
               <?php if (!empty($brand->data['image'])) { ?>
               <?php echo functions::form_draw_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
               <?php } ?>

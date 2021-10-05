@@ -992,7 +992,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
-              <?php echo functions::form_draw_file_field('file'); ?>
+              <?php echo functions::form_draw_file_field('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
             </div>
 
             <div class="row">

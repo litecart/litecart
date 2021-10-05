@@ -117,7 +117,7 @@ textarea[name="html"] {
 
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
-        <?php echo functions::form_draw_file_field('image'); ?>
+        <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
         <?php echo (!empty($banner->data['image'])) ? '<div>' . $banner->data['image'] .'</div>' : ''; ?>
       </div>
 
