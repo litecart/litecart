@@ -23,7 +23,7 @@
           ],
         ],
         [
-          'pattern' => '#^'. BACKEND_ALIAS .'/(login|logout|search_results.json)$#',
+          'pattern' => '#^'. BACKEND_ALIAS .'/(.*)$#',
           'endpoint' => 'backend',
           'page' => '$1',
           'params' => '',
