@@ -24,7 +24,9 @@
         throw new Exception('Install SVG support for Imagick to continue this operation');
       }
 
-      $image = new Imagick($_FILES['image']['tmp_name']);
+      $image = new Imagick();
+      $image->setBackgroundColor(new ImagickPixel('transparent'));
+      $image->readImage($_FILES['image']['tmp_name']);
 
       $geo = $image->getImageGeometry();
       if (256 / $geo['width'] * $geo['height'] > 256) {
@@ -36,7 +38,7 @@
       $image->cropImage(256, 256, 0, 0);
 
       $icon = new Imagick();
-      $icon->setFormat('png');
+      $icon->setFormat('png32');
       foreach ([256, 192, 128] as $size) {
         $clone = clone $image;
         $clone->scaleImage($size, 0);
