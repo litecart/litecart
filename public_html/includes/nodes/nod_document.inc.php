@@ -28,7 +28,7 @@
     // Set some snippets
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['text_direction'] = language::$selected['direction'];
-      self::$snippets['charset'] = language::$selected['charset'];
+      self::$snippets['charset'] = mb_http_output();
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
       self::$snippets['title'] = [settings::get('site_name')];

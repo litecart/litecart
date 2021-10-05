@@ -35,7 +35,7 @@
     }
 
   // Convert charset
-    $output = language::convert_characters($output, language::$selected['charset'], $charset);
+    $output = language::convert_characters($output, mb_internal_encoding(), $charset);
 
     return preg_replace('#(\r\n?|\n)#', $eol, $output);
   }
@@ -52,7 +52,7 @@
     ini_set('auto_detect_line_endings', true);
 
   // Convert charset
-    $string = language::convert_characters($string, $charset, language::$selected['charset']);
+    $string = language::convert_characters($string, $charset, mb_internal_encoding());
 
   // Trim preceding and trailing whitespace
     $string = trim($string, "\r\n ");
