@@ -139,7 +139,7 @@
 
     public static function before_output() {
 
-      $microtime_start = microtime(true);
+      stats::start_watch('output_optimization');
 
       $mb_str_replace_first = function($search, $replace, $subject) {
         return implode($replace, explode($search, $subject, 2));
@@ -293,9 +293,7 @@
         }
       }
 
-      if (class_exists('stats', false)) {
-        stats::set('output_optimization', microtime(true) - $microtime_start);
-      }
+      stats::stop_watch('output_optimization');
     }
 
     ######################################################################

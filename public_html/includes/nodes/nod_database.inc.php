@@ -7,17 +7,15 @@
 
       if (!isset(self::$_links[$link])) {
 
-        $measure_start = microtime(true);
+        stats::start_watch('database_execution');
 
         self::$_links[$link] = new mysqli($server, $username, $password, $database);
 
-        if (($duration = microtime(true) - $measure_start) > 1) {
+        if (($duration = stats::get_watch('database_execution')) > 1) {
           error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
         }
 
-        if (class_exists('stats', false)) {
-          stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
-        }
+        stats::start_watch('database_execution');
       }
 
       if (!is_object(self::$_links[$link])) {
@@ -91,19 +89,19 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      $measure_start = microtime(true);
+      stats::start_watch('database_execution');
 
       if (!$result = self::$_links[$link]->query($query)) {
         self::_error($query, self::$_links[$link]);
       }
 
-      if (($duration = microtime(true) - $measure_start) > 3) {
+      if (($duration = stats::get_watch('database_execution')) > 3) {
         error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
       }
 
       if (class_exists('stats', false)) {
-        stats::set('database_queries', stats::get('database_queries') + 1);
-        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
+        stats::increase_count('database_queries');
+        stats::stop_watch('database_execution');
       }
 
       return $result;
@@ -129,15 +127,11 @@
 
     public static function fetch($result, $column='') {
 
-      $measure_start = microtime(true);
+      stats::start_watch('database_execution');
 
       $row = $result->fetch_assoc();
 
-      $duration = microtime(true) - $measure_start;
-
-      if (class_exists('stats', false)) {
-        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
-      }
+      stats::stop_watch('database_execution');
 
       if ($column) {
         if (isset($row[$column])) {

@@ -56,6 +56,7 @@
       }
 
       $microtime_start = microtime(true);
+      stats::start_watch('http_requests');
 
       $this->last_request = [
         'timestamp' => time(),
@@ -114,8 +115,8 @@
       );
 
       if (class_exists('stats', false)) {
-        stats::set('http_requests', stats::get('http_requests') + 1);
-        stats::set('http_duration', stats::get('http_duration') + $this->last_response['duration']);
+        stats::increase_count('http_requests');
+        stats::stop_watch('http_requests');
       }
 
     // Redirect
