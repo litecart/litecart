@@ -53,7 +53,7 @@
   $num_rows = database::num_rows($brands_query);
 
 // Pagination
-  $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

@@ -52,7 +52,7 @@
           $this->_data['also_purchased_products'] = [];
 
             $query = database::query(
-              "select oi.product_id, sum(oi.quantity) as total_quantity from ". DB_TABLE_PREFIX ."orders_items oi
+              "select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
               left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
               where p.status
               and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
@@ -61,7 +61,7 @@
                 where product_id = ". (int)$this->_data['id'] ."
               )
               group by oi.product_id
-              order by total_quantity desc;"
+              order by num_purchases desc;"
             );
 
             while ($row = database::fetch($query)) {
