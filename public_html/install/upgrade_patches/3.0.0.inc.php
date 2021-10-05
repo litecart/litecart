@@ -427,6 +427,10 @@
     FS_DIR_APP . 'vqmod/',
   ]);
 
+  perform_action('copy', [
+    FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_STORAGE . 'images/',
+  ]);
+
   perform_action('modify', [
     FS_DIR_STORAGE . 'config.inc.php' => [
       [
