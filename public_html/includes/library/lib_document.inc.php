@@ -80,6 +80,7 @@
       ];
 
       self::$jsenv['session'] = [
+        'id' => session::get_id(),
         'language_code' => language::$selected['code'],
         'country_code' => customer::$data['country_code'],
         'currency_code' => currency::$selected['code'],
