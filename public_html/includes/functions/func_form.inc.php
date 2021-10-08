@@ -11,34 +11,36 @@
   function form_reinsert_value($name, $array_value=null) {
     if (empty($name)) return;
 
-    foreach ([$_POST, $_REQUEST, $_GET] as $superglobal) {
+    foreach ([$_POST, $_GET] as $superglobal) {
       if (empty($superglobal)) continue;
 
-      foreach (explode('&', http_build_query($superglobal)) as $pair) {
+    // Extract name parts
+      $parts = preg_split('#[\]\[]+#', preg_replace('#\[\]$#', '', $name), -1, PREG_SPLIT_NO_EMPTY);
 
-        if (strpos($pair, '=') !== false) {
-          list($key, $value) = explode('=', $pair);
+    // Get array node
+      $node = $superglobal;
+      foreach ($parts as $part) {
+        if (!isset($node[$part])) continue 2;
+        $node = $node[$part];
+      }
+
+    // Reinsert node value
+      if (is_array($node) && $array_value !== null) {
+
+      // Attempt reinserting a numerical indexed array value
+        if (preg_match('#\[\]$#', $name)) {
+          if (!is_array($node) || !in_array($array_value, $node)) continue;
+          return $array_value;
+
+      // Reinsert a defined key array value
         } else {
-          $key = $pair;
-          $value = '';
-        }
-
-        $key = urldecode($key);
-        $value = urldecode($value);
-
-        if ($key == $name) return $value;
-
-        if (preg_replace('#(.*)\[([^\]]+)?\]$#', "$1", $key) == preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $name)) {
-          if (preg_match('#\[([0-9]+)?\]$#', $key)) {
-            if ($value == $array_value) {
-              return $value;
-            }
-          }
+          if ($array_value != $node) continue;
+          return $array_value;
         }
       }
-    }
 
-    return '';
+      return $node;
+    }
   }
 
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
