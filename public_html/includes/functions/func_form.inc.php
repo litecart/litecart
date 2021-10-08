@@ -863,7 +863,7 @@
 
         $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
                . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . PHP_EOL
-               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('fa-folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
+               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('fa-folder', 'style="color: #cccc66;"') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
                . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
                .'</li>';
       }
