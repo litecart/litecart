@@ -645,43 +645,39 @@
         <div id="tab-stock" class="tab-pane">
           <h2><?php echo language::translate('title_stock', 'Stock'); ?></h2>
 
-          <div class="row" style="max-width: 960px;">
-            <div class="col-md-6">
-
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
-                  <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
-                  <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
-                  <?php echo functions::form_draw_decimal_field('quantity_step', true, null, 'min="0"'); ?>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
-                  <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
-                </div>
-              </div>
+          <div class="row" style="max-width: 640px;">
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group">
-                <label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
-                <?php echo functions::form_draw_delivery_statuses_list('delivery_status_id', true); ?>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
-                <?php echo functions::form_draw_sold_out_statuses_list('sold_out_status_id', true); ?>
-              </div>
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
             </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_step', true, null, 'min="0"'); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
+              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
+            </div>
+          </div>
+
+          <div class="row" style="max-width: 640px;">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
+              <?php echo functions::form_draw_delivery_statuses_list('delivery_status_id', true); ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
+              <?php echo functions::form_draw_sold_out_statuses_list('sold_out_status_id', true); ?>
+            </div>
+
           </div>
 
           <div class="table-responsive">
