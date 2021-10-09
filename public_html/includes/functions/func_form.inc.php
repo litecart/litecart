@@ -462,7 +462,7 @@
   }
 
   function form_draw_text_field($name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name, $value);
+    if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
