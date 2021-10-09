@@ -124,7 +124,7 @@
         </div>
       </div>
 
-      <p><?php echo language::translate('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a PNG 256 x 256px with alpha transparency'); ?></p>
+      <p><?php echo language::translate('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a 256 x 256px PNG image with alpha transparency.'); ?></p>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
