@@ -21,16 +21,11 @@
       group_concat(o.id) as order_ids,
       sum(o.total) - sum(o.total_tax) as total_sales,
       sum(o.total_tax) as total_tax,
-      sum(otst.value) as total_subtotal,
+      sum(o.subtotal) as total_subtotal,
       sum(otsf.value) as total_shipping_fees,
       sum(otpf.value) as total_payment_fees,
       date_format(o.date_created, '%Y-%m') as `year_month`
     from ". DB_TABLE_PREFIX ."orders o
-    left join (
-      select order_id, sum(value) as value from ". DB_TABLE_PREFIX ."orders_totals
-      where module_id = 'ot_subtotal'
-      group by order_id
-    ) otst on (o.id = otst.order_id)
     left join (
       select order_id, sum(value) as value from ". DB_TABLE_PREFIX ."orders_totals
       where module_id = 'ot_shipping_fee'

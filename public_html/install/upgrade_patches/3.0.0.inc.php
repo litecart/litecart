@@ -187,6 +187,7 @@
     FS_DIR_APP . 'includes/library/lib_vmod.inc.php',
     FS_DIR_APP . 'includes/library/lib_volume.inc.php',
     FS_DIR_APP . 'includes/library/lib_weight.inc.php',
+    FS_DIR_APP . 'includes/modules/order_total/ot_subtotal.inc.php',
     FS_DIR_APP . 'includes/templates/default.admin/',
     FS_DIR_APP . 'includes/templates/default.catalog/config.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/css',

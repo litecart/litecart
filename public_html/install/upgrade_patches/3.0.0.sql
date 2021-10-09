@@ -174,6 +174,8 @@ ADD COLUMN `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '' AFTER `last_hostna
 -- --------------------------------------------------------
 UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
 -- --------------------------------------------------------
+DELETE FROM `lc_modules` WHERE `module_id` = 'ot_subtotal' LIMIT 1;
+-- --------------------------------------------------------
 UPDATE `lc_settings`
 SET `key` = REGEXP_REPLACE(`key`, '^store_', 'site_'),
   title = REPLACE(title, 'Store', 'Site'),
@@ -236,6 +238,12 @@ UPDATE `lc_settings`
 SET ´function` = 'regional_text()'
 WHERE ´function` = 'regional_input()';
 -- --------------------------------------------------------
+UPDATE `lc_orders` o
+LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
+SET o.subtotal = ot.`value`,
+o.subtotal_tax = ot.`tax`;
+-- --------------------------------------------------------
+DELETE FROM `lc_orders_totals` WHERE module_id = 'ot_subtotal';
 UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
 SET oi.stock_option_id = pso.id;

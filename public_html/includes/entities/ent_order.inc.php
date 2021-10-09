@@ -460,15 +460,10 @@
       }
 
       foreach ($this->data['order_total'] as $row) {
-        if ($row['module_id'] == 'ot_subtotal') {
-          $row['value'] = $this->data['subtotal'];
-          $row['tax'] = $this->data['subtotal_tax'];
-        }
-
         if (empty($row['calculate'])) continue;
         $this->data['total'] += $row['value'] + $row['tax'];
         $this->data['total_tax'] += $row['tax'];
-      } unset($row);
+      }
     }
 
     public function calculate_total() {
