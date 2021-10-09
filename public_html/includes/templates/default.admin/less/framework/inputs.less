@@ -44,7 +44,7 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   background: @form-input-background;
   border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .form-control {
@@ -115,15 +115,16 @@ select.form-control {
   display: flex;
   .form-control {
     flex: 1 1 auto;
-    border-radius: 0;
-    border-top: none;
-    border-bottom: none;
+    background-color: unset;
+    border: none;
     border-radius: 0;
     box-shadow: none;
   }
-  .input-group-addon, .input-group-text {
+  .input-group-text {
     flex: 0 1 auto;
-    background-color: @default-color;
+    margin: 0 -1px;
+    padding: @form-input-padding @form-input-padding * 2;
+    background-color: @form-input-background;
     border-left: 1px solid @default-border-color;
     border-right: 1px solid @default-border-color;
     color: #555;
@@ -131,37 +132,29 @@ select.form-control {
     font-weight: normal;
     text-align: center;
   }
-  .input-group-text {
-    padding: @form-input-padding @form-input-padding * 2;
-  }
   .input-group-icon {
     flex: 0 1 auto;
     padding: @form-input-padding @form-input-padding * 2;
     margin-inline-end: -12px;
+    align-self: center;
   }
-  .btn {
-    flex: 0 1 auto;
-    border-top: none;
-    border-bottom: none;
-  }
-  > .form-control,
-  > .input-group-text,
   > .btn {
-    margin-inline-start: -1px;
-  }
-  > .form-control:first-child,
-  > .input-group-text:first-child,
-  > .btn:first-child {
-    border-radius: @default-border-radius 0 0 @default-border-radius;
-  }
-  > .form-control:last-child,
-  > .input-group-text:last-child,
-  > .btn:last-child {
-    margin-inline-end: -1px;
-    border-radius: 0 @default-border-radius @default-border-radius 0;
+    margin: -1px;
   }
   + .input-group {
     margin-top: -1px;
+  }
+  .form-control + .form-control {
+    border-left: 1px solid @default-border-color;
+  }
+  .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
+  .input-group-text:first-child {
+    border-radius: @default-border-radius 0 0 @default-border-radius;
+  }
+  .form-control:last-child, .input-group-btn:last-child .btn,
+  .input-group-text:last-child {
+    margin-inline-end: -1px;
+    border-radius: 0 @default-border-radius @default-border-radius 0;
   }
 }
 

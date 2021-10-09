@@ -21,12 +21,12 @@ input[type="checkbox"] {
   height: 1em;
   width: 1em;
   border: 1px solid var(--default-border-color);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   border-radius: var(--border-radius);
   vertical-align: middle;
   vertical-align: baseline;
   &:active, &:checked:active {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
   }
   &:checked {
     background-color: #999;
@@ -45,12 +45,12 @@ input[type="radio"] {
   height: 1.25em;
   width: 1.25em;
   border: 1px solid var(--default-border-color);
-  border-radius: 20%;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   vertical-align: text-bottom;
   margin-inline-end: .25em;
   &:active, &:checked:active {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
   }
   &:checked {
     background-color: #999;
@@ -92,6 +92,7 @@ input[type="radio"] {
   padding: var(--input-padding-y) var(--input-padding-x);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: all 50ms;
+  cursor: default;
 
   &[type="color"] {
     height: 37px;
@@ -130,10 +131,6 @@ select.form-control {
   }
 }
 
-.form-control {
-  cursor: default;
-}
-
 .form-control .dropdown-menu {
   user-select: none;
   li > label {
@@ -167,14 +164,10 @@ select.form-control {
   display: flex;
   .form-control {
     flex: 1 1 auto;
-    width: auto;
-    background: none;
+    background-color: unset;
     border: none;
     border-radius: 0;
     box-shadow: none;
-  }
-  .btn {
-    margin: -1px;
   }
   .input-group-text {
     flex: 0 1 auto;
@@ -194,6 +187,12 @@ select.form-control {
     margin-inline-end: -12px;
     align-self: center;
   }
+  > .btn {
+    margin: -1px;
+  }
+  + .input-group {
+    margin-top: -1px;
+  }
   .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
   .input-group-text:first-child {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
@@ -202,9 +201,6 @@ select.form-control {
   .input-group-text:last-child {
     margin-inline-end: -1px;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
-  }
-  + .input-group {
-    margin-top: -1px;
   }
 }
 
