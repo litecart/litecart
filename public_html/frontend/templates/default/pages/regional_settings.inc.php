@@ -14,7 +14,7 @@
   <div id="content">
     {{notices}}
 
-    <section id="box-regional-settings">
+    <section id="box-regional-settings" class="box box-default">
       <h1 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
 
       <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>

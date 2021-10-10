@@ -23,8 +23,8 @@
   }
 
 // Load Featherlight
-  if ($('[data-toggle="lightbox"]').length) {
-    if (typeof $.featherlight == 'undefined') {
+  if (typeof $.featherlight == 'undefined') {
+    if ($('[data-toggle="lightbox"]').length) {
       $.loadStylesheet(window._env.platform.path + 'assets/featherlight/featherlight.min.css');
       $.loadScript(window._env.platform.path + 'assets/featherlight/featherlight.min.js').done(function(script, textStatus) {
         $.featherlight.autoBind = '[data-toggle="lightbox"]';
@@ -34,6 +34,20 @@
       });
     }
   }
+
+$(document).ajaxComplete(function(e, xhr, settings) {
+  if (typeof $.featherlight == 'undefined') {
+    if ($('[data-toggle="lightbox"]').length) {
+      $.loadStylesheet(window._env.platform.path + 'assets/featherlight/featherlight.min.css');
+      $.loadScript(window._env.platform.path + 'assets/featherlight/featherlight.min.js').done(function(script, textStatus) {
+        $.featherlight.autoBind = '[data-toggle="lightbox"]';
+        $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
+        $.featherlight.defaults.closeIcon = '&#x2716;';
+        $.featherlight.defaults.targetAttr = 'data-target';
+      });
+    }
+  }
+});
 
 // Toggle Cart
   $('[data-toggle="cart"]').click(function(e){

@@ -3,7 +3,7 @@
 .table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 2em;
+  margin: 2em 0;
   background: var(--table-body-background-color);
   border-spacing: 0;
   border-collapse: collapse;
@@ -11,12 +11,15 @@
   thead th {
     background: var(--table-header-background-color);
     border-bottom: 2px solid var(--table-border-color);
+    vertical-align: bottom;
+  }
+  thead td {
+    vertical-align: middle;
   }
 
   td, th {
-    padding: ~"calc(var(--gutter-size)/4)";
+    padding: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)";
     line-height: var(--default-line-height);
-    vertical-align: top;
     color: var(--default-text-color);
 
     &:first-child {
@@ -65,7 +68,6 @@
   > tfoot {
     background: var(--table-footer-background-color);
     border-top: 1px solid var(--table-border-color);
-    padding: 6px 12px;
     text-align: start;
   }
 

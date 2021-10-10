@@ -214,7 +214,7 @@
   }
 
 // Stock Options
-  foreach ($product->stock_options as $stock_option)  {
+  foreach ($product->stock_options as $stock_option) {
     $stock_option['image'] = [
       'original' => $stock_option['image'],
       'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),

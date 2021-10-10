@@ -16,7 +16,7 @@
 }
 /* Variables */
 :root {
-  --border-radius: 4px;
+  --border-radius: 0.33em;
   --gutter-size: 0.75rem;
   --link-text-color: #5bc0de;
   --shadow-color: rgba(0, 0, 0, 0.5);

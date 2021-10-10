@@ -2,7 +2,7 @@
   <?php echo functions::form_draw_hidden_field('customer_details', 'true'); ?>
 
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
-  <div style="float: right;">
+  <div class="float-end">
     <a class="btn btn-outline" href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout')]) ?>" data-toggle="lightbox" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
   </div>
   <?php } ?>
@@ -211,7 +211,7 @@
   <?php } ?>
 
   <div>
-    <button class="btn btn-lg btn-default btn-block" name="save_customer_details" type="submit" disabled><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
+    <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
   </div>
 </section>
 

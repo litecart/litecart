@@ -68,7 +68,7 @@
       <ul class="navbar-nav navbar-end">
 
         <li class="regional-settings">
-          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox">
+          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
             <ul class="list-inline">
               <li><?php echo functions::draw_fonticon('fa-globe'); ?></li>
               <li class="language"><?php echo language::$selected['code']; ?></li>

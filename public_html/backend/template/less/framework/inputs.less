@@ -1,7 +1,6 @@
 /* Input Fields & Input Groups - Bootstrap Compatible */
 
 .input-field() {
-  width: 100%;
   padding: ~"calc(var(--input-padding-y) + 1px)" ~"calc(var(--input-padding-x) + 1px)";
   position: relative;
   color: var(--input-text-color);
@@ -90,7 +89,8 @@ input[type="number"] {
 
 .form-input {
   .input-field();
-
+  display: block;
+  width: 100%;
   color: var(--input-text-color);
   vertical-align: middle;
   overflow-y: auto;
@@ -114,6 +114,7 @@ input[type="number"] {
 .form-select {
   .input-field();
   display: block;
+  width: 100%;
   padding-inline-end: 2.5em;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
@@ -167,6 +168,7 @@ input[type="number"] {
   padding: 0;
 
   .form-input, .input-group {
+    display: inline-block;
     flex: 1 1 auto;
     box-shadow: none;
     border-radius: 0;
@@ -176,6 +178,7 @@ input[type="number"] {
     }
   }
   .form-select {
+    display: inline-block;
     flex: 1 1 auto;
     box-shadow: none;
     background-color: transparent;

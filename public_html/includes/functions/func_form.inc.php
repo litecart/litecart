@@ -1164,6 +1164,7 @@ END;
       case 'default_country_code':
         $input = settings::get('default_country_code');
         break;
+      case 'site_country_code':
       case 'store_country_code':
         $input = settings::get('store_country_code');
         break;

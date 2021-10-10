@@ -15,7 +15,7 @@
 /* Media Breakpoints */
 /* Variables */
 :root {
-  --border-radius: 5px;
+  --border-radius: 0.33em;
   --gutter-size: 2rem;
   --link-text-color: #06b;
   --shadow-color: rgba(0, 0, 0, 0.1);
@@ -36,7 +36,7 @@
   --default-line-height: 1.5;
   --default-text-font: Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;
-  --default-text-size: 15px;
+  --default-text-size: 14px;
   --default-title-color: #444;
   --default-title-border-color: #e5e5e5;
   --breadcrumbs-background-color: transparent;
