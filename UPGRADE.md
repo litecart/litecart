@@ -10,7 +10,7 @@
 
   1. Backup your files AND database!! Do not underestimate the damage that can be caused by a failed upgrade process.
 
-2. **Upload the contents of the folder public_html/** to the corresponding path of your installation **replacing the current files**. Any modified files will be overwritten!
+2. **Upload the contents of the folder upload/** to the corresponding path of your installation **replacing the current files**. Any modified files will be overwritten!
 
    If you have renamed your admin/ folder, make sure the files of the admin/ folder are uploaded to the right place.
 

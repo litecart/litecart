@@ -430,8 +430,8 @@
 
     echo '<p>Copying default files...</p>' . PHP_EOL;
 
-    if (file_exists('data/default/public_html/')) {
-      perform_action('copy', ['data/default/public_html/*' => FS_DIR_APP]);
+    if (file_exists('data/default/upload/')) {
+      perform_action('copy', ['data/default/upload/*' => FS_DIR_APP]);
     }
 
     if (file_exists('data/default/storage/')) {
@@ -512,8 +512,8 @@
           }
         }
 
-        if (file_exists('data/'. $dir .'/public_html/')) {
-          perform_action('copy', ["data/$dir/public_html/" => FS_DIR_APP]);
+        if (file_exists('data/'. $dir .'/upload/')) {
+          perform_action('copy', ["data/$dir/upload/" => FS_DIR_APP]);
         }
 
         if (file_exists('data/'. $dir .'/storage/')) {
