@@ -94,7 +94,7 @@
     ];
 
     foreach ($fields as $field) {
-      if (!empty($order->data['customer']['different_shipping_address'])) {
+      if (!empty($order->data['customer']['different_shipping_address']) && settings::get('customer_shipping_address')) {
         if (isset($_POST['shipping_address'][$field])) {
           $order->data['customer']['shipping_address'][$field] = $_POST['shipping_address'][$field];
         } else {

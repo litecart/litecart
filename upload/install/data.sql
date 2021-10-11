@@ -354,6 +354,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('customer_details', 'local', 'Company Field', 'Display the field for the customer\'s company name.', 'customer_field_company', '1', 'toggle("y/n")', 0, 21, NOW(), NOW()),
 ('customer_details', 'local', 'Tax ID Field', 'Display the field for the customer\'s tax ID.', 'customer_field_tax_id', '1', 'toggle("y/n")', 0, 22, NOW(), NOW()),
 ('customer_details', 'local', 'Zone/State/Province Field', 'Display the field for the customer\'s zone/state.', 'customer_field_zone', '1', 'toggle("y/n")', 0, 23, NOW(), NOW()),
+('customer_details', 'local', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, NOW(), NOW()),
 ('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', 0, 2, NOW(), NOW()),
 ('listings', 'global', 'Catalog Only Mode', 'Disables the cart and checkout features leaving only a browsable catalog.', 'catalog_only_mode', '0', 'toggle("t/f")', 0, 1, NOW(), NOW()),
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'number()', 0, 10, NOW(), NOW()),

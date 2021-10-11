@@ -82,7 +82,7 @@
       if (empty($_POST['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
       if (empty($_POST['zone_code']) && settings::get('customer_field_zone') && reference::country($_POST['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
 
-      if (!empty($_POST['different_shipping_address'])) {
+      if (!empty($_POST['different_shipping_address']) && settings::get('customer_shipping_address')) {
         if (empty($_POST['shipping_address']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
         if (empty($_POST['shipping_address']['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
         if (empty($_POST['shipping_address']['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
@@ -126,24 +126,10 @@
       ];
 
       foreach ($fields as $field) {
-        if (isset($_POST['shipping_address'][$field])) $customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field];
-      }
-
-      if (empty($_POST['different_shipping_address'])) {
-        $fields = [
-          'company',
-          'firstname',
-          'lastname',
-          'address1',
-          'address2',
-          'postcode',
-          'city',
-          'country_code',
-          'zone_code',
-        ];
-
-        foreach ($fields as $key) {
-          $customer->data['shipping_address'][$key] = $customer->data[$key];
+        if (empty($_POST['different_shipping_address']) && settings::get('customer_shipping_address')) {
+          $customer->data['shipping_address'][$field] = isset($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
+        } else {
+          $customer->data['shipping_address'][$field] = $customer->data[$field];
         }
       }
 

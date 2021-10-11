@@ -92,6 +92,7 @@
     </div>
   </div>
 
+  <?php if (settings::get('customer_shipping_address')) { ?>
   <div class="address shipping-address">
 
     <h3><?php echo functions::form_draw_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
@@ -166,6 +167,7 @@
 
     </fieldset>
   </div>
+  <?php } ?>
 
   <?php if (settings::get('accounts_enabled') && empty(customer::$data['id'])) { ?>
   <div class="account">
