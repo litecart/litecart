@@ -306,7 +306,17 @@
       $(this).on('click', '.dropdown-menu .list-item button.add', function(e){
         e.preventDefault();
 
-        var category = $(this).closest('li');
+        var category = $(this).closest('li'),
+            abort = false;
+
+        $(self).find('input[name="'+ self.config.inputName +'"]').each(function(){
+          if ($(this).val() == category.data('id')) {
+            abort = true;
+            return;
+          }
+        });
+
+        if (abort) return;
 
         $(self).find('.categories').append(
           '<li class="list-item" style="display: flex;">' +
