@@ -90,6 +90,12 @@
         <?php echo functions::form_draw_phone_field('phone', true, 'required'); ?>
       </div>
     </div>
+
+    <?php if (!$subscribed_to_newsletter) { ?>
+    <div class="form-group">
+      <?php echo functions::form_draw_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+    </div>
+    <?php } ?>
   </div>
 
   <?php if (settings::get('customer_shipping_address')) { ?>
@@ -174,7 +180,7 @@
 
     <?php if (!empty($account_exists)) { ?>
 
-    <div class="alert alert-info">
+    <div class="alert alert-default">
       <?php echo functions::draw_fonticon('fa-info-circle'); ?> <?php echo language::translate('notice_existing_customer_account_will_be_used', 'We found an existing customer account that will be used for this order'); ?>
     </div>
 
@@ -203,12 +209,6 @@
 
     </fieldset>
     <?php } ?>
-  </div>
-  <?php } ?>
-
-  <?php if (!$subscribed_to_newsletter) { ?>
-  <div class="form-group">
-    <?php echo functions::form_draw_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
   </div>
   <?php } ?>
 

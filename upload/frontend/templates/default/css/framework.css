@@ -1899,12 +1899,6 @@ ul.list-inline li {
   color: #666;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
-.mt-0 {
-  margin-top: 0;
-}
-.mb-0 {
-  margin-top: 0;
-}
 /* Tables - Bootstrap Compatible */
 .table {
   width: 100%;

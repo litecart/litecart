@@ -98,7 +98,7 @@
 
   $('#modal-customer-picker .set-guest').click(function(){
 
-    var field = $.featherlight.current().$currentTarget.closest('.input-group');
+    var field = $.featherlight.current().$currentTarget.closest('.form-input');
 
     $(field).find(':input').val('0').trigger('change');
     $(field).find('.id').text('0');

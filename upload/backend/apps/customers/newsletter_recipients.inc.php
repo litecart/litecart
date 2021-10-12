@@ -150,7 +150,7 @@
 
     <div class="card-body">
       <div class="btn-group">
-        <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', '', 'delete'); ?>
+        <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
       </div>
     </div>
 

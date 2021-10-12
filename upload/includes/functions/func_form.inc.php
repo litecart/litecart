@@ -24,7 +24,8 @@
         $node = $node[$part];
       }
 
-      if ($array_value !== null) {
+    // Reinsert node value
+      if (is_array($node) && $array_value !== null) {
 
       // Attempt reinserting a numerical indexed array value
         if (preg_match('#\[\]$#', $name)) {
@@ -36,11 +37,9 @@
           if ($array_value != $node) continue;
           return $array_value;
         }
-
-    // Reinsert node value
-      } else {
-        return $node;
       }
+
+      return $node;
     }
   }
 

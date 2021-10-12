@@ -272,7 +272,7 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `track_shipping`, `date_updated`, `date_created`) VALUES
 (1, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
 (2, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
-(3, 'on_hold', 'fa-hourglass-start', '#c0c0c0', 1, 0, 0, NOW(), NOW()),
+(3, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, NOW(), NOW()),
 (4, 'ready', 'fa-clock-o', '#d7d96f', 1, 0, 0, NOW(), NOW()),
 (5, 'delayed', 'fa-hourglass-half', '#ffa851', 1, 0, 0, NOW(), NOW()),
 (6, 'processing', 'fa-cog', '#ffa851', 1, 0, 0, NOW(), NOW()),

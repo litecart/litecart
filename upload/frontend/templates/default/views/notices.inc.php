@@ -19,7 +19,7 @@
           break;
 
         case 'notices':
-          echo '<div class="alert alert-info">' . PHP_EOL
+          echo '<div class="alert alert-default">' . PHP_EOL
              . '  <a href="#" class="close" data-dismiss="alert">&times;</a>' . PHP_EOL
              . '  ' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice . PHP_EOL
              . '</div>';

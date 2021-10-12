@@ -94,6 +94,7 @@ body {
     margin: 1em 0;
     padding: .25em;
     border: 2px solid #ccc;
+    user-select: none;
     &.btn {
       padding: 12px;
     }
@@ -133,11 +134,14 @@ body {
     }
   }
   @media(min-width: @media-breakpoint-sm) {
-    .price {
-      position: absolute;
-      display: inline-block;
-      top: .5rem;
-      right: .5rem;
+    .option {
+      padding: .5em;
+      .price {
+        position: absolute;
+        display: inline-block;
+        top: .5rem;
+        right: .5rem;
+      }
     }
   }
 }
@@ -147,7 +151,7 @@ body {
 }
 #box-checkout-summary {
   .alert {
-    padding: 12px 18px;
+    padding: var(--input-padding-y) var(--input-padding-x);
     text-align: center;
     line-height: 24px;
   }

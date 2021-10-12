@@ -85,6 +85,7 @@
   margin: 1em 0;
   padding: 0.25em;
   border: 2px solid #ccc;
+  user-select: none;
 }
 #box-checkout-shipping .option.btn,
 #box-checkout-payment .option.btn {
@@ -131,8 +132,12 @@
   align-self: center;
 }
 @media (min-width: 576px) {
-  #box-checkout-shipping .price,
-  #box-checkout-payment .price {
+  #box-checkout-shipping .option,
+  #box-checkout-payment .option {
+    padding: 0.5em;
+  }
+  #box-checkout-shipping .option .price,
+  #box-checkout-payment .option .price {
     position: absolute;
     display: inline-block;
     top: 0.5rem;
@@ -143,7 +148,7 @@
   height: 100%;
 }
 #box-checkout-summary .alert {
-  padding: 12px 18px;
+  padding: var(--input-padding-y) var(--input-padding-x);
   text-align: center;
   line-height: 24px;
 }
