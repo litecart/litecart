@@ -420,6 +420,11 @@
     }
   });
 
+// Prevent losing form focus when clicking the label of a checkbox
+  $('#box-checkout-customer .form-check').click(function(e){
+    $(this).find('input[type="checkbox"]').trigger('focusin').focus();
+  });
+
 // Customer Form: Auto-Save
 
   var timerSubmitCustomer;
@@ -441,7 +446,7 @@
           $('#box-checkout-customer :input').first().trigger('input');
         }
       }
-    }, 50);
+    }, 200);
   });
 
   $('#box-checkout-customer').on('focusin', function() {
