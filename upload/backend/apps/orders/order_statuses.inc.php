@@ -11,7 +11,7 @@
   $order_statuses_query = database::query(
     "select os.*, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
-    order by field(stage,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
+    order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
   );
 
   if ($_GET['page'] > 1) database::seek($order_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -32,7 +32,7 @@
 // Pagination
   $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 
-  $stages = [
+  $states = [
     'created' => language::translate('title_created', 'Created'),
     'on_hold' => language::translate('title_on_hold', 'On Hold'),
     'ready' => language::translate('title_ready', 'Ready'),
@@ -71,7 +71,7 @@
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
           <th><?php echo language::translate('title_track', 'Track'); ?></th>
-          <th><?php echo language::translate('title_stage', 'Stage'); ?></th>
+          <th><?php echo language::translate('title_status_state', 'State'); ?></th>
           <th></th>
         </tr>
       </thead>
@@ -87,7 +87,7 @@
           <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td><?php echo strtr($order_status['stage'], $stages); ?></td>
+          <td><?php echo strtr($order_status['state'], $states); ?></td>
           <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>

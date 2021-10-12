@@ -25,7 +25,7 @@
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
       $fields = [
-        'stage',
+        'state',
         'icon',
         'color',
         'is_sale',
@@ -69,7 +69,7 @@
     }
   }
 
-  $stages = [
+  $states = [
     'created' => language::translate('title_created', 'Created'),
     'on_hold' => language::translate('title_on_hold', 'On Hold'),
     'ready' => language::translate('title_ready', 'Ready'),
@@ -103,8 +103,8 @@
             </div>
 
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_status_stage', 'Stage'); ?></label>
-              <?php echo functions::form_draw_select_field('stage', $stages, true); ?>
+              <label><?php echo language::translate('title_order_state', 'State'); ?></label>
+              <?php echo functions::form_draw_select_field('state', $states, true); ?>
             </div>
           </div>
 

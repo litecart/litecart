@@ -99,7 +99,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."order_statuses
-        set stage = '". database::input($this->data['stage']) ."',
+        set state = '". database::input($this->data['state']) ."',
           icon = '". database::input($this->data['icon']) ."',
           color = '". database::input($this->data['color']) ."',
           is_sale = '". (empty($this->data['is_sale']) ? '0' : '1') ."',
