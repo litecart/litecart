@@ -20,7 +20,7 @@
       }
 
       notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
