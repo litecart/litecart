@@ -127,7 +127,6 @@
             <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
             <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
             <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-            <th>&nbsp;</th>
           </tr>
         </thead>
 
@@ -139,14 +138,13 @@
             <td><?php echo $recipient['email']; ?></td>
             <td><?php echo $recipient['client_ip']; ?></td>
             <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
-            <td class="text-end"><a href="<?php echo document::href_ilink('customers/edit_recipient', ['recipient_id' => $recipient['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
 
         <tfoot>
           <tr>
-            <td colspan="6"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
+            <td colspan="5"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
           </tr>
         </tfoot>
       </table>
