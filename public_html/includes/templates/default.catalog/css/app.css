@@ -237,13 +237,14 @@ html {
   margin-top: 0;
 }
 #box-cookie-notice {
-  background: rgba(190, 190, 190, 0.5);
+  background: var(--cookie-notice-background-color);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 1em;
   backdrop-filter: saturate(200%) blur(5px);
+  color: var(--cookie-notice-text-color);
   z-index: 999;
 }
 #box-cookie-notice .notice {
@@ -254,6 +255,9 @@ html {
     position: sticky;
     top: 0;
   }
+}
+#box-manufacturer-logotypes img {
+  max-height: 60px;
 }
 #box-filter .manufacturers ul {
   max-height: 200px;

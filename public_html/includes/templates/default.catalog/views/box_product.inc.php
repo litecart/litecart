@@ -108,8 +108,6 @@
       </div>
       <?php } ?>
 
-      <hr />
-
       <div class="buy_now" style="margin: 1em 0;">
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
