@@ -33,9 +33,6 @@
       if (empty($_POST['options'])) $_POST['options'] = [];
       if (empty($_POST['options_stock'])) $_POST['options_stock'] = [];
 
-      if (empty($_POST['name'][language::$selected['code']])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
-      if (empty($_POST['categories'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
-
       if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       if (!empty($_POST['sku'])  && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and sku = '". database::input($_POST['sku']) ."' limit 1;")))   throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
       if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
@@ -246,22 +243,22 @@
 
               <div class="form-group">
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('sku', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('mpn', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('gtin', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-addon" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('taric', true); ?>
                 </div>
               </div>
@@ -312,7 +309,7 @@
 
                     <div class="input-group">
                       <?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
-                      <div class="input-group-addon">
+                      <div class="input-group-text">
                         <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
@@ -330,7 +327,7 @@
 
                     <div class="input-group">
                       <?php echo functions::form_draw_file_field('new_images[]'); ?>
-                      <div class="input-group-addon">
+                      <div class="input-group-text">
                         <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
                         <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
@@ -441,9 +438,7 @@
                 <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
                 <div class="input-group">
                   <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 0, null); ?>
-                  <span class="input-group-addon">
-                    <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
-                  </span>
+                  <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true, false); ?>
                 </div>
               </div>
 
@@ -650,43 +645,39 @@
         <div id="tab-stock" class="tab-pane">
           <h2><?php echo language::translate('title_stock', 'Stock'); ?></h2>
 
-          <div class="row" style="max-width: 960px;">
-            <div class="col-md-6">
-
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
-                  <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
-                  <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
-                  <?php echo functions::form_draw_decimal_field('quantity_step', true, null, 'min="0"'); ?>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
-                  <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
-                </div>
-              </div>
+          <div class="row" style="max-width: 640px;">
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group">
-                <label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
-                <?php echo functions::form_draw_delivery_statuses_list('delivery_status_id', true); ?>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
-                <?php echo functions::form_draw_sold_out_statuses_list('sold_out_status_id', true); ?>
-              </div>
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
             </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
+              <?php echo functions::form_draw_decimal_field('quantity_step', true, null, 'min="0"'); ?>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label><?php echo language::translate('title_quantity_unit', 'Quantity Unit'); ?></label>
+              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false); ?>
+            </div>
+          </div>
+
+          <div class="row" style="max-width: 640px;">
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?></label>
+              <?php echo functions::form_draw_delivery_statuses_list('delivery_status_id', true); ?>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_sold_out_status', 'Sold Out Status'); ?></label>
+              <?php echo functions::form_draw_sold_out_statuses_list('sold_out_status_id', true); ?>
+            </div>
+
           </div>
 
           <div class="table-responsive">
@@ -709,9 +700,7 @@
                   <td>
                     <div class="input-group">
                       <?php echo functions::form_draw_decimal_field('weight', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_weight_classes_list('weight_class', true); ?>
                     </div>
                   </td>
                   <td>
@@ -719,15 +708,13 @@
                       <?php echo functions::form_draw_decimal_field('dim_x', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('dim_y', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('dim_z', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_length_classes_list('dim_class', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
                     </div>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('quantity', true, 2, null, null, 'data-quantity="'. (float)$product->data['quantity'] .'"' . (!empty($_POST['options_stock']) ? ' readonly' : '')); ?></td>
                   <td>
                     <div class="input-group">
-                      <span class="input-group-addon">&plusmn;</span>
+                      <span class="input-group-text">&plusmn;</span>
                       <?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2, null, null, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>
                     </div>
                   </td>
@@ -742,9 +729,7 @@
                   <td>
                     <div class="input-group">
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][weight]', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_weight_classes_list('options_stock['.$key.'][weight_class]', true); ?>
                     </div>
                   </td>
                   <td>
@@ -752,15 +737,13 @@
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_x]', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_y]', true, 4, 0); ?>
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][dim_z]', true, 4, 0); ?>
-                      <span class="input-group-addon">
-                        <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true, false, 'style="width: auto;"'); ?>
-                      </span>
+                      <?php echo functions::form_draw_length_classes_list('options_stock['.$key.'][dim_class]', true); ?>
                     </div>
                   </td>
                   <td><?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity]', true, 2, null, null, 'data-quantity="'. (isset($product->data['options_stock'][$key]['quantity']) ? (float)$product->data['options_stock'][$key]['quantity'] : '0') .'"'); ?></td>
                   <td>
                     <div class="input-group">
-                      <span class="input-group-addon">&plusmn;</span>
+                      <span class="input-group-text">&plusmn;</span>
                       <?php echo functions::form_draw_decimal_field('options_stock['.$key.'][quantity_adjustment]', true); ?>
                     </div>
                   </td>
@@ -815,7 +798,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($product->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (isset($product->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -839,27 +822,19 @@
 
 // Default Category
 
-  $('input[name="categories[]"]').change(function() {
-    if ($(this).is(':checked')) {
-      if ($(this).val() == '<?php echo $product->data['default_category_id']; ?>') {
-        $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'" selected="selected">'+ $(this).data('name') +'</option>');
-      } else {
-        $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ $(this).data('name') +'</option>');
-      }
-    } else {
-      $('select[name="default_category_id"] option[value="'+ $(this).val() +'"]').remove();
-    }
-    var default_category = $('select[name="default_category_id"] option:selected').val();
-    $('select[name="default_category_id"]').html($('select[name="default_category_id"] option').sort(function(a,b){
-        a = $('input[name="categories[]"][value="'+ a.value +'"]').data('priority');
-        b = $('input[name="categories[]"][value="'+ b.value +'"]').data('priority');
-        return a-b;
-    }));
-    $('select[name="default_category_id"] option').prop('selected', '');
-    $('select[name="default_category_id"] option[value="'+ default_category +'"]').prop('selected', 'selected');
-  });
+  $('[data-toggle="category-picker"]').on('change', function() {
+    var default_category_id = $('select[name="default_category_id"]').val();
 
-  $('input[name="categories[]"]:checked').trigger('change');
+    $('select[name="default_category_id"]').html('');
+
+    $('input[name="categories[]"]').each(function() {
+      $('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ $(this).data('name') +'</option>');
+    });
+
+    $('select[name="default_category_id"] option[value="'+ default_category_id +'"]').prop('selected', true);
+  }).trigger('change');
+
+  $('select[name="default_category_id"]').val('<?php echo $product->data['default_category_id']; ?>');
 
 // SKU
 
@@ -896,7 +871,7 @@
                + '  '
                + '  <div class="input-group">'
                + '    <?php echo functions::form_draw_file_field('new_images[]'); ?>'
-               + '    <div class="input-group-addon">'
+               + '    <div class="input-group-text">'
                + '      <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>'
                + '      <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>'
                + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
@@ -1633,9 +1608,7 @@
                + '  <td>'
                + '    <div class="input-group">'
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
-               + '      <span class="input-group-addon">'
-               + '        <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '', false, 'style="width: auto;"')); ?>'
-               + '      </span>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td>'
@@ -1643,15 +1616,13 @@
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 4, 0)); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 4, 0)); ?>'
                + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 4, 0)); ?>'
-               + '      <span class="input-group-addon">'
-               + '        <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '', false, 'style="width: auto;"')); ?>'
-               + '      </span>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity]', '0', 2, null, null, 'data-quantity="0"')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <span class="input-group-addon">&plusmn;</span>'
+               + '      <span class="input-group-text">&plusmn;</span>'
                + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity_adjustment]', '0')); ?>'
                + '    </div>'
                + '  </td>'

@@ -7,6 +7,7 @@
 /* Variables */
 
 :root {
+  /* General */
   --border-radius: 4px;
   --gutter-size: 20px;
   --link-text-color: #2e9cd4;
@@ -18,77 +19,106 @@
 
   --sidebar-width: 300px;
 
+  /* Cookie Notice */
+  --cookie-notice-background-color: rgba(0, 0, 0, .75);
+  --cookie-notice-text-color: #fff;
+
+  /* Navigation */
   --navigation-background-color: #f0f0f0;
+  --navigation-background-color-hover: rgba(0, 0, 0, .05);
+  --navigation-background-color-active: rgba(0, 0, 0, .15);
   --navigation-text-color: var(--default-text-color);
 
+  /* Defaults */
   --default-background-color: #f9f9f9;
-  --default-background-color-hover: #d8d8d8;
-  --default-background-color-active: #fff;
-  --default-border-color: #eee;
+  --default-border-color: rgba(0, 0, 0, .075);
   --default-line-height: 1.3333;
   --default-text-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #333;
-  --default-text-size: 12px;
-  --default-title-color: var(--default-text-color);
-  --default-title-border-color: #e5e5e5;
+  --default-text-size: 15px;
+
+  /* Buttons */
+  --default-button-background-color: #f9f9f9;
+  --default-button-background-color-hover: #f3f3f3;
+  --default-button-background-color-active: #f3f3f3;
+  --default-button-border-color: rgba(0, 0, 0, .075);
+  --default-button-text-color: #333;
+
+  --primary-button-background-color: #2e9cd4;
+  --primary-button-background-color-hover: #ddd;
+  --primary-button-background-color-active: #bdbdbd;
+  --primary-button-border-color: rgba(0, 0, 0, .075);
+  --primary-button-text-color: #fff;
+
+  --success-button-background-color: #98cc34;
+  --success-button-background-color-hover: #9dcf3e;
+  --success-button-background-color-active: #89b82e;
+  --success-button-border-color: rgba(0, 0, 0, .075);
+  --success-button-text-color: #fff;
+
+  --warning-button-background-color: #f0ad4e;
+  --warning-button-background-color-hover: #f2b866;
+  --warning-button-background-color-active: #f1b25a;
+  --warning-button-border-color: rgba(0, 0, 0, 0.1);
+  --warning-button-text-color: #aa0000;
+
+  --danger-button-background-color: #d9534f;
+  --danger-button-background-color-hover: #de6764;
+  --danger-button-background-color-active: #db5d59;
+  --danger-button-border-color: rgba(0, 0, 0, 0.1);
+  --danger-button-text-color: #fff;
+
+  /* Notices */
   --default-notice-background-color: #e5e5e5;
   --default-notice-text-color: #000;
+  --default-notice-border-color: #e5e5e5;
 
-  --primary-background-color: #2e9cd4;
-  --primary-background-color-hover: #ddd;
-  --primary-background-color-active: #bdbdbd;
-  --primary-text-color: #fff;
   --primary-notice-background-color: #3ba5c6;
   --primary-notice-text-color: #fff;
+  --primary-notice-border-color: #3ba5c6;
 
-  --success-background-color: #98cc34;
-  --success-background-color-hover: #9dcf3e;
-  --success-background-color-active: #89b82e;
-  --success-border-color: rgba(0,0,0,0.1);
-  --success-text-color: #fff;
   --success-notice-background-color: #98cc34;
   --success-notice-text-color: #fff;
+  --success-notice-border-color: #98cc34;
 
-  --warning-background-color: #f0ad4e;
-  --warning-background-color-hover: #f2b866;
-  --warning-background-color-active: #f1b25a;
-  --warning-border-color: rgba(0,0,0,0.1);
-  --warning-text-color: #aa0000;
   --warning-notice-background-color: #ffcc66;
   --warning-notice-text-color: #aa0000;
+  --warning-notice-border-color: #ffcc66;
 
-  --danger-background-color: #d9534f;
-  --danger-background-color-hover: #de6764;
-  --danger-background-color-active: #db5d59;
-  --danger-border-color: rgba(0,0,0,0.1);
-  --danger-text-color: #fff;
   --danger-notice-background-color: #d9534f;
   --danger-notice-text-color: #fff;
+  --danger-notice-border-color: #d9534f;
 
+  /* Breadcrumbs */
   --breadcrumbs-background-color: #f3f3f3;
   --breadcrumbs-text-color: #333;
   --breadcrumbs-border-color: transparent;
 
+  /* Input */
   --input-background-color: #fff;
   --input-padding-x: 1em;
   --input-padding-y: .5em;
   --input-text-color: #000;
 
+  /* Pills */
   --pills-background-color: #f3f3f3;
   --pills-background-color-active: #cdcdcd;
   --pills-text-color: #333;
   --pills-text-color-active: var(--pills-text-color);
 
+  /* Tabs */
   --tabs-background-color: #f3f3f3;
   --tabs-background-color-active: #fff;
   --tabs-borde-color: var(--default-border-color);
   --tabs-text-color: #333;
   --tabs-text-color-active: var(--tabs-text-color);
 
+  /* Tables */
   --table-striped-row-background-odd: #f9f9f9;
   --table-striped-row-background-even: #fff;
   --table-row-hover-background: #ececec;
 
+  /* Pagination */
   --pagination-background-color: var(--default-background-color);
   --pagination-text-color: var(--default-text-color);
   --pagination-border-color: var(--default-border-color);
@@ -97,10 +127,12 @@
   --pagination-hover-background-color: #f3f3f3;
   --pagination-hover-text-color: var(--default-text-color);;
 
+  /* Footer */
   --footer-background-color: #fff;
   --footer-title-color: #333;
   --footer-text-color: #333;
 
+  /* Copyright */
   --copyright-background-color: #fff;
   --copyright-text-color: #333;
 }

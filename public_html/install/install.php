@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.3.0\n"
+      echo "\nLiteCart® 2.3.1\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -622,9 +622,7 @@
          . '  <div class="form-group">' . PHP_EOL
          . '    <div class="input-group">' . PHP_EOL
          . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
-         . '      <span class="input-group-btn">' . PHP_EOL
-         . '        <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
-         . '      </span>' . PHP_EOL
+         . '      <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
          . '    </div>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '</form>' . PHP_EOL;

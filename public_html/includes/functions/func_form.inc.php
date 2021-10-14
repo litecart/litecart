@@ -11,34 +11,36 @@
   function form_reinsert_value($name, $array_value=null) {
     if (empty($name)) return;
 
-    foreach ([$_POST, $_REQUEST, $_GET] as $superglobal) {
+    foreach ([$_POST, $_GET] as $superglobal) {
       if (empty($superglobal)) continue;
 
-      foreach (explode('&', http_build_query($superglobal)) as $pair) {
+    // Extract name parts
+      $parts = preg_split('#[\]\[]+#', preg_replace('#\[\]$#', '', $name), -1, PREG_SPLIT_NO_EMPTY);
 
-        if (strpos($pair, '=') !== false) {
-          list($key, $value) = explode('=', $pair);
+    // Get array node
+      $node = $superglobal;
+      foreach ($parts as $part) {
+        if (!isset($node[$part])) continue 2;
+        $node = $node[$part];
+      }
+
+    // Reinsert node value
+      if (is_array($node) && $array_value !== null) {
+
+      // Attempt reinserting a numerical indexed array value
+        if (preg_match('#\[\]$#', $name)) {
+          if (!is_array($node) || !in_array($array_value, $node)) continue;
+          return $array_value;
+
+      // Reinsert a defined key array value
         } else {
-          $key = $pair;
-          $value = '';
-        }
-
-        $key = urldecode($key);
-        $value = urldecode($value);
-
-        if ($key == $name) return $value;
-
-        if (preg_replace('#(.*)\[([^\]]+)?\]$#', "$1", $key) == preg_replace('/(.*)\[([^\]]+)?\]$/', "$1", $name)) {
-          if (preg_match('#\[([0-9]+)?\]$#', $key)) {
-            if ($value == $array_value) {
-              return $value;
-            }
-          }
+          if ($array_value != $node) continue;
+          return $array_value;
         }
       }
-    }
 
-    return '';
+      return $node;
+    }
   }
 
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
@@ -87,7 +89,7 @@
   function form_draw_captcha_field($name, $id, $parameters='') {
 
     $output = '<div class="input-group">' . PHP_EOL
-            . '  <span class="input-group-addon" style="padding: 0;">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
+            . '  <span class="input-group-text" style="padding: 0;">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
             . '  ' . form_draw_text_field('captcha', '', $parameters . ' style="font-size: 24px; padding: 0; text-align: center;"') . PHP_EOL
             . '</div>';
 
@@ -152,7 +154,7 @@
 
     return '<div class="input-group">' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" step="any" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
-         . '  <strong class="input-group-addon" style="opacity: 0.75;">'. htmlspecialchars($currency_code) .'</strong>' . PHP_EOL
+         . '  <strong class="input-group-text" style="opacity: 0.75;">'. htmlspecialchars($currency_code) .'</strong>' . PHP_EOL
          . '</div>';
   }
 
@@ -220,7 +222,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-envelope-o fa-fw') .'</span>' . PHP_EOL
+         . '  <span class="input-group-text">'. functions::draw_fonticon('fa-envelope-o fa-fw') .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />'
          . '</div>';
   }
@@ -234,7 +236,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon">'. functions::draw_fonticon($icon) .'</span>' . PHP_EOL
+         . '  <span class="input-group-text">'. functions::draw_fonticon($icon) .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />' . PHP_EOL
          . '</div>';
   }
@@ -315,7 +317,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-key fa-fw') .'</span>' . PHP_EOL
+         . '  <span class="input-group-text">'. functions::draw_fonticon('fa-key fa-fw') .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password"'. (($parameters) ? ' '.$parameters : false) .' />'
          . '</div>';
   }
@@ -324,7 +326,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>' . PHP_EOL
+         . '  <span class="input-group-text">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />'
          . '</div>';
   }
@@ -343,7 +345,7 @@
 
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -351,7 +353,7 @@
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_textarea($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -359,7 +361,7 @@
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'images/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
          . '  ' . form_draw_wysiwyg_field($name, $value, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -460,7 +462,7 @@
   }
 
   function form_draw_text_field($name, $value=true, $parameters='') {
-    if ($value === true) $value = form_reinsert_value($name, $value);
+    if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -516,7 +518,7 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-user fa-fw') .'</span>' . PHP_EOL
+         . '  <span class="input-group-text">'. functions::draw_fonticon('fa-user fa-fw') .'</span>' . PHP_EOL
          . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />'
          . '</div>';
   }
@@ -859,10 +861,10 @@
           }
         }
 
-        $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
+        $html .= '<li class="list-item" style="display: flex; align-items: center;">'. PHP_EOL
                . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . PHP_EOL
-               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('fa-folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
-               . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
+               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('fa-folder', 'style="color: #cccc66;"') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
+               . '  <div><button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button></div>' . PHP_EOL
                .'</li>';
       }
     }

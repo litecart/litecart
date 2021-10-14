@@ -553,7 +553,7 @@ input[name="development_type"]:checked + div {
     <div class="form-group col-md-6">
       <label>Folder Name</label>
       <div class="input-group">
-        <span class="input-group-addon">/</span>
+        <span class="input-group-text">/</span>
         <input class="form-control" name="admin_folder" type="text" value="admin" required />
       </div>
     </div>

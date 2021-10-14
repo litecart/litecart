@@ -143,7 +143,7 @@
           <label><?php echo language::translate('title_value', 'Value'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_decimal_field('value', true, 4); ?>
-            <span class="input-group-addon"><?php echo $store_currency->code; ?></span>
+            <span class="input-group-text"><?php echo $store_currency->code; ?></span>
           </div>
         </div>
 
@@ -184,7 +184,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($currency->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (isset($currency->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

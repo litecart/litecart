@@ -50,7 +50,7 @@
                 <div class="input-group" style="max-width: 150px;">
                 <?php if (!empty($item['quantity_unit']['name'])) { ?>
                   <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], $item['quantity_min'], $item['quantity_max'], $item['quantity_step'] ? 'step="'. (float)$item['quantity_step'] .'"' : '') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_min'], $item['quantity_max'], $item['quantity_step'] ? 'step="'. (float)$item['quantity_step'] .'"' : ''); ?>
-                  <span class="input-group-addon"><?php echo $item['quantity_unit']['name']; ?></span>
+                  <span class="input-group-text"><?php echo $item['quantity_unit']['name']; ?></span>
                 <?php } else { ?>
                   <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                 <?php } ?>

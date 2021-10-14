@@ -108,8 +108,6 @@
       </div>
       <?php } ?>
 
-      <hr />
-
       <div class="buy_now" style="margin: 1em 0;">
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
@@ -147,7 +145,7 @@
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
               <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_min ? $quantity_min : '1', $quantity_max ? $quantity_max : null, 'step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
-              <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
+              <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
             </div>
 
             <div style="padding-inline-start: 1em;">
@@ -165,8 +163,6 @@
         <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and can not be purchased.'); ?>
       </div>
       <?php } ?>
-
-      <hr />
 
       <div class="social-bookmarks text-center">
         <a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>
