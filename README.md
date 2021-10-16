@@ -23,7 +23,7 @@ Please note running your own website requires some common sense of web knowledge
 
 1. Connect to your web host via FTP using your favourite FTP software.
 
-2. Transfer the contents of the folder upload/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
+2. Transfer the contents of the folder public_html/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
 
     Example:
 

@@ -2,18 +2,18 @@
 # Application Files #
 #####################
 
-!upload/**/index.html
-!upload/**/.htaccess
+!public_html/**/index.html
+!public_html/**/.htaccess
 
-upload/storage/*
+public_html/storage/*
 
 composer.lock
 package-lock.json
-upload/.htaccess
-upload/.user.ini
-upload/favicon.ico
-upload/php.ini
-upload/robots.txt
+public_html/.htaccess
+public_html/.user.ini
+public_html/favicon.ico
+public_html/php.ini
+public_html/robots.txt
 
 #####################
 # Development files #

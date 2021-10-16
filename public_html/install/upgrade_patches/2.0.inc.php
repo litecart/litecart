@@ -60,7 +60,7 @@
   ]);
 
   perform_action('copy', [
-    'data/default/upload/images/no_image.png' => FS_DIR_APP . 'images/no_image.png',
+    'data/default/public_html/images/no_image.png' => FS_DIR_APP . 'images/no_image.png',
   ];
 
   perform_action('modify', [
