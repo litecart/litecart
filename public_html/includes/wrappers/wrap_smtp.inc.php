@@ -133,7 +133,10 @@
 
       $this->_last_response = $response;
 
-      if (substr($response, 0, 3) != $expected_response) throw new Exception('Unexpected socket response; '. $response);
+      if (substr($response, 0, 3) != $expected_response) {
+        copy(FS_DIR_APP . 'logs/last_smtp.log', FS_DIR_APP . 'logs/last_smtp_error.log');
+        throw new Exception('Unexpected socket response; '. $response);
+      }
 
       return $this;
     }
