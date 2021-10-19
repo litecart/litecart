@@ -802,6 +802,7 @@
                 'head_title' => $category->head_title,
                 'h1_title' => $category->h1_title,
                 'image' => $category->image,
+                'new_image' => '',
                 'priority' => $category->priority,
                 'language_code' => $_POST['language_code'],
               ];
@@ -829,6 +830,7 @@
                 'head_title' => $manufacturer->head_title,
                 'h1_title' => $manufacturer->h1_title,
                 'image' => $manufacturer->image,
+                'new_image' => '',
                 'priority' => $manufacturer->priority,
                 'language_code' => $_POST['language_code'],
               ];
@@ -877,6 +879,7 @@
                 'head_title' => $product->head_title,
                 'meta_description' => $product->meta_description,
                 'images' => implode(';', $product->images),
+                'new_images' => '',
                 'attributes' => implode("\r\n", array_map($attribute_map, $product->attributes)),
                 'purchase_price' => $product->purchase_price,
                 'purchase_price_currency_code' => $product->purchase_price_currency_code,
