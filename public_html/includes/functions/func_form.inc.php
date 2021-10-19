@@ -96,17 +96,17 @@
     return $output;
   }
 
-  function form_draw_category_field($name, $value=true, $parameters='') {
+  function form_draw_category_field($name, $input=true, $parameters='') {
 
-    if ($value === true) $value = form_reinsert_value($name);
+    if ($input === true) $input = form_reinsert_value($name);
 
     $account_name = language::translate('title_root', 'Root');
 
-    if (!empty($value)) {
+    if (!empty($input)) {
       $category_query = database::query(
         "select c.id, c.code, ci.name, c.date_created from ". DB_TABLE_PREFIX ."categories c
         left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input(language::$selected['code']) ."')
-        where c.id = ". (int)$value ."
+        where c.id = ". (int)$input ."
         limit 1;"
       );
 
@@ -123,7 +123,7 @@
          . '    '. functions::draw_fonticon('fa-folder', 'style="color: #cc6;"') .' <span class="name" style="display: inline-block;">'. $category_name .'</span>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '  <div style="align-self: center;">' . PHP_EOL
-         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'category_picker', 'parent_id' => $value]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
+         . '    <a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'category_picker', 'parent_id' => $input]) .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. language::translate('title_change', 'Change') .'</a>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '</div>';
   }
@@ -833,7 +833,7 @@
   function form_draw_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
     if (!$multiple || !preg_match('#\[\]$#', $name)) {
-      return form_draw_category_field($name, $options, $input, $parameters);
+      return form_draw_category_field($name, $input, $parameters);
     }
 
     if ($input === true) {
