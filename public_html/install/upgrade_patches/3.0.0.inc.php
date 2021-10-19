@@ -395,11 +395,15 @@
   ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
 
   foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
-    perform_action('move', [$file => FS_DIR_APP . 'frontend/boxes/' . basename($file)]);
+    perform_action('move', [$file => FS_DIR_APP . 'frontend/partials/' . basename($file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'includes/library/*') as $file) {
     perform_action('move', [$file => FS_DIR_APP . 'inlcudes/nodes/' . preg_replace('#^lib_#', 'nod_', basename($file))]);
+  }
+
+  foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/views/') as $directory) {
+    perform_action('move', [$directory => preg_replace(['#\.catalog#', '#/views/#'], ['', '/partials/'], $directory)]);
   }
 
   foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog') as $file) {

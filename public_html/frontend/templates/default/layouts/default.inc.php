@@ -13,15 +13,15 @@
 </head>
 <body>
 
-<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
+<?php include vmod::check(FS_DIR_TEMPLATE . 'partials/box_cookie_notice.inc.php'); ?>
 
-<?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_site_header.inc.php'); ?>
+<?php include vmod::check(FS_DIR_TEMPLATE . 'partials/box_site_header.inc.php'); ?>
 
-<?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_menu.inc.php'); ?>
+<?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_site_menu.inc.php'); ?>
 
 {{content}}
 
-<?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_footer.inc.php'); ?>
+<?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_site_footer.inc.php'); ?>
 
 <a id="scroll-up" class="hidden-print" href="#">
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>

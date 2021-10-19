@@ -42,7 +42,7 @@
     }
     breadcrumbs::add($page->title);
 
-    $box_information = new ent_view(FS_DIR_TEMPLATE . 'views/box_information.inc.php');
+    $box_information = new ent_view(FS_DIR_TEMPLATE . 'partials/box_information.inc.php');
     $box_information->snippets = [
       'title' => $page->title,
       'content' => $page->content,
@@ -53,7 +53,7 @@
   } else {
 
     ob_start();
-    include vmod::check(FS_DIR_APP . 'frontend/boxes/box_contact_us.inc.php');
+    include vmod::check(FS_DIR_APP . 'frontend/partials/box_contact_us.inc.php');
     $_page->snippets['content'] = ob_get_clean();
   }
 

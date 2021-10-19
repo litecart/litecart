@@ -22,7 +22,7 @@
       self::$aliases['#^admin/(.*?)\.app/#'] = 'backend/apps/$1/'; // <3.0.0
       self::$aliases['#^admin/(.*?)\.widget/#'] = 'backend/widgets/$1/'; // <3.0.0
       self::$aliases['#^pages/#'] = 'frontend/pages/'; // <3.0.0
-      self::$aliases['#^includes/boxes/#'] = 'frontend/boxes/'; // <3.0.0
+      self::$aliases['#^includes/partials/#'] = 'frontend/partials/'; // <3.0.0
       self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_'; // <2.2.0
       self::$aliases['#^includes/library/lib_#'] = 'includes/nodes/nod_'; // <3.0.0
       self::$aliases['#^includes/routes/#'] = 'frontend/routes/'; // <3.0.0

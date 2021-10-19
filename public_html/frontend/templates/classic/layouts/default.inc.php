@@ -15,7 +15,7 @@
 
 <div id="page" class="container">
 
-  <?php include vmod::check(FS_DIR_TEMPLATE . 'views/box_cookie_notice.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_TEMPLATE . 'partials/box_cookie_notice.inc.php'); ?>
 
   <header id="header" class="hidden-print">
     <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
@@ -23,19 +23,19 @@
     </a>
 
     <div class="text-center hidden-xs">
-      <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_region.inc.php'); ?>
+      <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_region.inc.php'); ?>
     </div>
 
     <div class="text-end">
-      <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_shopping_cart.inc.php'); ?>
+      <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_shopping_cart.inc.php'); ?>
     </div>
   </header>
 
-  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_menu.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_site_menu.inc.php'); ?>
 
   {{content}}
 
-  <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_site_footer.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_site_footer.inc.php'); ?>
 </div>
 
 <a id="scroll-up" class="hidden-print" href="#">

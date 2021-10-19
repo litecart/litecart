@@ -2,8 +2,8 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
-        <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_category_tree.inc.php'); ?>
-        <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_recently_viewed_products.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_category_tree.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_recently_viewed_products.inc.php'); ?>
       </div>
     </div>
 
@@ -37,7 +37,7 @@
             <?php foreach ($subcategories as $subcategory) { ?><li><a href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a></li><?php } ?>
           </ul>
 
-          <?php include vmod::check(FS_DIR_APP . 'frontend/boxes/box_filter.inc.php'); ?>
+          <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_filter.inc.php'); ?>
 
           <section class="listing products <?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? 'rows' : 'columns'; ?>">
             <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['category_id']); ?>

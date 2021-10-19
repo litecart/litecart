@@ -6,7 +6,7 @@
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), document::ilink(''));
 
 // Apps
-  include vmod::check(FS_DIR_APP . 'backend/boxes/box_apps_menu.inc.php');
+  include vmod::check(FS_DIR_APP . 'backend/partials/box_apps_menu.inc.php');
   document::$snippets['box_apps_menu'] = $box_apps_menu;
 
 // Display app content
@@ -74,7 +74,7 @@
 
   // Widgets
 
-    $box_widgets = new ent_view('views/box_widgets.inc.php');
+    $box_widgets = new ent_view('partials/box_widgets.inc.php');
     $box_widgets->snippets['widgets'] = [];
 
     $widgets = functions::admin_get_widgets();

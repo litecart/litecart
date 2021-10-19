@@ -6,7 +6,7 @@
 
   if (empty($order->data['items'])) return;
 
-  $box_checkout_summary = new ent_view('views/box_checkout_summary.inc.php');
+  $box_checkout_summary = new ent_view('partials/box_checkout_summary.inc.php');
 
   $box_checkout_summary->snippets = [
     'order' => $order->data,

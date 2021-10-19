@@ -24,7 +24,7 @@
       notices::$data = array_filter(notices::$data);
 
       if (!empty(notices::$data)) {
-        $notices = new ent_view('views/notices.inc.php');
+        $notices = new ent_view('partials/notices.inc.php');
         $notices->snippets['notices'] = notices::$data;
         document::$snippets['notices'] = $notices;
         self::reset();
