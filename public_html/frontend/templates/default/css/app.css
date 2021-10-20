@@ -62,6 +62,9 @@ body main {
 #site-menu a {
   color: inherit;
 }
+#site-menu .search form {
+  padding: var(--gutter-size);
+}
 #site-menu .shopping-cart.filled > a {
   background-color: var(--navigation-cart-color);
 }

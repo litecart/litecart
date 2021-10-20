@@ -84,7 +84,7 @@
       );
 
       if (database::num_rows($country_query)) {
-        throw new Exception(language::translate('error_language_conflict', 'The language conflicts another language in the database'));
+        throw new Exception(language::translate('error_language_conflict', 'The country conflicts another country in the database'));
       }
 
       if (empty($this->data['id'])) {

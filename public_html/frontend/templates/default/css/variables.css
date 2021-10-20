@@ -31,10 +31,10 @@
   --default-background-color-hover: #e4e4e4;
   --default-background-color-active: #ccc;
   --default-border-color: #eee;
-  --default-line-height: 1.3333;
   --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #000;
-  --default-text-size: 16px;
+  --default-text-size: 15px;
+  --default-line-height: 1.5;
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
   --default-notice-background-color: #f0f0f0;

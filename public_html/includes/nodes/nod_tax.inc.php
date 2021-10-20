@@ -71,12 +71,11 @@
 
       if (empty($customer)) $customer = 'customer';
 
-      $tax_rates = [];
-
     // Presets
       if (is_string($customer)) {
         switch(strtolower($customer)) {
 
+          case 'site':
           case 'store':
 
             $customer = [

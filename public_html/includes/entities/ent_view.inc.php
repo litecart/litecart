@@ -146,7 +146,7 @@
 
     public function stitch($view=null, $cleanup=false) {
 
-      //trigger_error('ent_view->stitch() is deprecated. Instead set the view when constructing view and use echo to output.', E_USER_DEPRECATED);
+      //trigger_error('ent_view->stitch() is deprecated. Instead set the view file when constructing view object, and use echo to output.', E_USER_DEPRECATED);
 
       if ($cleanup) $this->cleanup = true;
 

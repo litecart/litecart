@@ -67,6 +67,9 @@ body {
   a {
     color: inherit;
   }
+  .search form {
+    padding: var(--gutter-size);
+  }
   .shopping-cart {
     &.filled > a {
       background-color: var(--navigation-cart-color);
@@ -74,10 +77,6 @@ body {
     .badge {
       animation: pulsating 2s linear;
       animation-iteration-count: infinite;
-    }
-    img {
-      max-width: 64px;
-      max-height: 64px;
     }
     @media (min-width: @media-breakpoint-md) {
       .dropdown-menu {

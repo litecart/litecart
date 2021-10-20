@@ -136,6 +136,11 @@ table.items tbody tr:nth-child(11) {
 
       <table class="order-total table data-table">
         <tbody>
+          <tr>
+            <td class="text-end"><strong><?php echo $order['subtotal']; ?>:</strong></td>
+            <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $order['subtotal'] + $order['subtotal_tax'] : $order['subtotal'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          </tr>
+
           <?php foreach ($order['order_total'] as $ot_row) { ?>
           <?php if (!empty($order['display_prices_including_tax'])) { ?>
           <tr>

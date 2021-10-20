@@ -1218,6 +1218,7 @@ END;
     }
 
     $options = [];
+
     $customers_query = database::query(
       "select id, email, company, firstname, lastname from ". DB_TABLE_PREFIX ."customers
       order by email;"

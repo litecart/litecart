@@ -5,7 +5,7 @@
     public $description = '';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
-    public $website = 'https://www.litecart.net';
+    public $website = 'https://www.litecart.net/';
     public $priority = 0;
 
     public function process($force, $last_run) {

@@ -485,12 +485,12 @@
 
           <div class="row" style="max-width: 960px;">
             <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_quantity_min', 'Quantity Minimum'); ?></label>
+              <label><?php echo language::translate('title_minimum_cart_quantity', 'Minimum Cart Quantity'); ?></label>
               <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
             </div>
 
             <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_quantity_maximum', 'Quantity Maximum'); ?></label>
+              <label><?php echo language::translate('title_maximum_cart_quantity', 'Maximum Cart Quantity'); ?></label>
               <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
             </div>
 
@@ -660,7 +660,7 @@
     e.preventDefault();
     var output = '<div class="image form-group">'
                + '  <div class="thumbnail float-start">'
-               + '    <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
+               + '    <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>" alt="" />'
                + '  </div>'
                + '  '
                + '  <div class="input-group">'
@@ -695,7 +695,7 @@
       return;
     }
 
-    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>');
+    $('#tab-general .main-image').attr('src', '<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping'))); ?>');
   }
 
 // Technical Data

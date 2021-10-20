@@ -381,7 +381,7 @@
               <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
               <div class="input-group">
                 <div class="form-input"><?php echo $order->data['client_ip']; ?></div>
-                <a class="btn btn-primary" href="ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
+                <a class="btn btn-default" href="https://ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a>
               </div>
             </div>
 
@@ -586,21 +586,23 @@
                   <label><?php echo language::translate('title_name', 'Name'); ?></label>
                   <?php echo functions::form_draw_text_field('shipping_option[name]', true); ?>
                 </div>
+              </div>
 
-                <div class="form-group col-md-6">
+              <div class="row">
+                <div class="form-group col-md-8">
                   <label><?php echo language::translate('title_tracking_id', 'Tracking ID'); ?></label>
                   <?php echo functions::form_draw_text_field('shipping_tracking_id', true); ?>
                 </div>
 
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
-                  <span class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></span>
+                  <div class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></div>
                 </div>
+              </div>
 
-                <div class="form-group col-md-12">
-                  <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
-                  <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
-                </div>
+              <div class="form-grou">
+                <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
+                <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
               </div>
             </div>
           </div>
@@ -900,13 +902,18 @@
         <?php echo functions::form_draw_currency_field('price', $_POST['currency_code'], ''); ?>
       </div>
 
-        <div class="form-group col-md-4">
+      <div class="form-group col-md-4">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
         <?php echo functions::form_draw_currency_field('tax', $_POST['currency_code'], ''); ?>
       </div>
+
+      <div class="form-group col-md-4">
+        <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
+        <?php echo functions::form_draw_tax_classes_list('tax_class_id', ''); ?>
+      </div>
     </div>
 
-    <div class="btn-group">
+    <div class="card-action">
       <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
       <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
     </div>
@@ -995,6 +1002,7 @@
 </div>
 
 <script>
+
 // Order
 
   $('select[name="currency_code"]').change(function(e){
@@ -1403,7 +1411,7 @@
 
     var row = $('#order-items tbody tr.item').last();
     $(row).find('*[name$="[product_id]"]').val(item.product_id);
-    $(row).find('*[name$="[stock_option_id]"]').val(item.stock_option_id);
+    $(row).find('*[name$="[stock_item_id]"]').val(item.stock_item_id);
     $(row).find('*[name$="[sku]"]').val(item.sku);
     $(row).find('*[name$="[name]"]').val(item.name);
     $(row).find('*[name$="[gtin]"]').val(item.gtin);
@@ -1417,6 +1425,7 @@
     $(row).find('*[name$="[quantity]"]').val(item.quantity);
     $(row).find('*[name$="[price]"]').val(item.price);
     $(row).find('*[name$="[tax]"]').val(item.tax);
+    $(row).find('*[name$="[tax_class_id]"]').val(item.tax_class_id);
 
     $(row).find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
     $(row).find('.weight').text(String(item.weight).trim('.0'));
@@ -1441,12 +1450,12 @@
     while ($('input[name="order_total['+new_ot_row_index+'][id]"]').length) new_ot_row_index++;
     e.preventDefault();
     var output = '  <tr>'
-               + '    <td class="text-end"><a href="#" class="add" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus', 'style="color: #6c6;"')); ?></a></td>'
+               + '    <td class="text-end"><a href="#" class="btn btn-default add" title="<?php echo functions::general_escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-plus', 'style="color: #6c6;"')); ?></a></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][module_id]', '')); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'class="form-input text-end"')); ?></td>'
                + '    <td>'
                + '      <div class="input-group">'
-               + '        <span class="input-group-text"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
+               + '        <span class="input-group-text"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', ['1', functions::draw_fonticon('fa-calculator')], '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
                + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field('order_total[new_ot_row_index][value]', $_POST['currency_code'], currency::format_raw(0))); ?>'
                + '      </div>'
                + '    </td>'
@@ -1469,15 +1478,17 @@
     $('input[name^="items["][name$="[price]"]').each(function() {
       subtotal += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
     });
+
     subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[value]"]').val(subtotal);
+    $('#order-total .subtotal').val(subtotal);
 
     var subtotal_tax = 0;
     $('input[name^="items["][name$="[tax]"]').each(function() {
       subtotal_tax += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
     });
+
     subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('input[name^="order_total["][value="ot_subtotal"]').closest('tr').find('input[name^="order_total["][name$="[tax]"]').val(subtotal_tax);
+    $('#order-total .subtotal-tax').val(subtotal_tax);
 
     var order_total = subtotal + subtotal_tax;
     $('input[name^="order_total["][name$="[value]"]').each(function() {
