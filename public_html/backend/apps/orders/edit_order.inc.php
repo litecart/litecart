@@ -604,6 +604,11 @@
                 <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
                 <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
               </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_incoterm', 'Incoterm'); ?></label>
+                <?php echo functions::form_draw_incoterms_list('incoterm', true); ?>
+              </div>
             </div>
           </div>
         </div>
