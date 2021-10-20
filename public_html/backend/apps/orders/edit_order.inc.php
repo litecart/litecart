@@ -570,7 +570,6 @@
                 <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
                 <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
               </div>
-              </div>
             </div>
 
             <div class="col-md-6">
@@ -1083,6 +1082,7 @@
         } else {
           $('select[name="customer[zone_code]"]').prop('disabled', true);
         }
+        $('select[name="customer[zone_code]"]').trigger('change');
       },
       complete: function() {
         $('body').css('cursor', 'auto');
@@ -1131,6 +1131,7 @@
         } else {
           $('select[name="customer[shipping_address][zone_code]]"]').prop('disabled', true);
         }
+        $('select[name="customer[zone_code]"]').trigger('change');
       },
       complete: function() {
         $('body').css('cursor', 'auto');

@@ -72,10 +72,10 @@
 
     private function _load_vmod($dom) {
 
-      $this->data['title'] = $dom->getElementsByTagName('title')->item(0)->textContent;
-      $this->data['description'] = $dom->getElementsByTagName('description')->item(0)->textContent;
-      $this->data['version'] = $dom->getElementsByTagName('version')->item(0)->textContent;
-      $this->data['author'] = $dom->getElementsByTagName('author')->item(0)->textContent;
+      $this->data['title'] = !empty($dom->getElementsByTagName('title')->item(0)) ? $dom->getElementsByTagName('title')->item(0)->textContent : '';
+      $this->data['description'] = !empty($dom->getElementsByTagName('description')->item(0)) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
+      $this->data['version'] = !empty($dom->getElementsByTagName('version')->item(0)) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
+      $this->data['author'] = !empty($dom->getElementsByTagName('author')->item(0)) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
         $this->data['aliases'][$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
@@ -301,10 +301,10 @@
             }
           }
 
-          if (@$operation['insert']['regex'] == 'true') {
-            $find_node->appendChild( $dom->createCDATASection(@$operation['find']['content']) );
+          if ($operation['insert']['regex'] == 'true') {
+            $find_node->appendChild( $dom->createCDATASection($operation['find']['content']) );
           } else {
-            $find_node->appendChild( $dom->createCDATASection(PHP_EOL . @$operation['find']['content'] . PHP_EOL . str_repeat(' ', 6)) );
+            $find_node->appendChild( $dom->createCDATASection(PHP_EOL . $operation['find']['content'] . PHP_EOL . str_repeat(' ', 6)) );
           }
 
           $operation_node->appendChild( $find_node );
@@ -320,10 +320,10 @@
             }
           }
 
-          if (@$operation['insert']['regex'] == 'true') {
+          if ($operation['insert']['regex'] == 'true') {
             $insert_node->appendChild( $dom->createCDATASection(@$operation['insert']['content']) );
           } else {
-            $insert_node->appendChild( $dom->createCDATASection(PHP_EOL . @$operation['insert']['content'] . PHP_EOL . str_repeat(' ', 6)) );
+            $insert_node->appendChild( $dom->createCDATASection(PHP_EOL . $operation['insert']['content'] . PHP_EOL . str_repeat(' ', 6)) );
           }
 
           $operation_node->appendChild( $insert_node );
@@ -342,9 +342,9 @@
             }
 
             if (@$operation['ignoreif']['regex'] == 'true') {
-              $ignoreif_node->appendChild( $dom->createCDATASection(@$operation['ignoreif']['content']) );
+              $ignoreif_node->appendChild( $dom->createCDATASection($operation['ignoreif']['content']) );
             } else {
-              $ignoreif_node->appendChild( $dom->createCDATASection(PHP_EOL . @$operation['ignoreif']['content'] . PHP_EOL . str_repeat(' ', 6)) );
+              $ignoreif_node->appendChild( $dom->createCDATASection(PHP_EOL . $operation['ignoreif']['content'] . PHP_EOL . str_repeat(' ', 6)) );
             }
 
             $operation_node->appendChild( $ignoreif_node );

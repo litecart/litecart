@@ -72,10 +72,6 @@ body main {
   animation: pulsating 2s linear;
   animation-iteration-count: infinite;
 }
-#site-menu .shopping-cart img {
-  max-width: 64px;
-  max-height: 64px;
-}
 @media (min-width: 768px) {
   #site-menu .shopping-cart .dropdown-menu {
     width: 320px;
