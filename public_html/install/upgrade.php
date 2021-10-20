@@ -147,11 +147,14 @@
 
         $platform_database_version = database::fetch($platform_database_version_query, 'value');
 
-        $backup_file = FS_DIR_STORAGE . 'backups/'. strftime('%Y%m%d-%H%M%S') . '-database-'. PLATFORM_NAME .'-'. $platform_database_version .'.sql';
+        $backup_file = FS_DIR_STORAGE . 'backups/'. PLATFORM_NAME .'-'. strftime('%Y%m%d-%H%M%S') .'-database-'. $platform_database_version .'.sql';
 
-        if (!$backup_handle = fopen($backup_file, 'w')) {
+        if (!$backup_handle = fopen($backup_file, 'wb')) {
           throw new Exception("Cannot open backup file for writing ($backup_file)");
-          exit;
+        }
+
+        if (!flock($backup_handle, LOCK_EX)) {
+          throw new Exception("Could not aquire an exlusive lock for writing to file ($backup_file)");
         }
 
         $separator = '-- --------------------------------------------------------';
@@ -160,63 +163,62 @@
         while ($table = database::fetch($tables_query)) {
           $table = array_shift($table);
 
+          if (!preg_match('#^'. preg_quote(DB_TABLE_PREFIX, '#') .'#', $table)) continue;
+
+          if (!empty($use_initial_separator)) {
+            $output .= $separator . PHP_EOL;
+            $use_initial_separator = true;
+          }
+
         // Drop Table
-          $output = (!empty($use_initial_separator) ? $separator . PHP_EOL : "")
-                  . "DROP TABLE IF EXISTS `" . $table . "`;" . PHP_EOL;
-          fwrite($backup_handle, $output);
-          $use_initial_separator = true;
+          $output = "DROP TABLE IF EXISTS `" . $table . "`;" . PHP_EOL;
 
         // Create Table
           $query = database::query("SHOW CREATE TABLE `" . $table . "`;");
-          while ($row = database::fetch($query)) {
+          if ($row = database::fetch($query)) {
             $output = $separator . PHP_EOL
                     . $row['Create Table'] . ';' . PHP_EOL;
-            fwrite($backup_handle, $output);
           }
 
-          if (empty($ignore_tables) || !in_array($table, explode(',', $ignore_tables))) {
+          fwrite($backup_handle, $output);
 
-          // Insert Data
-            $columns = [];
-            $columns_query = database::query("SHOW COLUMNS FROM `" . $table ."`");
-            while ($column = database::fetch($columns_query)) {
-              $columns[] = $column['Field'];
-            }
+          if (!empty($ignore_tables) && in_array($table, $ignore_tables)) continue;
 
-            $rows_query = database::query("SELECT `" . implode('`, `', $columns) . "` FROM `" . $table ."`");
+        // Insert Data
+          $columns = [];
+          $columns_query = database::query("SHOW COLUMNS FROM `" . $table ."`");
+          while ($column = database::fetch($columns_query)) {
+            $columns[] = $column['Field'];
+          }
 
-            if (database::num_rows($rows_query)) {
+          $rows_query = database::query("SELECT `" . implode('`, `', $columns) . "` FROM `" . $table ."`");
 
-              $output = $separator . PHP_EOL
-                      . 'INSERT INTO `' . $table . '` (`' . implode('`, `', $columns) . '`) VALUES ' . PHP_EOL;
+          if (!database::num_rows($rows_query)) continue;
 
-              while ($rows = database::fetch($rows_query)) {
+          $output = $separator . PHP_EOL
+                  . "INSERT INTO `" . $table . "` (`" . implode("`, `", $columns) . "`) VALUES " . PHP_EOL;
 
-                $output .= '(';
+          while ($row = database::fetch($rows_query)) {
 
-                foreach($columns as $column) {
-                  if (!isset($rows[$column])) {
-                    $output .= 'NULL, ';
-                  } elseif ($rows[$column] != '') {
-                    $row = strtr($rows[$column], ["'" => "\\'", '\\'=> '\\\\', "\r" => "\\r", "\n" => "\\n"]);
-                    $row = preg_replace('#'. preg_quote(PHP_EOL, '#') ."\##", PHP_EOL . '#', $row);
-
-                    $output .= "'$row', ";
-                  } else {
-                    $output .= "'', ";
-                  }
-                }
-
-                $output = preg_replace('#, $#', '), ', $output) . PHP_EOL;
+            foreach ($columns as $column) {
+              if (!isset($row[$column])) {
+                $row[$column] = "NULL, ";
+              } elseif ($row[$column] != '') {
+                $row[$column] = "'". addcslashes($row[$column], "\\'\r\n") ."'";
+              } else {
+                $row[$column] = "'', ";
               }
-
-              $output = preg_replace('#\),\s+$#', ');', $output) . PHP_EOL;
-
-              fwrite($backup_handle, $output);
             }
+
+            $output .= "(". implode(", ", $row) . ")," . PHP_EOL;
           }
+
+          $output = rtrim($output, ", ") . ";" . PHP_EOL;
+
+          fwrite($backup_handle, $output);
         }
 
+        flock($backup_handle, LOCK_UN);
         fclose($backup_handle);
 
         echo '<span class="ok">[OK]</span> '. $backup_file .'</p>' . PHP_EOL . PHP_EOL;
