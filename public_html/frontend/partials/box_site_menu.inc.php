@@ -9,6 +9,7 @@
       'categories' => [],
       'brands' => [],
       'pages' => [],
+      'shopping_cart' => [],
     ];
 
   // Categories
@@ -66,5 +67,26 @@
 
     cache::set($box_site_menu_cache_token, $box_site_menu->snippets);
   }
+
+// Shopping Cart
+  $box_site_menu->snippets['shopping_cart'] = [
+    'items' => [],
+    'link' => document::ilink('shopping_cart'),
+    'num_items' => cart::$total['items'],
+    'total' => null,
+  ];
+
+  foreach (cart::$items as $key => $item) {
+    $item['thumbnail'] = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 64, 64, 'FIT_USE_WHITESPACING');
+    $box_site_menu->snippets['shopping_cart']['items'][$key] = $item;
+  }
+
+  if (!empty(customer::$data['display_prices_including_tax'])) {
+    $box_site_menu->snippets['shopping_cart']['total'] = currency::format(cart::$total['value'] + cart::$total['tax']);
+  } else {
+    $box_site_menu->snippets['shopping_cart']['total'] = currency::format(cart::$total['value']);
+  }
+
+  functions::draw_lightbox();
 
   echo $box_site_menu;
