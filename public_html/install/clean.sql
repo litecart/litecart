@@ -12,8 +12,6 @@ DROP TABLE IF EXISTS `lc_brands`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_brands_info`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_cart_items`;
--- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_categories_filters`;
@@ -85,6 +83,10 @@ DROP TABLE IF EXISTS `lc_quantity_units_info`;
 DROP TABLE IF EXISTS `lc_settings`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_settings_groups`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_shopping_carts`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_shopping_carts_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_slides`;
 -- --------------------------------------------------------
