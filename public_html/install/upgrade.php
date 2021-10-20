@@ -1,6 +1,8 @@
 <?php
   // Automatic upgrade: upgrade.php?upgrade=true&redirect={url}
 
+  set_time_limit(900);
+  ini_set('memory_limit', -1);
   ini_set('display_errors', 'On');
   mb_internal_encoding('UTF-8');
   mb_http_output('UTF-8');

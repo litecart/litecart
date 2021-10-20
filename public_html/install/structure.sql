@@ -350,9 +350,9 @@ CREATE TABLE `lc_orders` (
   `shipping_option_userdata` VARCHAR(512) NOT NULL DEFAULT '',
   `shipping_tracking_id` VARCHAR(128) NOT NULL DEFAULT '',
   `shipping_tracking_url` VARCHAR(256) NOT NULL DEFAULT '',
-  `shipping_progress` TINYINT(3) NOT NULL DEFAULT 0 AFTER `shipping_tracking_url`,
-  `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_progress`,
-  `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_current_status`,
+  `shipping_progress` TINYINT(3) NOT NULL DEFAULT 0,
+  `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '',
+  `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '',
   `payment_option_id` VARCHAR(32) NOT NULL DEFAULT '',
   `payment_option_name` VARCHAR(64) NOT NULL DEFAULT '',
   `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '',
@@ -420,6 +420,21 @@ CREATE TABLE `lc_orders_items` (
   KEY `stock_option_id` (`stock_option_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
+CREATE TABLE `lc_orders_totals` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `module_id` VARCHAR(32) NOT NULL DEFAULT '',
+  `title` VARCHAR(128) NOT NULL DEFAULT '',
+  `value` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `discount` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `discount_tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `calculate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `priority` INT(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
 CREATE TABLE `lc_order_statuses` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `state` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '',
@@ -448,19 +463,6 @@ CREATE TABLE `lc_order_statuses_info` (
   UNIQUE KEY `order_status_info` (`order_status_id`, `language_code`),
   KEY `order_status_id` (`order_status_id`),
   KEY `language_code` (`language_code`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
-CREATE TABLE `lc_orders_totals` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `module_id` VARCHAR(32) NOT NULL DEFAULT '',
-  `title` VARCHAR(128) NOT NULL DEFAULT '',
-  `value` DECIMAL(11,4) NOT NULL DEFAULT '0',
-  `tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
-  `calculate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-  `priority` INT(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_pages` (

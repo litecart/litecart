@@ -326,6 +326,7 @@
             quantity = ". (float)$item['quantity'] .",
             price = ". (float)$item['price'] .",
             tax = ". (float)$item['tax'] .",
+            tax_class_id = ". (int)$item['tax_class_id'] .",
             weight = ". (float)$item['weight'] .",
             weight_unit = '". database::input($item['weight_unit']) ."',
             length = ". (float)$item['length'] .",
@@ -363,6 +364,7 @@
           module_id = '". database::input($row['module_id']) ."',
           value = '". (float)$row['value'] ."',
           tax = '". (float)$row['tax'] ."',
+          tax_class_id = ". (int)$item['tax_class_id'] .",
           calculate = '". (empty($row['calculate']) ? 0 : 1) ."',
           priority = ". ++$i ."
           where order_id = ". (int)$this->data['id'] ."
