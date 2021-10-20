@@ -748,7 +748,7 @@ END;
     document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/trumbowyg.min.js') .'"></script>' . PHP_EOL
                                                   . ((language::$selected['code'] != 'en') ? '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/langs/'. language::$selected['code'] .'.min.js') .'"></script>' . PHP_EOL : '')
                                                   . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/colors/trumbowyg.colors.min.js') .'"></script>' . PHP_EOL
-                                                  . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/upload/trumbowyg.upload.min.js') .'"></script>' . PHP_EOL
+                                                  . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/public_html/trumbowyg.upload.min.js') .'"></script>' . PHP_EOL
                                                   . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/table/trumbowyg.table.min.js') .'"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
@@ -762,7 +762,7 @@ END;
                                         . '    },' . PHP_EOL
                                         . '    plugins: {' . PHP_EOL
                                         . '      upload: {' . PHP_EOL
-                                        . '        serverPath: "'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",' . PHP_EOL
+                                        . '        serverPath: "'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/public_html/trumbowyg.upload.php') .'",' . PHP_EOL
                                         . '      }' . PHP_EOL
                                         . '    },' . PHP_EOL
                                         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
