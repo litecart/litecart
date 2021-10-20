@@ -52,6 +52,7 @@
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
+        'incoterm' => settings::get('default_incoterm'),
         'items' => [],
         'order_total' => [],
         'comments' => [],
