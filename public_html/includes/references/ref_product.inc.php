@@ -228,65 +228,6 @@
 
           break;
 
-        case 'stock_options':
-
-          $this->_data['stock_options'] = [];
-
-          $query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_stock_options
-            where product_id = ". (int)$this->_data['id'] ."
-            ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
-            order by priority asc;"
-          );
-
-          while ($row = database::fetch($query)) {
-
-            if (empty($row['tax_class_id'])) {
-              $row['tax_class_id'] = $this->tax_class_id;
-            }
-
-            if (empty($row['sku'])) {
-              $row['sku'] = $this->sku;
-            }
-
-            if (empty($row['weight']) || (float)$row['weight'] == 0) {
-              $row['weight'] = $this->weight;
-              $row['weight_class'] = $this->weight_class;
-            }
-
-            if (empty($row['length'])) {
-              $row['length'] = $this->length;
-              $row['width'] = $this->width;
-              $row['height'] = $this->height;
-              $row['length_unit'] = $this->length_unit;
-            }
-
-            $row['name'] = [];
-
-            foreach (preg_split('#\s*,\s*#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $pair) {
-              list($group_id, $value_id) = explode('-', $pair);
-
-              $attribute_values_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."attribute_values av
-                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id)
-                where av.id = ". (int)$value_id ."
-                and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
-
-              while ($attribute_value_info = database::fetch($attribute_values_query)) {
-                $row[$key]['name'][] = $attribute_value_info['name'];
-              }
-            }
-
-            $row['name'] = implode(',', $row['name']);
-            $row['price_adjust'] = 0;
-
-            $this->_data['stock_options'][$row['id']] = $row;
-          }
-
-          break;
-
         case 'parents':
 
           $this->_data['parents'] = [];
@@ -322,6 +263,22 @@
 
           break;
 
+        case 'quantity':
+
+          $this->_data['quantity'] = null;
+
+          $stock_options_query = database::query(
+            "select sum(si.quantity) as sum_quanity from ". DB_TABLE_PREFIX ."products_stock_options pso
+            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+            where pso.product_id = ". (int)$this->_data['id'] .";"
+          );
+
+          if (!$stock_options = database::fetch($stock_options_query)) return;
+
+          $this->_data['quantity'] = $stock_options['sum_quantity'];
+
+          break;
+
         case 'quantity_unit':
 
           $quantity_unit_query = database::query(
@@ -338,11 +295,36 @@
             and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
             order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
+
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
               if (in_array($key, ['id', 'quantity_unit_id', 'language_code'])) continue;
               if (empty($this->_data['quantity_unit'][$key])) $this->_data['quantity_unit'][$key] = $value;
             }
+          }
+
+          break;
+
+        case 'stock_options':
+
+          $this->_data['stock_options'] = [];
+
+          $query = database::query(
+            "select pso.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, si.image from ". DB_TABLE_PREFIX ."products_stock_options pso
+            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+            where product_id = ". (int)$this->_data['id'] ."
+            ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
+            order by pso.priority asc;"
+          );
+
+          while ($row = database::fetch($query)) {
+            settype($row['quantity'], 'float');
+            settype($row['weight'], 'float');
+            settype($row['length'], 'float');
+            settype($row['width'], 'float');
+            settype($row['height'], 'float');
+            $this->_data['stock_options'][$row['id']] = $row;
           }
 
           break;

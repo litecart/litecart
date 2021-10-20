@@ -119,25 +119,7 @@ table.items tbody tr:nth-child(11) {
           <tr>
             <td><?php echo (float)$item['quantity']; ?></td>
             <td><?php echo $item['gtin']; ?></td>
-            <td style="white-space: normal;"><?php echo $item['name']; ?>
-<?php
-    if (!empty($item['data'])) {
-      foreach ($item['data'] as $key => $value) {
-        if (is_array($value)) {
-          echo '<br />- '.$key .': ';
-          $useComa = false;
-          foreach ($value as $v) {
-            if ($useComa) echo ', ';
-            echo $v;
-            $useComa = true;
-          }
-        } else {
-          echo '<br />- '.$key .': '. $value;
-        }
-      }
-    }
-?>
-            </td>
+            <td style="white-space: normal;"><?php echo $item['name']; ?></td>
             <?php if (!empty($order['display_prices_including_tax'])) { ?>
             <td class="text-end"><?php echo currency::format($item['price'] + $item['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
             <td class="text-end"><?php echo currency::format($item['tax'], false, $order['currency_code'], $order['currency_value']); ?> (<?php echo @round($item['tax']/$item['price']*100); ?> %)</td>

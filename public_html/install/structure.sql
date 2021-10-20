@@ -500,24 +500,11 @@ CREATE TABLE `lc_products` (
   `default_category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `keywords` VARCHAR(256) NOT NULL DEFAULT '',
   `code` VARCHAR(32) NOT NULL DEFAULT '',
-  `sku` VARCHAR(32) NOT NULL DEFAULT '',
-  `mpn` VARCHAR(32) NOT NULL DEFAULT '',
-  `upc` VARCHAR(24) NOT NULL DEFAULT '' COMMENT 'Deprecated, use GTIN',
-  `gtin` VARCHAR(32) NOT NULL DEFAULT '',
-  `taric` VARCHAR(16) NOT NULL DEFAULT '',
   `quantity` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `quantity_min` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `quantity_max` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `quantity_step` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `weight` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-  `length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-  `purchase_price` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
   `recommended_price` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `tax_class_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `image` VARCHAR(256) NOT NULL DEFAULT '',
@@ -600,20 +587,13 @@ CREATE TABLE `lc_products_info` (
 CREATE TABLE `lc_products_stock_options` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `attributes` VARCHAR(64) NOT NULL DEFAULT '',
-  `sku` VARCHAR(64) NOT NULL DEFAULT '',
-  `weight` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-  `length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-  `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-  `quantity` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `price_operator` ENUM('+','%','*','=') NOT NULL DEFAULT '+',
+  `USD` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `EUR` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `priority` INT(11) NOT NULL DEFAULT '0',
-  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `stock_option` (`product_id`, `attributes`),
+  UNIQUE KEY `stock_option` (`product_id`, `stock_item_id`),
   KEY `product_id` (`product_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
@@ -730,6 +710,64 @@ CREATE TABLE `lc_sold_out_statuses_info` (
   UNIQUE KEY `sold_out_status_info` (`sold_out_status_id`, `language_code`),
   KEY `sold_out_status_id` (`sold_out_status_id`),
   KEY `language_code` (`language_code`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_items` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`code` VARCHAR(32) NOT NULL DEFAULT '',
+	`sku` VARCHAR(32) NOT NULL DEFAULT '',
+	`mpn` VARCHAR(32) NOT NULL DEFAULT '',
+	`gtin` VARCHAR(32) NOT NULL DEFAULT '',
+	`taric` VARCHAR(16) NOT NULL DEFAULT '',
+	`image` VARCHAR(512) NOT NULL DEFAULT '',
+	`file` VARCHAR(128) NOT NULL DEFAULT '',
+	`filename` VARCHAR(128) NOT NULL DEFAULT '',
+	`mime_type` VARCHAR(32) NOT NULL DEFAULT '',
+	`downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`quantity` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+	`quantity_unit_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`weight` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+	`purchase_price` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `sku` (`sku`),
+	INDEX `mpn` (`mpn`),
+	INDEX `gtin` (`gtin`),
+	INDEX `code` (`code`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_items_info` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`),
+	INDEX `stock_item_id` (`stock_item_id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_transactions` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(128) NOT NULL DEFAULT '',
+  `notes` MEDIUMTEXT NOT NULL DEFAULT '',
+  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_transactions_contents` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  PRIMARY KEY (`id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_suppliers` (

@@ -62,6 +62,36 @@ CREATE TABLE `lc_shopping_carts` (
   KEY `uid` (`uid`)
 );
 -- --------------------------------------------------------
+CREATE TABLE `lc_products_to_stock_items` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+  `price_adjust` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  `price_operator` VARCHAR(1) NOT NULL DEFAULT '',
+  `priority` TINYINT(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `stock_option` (`product_id`, `stock_item_id`),
+  INDEX `product_id` (`product_id`)
+);
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_transactions` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(128) NOT NULL DEFAULT '',
+  `notes` MEDIUMTEXT NOT NULL DEFAULT '',
+  `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_transactions_contents` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  PRIMARY KEY (`id`)
+);
+-- --------------------------------------------------------
 RENAME TABLE `lc_cart_items` TO `lc_shopping_carts_items`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
@@ -137,18 +167,31 @@ ADD COLUMN `state` ENUM('','created','on_hold','ready','delayed','processing','d
 DROP COLUMN `keywords`,
 DROP COLUMN `priority`;
 -- --------------------------------------------------------
-ALTER TABLE `lc_products_stock_options`
+ALTER TABLE `lc_stock_items`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `combination` `attributes` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL DEFAULT '',
+ADD COLUMN `gtin` VARCHAR(32) NOT NULL DEFAULT '' AFTER `sku`,
+ADD COLUMN `mpn` VARCHAR(32) NOT NULL DEFAULT '' AFTER `gtin`,
+ADD COLUMN `taric` VARCHAR(32) NOT NULL DEFAULT '' AFTER `mpn`,
+ADD COLUMN `image` VARCHAR(128) NOT NULL DEFAULT '' AFTER `taric`,
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-ADD INDEX `sku` (`sku`)
-ADD UNIQUE KEY `stock_option` (`product_id`, `attributes`)
-DROP INDEX `product_option_stock`;
+ADD COLUMN `purchase_price` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `length_unit`,
+ADD COLUMN `purchas_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '' AFTER `purchase_price`,
+ADD COLUMN `quantity_unit_id` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `quantity`,
+ADD COLUMN `reorder_point` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `quantity_unit_id`,
+ADD COLUMN `reordered` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `reorder_point`,
+ADD COLUMN `file` VARCHAR(128) NOT NULL DEFAULT '' AFTER `reordered`,
+ADD COLUMN `filename` VARCHAR(128) NOT NULL DEFAULT '' AFTER `file`,
+ADD COLUMN `mime_type` VARCHAR(32) NOT NULL DEFAULT '' AFTER `filename`,
+ADD COLUMN `downloads` INT NOT NULL DEFAULT '0' AFTER `mime_type`,
+DROP INDEX `product_option_stock`,
+ADD INDEX `sku` (`sku`),
+ADD INDEX `gtin` (`gtin`),
+ADD INDEX `mpn` (`mpn`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
 ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`;
@@ -245,8 +288,9 @@ SET o.subtotal = ot.`value`,
 o.subtotal_tax = ot.`tax`;
 -- --------------------------------------------------------
 DELETE FROM `lc_orders_totals` WHERE module_id = 'ot_subtotal';
+-- --------------------------------------------------------
 UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_products_stock_options` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
+LEFT JOIN `lc_stock_items` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
 SET oi.stock_option_id = pso.id;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');

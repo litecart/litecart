@@ -102,25 +102,7 @@ table.items tbody tr:nth-child(11) {
           <tr>
             <td><?php echo (float)$item['quantity']; ?></td>
             <td><?php echo $item['sku']; ?></td>
-            <td style="white-space: normal;"><?php echo $item['name']; ?>
-<?php
-    if (!empty($item['data'])) {
-      foreach ($item['data'] as $key => $value) {
-        if (is_array($value)) {
-          echo '<br />- '.$key .': ';
-          $useComa = false;
-          foreach ($value as $v) {
-            if ($useComa) echo ', ';
-            echo $v;
-            $useComa = true;
-          }
-        } else {
-          echo '<br />- '.$key .': '. $value;
-        }
-      }
-    }
-?>
-            </td>
+            <td style="white-space: normal;"><?php echo $item['name']; ?></td>
           </tr>
           <?php } ?>
         </tbody>

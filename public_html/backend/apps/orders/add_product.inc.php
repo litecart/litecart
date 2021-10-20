@@ -12,15 +12,6 @@
 
     $fields = [
       'name',
-      'sku',
-      'gtin',
-      'taric',
-      'weight',
-      'weight_unit',
-      'length',
-      'width',
-      'height',
-      'length_unit',
       'price',
       'tax',
     ];
@@ -62,52 +53,6 @@
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_product_id', 'Product ID'); ?></label>
           <?php echo functions::form_draw_number_field('product_id', true, 'readonly'); ?>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label><?php echo language::translate('title_stock_option', 'Stock Option'); ?></label>
-        <?php echo functions::form_draw_product_stock_options_list('stock_option_id', $stock_options, true); ?>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_sku', 'SKU'); ?></label>
-          <?php echo functions::form_draw_text_field('sku', true); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_gtin', 'GTIN'); ?></label>
-          <?php echo functions::form_draw_text_field('gtin', true); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_taric', 'TARIC'); ?></label>
-          <?php echo functions::form_draw_text_field('taric', true); ?>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-4">
-          <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
-          <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('weight', true, 2, 'min="0"'); ?>
-            <span class="input-group-text"><?php echo functions::form_draw_weight_units_list('weight_unit', true, 'style="width: auto;"'); ?></span>
-          </div>
-        </div>
-
-        <div class="form-group col-md-8">
-          <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
-          <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('length', true, 1, 'min="0"'); ?>
-            <span class="input-group-text">x</span>
-            <?php echo functions::form_draw_decimal_field('width', true, 1, 'min="0"'); ?>
-            <span class="input-group-text">x</span>
-            <?php echo functions::form_draw_decimal_field('height', true, 1, 'min="0"'); ?>
-            <span class="input-group-text">
-              <?php echo functions::form_draw_length_units_list('length_unit', true, 'style="width: auto;"'); ?>
-            </span>
-          </div>
         </div>
       </div>
 
@@ -157,7 +102,7 @@
         <?php } ?>
       </div>
 
-      <div class="btn-group">
+      <div class="card-action">
         <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
       </div>
@@ -168,58 +113,6 @@
 </div>
 
 <script>
-  $('form[name=form_add_product]').on('input', function(e) {
-
-    var price = parseFloat($(':input[name="price"]').val() || 0);
-    var tax = parseFloat($(':input[name="tax"]').val() || 0);
-
-    $(this).find('input[name^="options"][type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
-      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
-      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
-    });
-
-    $(this).find('select[name^="options"] option:checked').each(function(){
-      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
-      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
-    });
-
-    $(this).find('input[name^="options"][type!="radio"][type!="checkbox"]').each(function(){
-      if ($(this).val() != '') {
-        if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
-        if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
-      }
-    });
-
-    $(this).find('input[name="price"]').val(price);
-    $(this).find('input[name="tax"]').val(tax);
-  });
-
-  $('form[name=form_add_product] select[name="stock_option_id"]').change(function(){
-    var sku, weight, weight_unit, length, width, height, length_unit;
-
-    if (sku = $(this).find('option:selected').data('sku')) {
-      $('form[name=form_add_product] :input[name="sku"]').val(sku);
-    }
-    if (weight = $(this).find('option:selected').data('weight')) {
-      $('form[name=form_add_product] :input[name="weight"]').val(weight);
-    }
-    if (weight_unit = $(this).find('option:selected').data('weight-unit')) {
-      $('form[name=form_add_product] :input[name="weight_unit"]').val(weight_unit);
-    }
-    if (length = $(this).find('option:selected').data('length')) {
-      $('form[name=form_add_product] :input[name="length"]').val(length);
-    }
-    if (width = $(this).find('option:selected').data('width')) {
-      $('form[name=form_add_product] :input[name="width"]').val(width);
-    }
-    if (height = $(this).find('option:selected').data('height')) {
-      $('form[name=form_add_product] :input[name="height"]').val(height);
-    }
-    if (length_unit = $(this).find('option:selected').data('length-unit')) {
-      $('form[name=form_add_product] :input[name="length_unit"]').val(length_unit);
-    }
-  }).trigger('change');
-
   $('form[name="form_add_product"] button[name="ok"]').unbind('click').click(function(e){
     e.preventDefault();
 
@@ -229,7 +122,7 @@
     var item = {
       id: '',
       product_id: $(form).find(':input[name="product_id"]').val(),
-      stock_option_id: $(form).find(':input[name="stock_option_id"]').val(),
+      stock_item_id: $(form).find(':input[name="stock_item_id"]').val(),
       name: $(form).find(':input[name="name"]').val(),
       sku: $(form).find(':input[name="sku"]').val(),
       gtin: $(form).find(':input[name="gtin"]').val(),

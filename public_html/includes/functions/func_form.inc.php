@@ -1593,13 +1593,40 @@ END;
 
     $options = [];
     foreach ($product->stock_options as $stock_option) {
-      $options[] = [$stock_option['id'], $stock_option['name'], 'data-sku="'. htmlspecialchars($stock_option['sku']) .'" data-weight="'. htmlspecialchars($stock_option['weight']) .'" data-weight-unit="'. htmlspecialchars($stock_option['weight_unit']) .'" data-length="'. htmlspecialchars($stock_option['length']) .'" data-width="'. htmlspecialchars($stock_option['width']) .'" data-height="'. htmlspecialchars($stock_option['height']) .'" data-length-unit="'. htmlspecialchars($stock_option['length_unit']) .'" '];
+
+      $aliases = [
+        '%name' => $stock_option['name'],
+        '%image' => '',
+      ];
+
+      if ($product->quantity_unit) {
+        $qty = language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
+      } else {
+        $qty = language::number_format($product->quantity, 0);
+      }
+
+      if (!empty($stock_option['image'])) {
+        list($width, $height) = functions::image_scale_by_width(48, settings::get('product_image_ratio'));
+        $aliases['%image'] = '<img class="image" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width, $height, 'FIT_USE_WHITESPACING')) .'" />';
+      }
+
+      if ($stock_option['quantity'] > 0) {
+        $aliases['%icon'] = functions::draw_fonticon('on');
+        $aliases['%notice'] = language::translate('title_in_stock', 'In Stock') . (settings::get('display_stock_count') ?  ' (' . $qty . ')' : '');
+      } else if (!empty($product->sold_out_status)) {
+        $aliases['%icon'] = functions::draw_fonticon('semi-off');
+        $aliases['%notice'] = $product->sold_out_status['name'];
+      } else {
+        $aliases['%icon'] = functions::draw_fonticon('off');
+        $aliases['%notice'] = language::translate('title_sold_out', 'Sold Out');
+      }
+
+      $options[] = [$stock_option['stock_item_id'], strtr('%image %name &ndash; %icon %notice', $aliases), 'data-name="'. htmlspecialchars($stock_option['name']) .'" data-sku="'. htmlspecialchars($stock_option['sku']) .'" data-weight="'. htmlspecialchars($stock_option['weight']) .'" data-weight-unit="'. htmlspecialchars($stock_option['weight_unit']) .'" data-length="'. htmlspecialchars($stock_option['length']) .'" data-width="'. htmlspecialchars($stock_option['width']) .'" data-height="'. htmlspecialchars($stock_option['height']) .'" data-length-unit="'. htmlspecialchars($stock_option['length_unit']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
       return form_draw_dropdown_field($name, $options, $input, $parameters);
     } else {
-      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
       return form_draw_dropdown_field($name, $options, $input, $parameters);
     }
   }

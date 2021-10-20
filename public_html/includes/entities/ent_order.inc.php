@@ -269,9 +269,10 @@
     // Restock previous items
       if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
-          if (empty($previous_order_item['product_id'])) continue;
-          $product = new ent_product($previous_order_item['product_id']);
-          $product->adjust_quantity($previous_order_item['quantity'], $previous_order_item['stock_option_id']);
+          if (empty($previous_order_item['stock_item_id'])) continue;
+          $stock_item = new ent_stock_item($previous_order_item['stock_item_id']);
+          $stock_item->data['quantity_adjustment'] = $previous_order_item['quantity'];
+          $stock_item->save();
         }
       }
 
@@ -306,15 +307,16 @@
         }
 
       // Withdraw stock
-        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-          $product = new ent_product($item['product_id']);
-          $product->adjust_quantity(-$item['quantity'], $item['combination']);
+        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['stock_item_id'])) {
+          $stock_item = new ent_stock_item($item['stock_item_id']);
+          $stock_item->data['quantity_adjustment'] = -$item['quantity'];
+          $stock_item->save();
         }
 
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",
-            combination = '". database::input($item['combination']) ."',
+            stock_item_id = '". database::input($item['stock_item_id']) ."',
             name = '". database::input($item['name']) ."',
             data = '". (!empty($item['data']) ? database::input(json_encode($item['data'], JSON_UNESCAPED_SLASHES)) : '') ."',
             sku = '". database::input($item['sku']) ."',
@@ -486,38 +488,13 @@
 
     public function add_item($item) {
 
-      $fields = [
-        'product_id',
-        'options',
-        'stock_item_id',
-        'name',
-        'description',
-        'data',
-        'sku',
-        'gtin',
-        'taric',
-        'price',
-        'tax',
-        'quantity',
-        'weight',
-        'weight_unit',
-        'length',
-        'width',
-        'height',
-        'length_unit',
-        'error',
-      ];
-
       $i = 1;
       while (isset($this->data['items']['new_'.$i])) $i++;
       $item_key = 'new_'.$i;
 
-      $this->data['items']['new_'.$i]['id'] = null;
+      $item['id'] = null;
 
-      foreach ($fields as $field) {
-        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
-      }
-
+      $this->data['items']['new_'.$i] = $item;
       $this->data['subtotal'] += $item['price'] * $item['quantity'];
       $this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
       $this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
