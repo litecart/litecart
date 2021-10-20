@@ -8,36 +8,18 @@
 
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
 
-  if (!empty(session::$data['order']->data['id'])) {
-    session::$data['order'] = $previous_order = new ent_order(session::$data['order']->data['id']);
-    $resume_id = session::$data['order']->data['id'];
-  }
-
-  session::$data['order'] = new ent_order();
-
-// Resume incomplete order in session
-  if (!empty($resume_id)) {
-    $order_query = database::query(
-      "select * from ". DB_TABLE_PREFIX ."orders
-      where id = ". (int)$resume_id ."
-      and order_status_id = 0
-      and date_created > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
-      limit 1;"
-    );
-
-    if (database::num_rows($order_query)) {
-      session::$data['order'] = new ent_order($resume_id);
-      session::$data['order']->reset();
-      session::$data['order']->data['id'] = $resume_id;
-    }
-  }
-
-  $order = &session::$data['order'];
-
 // If Confirm Order button was pressed
   if (isset($_POST['confirm_order'])) {
 
     try {
+
+      if (empty(session::$data['order'])) {
+        notices::add('errors', 'Missing order object');
+        header('Location: '. document::ilink('checkout'));
+        exit;
+      }
+
+      $order = &session::$data['order'];
 
       ob_start();
       include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/customer.inc.php');
@@ -136,20 +118,48 @@
     }
   }
 
+// Load an existing order
+  if (!empty($_GET['order_id']) && !empty($_GET['public_key'])) {
+
+    $order = new ent_order($_GET['order_id']);
+
+    if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
+      http_response_code(404);
+      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      return;
+    }
+
+// Resume an incomplete order in session
+  } else if (!empty(session::$data['order'])) {
+
+    $previous_order = session::$data['order'];
+    session::$data['order'] = new ent_order();
+
+    if (empty(session::$data['order']->data['order_status_id']) || !reference::order_status(session::$data['order']->data['order_status_id'])->is_sale) {
+      if (strtotime($previous_order->data['date_created']) > strtotime('-15 minutes')) {
+        session::$data['order']->data['id'] = $previous_order->data['id'];
+      }
+    }
+
+    session::$data['order']->data['customer'] = $previous_order->data['customer'];
+    session::$data['order']->shipping->selected = $previous_order->shipping->selected;
+    session::$data['order']->payment->selected = $previous_order->payment->selected;
+
+// Start off with a fresh new order
+  } else {
+    session::$data['order'] = new ent_order();
+    session::$data['order']->data['customer'] = customer::$data;
+  }
+
+  $order = &session::$data['order'];
+
 // Build Order
   $order->data['processable'] = false; // Whether or not it is allowed to be processed in order_process
   $order->data['weight_unit'] = settings::get('site_weight_unit');
   $order->data['currency_code'] = currency::$selected['code'];
   $order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
   $order->data['language_code'] = language::$selected['code'];
-  $order->data['customer'] = customer::$data;
   $order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
-
-  if (!empty($previous_order)) {
-    $order->data['customer'] = $previous_order->data['customer'];
-    $order->shipping = $previous_order->shipping;
-    $order->payment = $previous_order->payment;
-  }
 
   foreach (cart::$items as $item) {
     $order->add_item($item);

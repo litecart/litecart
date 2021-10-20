@@ -1,5 +1,5 @@
 <main id="box-checkout" class="container">
-  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
+  <?php echo functions::form_draw_form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
     <div class="row layout" style="grid-gap: calc(var(--gutter-size)*8); margin: 0;">
 
       <div class="col-md-6">
