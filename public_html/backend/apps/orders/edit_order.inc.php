@@ -1015,6 +1015,51 @@
     calculate_total();
   });
 
+// Tax
+
+  var tax_rates = [];
+
+  window.calculate_tax = function (amount, tax_class_id) {
+    var tax = 0;
+    console.log(tax_class_id);
+    $.each(tax_rates, function(nth_tax_class_id, nth_tax_rate) {
+      if (nth_tax_class_id == tax_class_id) {
+        console.log(amount, nth_tax_rate.rate, nth_tax_rate.fixed);
+        tax =  amount * nth_tax_rate.rate / 100 + nth_tax_rate.fixed;
+      }
+    });
+    return tax;
+  }
+
+  $('#order-items').on('keyup change', ':input[name$="[price]"]', function(){
+    var row = $(this).closest('tr');
+    var tax = calculate_tax(parseFloat($(this).val() || 0), $(row).find(':input[name$="[tax_class_id]"]').val());
+    $(row).find(':input[name$="[tax]"]').val(tax);
+  });
+
+  $('#order-total').on('keyup change', ':input[name$="[value]"]', function(){
+    var tax = calculate_tax(parseFloat($(this).val() || 0));
+    $(this).closest('tr').find(':input[name$="[tax]"]').val(tax)
+  });
+
+  $('#customer-details :input').change(function() {
+    $.ajax({
+      url: '<?php echo document::ilink('tax/tax_rates.json'); ?>?' + $('#customer-details :input').serialize(),
+      type: 'get',
+      cache: true,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn(errorThrown.message);
+      },
+      success: function(data) {
+        tax_rates = data;
+        $('#order-items :input[name$="[price]"]').trigger('change');
+        $('#order-total :input[name$="[value]"]').trigger('change');
+      },
+    });
+  }).first().trigger('change');
+
 // Customer
 
   $('#customer-details button[name="get_address"]').click(function() {
