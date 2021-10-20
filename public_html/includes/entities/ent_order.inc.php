@@ -598,30 +598,28 @@
       }
 
     // Validate shipping option
-      if (!empty($this->shipping->modules) && count($this->shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+      $shipping_options = $this->shipping->options($this->data['items'], $this->data['currency_code'], $this->data['customer']);
+      if (!empty($this->shipping->modules) && count($shipping_options)) {
         if (empty($this->shipping->selected)) {
           return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
         } else {
-          list($module_id, $option_id) = explode(':', $this->shipping->selected['id']);
-          if (empty($this->shipping->data['options'][$module_id]['options'][$option_id])) {
+          if (($key = array_search($this->shipping->selected['id'], array_combine(array_keys($shipping_options), array_column($shipping_options, 'id')))) === false) {
             return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
-          }
-          if (!empty($this->shipping->data['options'][$module_id]['options'][$option_id]['error'])) {
+          } else if (!empty($shipping_options[$key]['error'])) {
             return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
           }
         }
       }
 
     // Validate payment option
-      if (!empty($this->payment->modules) && count($this->payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']))) {
+      $payment_options = $this->payment->options($this->data['items'], $this->data['currency_code'], $this->data['customer']);
+      if (!empty($this->payment->modules) && count($payment_options)) {
         if (empty($this->payment->selected)) {
           return language::translate('error_no_payment_method_selected', 'No payment method selected');
         } else {
-          list($module_id, $option_id) = explode(':', $this->payment->selected['id']);
-          if (empty($this->payment->data['options'][$module_id]['options'][$option_id])) {
+          if (($key = array_search($this->payment->selected['id'], array_combine(array_keys($payment_options), array_column($payment_options, 'id')))) === false) {
             return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
-          }
-          if (!empty($this->payment->data['options'][$module_id]['options'][$option_id]['error'])) {
+          } else if (!empty($payment_options[$key]['error'])) {
             return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
           }
         }

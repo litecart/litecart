@@ -10,10 +10,13 @@
     return;
   }
 
-  if (file_get_contents('php://input') != '' && !empty($_POST['shipping_option_id'])) {
-    list($module_id, $option_id) = explode(':', $_POST['shipping_option_id']);
+  if (!empty($_POST['select_shipping'])) {
+    $order->shipping->select($_POST['shipping_option']['id'], $_POST);
 
-    $order->shipping->select($module_id, $option_id, $_POST);
+    if (!empty($order->shipping->selected['incoterm'])) {
+      $order->data['incoterm'] = $order->shipping->selected['incoterm'];
+    }
+
     if (route::$route['page'] != 'order_process') {
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
@@ -21,17 +24,16 @@
   }
 
   if (!empty($order->shipping->selected['id'])) {
-    $key = $order->payment->selected['module_id'] .':'. $order->payment->selected['option_id'];
-    if (!isset($options[$key]) || !empty($options[$key]['error'])) {
+    if (array_search($order->shipping->selected['id'], array_column($options, 'id')) === false) {
       $order->shipping->selected = []; // Clear because option is no longer present
     } else {
-      $order->shipping->select($order->payment->selected['module_id'], $order->payment->selected['option_id'], $order->payment->selected['userdata']); // Reinstate a present option
+      $order->shipping->select($order->shipping->selected['id'], $order->shipping->selected['userdata']); // Reinstate a present option
     }
   }
 
-  if (empty($order->shipping->selected)) {
+  if (empty($order->shipping->selected['id'])) {
     if ($cheapest = $order->shipping->cheapest($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
-      $order->shipping->select($cheapest['module_id'], $cheapest['option_id'], $_POST);
+      $order->shipping->select($cheapest['id'], $_POST);
     }
   }
 

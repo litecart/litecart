@@ -20,23 +20,21 @@
       }
     }
 
-    public function select($module_id, $option_id, $userdata=[]) {
+    public function select($id, $userdata=[]) {
 
       if (empty($this->_cache['options'])) return;
 
-      if (empty($option_id) && strpos($module_id, ':') !== false) {
-        list($module_id, $option_id) = explode(':', $module_id);
-      }
-
       $this->selected = [];
 
-      $last_checksum = @end(array_keys($this->_cache['options']));
-      $options = $this->_cache['options'][$last_checksum];
-      $key = $module_id.':'.$option_id;
+      $options = array_slice($this->_cache['options'], -1)[0];
 
-      if (!isset($options[$key])) return;
-      if (!empty($options[$key]['error'])) return;
+      if (($key = array_search($id, array_combine(array_keys($options), array_column($options, 'id')))) === false) {
+        return;
+      }  if (!empty($this->data['options'][$key]['error'])) {
+        return;
+      }
 
+      list($module_id, $option_id) = explode(':', $id);
       if (method_exists($this->modules[$module_id], 'select')) {
         if ($error = $this->modules[$module_id]->select($option_id)) {
           notices::add('errors', $error);
@@ -44,6 +42,7 @@
       }
 
       $this->selected = [
+        'id' => $module_id.':'.$option_id,
         'module_id' => $module_id,
         'option_id' => $option_id,
         'icon' => $options[$key]['icon'],
@@ -85,7 +84,8 @@
 
           if (empty($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility LiteCart <3.0.0
 
-          $this->_cache['options'][$checksum][$module->id.':'.$option['id']] = [
+          $this->_cache['options'][$checksum][] = [
+            'id' => $module->id.':'.$option['id'],
             'module_id' => $module->id,
             'option_id' => $option['id'],
             'icon' => $option['icon'],
@@ -120,32 +120,9 @@
         if (!empty($option['error'])) continue;
         if (!empty($option['exclude_cheapest'])) continue;
         if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
-          $cheapest = [
-            'module_id' => $option['module_id'],
-            'option_id' => $option['option_id'],
-            'cost' => $option['cost'],
-            'tax_class_id' => $option['tax_class_id'],
-          ];
+          return $option;
         }
       }
-
-      if (empty($cheapest)) {
-        foreach ($options as $module) {
-          foreach ($module['options'] as $option) {
-            if (!empty($option['error'])) continue;
-            if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
-              $cheapest = [
-                'module_id' => $module['id'],
-                'option_id' => $option['id'],
-                'cost' => $option['cost'],
-                'tax_class_id' => $option['tax_class_id'],
-              ];
-            }
-          }
-        }
-      }
-
-      return $cheapest;
     }
 
     public function pre_check($order) {

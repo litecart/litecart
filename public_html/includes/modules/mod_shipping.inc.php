@@ -20,30 +20,36 @@
       }
     }
 
-    public function select($module_id, $option_id, $userdata=[]) {
+    public function select($id, $userdata=[]) {
 
       if (empty($this->_cache['options'])) return;
 
-      if (empty($option_id) && strpos($module_id, ':') !== false) {
-        list($module_id, $option_id) = explode(':', $module_id);
+      $this->selected = null;
+
+      $options = array_slice($this->_cache['options'], -1)[0];
+
+      if (($key = array_search($id, array_combine(array_keys($options), array_column($options, 'id')))) === false) {
+        return;
+      }  if (!empty($this->data['options'][$key]['error'])) {
+        return;
       }
 
-      $this->selected = [];
-
-      $last_checksum = @end(array_keys($this->_cache['options']));
-      $options = $this->_cache['options'][$last_checksum];
-      $key = $module_id.':'.$option_id;
-
-      if (!isset($options[$key])) return;
-      if (!empty($options[$key]['error'])) return;
+      list($module_id, $option_id) = explode(':', $id);
+      if (method_exists($this->modules[$module_id], 'select')) {
+        if ($error = $this->modules[$module_id]->select($option_id)) {
+          notices::add('errors', $error);
+        }
+      }
 
       $this->selected = [
+        'id' => $module_id.':'.$option_id,
         'module_id' => $module_id,
         'option_id' => $option_id,
         'icon' => $options[$key]['icon'],
         'title' => $options[$key]['title'],
         'cost' => $options[$key]['cost'],
         'tax_class_id' => $options[$key]['tax_class_id'],
+        'incoterm' => $options[$key]['incoterm'],
         'userdata' => $userdata,
       ];
     }
@@ -78,7 +84,8 @@
 
           if (empty($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility LiteCart <3.0.0
 
-          $this->_cache['options'][$checksum][$module->id.':'.$option['id']] = [
+          $this->_cache['options'][$checksum][] = [
+            'id' => $module->id.':'.$option['id'],
             'module_id' => $module->id,
             'option_id' => $option['id'],
             'icon' => $option['icon'],
@@ -87,6 +94,7 @@
             'fields' => !empty($option['fields']) ? $option['fields'] : '',
             'cost' => (float)$option['cost'],
             'tax_class_id' => (int)$option['tax_class_id'],
+            'incoterm' => !empty($option['incoterm']) ? $option['incoterm'] : settings::get('default_incoterm'),
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
             'error' => !empty($option['error']) ? $option['error'] : false,
           ];
@@ -112,34 +120,9 @@
         if (!empty($option['error'])) continue;
         if (!empty($option['exclude_cheapest'])) continue;
         if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
-          $cheapest = [
-            'module_id' => $option['module_id'],
-            'option_id' => $option['option_id'],
-            'cost' => $option['cost'],
-            'tax_class_id' => $option['tax_class_id'],
-          ];
+          return $option;
         }
       }
-
-      if (empty($cheapest)) {
-        foreach ($options as $module) {
-          foreach ($module['options'] as $option) {
-            if (!empty($option['error'])) continue;
-            if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
-              $cheapest = [
-                'module_id' => $module['id'],
-                'option_id' => $option['id'],
-                'cost' => $option['cost'],
-                'tax_class_id' => $option['tax_class_id'],
-              ];
-            }
-          }
-        }
-      }
-
-      if (empty($cheapest)) return false;
-
-      return $cheapest;
     }
 
     public function after_process($order) {
