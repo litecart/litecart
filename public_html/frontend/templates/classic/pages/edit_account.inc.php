@@ -51,14 +51,14 @@
         <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
         <div class="row">
           <?php if (settings::get('customer_field_company')) { ?>
-          <div class="form-group col-xs-6">
+          <div class="form-group col-6">
             <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
             <?php echo functions::form_draw_text_field('company', true); ?>
           </div>
           <?php } ?>
 
           <?php if (settings::get('customer_field_tax_id')) { ?>
-          <div class="form-group col-xs-6">
+          <div class="form-group col-6">
             <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
             <?php echo functions::form_draw_text_field('tax_id', true); ?>
           </div>

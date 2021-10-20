@@ -916,40 +916,40 @@ tr.semi-transparent td {
     margin-bottom: 1rem;
   }
 }
-.col-xs-1 {
+.col-1 {
   grid-column: span 1 !important;
 }
-.col-xs-2 {
+.col-2 {
   grid-column: span 2 !important;
 }
-.col-xs-3 {
+.col-3 {
   grid-column: span 3 !important;
 }
-.col-xs-4 {
+.col-4 {
   grid-column: span 4 !important;
 }
-.col-xs-5 {
+.col-5 {
   grid-column: span 5 !important;
 }
-.col-xs-6 {
+.col-6 {
   grid-column: span 6 !important;
 }
-.col-xs-7 {
+.col-7 {
   grid-column: span 7 !important;
 }
-.col-xs-8 {
+.col-8 {
   grid-column: span 8 !important;
 }
-.col-xs-9 {
+.col-9 {
   grid-column: span 9 !important;
 }
-.col-xs-10 {
+.col-10 {
   grid-column: span 10 !important;
 }
-.col-xs-11 {
+.col-11 {
   grid-column: span 11 !important;
 }
-.col-xs-12 {
+.col-12 {
   grid-column: span 12 !important;
 }
 @media (min-width: 576px) {

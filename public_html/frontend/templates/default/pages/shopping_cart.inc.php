@@ -42,16 +42,16 @@
               <?php foreach ($items as $key => $item) { ?>
               <li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo htmlspecialchars($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
                 <div class="row">
-                  <div class="col-xs-8">
+                  <div class="col-8">
 
                     <div class="row">
-                      <div class="col-xs-4 col-md-2">
+                      <div class="col-4 col-md-2">
                         <a href="<?php echo htmlspecialchars($item['link']); ?>" class="thumbnail float-start" style="max-width: 64px; margin-inline-end: 1em;">
                           <img src="<?php echo document::href_link(WS_DIR_APP . $item['image']['thumbnail']); ?>" alt="" />
                         </a>
                       </div>
 
-                      <div class="col-xs-8 col-md-10">
+                      <div class="col-8 col-md-10">
                         <div class="row">
                           <div class="col-md-6">
                             <div><strong><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
@@ -77,12 +77,12 @@
 
                   </div>
 
-                  <div class="col-xs-2 text-end">
+                  <div class="col-2 text-end">
                     <?php echo currency::format($item['display_price'] * $item['quantity']); ?>
                   </div>
 
-                  <div class="col-xs-2 text-end">
-                    <td><?php echo functions::form_draw_button('remove_cart_item', array($key, functions::draw_fonticon('fa-trash')), 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+                  <div class="col-2 text-end">
+                    <td><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
                   </div>
                 </div>
               </li>

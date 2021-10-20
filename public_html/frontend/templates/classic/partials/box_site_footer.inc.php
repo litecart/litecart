@@ -23,7 +23,7 @@
           </section>
           <?php } ?>
 
-          <section class="information col-xs-6 col-sm-3">
+          <section class="information col-6 col-sm-3">
             <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
             <ul class="list-unstyled">
               <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>

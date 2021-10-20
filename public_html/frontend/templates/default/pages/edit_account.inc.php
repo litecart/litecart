@@ -53,14 +53,14 @@
             <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
             <div class="row">
               <?php if (settings::get('customer_field_company')) { ?>
-              <div class="form-group col-xs-6">
+              <div class="form-group col-6">
                 <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
                 <?php echo functions::form_draw_text_field('company', true); ?>
               </div>
               <?php } ?>
 
               <?php if (settings::get('customer_field_tax_id')) { ?>
-              <div class="form-group col-xs-6">
+              <div class="form-group col-6">
                 <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
                 <?php echo functions::form_draw_text_field('tax_id', true); ?>
               </div>
@@ -136,7 +136,7 @@
 
                 <?php if (settings::get('customer_field_company')) { ?>
                 <div class="row">
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                   <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
                     <?php echo functions::form_draw_text_field('shipping_address[company]', true); ?>
                   </div>
@@ -144,49 +144,49 @@
                 <?php } ?>
 
                 <div class="row">
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
                     <?php echo functions::form_draw_text_field('shipping_address[firstname]', true); ?>
                   </div>
 
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
                     <?php echo functions::form_draw_text_field('shipping_address[lastname]', true); ?>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
                     <?php echo functions::form_draw_text_field('shipping_address[address1]', true); ?>
                   </div>
 
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
                     <?php echo functions::form_draw_text_field('shipping_address[address2]', true); ?>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
                     <?php echo functions::form_draw_text_field('shipping_address[postcode]', true); ?>
                   </div>
 
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_city', 'City'); ?></label>
                     <?php echo functions::form_draw_text_field('shipping_address[city]', true); ?>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="form-group col-xs-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
+                  <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
                     <label><?php echo language::translate('title_country', 'Country'); ?></label>
                     <?php echo functions::form_draw_countries_list('shipping_address[country_code]', true); ?>
                   </div>
 
                   <?php if (settings::get('customer_field_zone')) { ?>
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
                     <?php echo functions::form_draw_zones_list('shipping_address[zone_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], true); ?>
                   </div>
@@ -194,7 +194,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="form-group col-xs-6">
+                  <div class="form-group col-6">
                     <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
                     <?php echo functions::form_draw_phone_field('shipping_address[phone]', true); ?>
                   </div>

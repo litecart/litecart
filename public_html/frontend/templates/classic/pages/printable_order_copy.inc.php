@@ -47,11 +47,11 @@ table.items tbody tr:nth-child(11) {
 <section class="page" data-size="A4" dir="<?php echo $text_direction; ?>">
   <header class="header">
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-6">
         <img class="logotype" src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" />
       </div>
 
-      <div class="col-xs-6 text-end">
+      <div class="col-6 text-end">
         <h1><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
         <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
         <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>
@@ -62,12 +62,12 @@ table.items tbody tr:nth-child(11) {
   <div class="content">
     <div class="addresses">
       <div class="row">
-        <div class="col-xs-3 shipping-address">
+        <div class="col-3 shipping-address">
           <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
           <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
         </div>
 
-        <div class="col-xs-3">
+        <div class="col-3">
           <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
           <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
 
@@ -75,7 +75,7 @@ table.items tbody tr:nth-child(11) {
           <div class="value"><?php echo $order['customer']['tax_id']; ?></div>
         </div>
 
-        <div class="col-xs-6 billing-address">
+        <div class="col-6 billing-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
             <div class="value"><?php echo nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer'])); ?></div>
@@ -85,7 +85,7 @@ table.items tbody tr:nth-child(11) {
     </div>
 
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-6">
         <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
         <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
 
@@ -93,7 +93,7 @@ table.items tbody tr:nth-child(11) {
         <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
       </div>
 
-      <div class="col-xs-6">
+      <div class="col-6">
         <div class="label"><?php echo language::translate('title_payment_option', 'Payment Option'); ?></div>
         <div class="value"><?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></div>
 
@@ -188,12 +188,12 @@ table.items tbody tr:nth-child(11) {
     <hr />
 
     <div class="row">
-      <div class="col-xs-3">
+      <div class="col-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
         <div class="value"><?php echo nl2br(settings::get('site_postal_address')); ?></div>
       </div>
 
-      <div class="col-xs-3">
+      <div class="col-3">
         <?php if (settings::get('site_phone')) { ?>
         <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
         <div class="value"><?php echo settings::get('site_phone'); ?></div>
@@ -205,7 +205,7 @@ table.items tbody tr:nth-child(11) {
         <?php } ?>
       </div>
 
-      <div class="col-xs-3">
+      <div class="col-3">
         <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
         <div class="value"><?php echo settings::get('site_email'); ?></div>
 
@@ -213,7 +213,7 @@ table.items tbody tr:nth-child(11) {
         <div class="value"><?php echo document::ilink(''); ?></div>
       </div>
 
-      <div class="col-xs-3">
+      <div class="col-3">
       </div>
     </div>
   </footer>
