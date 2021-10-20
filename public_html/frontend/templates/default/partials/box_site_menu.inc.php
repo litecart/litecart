@@ -149,11 +149,20 @@
           <ul class="dropdown-menu">
             <?php if (!empty($shopping_cart['items'])) { ?>
             <?php foreach ($shopping_cart['items'] as $item) { ?>
-            <li>
+            <li class="item">
               <a href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
-                <img class="pull-left" src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
-                <div><?php echo $item['name']; ?></div>
-                <div><?php echo currency::format($item['price']); ?></div>
+                <div class="row">
+                  <div class="col-3">
+                    <img class="image img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
+                  </div>
+                  <div class="col-8">
+                    <div class="name"><?php echo $item['name']; ?></div>
+                    <div class="price"><?php echo currency::format($item['price']); ?></div>
+                  </div>
+                  <div class="col-1 text-right">
+                    <?php echo functions::form_draw_button('remove', [1, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
+                  </div>
+                </div>
               </a>
             </li>
             <?php } ?>

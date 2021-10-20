@@ -60,15 +60,15 @@
 
                           <div class="col-md-6 text-center">
                             <div style="display: inline-flex;">
-                              <?php if (!empty($item['quantity_unit']['name'])) { ?>
+                              <?php if (!empty($item['quantity_unit']->name)) { ?>
                               <div class="input-group" style="max-width: 150px;">
-                                <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"'); ?>
-                                <?php echo $item['quantity_unit']['name']; ?>
+                                <?php echo !empty($item['quantity_unit']->decimals) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"'); ?>
+                                <?php echo $item['quantity_unit_name']; ?>
                               </div>
                               <?php } else { ?>
-                                <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+                                <?php echo !empty($item['quantity_unit']->decimals) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                               <?php } ?>
-                              <?php echo functions::form_draw_button('update_cart_item', array($key, functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+                              <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
                             </div>
                           </div>
                         </div>

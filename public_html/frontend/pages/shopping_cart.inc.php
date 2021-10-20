@@ -54,7 +54,10 @@
       'tax' => $item['tax'],
       'tax_class_id' => $item['tax_class_id'],
       'quantity' => (float)$item['quantity'],
-      'quantity_unit' => $item['quantity_unit'],
+      'quantity_unit_name' => $item['quantity_unit_name'],
+      'quantity_min' => $item['quantity_min'],
+      'quantity_max' => $item['quantity_max'],
+      'quantity_step' => $item['quantity_step'],
       'error' => !empty($item['error']) ? $item['error'] : null,
     ];
   }
