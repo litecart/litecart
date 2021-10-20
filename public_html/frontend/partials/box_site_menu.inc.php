@@ -1,6 +1,6 @@
 <?php
 
-  $box_site_menu = new ent_view('partials/box_site_menu.inc.php');
+  $box_site_menu = new ent_view(FS_DIR_TEMPLATE . 'partials/box_site_menu.inc.php');
 
   $box_site_menu_cache_token = cache::token('box_site_menu', ['language']);
   if (!$box_site_menu->snippets = cache::get($box_site_menu_cache_token)) {

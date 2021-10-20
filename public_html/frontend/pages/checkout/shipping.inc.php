@@ -37,7 +37,7 @@
     }
   }
 
-  $box_checkout_shipping = new ent_view('partials/box_checkout_shipping.inc.php');
+  $box_checkout_shipping = new ent_view(FS_DIR_TEMPLATE . 'partials/box_checkout_shipping.inc.php');
 
   $box_checkout_shipping->snippets = [
     'selected' => $order->shipping->selected,

@@ -8,13 +8,13 @@
 
     if (empty($page->id)) {
       http_response_code(410);
-      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
       return;
     }
 
     if (empty($page->status)) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
       return;
     }
 
@@ -22,7 +22,7 @@
     if (!in_array('information', $page->dock) && !in_array('information', $mother_page->dock)
      && !in_array('site_menu', $page->dock) && !in_array('site_menu', $mother_page->dock)) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
       return;
     }
 
@@ -35,7 +35,7 @@
     }
     breadcrumbs::add($page->title);
 
-    $_page = new ent_view('pages/information.inc.php');
+    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/information.inc.php');
 
     $_page->snippets = [
       'title' => $page->title,

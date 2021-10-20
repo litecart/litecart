@@ -31,7 +31,7 @@
   breadcrumbs::add(language::translate('title_brands', 'Brands'), document::ilink('brands'));
   breadcrumbs::add($brand->name);
 
-  $_page = new ent_view('pages/brand.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/brand.inc.php');
 
   $brand_cache_token = cache::token('box_brand', ['get', 'language', 'currency', 'prices'], 'file');
   if (!$_page->snippets = cache::get($brand_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {

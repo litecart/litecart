@@ -27,7 +27,7 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
-  $_page = new ent_view('pages/printable_order_copy.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/printable_order_copy.inc.php');
   $_page->snippets['order'] = $order->data;
   $_page->snippets['text_direction'] = !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr';
   echo $_page;

@@ -2,7 +2,7 @@
   $box_site_footer_cache_token = cache::token('box_site_footer', ['language', 'login', 'region']);
   if (cache::capture($box_site_footer_cache_token)) {
 
-    $box_site_footer = new ent_view('partials/box_site_footer.inc.php');
+    $box_site_footer = new ent_view(FS_DIR_TEMPLATE . 'partials/box_site_footer.inc.php');
 
     $box_site_footer->snippets = [
       'pages' => [],

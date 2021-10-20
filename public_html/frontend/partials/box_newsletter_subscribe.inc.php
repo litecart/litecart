@@ -53,5 +53,5 @@
     }
   }
 
-  $box_newsletter_subscribe = new ent_view('partials/box_newsletter_subscribe.inc.php');
+  $box_newsletter_subscribe = new ent_view(FS_DIR_TEMPLATE . 'partials/box_newsletter_subscribe.inc.php');
   echo $box_newsletter_subscribe;

@@ -13,7 +13,7 @@
 
     if (database::num_rows($brands_query)) {
 
-      $box_brand_logotypes = new ent_view('partials/box_brand_logotypes.inc.php');
+      $box_brand_logotypes = new ent_view(FS_DIR_TEMPLATE . 'partials/box_brand_logotypes.inc.php');
 
       $box_brand_logotypes->snippets['logotypes'] = [];
 

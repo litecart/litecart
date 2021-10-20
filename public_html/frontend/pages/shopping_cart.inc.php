@@ -17,7 +17,7 @@
     return;
   }
 
-  $_page = new ent_view('pages/shopping_cart.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/shopping_cart.inc.php');
 
   $_page->snippets = [
     'items' => [],

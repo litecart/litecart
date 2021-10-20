@@ -1,6 +1,6 @@
 <?php
 
-  $box_apps_menu = new ent_view('partials/box_apps_menu.inc.php');
+  $box_apps_menu = new ent_view(FS_DIR_TEMPLATE . 'partials/box_apps_menu.inc.php');
   $box_apps_menu->snippets['apps'] = [];
 
   $apps = functions::admin_get_apps();

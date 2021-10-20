@@ -22,7 +22,7 @@
 
       $listing_products = array_slice($listing_products, 0, settings::get('box_popular_products_num_items'));
 
-      $box_popular_products = new ent_view('partials/box_popular_products.inc.php');
+      $box_popular_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_popular_products.inc.php');
 
       $box_popular_products->snippets['products'] = [];
       foreach ($listing_products as $listing_product) {

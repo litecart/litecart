@@ -7,7 +7,7 @@
   event::fire('after_capture');
 
 // Stitch with layout snippets
-  $_page = new ent_view('layouts/'.document::$layout);
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'layouts/'.document::$layout);
   $_page->snippets = document::$snippets;
   $_page->cleanup = true;
   $GLOBALS['output'] = (string)$_page;

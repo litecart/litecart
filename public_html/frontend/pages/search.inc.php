@@ -18,7 +18,7 @@
 
   functions::draw_lightbox();
 
-  $_page = new ent_view('pages/search_results.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/search_results.inc.php');
   $_page->snippets = [
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
     'products' => [],

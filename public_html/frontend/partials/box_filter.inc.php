@@ -1,5 +1,5 @@
 <?php
-  $box_filter = new ent_view('partials/box_filter.inc.php');
+  $box_filter = new ent_view(FS_DIR_TEMPLATE . 'partials/box_filter.inc.php');
 
   $box_filter->snippets = [
     'brands' => [],

@@ -145,5 +145,5 @@
     }
   }
 
-  $_page = new ent_view('pages/edit_account.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/edit_account.inc.php');
   echo $_page;

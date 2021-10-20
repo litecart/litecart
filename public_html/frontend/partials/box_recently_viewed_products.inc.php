@@ -22,7 +22,7 @@
   });
 
 // Create list
-  $box_recently_viewed_products = new ent_view('partials/box_recently_viewed_products.inc.php');
+  $box_recently_viewed_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_recently_viewed_products.inc.php');
   $box_recently_viewed_products->snippets['products'] = [];
 
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));

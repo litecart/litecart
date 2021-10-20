@@ -7,6 +7,6 @@
                                                 . '<meta property="og:type" content="website" />' . PHP_EOL
                                                 . '<meta property="og:image" content="'. document::href_link(WS_DIR_STORAGE . 'images/logotype.png') .'" />';
 
-  $_page = new ent_view('pages/index.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/index.inc.php');
 
   echo $_page;

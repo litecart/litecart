@@ -11,7 +11,7 @@
       $parent_id = 0;
     }
 
-    $box_category_tree = new ent_view('partials/box_category_tree.inc.php');
+    $box_category_tree = new ent_view(FS_DIR_TEMPLATE . 'partials/box_category_tree.inc.php');
     $box_category_tree->snippets = [
       'title' => $parent_id ? reference::category($parent_id)->name : language::translate('title_categories', 'Categories'),
       'categories' => [],

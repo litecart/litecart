@@ -6,7 +6,7 @@
   $box_campaign_products_cache_token = cache::token('box_campaign_products', ['language', 'currency']);
   if (cache::capture($box_campaign_products_cache_token)) {
 
-    $box_campaign_products = new ent_view('partials/box_campaign_products.inc.php');
+    $box_campaign_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_campaign_products.inc.php');
 
     $products_query = functions::catalog_products_query([
       'campaign' => true,

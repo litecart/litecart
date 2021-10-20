@@ -20,14 +20,14 @@
 
   } catch (Exception $e) {
     http_response_code(404);
-    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
     return;
   }
 
   $payment = new mod_payment();
   $order_module = new mod_order();
 
-  $_page = new ent_view('pages/order_success.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/order_success.inc.php');
   $_page->snippets = [
     'order' => $order->data,
     'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key'], 'media' => 'print']),

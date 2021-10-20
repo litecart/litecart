@@ -129,7 +129,7 @@
 
   function draw_listing_category($category) {
 
-    $listing_category = new ent_view('partials/listing_category.inc.php');
+    $listing_category = new ent_view(FS_DIR_TEMPLATE . 'partials/listing_category.inc.php');
 
     list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
 
@@ -155,7 +155,7 @@
 
   function draw_listing_product($product, $inherit_params=[]) {
 
-    $listing_product = new ent_view('partials/listing_product.inc.php');
+    $listing_product = new ent_view(FS_DIR_TEMPLATE . 'partials/listing_product.inc.php');
 
     $sticker = '';
     if ((float)$product['campaign_price']) {
@@ -274,7 +274,7 @@
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
 
-    $pagination = new ent_view('partials/pagination.inc.php');
+    $pagination = new ent_view(FS_DIR_TEMPLATE . 'partials/pagination.inc.php');
 
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']-1,

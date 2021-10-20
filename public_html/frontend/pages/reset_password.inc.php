@@ -106,5 +106,5 @@
   }
 
 
-  $_page = new ent_view('pages/reset_password.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/reset_password.inc.php');
   echo $_page;

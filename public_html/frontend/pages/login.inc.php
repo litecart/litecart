@@ -122,9 +122,9 @@
 
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    $_page = new ent_view('pages/login.ajax.inc.php');
+    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/login.ajax.inc.php');
   } else {
-    $_page = new ent_view('pages/login.inc.php');
+    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/login.inc.php');
   }
 
   echo $_page;

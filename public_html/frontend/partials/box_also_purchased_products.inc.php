@@ -21,7 +21,7 @@
 
       if (database::num_rows($products_query)) {
 
-        $box_also_purchased_products = new ent_view('partials/box_also_purchased_products.inc.php');
+        $box_also_purchased_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_also_purchased_products.inc.php');
 
         $box_also_purchased_products->snippets['products'] = [];
         while ($listing_product = database::fetch($products_query)) {

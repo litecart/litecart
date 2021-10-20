@@ -27,7 +27,7 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
-  $_page = new ent_view('pages/order.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/order.inc.php');
   $_page->snippets = [
     'order' => $order->data,
     'comments' => [],

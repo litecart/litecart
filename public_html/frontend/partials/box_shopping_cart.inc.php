@@ -1,7 +1,7 @@
 <?php
   if (settings::get('catalog_only_mode')) return;
 
-  $box_shopping_cart = new ent_view('partials/box_shopping_cart.inc.php');
+  $box_shopping_cart = new ent_view(FS_DIR_TEMPLATE . 'partials/box_shopping_cart.inc.php');
   $box_shopping_cart->snippets = [
     'items' => [],
     'link' => document::ilink('shopping_cart'),

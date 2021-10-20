@@ -131,7 +131,7 @@
     }
   }
 
-  $_page = new ent_view('pages/create_account.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/create_account.inc.php');
 
   $_page->snippets = [
     'consent' => null,

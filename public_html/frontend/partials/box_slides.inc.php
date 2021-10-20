@@ -15,7 +15,7 @@
 
     if (database::num_rows($slides_query)) {
 
-      $box_slides = new ent_view('partials/box_slides.inc.php');
+      $box_slides = new ent_view(FS_DIR_TEMPLATE . 'partials/box_slides.inc.php');
 
       $box_slides->snippets['slides'] = [];
 

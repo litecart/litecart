@@ -128,5 +128,5 @@
     }
   }
 
-  $page_login = new ent_view('pages/login.inc.php');
+  $page_login = new ent_view(FS_DIR_TEMPLATE . 'pages/login.inc.php');
   echo $page_login;

@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_account', 'Account'));
   breadcrumbs::add(language::translate('title_order_history', 'Order History'));
 
-  $_page = new ent_view('pages/order_history.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/order_history.inc.php');
 
   $_page->snippets['orders'] = [];
 

@@ -42,7 +42,7 @@
     ];
 
   // Render the page
-    $_page = new ent_view('pages/doc.inc.php');
+    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/doc.inc.php');
 
     $_page->snippets = [
       'app' => __APP__,
@@ -74,7 +74,7 @@
 
   // Widgets
 
-    $box_widgets = new ent_view('partials/box_widgets.inc.php');
+    $box_widgets = new ent_view(FS_DIR_TEMPLATE . 'partials/box_widgets.inc.php');
     $box_widgets->snippets['widgets'] = [];
 
     $widgets = functions::admin_get_widgets();

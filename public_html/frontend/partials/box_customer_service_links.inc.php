@@ -8,7 +8,7 @@
       $current_page_path = [];
     }
 
-    $box_customer_service_links = new ent_view('partials/box_customer_service_links.inc.php');
+    $box_customer_service_links = new ent_view(FS_DIR_TEMPLATE . 'partials/box_customer_service_links.inc.php');
     $box_customer_service_links->snippets = [
       'title' =>  language::translate('title_customer_service', 'Customer Service'),
       'pages' => [],

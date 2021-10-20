@@ -9,7 +9,7 @@
       $current_page_path = [];
     }
 
-    $box_information_links = new ent_view('partials/box_information_links.inc.php');
+    $box_information_links = new ent_view(FS_DIR_TEMPLATE . 'partials/box_information_links.inc.php');
 
     $box_information_links->snippets['pages'] = [];
 

@@ -8,7 +8,7 @@
     breadcrumbs::add(language::translate('title_customer_service', 'Customer Service'));
   }
 
-  $_page = new ent_view('pages/customer_service.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/customer_service.inc.php');
 
 // Custom page
   if (!empty($_GET['page_id'])) {
@@ -23,7 +23,7 @@
 
     if (empty($page->status) || !in_array('customer_service', $page->dock)) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
       return;
     }
 

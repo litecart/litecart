@@ -57,7 +57,7 @@
     }
   }
 
-  $_page = new ent_view('pages/regional_settings.inc.php');
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/regional_settings.inc.php');
 
   $_page->snippets = [
     'currencies' => [],

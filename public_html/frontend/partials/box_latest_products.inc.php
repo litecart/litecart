@@ -13,7 +13,7 @@
 
     if (database::num_rows($products_query)) {
 
-      $box_latest_products = new ent_view('partials/box_latest_products.inc.php');
+      $box_latest_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_latest_products.inc.php');
 
       $box_latest_products->snippets['products'] = [];
       while ($listing_product = database::fetch($products_query)) {
