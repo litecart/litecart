@@ -149,7 +149,7 @@
         $queue[] = $modifications;
       }
 
-      $checksum = md5(implode('', $digest));
+      $checksum = md5(implode($digest));
 
     // Return original file if nothing to modify
       if (empty($queue)) {
@@ -396,7 +396,7 @@
                   $find[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
                 }
               }
-              $find = implode('', $find);
+              $find = implode($find);
             } else {
               $find = '(?:[ \\t]+)?' . preg_quote(trim($find), '#') . '(?:[ \\t]+)?';
             }
@@ -437,7 +437,7 @@
                     $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
                   }
                 }
-                $ignoreif = implode('', $ignoreif);
+                $ignoreif = implode($ignoreif);
               } else {
                 $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
               }
@@ -588,7 +588,7 @@
                   $search[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
                 }
               }
-              $search = implode('', $search);
+              $search = implode($search);
             } else {
               $search = '(?:[ \\t]+)?' . preg_quote(trim($search), '#') . '(?:[ \\t]+)?';
             }
@@ -644,7 +644,7 @@
                     $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
                   }
                 }
-                $ignoreif = implode('', $ignoreif);
+                $ignoreif = implode($ignoreif);
               } else {
                 $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
               }

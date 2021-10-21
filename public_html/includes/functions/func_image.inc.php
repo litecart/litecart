@@ -145,7 +145,7 @@
         return;
     }
 
-    $filename = implode('', [
+    $filename = implode([
       sha1($path),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,

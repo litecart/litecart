@@ -21,7 +21,7 @@
       return;
     }
 
-    if (empty($page->status) || !in_array('customer_service', $page->dock)) {
+    if (empty($page->status)) {
       http_response_code(404);
       include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
       return;
