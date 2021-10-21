@@ -51,25 +51,58 @@
         throw new Exception('No image processing library available');
       }
 
-      if (!empty($file)) $this->set($file);
-
       $this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
+
+      if (!empty($file)) {
+        $this->set($file);
+      }
     }
 
     public function set($file) {
-      $this->_src = $file;
+
+      $this->_src = null;
       $this->_image = null;
       $this->_width = null;
       $this->_height = null;
       $this->_type = null;
+
+      if (empty($file)) {
+        throw new Exception('Could not set image to an empty source file');
+      }
+
+    // Handle remote images (Safe for allow_url_fopen = off)
+      if (preg_match('#^https?://#', $file)) {
+
+        $client = new wrap_http();
+        $response = $client->call('GET', $file);
+
+        if ($client->last_response['status_code'] != 200) {
+          throw new Exception('Remote image location '. $file .' returned an unexpected http response code ('. $client->last_response['status_code'] .')');
+        }
+
+        $tmpfile = tempnam(sys_get_temp_dir(), '') .'.'. pathinfo(parse_url($file, PHP_URL_PATH), PATHINFO_EXTENSION);
+        file_put_contents($tmpfile, $response);
+
+        $this->_src = $tmpfile;
+        return true;
+      }
+
+      if (!is_file($file)) {
+        throw new Exception('Could not set image source to a non-existing source');
+      }
+
+      $this->_src = $file;
+      return true;
     }
 
     public function load($file=null) {
 
-      if (!empty($file)) $this->_src = $file;
+      if (!empty($file)) {
+        $this->set($file);
+      }
 
       if (empty($this->_src)) {
-        throw new Exception('No source image file set');
+        throw new Exception('Could not load image from empty source location');
       }
 
       switch($this->_library) {
@@ -109,9 +142,10 @@
       }
     }
 
-    public function load_from_string($binary, $type='png') {
+    public function load_from_string($binary) {
 
-      $this->_type = $type;
+      $this->_image = null;
+      $this->_type = null;
       $this->_width = null;
       $this->_height = null;
 
@@ -119,14 +153,35 @@
 
         case 'imagick':
 
-          return $this->_image->readImageBlob($binary);
+          $this->_image = new imagick();
+          $this->_image->readImageBlob($binary);
+          $this->_type = $this->_image->getImageFormat();
+
+          return true;
 
         case 'gd':
 
-          $this->_type = $type;
           $this->_image = ImageCreateFromString($binary);
-
           if (!$this->_image) return false;
+
+          $params = GetImageSizeFromString($binary);
+          $image_type = $params[2];
+
+          switch($image_type) {
+            case 1:
+              $this->_type = 'gif';
+              break;
+            case 2:
+              $this->_type = 'jpg';
+              break;
+            case 18:
+              $this->_type = 'webp';
+              break;
+            case 3:
+            default:
+              $this->_type = 'png';
+              break;
+          }
 
           return true;
       }
@@ -893,12 +948,14 @@
       if (!empty($this->_type)) return $this->_type;
 
       if (empty($this->_image)) {
+
         if (function_exists('exif_imagetype')) {
           $image_type = exif_imagetype($this->_src);
         } else {
           $params = getimagesize($this->_src);
           $image_type = $params[2];
         }
+
         switch($image_type) {
           case 1:
             $this->_type = 'gif';
@@ -914,14 +971,15 @@
             $this->_type = 'png';
             break;
         }
+
         return $this->_type;
       }
+
+      if (empty($this->_image)) $this->load();
 
       switch($this->_library) {
 
         case 'imagick':
-
-          if (empty($this->_image)) $this->load();
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -930,8 +988,6 @@
           return $this->_image->getImageFormat();
 
         case 'gd':
-
-          if ($this->_image) $this->load();
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
