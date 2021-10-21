@@ -86,7 +86,7 @@
                     $search[$i] = '[ \\t]*(?:\r\n?|\n)';
                   }
                 }
-                $search = implode('', $search);
+                $search = implode($search);
               } else {
                 $search = '[ \\t]*' . preg_quote(trim($search), '#') . '[ \\t]*';
               }
@@ -142,7 +142,7 @@
                       $ignoreif[$i] = '[ \\t]*(?:\r\n?|\n)';
                     }
                   }
-                  $ignoreif = implode('', $ignoreif);
+                  $ignoreif = implode($ignoreif);
                 } else {
                   $ignoreif = '[ \\t]*' . preg_quote(trim($ignoreif), '#') . '[ \\t]*';
                 }

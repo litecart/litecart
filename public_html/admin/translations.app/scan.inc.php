@@ -33,7 +33,7 @@
         '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?',
         ')\)',
       ];
-      $regexp = '/'. implode('', $regexp) .'/s';
+      $regexp = '/'. implode($regexp) .'/s';
 
       preg_match_all($regexp, $contents, $matches);
       $translations = [];
