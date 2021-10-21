@@ -566,7 +566,6 @@
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."manufacturers_info` DROP INDEX `brand_info`;");
   }
 
-
 // Separate product configurations from stock options
   $stock_options_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."products_stock_options;"

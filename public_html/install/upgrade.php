@@ -68,6 +68,7 @@
   require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
   require_once FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
   require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
+  require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
 
 // Set platform name
   preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches);

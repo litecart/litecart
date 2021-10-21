@@ -358,6 +358,7 @@
           );
           $this->data['order_total'][$key]['id'] = $row['id'] = database::insert_id();
         }
+
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_totals
           set title = '". database::input($row['title']) ."',

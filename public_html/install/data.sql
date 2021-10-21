@@ -269,7 +269,7 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `track_shipping`, `date_updated`, `date_created`) VALUES
+INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `date_updated`, `date_created`) VALUES
 (1, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
 (2, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
 (3, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, NOW(), NOW()),
@@ -392,7 +392,6 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '1', 'toggle()', 0, 10, NOW(), NOW()),
 ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '0', 'toggle()', 0, 11, NOW(), NOW()),
 ('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (images, stylesheets, javascripts).', 'static_domain', '', 'text()', 0, 12, NOW(), NOW()),
-('advanced', 'global', 'Background Jobs Last Poke', 'Time when background jobs were last poked.', 'jobs_last_push', NOW(), 'text()', 0, 16, NOW(), NOW()),
 ('advanced', 'local', 'Control Panel Link', 'The URL to your control panel, e.g. cPanel.', 'control_panel_link', '?app=settings&doc=advanced&action=edit&key=control_panel_link', 'text()', 0, 18, NOW(), NOW()),
 ('advanced', 'local', 'Database Admin Link', 'The URL to your database manager, e.g. phpMyAdmin.', 'database_admin_link', '?app=settings&doc=advanced&action=edit&key=database_admin_link', 'text()', 0, 19, NOW(), NOW()),
 ('advanced', 'local', 'Webmail Link', 'The URL to your webmail client.', 'webmail_link', '?app=settings&doc=advanced&action=edit&key=webmail_link', 'text()', 0, 20, NOW(), NOW()),

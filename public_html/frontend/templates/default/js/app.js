@@ -461,8 +461,7 @@ $(document).ajaxComplete(function(e, xhr, settings) {
         "left": source.offset().left,
         "height": source.height(),
         "width": source.width(),
-        "z-index": 100000,
-        "image": '|$|'
+        "z-index": 100000
       },
       square: '',
       callback: function(){ return; }
@@ -481,17 +480,12 @@ $(document).ajaxComplete(function(e, xhr, settings) {
       target_height = target_width;
     }
 
-    var shadowImage = '';
-    if (options.initial_css.image != '') {
-      shadowImage = '<img src="' + options.initial_css.image + '" style="width: 100%; height: 100%" />';
-    }
-
     var dy = source.offset().top + source.width()/2 - target.offset().top,
       dx = source.offset().left + source.height()/2 - target.offset().left,
       pixel_distance = Math.floor(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))),
       duration = (pixel_distance/options.pixels_per_second)*1000,
 
-      shadow = $('<div id="animated-cart-item">' + shadowImage + '</div>')
+      shadow = $('<div id="animated-cart-item"></div>')
         .css(options.initial_css)
         .appendTo('body')
         .animate({

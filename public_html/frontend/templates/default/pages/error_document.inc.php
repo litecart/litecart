@@ -12,7 +12,7 @@
 </style>
 
 <main id="main">
-  {snippet:notices}
+  {{notices}}
 
   <article class="box text-center">
     <div class="code">HTTP {{code}}</div>

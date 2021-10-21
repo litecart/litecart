@@ -60,9 +60,10 @@
     define('DB_CONNECTION_CHARSET', 'utf8mb4');
 
     require FS_DIR_APP . 'includes/error_handler.inc.php';
+    require FS_DIR_APP . 'includes/functions/func_file.inc.php';
     require FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
     require FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
-    require FS_DIR_APP . 'includes/functions/func_file.inc.php';
+    require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();

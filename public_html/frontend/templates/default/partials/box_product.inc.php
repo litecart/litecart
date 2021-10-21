@@ -11,23 +11,23 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 </style>
 
-<article id="box-product" class="box<?php echo (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') ? ' white' : ''; ?>" data-id="{{product_id}}" data-sku="{{sku|escape}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+<article id="box-product" class="box<?php echo (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') ? ' white' : ''; ?>" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
   <div class="row layout">
     <div class="col-sm-4 col-md-6">
       <div class="images row">
 
         <div class="col-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_link($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link($image['thumbnail']); ?>" srcset="<?php echo document::href_link($image['thumbnail']); ?> 1x, <?php echo document::href_link($image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
+          <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
             {{sticker}}
           </a>
         </div>
 
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_link($extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link($extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link($extra_image['thumbnail']); ?> 1x, <?php echo document::href_link($extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
+          <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
           </a>
         </div>
         <?php } ?>

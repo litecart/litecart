@@ -19,7 +19,7 @@
 	}
 
 	$stock_items_query = database::query(
-		"select si.*, sii.name, b.name as brand_name from ". DB_TABLE_PREFIX ."stock_items si
+		"select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
 		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
 		left join ". DB_TABLE_PREFIX ."brands b on (b.id = si.brand_id)
 		where si.id

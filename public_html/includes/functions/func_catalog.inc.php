@@ -144,7 +144,7 @@
       "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, group_concat(concat(pa.group_id, '-', if(pa.custom_value != '', pa.custom_value, pa.value_id)) separator ',') as attributes
 
       from (
-        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.brand_id, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
+        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
 
         from ". DB_TABLE_PREFIX ."products p
 
@@ -253,7 +253,7 @@
       ) as occurrences
 
       from (
-        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.brand_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
+        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
         from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (p.id = ptc.product_id)
         left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)

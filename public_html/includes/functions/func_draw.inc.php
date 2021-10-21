@@ -169,9 +169,6 @@
     $listing_product->snippets = [
       'product_id' => $product['id'],
       'code' => $product['code'],
-      'sku' => $product['sku'],
-      'mpn' => $product['mpn'],
-      'gtin' => $product['gtin'],
       'name' => $product['name'],
       'link' => document::ilink('product', ['product_id' => $product['id']], $inherit_params),
       'image' => [

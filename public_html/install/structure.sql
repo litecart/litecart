@@ -397,7 +397,7 @@ CREATE TABLE `lc_orders_items` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `stock_option_id` INT(11) NOT NULL DEFAULT '',
+  `stock_option_id` INT(11) NOT NULL DEFAULT '0',
   `options` VARCHAR(4096) NOT NULL DEFAULT '',
   `name` VARCHAR(128) NOT NULL DEFAULT '',
   `data` VARCHAR(1024) NOT NULL DEFAULT '',
@@ -524,10 +524,6 @@ CREATE TABLE `lc_products` (
   KEY `brand_id` (`brand_id`),
   KEY `keywords` (`keywords`),
   KEY `code` (`code`),
-  KEY `sku` (`sku`),
-  KEY `mpn` (`mpn`),
-  KEY `gtin` (`gtin`),
-  KEY `taric` (`taric`),
   KEY `date_valid_from` (`date_valid_from`),
   KEY `date_valid_to` (`date_valid_to`),
   KEY `purchases` (`purchases`),
@@ -709,7 +705,7 @@ CREATE TABLE `lc_shopping_carts` (
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`),
-  KEY `uid` (`uid`),
+  KEY `uid` (`uid`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_shopping_carts_items` (
