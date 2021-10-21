@@ -297,7 +297,7 @@
               }
             }
 
-            if (isset($row['new_image'])) {
+            if (!empty($row['new_image'])) {
               $category->save_image($row['new_image']);
             }
 
@@ -387,7 +387,7 @@
               }
             }
 
-            if (isset($row['new_image'])) {
+            if (!empty($row['new_image'])) {
               $manufacturer->save_image($row['new_image']);
             }
 
@@ -569,7 +569,7 @@
             }
 
           // Import new images
-            if (isset($row['new_images'])) {
+            if (!empty($row['new_images'])) {
               foreach (explode(';', $row['new_images']) as $new_image) {
                 $product->add_image($new_image);
               }
@@ -706,7 +706,8 @@
     } catch (Exception $e) {
       unset(session::$data['csv_batch']);
       notices::add('errors', $e->getMessage());
-      header('Location: '. document::link(null, [], ['app', 'doc'], 'resume'));
+      echo 'Error: ' . $e->getMessage();
+      header('Refresh: 5; url='. document::link(null, [], ['app', 'doc'], 'resume'));
       exit;
     }
   }
