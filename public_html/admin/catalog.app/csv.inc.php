@@ -571,22 +571,6 @@
           // Import new images
             if (isset($row['new_images'])) {
               foreach (explode(';', $row['new_images']) as $new_image) {
-
-              // Workaround for remote images and allow_url_fopen = Off
-                if (preg_match('#^https?://#', $new_image) && preg_match('#^(|0|false|off)$#i', ini_get('allow_url_fopen'))) {
-
-                  $client = new wrap_http();
-                  $response = $client->call('GET', $new_image);
-
-                  if ($client->last_response['status_code'] == 200) {
-                    $tmp = tempnam(sys_get_temp_dir(), '');
-                    file_put_contents($tmp, $response);
-                    $new_image = $tmp;
-                  } else {
-                    throw new Exception('Remote location '. $new_image .' returned an unexpected http response code ('. $client->last_response['status_code'] .')');
-                  }
-                }
-
                 $product->add_image($new_image);
               }
             }
