@@ -51,6 +51,7 @@
         $customer->set_password($_POST['new_password']);
       }
 
+      $customer->data['password_reset_token'] = '';
       $customer->data['date_expire_sessions'] = date('Y-m-d H:i:s');
       $customer->save();
 

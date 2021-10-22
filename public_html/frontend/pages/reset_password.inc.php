@@ -84,15 +84,9 @@
 
       } else {
 
-        database::query(
-          "update ". DB_TABLE_PREFIX ."customers
-          set password_reset_token = ''
-          where id = ". (int)$customer['id'] ."
-          limit 1;"
-        );
-
         $customer = new ent_customer($customer['id']);
         $customer->set_password($_POST['new_password']);
+        $customer->data['password_reset_token'] = '';
 
         notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
         header('Location: '. document::ilink('login', ['email' => $customer->data['email']]));

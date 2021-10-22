@@ -226,6 +226,35 @@
       }
     }
 
+    ### Installer > Update ########################################
+
+    echo '<p>Check if the installer has the latest updates... ';
+
+    $files_to_update = [
+      'config',
+      'htaccess',
+      'clean.sql',
+      'data.sql',
+      'structure.sql',
+    ];
+
+    require_once FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php';
+    $client = new wrap_http();
+
+    foreach ($files_to_update as $file) {
+      $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/install/'. $file);
+      if ($client->last_response['status_code'] == 200 && md5($response) != md5_file(__DIR__.'/'. $file)) {
+        file_put_contents(__DIR__.'/'. $file, $response);
+        $is_updated = true;
+      }
+    }
+
+    if (!empty($is_updated)) {
+      echo 'Updated! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      echo 'Already up to date! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    }
+
     ### Database > Connection #####################################
 
     echo '<p>Connecting to MySQL server on '. $_REQUEST['db_server'] .'... ';

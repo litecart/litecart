@@ -15,7 +15,7 @@
 
   $category = reference::category($_GET['category_id']);
 
-  if (empty($_GET['list_style'])) $_GET['list_style'] = $category->list_style;
+  if (empty($_GET['list_style'])) $_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
 
   if (empty($category->id)) {
     http_response_code(410);

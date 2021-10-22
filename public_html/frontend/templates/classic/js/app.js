@@ -8,24 +8,26 @@
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
 // Sidebar parallax effect
-  if (window._env.template.settings.sidebar_parallax_effect) {
+  if (typeof window._env != 'undefined') {
+    if (window._env.template.settings.sidebar_parallax_effect == true) {
 
-    var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
-    var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
+      var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
+      var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
-    $(window).bind('resize scroll', function(e){
-      if (sidebar_max_offset) {
-        var parallax_rate = 0.4;
+      $(window).bind('resize scroll', function(e){
+        if (sidebar_max_offset) {
+          var parallax_rate = 0.4;
 
-        if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
-          var offset = $(this).scrollTop() * parallax_rate;
-          if (offset > sidebar_max_offset) offset = sidebar_max_offset;
-          if (offset > 0) $(column).css('margin-top', offset + 'px');
-        } else {
-          $(column).css('margin', 0);
+          if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
+            var offset = $(this).scrollTop() * parallax_rate;
+            if (offset > sidebar_max_offset) offset = sidebar_max_offset;
+            if (offset > 0) $(column).css('margin-top', offset + 'px');
+          } else {
+            $(column).css('margin', 0);
+          }
         }
-      }
-    }).trigger('resize');
+      }).trigger('resize');
+    }
   }
 
 // Add to cart animation

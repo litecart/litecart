@@ -58,7 +58,7 @@
         }
       }
 
-      if (!$image = new ent_image($source)) return;
+      $image = new ent_image($source);
 
       if (!empty($options['trim'])) {
         $image->trim();
@@ -78,7 +78,7 @@
       return functions::image_path($options['destination']);
 
     } catch (Exception $e) {
-      trigger_error($e->getMessage() , E_USER_WARNING);
+      trigger_error('Could not process image: ' . $e->getMessage(), E_USER_WARNING);
     }
   }
 

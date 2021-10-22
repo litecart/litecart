@@ -49,7 +49,7 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."orders
         set customer_id = '". database::input($customer['id']) ."'
-        where lower(email) = lower('". database::input($order['customer_email']) ."');"
+        where lower(customer_email) = lower('". database::input($order['customer_email']) ."');"
       );
     }
   }

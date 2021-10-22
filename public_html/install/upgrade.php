@@ -238,7 +238,33 @@
         throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
       }
 
-      ########################################################################
+      ### Installer > Update ########################################
+
+      echo '<p>Check if the installer has the latest updates... ';
+
+      $files_to_update = [
+        'upgrade_patches/'. PLATFORM_VERSION .'.sql',
+        'upgrade_patches/'. PLATFORM_VERSION .'.inc.php',
+      ];
+
+      require_once FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php';
+      $client = new wrap_http();
+
+      foreach ($files_to_update as $file) {
+        $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/install/'. $file);
+        if ($client->last_response['status_code'] == 200 && (!is_file(__DIR__.'/'. $file) || md5($response) != md5_file(__DIR__.'/'. $file))) {
+          file_put_contents(__DIR__.'/'. $file, $response);
+          $is_updated = true;
+        }
+      }
+
+      if (!empty($is_updated)) {
+        echo 'Updated! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      } else {
+        echo 'Already up to date! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
+
+      #############################################
 
       foreach ($supported_versions as $version) {
 

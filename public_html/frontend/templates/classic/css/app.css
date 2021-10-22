@@ -218,14 +218,33 @@ html {
   right: 30px;
   width: 48px;
 }
+/* Boxes */
+.box {
+  margin: var(--gutter-size) 0;
+}
+.box.white {
+  margin: var(--gutter-size);
+  padding: var(--gutter-size);
+  border-radius: var(--border-radius);
+  background: #fff;
+}
+.box.border {
+  padding: var(--gutter-size);
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
+}
+.box > .title {
+  margin-top: 0;
+}
 #box-cookie-notice {
-  background: rgba(50, 50, 75, 0.85);
+  background: var(--cookie-notice-background-color);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 1em;
-  color: #fff;
+  backdrop-filter: saturate(200%) blur(5px);
+  color: var(--cookie-notice-text-color);
   z-index: 999;
 }
 #box-cookie-notice .notice {
@@ -236,6 +255,9 @@ html {
     position: sticky;
     top: 0;
   }
+}
+#box-manufacturer-logotypes img {
+  max-height: 60px;
 }
 #box-filter .manufacturers ul {
   max-height: 200px;
@@ -274,11 +296,11 @@ html {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
 }
-.listing.brands {
+.listing.manufacturers {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 @media (min-width: 768px) {
-  .listing.brands {
+  .listing.manufacturers {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }
@@ -293,7 +315,7 @@ html {
   text-decoration: none;
 }
 .listing .category,
-.listing .brand,
+.listing .manufacturer,
 .listing .product {
   position: relative;
   overflow: hidden;
@@ -307,7 +329,7 @@ html {
 }
 @media (min-width: 768px) {
   .listing .category:hover,
-  .listing .brand:hover,
+  .listing .manufacturer:hover,
   .listing .product:hover {
     box-shadow: 0 calc(var(--gutter-size)/4) calc(var(--gutter-size)/2) 0 rgba(0, 0, 0, 0.15);
     transform: scale(1.01);
@@ -323,12 +345,12 @@ html {
   color: inherit;
   margin: 0;
 }
-.listing .brand img {
+.listing .manufacturer img {
   width: 100%;
   height: auto;
   padding: calc(var(--gutter-size)/2);
 }
-.listing .brand .caption {
+.listing .manufacturer .caption {
   margin: 0;
   padding: calc(var(--gutter-size)/2);
   background: #f2f2f2;
@@ -375,7 +397,7 @@ html {
   border-bottom: 0;
   margin: 0;
 }
-.listing .product .brand-name {
+.listing .product .manufacturer-name {
   color: var(--default-text-color);
   font-size: 0.9em;
   overflow: hidden;
@@ -441,6 +463,8 @@ html {
   position: absolute;
   top: 0;
   left: calc(var(--gutter-size) + 100px);
+  right: 0;
+  bottom: 0;
   padding: calc(var(--gutter-size)/2);
 }
 @media (min-width: 768px) {

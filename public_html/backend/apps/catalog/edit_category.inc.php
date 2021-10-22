@@ -255,7 +255,7 @@
 
           <div class="input-group" style="max-width: 320px;">
             <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-              <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
+            <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
           </div>
         </div>
       </div>

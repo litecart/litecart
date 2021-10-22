@@ -236,16 +236,19 @@
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_STORAGE . 'images/categories/')) mkdir(FS_DIR_STORAGE . 'images/categories/', 0777);
+      if (!is_dir(FS_DIR_STORAGE . 'images/categories/')) {
+        mkdir(FS_DIR_STORAGE . 'images/categories/', 0777);
+      }
 
-      if (!$image = new ent_image($file)) return false;
-
-    // 456-Fancy-category-title-N.jpg
       if (empty($filename)) {
         $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('site_language_code')], settings::get('site_language_code')) .'.'. $image->type();
       }
 
-      if (is_file(FS_DIR_STORAGE . 'images/' . $filename)) unlink(FS_DIR_STORAGE . 'images/' . $filename);
+      if (is_file(FS_DIR_STORAGE . 'images/' . $filename)) {
+        unlink(FS_DIR_STORAGE . 'images/' . $filename);
+      }
+
+      $image = new ent_image($file);
 
       if (settings::get('image_downsample_size')) {
         list($width, $height) = explode(',', settings::get('image_downsample_size'));
@@ -269,7 +272,9 @@
 
       if (empty($this->data['image'])) return;
 
-      if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
+      if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) {
+        unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
+      }
 
       functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 

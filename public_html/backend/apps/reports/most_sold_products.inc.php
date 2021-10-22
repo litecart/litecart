@@ -34,8 +34,8 @@
     )
     and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
     and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
-    ". (!empty($_GET['name']) ? "and oi.name like '%". database::input($_GET['name']) ."%'" : "") ."
-    group by oi.product_id
+    ". (!empty($_GET['query']) ? "and oi.name like '%". database::input($_GET['query']) ."%' or oi.sku like '%". database::input($_GET['query']) ."%'" : "") ."
+    group by oi.product_id, oi.sku
     order by total_quantity desc;"
   );
 
@@ -77,7 +77,7 @@ form[name="filter_form"] li {
   <div class="card-action">
     <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
       <ul class="list-inline">
-        <li><?php echo functions::form_draw_search_field('name', true, 'placeholder="'. htmlspecialchars(language::translate('title_item_name', 'Item Name')) .'"'); ?></li>
+        <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
         <li>
           <div class="input-group" style="max-width: 380px;">
             <?php echo functions::form_draw_date_field('date_from', true); ?>

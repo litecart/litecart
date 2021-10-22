@@ -75,6 +75,7 @@
             } else {
               $params = getimagesize($this->_file);
               $image_type = $params[2];
+              $this->_data['type'] = 'gif';
             }
 
             switch ($image_type) {
@@ -184,21 +185,55 @@
       trigger_error("Setting data is prohibited ($name)", E_USER_WARNING);
     }
 
+    public function set($file) {
+
+      $this->_file = null;
+      $this->_image = null;
+      unset($this->_data['type']);
+      unset($this->_data['width']);
+      unset($this->_data['height']);
+
+      if (empty($file)) {
+        throw new Exception('Could not set image to an empty source file');
+      }
+
+    // Handle remote images (Safe for allow_url_fopen = off)
+      if (preg_match('#^https?://#', $file)) {
+
+        $client = new wrap_http();
+        $response = $client->call('GET', $file);
+
+        if ($client->last_response['status_code'] != 200) {
+          throw new Exception('Remote image location '. $file .' returned an unexpected http response code ('. $client->last_response['status_code'] .')');
+        }
+
+        $tmpfile = tempnam(sys_get_temp_dir(), '') .'.'. pathinfo(parse_url($file, PHP_URL_PATH), PATHINFO_EXTENSION);
+        file_put_contents($tmpfile, $response);
+
+        $this->_file = $tmpfile;
+        return true;
+      }
+
+      if (!is_file($file)) {
+        throw new Exception('Could not set image source to a non-existing source');
+      }
+
+      $this->_src = $file;
+      return true;
+    }
+
     public function load($file=null) {
+
+      if (!empty($file)) {
+        $this->set($file);
+      }
 
       unset($this->_data['type']);
       unset($this->_data['width']);
       unset($this->_data['height']);
 
-      if (!empty($file)) {
-        if (!is_file($file)) {
-          throw new Exception("Cannot load a missing image file ($file)");
-        }
-        $this->_file = $file;
-      }
-
-      if (empty($this->_file)) {
-        throw new Exception('Cannot load a missing file as no file has been set');
+      if (empty($this->_src)) {
+        throw new Exception('Could not load image from empty source location');
       }
 
       switch ($this->_library) {
@@ -259,15 +294,36 @@
       switch($this->_library) {
 
         case 'imagick':
-
+          $this->_data['type'] = $this->_image->getImageFormat();
           return $this->_image->readImageBlob($binary);
 
         case 'gd':
 
           $this->_type = $type;
           $this->_image = ImageCreateFromString($binary);
-
           if (!$this->_image) return false;
+
+          $params = GetImageSizeFromString($binary);
+          $image_type = $params[2];
+
+          switch($image_type) {
+            case 1:
+              $this->_type = 'gif';
+              break;
+            case 2:
+              $this->_type = 'jpg';
+              break;
+            case 18:
+              $this->_type = 'webp';
+              break;
+            case 3:
+            default:
+              $this->_type = 'png';
+              break;
+          }
+
+          $this->_data['width'] = $params[0];
+          $this->_data['height'] = $params[1];
 
           return true;
       }

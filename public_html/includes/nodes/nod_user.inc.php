@@ -80,18 +80,18 @@
       if (!empty(self::$data['id'])) {
 
         $user_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."customers
+          "select * from ". DB_TABLE_PREFIX ."users
           where id = ". (int)self::$data['id'] ."
           limit 1;"
         );
 
-        if (!$customer = database::fetch($user_query)) {
+        if (!$user = database::fetch($user_query)) {
           die('The account has been removed');
         }
 
-        if (!$customer['status']) {
-          if (!empty($_COOKIE['customer_remember_me'])) {
-            header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
+        if (!$user['status']) {
+          if (!empty($_COOKIE['remember_me'])) {
+            header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
           }
           self::reset();
           die('Your account is disabled');
@@ -106,8 +106,8 @@
           limit 1;"
         );
 
-        if (!empty($customer['date_expire_sessions'])) {
-          if (!isset(session::$data['user_security_timestamp']) || session::$data['user_security_timestamp'] < strtotime($customer['date_expire_sessions'])) {
+        if (!empty($user['date_expire_sessions'])) {
+          if (!isset(session::$data['user_security_timestamp']) || session::$data['user_security_timestamp'] < strtotime($user['date_expire_sessions'])) {
             self::reset();
             notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
             header('Location: '. document::ilink('login'));

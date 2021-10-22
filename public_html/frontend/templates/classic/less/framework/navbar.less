@@ -8,27 +8,11 @@
   background-color: var(--navigation-background-color);
   color: var(--navigation-text-color);
 
-  .navbar-header {
-    display: flex;
-    width: 100%;
-    @media (min-width: @media-breakpoint-sm) {
-      float: left;
-      width: ~"calc(var(--sidebar-width) + var(--gutter-size)/4)";
-    }
-    > * {
-      flex: 1 1 auto;
-    }
-
-    .navbar-brand {
-      padding: var(--gutter-size);
-      font-size: 18px;
-      &:hover, &:focus {
-        text-decoration: none;
-      }
-      > img {
-        display: block;
-      }
-    }
+  li:not(.open) > a:hover {
+    background-color: var(--navigation-background-color-hover);
+  }
+  li.open > a {
+    background-color: var(--navigation-background-color-active) !important;
   }
 
   .navbar-toggle {
@@ -174,9 +158,28 @@
 }
 
 @media (min-width: @media-breakpoint-sm) {
-  html[dir="rtl"] {
-    .navbar-nav {
-      float: right;
+  .navbar-right {
+    float: right !important;
+  }
+}
+
+.navbar-form {
+  margin: ~"calc(var(--gutter-size)/4)";
+  @media (min-width: @media-breakpoint-sm) {
+    margin: 11px 11px 0 11px
+  }
+}
+
+.navbar-toggle {
+  .icon-bar {
+    position: relative;
+    background-color: var(--navigation-text-color);
+    display: block;
+    width: 22px;
+    height: 2px;
+    transition: all 250ms ease-in-out;
+    + .icon-bar {
+      margin-top: 4px;
     }
     .navbar-right {
       float: left !important;
