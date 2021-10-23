@@ -208,69 +208,60 @@ th:not(:last-child) {
     </div>
   </div>
 
-  <ul class="list-unstyled">
-    <li><a href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a></li>
-    <li><a href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a></li>
-  </ul>
+  <div class="row">
+    <div class="col-md-6">
+      <ul class="list-unstyled">
+        <li><a href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a></li>
+        <li><a href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a></li>
+      </ul>
+    </div>
 
-  <p>
-    <button type="button" class="btn btn-default" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
-  </p>
+    <div class="col-md-6 text-end">
+      <button type="button" class="btn btn-default" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
+    </div>
+  </div>
 
 </div>
 
 <script>
+  $('[data-toggle="dropdown"]').text("-- <?php echo htmlspecialchars(language::translate('title_languages', 'Languages')); ?> --");
 
-  $('textarea[name^="translations"]').on('input', function(){
-    $(this).height('auto').height($(this).prop('scrollHeight') + 'px');
-  }).trigger('input');
+  $('body').on('change', '.featherlight select[name="to_language_code"]', function(e){
 
-  var delimiter = "\r\n----------\r\n";
-
-  $('#translator-tool select').change(function(e){
-
-    var box = $(this).closest('.row');
-    var from_language_code = $(this).closest('.row').find('select[name="from_language_code"]').val();
-    var to_language_code = $(this).closest('.row').find('select[name="to_language_code"]').val();
-    var translations = [];
+     var from_language_code = $('.featherlight select[name="from_language_code"]').val(),
+       to_language_code = $('.featherlight select[name="to_language_code"]').val(),
+       translations = [];
 
     if (!from_language_code || !to_language_code) return;
 
     $.each($(':input[name$="[text_'+ from_language_code +']"]'), function(i){
-      var source = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ from_language_code +']"]');
-      var target = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]');
+      var source = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'),
+        target = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]');
 
       if ($(source).val() && !$(target).val()) {
-        translations.push('{{'+ i +'}} = ' + $(source).val());
+        translations.push('{'+ $(source).closest('tr').find(':input[name$="[id]"]').val() +'}: ' + $(source).val());
       }
     });
 
-    translations = translations.join(delimiter);
+    translations = translations.join("\r\n");
 
-    $(box).find(':input[name="source"]').val(translations);
+    $('.featherlight :input[name="source"]').val(translations);
   });
 
-  $('#translator-tool :input[name="source"]').focus(function(e){
-    $(this).select();
-  });
+  $('body').on('click', '.featherlight button[name="prefill_fields"]', function(){
 
-  $('#translator-tool button[name="prefill_fields"]').click(function(){
-    var box = $(this).closest('div');
+    var translated = $('.featherlight :input[name="result"]').val().split(/(?:\r|\n)+(?=\{[0-9]+\}: |$)/);
 
-    var translated = $(box).find(':input[name="result"]').val();
-    translated = translated.split(delimiter.trim());
-
-    if ($(box).find('select[name="to_language_code"]').val() == '') {
+    if ($('.featherlight select[name="to_language_code"]').val() == '') {
       alert('You must specify which language you are translating');
       return false;
     }
 
     $.each(translated, function(i){
-      var matches = translated[i].trim().match(/^\{\{([0-9]+)\}\} = (.*)$/);
-      var index = matches[1];
-      var translation = matches[2].trim();
-
-      $(':input[name$="[text_'+ $(box).find('select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
+      var matches = translated[i].trim().match(/^\{([0-9]+)\}: (.*)$/),
+       translation = matches[2].trim(),
+       to_language_code = $('.featherlight select[name="to_language_code"]').val();
+      $(':input[name$="[id]"][value="'+ matches[1] +'"]').closest('tr').find(':input[name$="[text_'+ to_language_code +']"]').val(translation).css('border', '1px solid #f00');
     });
 
     $.featherlight.close();

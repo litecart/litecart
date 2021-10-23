@@ -116,7 +116,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'add'); ?>
+    <?php echo functions::form_draw_link_button('https://www.litecart.net/addons/', 'LiteCart Add-Ons', 'target="_blank"', 'fa-globe'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>

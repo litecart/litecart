@@ -1,15 +1,15 @@
 /* Buttons & Button Groups - Bootstrap Compatible */
 
 .btn(@type) {
-  background: ~"var(--@{type}-background-color)";
-  color: ~"var(--@{type}-text-color)";
+  background: ~"var(--button-@{type}-background-color)";
+  color: ~"var(--button-@{type}-text-color)";
   text-decoration: none;
   &:hover:not(.active):not(.disabled):not([disabled]) {
-    background: ~"var(--@{type}-background-color-hover)";
+    background: ~"var(--button-@{type}-background-color-hover)";
   }
   &.active {
-    background: ~"var(--@{type}-background-color-active)";
-    border-color: ~"var(--@{type}-border-color)";
+    background: ~"var(--button-@{type}-background-color-active)";
+    border-color: ~"var(--button-@{type}-border-color)";
   }
 }
 
@@ -37,7 +37,7 @@
   font-weight: normal;
   border: none;
   border-radius: var(--border-radius);
-  box-shadow: 0 1px 1px var(--shadow-color);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
   text-align: center;
   vertical-align: middle;
   white-space: nowrap;

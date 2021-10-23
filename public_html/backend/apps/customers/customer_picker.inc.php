@@ -88,7 +88,7 @@
       name = '(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)';
     }
 
-    var field = $.featherlight.current().$currentTarget.closest('.form-control');
+    var field = $.featherlight.current().$currentTarget.closest('.form-input');
 
     $(field).find(':input').val(id).trigger('change');
     $(field).find('.id').text(id);

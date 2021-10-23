@@ -21,7 +21,6 @@
 	$stock_items_query = database::query(
 		"select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
 		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
-		left join ". DB_TABLE_PREFIX ."brands b on (b.id = si.brand_id)
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 		order by si.sku, sii.name;"
@@ -54,15 +53,12 @@
     <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_stock_item'), language::translate('title_create_new_stock_item', 'Create New Stock Item'), '', 'add'); ?>
   </div>
 
-  <div class="card-filter">
-    <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
-    <ul class="list-inline float-end">
-      <li style="min-width: 250px;"><?php echo functions::form_draw_brands_list('brand_id', true); ?></li>
-      <li style="min-width: 250px;"><?php echo functions::form_draw_suppliers_list('supplier_id', true); ?></li>
-      <li style="min-width: 500px;"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></li>
-    </ul>
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+    <div class="card-filter">
+      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_items', 'Search items').'"'); ?></div>
+      <?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+    </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
   <?php echo functions::form_draw_form_begin('stock_items_form', 'post'); ?>
 
@@ -72,13 +68,12 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw'); ?></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_brand', 'Brand'); ?></th>
           <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
           <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
           <th><?php echo language::translate('title_reordered', 'Reordered'); ?></th>
           <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -87,7 +82,6 @@
           <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
           <td><?php echo $stock_item['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
-          <td><?php echo $stock_item['brand_name']; ?></td>
           <td><?php echo $stock_item['sku']; ?></td>
           <td><?php echo $stock_item['gtin']; ?></td>
           <td><?php echo $stock_item['mpn']; ?></td>
@@ -99,7 +93,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="10"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
+          <td colspan="9"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
         </tr>
       </tfoot>
     </table>

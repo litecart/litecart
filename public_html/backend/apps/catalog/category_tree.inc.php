@@ -329,7 +329,7 @@
         + if (p.id in (
           select product_id from ". DB_TABLE_PREFIX ."products_stock_options
           where sku regexp '". database::input($code_regex) ."'
-        )), 5, 0)
+        ), 5, 0)
         + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
         + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
       ) as relevance
@@ -352,7 +352,7 @@
             throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
           }
 
-          if (!empty(strtotime($product['date_valid_to']) && strtotime($product['date_valid_to']) < time()) {
+          if (!empty($product['date_valid_to']) && strtotime($product['date_valid_to']) < time()) {
             throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
           }
 
