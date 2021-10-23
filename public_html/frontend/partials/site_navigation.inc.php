@@ -1,11 +1,11 @@
 <?php
 
-  $box_site_menu = new ent_view(FS_DIR_TEMPLATE . 'partials/box_site_menu.inc.php');
+  $site_navigation = new ent_view(FS_DIR_TEMPLATE . 'partials/site_navigation.inc.php');
 
-  $box_site_menu_cache_token = cache::token('box_site_menu', ['language']);
-  if (!$box_site_menu->snippets = cache::get($box_site_menu_cache_token)) {
+  $site_navigation_cache_token = cache::token('site_navigation', ['language']);
+  if (!$site_navigation->snippets = cache::get($site_navigation_cache_token)) {
 
-    $box_site_menu->snippets = [
+    $site_navigation->snippets = [
       'categories' => [],
       'brands' => [],
       'pages' => [],
@@ -17,7 +17,7 @@
     $categories_query = functions::catalog_categories_query(0);
 
     while ($category = database::fetch($categories_query)) {
-      $box_site_menu->snippets['categories'][$category['id']] = [
+      $site_navigation->snippets['categories'][$category['id']] = [
         'type' => 'category',
         'id' => $category['id'],
         'title' => $category['name'],
@@ -36,7 +36,7 @@
     );
 
     while ($brand = database::fetch($pages_query)) {
-      $box_site_menu->snippets['brands'][$brand['id']] = [
+      $site_navigation->snippets['brands'][$brand['id']] = [
         'type' => 'brand',
         'id' => $brand['id'],
         'title' => $brand['name'],
@@ -56,7 +56,7 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $box_site_menu->snippets['pages'][$page['id']] = [
+      $site_navigation->snippets['pages'][$page['id']] = [
         'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],
@@ -65,11 +65,11 @@
       ];
     }
 
-    cache::set($box_site_menu_cache_token, $box_site_menu->snippets);
+    cache::set($site_navigation_cache_token, $site_navigation->snippets);
   }
 
 // Shopping Cart
-  $box_site_menu->snippets['shopping_cart'] = [
+  $site_navigation->snippets['shopping_cart'] = [
     'items' => [],
     'link' => document::ilink('shopping_cart'),
     'num_items' => cart::$total['items'],
@@ -78,15 +78,15 @@
 
   foreach (cart::$items as $key => $item) {
     $item['thumbnail'] = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 64, 64, 'FIT_USE_WHITESPACING');
-    $box_site_menu->snippets['shopping_cart']['items'][$key] = $item;
+    $site_navigation->snippets['shopping_cart']['items'][$key] = $item;
   }
 
   if (!empty(customer::$data['display_prices_including_tax'])) {
-    $box_site_menu->snippets['shopping_cart']['total'] = currency::format(cart::$total['value'] + cart::$total['tax']);
+    $site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['value'] + cart::$total['tax']);
   } else {
-    $box_site_menu->snippets['shopping_cart']['total'] = currency::format(cart::$total['value']);
+    $site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['value']);
   }
 
   functions::draw_lightbox();
 
-  echo $box_site_menu;
+  echo $site_navigation;

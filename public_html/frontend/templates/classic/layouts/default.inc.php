@@ -31,11 +31,11 @@
     </div>
   </header>
 
-  <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_site_menu.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'frontend/partials/site_navigation.inc.php'); ?>
 
   {{content}}
 
-  <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_site_footer.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_APP . 'frontend/partials/site_footer.inc.php'); ?>
 </div>
 
 <a id="scroll-up" class="hidden-print" href="#">

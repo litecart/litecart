@@ -1,4 +1,4 @@
-<div id="site-menu" style="grid-area: navigation;">
+<div id="site-navigation" style="grid-area: navigation;">
   <div class="container navbar">
 
     <div class="navbar-header">
@@ -182,7 +182,7 @@
     $(this).closest('.navbar').toggleClass('expanded');
   });
 
-  $('#site-menu .search').click(function(){
+  $('#site-navigation .search').click(function(){
     $(this).find('input[name="query"]').focus();
   });
 </script>

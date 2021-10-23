@@ -50,7 +50,7 @@ body main {
     max-height: 80px;
   }
 }
-#site-menu {
+#site-navigation {
   background-color: var(--navigation-background-color);
   margin-bottom: calc(var(--gutter-size) *2);
   color: var(--navigation-text-color);
@@ -59,21 +59,21 @@ body main {
   z-index: 1;
   backdrop-filter: saturate(200%) blur(5px);
 }
-#site-menu a {
+#site-navigation a {
   color: inherit;
 }
-#site-menu .search form {
+#site-navigation .search form {
   padding: var(--gutter-size);
 }
-#site-menu .shopping-cart.filled > a {
+#site-navigation .shopping-cart.filled > a {
   background-color: var(--navigation-cart-color);
 }
-#site-menu .shopping-cart .badge {
+#site-navigation .shopping-cart .badge {
   animation: pulsating 2s linear;
   animation-iteration-count: infinite;
 }
 @media (min-width: 768px) {
-  #site-menu .shopping-cart .dropdown-menu {
+  #site-navigation .shopping-cart .dropdown-menu {
     width: 320px;
   }
 }

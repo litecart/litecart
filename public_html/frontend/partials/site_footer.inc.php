@@ -1,10 +1,10 @@
 <?php
-  $box_site_footer_cache_token = cache::token('box_site_footer', ['language', 'login', 'region']);
-  if (cache::capture($box_site_footer_cache_token)) {
+  $site_footer_cache_token = cache::token('site_footer', ['language', 'login', 'region']);
+  if (cache::capture($site_footer_cache_token)) {
 
-    $box_site_footer = new ent_view(FS_DIR_TEMPLATE . 'partials/box_site_footer.inc.php');
+    $site_footer = new ent_view(FS_DIR_TEMPLATE . 'partials/site_footer.inc.php');
 
-    $box_site_footer->snippets = [
+    $site_footer->snippets = [
       'pages' => [],
       'modules' => [],
       'social_bookmarks' => [],
@@ -19,7 +19,7 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $box_site_footer->snippets['pages'][$page['id']] = [
+      $site_footer->snippets['pages'][$page['id']] = [
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::href_ilink('information', ['page_id' => $page['id']]),
@@ -35,7 +35,7 @@
     );
 
     while ($page = database::fetch($pages_query)) {
-      $box_site_footer->snippets['customer_service_pages'][$page['id']] = [
+      $site_footer->snippets['customer_service_pages'][$page['id']] = [
         'id' => $page['id'],
         'title' => $page['title'],
         'link' => document::href_ilink('customer_service', ['page_id' => $page['id']]),
@@ -55,7 +55,7 @@
       if (empty($module['settings']['icon'])) continue;
       if (!is_file(FS_DIR_APP . $module['settings']['icon'])) continue;
 
-      $box_site_footer->snippets['modules'][$module['settings']['icon']] = [
+      $site_footer->snippets['modules'][$module['settings']['icon']] = [
         'id' => $module['id'],
         //'title' => $module['name'],
         'icon' => functions::image_thumbnail(FS_DIR_APP . $module['settings']['icon'], 72, 32, 'FIT_USE_WHITESPACING'),
@@ -73,7 +73,7 @@
 
     foreach ($social_media as $platform) {
       if (!$link = settings::get($platform.'_link')) continue;
-      $box_site_footer->snippets['social_bookmarks'][$platform] = [
+      $site_footer->snippets['social_bookmarks'][$platform] = [
         'type' => $platform,
         'title' => ucfirst($platform),
         'icon' => 'fa-'.$platform,
@@ -81,7 +81,7 @@
       ];
     }
 
-    echo $box_site_footer;
+    echo $site_footer;
 
-    cache::end_capture($box_site_footer_cache_token);
+    cache::end_capture($site_footer_cache_token);
   }
