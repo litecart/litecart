@@ -648,17 +648,17 @@
           <div class="row" style="max-width: 640px;">
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_min', true, 2, 0); ?>
             </div>
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_max', true, 2, 0); ?>
             </div>
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_step', true, null, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_step', true, 2, 0); ?>
             </div>
 
             <div class="form-group col-md-3">
