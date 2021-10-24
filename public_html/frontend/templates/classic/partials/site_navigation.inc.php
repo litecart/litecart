@@ -32,7 +32,7 @@
 
       <?php if ($brands) { ?>
       <li class="brands dropdown">
-        <a href="#" data-toggle="dropdown"><?php echo language::translate('title_brands', 'Manufacturers'); ?></a>
+        <a href="#" data-toggle="dropdown"><?php echo language::translate('title_brands', 'Brands'); ?></a>
         <ul class="dropdown-menu">
           <?php foreach ($brands as $item) { ?>
           <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>

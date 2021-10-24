@@ -259,9 +259,14 @@
     'ZW' => 'Zimbabwe',
   ];
 
+// Include config
+  if (is_file(__DIR__ . '/../storage/config.inc.php') || is_file(__DIR__ . '/../includes/config.inc.php')) {
+    $installation_detected = true;
+  }
+
 ?>
 
-<?php if (file_exists('../includes/config.inc.php')) { ?>
+<?php if (!empty($installation_detected)) { ?>
 <link rel="stylesheet" href="../assets/featherlight/featherlight.min.css" />
 
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">

@@ -4,7 +4,7 @@
 
     <section id="box-brands">
 
-      <h1 class="title"><?php echo language::translate('title_brands', 'Manufacturers'); ?></h1>
+      <h1 class="title"><?php echo language::translate('title_brands', 'Brands'); ?></h1>
 
       <div class="listing brands columns">
 

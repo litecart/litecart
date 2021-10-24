@@ -59,7 +59,7 @@ INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, 
 (3, 1, 'staff', 'This is a hidden message by the store crew.', 1, NOW()),
 (4, 1, 'system', 'Order status changed to Dispatched', 1, NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `stock_option_id`, `options`, `name`, `sku`, `quantity`, `price`, `tax`, `weight`, `weight_unit`) VALUES
+INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `stock_item_id`, `options`, `name`, `sku`, `quantity`, `price`, `tax`, `weight`, `weight_unit`) VALUES
 (1, 1, 1, '1-1', '1', 'Yellow Duck', 'RD001-S', '1.0000', '8', '0', '1.0000', 'kg');
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_totals` (`id`, `order_id`, `module_id`, `title`, `value`, `tax`, `calculate`, `priority`) VALUES
@@ -119,7 +119,7 @@ INSERT INTO `lc_products_info` (`id`, `product_id`, `language_code`, `name`, `sh
 (4, 4, 'en', 'Blue Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Blue\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic'),
 (5, 5, 'en', 'Purple Duck', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue.', '<p>\r\n	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin ante massa, eget ornare libero porta congue. Cras scelerisque dui non consequat sollicitudin. Sed pretium tortor ac auctor molestie. Nulla facilisi. Maecenas pulvinar nibh vitae lectus vehicula semper. Donec et aliquet velit. Curabitur non ullamcorper mauris. In hac habitasse platea dictumst. Phasellus ut pretium justo, sit amet bibendum urna. Maecenas sit amet arcu pulvinar, facilisis quam at, viverra nisi. Morbi sit amet adipiscing ante. Integer imperdiet volutpat ante, sed venenatis urna volutpat a. Proin justo massa, convallis vitae consectetur sit amet, facilisis id libero. \r\n</p>', '', '', 'Colors\r\nBody: Purple\r\nEyes: Black\r\nBeak: Orange\r\n\r\nOther\r\nMaterial: Plastic');
 -- --------------------------------------------------------
-INSERT INTO `lc_products_stock_options` (`id`, `product_id`, `stock_item_id`, `priority`) VALUES
+INSERT INTO `lc_products_to_stock_items` (`id`, `product_id`, `stock_item_id`, `priority`) VALUES
 (1, 1, 1, 0),
 (2, 1, 2, 1),
 (3, 1, 3, 2);

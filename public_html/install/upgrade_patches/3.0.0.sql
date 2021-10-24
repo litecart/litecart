@@ -77,7 +77,7 @@ CREATE TABLE `lc_products_to_stock_items` (
 CREATE TABLE `lc_stock_transactions` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(128) NOT NULL DEFAULT '',
-  `notes` MEDIUMTEXT NOT NULL DEFAULT '',
+  `description` MEDIUMTEXT NOT NULL DEFAULT '',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
@@ -87,7 +87,6 @@ CREATE TABLE `lc_stock_transactions_contents` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `warehouse_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `quantity_adjustment` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
   PRIMARY KEY (`id`)
 );
@@ -101,6 +100,8 @@ RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 RENAME TABLE `lc_products_options` TO `lc_products_configurations`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options_values` TO `lc_products_configurations_values`;
+-- --------------------------------------------------------
+RENAME TABLE `lc_products_options_stock` TO `lc_stock_items`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_brands_info`
 CHANGE COLUMN `manufacturer_id` `brand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -127,7 +128,7 @@ CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT ''
+CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
@@ -149,18 +150,17 @@ ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_transaction_
 ADD INDEX `uid` (`uid`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
-ADD COLUMN `stock_option_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
-CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `options` `data` VARCHAR(1024) NOT NULL DEFAULT '',
-CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT,
-ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `length_unit`,
+CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
+CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
+ADD COLUMN `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
+ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `lengh_unit`,
 ADD INDEX `product_id` (`product_id`),
-ADD INDEX `stock_option_id` (`stock_option_id`);
+ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
@@ -170,6 +170,7 @@ DROP COLUMN `priority`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_stock_items`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `combination` `attributes` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `sku` `sku` VARCHAR(32) NOT NULL DEFAULT '',
 ADD COLUMN `gtin` VARCHAR(32) NOT NULL DEFAULT '' AFTER `sku`,
 ADD COLUMN `mpn` VARCHAR(32) NOT NULL DEFAULT '' AFTER `gtin`,
@@ -181,7 +182,7 @@ CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 ADD COLUMN `purchase_price` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `length_unit`,
-ADD COLUMN `purchas_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '' AFTER `purchase_price`,
+ADD COLUMN `purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '' AFTER `purchase_price`,
 ADD COLUMN `quantity_unit_id` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `quantity`,
 ADD COLUMN `reorder_point` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `quantity_unit_id`,
 ADD COLUMN `reordered` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `reorder_point`,
@@ -195,7 +196,7 @@ ADD INDEX `gtin` (`gtin`),
 ADD INDEX `mpn` (`mpn`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
-ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`;
+ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`,
 CHANGE COLUMN `setting_group_key` `group_key` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL DEFAULT '',
 CHANGE COLUMN `value` `value` VARCHAR(8192) NOT NULL DEFAULT '',
@@ -204,11 +205,9 @@ ADD INDEX `group_key` (`group_key`),
 DROP INDEX `setting_group_key`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_shopping_carts_items`
-ADD COLUMN `cart_id` INT UNSIGNED NOT NULL DEFAULT '0',
+ADD COLUMN `cart_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `customer_id`,
 ADD COLUMN `type` ENUM('product','stock_item','custom') NOT NULL DEFAULT 'product' AFTER `cart_id`,
-ADD COLUMN `parent_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `cart_id`,
-CHANGE COLUMN `product_id` `entity_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-ADD COLUMN `configuration` VARCHAR(512) UNSIGNED NOT NULL DEFAULT '0',
+ADD COLUMN `configuration` VARCHAR(512) NOT NULL DEFAULT '0',
 ADD INDEX `cart_id` (`cart_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_users`
@@ -233,7 +232,7 @@ SET `key` = 'site_info',
 WHERE `key` = 'store_info'
 LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `setting_group_key` = 'site_info' WHERE `setting_group_key` = 'store_info';
+UPDATE `lc_settings` SET `group_key` = 'site_info' WHERE `group_key` = 'store_info';
 -- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
 -- --------------------------------------------------------
@@ -266,8 +265,8 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('social_media', 'global', 'Twitter Link', 'The link to your Twitter page.', 'twitter_link', '', 'url()', 50, NOW(), NOW()),
 ('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 60, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT IGNORE INTO `lc_shopping_carts` (cart_uid, customer_id, date_updated, date_created)
-SELECT cart_uid, customer_id, date_updated, date_created FROM `lc_shopping_carts`
+INSERT IGNORE INTO `lc_shopping_carts` (uid, customer_id, date_updated, date_created)
+SELECT cart_uid, customer_id, date_updated, date_created FROM `lc_shopping_carts_items`
 GROUP BY cart_uid, customer_id
 ORDER BY id DESC;
 -- --------------------------------------------------------
@@ -277,12 +276,12 @@ SET sci.cart_id = sc.id;
 -- --------------------------------------------------------
 ALTER TABLE `lc_shopping_carts_items`
 DROP COLUMN `cart_uid`,
-DROP COLUMN `customer_id`
+DROP COLUMN `customer_id`,
 DROP COLUMN `key`;
 -- --------------------------------------------------------
 UPDATE `lc_settings`
-SET ´function` = 'regional_text()'
-WHERE ´function` = 'regional_input()';
+SET `function` = 'regional_text()'
+WHERE `function` = 'regional_input()';
 -- --------------------------------------------------------
 UPDATE `lc_orders` o
 LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
@@ -292,8 +291,12 @@ o.subtotal_tax = ot.`tax`;
 DELETE FROM `lc_orders_totals` WHERE module_id = 'ot_subtotal';
 -- --------------------------------------------------------
 UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_stock_items` pso ON (pso.product_id = oi.product_id AND pso.attributes = oi.attributes)
-SET oi.stock_option_id = pso.id;
+LEFT JOIN `lc_stock_items` si ON (si.product_id = oi.product_id AND si.attributes = oi.attributes)
+SET oi.stock_item_id = si.id;
+-- --------------------------------------------------------
+INSERT INTO `lc_products_to_stock_items`
+(product_id, stock_item_id)
+SELECT product_id, id FROM `lc_stock_items`;
 -- --------------------------------------------------------
 DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
 -- --------------------------------------------------------
@@ -303,3 +306,40 @@ SET `key` = 'jobs_last_push',
   `description` = 'Time when background jobs were last pushed.'
 WHERE `key` = 'jobs_last_run'
 LIMIT 1;
+-- --------------------------------------------------------
+UPDATE `lc_stock_items` si
+LEFT JOIN `lc_products` p on (p.id = si.product_id) SET
+si.gtin = if(si.gtin != '', si.gtin, p.gtin),
+si.mpn = if(si.mpn != '', si.mpn, p.mpn),
+si.taric = if(si.taric != '', si.taric, p.taric),
+si.weight = if (si.weight > 0, si.weight, p.weight),
+si.weight_unit = if(si.weight_unit != '', si.weight_unit, p.weight_unit),
+si.length = if (si.length > 0, si.length, p.length),
+si.width = if (si.width > 0, si.width, p.width),
+si.height = if (si.height > 0, si.height, p.height),
+si.length_unit = if(si.length_unit != '', si.length_unit, p.length_unit),
+si.purchase_price = p.purchase_price,
+si.purchase_price_currency_code = p.purchase_price_currency_code,
+si.quantity_unit_id = if(si.quantity_unit_id > 0, si.quantity_unit_id, p.quantity_unit_id);
+-- --------------------------------------------------------
+INSERT INTO `lc_stock_transactions` (id, name, description)
+VALUES (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');
+-- --------------------------------------------------------
+INSERT INTO `lc_stock_transactions_contents`
+(transaction_id, stock_item_id, quantity_adjustment)
+SELECT transaction_id, stock_item_id, quantity_adjustment FROM (
+  SELECT '1' AS transaction_id, stock_item_id, SUM(quantity) as quantity_adjustment FROM (
+    SELECT si.id AS stock_item_id, si.quantity FROM `lc_stock_items` si
+    UNION
+    SELECT oi.stock_item_id, oi.quantity FROM `lc_orders_items` oi
+	 WHERE oi.order_id IN (
+      SELECT id FROM `lc_orders` o
+      WHERE o.order_status_id IN (
+        SELECT id FROM `lc_order_statuses` os
+        WHERE os.is_sale
+      )
+    )
+  ) x
+  GROUP BY x.stock_item_id
+  ORDER BY x.stock_item_id
+) y;

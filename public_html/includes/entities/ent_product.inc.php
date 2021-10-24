@@ -135,11 +135,11 @@
 
     // Stock Items
       $products_stock_items_query = database::query(
-        "select pso.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.reordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_stock_options pso
-        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-        left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
-        where pso.product_id = ". (int)$this->data['id'] ."
-        order by pso.priority;"
+        "select p2si.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.reordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_to_stock_items
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
+        left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+        where p2si.product_id = ". (int)$this->data['id'] ."
+        order by p2si.priority;"
       );
 
       while ($stock_item = database::fetch($products_stock_items_query)) {
@@ -354,7 +354,7 @@
 
     // Delete stock items
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."products_stock_options
+        "delete from ". DB_TABLE_PREFIX ."products_to_stock_items
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['stock_options'], 'id')) ."');"
       );
@@ -367,7 +367,7 @@
 
           if (empty($stock_item['id'])) {
             database::query(
-              "insert into ". DB_TABLE_PREFIX ."products_stock_options
+              "insert into ". DB_TABLE_PREFIX ."products_to_stock_items
               (product_id, stock_item_id)
               values (". (int)$this->data['id'] .", ". (int)$stock_item['stock_item_id'] .");"
             );
@@ -375,7 +375,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_PREFIX ."products_stock_options
+            "update ". DB_TABLE_PREFIX ."products_to_stock_items
             set priority = ". (int)$i++ ."
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$stock_item['id'] ."
@@ -526,13 +526,13 @@
       $this->save();
 
       database::query(
-        "delete p, pi, pa, pp, pc, po, pov, pos, ptc
+        "delete p, pi, pa, pp, pc, po, pov, p2si, ptc
         from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.id = p.id)
         left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
         left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
         left join ". DB_TABLE_PREFIX ."products_campaigns pc on (pc.product_id = p.id)
-        left join ". DB_TABLE_PREFIX ."products_stock_options pos on (pos.product_id = p.id)
+        left join ". DB_TABLE_PREFIX ."products_to_stock_items p2si on (p2si.product_id = p.id)
         left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
         where p.id = ". (int)$this->data['id'] .";"
       );

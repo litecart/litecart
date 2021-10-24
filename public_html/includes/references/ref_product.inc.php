@@ -268,9 +268,8 @@
           $this->_data['quantity'] = null;
 
           $stock_options_query = database::query(
-            "select sum(si.quantity) as sum_quanity from ". DB_TABLE_PREFIX ."products_stock_options pso
-            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-            where pso.product_id = ". (int)$this->_data['id'] .";"
+            "select sum(si.quantity) as sum_quanity from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+            where p2si.product_id = ". (int)$this->_data['id'] .";"
           );
 
           if (!$stock_options = database::fetch($stock_options_query)) return;
@@ -310,12 +309,12 @@
           $this->_data['stock_options'] = [];
 
           $query = database::query(
-            "select pso.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, si.image from ". DB_TABLE_PREFIX ."products_stock_options pso
-            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = pso.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, si.image from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+            left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
+            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
             where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
-            order by pso.priority asc;"
+            order by p2si.priority asc;"
           );
 
           while ($row = database::fetch($query)) {

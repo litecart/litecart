@@ -44,7 +44,7 @@
       $fields = [
         'code',
         'status',
-        'manufacturer_id',
+        'brand_id',
         'supplier_id',
         'delivery_status_id',
         'sold_out_status_id',

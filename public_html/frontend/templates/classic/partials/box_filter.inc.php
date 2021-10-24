@@ -52,7 +52,7 @@
       <div>
         <div class="dropdown">
           <div class="form-select" data-toggle="dropdown">
-            <?php echo language::translate('title_manufacturers', 'Brands'); ?>
+            <?php echo language::translate('title_brands', 'Brands'); ?>
           </div>
           <ul class="dropdown-menu">
             <?php foreach ($brands as $brand) { ?>

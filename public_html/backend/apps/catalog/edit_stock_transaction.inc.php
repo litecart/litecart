@@ -24,7 +24,7 @@
 
       $fields = [
         'name',
-        'notes',
+        'description',
         'contents',
       ];
 
@@ -84,8 +84,8 @@
 
       <div class="row">
         <div class="form-group col-md-8">
-          <label><?php echo language::translate('title_notes', 'Notes'); ?></label>
-          <?php echo functions::form_draw_textarea('notes', true, 'style="height: 100px;"'); ?>
+          <label><?php echo language::translate('title_description', 'Description'); ?></label>
+          <?php echo functions::form_draw_textarea('description', true, 'style="height: 100px;"'); ?>
         </div>
       </div>
 

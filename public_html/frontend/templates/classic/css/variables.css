@@ -1,12 +1,6 @@
-/* Fonts */
-/*@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap');*/
 /* Variables */
 :root {
   /* General */
-  --border-radius: 4px;
-  --gutter-size: 20px;
-  --link-text-color: #2e9cd4;
-  --shadow-color: rgba(0, 0, 0, 0.3);
   --whitespace-color: #fff;
   --site-background-color: #f0f0f0;
   --page-background-color: #fff;
@@ -73,9 +67,6 @@
   --breadcrumbs-text-color: #333;
   --breadcrumbs-border-color: transparent;
   /* Input */
-  --input-background-color: #fff;
-  --input-padding-x: 1em;
-  --input-padding-y: 0.5em;
   --input-text-color: #000;
   /* Pills */
   --pills-background-color: #f3f3f3;
@@ -102,11 +93,18 @@
   --pagination-hover-text-color: var(--default-text-color);
   /* Footer */
   --footer-background-color: #fff;
-  --footer-title-color: #333;
   --footer-text-color: #333;
   /* Copyright */
   --copyright-background-color: #fff;
   --copyright-text-color: #333;
+  --border-radius: 4px;
+  --gutter-size: 20px;
+  --link-text-color: #2e9cd4;
+  --input-background-color: #fff;
+  --input-padding-x: 1em;
+  --input-padding-y: 0.5em;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --image-whitespace-color: #fff;
 }
 @media (min-width: 1200px) {
   :root {

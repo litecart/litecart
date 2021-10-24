@@ -1,20 +1,3 @@
-<style>
-#box-latest-products .products {
-  padding: 2em 0;
-  margin-bottom: -1em;
-  margin-top: -1em;
-}
-#box-latest-products .product {
-  max-width: 200px;
-}
-@media (min-width: 768px) {
-  #box-latest-products .products {
-    margin-bottom: -2em;
-    margin-top: -2em;
-  }
-}
-</style>
-
 <section id="box-latest-products" class="box box-default">
 
   <h2 class="title"><?php echo language::translate('title_latest_products', 'Latest Products'); ?></h2>

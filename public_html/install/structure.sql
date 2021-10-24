@@ -400,7 +400,7 @@ CREATE TABLE `lc_orders_items` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `stock_option_id` INT(11) NOT NULL DEFAULT '0',
+  `stock_item_id` INT(11) NOT NULL DEFAULT '0',
   `options` VARCHAR(4096) NOT NULL DEFAULT '',
   `name` VARCHAR(128) NOT NULL DEFAULT '',
   `data` VARCHAR(1024) NOT NULL DEFAULT '',
@@ -420,7 +420,7 @@ CREATE TABLE `lc_orders_items` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `product_id` (`product_id`),
-  KEY `stock_option_id` (`stock_option_id`)
+  KEY `stock_item_id` (`stock_item_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders_totals` (
@@ -586,19 +586,6 @@ CREATE TABLE `lc_products_info` (
   FULLTEXT KEY `description` (`description`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
-CREATE TABLE `lc_products_stock_options` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `price_operator` ENUM('+','%','*','=') NOT NULL DEFAULT '+',
-  `USD` DECIMAL(11,4) NOT NULL DEFAULT '0',
-  `EUR` DECIMAL(11,4) NOT NULL DEFAULT '0',
-  `priority` INT(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `stock_option` (`product_id`, `stock_item_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
--- --------------------------------------------------------
 CREATE TABLE `lc_products_prices` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -612,6 +599,19 @@ CREATE TABLE `lc_products_to_categories` (
    `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
    `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
    PRIMARY KEY(`product_id`, `category_id`)
+) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- --------------------------------------------------------
+CREATE TABLE `lc_products_to_stock_items` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `price_operator` ENUM('+','%','*','=') NOT NULL DEFAULT '+',
+  `USD` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `EUR` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `priority` INT(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `stock_option` (`product_id`, `stock_item_id`),
+  KEY `product_id` (`product_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_quantity_units` (
@@ -715,7 +715,7 @@ CREATE TABLE `lc_shopping_carts_items` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`cart_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 	`product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`stock_option_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
 	`key` VARCHAR(12) NOT NULL DEFAULT '',
 	`name` VARCHAR(64) NOT NULL DEFAULT '',
 	`image` VARCHAR(128) NOT NULL DEFAULT '',
@@ -740,7 +740,7 @@ CREATE TABLE `lc_shopping_carts_items` (
 	PRIMARY KEY (`id`),
 	INDEX `cart_id` (`cart_id`),
 	INDEX `product_id` (`product_id`),
-	INDEX `stock_option_id` (`stock_option_id`)
+	INDEX `stock_item_id` (`stock_item_id`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_slides` (
@@ -835,7 +835,7 @@ CREATE TABLE `lc_stock_items_info` (
 CREATE TABLE `lc_stock_transactions` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(128) NOT NULL DEFAULT '',
-  `notes` MEDIUMTEXT NOT NULL DEFAULT '',
+  `description` MEDIUMTEXT NOT NULL DEFAULT '',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

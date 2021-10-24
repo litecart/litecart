@@ -33,11 +33,12 @@
   require_once __DIR__ . '/includes/header.inc.php';
   require_once __DIR__ . '/includes/functions.inc.php';
 
-  if (is_file(__DIR__ . '/../includes/config.inc.php')) {
-    include(__DIR__ . '/../includes/config.inc.php');
-
-  } else if (is_file(__DIR__ . '/../storage/config.inc.php')) {
+// Include config
+  if (is_file(__DIR__ . '/../storage/config.inc.php')) {
     include(__DIR__ . '/../storage/config.inc.php');
+
+  } else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // <3.0
+    include(__DIR__ . '/../includes/config.inc.php');
 
   } else {
     echo '<h2>No Installation Detected</h2>' . PHP_EOL
@@ -46,9 +47,6 @@
     require('includes/footer.inc.php');
     return;
   }
-
-// Include config
-  require_once(__DIR__ . '/../storage/config.inc.php');
 
   if (!defined('DB_CONNECTION_CHARSET')) define('DB_CONNECTION_CHARSET', 'utf8mb4'); // Prior to 1.2.x
   if (!defined('FS_DIR_APP')) define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x

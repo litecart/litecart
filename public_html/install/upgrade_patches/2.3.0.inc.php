@@ -26,10 +26,11 @@
         'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
       ],
     ],
-    [
-      'file'    => FS_DIR_APP . 'includes/config.inc.php',
-      'search'  => "// Database tables",
-      'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
+    FS_DIR_APP . 'includes/config.inc.php' => [
+	    [
+        'search'  => "// Database tables",
+        'replace' => "// Database Tables - Backwards Compatibility (LiteCart <2.3)",
+      ],
     ],
   ], 'abort');
 

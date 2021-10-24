@@ -237,7 +237,7 @@ html {
     top: 0;
   }
 }
-#box-filter .manufacturers ul {
+#box-filter .brands ul {
   max-height: 200px;
   overflow-y: auto;
 }

@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS `lc_products_images`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_info`;
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `lc_products_stock_options`;
+DROP TABLE IF EXISTS `products_to_stock_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_to_categories`;
 -- --------------------------------------------------------

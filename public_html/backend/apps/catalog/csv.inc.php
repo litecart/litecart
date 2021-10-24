@@ -316,7 +316,7 @@
 
           case 'brands':
 
-          // Find manufacturer
+          // Find brand
             if (!empty($row['id']) && $brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;"))) {
               $brand = new ent_brand($brand['id']);
 
@@ -340,11 +340,11 @@
             } else {
 
               if (empty($_POST['insert'])) {
-                echo "Skip inserting new manufacturer on line $line" . PHP_EOL;
+                echo "Skip inserting new brand on line $line" . PHP_EOL;
                 continue 2;
               }
 
-              echo 'Inserting new manufacturer: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
+              echo 'Inserting new brand: '. (!empty($row['name']) ? $row['name'] : "on line $line") . PHP_EOL;
               $batch['counters']['inserted']++;
 
               if (!empty($row['id'])) {
@@ -358,7 +358,7 @@
               }
             }
 
-          // Set new manufacturer data
+          // Set new brand data
             $fields = [
               'status',
               'code',
@@ -372,7 +372,7 @@
               if (isset($row[$field])) $brand->data[$field] = $row[$field];
             }
 
-          // Set manufacturer info data
+          // Set brand info data
             if (!empty($row['language_code'])) {
               $fields = [
                 'short_description',
@@ -455,20 +455,20 @@
               }
             }
 
-            if (empty($row['manufacturer_id']) && !empty($row['manufacturer_name'])) {
-              $manufacturers_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."manufacturers
-                where name = '". database::input($row['manufacturer_name']) ."'
+            if (empty($row['brand_id']) && !empty($row['brand_name'])) {
+              $brands_query = database::query(
+                "select * from ". DB_TABLE_PREFIX ."brands
+                where name = '". database::input($row['brand_name']) ."'
                 limit 1;"
               );
 
-              if ($manufacturer = database::fetch($manufacturers_query)) {
-                $row['manufacturer_id'] = $manufacturer['id'];
+              if ($brand = database::fetch($brands_query)) {
+                $row['brand_id'] = $brand['id'];
               } else {
-                $manufacturer = new ent_manufacturer();
-                $manufacturer->data['name'] = $row['manufacturer_name'];
-                $manufacturer->save();
-                $row['manufacturer_id'] = $manufacturer->data['id'];
+                $brand = new ent_brand();
+                $brand->data['name'] = $row['brand_name'];
+                $brand->save();
+                $row['brand_id'] = $brand->data['id'];
               }
             }
 
@@ -490,7 +490,7 @@
 
             $fields = [
               'status',
-              'manufacturer_id',
+              'brand_id',
               'supplier_id',
               'code',
               'tax_class_id',
@@ -1157,7 +1157,7 @@
                 <?php echo functions::form_draw_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
                 <?php echo functions::form_draw_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['brands', language::translate('title_brands', 'Manufacturers')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_draw_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
                 <?php echo functions::form_draw_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>

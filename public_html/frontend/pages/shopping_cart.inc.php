@@ -41,7 +41,7 @@
   foreach (cart::$items as $key => $item) {
     $_page->snippets['items'][$key] = [
       'product_id' => $item['product_id'],
-      'stock_option_id' => $item['stock_option_id'],
+      'stock_item_id' => $item['stock_item_id'],
       'name' => $item['name'],
       'sku' => $item['sku'],
       'image' => [

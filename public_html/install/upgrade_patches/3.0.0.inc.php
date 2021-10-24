@@ -136,6 +136,8 @@
     FS_DIR_APP . 'cache/index.html',
     FS_DIR_APP . 'data/.htaccess',
     FS_DIR_APP . 'data/bad_urls.txt',
+    FS_DIR_APP . 'data/blacklist.txt',
+    FS_DIR_APP . 'data/whitelist.txt',
     FS_DIR_APP . 'data/captcha.ttf',
     FS_DIR_APP . 'data/index.html',
     FS_DIR_APP . 'images/index.html',
@@ -156,8 +158,8 @@
     FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_region.inc.php',
     FS_DIR_APP . 'includes/boxes/box_similar_products.inc.php',
-    FS_DIR_APP . 'includes/boxes/box_site_footer.inc.php',
-    FS_DIR_APP . 'includes/boxes/box_site_menu.inc.php',
+    FS_DIR_APP . 'includes/boxes/site_footer.inc.php',
+    FS_DIR_APP . 'includes/boxes/site_navigation.inc.php',
     FS_DIR_APP . 'includes/boxes/box_slides.inc.php',
     FS_DIR_APP . 'includes/boxes/index.html',
     FS_DIR_APP . 'includes/functions/func_password.inc.php',
@@ -308,8 +310,8 @@
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_recently_viewed_products.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_region.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_similar_products.inc.php',
-    FS_DIR_APP . 'includes/templates/default.catalog/views/box_site_footer.inc.php',
-    FS_DIR_APP . 'includes/templates/default.catalog/views/box_site_menu.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/views/site_footer.inc.php',
+    FS_DIR_APP . 'includes/templates/default.catalog/views/site_navigation.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/box_slides.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/breadcrumbs.inc.php',
     FS_DIR_APP . 'includes/templates/default.catalog/views/index.html',
@@ -377,7 +379,7 @@
   }
 
   foreach (glob(FS_DIR_APP . 'data/*') as $file) {
-    perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE . 'data/', $file)]);
+    perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE, $file)]);
   }
 
   foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
@@ -551,7 +553,7 @@
                    . PHP_EOL
                    . "// Character Set Encoding" . PHP_EOL
                    . "  mb_internal_encoding('UTF-8');" . PHP_EOL
-                   . "  mb_regex_encoding('UTF-8');" . PHP_EOL
+                   . "  mb_regex_encoding('UTF-8');" . PHP_EOL,
         'regexp'  => true,
       ],
     ],
@@ -567,28 +569,28 @@
   }
 
 // Separate product configurations from stock options
-  $stock_options_query = database::query(
-    "select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+  $stock_items_query = database::query(
+    "select * from ". DB_TABLE_PREFIX ."stock_items;"
   );
 
-  while ($stock_option = database::fetch($stock_options_query )) {
-    foreach (explode(',', $stock_option['attributes']) as $pair) {
+  while ($stock_item = database::fetch($stock_items_query )) {
+    foreach (explode(',', $stock_item['attributes']) as $pair) {
 
       list($group_id, $value_id) = explode('-', $pair);
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_configurations_values
-        where product_id = ". (int)$stock_option['product_id'] ."
+        where product_id = ". (int)$stock_item['product_id'] ."
         and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
       );
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_configurations
-        where product_id = ". (int)$stock_option['product_id'] ."
+        where product_id = ". (int)$stock_item['product_id'] ."
         and group_id = ". (int)$group_id ."
         and product_id not in (
           select product_id from ". DB_TABLE_PREFIX ."products_configurations_values
-          where product_id = ". (int)$stock_option['product_id'] ."
+          where product_id = ". (int)$stock_item['product_id'] ."
           and group_id = ". (int)$group_id ."
         );"
       );
@@ -600,17 +602,23 @@
     DROP COLUMN `attributes`;"
   );
 
+  database::query(
+    "ALTER TABLE `lc_stock_items`
+    DROP COLUMN `product_id`,
+    DROP COLUMN `attributes`;"
+  );
+
  // Migrate PHP serialized configurations to JSON
   $order_items_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."orders_items;"
   );
 
   while ($item = database::fetch($order_items_query)) {
-    $item['data'] = unserialize($item['data']);
+    $item['configuration'] = unserialize($item['configuration']);
 
     database::query(
       "update ". DB_TABLE_PREFIX ."orders_items
-      set data = '". (!empty($item['data']) ? json_encode($item['data'], JSON_UNESCAPED_SLASHES) : '') ."'
+      set configuration = '". (!empty($item['configuration']) ? json_encode($item['configuration'], JSON_UNESCAPED_SLASHES) : '') ."'
       where id = ". (int)$item['id'] ."
       limit 1;"
     );
@@ -633,10 +641,10 @@
 
 // Set subtotal for all previous orders
   database::query(
-    "update `". DB_TABLE_PREFIX ."`orders o
+    "update ". DB_TABLE_PREFIX ."orders o
     left join (
       select order_id, sum(quantity * price) as subtotal, sum(quantity * tax) as subtotal_tax
-      from `". DB_TABLE_PREFIX ."`orders_items
+      from ". DB_TABLE_PREFIX ."orders_items
       group by order_id
     ) oi on (oi.order_id = o.id)
     set o.subtotal = if(oi.subtotal, oi.subtotal, 0),
@@ -687,13 +695,13 @@
     }
 
     database::query(
-      "alter table `". DB_DATABASE ."`.`". $table['TABLE_NAME'] ."`
+      "alter table `". $table['TABLE_NAME'] ."`
       convert to character set utf8mb4 collate ". database::input($new_collation) .";"
     );
 
     if (!empty($found_aria)) {
       database::query(
-        "alter table `". DB_DATABASE ."`.`". $table['TABLE_NAME'] ."`
+        "alter table `". $table['TABLE_NAME'] ."`
         engine=Aria;"
       );
     }
