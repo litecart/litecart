@@ -1,16 +1,21 @@
 .listing {
   display: grid;
+  &[data-toggle="momentumScroll"] {
+    flex-wrap: nowrap;
+    padding: 2em;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
 
-  &.scrollable {
-    grid-auto-flow: column;
-    scroll-snap-type: x proximity;
-    scroll-behavior: smooth;
-    overflow-x: scroll;
-    //&::-webkit-scrollbar {
-    //  display: none;
-    //}
-    > * {
-      scroll-snap-align: start;
+    &::-webkit-scrollbar {
+      height: 7.5px;
+      * {
+        background: transparent;
+      }
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,.25) !important;
+      border-radius: 6px;
     }
   }
 

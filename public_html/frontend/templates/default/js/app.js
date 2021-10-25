@@ -249,136 +249,6 @@ $(document).ajaxComplete(function(e, xhr, settings) {
 
     var timerCart = setInterval('updateCart()', 60e3); // Keeps session alive
   }
-*/
-
-/*
- * jQuery Momentum Scroll
- * by LiteCart
- */
-
-+function($) {
-
-  $.fn.momentumScroll = function(){
-    this.each(function(){
-
-      this.$element = $(this);
-      this.clicked = null;
-      this.dragging = false;
-      this.clickX = 0;
-      this.scrollX = 0;
-      this.velX = 0;
-      this.momentumID = null;
-
-      this.$element.on({
-
-        'click': function(e) {
-          if (this.dragging) {
-            e.preventDefault();
-          }
-          this.dragging = false;
-        },
-
-        'mousemove': function(e) {
-          if (!this.clicked) return;
-          this.dragging = true;
-          var prevScrollLeft = this.$element.scrollLeft(); // Store the previous scroll position
-          this.$element.scrollLeft(this.scrollX + (this.clickX - e.pageX));
-          this.velX = this.$element.scrollLeft() - prevScrollLeft; // Compare change in position to work out drag speed
-        },
-
-        'mousedown': function(e) {
-          e.preventDefault();
-          this.clicked = true;
-          this.scrollX = this.$element.scrollLeft();
-          this.clickX = e.pageX;
-          this.$element.css('cursor', 'grabbing');
-        },
-
-        'mouseup': function(e) {
-          e.preventDefault();
-          self = this;
-          this.clicked = false;
-          var momentumLoop = function() {
-            self.$element.scrollLeft( self.$element.scrollLeft() + self.velX ); // Apply the velocity to the scroll position
-            self.velX *= 0.90; // Slow the velocity slightly
-            if (Math.abs(self.velX) > 0.5){ // Still moving?
-              self.momentumID = requestAnimationFrame(momentumLoop); // Keep looping
-            }
-          }
-          cancelAnimationFrame(self.momentumID);
-          self.momentumID = requestAnimationFrame(momentumLoop);
-          self.$element.css('cursor', 'grab');
-        },
-
-        'mouseleave': function(e) {
-          this.clicked = false;
-          this.$element.css('cursor', 'grab');
-        }
-
-      });
-    });
-  }
-
-  $('[data-toggle*="momentumScroll"]').momentumScroll();
-
-}(jQuery);
-
-/*
- * jQuery Auto Scroll
- * by LiteCart
- */
-
-+function($) {
-
-  $.fn.autoScroll = function(){
-    this.each(function(){
-
-      this.$element = $(this);
-      this.scrollInterval = null;
-      this.scrollDirection = 'right';
-
-      this.$element.on({
-
-        'mouseenter': function(e) {
-          this.$element.trigger('scrollStop');
-        },
-
-        'mouseleave': function(e) {
-          if (!this.scrollInterval) {
-            this.$element.trigger('scrollStart');
-          }
-        },
-
-        'scrollStart': function(){
-          var self = this;
-          self.scrollInterval = setInterval(function() {
-            if (self.scrollDirection != 'left') {
-              self.$element.scrollLeft(self.$element.scrollLeft() + 1);
-              if ((self.$element.scrollLeft() + self.$element.width()) >= self.$element[0].scrollWidth) {
-                self.scrollDirection = 'left';
-              }
-            } else {
-              self.$element.scrollLeft(self.$element.scrollLeft() - 1);
-              if (self.$element.scrollLeft() == 0) {
-                self.scrollDirection = 'right';
-              }
-            }
-          }, 100);
-        },
-
-        'scrollStop': function() {
-          clearInterval(this.scrollInterval);
-          this.scrollInterval = null;
-        }
-
-      }).trigger('scrollStart');
-
-    });
-  }
-
-  $('[data-toggle*="autoScroll"]').autoScroll();
-
-}(jQuery);
 
 /*
  * jQuery Placeholders
@@ -424,6 +294,88 @@ $(document).ajaxComplete(function(e, xhr, settings) {
       placeholder.refresh();
     });
   });
+}(jQuery);
+
+/*
+ * jQuery Momentum Scroll
+ * by LiteCart
+ */
+
++function($) {
+
+  $.fn.momentumScroll = function() {
+    this.each(function() {
+
+      var $self = $(this),
+        direction = '',
+        velX = 0,
+        momentumID = null;
+
+      var momentumLoop = function() {
+        if (direction == 'left') {
+          $self.scrollLeft($self.scrollLeft() - velX); // Apply the velocity to the scroll position
+        } else {
+          $self.scrollLeft($self.scrollLeft() + velX);
+        }
+        velX *= 1 - 5 / 100; // Slow down the velocity 5%
+        if (Math.abs(velX) > 0.5) { // Still moving?
+          momentumID = requestAnimationFrame(momentumLoop); // Keep looping
+        }
+      }
+
+      $self.css({
+        "user-select": "none",
+        "touch-action": "pan-x",
+      });
+
+      $(window).on('resize', function(){
+
+        if ($self.prop('scrollWidth') > $self.outerWidth()) {
+
+          if ($self.find('button[name="left"], button[name="right"]').length) return;
+
+          $self.append(
+            '<button name="left" class="btn btn-default" type="button"><i class="fa fa-chevron-left"></i></button>' +
+            '<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
+          );
+
+          $self.find('button[name="left"], button[name="right"]').css({
+            "position": "absolute",
+            "top": "40%",
+            "width": "3em",
+            "height": "3em",
+            "border-radius": "50%",
+            "padding": 0,
+          });
+
+          $self.find('button[name="left"]').css({
+            "left": "-1.5em",
+          });
+
+          $self.find('button[name="right"]').css({
+            "right": "-1.5em",
+          });
+
+          $self.on('click', 'button[name="left"], button[name="right"]', function(e) {
+            if (direction != $(this).attr('name')) {
+              velX = 0;
+            }
+            cancelAnimationFrame(momentumID);
+            velX += 30;
+            direction = $(this).attr('name');
+            momentumID = requestAnimationFrame(momentumLoop);
+          });
+
+        } else {
+          $self.find('button[name="left"], button[name="right"]').remove();
+        }
+
+      }).trigger('resize');
+    });
+  }
+
+  $('[data-toggle*="momentumScroll"]').momentumScroll();
+
 }(jQuery);
 
 /*
