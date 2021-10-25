@@ -1,5 +1,7 @@
 .listing {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+
   &[data-toggle="momentumScroll"] {
     flex-wrap: nowrap;
     padding: 2em;
@@ -19,32 +21,23 @@
     }
   }
 
-  &.products {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: .25em;
-
+  &.categories {
+    gap: .5em;
     @media (min-width: (@media-breakpoint-sm)) {
-      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-      grid-gap: .5em;
+      gap: .75em;
     }
-
     @media (min-width: (@media-breakpoint-md)) {
-      grid-gap: 1em;
+      gap: 1em;
     }
   }
 
-  &.categories {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: .5em;
-
+  &.products {
+    gap: .25em;
     @media (min-width: (@media-breakpoint-sm)) {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      grid-gap: .75em;
+      gap: .5em;
     }
-
     @media (min-width: (@media-breakpoint-md)) {
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      grid-gap: 1em;
+      gap: 1em;
     }
   }
 
@@ -61,6 +54,8 @@
   .category, .brand, .product {
     position: relative;
     overflow: hidden;
+
+    flex: 1 1;
 
     background: var(--whitespace-color);
     border: 1px solid var(--default-border-color);
@@ -80,6 +75,15 @@
   }
 
   .category {
+    min-width: 200px;
+    max-width: 100%;
+    @media (min-width: (@media-breakpoint-sm)) {
+      //grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    @media (min-width: (@media-breakpoint-md)) {
+      //grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+
     .caption {
       background: #f2f2f2;
       padding: .5em 1em;
@@ -109,8 +113,18 @@
   }
 
   .product {
+    min-width: 160px;
+    max-width: 200px;
     position: relative;
     font-size: ~"calc(var(--default-text-size) - 1px)";
+
+    @media (min-width: (@media-breakpoint-sm)) {
+      gap: .5em;
+    }
+
+    @media (min-width: (@media-breakpoint-md)) {
+      gap: 1em;
+    }
 
     .link {
       text-decoration: none;
