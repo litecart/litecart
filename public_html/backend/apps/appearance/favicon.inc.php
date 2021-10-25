@@ -54,7 +54,7 @@
         $icon->addImage($clone);
       }
 
-      $icon->writeImages(FS_DIR_STORAGE . 'images/favicon.ico', true);
+      $icon->writeImages(FS_DIR_STORAGE . 'images/favicons/favicon.ico', true);
 
       $image->destroy();
       $icon->destroy();
@@ -101,17 +101,17 @@
         </div>
 
         <div class="thumbnail" style="display: inline-block;">
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicon-192x192.png'); ?>" width="192" height="192" alt="" />
+          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png'); ?>" width="192" height="192" alt="" />
           favicon-192x192.png
         </div>
 
         <div class="thumbnail" style="display: inline-block;">
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicon-128x128.png'); ?>" width="128" height="128" alt="" />
+          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png'); ?>" width="128" height="128" alt="" />
           favicon-128x128.png
         </div>
 
         <div class="thumbnail" style="display: inline-block;">
-          <img src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents(FS_DIR_STORAGE . 'images/favicon.ico')); ?>" width="48" height="48" alt="" />
+          <img src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents(FS_DIR_STORAGE . 'images/favicons/favicon.ico')); ?>" width="48" height="48" alt="" />
           favicon.ico
         </div>
       </div>

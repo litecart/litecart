@@ -364,6 +364,7 @@
 
   perform_action('move', [
     FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_STORAGE . 'config.inc.php',
+    FS_DIR_APP . 'favicon.ico' => FS_DIR_STORAGE . 'storage/images/favicons/favicon.ico',
   ]);
 
   foreach (glob(FS_DIR_ADMIN . '*.app') as $file) {
@@ -493,6 +494,15 @@
                    . '  # Remove bogus URL query parameters without values (MSNBot)'. PHP_EOL
                    . '  RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$' . PHP_EOL
                    . '  RewriteRule ^(.*)$ $1 [R=301,L]' . PHP_EOL
+                   . PHP_EOL
+                   . ' # Favicons' . PHP_EOL
+                   . ' RewriteCond %{REQUEST_URI} /favicon\.ico$' . PHP_EOL
+                   . ' RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL
+                   . ' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]' . PHP_EOL
+                   . PHP_EOL
+                   . ' RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(-\d{2,3}x\d{2,3})?(-precomposed)?\.png$' . PHP_EOL
+                   . ' RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL
+                   . ' RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]' . PHP_EOL
                    . PHP_EOL
                    . '  # Web path to catalog root' . PHP_EOL,
       ],

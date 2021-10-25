@@ -54,6 +54,15 @@ ErrorDocument 500 "Internal Server Error"
   RewriteCond %{QUERY_STRING} ^[0-9a-z]{6,8}=$
   RewriteRule ^(.*)$ $1 [R=301,L]
 
+  # Favicons
+  RewriteCond %{REQUEST_URI} /favicon\.ico$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]
+
+  RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(\-\d{2,3}x\d{2,3})?(-precomposed)?\.png$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]
+
   # Web path to catalog root
   RewriteBase {BASE_DIR}
 
