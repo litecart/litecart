@@ -466,7 +466,7 @@ END;
     if ($input === true) $input = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
          . '  <input class="form-input" name="'. htmlspecialchars($name) .'" type="'. htmlspecialchars($type) .'" value="'. htmlspecialchars($input) .'" />' . PHP_EOL
          . '</div>';
   }
@@ -476,7 +476,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('site_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -491,7 +491,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('site_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text" style="vertical-align: top;"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
          . '  ' . form_draw_textarea($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -506,7 +506,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('site_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text"><img src="'. document::href_link(WS_DIR_APP . 'assets/languages/'. $language_code .'.png') .'" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
          . '  ' . form_draw_wysiwyg_field($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }

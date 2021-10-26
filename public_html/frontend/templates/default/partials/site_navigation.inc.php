@@ -73,28 +73,6 @@
           </a>
         </li>
 
-        <?php /*if (count(currency::$currencies) > 1) { ?>
-        <li class="currencies dropdown">
-          <a href="#" data-toggle="dropdown"><?php echo currency::$selected['code']; ?> </a>
-          <ul class="dropdown-menu list-unstyled">
-            <?php foreach (currency::$currencies as $currency) { ?>
-            <li><a href="<?php echo document::href_link(null, ['currency' => $currency['code']]); ?>" title="<?php echo currency::$selected['name']; ?>"><?php echo $currency['code']; ?></a></li>
-            <?php } ?>
-          </ul>
-        </li>
-        <?php } ?>
-
-        <?php if (count(language::$languages) > 1) { ?>
-        <li class="languages dropdown" title="<?php echo language::$selected['name']; ?>">
-          <a href="#" data-toggle="dropdown"><img src="<?php echo document::href_link(WS_DIR_APP . 'assets/languages/' . language::$selected['code'] . '.png'); ?>" alt="<?php echo language::$selected['name']; ?>" /> <span class="hidden-md hidden-lg"><?php echo language::$selected['name']; ?></span></a>
-          <ul class="dropdown-menu">
-            <?php foreach (language::$languages as $language) { ?>
-            <li><a href="<?php echo document::href_ilink(null, [], true, [], $language['code']); ?>"><img src="<?php echo document::href_link(WS_DIR_APP . 'assets/languages/' . $language['code'] . '.png'); ?>" alt="<?php echo $language['name']; ?>" /> <?php echo $language['name']; ?></a></li>
-            <?php } ?>
-          </ul>
-        </li>
-        <?php }*/ ?>
-
         <?php if (settings::get('accounts_enabled')) { ?>
         <li class="account dropdown">
           <a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
