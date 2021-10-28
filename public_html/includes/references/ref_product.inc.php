@@ -286,9 +286,8 @@
                 switch ($value['price_operator']) {
 
                   case '+':
-
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = (float)currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
                       $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
                     }
@@ -296,7 +295,7 @@
 
                   case '%':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $this->price * ((float)$value[$this->_currency_code] / 100);
+                      $value['price_adjust'] = $this->price * currency::convert((float)$value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) / 100;
                     } else {
                       $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')] / 100;
                     }
@@ -304,7 +303,7 @@
 
                   case '*':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $this->price * $value[$this->_currency_code];
+                      $value['price_adjust'] = $this->price * currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
                       $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
                     }
@@ -312,7 +311,7 @@
 
                   case '=':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $value[$this->_currency_code] - $this->price;
+                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) - $this->price;
                     } else {
                       $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
                     }
