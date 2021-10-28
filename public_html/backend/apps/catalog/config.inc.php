@@ -20,6 +20,11 @@
         'params' => [],
       ],
       [
+        'title' => language::translate('title_campaigns', 'Campaigns'),
+        'doc' => 'campaigns',
+        'params' => [],
+      ],
+      [
         'title' => language::translate('title_attributes', 'Attributes'),
         'doc' => 'attribute_groups',
         'params' => [],
@@ -74,6 +79,8 @@
       'edit_category' => 'edit_category.inc.php',
       'brands' => 'brands.inc.php',
       'edit_brand' => 'edit_brand.inc.php',
+      'campaigns' => 'campaigns.inc.php',
+      'edit_campaign' => 'edit_campaign.inc.php',
       'suppliers' => 'suppliers.inc.php',
       'edit_supplier' => 'edit_supplier.inc.php',
       'delivery_statuses' => 'delivery_statuses.inc.php',
