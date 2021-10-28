@@ -1,9 +1,11 @@
-LiteCart contains work by the following listed:
-===============================================
+LiteCart contains work by the following third parties:
+======================================================
 
-Iconic Fonts
-------------
-* Fontawesome - MIT License - http://www.fontawesome.io/
+Fonts
+-----
+* (Fontawesome) Fonticons, Inc - SIL Open Font License Version 1.1 - http://www.fontawesome.io/
+* (Roboto) Christian Robertson - Apache License, Version 2.0 - https://fonts.google.com/specimen/Roboto
+* (Fira Sans) Carrois Apostrophe - Open Font License - https://fonts.google.com/specimen/Fira+Sans
 
 Graphics
 --------

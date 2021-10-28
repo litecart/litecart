@@ -6,19 +6,24 @@
 #box-newsletter-subscribe .row > div:last-child {
   align-self: center;
 }
+#box-newsletter-subscribe .wrapper {
+  display: inline-flex;
+  gap: calc(var(--gutter-size) * 2);
+  justify-content: center;
+}
 </style>
 
 <section id="box-newsletter-subscribe">
   <div class="container text-center">
 
-    <div style="display: inline-flex; gap: calc(var(--gutter-size) * 2); justify-content: center;">
+    <div class="wrapper">
       <div class="hidden-xs" style="flex: 0 1 170px;">
         <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/illustration/letter.svg'); ?>"  />
       </div>
 
       <?php echo functions::form_draw_form_begin('newsletter_subscribe_form', 'post'); ?>
 
-        <h2 class="mt-0"><?php echo language::translate('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
+        <h2><?php echo language::translate('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
 
         <p><?php echo language::translate('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.'); ?></p>
 

@@ -470,19 +470,19 @@
       [
         'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL, '/') .'/',
         'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.' . PHP_EOL
-                  .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+                   . '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
       [
         'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} ^www\.(.*)$' . PHP_EOL, '/') .'/',
         'replace' => '  $1RewriteCond %{HTTP_HOST} ^www\.(.*)' . PHP_EOL
-                  .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+                   . '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
       [
         'search'  => '/  (#)?' . preg_quote('RewriteCond %{HTTP_HOST} !^www.mydomain.com' . PHP_EOL, '/') .'/',
         'replace' => '  $1RewriteCond %{HTTP_HOST} !^www\.mydomain\.com' . PHP_EOL
-                  .  '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
+                   . '  $1RewriteCond %{HTTP_HOST} !^static\.' . PHP_EOL,
         'regexp'  => true,
       ],
       [

@@ -75,14 +75,14 @@
   &:not(.btn-group-vertical) > .btn:not(:first-child) {
     border-left: 1px solid var(--default-border-color);
   }
-  >.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+  >.btn:first-child:not(:last-child):not([data-toggle="dropdown"]) {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
   }
-  >.btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  >.btn:not(:first-child):not(:last-child):not([data-toggle="dropdown"]) {
     border-radius: 0;
   }
-  >.btn:last-child:not(:first-child), >.dropdown-toggle:not(:first-child) {
+  >.btn:last-child:not(:first-child), >[data-toggle="dropdown"]:not(:first-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }

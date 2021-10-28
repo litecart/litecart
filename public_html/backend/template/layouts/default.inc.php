@@ -62,7 +62,7 @@
       </li>
 
       <li class="language dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span style="font-family: monospace" title="<?php echo htmlspecialchars(language::$selected['name']); ?>"><?php echo language::$selected['code']; ?><span> <b class="caret"></b></a>
+        <a href="#" data-toggle="dropdown"><span style="font-family: monospace" title="<?php echo htmlspecialchars(language::$selected['name']); ?>"><?php echo language::$selected['code']; ?><span> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>

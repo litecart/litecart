@@ -37,7 +37,7 @@
 
 <script>
   var xhr_product_picker = null;
-  $('#modal-product-picker input[name="query"]').bind('propertyChange input', function(){
+  $('#modal-product-picker input[name="query"]').on('input', function(){
 
     if ($(this).val() == '') {
       $('#modal-product-picker tbody').html('');
@@ -81,32 +81,32 @@
             '</tr>'
           );
         });
-
-        $('#modal-product-picker tbody').on('click', 'td', function() {
-
-          var callback = $.featherlight.current().$currentTarget.data('callback');
-
-          var $tr = $(this).closest('tr');
-
-          var product = {
-            id: $tr.find('.id').text(),
-            name: $tr.find('.name').text(),
-            sku: $tr.find('.sku').text(),
-            quantity: $tr.find('.quantity').text(),
-            price: $tr.find('.price').text(),
-          }
-
-          if (callback) {
-            window[callback](product);
-          } else if ($.featherlight.current().$currentTarget[0].closest('.input-group').length) {
-            var field = $.featherlight.current().$currentTarget[0].closest('.input-group');
-            $(field).find(':input').val(product.id).trigger('change');
-            $(field).find('.name').text(product.name);
-            $.featherlight.close();
-          }
-        });
-
       },
     });
   }).focus();
+
+  $('#modal-product-picker tbody').on('click', 'td', function() {
+
+    var callback = $.featherlight.current().$currentTarget.data('callback');
+
+    var $tr = $(this).closest('tr');
+
+    var product = {
+      id: $tr.find('.id').text(),
+      name: $tr.find('.name').text(),
+      sku: $tr.find('.sku').text(),
+      quantity: $tr.find('.quantity').text(),
+      price: $tr.find('.price').text(),
+    }
+
+    if (callback) {
+      window[callback](product);
+    } else if ($.featherlight.current().$currentTarget[0].closest('.input-group')) {
+      var field = $.featherlight.current().$currentTarget[0].closest('.input-group');
+      $(field).find(':input').val(product.id).trigger('change');
+      $(field).find('.id').text(product.id);
+      $(field).find('.name').text(product.name);
+      $.featherlight.close();
+    }
+  });
 </script>

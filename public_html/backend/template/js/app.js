@@ -585,7 +585,7 @@
 
     var $parent = selector && $(selector)
 
-    return $parent && $parent.length ? $parent : $this.parent()
+    return $parent && $parent.length ? $parent : $this.closest('.dropdown')
   }
 
   function clearMenus(e) {

@@ -89,7 +89,6 @@
 	}).focus();
 
 	$('#modal-stock-item-picker tbody').on('click', 'td', function() {
-
     <?php if (!empty($_GET['js_callback'])) { ?>
 		var row = $(this).closest('tr');
 
@@ -98,7 +97,7 @@
 
     var data = $(row).data();
 
-    if (window['<?php echo addcslashes($_GET['js_callback'], '\''); ?>']) window['<?php echo addcslashes($_GET['js_callback'], '\''); ?>'](data);
+    window['<?php echo addcslashes($_GET['js_callback'], '\''); ?>'](data);
     <?php } ?>
 
     if ($.featherlight.opened) {

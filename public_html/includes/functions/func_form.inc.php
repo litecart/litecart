@@ -195,7 +195,7 @@ END;
 
   function form_draw_currency_field($name, $currency_code=null, $input=true, $parameters='') {
 
-    if (preg_match('#^[A-Z]{3}$#', $name)) {
+    if (preg_match('#^[A-Z]{3}$#', $name) && !preg_match('#^[A-Z]{3}$#', $currency_code)) {
       trigger_error('Passing currency code as 1st parameter in form_draw_currency_field() is deprecated. Instead, use form_draw_currency_field($name, $currency_code, $input, $parameters)', E_USER_DEPRECATED);
       list($name, $currency_code) = [$currency_code, $name];
     }

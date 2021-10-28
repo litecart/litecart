@@ -1,5 +1,5 @@
 <div id="cart" class="dropdown">
-  <a href="{{link|escape}}" class="dropdown-toggle">
+  <a href="{{link|escape}}">
     <img class="image" src="{{template_path}}images/<?php echo !empty($num_items) ? 'cart_filled.svg' : 'cart.svg'; ?>" alt="" />
     <div class="badge quantity"><?php echo $num_items ? $num_items : ''; ?></div>
   </a>
