@@ -540,7 +540,7 @@
             dim_y = '". database::input($stock_option['dim_y']) ."',
             dim_z = '". database::input($stock_option['dim_z']) ."',
             dim_class = '". database::input($stock_option['dim_class']) ."',
-            priority = '". $i++ ."',
+            priority = ". (int)$i++ .",
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$stock_option['id'] ."
@@ -595,7 +595,7 @@
           database::query(
             "update ". DB_TABLE_PREFIX ."products_images
             set filename = '". database::input($this->data['images'][$key]['filename']) ."',
-                priority = '". $image_priority++ ."'
+                priority = ". (int)$image_priority++ ."
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['images'][$key]['id'] ."
             limit 1;"

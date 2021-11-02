@@ -184,7 +184,7 @@
             "update ". DB_TABLE_PREFIX ."categories_filters set
               attribute_group_id = '". database::input($this->data['filters'][$key]['attribute_group_id']) ."',
               select_multiple = ". (!empty($this->data['filters'][$key]['select_multiple']) ? 1 : 0) .",
-              priority = ". $filter_priority++ ."
+              priority = ". (int)$filter_priority++ ."
             where category_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['filters'][$key]['id'] ."
             limit 1;"

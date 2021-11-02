@@ -74,7 +74,7 @@
 
       $country_query = database::query(
         "select id from ". DB_TABLE_PREFIX ."countries
-        where id != ". $this->data['id'] ."
+        where id != ". (int)$this->data['id'] ."
         and (
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."'
           or iso_code_2 = '". database::input($this->data['iso_code_2']) ."'
