@@ -33,7 +33,9 @@
 
       self::set('page_capture_time', microtime(true) - self::$_capture_parse_start);
 
-      if (microtime(true) - SCRIPT_TIMESTAMP_START > 5) {
+      $page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START;
+
+      if ($page_parse_time > 5) {
         notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
         error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. $_SERVER['REQUEST_URI']);
       }
