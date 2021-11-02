@@ -257,6 +257,7 @@ table .fa-star:hover {
       </tfoot>
     </table>
 
+    <?php if ($order_actions) { ?>
     <div class="card-body">
       <ul id="order-actions" class="list-inline">
         <?php foreach ($order_actions as $module) { ?>
@@ -271,6 +272,7 @@ table .fa-star:hover {
         <?php } ?>
       </ul>
     </div>
+    <?php } ?>
 
   <?php echo functions::form_draw_form_end(); ?>
 

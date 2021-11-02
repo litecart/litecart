@@ -464,7 +464,7 @@
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('folder-open') .' <strong><a href="'. document::href_ilink(null, ['category_id' => '0']) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => '0']) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
@@ -488,11 +488,11 @@
                  . '  <td></td>' . PHP_EOL;
 
         if ($category['id'] == $_GET['category_id']) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else if (in_array($category['id'], $category_trail)) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
         $output .= '  <td><a href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL

@@ -1125,5 +1125,4 @@
       $(row).find('.'+key).text(value);
     });
   }
-
 </script>

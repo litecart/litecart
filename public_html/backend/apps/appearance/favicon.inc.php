@@ -96,7 +96,7 @@
 
       <div class="icons">
         <div class="thumbnail" style="display: inline-block;">
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicon-256x256.png'); ?>" width="256" height="256" alt="" />
+          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png'); ?>" width="256" height="256" alt="" />
           favicon-256x256.png
         </div>
 

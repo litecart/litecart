@@ -37,8 +37,6 @@ input[type="number"] {
     content: ' *';
     color: #f00;
   }
-  &:not([class*=col-]) {
-  }
   > label:not(.form-check) {
     display: block;
     font-size: .9em;
@@ -85,6 +83,13 @@ input[type="number"] {
       background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='%23fff'/></svg>");
     }
   }
+}
+
+.form-check:hover  input[type="checkbox"],
+.table tr:hover .form-check input[type="checkbox"],
+.form-check:hover  input[type="radio"],
+.table tr:hover .form-check input[type="radio"] {
+  box-shadow: 0 0 0 .25rem #ccc;
 }
 
 .form-input {

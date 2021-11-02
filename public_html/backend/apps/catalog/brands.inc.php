@@ -99,9 +99,11 @@
       </tfoot>
     </table>
 
-    <div class="btn-group">
-      <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-      <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+    <div class="card-body">
+      <div class="btn-group">
+        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+      </div>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>

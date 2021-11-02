@@ -101,7 +101,9 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
-    <?php echo functions::draw_pagination(ceil(database::num_rows($stock_transactions_query)/settings::get('data_table_rows_per_page'))); ?>
+    <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

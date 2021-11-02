@@ -599,7 +599,7 @@
                 </div>
               </div>
 
-              <div class="form-grou">
+              <div class="form-group">
                 <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
                 <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
               </div>

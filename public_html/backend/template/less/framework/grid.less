@@ -15,11 +15,19 @@
 .float-end {
   float: right;
 }
+html[dir="rtl"] {
+  .float-start {
+    float: right;
+  }
+  .float-end {
+    float: left;
+  }
+}
 
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: var(--gutter-size);
+  grid-gap: 0 var(--gutter-size);
   &.column {
     flex-direction: column;
   }
@@ -30,6 +38,10 @@
     justify-items: center;
     align-items: center;
   }
+}
+
+*[class*="col-"] {
+  display: block;
 }
 
 .make-grid-columns(@device: ~'') {
@@ -73,7 +85,7 @@
 // Hidden
 
 @media (max-width: @media-breakpoint-sm - 1px) {
-  .hidden-xs { display: none !important; }
+  .hidden-xs { display: none; }
 }
 @media (min-width: @media-breakpoint-sm) and (max-width: @media-breakpoint-md - 1px) {
   .hidden-sm { display: none; }

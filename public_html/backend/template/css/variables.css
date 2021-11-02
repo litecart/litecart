@@ -24,7 +24,7 @@
   --page-background-color: #f6f6f6;
   --sidebar-background-color: #e6e8ec;
   --sidebar-border-color: var(--default-border-color);
-  --sidebar-text-color: #444;
+  --sidebar-text-color: #333;
   --sidebar-width: 275px;
   --navigation-background-color: #3e3e3e;
   --navigation-background-color-active: #bdbdbd;
@@ -60,7 +60,7 @@
   --table-row-background-color-hover: #e3e5ea;
   --table-footer-background-color: #eceef3;
   --table-border-color: #e6e8f0;
-  --pagination-background-color: var(--default-background-color);
+  --pagination-background-color: #fff;
   --pagination-background-color-hover: #c8cbd0;
   --pagination-background-color-active: #788090;
   --pagination-border-color: var(--default-border-color);

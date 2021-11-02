@@ -85,10 +85,7 @@
 
   function form_draw_checkbox($name, $value, $input=true, $parameters='') {
 
-    if (!is_array($value)) {
-      if ($input === true) $input = form_reinsert_value($name, $value);
-      return '<span class="form-check"><input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (!strcmp($input, $value) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' /></span>';
-    }
+    if (!is_array($value)) $value = [$value, ''];
 
     if ($input === true) $input = form_reinsert_value($name, $value[0]);
 
@@ -435,10 +432,7 @@ END;
 
   function form_draw_radio_button($name, $value, $input=true, $parameters='') {
 
-    if (!is_array($value)) {
-	    if ($input === true) $input = form_reinsert_value($name, $value);
-      return '<span class="form-check"><input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-radio"' : '') .' type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (!strcmp($input, $value) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' /></span>';
-    }
+    if (!is_array($value)) $value = [$value, ''];
 
     if ($input === true) $input = form_reinsert_value($name, $value[0]);
 

@@ -66,8 +66,13 @@
     }
   }
 
-  .card-footer:blank {
-    display: none;
+  .card-footer {
+    > *:last-child {
+      margin-bottom: 0;
+    }
+    &:blank {
+      display: none;
+    }
   }
 }
 
