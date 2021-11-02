@@ -297,7 +297,7 @@
                     if ((float)$value[$this->_currency_code] != 0) {
                       $value['price_adjust'] = $this->price * currency::convert((float)$value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) / 100;
                     } else {
-                      $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')] / 100;
+                      $value['price_adjust'] = $this->price * (float)$value[settings::get('store_currency_code')] / 100;
                     }
                     break;
 
