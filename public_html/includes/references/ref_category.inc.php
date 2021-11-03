@@ -82,7 +82,7 @@
 
           $current = $this;
           while ($current->parent_id) {
-            array_unshift($this->_data['path'], [$current->parent_id, current->parent]);
+            $this->_data['path'] = [$current->parent_id => $current->parent] + $this->_data['path'];
             $current = $current->parent;
           }
 
