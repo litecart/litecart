@@ -749,15 +749,14 @@ ul.breadcrumb li a {
 .dropdown .dropdown-menu > .active > a,
 .dropdown .dropdown-menu > .active > a:hover,
 .dropdown .dropdown-menu > .active > a:focus {
-  color: #fff;
   text-decoration: none;
   outline: 0;
-  background-color: #337ab7;
+  background-color: var(--navigation-background-color-active);
 }
 .dropdown .dropdown-menu > .disabled > a,
 .dropdown .dropdown-menu > .disabled > a:hover,
 .dropdown .dropdown-menu > .disabled > a:focus {
-  color: #777777;
+  color: #777;
 }
 .dropdown .dropdown-menu > .disabled > a:hover,
 .dropdown .dropdown-menu > .disabled > a:focus {
