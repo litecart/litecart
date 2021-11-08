@@ -58,6 +58,9 @@
       if (isset($result['transaction_id'])) $order->data['payment_transaction_id'] = $result['transaction_id'];
 
     // Set transaction date
+      if (isset($result['receipt_url'])) $order->data['payment_receipt_url'] = $result['receipt_url'];
+
+    // Set transaction date
       if (isset($result['date_paid'])) $order->data['date_paid'] = $result['date_paid'];
     }
   }

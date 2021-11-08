@@ -146,7 +146,8 @@ ADD COLUMN `shipping_progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 AFTER `shi
 ADD COLUMN `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_progress`,
 ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_current_status`,
 ADD COLUMN `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `payment_option_name`,
-ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_transaction_id`,
+ADD COLUMN `payment_receipt_url` VARCHAR(256) NOT NULL DEFAULT '' AFTER `payment_transaction_id`;
+ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `date_paid` TIMESTAMP NULL DEFAULT NULL AFTER `public_key`,
 ADD COLUMN `date_dispatched` TIMESTAMP NULL DEFAULT NULL AFTER `date_paid`,
 ADD INDEX `uid` (`uid`);

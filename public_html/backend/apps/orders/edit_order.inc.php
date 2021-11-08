@@ -168,6 +168,7 @@
         'shipping_tracking_id',
         'shipping_tracking_url',
         'payment_transaction_id',
+        'payment_receipt_url',
         'display_prices_including_tax',
         'reference',
         'date_paid',
@@ -571,6 +572,11 @@
               <div class="form-group ">
                 <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
                 <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_receipt_url', 'Receipt URL'); ?></label>
+                <?php echo functions::form_draw_url_field('payment_receipt_url', true); ?>
               </div>
 
               <div class="form-group">
