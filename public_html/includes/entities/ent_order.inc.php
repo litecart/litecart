@@ -259,6 +259,7 @@
           payment_option_userdata = '". (!empty($this->payment->selected['userdata']) ? database::input(json_encode($this->payment->selected['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
           payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
           payment_receipt_url = '". database::input($this->data['payment_receipt_url']) ."',
+          payment_terms = '". database::input($this->data['payment_terms']) ."',
           reference = '". database::input($this->data['reference']) ."',
           language_code = '". database::input($this->data['language_code']) ."',
           currency_code = '". database::input($this->data['currency_code']) ."',

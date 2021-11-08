@@ -881,6 +881,10 @@ END;
       case 'products':
         return form_draw_products_list($name, $input, $parameters);
 
+      case 'payment_term':
+      case 'payment_terms':
+        return form_draw_payment_terms_list($name, $input, false, $parameters);
+
       case 'quantity_unit':
       case 'quantity_units':
         return form_draw_quantity_units_list($name, $input, $parameters);
@@ -1577,6 +1581,27 @@ END;
     }
 
     if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_payment_terms_list($name, $input=true, $multiple=false, $parameters='') {
+
+    $options = [
+      ['PIA', 'PIA – '. language::translate('title_payment_terms_pia', 'Payment In Advance')],
+      ['PWO', 'PWO – '. language::translate('title_payment_terms_pwo', 'Payment With Order')],
+      ['CBS', 'CBS – '. language::translate('title_payment_terms_cbs', 'Cash Before Shipment')],
+      ['COD', 'COD – '. language::translate('title_payment_terms_cod', 'Cash On Delivery')],
+      ['NET7', 'NET7 – '. language::translate('title_payment_terms_net7', 'Payment 7 days after invoice date')],
+      ['NET10', 'NET10 – '. language::translate('title_payment_terms_net10', 'Payment 10 days after invoice date')],
+      ['NET20', 'NET20 – '. language::translate('title_payment_terms_net20', 'Payment 20 days after invoice date')],
+      ['NET30', 'NET30 – '. language::translate('title_payment_terms_net30', 'Payment 30 days after invoice date')],
+    ];
+
+    if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
