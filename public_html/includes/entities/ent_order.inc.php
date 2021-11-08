@@ -202,6 +202,14 @@
         $this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
       }
 
+      if (empty($this->data['date_dispatched'])) {
+        if (!empty($this->data['order_status_id']) && in_array(reference::order_status($this->data['order_status_id'])->state, ['dispatched', 'delivered'])) {
+          if (empty($this->previous['order_status_id']) || !in_array(reference::order_status($this->previous['order_status_id'])->state, ['dispatched', 'delivered'])) {
+            $this->data['date_dispatched'] = date('Y-m-d H:i:s');
+          }
+        }
+      }
+
     // Insert/update order
       if (empty($this->data['id'])) {
         database::query(
@@ -262,6 +270,8 @@
           total = ". (float)$this->data['total'] .",
           total_tax = ". (float)$this->data['total_tax'] .",
           public_key = '". database::input($this->data['public_key']) ."',
+          date_paid = '". (!empty($this->data['date_paid']) ? date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) : "null") ."',
+          date_dispatched = '". (!empty($this->data['date_dispatched']) ? date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) : "null") ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

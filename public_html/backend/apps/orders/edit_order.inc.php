@@ -170,6 +170,8 @@
         'payment_transaction_id',
         'display_prices_including_tax',
         'reference',
+        'date_paid',
+        'date_dispatched',
         'comments',
       ];
 
@@ -570,6 +572,12 @@
                 <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
                 <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
               </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_date_paid', 'Date Paid'); ?></label>
+                <?php echo functions::form_draw_datetime_field('date_paid', true); ?>
+              </div>
+
             </div>
 
             <div class="col-md-6">
@@ -603,6 +611,12 @@
                 <label><?php echo language::translate('title_tracking_url', 'Tracking URL'); ?></label>
                 <?php echo functions::form_draw_url_field('shipping_tracking_url', true); ?>
               </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_date_dispatched', 'Date Dispatched'); ?></label>
+                <?php echo functions::form_draw_datetime_field('date_dispatched', true); ?>
+              </div>
+
 
               <div class="form-group">
                 <label><?php echo language::translate('title_incoterm', 'Incoterm'); ?></label>
