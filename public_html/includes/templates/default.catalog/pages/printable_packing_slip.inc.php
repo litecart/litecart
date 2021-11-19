@@ -76,7 +76,7 @@ table.items tbody tr:nth-child(11) {
         <div class="col-xs-6 shipping-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-            <div class="value"><?php echo htmlspecialchars(nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address']))); ?></div>
+            <div class="value"><?php echo nl2br(htmlspecialchars(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address']))); ?></div>
           </div>
 
           <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>

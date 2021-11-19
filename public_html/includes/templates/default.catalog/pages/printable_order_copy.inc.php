@@ -78,7 +78,7 @@ table.items tbody tr:nth-child(11) {
         <div class="col-xs-6 billing-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
-            <div class="value"><?php echo htmlspecialchars(nl2br(reference::country($order['customer']['country_code'])->format_address($order['customer']))); ?></div>
+            <div class="value"><?php echo nl2br(htmlspecialchars(reference::country($order['customer']['country_code'])->format_address($order['customer']))); ?></div>
           </div>
         </div>
       </div>
