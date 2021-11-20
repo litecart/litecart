@@ -73,7 +73,7 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), 3 - $user['login_attempts']));
+          throw new Exception(sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), 3 - $user['login_attempts']));
 
         } else {
 
@@ -85,7 +85,37 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'This account has been temporarily blocked for %d minutes.'), 15));
+          if (!empty($user['email'])) {
+
+            $aliases = [
+              '%store_name' => settings::get('store_name'),
+              '%store_link' => document::ilink(''),
+              '%username' => $user['username'],
+              '%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
+              '%ip_address' => $_SERVER['REMOTE_ADDR'],
+              '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+              '%user_agent' => $_SERVER['HTTP_USER_AGENT'],
+            ];
+
+            $subject = language::translate('user_account_blocked:email_subject', 'User Account Blocked');
+            $message = strtr(language::translate('user_account_blocked:email_body',
+              "Your user account %username has been blocked until %expires because of too many invalid attempts.\r\n"
+            . "\r\n"
+            . "Client: %hostname (%ip_address)\r\n"
+            . "%user_agent\r\n"
+            . "\r\n"
+            . "%store_name\r\n"
+            . "%store_link"
+            ), $aliases);
+
+            $email = new ent_email();
+            $email->add_recipient($user['email'], $user['username'])
+                  ->set_subject($subject)
+                  ->add_body($message)
+                  ->send();
+          }
+
+          throw new Exception(sprintf(language::translate('error_account_has_been_blocked_x_minutes', 'This account has been temporarily blocked for %d minutes.'), 15));
         }
 
         throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
