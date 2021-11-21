@@ -117,9 +117,14 @@
     max-width: 200px;
     position: relative;
     font-size: ~"calc(var(--default-text-size) - 1px)";
+    border: 1px solid transparent;
 
     @media (min-width: (@media-breakpoint-sm)) {
       gap: .5em;
+      &:hover {
+        border-color: var(--listing-border-color);
+        transform: scale(1.01);
+      }
     }
 
     @media (min-width: (@media-breakpoint-md)) {

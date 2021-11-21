@@ -176,7 +176,7 @@ $(document).ajaxComplete(function(e, xhr, settings) {
 
 // Scroll Up
   $(window).scroll(function(){
-    if ($(this).scrollTop() > 100) {
+    if ($(this).scrollTop() > 300) {
       $('#scroll-up').fadeIn();
     } else {
       $('#scroll-up').fadeOut();

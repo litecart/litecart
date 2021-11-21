@@ -15,7 +15,7 @@ h1 {
 
 .rounded-rectangle {
   border: 1px solid #000;
-  border-radius: 5mm;
+  border-radius: 2mm;
   padding: 4mm;
   margin-inline-start: -15px;
   margin-bottom: 3mm;

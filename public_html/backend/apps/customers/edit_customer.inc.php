@@ -84,7 +84,7 @@
       $customer->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(__APP__.'customers'));
+      header('Location: '. document::ilink(__APP__.'/customers'));
       exit;
 
     } catch (Exception $e) {

@@ -96,7 +96,7 @@
               $.each(group.results, function(i, result){
                 $('#search .results ul[data-group="'+ group.name +'"]').append(
                   '<li class="result">' +
-                  '  <a class="list-group-item" href="'+ encodeURIComponent(result.link) +'" style="border-left: 3px solid '+ group.theme.color +';">' +
+                  '  <a class="list-group-item" href="'+ result.link +'" style="border-left: 3px solid '+ group.theme.color +';">' +
                   '    <small class="id float-end">#'+ result.id +'</small>' +
                   '    <div class="title">'+ result.title +'</div>' +
                   '    <div class="description"><small>'+ result.description +'</small></div>' +
@@ -157,8 +157,8 @@
   });
 
   $('.data-table tbody').on('click', 'tr', function(e) {
-    if ($(e.target).is('a, .btn, :input, th')) return;
-    if ($(e.target).is('.fa-star, .fa-star-o')) return;
+    if ($(e.target).is('a') || $(e.target).closest('a').length) return;
+    if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 

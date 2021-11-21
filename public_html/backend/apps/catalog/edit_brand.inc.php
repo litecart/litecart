@@ -109,12 +109,14 @@
           </div>
 
           <div id="image">
+            <?php if (!empty($brand->data['image'])) { ?>
             <div class="thumbnail" style="margin-bottom: 15px;">
               <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->data['image'], 400, 100)); ?>" alt="" />
             </div>
+            <?php } ?>
 
             <div class="form-group">
-              <label><?php echo ((isset($brand->data['image']) && $brand->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
+              <label><?php echo !empty($brand->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></label>
               <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
               <?php if (!empty($brand->data['image'])) { ?>
               <?php echo functions::form_draw_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>

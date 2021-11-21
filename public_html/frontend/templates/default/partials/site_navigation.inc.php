@@ -127,24 +127,24 @@
           <ul class="dropdown-menu">
             <?php if (!empty($shopping_cart['items'])) { ?>
             <?php foreach ($shopping_cart['items'] as $item) { ?>
-            <li class="item">
-              <a href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>">
+            <li>
+              <div class="item">
                 <div class="row">
                   <div class="col-3">
                     <img class="image img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
                   </div>
                   <div class="col-8">
-                    <div class="name"><?php echo $item['name']; ?></div>
+                    <div><a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><?php echo $item['name']; ?></a></div>
                     <div class="price"><?php echo currency::format($item['price']); ?></div>
                   </div>
                   <div class="col-1 text-right">
-                    <?php echo functions::form_draw_button('remove', [1, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
+                    <?php echo functions::form_draw_button('remove_cart_item', [1, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
                   </div>
                 </div>
-              </a>
+              </div>
             </li>
             <?php } ?>
-            <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
+            <li class="checkout"><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
             <?php } else { ?>
             <li><span><?php echo language::translate('title_empty'), 'Empty'; ?></span></li>
             <?php } ?>

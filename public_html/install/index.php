@@ -556,9 +556,9 @@ input[name="development_type"]:checked + div {
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label>Folder Name</label>
+      <label>Backend URL</label>
       <div class="input-group">
-        <span class="input-group-text">/</span>
+        <span class="input-group-text"><?php echo preg_replace('#install/.*$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)); ?></span>
         <input class="form-input" name="admin_folder" type="text" value="admin" required />
       </div>
     </div>

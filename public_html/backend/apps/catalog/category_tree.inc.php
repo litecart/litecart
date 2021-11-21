@@ -106,7 +106,7 @@
         }
       }
 
-      notices::add('success', sprintf(language::translate('success_changes_saved', 'Changes saved')));
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink(null, ['category_id' => $_POST['category_id']]));
       exit;
 

@@ -7,13 +7,17 @@
   border-radius: var(--border-radius);
   box-shadow: 0 1px .25rem rgba(0, 0, 0, .15);
 
-  .card-header, .card-body, .card-footer {
+  .card-header, .card-filter, .card-body, .card-footer {
     padding: 2em;
-    padding-top: 0;
   }
 
-  .card-header:first-child, .card-body:first-child, .card-footer:first-child {
-    padding-top: 2em;
+  .card-filter, .card-body {
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+
+  .card-header {
+    padding-bottom: 1em;
   }
 
   .card-header {
@@ -29,9 +33,11 @@
   }
 
   .card-body {
+    padding-bottom: 2em;
   }
 
   .card-footer {
+    padding-bottom: 2em;
     background-color: var(--default-background-color);
     border-top: 1px solid var(--card-border-color);
     border-bottom-right-radius: var(--border-radius);
@@ -57,8 +63,6 @@
   .card-filter {
     display: flex;
     gap: ~"calc(var(--gutter-size) / 2)";
-    padding: var(--gutter-size);
-    padding-top: 0;
     > * {
       &.expandable {
         flex-grow: 1;

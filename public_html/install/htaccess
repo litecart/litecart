@@ -73,7 +73,7 @@ ErrorDocument 500 "Internal Server Error"
   RewriteRule ^ - [L]
 
   # Resolve some storage content
-  RewriteRule ^(cache|images)/ {BASE_DIR}%{REQUEST_URI} [L]
+  RewriteRule ^(cache|images)/ storage/%{REQUEST_URI} [L]
 
   RewriteRule ^ index.php [QSA,L]
 </IfModule>

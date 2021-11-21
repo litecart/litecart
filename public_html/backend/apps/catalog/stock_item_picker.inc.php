@@ -22,7 +22,6 @@
 					<tr>
 						<th><?php echo language::translate('title_id', 'ID'); ?></th>
 						<th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-						<th><?php echo language::translate('title_brand', 'Brand'); ?></th>
 						<th><?php echo language::translate('title_sku', 'SKU'); ?></th>
 						<th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
 						<th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
@@ -65,7 +64,6 @@
           $row = $('<tr>' +
             '  <td class="id">' + item.id + '</td>' +
             '  <td class="name">' + item.name + '</td>' +
-            '  <td class="brand">' + item.brand_name + '</td>' +
             '  <td class="sku">' + item.sku + '</td>' +
             '  <td class="gtin">' + item.gtin + '</td>' +
             '  <td class="mpn">' + item.mpn + '</td>' +
