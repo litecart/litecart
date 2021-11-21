@@ -511,7 +511,7 @@
       [
         'search'  => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]" . PHP_EOL,
         'replace' => "  # Resolve some storage content" . PHP_EOL
-                   . "  RewriteRule ^(cache|images)/ /storage/%{REQUEST_URI} [L]" . PHP_EOL
+                   . "  RewriteRule ^(cache|images)/ storage/%{REQUEST_URI} [L]" . PHP_EOL
                    . PHP_EOL
                    . "  RewriteRule ^ index.php [QSA,L]" . PHP_EOL,
       ],

@@ -145,3 +145,12 @@ INSERT INTO `lc_stock_items` (`id`, `sku`, `mpn`, `gtin`, `taric`, `image`, `fil
 (5, 'RD003', '', '', '', '', '', '', '', 0, 0.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
 (6, 'RD004', '', '', '', '', '', '', '', 0, 100.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW()),
 (7, 'RD005', '', '', '', '', '', '', '', 0, 100.0000, '1', 0.0000, 'kg', 0.0000, 0.0000, 0.0000, 'cm', 0.0000, 0.0000, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_stock_items_info` (`id`, `stock_item_id`, `name`, `language_code`) VALUES
+(1, 1, 'Yellow Duck (Small)', 'en'),
+(2, 1, 'Yellow Duck (Medium)', 'en'),
+(3, 1, 'Yellow Duck (Large)', 'en'),
+(4, 2, 'Green Duck', 'en'),
+(5, 3, 'Red Duck', 'en'),
+(6, 4, 'Blue Duck', 'en'),
+(7, 5, 'Purple Duck', 'en');
