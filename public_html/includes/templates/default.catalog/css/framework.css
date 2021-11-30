@@ -784,7 +784,6 @@ ul.breadcrumb li a {
   top: 0;
   z-index: 990;
   background: rgba(0, 0, 0, 0.15);
-  transition: all 200ms linear;
 }
 .float-end > .dropdown-menu {
   right: 0;
