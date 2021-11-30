@@ -684,7 +684,7 @@ ul.breadcrumb li a {
   padding-inline-end: 2.5em !important;
 }
 .dropdown.open {
-  z-index: 1;
+  z-index: 999;
 }
 .dropdown.open > .dropdown-menu {
   visibility: visible;
@@ -783,6 +783,8 @@ ul.breadcrumb li a {
   bottom: 0;
   top: 0;
   z-index: 990;
+  background: rgba(0, 0, 0, 0.15);
+  transition: all 200ms linear;
 }
 .float-end > .dropdown-menu {
   right: 0;
