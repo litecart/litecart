@@ -214,7 +214,7 @@
         }
 
         if ($product->quantity_step > 0 && ($quantity % $product->quantity_step) != 0) {
-          throw new Exception(strtr(language::translate('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => (float)$product->quantity_max]));
+          throw new Exception(strtr(language::translate('error_can_only_purchase_sets_for_item', 'You can only purchase sets by %num for this item'), ['%num' => (float)$product->quantity_step]));
         }
 
         //if (($product->quantity - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
