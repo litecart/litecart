@@ -297,7 +297,7 @@
               }
             }
 
-            if (isset($row['new_image'])) {
+            if (!empty($row['new_image'])) {
               $category->save_image($row['new_image']);
             }
 
@@ -387,7 +387,7 @@
               }
             }
 
-            if (isset($row['new_image'])) {
+            if (!empty($row['new_image'])) {
               $manufacturer->save_image($row['new_image']);
             }
 
@@ -569,24 +569,8 @@
             }
 
           // Import new images
-            if (isset($row['new_images'])) {
+            if (!empty($row['new_images'])) {
               foreach (explode(';', $row['new_images']) as $new_image) {
-
-              // Workaround for remote images and allow_url_fopen = Off
-                if (preg_match('#^https?://#', $new_image) && preg_match('#^(|0|false|off)$#i', ini_get('allow_url_fopen'))) {
-
-                  $client = new wrap_http();
-                  $response = $client->call('GET', $new_image);
-
-                  if ($client->last_response['status_code'] == 200) {
-                    $tmp = tempnam(sys_get_temp_dir(), '');
-                    file_put_contents($tmp, $response);
-                    $new_image = $tmp;
-                  } else {
-                    throw new Exception('Remote location '. $new_image .' returned an unexpected http response code ('. $client->last_response['status_code'] .')');
-                  }
-                }
-
                 $product->add_image($new_image);
               }
             }
@@ -722,7 +706,8 @@
     } catch (Exception $e) {
       unset(session::$data['csv_batch']);
       notices::add('errors', $e->getMessage());
-      header('Location: '. document::link(null, [], ['app', 'doc'], 'resume'));
+      echo 'Error: ' . $e->getMessage();
+      header('Refresh: 5; url='. document::link(null, [], ['app', 'doc'], 'resume'));
       exit;
     }
   }
@@ -802,6 +787,7 @@
                 'head_title' => $category->head_title,
                 'h1_title' => $category->h1_title,
                 'image' => $category->image,
+                'new_image' => '',
                 'priority' => $category->priority,
                 'language_code' => $_POST['language_code'],
               ];
@@ -829,6 +815,7 @@
                 'head_title' => $manufacturer->head_title,
                 'h1_title' => $manufacturer->h1_title,
                 'image' => $manufacturer->image,
+                'new_image' => '',
                 'priority' => $manufacturer->priority,
                 'language_code' => $_POST['language_code'],
               ];
@@ -877,6 +864,7 @@
                 'head_title' => $product->head_title,
                 'meta_description' => $product->meta_description,
                 'images' => implode(';', $product->images),
+                'new_images' => '',
                 'attributes' => implode("\r\n", array_map($attribute_map, $product->attributes)),
                 'purchase_price' => $product->purchase_price,
                 'purchase_price_currency_code' => $product->purchase_price_currency_code,

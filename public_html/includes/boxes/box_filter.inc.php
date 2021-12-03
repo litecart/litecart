@@ -17,11 +17,11 @@
   if (empty($_GET['manufacturer_id'])) {
     $manufacturers_query = database::query(
       "select distinct m.id, m.name from ". DB_TABLE_PREFIX ."products p
-      left join ". DB_TABLE_PREFIX ."manufacturers m on m.id = p.manufacturer_id ".
-      (!empty($_GET['category_id']) ? " left join ". DB_TABLE_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "")."
+      left join ". DB_TABLE_PREFIX ."manufacturers m on m.id = p.manufacturer_id
+      ". (!empty($_GET['category_id']) ? " left join ". DB_TABLE_PREFIX ."products_to_categories pc on( pc.product_id = p.id)" : "") ."
       where p.status
       and manufacturer_id
-      ". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
+      ". (!empty($_GET['category_id']) ? "and pc.category_id = ". (int)$_GET['category_id']  : "") ."
       order by m.name asc;"
     );
     if (database::num_rows($manufacturers_query)) {

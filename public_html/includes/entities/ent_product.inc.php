@@ -506,18 +506,18 @@
     // Update stock options
       if (!empty($this->data['options_stock'])) {
         $i = 0;
-        foreach (array_keys($this->data['options_stock']) as $key) {
-          if (empty($this->data['options_stock'][$key]['id'])) {
+        foreach ($this->data['options_stock'] as $key => $stock_option) {
+          if (empty($stock_option['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_options_stock
               (product_id, date_created)
               values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
-            $this->data['options_stock'][$key]['id'] = database::insert_id();
+            $stock_option['id'] = $this->data['options_stock'][$key]['id'] = database::insert_id();
           }
 
         // Ascending option combination
-          $combinations = explode(',', $this->data['options_stock'][$key]['combination']);
+          $combinations = explode(',', $stock_option['combination']);
 
           usort($combinations, function($a, $b) {
             $a = explode('-', $a);
@@ -532,18 +532,18 @@
 
           database::query(
             "update ". DB_TABLE_PREFIX ."products_options_stock
-            set combination = '". database::input($this->data['options_stock'][$key]['combination']) ."',
-            sku = '". database::input($this->data['options_stock'][$key]['sku']) ."',
-            weight = '". database::input($this->data['options_stock'][$key]['weight']) ."',
-            weight_class = '". database::input($this->data['options_stock'][$key]['weight_class']) ."',
-            dim_x = '". database::input($this->data['options_stock'][$key]['dim_x']) ."',
-            dim_y = '". database::input($this->data['options_stock'][$key]['dim_y']) ."',
-            dim_z = '". database::input($this->data['options_stock'][$key]['dim_z']) ."',
-            dim_class = '". database::input($this->data['options_stock'][$key]['dim_class']) ."',
-            priority = '". $i++ ."',
+            set combination = '". database::input($stock_option['combination']) ."',
+            sku = '". database::input($stock_option['sku']) ."',
+            weight = '". database::input($stock_option['weight']) ."',
+            weight_class = '". database::input($stock_option['weight_class']) ."',
+            dim_x = '". database::input($stock_option['dim_x']) ."',
+            dim_y = '". database::input($stock_option['dim_y']) ."',
+            dim_z = '". database::input($stock_option['dim_z']) ."',
+            dim_class = '". database::input($stock_option['dim_class']) ."',
+            priority = ". (int)$i++ .",
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$this->data['options_stock'][$key]['id'] ."
+            and id = ". (int)$stock_option['id'] ."
             limit 1;"
           );
         }
@@ -595,7 +595,7 @@
           database::query(
             "update ". DB_TABLE_PREFIX ."products_images
             set filename = '". database::input($this->data['images'][$key]['filename']) ."',
-                priority = '". $image_priority++ ."'
+                priority = ". (int)$image_priority++ ."
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['images'][$key]['id'] ."
             limit 1;"
@@ -615,7 +615,7 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."products set
         image = '". database::input($this->data['image']) ."'
-        where id=". (int)$this->data['id'] ."
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
@@ -623,15 +623,15 @@
       if (!empty($this->data['options_stock'])) {
 
         foreach ($this->data['options_stock'] as $key => $stock_option) {
-          if (empty($this->data['options_stock'][$key]['quantity_adjustment']) && (empty($this->previous['options_stock'][$key]) || (float)$this->data['options_stock'][$key]['quantity'] != (float)$this->previous['options_stock'][$key]['quantity'])) {
-            $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$this->data['options_stock'][$key]['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
+          if (!isset($stock_option['quantity_adjustment']) && (empty($this->previous['options_stock'][$key]) || (float)$stock_option['quantity'] != (float)$this->previous['options_stock'][$key]['quantity'])) {
+            $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$stock_option['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
           }
         }
 
         $this->data['quantity'] = array_sum(array_column($this->data['options_stock'], 'quantity_adjust'));
 
       } else {
-        if (empty($this->data['quantity_adjustment']) && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
+        if (!isset($this->data['quantity_adjustment']) && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
           $this->data['quantity_adjustment'] = (float)$this->data['quantity'] - (float)$this->previous['quantity'];
         }
       }
@@ -640,8 +640,8 @@
       if (!empty($this->data['options_stock'])) {
 
         foreach (array_keys($this->data['options_stock']) as $key) {
-          if (!empty($this->data['options_stock'][$key]['quantity_adjustment']) && (float)$this->data['options_stock'][$key]['quantity_adjustment'] != 0) {
-            $this->adjust_quantity($this->data['options_stock'][$key]['quantity_adjustment'], $this->data['options_stock'][$key]['combination']);
+          if (!empty($stock_option['quantity_adjustment']) && (float)$stock_option['quantity_adjustment'] != 0) {
+            $this->adjust_quantity($stock_option['quantity_adjustment'], $stock_option['combination']);
             unset($this->data['options_stock'][$key]['quantity_adjustment']);
           }
         }

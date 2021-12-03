@@ -14,11 +14,6 @@ body.featherlight-open {
   /* prevent scrolling */
   overflow: hidden;
   padding-inline-end: 15px;
-
-  > *:not(.featherlight):not(#animated-cart-item) {
-    /* blur backdrop */
-    filter: blur(@blur-size);
-  }
 }
 
 .featherlight {
@@ -37,6 +32,9 @@ body.featherlight-open {
   background: rgba(0, 0, 0, 0);
 
   animation: featherlight-fadein 0.1s linear;
+
+  backdrop-filter: blur(3px) grayscale(1);
+  z-index: 999;
 
   * {
     box-sizing: border-box;

@@ -243,22 +243,22 @@
 
               <div class="form-group">
                 <div class="input-group">
-                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('sku', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('mpn', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('gtin', true); ?>
                 </div>
 
                 <div class="input-group">
-                  <label class="input-group-text" style="width: 100px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                  <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
                   <?php echo functions::form_draw_text_field('taric', true); ?>
                 </div>
               </div>
@@ -648,17 +648,17 @@
           <div class="row" style="max-width: 640px;">
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_min_order_qty', 'Min. Order Qty'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_min', true, null, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_min', true, 2, 0); ?>
             </div>
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_max_order_quantity', 'Max. Order Qty'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_max', true, null, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_max', true, 2, 0); ?>
             </div>
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_quantity_step', 'Quantity Step'); ?></label>
-              <?php echo functions::form_draw_decimal_field('quantity_step', true, null, 'min="0"'); ?>
+              <?php echo functions::form_draw_decimal_field('quantity_step', true, 2, 0); ?>
             </div>
 
             <div class="form-group col-md-3">

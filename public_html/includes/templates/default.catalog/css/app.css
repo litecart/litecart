@@ -124,7 +124,7 @@ html {
     position: sticky;
     top: 0;
     z-index: 999;
-    font-size: 1.25em;
+    font-size: 1.15em;
   }
 }
 #main {
@@ -277,7 +277,7 @@ html {
   }
 }
 .listing.products.columns {
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
 }
 @media (min-width: 768px) {
   .listing.products.columns {
