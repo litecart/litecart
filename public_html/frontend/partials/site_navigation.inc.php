@@ -69,6 +69,7 @@
   }
 
 // Shopping Cart
+
   $site_navigation->snippets['shopping_cart'] = [
     'items' => [],
     'link' => document::ilink('shopping_cart'),

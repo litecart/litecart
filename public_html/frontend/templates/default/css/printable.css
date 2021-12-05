@@ -1,7 +1,6 @@
 .page {
   position: relative;
   font-size: 12px;
-  font-family: Arial, Helvetica, sans-serif;
   color: #000;
 }
 .page .footer {
@@ -77,13 +76,9 @@ hr {
   }
   html:hover button[name="print"] {
     position: fixed;
-    top: 0cm;
+    top: 1cm;
     right: 1cm;
-    padding: 0.5em;
-    font-size: 8mm;
     display: block;
-    margin: 5mm auto;
-    z-index: 999999;
-    border-radius: 0.25em;
+    z-index: 999;
   }
 }

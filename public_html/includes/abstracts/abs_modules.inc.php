@@ -74,8 +74,7 @@
 
     public function run($method_name, $module_id=null) {
 
-      if (empty($module_id)) {
-        if (empty($this->selected['id'])) return;
+      if (empty($module_id) && !empty($this->selected['id'])) {
         list($module_id, $option_id) = explode(':', $this->selected['id']);
       }
 
@@ -83,4 +82,7 @@
 
       return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
     }
+
+  // Last destination method handler for prevent throwing errors if called methods are not defined
+    public function call($name, $arguments) {}
   }

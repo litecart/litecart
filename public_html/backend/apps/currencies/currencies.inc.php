@@ -74,9 +74,7 @@
           <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_value', 'Value'); ?></th>
-          <th><?php echo language::translate('title_decimals', 'Decimals'); ?></th>
-          <th><?php echo language::translate('title_prefix', 'Prefix'); ?></th>
-          <th><?php echo language::translate('title_suffix', 'Suffix'); ?></th>
+          <th><?php echo language::translate('title_format_example', 'Format Example'); ?></th>
           <th><?php echo language::translate('title_default_currency', 'Default Currency'); ?></th>
           <th><?php echo language::translate('title_store_currency', 'Store Currency'); ?></th>
           <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
@@ -92,10 +90,8 @@
           <td><?php echo $currency['id']; ?></td>
           <td><?php echo $currency['code']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
-          <td class="text-end"><?php echo $currency['value']; ?></td>
-          <td class="text-center"><?php echo $currency['decimals']; ?></td>
-          <td class="text-center"><?php echo $currency['prefix']; ?></td>
-          <td class="text-center"><?php echo $currency['suffix']; ?></td>
+          <td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
+          <td class="text-center"><?php echo currency::format_html(1234.56, false, $currency['code'], 1); ?></td>
           <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo ($currency['code'] == settings::get('site_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo $currency['priority']; ?></td>

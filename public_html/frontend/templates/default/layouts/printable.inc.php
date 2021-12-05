@@ -11,16 +11,37 @@
 </head>
 <body>
 
-<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
-<button name="print" class="btn btn-default"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button>
-<?php } ?>
-
 {{content}}
 
 {{foot_tags}}
 {{javascript}}
 
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
+<style>
+@media print {
+  button[name="print"] {
+    display: none;
+  }
+}
+@media screen {
+  button[name="print"] {
+    display: none;
+  }
+
+  html:hover button[name="print"] {
+    position: fixed;
+    top: 1cm;
+    right: 1cm;
+    display: block;
+    z-index: 999;
+  }
+}
+</style>
+
+<button name="print" class="btn btn-default btn-lg">
+  <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
+</button>
+
 <script>
   $('button[name="print"]').click(function(){
     window.print();
