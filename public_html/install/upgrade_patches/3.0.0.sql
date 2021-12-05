@@ -136,6 +136,7 @@ ALTER TABLE `lc_products_images`
 CHANGE COLUMN `checksum` `checksum` VARCHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
+DROP COLUMN `uid`,
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `payment_due` `total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `tax_total` `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
@@ -150,8 +151,7 @@ ADD COLUMN `payment_receipt_url` VARCHAR(256) NOT NULL DEFAULT '' AFTER `payment
 ADD COLUMN `payment_terms` VARCHAR(8) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `date_paid` TIMESTAMP NULL DEFAULT NULL AFTER `public_key`,
-ADD COLUMN `date_dispatched` TIMESTAMP NULL DEFAULT NULL AFTER `date_paid`,
-ADD INDEX `uid` (`uid`);
+ADD COLUMN `date_dispatched` TIMESTAMP NULL DEFAULT NULL AFTER `date_paid`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
