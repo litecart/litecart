@@ -1,6 +1,6 @@
 <?php
 
-  class mod_payment extends abs_module {
+  class mod_payment extends abs_modules {
     private $_cache = [];
     public $selected = [];
 
@@ -143,17 +143,5 @@
 
     public function receipt($order) {
       return $this->run('receipt', null, $order);
-    }
-
-    public function run($method_name, $module_id=null) {
-
-      if (empty($module_id)) {
-        if (empty($this->selected['id'])) return;
-        list($module_id, $option_id) = explode(':', $this->selected['id']);
-      }
-
-      if (!empty($this->modules[$module_id]) && method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
-      }
     }
   }

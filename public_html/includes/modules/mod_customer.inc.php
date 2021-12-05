@@ -1,6 +1,6 @@
 <?php
 
-  class mod_customer extends abs_module {
+  class mod_customer extends abs_modules {
     private $_cache;
 
     public function __construct() {
@@ -63,20 +63,5 @@
 
     public function delete($customer) {
       return $this->run('delete', null, $customer);
-    }
-
-    public function run($method_name, $module_id=null) {
-
-      if (!empty($module_id)) {
-       $modules = [$module_id];
-      } else {
-        $modules = array_keys($this->modules);
-      }
-
-      foreach ($modules as $module_id) {
-        if (method_exists($this->modules[$module_id], $method_name)) {
-          return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
-        }
-      }
     }
   }

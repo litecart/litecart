@@ -1,6 +1,6 @@
 <?php
 
-  class mod_shipping extends abs_module {
+  class mod_shipping extends abs_modules {
     private $_cache = [];
     public $selected = [];
 
@@ -131,17 +131,5 @@
 
     public function track($order) {
       return $this->run('track', null, $order);
-    }
-
-    public function run($method_name, $module_id=null) {
-
-      if (empty($module_id)) {
-        if (empty($this->selected['id'])) return;
-        list($module_id, $option_id) = explode(':', $this->selected['id']);
-      }
-
-      if (!method_exists($this->modules[$module_id], $method_name)) return false;
-
-      return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
     }
   }

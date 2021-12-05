@@ -1,6 +1,6 @@
 <?php
 
-  class mod_jobs extends abs_module {
+  class mod_jobs extends abs_modules {
 
     public function __construct() {
       $this->load();
@@ -67,11 +67,5 @@
       }
 
       return $output;
-    }
-
-    public function run($method_name, $module_id) {
-      if (method_exists($this->modules[$module_id], $method_name)) {
-        return call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
-      }
     }
   }

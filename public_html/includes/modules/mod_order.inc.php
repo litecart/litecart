@@ -1,6 +1,6 @@
 <?php
 
-  class mod_order extends abs_module {
+  class mod_order extends abs_modules {
 
     public function __construct() {
       $this->load();
@@ -75,22 +75,5 @@
 
     public function delete($order) {
       return $this->run('delete', null, $order);
-    }
-
-    public function run($method_name, $module_id=null) {
-
-      if (empty($this->modules)) return;
-
-      if (!empty($module_id)) {
-        $module_ids = [$module_id];
-      } else {
-        $module_ids = array_keys($this->modules);
-      }
-
-      foreach ($module_ids as $module_id) {
-        if (method_exists($this->modules[$module_id], $method_name)) {
-          call_user_func_array([$this->modules[$module_id], $method_name], array_slice(func_get_args(), 2));
-        }
-      }
     }
   }
