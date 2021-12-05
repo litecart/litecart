@@ -217,6 +217,8 @@
 
     public static function set($token, $data) {
 
+      if (empty(self::$enabled)) return;
+
       if (empty($data)) return;
 
       switch ($token['storage']) {
@@ -263,15 +265,17 @@
       }
     }
 
-    // Output recorder (This option is not affected by $enabled as fresh data is always recorded)
+    // Output recorder
     public static function capture($token, $max_age=900, $force_cache=false) {
 
-      if (isset(self::$_recorders[$token['id']])) trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+      if (empty(self::$enabled)) return true;
 
-      $_data = self::get($token, $max_age, $force_cache);
+      if (isset(self::$_recorders[$token['id']])) {
+        trigger_error('Cache recorder already initiated ('. $token['id'] .')', E_USER_ERROR);
+      }
 
-      if (!empty($_data)) {
-        echo $_data;
+      if ($data = self::get($token, $max_age, $force_cache)) {
+        echo $data;
         return false;
       }
 
@@ -286,6 +290,8 @@
     }
 
     public static function end_capture($token=null) {
+
+      if (empty(self::$enabled)) return;
 
       if (empty($token['id'])) $token['id'] = current(array_reverse(self::$_recorders));
 
