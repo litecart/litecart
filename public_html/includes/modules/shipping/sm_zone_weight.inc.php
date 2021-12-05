@@ -24,10 +24,8 @@
       $options = [];
 
       for ($i=1; $i <= 3; $i++) {
+
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
-
-        $name = language::translate(__CLASS__.':title_option_name_zone_'.$i, '');
-
         if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address'])) continue;
 
         $cost = $this->calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
@@ -35,7 +33,7 @@
         $options[] = [
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
-          'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
+          'name' => language::translate(__CLASS__.':title_option_name_zone_'.$i, $this->name),
           'description' => language::translate(__CLASS__.':title_option_description_zone_'.$i, ''),
           'fields' => '',
           'cost' => $cost,
@@ -44,24 +42,21 @@
         ];
       }
 
-      $name = language::translate(__CLASS__.':title_option_name_zone_x', '');
-
       if (empty($options)) {
-        if (!empty($this->settings['weight_rate_table_x'])) {
-          $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
 
-          $options[] = [
-            'id' => 'zone_x',
-            'icon' => $this->settings['icon'],
-            'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
-            'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
-            'fields' => '',
-            'cost' => $cost + $this->settings['handling_fee'],
-            'tax_class_id' => $this->settings['tax_class_id'],
-          ];
-        } else {
-          return;
-        }
+        if (empty($this->settings['weight_rate_table_x'])) return;
+
+        $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
+
+        $options[] = [
+          'id' => 'zone_x',
+          'icon' => $this->settings['icon'],
+          'name' => language::translate(__CLASS__.':title_option_name_zone_x', $this->name),
+          'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
+          'fields' => '',
+          'cost' => $cost + $this->settings['handling_fee'],
+          'tax_class_id' => $this->settings['tax_class_id'],
+        ];
       }
 
       return $options;

@@ -21,7 +21,7 @@
       $output = [];
 
       $output[] = [
-        'title' => $order->shipping->selected['title'] .' ('. $order->shipping->selected['name'] .')',
+        'title' => $order->shipping->selected['name'],
         'value' => $order->shipping->selected['cost'],
         'tax' => tax::get_tax($order->shipping->selected['cost'], $order->shipping->selected['tax_class_id'], $order->data['customer']),
         'calculate' => true,

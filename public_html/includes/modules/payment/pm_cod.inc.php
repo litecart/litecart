@@ -27,7 +27,7 @@
         [
           'id' => 'cod',
           'icon' => $this->settings['icon'],
-          'title' => language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery'),
+          'name' => $this->name,
           'description' => '',
           'fields' => '',
           'cost' => $this->settings['fee'],
