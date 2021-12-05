@@ -98,7 +98,7 @@
           <td class="text-end"><?php echo !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-'; ?></td>
           <td class="text-center"><?php echo (date('Y', strtotime($banner['date_valid_from'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($banner['date_valid_from'])) : '-'; ?></td>
           <td class="text-center"><?php echo (date('Y', strtotime($banner['date_valid_to'])) > '1970') ? strftime(language::$selected['format_datetime'], strtotime($banner['date_valid_to'])) : '-'; ?></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

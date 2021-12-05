@@ -78,7 +78,7 @@
           <td><?php echo functions::form_draw_checkbox('users[]', $user['id']); ?></td>
           <td><?php echo functions::draw_fonticon($user['status'] ? 'on' : 'off'); ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_user', ['user_id' => $user['id']]); ?>"><?php echo $user['username']; ?></a></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_user', ['user_id' => $user['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_user', ['user_id' => $user['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php }?>
       </tbody>

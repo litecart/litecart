@@ -188,7 +188,7 @@ textarea[name="html"] {
                  <?php foreach (language::$languages as $language) { ?>
                  '  <td><?php echo functions::form_draw_text_field('values['. $language['code'] .'][key_new_key_i]', true); ?></td>' +
                  <?php } ?>
-                 '  <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
+                 '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
                  '</tr>';
 
     output = output.replace(/new_key_i/g, new_key_i);

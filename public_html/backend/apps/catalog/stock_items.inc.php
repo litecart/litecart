@@ -87,7 +87,7 @@
           <td><?php echo $stock_item['mpn']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['reordered']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

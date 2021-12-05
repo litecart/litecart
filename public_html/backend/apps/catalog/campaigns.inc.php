@@ -85,7 +85,7 @@
           <td class="text-right"><?php echo (!empty($campaign['end_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['end_date'])) : ''; ?></td>
           <td><?php echo $campaign['product_name']; ?></td>
           <td class="text-right"><?php echo currency::format($campaign['campaign_price'], false, settings::get('site_currency_code')); ?></td>
-          <td class="text-right"><a href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td class="text-right"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

@@ -157,7 +157,7 @@
               <?php echo nl2br($setting['value']); ?>
             </div>
           </td>
-          <td class="text-end"><a href="<?php echo document::href_ilink('appearance/template_settings', ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('appearance/template_settings', ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
         <?php } ?>

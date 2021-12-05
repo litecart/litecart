@@ -382,7 +382,7 @@
                 <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
                 <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
                 <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
-                <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+                <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
               </tr>
               <?php } ?>
             </tbody>

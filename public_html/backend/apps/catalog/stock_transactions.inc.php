@@ -88,7 +88,7 @@
         <td><?php echo $transaction['id']; ?></td>
         <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
         <td><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>
-        <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+        <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
       </tr>
       <?php } ?>
       </tbody>

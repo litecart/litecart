@@ -373,7 +373,7 @@
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
           <td><?php echo '<img class="thumbnail" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 24, 24, 'FIT_USE_WHITESPACING')) .'" alt="" />'; ?><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
           <td><a href="<?php echo document::href_ilink('f:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
-          <td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
 <?php
       }
@@ -448,7 +448,7 @@
         }
 
         $output .= '  <td><a href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-end"><a href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
 
@@ -496,7 +496,7 @@
         }
 
         $output .= '  <td><a href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
-                 . '  <td class="text-end"><a href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
+                 . '  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 
         if (in_array($category['id'], $category_trail)) {
