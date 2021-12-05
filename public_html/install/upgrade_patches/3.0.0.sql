@@ -162,7 +162,8 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 ADD COLUMN `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
-ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `lengh_unit`,
+ADD COLUMN `downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
+ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `downloads`,
 ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------

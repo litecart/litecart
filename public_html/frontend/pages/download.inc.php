@@ -20,8 +20,8 @@
       throw new Exception('Missing order_item_id');
     }
 
-    $file_query = database::query(
-      "select si.* from ". DB_TABLE_PREFIX ."orders_items oi
+    $item_query = database::query(
+      "select oi.id, oi.stck_item_id, si.file, si.filename, si.mime_type from ". DB_TABLE_PREFIX ."orders_items oi
       left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
       where oi.order_id = ". (int)$order['id'] ."
       and id = ". (int)$_GET['order_item_id'] ."
@@ -30,22 +30,36 @@
       limit 1;"
     );
 
-    if (!$file = database::fetch($file_query)) throw new Exception('Could not find a download for the given order_item_id', 400);
+    if (!$item = database::fetch($item_query)) throw new Exception('Could not find a download for the given order_item_id', 400);
 
-    $src = FS_DIR_STORAGE . 'files/' . $file['file'];
+    $file = FS_DIR_STORAGE . 'files/' . $item['file'];
 
-    if (!is_file($src)) {
-      trigger_error('Missing download for stock item ' . $file['id'], E_USER_WARNING);
+    if (!is_file($file)) {
+      trigger_error('Missing download for stock item ' . $item['id'], E_USER_WARNING);
       throw new Exception('Found a reference for but the file does not exist on the disk', 404);
     }
 
+    database::query(
+      "update ". DB_TABLE_PREFIX ."orders_items
+      set downloads = downloads + 1
+      where id = ". (int)$item['id'] ."
+      limit 1;"
+    );
+
+    database::query(
+      "update ". DB_TABLE_PREFIX ."stock_items
+      set downloads = downloads + 1
+      where id = ". (int)$item['stock_item_id'] ."
+      limit 1;"
+    );
+
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
-    header('Content-Type: ' . $file['mime_type']);
-    header('Content-Disposition: attachment; filename="' . $file['filename'] .'"');
-    header('Content-Length: ' . filesize($src));
+    header('Content-Type: ' . $item['mime_type']);
+    header('Content-Disposition: attachment; filename="' . $item['filename'] .'"');
+    header('Content-Length: ' . filesize($file));
 
-    $fh = fopen($src, 'r');
+    $fh = fopen($file, 'r');
     while ($buffer = fread($fh, 1024)) echo $buffer;
     fclose($fh);
 
