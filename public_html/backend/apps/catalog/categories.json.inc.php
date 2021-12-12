@@ -3,7 +3,6 @@
   try {
 
     if (empty($_GET['parent_id'])) $_GET['parent_id'] = 0;
-    if (empty($_GET['page'])) $_GET['page'] = 1;
     if (empty($_GET['language_code'])) $_GET['language_code'] = language::$selected['code'];
 
     if (!empty($_GET['query'])) {
@@ -32,15 +31,10 @@
       where c.id
       ". (isset($_GET['parent_id']) ? "and c.parent_id = ". (int)$_GET['parent_id'] : "") ."
       ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
-      order by c.priority, ci.name
-      limit 20;"
+      order by c.priority, ci.name;"
     );
 
     if (database::num_rows($categories_query)) {
-
-      if ($_GET['page'] > 1) database::seek($categories_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-
-      $page_items = 0;
       while ($subcategory = database::fetch($categories_query)) {
 
         $subcategory['path'] = [];
@@ -51,8 +45,6 @@
         }
 
         $json['subcategories'][] = $subcategory;
-
-        if (++$page_items == settings::get('data_table_rows_per_page')) break;
       }
     }
 

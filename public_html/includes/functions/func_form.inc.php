@@ -403,24 +403,27 @@ END;
 
     $product_name = '('. language::translate('title_no_product', 'No Product') .')';
 
-    if (!empty($input)) {
+    if (!empty($value)) {
       $product_query = database::query(
-        "select p.id, pi.name from ". DB_TABLE_PREFIX ."products p
-        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-        where p.id = ". (int)$input ."
+        "select p.id, p.sku, pp.price, pi.name
+        from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        left join (
+          select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
+          from ". DB_TABLE_PREFIX ."products_prices
+        ) pp on (pp.product_id = p.id)
+        where p.id = ". (int)$value ."
         limit 1;"
       );
 
-      if ($product = database::fetch($product_query)) {
-        $product_name = $product['name'];
-      }
+      $product = database::fetch($product_query);
     }
 
     functions::draw_lightbox();
 
     return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
          . '  <div class="form-input">' . PHP_EOL
-         . '    ' . form_draw_hidden_field($name, true) . PHP_EOL
+         . '    ' . form_draw_hidden_field($name, true, !empty($product) ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : '') . PHP_EOL
          . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
          . '    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]' . PHP_EOL
          . '  </div>' . PHP_EOL
@@ -1098,7 +1101,7 @@ END;
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
            . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
-           . '    <ul class="dropdown-menu" style="padding: 1em; right: 0;"></ul>' . PHP_EOL
+           . '    <ul class="dropdown-menu" style="padding: 1em; right: 0; max-height: 480px; overflow-y: auto;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';
 

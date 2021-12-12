@@ -240,6 +240,8 @@
         mkdir(FS_DIR_STORAGE . 'images/categories/', 0777);
       }
 
+      $image = new ent_image($file);
+
       if (empty($filename)) {
         $filename = 'categories/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'][settings::get('site_language_code')], settings::get('site_language_code')) .'.'. $image->type();
       }

@@ -453,9 +453,9 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."products set
-        image = '". database::input($this->data['image']) ."'
-        where id=". (int)$this->data['id'] ."
+        "update ". DB_TABLE_PREFIX ."products
+        set image = '". database::input($this->data['image']) ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 

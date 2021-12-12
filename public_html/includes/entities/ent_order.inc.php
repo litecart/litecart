@@ -180,7 +180,10 @@
       if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), ['%new_status' => reference::order_status($this->data['order_status_id'])->name]),
+          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username'), [
+            '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
+            '%new_status' => reference::order_status($this->data['order_status_id'])->name,
+          ]),
           'hidden' => 1,
         ];
       }

@@ -33,6 +33,9 @@ body.featherlight-open {
   animation: featherlight-fadein 100ms linear;
   backdrop-filter: saturate(0%) blur(@blur-size);
 
+  backdrop-filter: blur(3px) grayscale(1);
+  z-index: 999;
+
   * {
     box-sizing: border-box;
   }

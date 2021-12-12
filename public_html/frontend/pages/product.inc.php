@@ -27,11 +27,8 @@
     notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
   }
 
-  if (empty($_GET['category_id']) && empty($product->brand)) {
-    if ($product->category_ids) {
-      $category_ids = array_values($product->category_ids);
-      $_GET['category_id'] = array_shift($category_ids);
-    }
+  if (empty($_GET['category_id']) && empty($_GET['manufacturer_id'])) {
+    $_GET['category_id'] = $product->default_category_id;
   }
 
   database::query(

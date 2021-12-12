@@ -365,8 +365,11 @@
     }
 
     public static function rlink($resource) {
-      $timestamp = filemtime($resource);
-      return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => $timestamp]);
+      if (!is_file($resource)) {
+        trigger_error('Could not draw link for missing resource ('. $resource.')', E_USER_WARNING);
+        return '';
+      }
+      return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => filemtime($resource)]);
     }
 
     public static function href_rlink($resource) {
