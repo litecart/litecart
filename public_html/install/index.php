@@ -567,7 +567,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label>Password</label>
-      <input class="form-control" name="password" type="text" id="password" required />
+      <input class="form-control" name="password" type="password" id="password" required />
     </div>
   </div>
 
