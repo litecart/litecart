@@ -1,3 +1,9 @@
+UPDATE `lc_countries`
+SET postcode_format = '[0-9]{7}'
+WHERE iso_code_2 = 'IL'
+AND postcode_format = '[0-9]{5}'
+LIMIT 1;
+-- --------------------------------------------------------
 UPDATE IGNORE `lc_customers` SET date_login = NULL WHERE date_login = '0000-00-00 00:00:00';
 -- --------------------------------------------------------
 UPDATE IGNORE `lc_customers` SET date_blocked_until = NULL WHERE date_blocked_until = '0000-00-00 00:00:00';
