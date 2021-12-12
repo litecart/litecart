@@ -1292,23 +1292,26 @@
 
     if (!empty($value)) {
       $product_query = database::query(
-        "select p.id, pi.name from ". DB_TABLE_PREFIX ."products p
-        left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        "select p.id, p.sku, pp.price, pi.name
+        from ". DB_TABLE_PRODUCTS ." p
+        left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+        left join (
+          select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
+          from ". DB_TABLE_PREFIX ."products_prices
+        ) pp on (pp.product_id = p.id)
         where p.id = ". (int)$value ."
         limit 1;"
       );
 
-      if ($product = database::fetch($product_query)) {
-        $product_name = $product['name'];
-      }
+      $product = database::fetch($product_query);
     }
 
     functions::draw_lightbox();
 
     return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
          . '  <div class="form-control">' . PHP_EOL
-         . '    ' . form_draw_hidden_field($name, true) . PHP_EOL
-         . '    <span class="name" style="display: inline-block;">'. $product_name .'</span>' . PHP_EOL
+         . '    ' . form_draw_hidden_field($name, true, !empty($product) ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : '') . PHP_EOL
+         . '    <span class="name" style="display: inline-block;">'. $product['name'] .'</span>' . PHP_EOL
          . '    [<span class="id" style="display: inline-block;">'. (int)$value .'</span>]' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '  <div style="align-self: center;">' . PHP_EOL

@@ -61,13 +61,13 @@
 				$.each(json, function(i, row){
 					if (row) {
 						$('#modal-product-picker .results tbody').append(
-							'<tr>' +
+							'<tr data-id="' + row.id + '" data-sku="' + row.name + '" data-name="' + row.name + '" data-price="' + row.price.value + '" data-price-formatted="' + row.price.formatted + '" data-quantity="' + row.quantity + '">' +
 							'  <td class="id">' + row.id + '</td>' +
 							'  <td class="name">' + row.name + '</td>' +
 							'  <td class="sku">' + row.sku + '</td>' +
-							'  <td class="quantity text-end">' + row.quantity + '</td>' +
-							'  <td class="price text-end">' + row.price.formatted + '</td>' +
-							'  <td class="date-created">' + row.date_created + '</td>' +
+							'  <td class="text-right">' + row.quantity + '</td>' +
+							'  <td class="text-right">' + row.price.formatted + '</td>' +
+							'  <td>' + row.date_created + '</td>' +
 							'</tr>'
 						);
 					}
@@ -80,21 +80,19 @@
 	}).focus();
 
   $('#modal-product-picker tbody').on('click', 'td', function() {
-    var row = $(this).closest('tr');
+    var $input_group = $.featherlight.current().$currentTarget.closest('.input-group'),
+      $field = $input_group.find(':input');
 
-    var id = $(row).find('.id').text();
-    var name = $(row).find('.name').text();
+    var product = $(this).closest('tr').data();
 
-    if (!id) {
-      id = 0;
-      name = '(<?php echo functions::general_escape_js(language::translate('title_no_product', 'No Product')); ?>)';
-    }
+    $field.val(product.id || 0)
+      .data('sku', product.sku || '')
+      .data('price', product.price.amount || 0)
+      .data('price-formatted', product.priceFormatted || '')
+      .trigger('change');
 
-    var field = $.featherlight.current().$currentTarget.closest('.input-group');
-
-    $(field).find(':input').val(id).trigger('change');
-    $(field).find('.id').text(id);
-    $(field).find('.name').text(name);
+    $input_group.find('.id').text(product.id || 0);
+    $input_group.find('.name').text(product.name || '(<?php echo functions::general_escape_js(language::translate('title_no_product', 'No Product')); ?>)');
     $.featherlight.close();
   });
 </script>
