@@ -267,6 +267,15 @@
               }
             }
 
+            if (empty($row['parent_id']) && !empty($row['parent_code'])) {
+              $parent_query = database::query(
+                "select id from ". DB_TABLE_PREFIX ."categories
+                where code = '". database::input($row['code']) ."'
+                limit 1;"
+              );
+              $row['parent_id'] = database::fetch($parent_query, 'id');
+            }
+
           // Set new category data
             $fields = [
               'parent_id',
