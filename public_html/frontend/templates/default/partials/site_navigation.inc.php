@@ -144,7 +144,7 @@
               </div>
             </li>
             <?php } ?>
-            <li class="checkout"><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
+            <li class="checkout"><a href="<?php echo document::href_ilink('checkout/index'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?></a></li>
             <?php } else { ?>
             <li><span><?php echo language::translate('title_empty'), 'Empty'; ?></span></li>
             <?php } ?>
