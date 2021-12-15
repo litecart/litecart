@@ -705,7 +705,7 @@
               'length_unit',
               'purchase_price',
               'purchase_price_currency_code',
-              'reordered',
+              'backordered',
             ];
 
             foreach ($fields as $field) {

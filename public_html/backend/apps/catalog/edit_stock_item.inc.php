@@ -47,7 +47,7 @@
         'length_unit',
         'quantity',
         'quantity_adjustment',
-        'reordered',
+        'backordered',
         'quantity_unit_id',
         'purchase_price',
         'purchase_price_currency_code',
@@ -262,7 +262,7 @@
 </div>
 
 <script>
-  $('form[name="stock_item_form"] input[name="quantity"], form[name="stock_item_form"] input[name="quantity_adjustment"], form[name="stock_item_form"] input[name="reordered"]').on('blur', function(){
+  $('form[name="stock_item_form"] input[name="quantity"], form[name="stock_item_form"] input[name="quantity_adjustment"], form[name="stock_item_form"] input[name="backordered"]').on('blur', function(){
     $(this).val(parseFloat($(this).val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
   });
 
@@ -279,7 +279,7 @@
   $('form[name="stock_item_form"] select[name="quantity_unit_id"]').on('change', function(){
     if ($('input[name="quantity"]').val() != '') $('input[name="quantity"]').val(parseFloat($('input[name="quantity"]').val()).toFixed($(this).find('option:selected').data('decimals')));
     if ($('input[name="quantity_adjustment"]').val() != '') $('input[name="quantity_adjustment"]').val(parseFloat($('input[name="quantity_adjustment"]').val()).toFixed($(this).find('option:selected').data('decimals')));
-    if ($('input[name="reordered"]').val() != '') $('input[name="reordered"]').val(parseFloat($('input[name="reordered"]').val()).toFixed($(this).find('option:selected').data('decimals')));
+    if ($('input[name="backordered"]').val() != '') $('input[name="backordered"]').val(parseFloat($('input[name="backordered"]').val()).toFixed($(this).find('option:selected').data('decimals')));
   });
 
   $('button[name="transfer"]').click(function(){

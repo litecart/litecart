@@ -71,7 +71,7 @@
           <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
           <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
-          <th><?php echo language::translate('title_reordered', 'Reordered'); ?></th>
+          <th><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
           <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
           <th></th>
         </tr>
@@ -85,7 +85,7 @@
           <td><?php echo $stock_item['sku']; ?></td>
           <td><?php echo $stock_item['gtin']; ?></td>
           <td><?php echo $stock_item['mpn']; ?></td>
-          <td class="text-end"><?php echo (float)$stock_item['reordered']; ?></td>
+          <td class="text-end"><?php echo (float)$stock_item['backordered']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
