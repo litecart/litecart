@@ -47,7 +47,6 @@
       }
 
       $this->data = array_merge($this->data, [
-        'uid' => uniqid(),
         'weight_unit' => settings::get('site_weight_unit'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
@@ -138,16 +137,16 @@
       while ($row = database::fetch($order_totals_query)) {
         $row['value'] = (float)$row['value']; // Turns "1.0000" to 1
         $row['tax'] = (float)$row['tax']; // Turns "1.0000" to 1
-        $this->data['order_total'][$row['id']] = $row;
+        $this->data['order_total'][] = $row;
       }
 
-      $order_comments_query = database::query(
+      $comments_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."orders_comments
         where order_id = ". (int)$order_id ."
         order by id;"
       );
 
-      while ($row = database::fetch($order_comments_query)) {
+      while ($row = database::fetch($comments_query)) {
         $this->data['comments'][$row['id']] = $row;
       }
 
@@ -217,8 +216,8 @@
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."orders
-          (uid, client_ip, user_agent, domain, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
+          (client_ip, user_agent, domain, date_created)
+          values ('". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". database::input($_SERVER['HTTP_HOST']) ."', '". ($this->data['date_created'] = date('Y-m-d H:i:s')) ."');"
         );
 
         $this->data['id'] = database::insert_id();
@@ -292,16 +291,17 @@
         }
       }
 
-    // Delete order items
+    // Delete items
       database::query(
         "delete from ". DB_TABLE_PREFIX ."orders_items
         where order_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
 
-    // Insert/update order items
+    // Insert/update items
       $i = 0;
       foreach ($this->data['items'] as $key => $item) {
+
         if (empty($item['id'])) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."orders_items
@@ -332,9 +332,9 @@
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",
-            stock_item_id = '". database::input($item['stock_item_id']) ."',
+            stock_item_id = ". (int)$item['stock_item_id'] .",
             name = '". database::input($item['name']) ."',
-            data = '". (!empty($item['data']) ? database::input(json_encode($item['data'], JSON_UNESCAPED_SLASHES)) : '') ."',
+            userdata = '". (!empty($item['userdata']) ? database::input(json_encode($item['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
             sku = '". database::input($item['sku']) ."',
             gtin = '". database::input($item['gtin']) ."',
             taric = '". database::input($item['taric']) ."',
@@ -349,8 +349,8 @@
             height = ". (float)$item['height'] .",
             length_unit = '". database::input($item['length_unit']) ."',
             priority = ". ++$i ."
-          where order_id = ". (int)$this->data['id'] ."
-          and id = ". (int)$item['id'] ."
+          where id = ". (int)$item['id'] ."
+          and order_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
       };
@@ -383,8 +383,8 @@
           tax_class_id = ". (int)$item['tax_class_id'] .",
           calculate = '". (empty($row['calculate']) ? 0 : 1) ."',
           priority = ". ++$i ."
-          where order_id = ". (int)$this->data['id'] ."
-          and id = ". (int)$row['id'] ."
+          where id = ". (int)$row['id'] ."
+          and order_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
       }
@@ -424,8 +424,8 @@
             set author = '". (!empty($comment['author']) ? database::input($comment['author']) : 'system') ."',
               text = '". database::input($comment['text']) ."',
               hidden = '". (!empty($comment['hidden']) ? 1 : 0) ."'
-            where order_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$comment['id'] ."
+            where id = ". (int)$comment['id'] ."
+            and order_id = ". (int)$this->data['id'] ."
             limit 1;"
           );
         }

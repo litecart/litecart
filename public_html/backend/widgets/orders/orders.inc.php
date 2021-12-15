@@ -57,7 +57,7 @@
         <td><a href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
         <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
         <td><?php echo $order['payment_option_name']; ?></td>
-        <td><?php echo ($order['order_status_id'] == 0) ? language::translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
+        <td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
         <td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
         <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
         <td class="text-end">

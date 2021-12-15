@@ -77,7 +77,7 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_date', 'Date'); ?></th>
+          <th class="text-end"><?php echo language::translate('title_date', 'Date'); ?></th>
           <th>&nbsp;</th>
         </tr>
       </thead>
@@ -87,7 +87,7 @@
         <td><?php echo functions::form_draw_checkbox('stock_transactions['. $transaction['id'] .']', $transaction['id']); ?></td>
         <td><?php echo $transaction['id']; ?></td>
         <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
-        <td><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>
+        <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($transaction['date_created'])); ?></td>
         <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
       </tr>
       <?php } ?>

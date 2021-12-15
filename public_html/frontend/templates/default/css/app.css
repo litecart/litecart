@@ -30,10 +30,11 @@ body main {
 }
 #header .container form[name="search_form"] .input-group {
   border-radius: 1em;
+  background: var(--site-background-color);
 }
 #header .container form[name="search_form"] .input-group .btn {
-  margin: -0.25em;
-  border-radius: 2em;
+  border-radius: 0 1em 1em 0;
+  box-shadow: none;
 }
 @media (min-width: 576px) {
   #header .container {
@@ -295,10 +296,15 @@ body main {
   max-width: 200px;
   position: relative;
   font-size: calc(var(--default-text-size) - 1px);
+  border: 1px solid transparent;
 }
 @media (min-width: 576px) {
   .listing .product {
     gap: 0.5em;
+  }
+  .listing .product:hover {
+    border-color: var(--listing-border-color);
+    transform: scale(1.01);
   }
 }
 @media (min-width: 768px) {
@@ -471,6 +477,7 @@ body main {
   text-align: center;
   text-transform: uppercase;
   transform: rotate(-45deg);
+  line-height: 100%;
   width: 140px;
 }
 #box-product .main-image .sticker.new {

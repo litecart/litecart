@@ -218,7 +218,7 @@
         throw new Exception('Could not set image source to a non-existing source');
       }
 
-      $this->_src = $file;
+      $this->_file = $file;
       return true;
     }
 
@@ -232,7 +232,7 @@
       unset($this->_data['width']);
       unset($this->_data['height']);
 
-      if (empty($this->_src)) {
+      if (empty($this->_file)) {
         throw new Exception('Could not load image from empty source location');
       }
 

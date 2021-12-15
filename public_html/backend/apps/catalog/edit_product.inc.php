@@ -421,26 +421,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><?php echo functions::form_draw_currency_field('prices['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), true, 'data-currency-price="" placeholder=""'); ?></td>
-                <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('site_currency_code') .']', '', currency::$currencies[settings::get('site_currency_code')]['decimals'], 'min="0"'); ?></td>
-                </tr>
-<?php
-  foreach (currency::$currencies as $currency) {
-    if ($currency['code'] == settings::get('site_currency_code')) continue;
-?>
+                <?php foreach (currency::$currencies as $currency) { ?>
                 <tr>
                   <td><?php echo functions::form_draw_currency_field('prices['. $currency['code'] .']', $currency['code'], true, 'data-currency-price="" placeholder=""'); ?></td>
                 <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 'min="0"'); ?></td>
                 </tr>
-<?php
-  }
-?>
+                <?php } ?>
               </tbody>
             </table>
           </div>
 
           <h2><?php echo language::translate('title_campaigns', 'Campaigns'); ?></h2>
+
           <div class="table-responsive">
             <table id="table-campaigns" class="table table-striped data-table">
               <tbody>
@@ -455,26 +447,18 @@
                   <td>- %<br />
                     <?php echo functions::form_draw_decimal_field('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?>
                   </td>
-                  <td><?php echo settings::get('site_currency_code'); ?><br />
-                    <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), true); ?>
-                  </td>
-<?php
-  foreach (array_keys(currency::$currencies) as $currency_code) {
-    if ($currency_code == settings::get('site_currency_code')) continue;
-?>
+                  <?php foreach (array_keys(currency::$currencies) as $currency_code) { ?>
                   <td><?php echo $currency_code; ?><br />
                     <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. $currency_code. ']', $currency_code, isset($_POST['campaigns'][$key][$currency_code]) ? number_format((float)$_POST['campaigns'][$key][$currency_code], 4, '.', '') : ''); ?>
                   </td>
-<?php
-  }
-?>
+                   <?php } ?>
                   <td><br /><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
                 </tr>
               <?php } ?>
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="<?php echo 5 + count(currency::$currencies) - 1; ?>"><button class="btn btn-default add" type="button"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></button></td>
+                  <td colspan="<?php echo 4 + count(currency::$currencies); ?>"><button class="btn btn-default add" type="button"><?php echo functions::draw_fonticon('add'); ?> <?php echo language::translate('text_add_campaign', 'Add Campaign'); ?></button></td>
                 </tr>
               </tfoot>
             </table>
@@ -517,72 +501,84 @@
 
           <h3><?php echo language::translate('title_stock_options', 'Stock Options'); ?></h3>
 
-          <div class="table-responsive">
-            <table id="stock-options" class="table table-striped table-dragable table-hover data-table">
-              <thead>
-                <tr>
-                  <th><?php echo language::translate('title_item', 'Item'); ?></th>
-                  <th style="width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-                  <th style="width: 100px;" class="text-end"><?php echo language::translate('title_weight', 'Weight'); ?></th>
-                  <th style="width: 150px;" class="text-end"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
-                  <th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-                  <th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
-                  <th style="width: 175px;" class="text-center"><?php echo language::translate('title_reordered', 'Reordered'); ?></th>
-                  <th style="width: 85px;">&nbsp;</th>
-                  <th style="width: 50px;">&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php if (!empty($_POST['stock_options'])) foreach (array_keys($_POST['stock_options']) as $key) { ?>
-                <tr data-stock-item-id="<?php echo $_POST['stock_options'][$key]['stock_item_id']; ?>">
-                  <td class="grabable">
-                    <?php echo functions::form_draw_hidden_field('stock_options['.$key.'][id]', true); ?>
-                    <?php echo functions::form_draw_hidden_field('stock_options['.$key.'][stock_item_id]', true); ?>
-                    <span class="name"><?php echo $_POST['stock_options'][$key]['name']; ?></span>
-                  </td>
-                  <td class="grabable">
-                    <span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
-                  </td>
-                  <td class="grabable text-end">
-                    <span class="weight"><?php echo (float)$_POST['stock_options'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_options'][$key]['weight_unit']; ?></span>
-                  </td>
-                  <td class="grabable text-end">
-                    <span class="length"><?php echo (float)$_POST['stock_options'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_options'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_options'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_options'][$key]['length_unit']; ?></span>
-                  </td>
-                  <td><?php echo functions::form_draw_decimal_field('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
-                  <td>
-                    <div class="input-group">
-                      <span class="input-group-text">&plusmn;</span>
-                      <?php echo functions::form_draw_decimal_field('stock_options['. $key .'][quantity_adjustment]', true); ?>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="input-group">
-                      <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                      <?php echo functions::form_draw_decimal_field('stock_options['. $key .'][reordered]', true, 2, 'min="0"'); ?>
-                    </div>
-                  </td>
-                  <td class="text-end">
-                    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #39c;"'); ?></a>
-                    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #39c;"'); ?></a>
-                    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
-                  </td>
-                  <td class="text-end">
-                    <a class="edit" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
-                  </td>
-                </tr>
-              <?php } ?>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="9">
-                    <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
-                    <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+          <table id="stock-options" class="table table-striped table-dragable table-hover data-table">
+            <thead>
+              <tr>
+                <th><?php echo language::translate('title_item', 'Item'); ?></th>
+                <th style="width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+                <th style="width: 100px;" class="text-end"><?php echo language::translate('title_weight', 'Weight'); ?></th>
+                <th style="width: 150px;" class="text-end"><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
+                <th style="width: 125px;" class="text-center"><?php echo language::translate('title_pperator', 'Operator'); ?></th>
+                <th style="width: 125px;" class="text-center"><?php echo language::translate('title_price', 'Price'); ?></th>
+                <th style="width: 125px;" class="text-center"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+                <th style="width: 175px;" class="text-center"><?php echo language::translate('title_adjust', 'Adjust'); ?></th>
+                <th style="width: 175px;" class="text-center"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+                <th style="width: 85px;">&nbsp;</th>
+                <th style="width: 50px;">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if (!empty($_POST['stock_options'])) foreach (array_keys($_POST['stock_options']) as $key) { ?>
+              <tr data-stock-item-id="<?php echo $_POST['stock_options'][$key]['stock_item_id']; ?>">
+                <td class="grabable">
+                  <?php echo functions::form_draw_hidden_field('stock_options['.$key.'][id]', true); ?>
+                  <?php echo functions::form_draw_hidden_field('stock_options['.$key.'][stock_item_id]', true); ?>
+                  <span class="name"><?php echo $_POST['stock_options'][$key]['name']; ?></span>
+                </td>
+                <td class="grabable">
+                  <span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
+                </td>
+                <td class="grabable text-end">
+                  <span class="weight"><?php echo (float)$_POST['stock_options'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['stock_options'][$key]['weight_unit']; ?></span>
+                </td>
+                <td class="grabable text-end">
+                  <span class="length"><?php echo (float)$_POST['stock_options'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['stock_options'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['stock_options'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['stock_options'][$key]['length_unit']; ?></span>
+                </td>
+                <td><?php echo functions::form_draw_select_field('stock_options[new_stock_item_i][price_operator]', ['+', '*', '%', '='], '+'); ?></td>
+                <td>
+                  <div class="dropdown">
+                    <?php echo functions::form_draw_currency_field('stock_options['.$key.'][price]['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), true, 'style="width: 125px;"'); ?>
+                    <ul class="dropdown-menu">
+                      <?php foreach (currency::$currencies as $currency) { ?>
+                      <?php if ($currency['code'] == settings::get('site_currency_code')) continue; ?>
+                      <li><?php echo functions::form_draw_currency_field('stock_options['.$key.'][price]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?></li>
+                      <?php } ?>
+                    </ul>
+                  </div>
+                </td>
+                <td><?php echo functions::form_draw_decimal_field('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
+                <td>
+                  <div class="input-group">
+                    <span class="input-group-text">&plusmn;</span>
+                    <?php echo functions::form_draw_decimal_field('stock_options['. $key .'][quantity_adjustment]', true); ?>
+                  </div>
+                </td>
+                <td>
+                  <div class="input-group">
+                    <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                    <?php echo functions::form_draw_decimal_field('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #39c;"'); ?></a>
+                  <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #39c;"'); ?></a>
+                  <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
+                </td>
+                <td class="text-end">
+                  <a class="edit" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
+                </td>
+              </tr>
+            <?php } ?>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="11">
+                  <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
+                  <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
 
         </div>
       </div>
@@ -816,11 +812,15 @@
   }
 
   function get_currency_value(currency_code) {
-    switch (currency_code) { <?php foreach (currency::$currencies as $currency) echo 'case \''. $currency['code'] .'\': return '. (float)$currency['value'] .'; '; ?> }
+    switch (currency_code) {
+      <?php foreach (currency::$currencies as $currency) echo 'case \''. $currency['code'] .'\': return '. (float)$currency['value'] .';' . PHP_EOL; ?>
+    }
   }
 
   function get_currency_decimals(currency_code) {
-    switch (currency_code) { <?php foreach (currency::$currencies as $currency) echo 'case \''. $currency['code'] .'\': return '. ($currency['decimals']+2) .'; '; ?> }
+    switch (currency_code) {
+      <?php foreach (currency::$currencies as $currency) echo 'case \''. $currency['code'] .'\': return '. ($currency['decimals']+2) .';' . PHP_EOL; ?>
+    }
   }
 
 // Update prices
@@ -992,6 +992,12 @@
 
 // Stock
 
+  <?php if (currency::$currencies > 1) { ?>
+  $('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price]"]', function(){
+    $(this).closest('.dropdown').dropdown();
+  });
+  <?php } ?>
+
   $('#stock-options').on('input', 'input[name$="[quantity]"]', function(){
     var adjustment_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
     $(adjustment_field).val(parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0));
@@ -1004,10 +1010,10 @@
 
   $('#stock-options button[name="transfer"]').click(function(){
     var quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-    var reordered_field = $(this).closest('tr').find('input[name$="[reordered]"]');
+    var backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
     console.log($(quantity_field).length);
-    $(quantity_field).val(parseFloat($(quantity_field).val() || 0) + parseFloat($(reordered_field).val() || 0)).trigger('input');
-    $(reordered_field).val(0);
+    $(quantity_field).val(parseFloat($(quantity_field).val() || 0) + parseFloat($(backordered_field).val() || 0)).trigger('input');
+    $(backordered_field).val(0);
   });
 
   $('#stock-options').on('click', '.move-up, .move-down', function(e) {
@@ -1068,6 +1074,18 @@
                + '  <td class="text-end">'
                + '    <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>'
                + '  </td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('stock_options[new_stock_item_i][price_operator]', ['+', '*', '%', '='], '+')); ?></td>'
+               + '  <td>'
+               + '    <div class="dropdown">'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_currency_field('stock_options[new_stock_item_i][price]['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), '', 'style="width: 125px;"')); ?>'
+               + '      <ul class="dropdown-menu">'
+               <?php foreach (currency::$currencies as $currency) { ?>
+               <?php if ($currency['code'] == settings::get('site_currency_code')) continue; ?>
+               + '        <li><?php echo functions::general_escape_js(functions::form_draw_currency_field('stock_options[new_stock_item_i][price]['. $currency['code'] .']', $currency['code'], '', 'style="width: 125px;"')); ?></li>'
+               <?php } ?>
+               + '      </ul>'
+               + '    </div>'
+               + '  </td>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_options[new_stock_item_i][quantity]', '0', 2, 'data-quantity="new_stock_item_quantity"')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
@@ -1078,7 +1096,7 @@
                + '  <td>'
                + '    <div class="input-group">'
                + '      <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_options[new_stock_item_i][reordered]', '', 2, 'min="0"')); ?>'
+               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('stock_options[new_stock_item_i][backordered]', '', 2, 'min="0"')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td class="text-end">'

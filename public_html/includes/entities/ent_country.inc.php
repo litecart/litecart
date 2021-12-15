@@ -25,6 +25,8 @@
         $this->data[$field['Field']] = null;
       }
 
+      $this->data['zones'] = [];
+
       $this->previous = $this->data;
     }
 
@@ -47,6 +49,8 @@
       } else {
         throw new Exception('Could not find country ('. htmlspecialchars($country_code) .') in database.');
       }
+
+    // Zones
 
       $zones_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."zones
@@ -115,6 +119,8 @@
         limit 1;"
       );
 
+    // Zones
+
       database::query(
         "delete from ". DB_TABLE_PREFIX ."zones
         where country_code = '". database::input($this->data['iso_code_2']) ."'
@@ -122,21 +128,21 @@
       );
 
       if (!empty($this->data['zones'])) {
-        foreach ($this->data['zones'] as $zone) {
+        foreach ($this->data['zones'] as $key => $zone) {
           if (empty($zone['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."zones
               (country_code, date_created)
               values ('". database::input($this->data['iso_code_2']) ."', '". date('Y-m-d H:i:s') ."');"
             );
-            $zone['id'] = database::insert_id();
+            $zone['id'] = $this->data['zones'][$key]['id'] = database::insert_id();
           }
 
           database::query(
             "update ". DB_TABLE_PREFIX ."zones
             set code = '". database::input($zone['code']) ."',
-            name = '". database::input($zone['name']) ."',
-            date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+              name = '". database::input($zone['name']) ."',
+              date_updated = '". ($this->data['zones'][$key]['date_updated'] = date('Y-m-d H:i:s')) ."'
             where country_code = '". database::input($this->data['iso_code_2']) ."'
             and id = ". (int)$zone['id'] ."
             limit 1;"

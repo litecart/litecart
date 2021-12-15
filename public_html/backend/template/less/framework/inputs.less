@@ -163,7 +163,7 @@ input[type="number"] {
     box-shadow: 0 0 0 .25rem #ccc;
   }
   &:disabled {
-    opcaity: .5;
+    opacity: .5;
   }
 }
 
@@ -171,6 +171,7 @@ input[type="number"] {
   .input-field();
   display: flex;
   padding: 0;
+  overflow: hidden;
 
   .form-input, .input-group {
     display: inline-block;
@@ -188,7 +189,8 @@ input[type="number"] {
     box-shadow: none;
     background-color: transparent;
     border-radius: 0;
-    border: none;
+    border-top: none;
+    border-bottom: none;
     &[disabled] {
       opacity: .5;
     }
@@ -204,12 +206,6 @@ input[type="number"] {
     font-weight: normal;
     text-align: center;
     white-space: nowrap;
-    &:first-child {
-      border-left: none;
-    }
-    &:last-child {
-      border-right: none;
-    }
   }
   .input-group-icon {
     flex: 0 1 auto;
@@ -227,19 +223,44 @@ input[type="number"] {
   > *:last-child {
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
+  *:first-child:is(.form-input),
+  *:first-child:is(.form-select),
+  *:first-child:is(.input-group-text),
+  *:first-child:is(.input-group) {
+    border-left: none;
+  }
+  *:last-child:is(.form-input),
+  *:last-child:is(.form-select),
+  *:last-child:is(.input-group-text),
+  *:last-child:is(.input-group) {
+    border-right: none;
+  }
+
+  .form-input + .form-input,
+  .form-input + .form-select,
+  .form-input + .input-group,
+  .form-select + .form-input,
+  .form-select + .form-select,
+  .form-select + .input-group,
+  .input-group + .form-input,
+  .input-group + .form-select,
+  .input-group + .input-group {
+    border-left: 1x solid var(--input-border-color) !important;
+  }
 }
 
-.form-input + .form-input,
-.form-input + .form-select,
-.form-input + .input-group,
-.form-select + .form-input,
-.form-select + .form-select,
-.form-select + .input-group,
-.input-group + .form-input,
-.input-group + .form-select,
-.input-group + .input-group {
+.form-group > .form-input + .form-input,
+.form-group > .form-input + .form-select,
+.form-group > .form-input + .input-group,
+.form-group > .form-select + .form-input,
+.form-group > .form-select + .form-select,
+.form-group > .form-select + .input-group,
+.form-group > .input-group + .form-input,
+.form-group > .input-group + .form-select,
+.form-group > .input-group + .input-group {
   margin-top: -1px; // Compensate for border
 }
+
 .table-striped .form-input,
 .table-striped .form-select {
   background-color: var(--whitespace-color);

@@ -68,7 +68,6 @@
   if (!empty($_GET['query'])) {
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
-      "o.uid = '". database::input($_GET['query']) ."'",
       "o.reference like '%". database::input($_GET['query']) ."%'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
       "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
@@ -214,14 +213,13 @@ table .fa-star:hover {
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
-          <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th data-sort="id" class="text-end"><?php echo language::translate('title_id', 'ID'); ?></th>
           <th></th>
           <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
           <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
           <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
+          <th data-sort="order_status"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
           <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-          <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-          <th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
           <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
           <th></th>
         </tr>
@@ -232,14 +230,13 @@ table .fa-star:hover {
         <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
           <td><?php echo functions::form_draw_checkbox('orders[]', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
           <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
-          <td><?php echo $order['id']; ?></td>
+          <td class="text-end"><?php echo $order['id']; ?></td>
           <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
           <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
           <td><?php echo $order['payment_option_name']; ?></td>
+          <td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
           <td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-          <td class="text-end"><?php echo ($order['total_tax'] != 0) ? currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
-          <td class="text-center"><?php echo $order['order_status_name']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
           <td>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key'], 'media' => 'print']); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
@@ -252,7 +249,7 @@ table .fa-star:hover {
 
       <tfoot>
         <tr>
-          <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

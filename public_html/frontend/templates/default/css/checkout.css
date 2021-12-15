@@ -110,8 +110,8 @@
 #box-checkout-payment .option .thumbnail {
   padding: 0 !important;
 }
-#box-checkout-shipping .option .title,
-#box-checkout-payment .option .title {
+#box-checkout-shipping .option .name,
+#box-checkout-payment .option .name {
   margin: 1em 0;
   font-weight: bold;
 }
