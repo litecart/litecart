@@ -1,3 +1,5 @@
+ALTER TABLE `lc_newsletter_recipients` ADD `client_ip` VARCHAR(64) NOT NULL AFTER `email`;
+-- --------------------------------------------------------
 UPDATE `lc_countries`
 SET postcode_format = '[0-9]{7}'
 WHERE iso_code_2 = 'IL'
