@@ -47,9 +47,9 @@
   if (isset($_POST['save'])) {
 
     try {
-      foreach (array_keys($_POST['settings']) as $key) {
-        if (in_array($key, ['id', 'date_updated', 'date_created'])) continue;
-        if (isset($module->data['settings'][$key])) $module->data['settings'][$key] = $_POST['settings'][$key];
+      foreach (array_keys($module->data['settings']) as $key) {
+        if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
+        $module->data['settings'][$key] = isset($_POST['settings'][$key]) ? $_POST['settings'][$key] : '';
       }
 
       $module->save();
