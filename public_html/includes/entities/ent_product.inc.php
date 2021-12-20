@@ -510,8 +510,8 @@
           if (empty($stock_option['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_options_stock
-              (product_id, date_created)
-              values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
+              (product_id, combination, date_created)
+              values (". (int)$this->data['id'] .", '". database::input($stock_option['combination']) ."', '". date('Y-m-d H:i:s') ."');"
             );
             $stock_option['id'] = $this->data['options_stock'][$key]['id'] = database::insert_id();
           }
