@@ -162,7 +162,7 @@
     echo '<li>' . PHP_EOL
        . '  '. functions::form_draw_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
     if (!empty($app['docs'])) {
-      echo '  <ul>' . PHP_EOL;
+      echo '  <ul class="list-unstyled">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
         echo '    <li>'. functions::form_draw_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) . PHP_EOL;
       }

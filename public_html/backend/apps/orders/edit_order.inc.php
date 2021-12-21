@@ -1291,9 +1291,9 @@
                + '    <?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '')); ?>'
                + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
                + '    <div class="actions">'
-               + '      <label class="btn btn-default btn-sm notify" title="<?php echo htmlspecialchars(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>'
-               + '      <label class="btn btn-default btn-sm private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>'
-               + '      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>'
+               + '      <label class="notify" title="<?php echo htmlspecialchars(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>'
+               + '      <label class=" private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>'
+               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>'
                + '    </div>'
                + '  </div>';
     output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);

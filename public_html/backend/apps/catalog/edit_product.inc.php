@@ -424,7 +424,7 @@
                 <?php foreach (currency::$currencies as $currency) { ?>
                 <tr>
                   <td><?php echo functions::form_draw_currency_field('prices['. $currency['code'] .']', $currency['code'], true, 'data-currency-price="" placeholder=""'); ?></td>
-                <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 'min="0"'); ?></td>
+                <td><?php echo functions::form_draw_currency_field('gross_prices['. $currency['code'] .']', $currency['code']); ?></td>
                 </tr>
                 <?php } ?>
               </tbody>

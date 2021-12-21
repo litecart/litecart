@@ -126,43 +126,18 @@
 
           break;
 
-        case 'name':
-        case 'short_description':
-        case 'description':
-        case 'technical_data':
-        case 'head_title':
-        case 'meta_description':
-
-          $query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_info
-            where product_id = ". (int)$this->_data['id'] ."
-            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-          );
-
-          while ($row = database::fetch($query)) {
-            foreach ($row as $key => $value) {
-              if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
-              if (empty($this->_data[$key])) $this->_data[$key] = $value;
-            }
-          }
-
-          if ($this->autofill_technical_data) {
-            $this->_data['technical_data'] = '';
-            foreach ($this->attributes as $attribute) {
-              $this->_data['technical_data'] = $attribute['group_name'] .': '. $attribute['value_name'] . PHP_EOL;
-            }
-            $this->_data['technical_data'] = rtrim($this->_data['technical_data']);
-          }
-
-          break;
-
         case 'campaign':
 
           $this->_data['campaign'] = [];
 
           $campaigns_query = database::query(
-            "select *, min(if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('site_currency_code')) ."`)) as price
+            "select *, min(
+              case
+                when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
+                when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
+                else `". database::input(settings::get('site_currency_code')) ."`
+              end
+            ) as price
             from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
@@ -224,6 +199,37 @@
 
           while ($row = database::fetch($query)) {
             $this->_data['images'][$row['id']] = $row['filename'];
+          }
+
+          break;
+
+        case 'name':
+        case 'short_description':
+        case 'description':
+        case 'technical_data':
+        case 'head_title':
+        case 'meta_description':
+
+          $query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."products_info
+            where product_id = ". (int)$this->_data['id'] ."
+            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+          );
+
+          while ($row = database::fetch($query)) {
+            foreach ($row as $key => $value) {
+              if (in_array($key, ['id', 'product_id', 'language_code'])) continue;
+              if (empty($this->_data[$key])) $this->_data[$key] = $value;
+            }
+          }
+
+          if ($this->autofill_technical_data) {
+            $this->_data['technical_data'] = '';
+            foreach ($this->attributes as $attribute) {
+              $this->_data['technical_data'] = $attribute['group_name'] .': '. $attribute['value_name'] . PHP_EOL;
+            }
+            $this->_data['technical_data'] = rtrim($this->_data['technical_data']);
           }
 
           break;

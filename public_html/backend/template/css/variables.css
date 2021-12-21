@@ -25,7 +25,7 @@
   --sidebar-background-color: #e6e8ec;
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: #333;
-  --sidebar-width: 20em;
+  --sidebar-width: 18em;
   --navigation-background-color: #3e3e3e;
   --navigation-background-color-active: #bdbdbd;
   --navigation-text-color: #444;
@@ -88,8 +88,8 @@
   --input-addon-background-color: #f3f4f7;
   --input-text-color: #000;
   --input-border-color: #e7e9f0;
-  --input-padding-x: 15px;
-  --input-padding-y: 7.5px;
+  --input-padding-x: 1em;
+  --input-padding-y: 0.5em;
   --notice-default-background-color: #e5e5e5;
   --notice-default-text-color: #000;
   --notice-primary-background-color: #3ba5c6;

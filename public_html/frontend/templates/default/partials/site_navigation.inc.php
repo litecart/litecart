@@ -137,7 +137,7 @@
                     <div><a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><?php echo $item['name']; ?></a></div>
                     <div class="price"><?php echo currency::format($item['price']); ?></div>
                   </div>
-                  <div class="col-1 text-right">
+                  <div class="col-1 text-end">
                     <?php echo functions::form_draw_button('remove_cart_item', [1, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
                   </div>
                 </div>

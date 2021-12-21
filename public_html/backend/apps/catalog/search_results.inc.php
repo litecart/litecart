@@ -1,9 +1,8 @@
 <?php
 
-  $result = [
-    'name' => language::translate('title_products', 'Products'),
-    'results' => [],
-  ];
+  $results = [];
+
+// Products
 
   $code_regex = functions::format_regex_code($query);
   $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
@@ -40,15 +39,80 @@
     limit 5;"
   );
 
-  if (!database::num_rows($products_query)) return;
+  if (database::num_rows($products_query)) {
 
-  while ($product = database::fetch($products_query)) {
-    $result['results'][] = [
-        'id' => $product['id'],
-        'title' => $product['name'],
-        'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
-        'link' => document::ilink($app.'/edit_product', ['product_id' => $product['id']]),
+    $result = [
+      'name' => language::translate('title_products', 'Products'),
+      'results' => [],
     ];
+
+    while ($product = database::fetch($products_query)) {
+      $result['results'][] = [
+          'id' => $product['id'],
+          'title' => $product['name'],
+          'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
+          'link' => document::ilink($app.'/edit_product', ['product_id' => $product['id']]),
+      ];
+    }
+
+    $results[] = $result;
   }
 
-  return [$result];
+// Stock Items
+
+  $result = [
+    'name' => language::translate('title_stock_items', 'Stock Items'),
+    'results' => [],
+  ];
+
+  $code_regex = functions::format_regex_code($query);
+  $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+
+  $stock_items_query = database::query(
+    "select s.id, s.sku, si.name,
+    (
+        if(s.id = '". database::input($query) ."', 10, 0)
+        + (match(si.name) against ('". database::input($query_fulltext) ."' in boolean mode))
+        + if(si.name like '%". database::input($query) ."%', 3, 0)
+        + if(s.sku regexp '". database::input($code_regex) ."', 5, 0)
+        + if(s.mpn regexp '". database::input($code_regex) ."', 5, 0)
+        + if(s.gtin regexp '". database::input($code_regex) ."', 5, 0)
+        + if (s.id in (
+          select stock_item_id from ". DB_TABLE_PREFIX ."stock_items_references
+          where stock_item_id in (
+            select id from ". DB_TABLE_PREFIX ."stock_items_references
+            where code regexp '". database::input($code_regex) ."'
+          )
+        ), 5, 0)
+    ) as relevance
+
+    from ". DB_TABLE_PREFIX ."stock_items s
+
+    left join ". DB_TABLE_PREFIX ."stock_items_info si on (si.stock_item_id = s.id and si.language_code = '". database::input(language::$selected['code']) ."')
+
+    having relevance > 0
+    order by relevance desc, id asc
+    limit 5;"
+  );
+
+  if (database::num_rows($stock_items_query)) {
+
+    $result = [
+      'name' => language::translate('title_stok_items', 'Stock Items'),
+      'results' => [],
+    ];
+
+    while ($stock_item = database::fetch($stock_items_query)) {
+      $result['results'][] = [
+          'id' => $stock_item['id'],
+          'title' => $stock_item['name'],
+          'description' => $stock_item['sku'],
+          'link' => document::ilink($app.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]),
+      ];
+    }
+
+    $results[] = $result;
+  }
+
+
+  return $results;

@@ -199,7 +199,8 @@ ADD COLUMN `downloads` INT NOT NULL DEFAULT '0' AFTER `mime_type`,
 DROP INDEX `product_option_stock`,
 ADD INDEX `sku` (`sku`),
 ADD INDEX `gtin` (`gtin`),
-ADD INDEX `mpn` (`mpn`);
+ADD INDEX `mpn` (`mpn`),
+ADD FULLTEXT INDEX `name` (`name`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_settings`
 ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`,

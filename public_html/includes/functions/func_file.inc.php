@@ -1,8 +1,28 @@
 <?php
 
+  function file_copy($source, $target, &$results=[]) {
+
+    if (is_file($source) || is_link($source)) {
+      return $results[$target] = copy($source, $target);
+    }
+
+    if (is_dir($source)) {
+      if (!is_dir($target)) {
+        return $results[$target] = mkdir($target);
+      }
+
+      foreach (scandir($source) as $file) {
+        if ($file == '.' || $file == '..') continue;
+        file_copy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file);
+      }
+    }
+
+    return true;
+  }
+
   function file_delete($source, &$results=[]) {
 
-  // Resolve globstars (Dual or single globstars)
+  // Resolve glob stars (Dual or single glob stars)
     if (strpos($source, '*') !== false) {
       foreach (file_search($source) as $file) {
         $results[] = file_delete($file, $results);
@@ -20,33 +40,6 @@
     }
 
     return $results[$source] = unlink($source);
-  }
-
-  function file_size($file) {
-
-    if (is_file($file)) {
-      return filesize($file);
-    }
-
-    if (is_dir($file)) {
-      $size = 0;
-      foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($file)) as $f) {
-        $size += $f->getSize();
-      }
-      return $size;
-    }
-
-    return false;
-  }
-
-  function file_format_size($size) {
-    switch (true) {
-      case ($size == 0): return '-';
-      case ($size < 1000): return language::number_format($size, 0) . ' B';
-      case (($size/1024) < 1000): return language::number_format($size/1024) . ' kB';
-      case (($size/1024/1024) < 1000): return language::number_format($size/1024/1024, 2) . ' MB';
-      case (($size/1024/1024/1024) < 1000): return language::number_format($size/1024/1024/1024, 2) . ' GB';
-    }
   }
 
   function file_is_binary($file) {
@@ -128,22 +121,44 @@
     return $files;
   }
 
-  function file_copy($source, $target, &$results=[]) {
+  function file_size($file) {
 
-    if (is_file($source) || is_link($source)) {
-      return $results[$target] = copy($source, $target);
+    if (is_file($file)) {
+      return filesize($file);
     }
 
-    if (is_dir($source)) {
-      if (!is_dir($target)) {
-        return $results[$target] = mkdir($target);
+    if (is_dir($file)) {
+      $size = 0;
+      foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($file)) as $f) {
+        $size += $f->getSize();
       }
-
-      foreach (scandir($source) as $file) {
-        if ($file == '.' || $file == '..') continue;
-        file_copy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file);
-      }
+      return $size;
     }
 
-    return true;
+    return false;
+  }
+
+  function file_format_size($size) {
+    switch (true) {
+      case ($size == 0): return '-';
+      case ($size < 1000): return language::number_format($size, 0) . ' B';
+      case (($size/1024) < 1000): return language::number_format($size/1024) . ' kB';
+      case (($size/1024/1024) < 1000): return language::number_format($size/1024/1024, 2) . ' MB';
+      case (($size/1024/1024/1024) < 1000): return language::number_format($size/1024/1024/1024, 2) . ' GB';
+    }
+  }
+
+// Strip paths from logic e.g. ./ ../
+  function file_strip_path($path) {
+    $new_path = [];
+
+    foreach (explode('/', $path) as $part) {
+      if (empty($part) || $part === '.') continue;
+
+      if ($part !== '..') array_push($new_path, $part);
+      else if (count($new_path) > 0) array_pop($new_path);
+      else throw new \Exception('Climbing above the root is not permitted.');
+    }
+
+    return join('/', $new_path);
   }

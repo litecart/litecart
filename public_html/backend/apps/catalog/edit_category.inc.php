@@ -62,7 +62,7 @@
       $category->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(null, ['category_id' => $_POST['parent_id']]));
+      header('Location: '. document::ilink('catalog/category_tree', ['category_id' => $_POST['parent_id']]));
       exit;
 
     } catch (Exception $e) {
@@ -78,7 +78,7 @@
       $category->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(null, ['category_id' => $_POST['parent_id']]));
+      header('Location: '. document::ilink('catalog/category_tree', ['category_id' => $_POST['parent_id']]));
       exit;
 
     } catch (Exception $e) {

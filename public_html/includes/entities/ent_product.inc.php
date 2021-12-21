@@ -99,7 +99,8 @@
 
     // Attributes
       $product_attributes_query = database::query(
-        "select pa.*, agi.name as group_name, avi.name as value_name from ". DB_TABLE_PREFIX ."products_attributes pa
+        "select pa.*, agi.name as group_name, avi.name as value_name
+        from ". DB_TABLE_PREFIX ."products_attributes pa
         left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
         where product_id = ". (int)$product_id ."
@@ -135,7 +136,7 @@
 
     // Stock Items
       $products_stock_items_query = database::query(
-        "select p2si.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.reordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+        "select p2si.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.backordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
         left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where p2si.product_id = ". (int)$this->data['id'] ."
@@ -384,7 +385,7 @@
 
           $ent_stock_item = new ent_stock_item($stock_item['stock_item_id']);
           $ent_stock_item->data['quantity_adjust'] = $stock_item['quantity_adjustment'];
-          $ent_stock_item->data['reordered'] = $stock_item['reordered'];
+          $ent_stock_item->data['backordered'] = $stock_item['backordered'];
           $ent_stock_item->save();
         }
       }

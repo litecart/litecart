@@ -828,12 +828,13 @@ CREATE TABLE `lc_stock_items` (
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_items_info` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-	`language_code` VARCHAR(2) NOT NULL DEFAULT '',
-	`name` VARCHAR(128) NOT NULL DEFAULT '',
-	PRIMARY KEY (`id`),
-	INDEX `stock_item_id` (`stock_item_id`)
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `language_code` VARCHAR(2) NOT NULL DEFAULT '',
+  `name` VARCHAR(128) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX `stock_item_id` (`stock_item_id`),
+  FULLTEXT INDEX `name` (`name`)
 ) ENGINE={DB_ENGINE} DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions` (
