@@ -638,7 +638,11 @@
 
         foreach ($this->data['options_stock'] as $key => $stock_option) {
           if (!isset($stock_option['quantity_adjustment']) && (empty($this->previous['options_stock'][$key]) || (float)$stock_option['quantity'] != (float)$this->previous['options_stock'][$key]['quantity'])) {
-            $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$stock_option['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
+            if (!empty($this->previous['options_stock'][$key]['quantity'])) {
+              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$stock_option['quantity'] - (float)$this->previous['options_stock'][$key]['quantity'];
+            } else {
+              $this->data['options_stock'][$key]['quantity_adjustment'] = (float)$stock_option['quantity'];
+            }
           }
         }
 
