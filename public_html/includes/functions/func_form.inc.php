@@ -891,7 +891,7 @@
                                                          . '    remove: "'. language::translate('title_remove', 'Remove') .'",' . PHP_EOL
                                                          . '    root: "'. language::translate('title_root', 'Root') .'"' . PHP_EOL
                                                          . '  }' . PHP_EOL
-                                                         . '})';
+                                                         . '});';
 
     return $html;
   }
