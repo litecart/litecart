@@ -247,7 +247,7 @@
     <?php echo functions::form_draw_form_begin('form_order', 'post'); ?>
 
       <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-9">
 
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -534,7 +534,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div id="box-comments" class="panel panel-default" style="margin-bottom: 0;">
             <div class="panel-heading">
               <h2 class="panel-title"><?php echo language::translate('title_comments', 'Comments'); ?></h2>
