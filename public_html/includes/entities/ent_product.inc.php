@@ -177,18 +177,32 @@
         foreach (explode(',', $option_stock['combination']) as $combination) {
           list($group_id, $value_id) = explode('-', $combination);
 
-          $options_values_query = database::query(
-            "select avi.value_id, avi.name, avi.language_code from ". DB_TABLE_PREFIX ."attribute_values_info avi
-            where avi.value_id = ". (int)$value_id .";"
-          );
+          if (preg_match('#^0:"?(.*?)"?$#', $value_id, $matches)) {
 
-          while ($option_value = database::fetch($options_values_query)) {
-            if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']])) {
-              $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] = '';
-            } else {
-              $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] .= ', ';
+            foreach (array_keys(language::$languages) as $language_code) {
+              if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$language_code])) {
+                $this->data['options_stock'][$option_stock['id']]['name'][$language_code] = '';
+              } else {
+                $this->data['options_stock'][$option_stock['id']]['name'][$language_code] .= ', ';
+              }
+              $this->data['options_stock'][$option_stock['id']]['name'][$language_code] .= $matches[1];
             }
-            $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] .= $option_value['name'];
+
+          } else {
+
+            $options_values_query = database::query(
+              "select avi.value_id, avi.name, avi.language_code from ". DB_TABLE_PREFIX ."attribute_values_info avi
+              where avi.value_id = ". (int)$value_id .";"
+            );
+
+            while ($option_value = database::fetch($options_values_query)) {
+              if (!isset($this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']])) {
+                $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] = '';
+              } else {
+                $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] .= ', ';
+              }
+              $this->data['options_stock'][$option_stock['id']]['name'][$option_value['language_code']] .= $option_value['name'];
+            }
           }
         }
       }
@@ -739,6 +753,7 @@
         (product_id, filename, checksum, priority)
         values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
       );
+
       $image_id = database::insert_id();
 
       $this->data['images'][$image_id] = [

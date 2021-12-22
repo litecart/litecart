@@ -377,20 +377,29 @@
             foreach (explode(',', $row['combination']) as $combination) {
               list($group_id, $value_id) = explode('-', $combination);
 
-              $options_values_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."products_options_values pov
-                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
-                where pov.value_id = ". (int)$value_id ."
-                and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
+              if (preg_match('#^0:"?(.*?)"?$#', $value_id, $matches)) {
 
-              while ($option_value_info = database::fetch($options_values_query)) {
-                foreach ($option_value_info as $key => $value) {
-                  if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-                  if (!is_array(empty($row[$key][$option_value_info['value_id']]))) continue;
-                  if (empty($row[$key][$option_value_info['value_id']])) {
-                    $row[$key][$option_value_info['value_id']] = $value;
+                foreach (array_keys(language::$languages) as $language_code) {
+                  $row['name'][$language_code] = $matches[1];
+                }
+
+              } else {
+
+                $options_values_query = database::query(
+                  "select * from ". DB_TABLE_PREFIX ."products_options_values pov
+                  left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
+                  where pov.value_id = ". (int)$value_id ."
+                  and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+                  order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+                );
+
+                while ($option_value_info = database::fetch($options_values_query)) {
+                  foreach ($option_value_info as $key => $value) {
+                    if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
+                    if (!is_array(empty($row[$key][$option_value_info['value_id']]))) continue;
+                    if (empty($row[$key][$option_value_info['value_id']])) {
+                      $row[$key][$option_value_info['value_id']] = $value;
+                    }
                   }
                 }
               }

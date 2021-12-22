@@ -90,7 +90,7 @@
             }
 
             echo '<div class="checkbox">' . PHP_EOL
-               . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : htmlspecialchars('0:"'. $value['custom_value'] .'"')) .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                . '</div>';
           }
           break;
@@ -126,7 +126,7 @@
             }
 
             echo '<div class="radio">' . PHP_EOL
-               . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
+               . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-combination="'. $group['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : htmlspecialchars('0:"'. $value['custom_value'] .'"')) .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                . '</div>';
           }
 
@@ -147,7 +147,7 @@
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['group_id'] .'-'. $value['value_id'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
+            $options[] = [$value['name'] . $price_adjust_text, $value['name'], 'data-combination="'. $group['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : htmlspecialchars('0:"'. $value['custom_value'] .'"')) .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
           }
 
           echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, 'data-group="'. $group['name'] .'" ' . (!empty($group['required']) ? ' required' : ''));
