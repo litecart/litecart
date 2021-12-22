@@ -1,4 +1,6 @@
-ALTER TABLE `lc_newsletter_recipients` ADD `client_ip` VARCHAR(64) NOT NULL AFTER `email`;
+ALTER TABLE `lc_products_campaigns`
+CHANGE COLUMN `start_date` `start_date` TIMESTAMP NULL DEFAULT NULL,
+CHANGE COLUMN `end_date` `end_date` TIMESTAMP NULL DEFAULT NULL;
 -- --------------------------------------------------------
 UPDATE `lc_countries`
 SET postcode_format = '[0-9]{7}'
@@ -41,7 +43,3 @@ UPDATE IGNORE `lc_users` SET date_valid_to = NULL WHERE date_valid_to = '0000-00
 UPDATE IGNORE `lc_users` SET date_active = NULL WHERE date_active = '0000-00-00 00:00:00';
 -- --------------------------------------------------------
 UPDATE IGNORE `lc_users` SET date_login = NULL WHERE date_login = '0000-00-00 00:00:00';
--- --------------------------------------------------------
-ALTER TABLE `lc_products_campaigns`
-CHANGE COLUMN `start_date` `start_date` TIMESTAMP NULL DEFAULT NULL,
-CHANGE COLUMN `end_date` `end_date` TIMESTAMP NULL DEFAULT NULL;
