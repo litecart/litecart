@@ -446,8 +446,8 @@
           if (empty($option['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_options
-              (product_id)
-              values (". (int)$this->data['id'] .");"
+              (product_id, group_id)
+              values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .");"
             );
             $option['id'] = database::insert_id();
           }
