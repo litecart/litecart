@@ -199,31 +199,39 @@
 
     ### Installer > Update ########################################
 
-    echo '<p>Check if the installer has the latest updates... ';
-
-    $files_to_update = [
-      'config',
-      'htaccess',
-      'clean.sql',
-      'data.sql',
-      'structure.sql',
-    ];
+    echo '<p>Checking for updates... ';
 
     require_once FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php';
     $client = new wrap_http();
 
-    foreach ($files_to_update as $file) {
-      $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/install/'. $file);
-      if ($client->last_response['status_code'] == 200 && md5($response) != md5_file(__DIR__.'/'. $file)) {
-        file_put_contents(__DIR__.'/'. $file, $response);
-        $is_updated = true;
-      }
-    }
+    $update_file = function($file) use ($client) {
+      $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+      if ($client->last_response['status_code'] != 200) return false;
+      file_put_contents(FS_DIR_APP . $file, $response);
+      return true;
+    };
 
-    if (!empty($is_updated)) {
-      echo 'Updated! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-    } else {
-      echo 'Already up to date! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    $calculate_md5 = function($file) {
+      if (!is_file(FS_DIR_APP . $file)) return;
+      $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $file));
+      return md5($contents);
+    };
+
+    if ($update_file('install/checksums.md5')) {
+
+      $checksum_files = preg_split('#(\r\n?|\n)#', file_get_contents(FS_DIR_APP . 'install/checksums.md5'), -1, PREG_SPLIT_NO_EMPTY);
+
+      $files_updated = 0;
+      foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        list($checksum, $file) = explode("\t", $line);
+        if ($calculate_md5($file) != $checksum) {
+          if ($update_file($file)) $files_updated++;
+        }
+      }
+
+      if (!empty($files_updated)) {
+        echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
     }
 
     ### Database > Connection #####################################
