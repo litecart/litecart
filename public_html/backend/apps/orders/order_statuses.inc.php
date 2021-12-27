@@ -98,12 +98,14 @@
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_orders', 'Orders'); ?></th>
           <th><?php echo language::translate('title_status_state', 'State'); ?></th>
+          <th><?php echo language::translate('title_stock_action', 'Stock Action'); ?></th>
           <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
           <th><?php echo language::translate('title_track', 'Track'); ?></th>
+          <th><?php echo language::translate('title_orders', 'Orders'); ?></th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -115,12 +117,14 @@
           <td><?php echo $order_status['id']; ?></td>
           <td class="text-center"><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
-          <td class="text-end"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
           <td><?php echo strtr($order_status['state'], $states); ?></td>
+          <td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => language::translate('title_none', 'None'), 'reserve' => language::translate('title_reserve_stock', 'Reserve Stock'), 'withdraw' => language::translate('title_withdraw_stock', 'Withdraw Stock')]); ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_archived']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
+          <td class="text-end"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
@@ -128,7 +132,7 @@
 
       <tfoot>
         <tr>
-        <td colspan="11"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
+        <td colspan="13"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

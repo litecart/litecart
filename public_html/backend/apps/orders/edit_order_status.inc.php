@@ -126,22 +126,41 @@
           </div>
 
           <div class="row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-6">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
 
               <div>
                 <strong><?php echo functions::form_draw_checkbox('is_sale', ['1', language::translate('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>
-                <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?>
+                <?php echo language::translate('text_include_in_sales_reports', 'Include in sales reports'); ?>
               </div>
 
               <div>
                 <strong><?php echo functions::form_draw_checkbox('is_archived', ['1', language::translate('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?></strong>
-                <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?>
+                <?php echo language::translate('text_exclude_from_list_of_orders', 'Exclude from the default list of orders'); ?>
               </div>
 
               <div class="checkbox">
                 <strong><?php echo functions::form_draw_checkbox('is_trackable', ['1', language::translate('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
-                <?php echo language::translate('order_status:description_is_trackable', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
+                <?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_stock_action', 'Stock Action'); ?></label>
+
+              <div>
+                <strong><?php echo functions::form_draw_radio_button('stock_action', ['none', language::translate('title_none', 'None')], empty($_POST['stock_action']) ? 'none' : true); ?></strong>
+                <?php echo language::translate('text_stock_remains_without_an_action', 'Stock remains without an action.'); ?>
+              </div>
+
+              <div>
+                <strong><?php echo functions::form_draw_radio_button('stock_action', ['reserve', language::translate('title_reserve_stock', 'Reserve Stock')], true); ?></strong>
+                <?php echo language::translate('text_reserve_stock_for_orders_having_this_status', 'Reserve stock for orders having this status.'); ?>
+              </div>
+
+              <div class="checkbox">
+                <strong><?php echo functions::form_draw_radio_button('stock_action', ['withdraw', language::translate('title_withdraw_stock', 'Withdraw Stock')], true); ?> </strong>
+                <?php echo language::translate('text_commit_changes_to_the_stock', 'Withdraw quantity from stock (or reinsert upon returns).'); ?></label>
               </div>
             </div>
           </div>
