@@ -31,6 +31,26 @@
     exit;
   }
 
+  if (!empty($_POST['set_order_status'])) {
+    try {
+      if (empty($_POST['orders'])) throw new Exception(language::translate('error_must_select_orders', 'You must select orders to perform the operation'));
+
+      foreach ($_POST['orders'] as $order_id) {
+        $order = new ent_order($order_id);
+        $order->data['order_status_id'] = $_POST['order_status_id'];
+        $order->save();
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+
+      header('Location: '. $_SERVER['REQUEST_URI']);
+      exit;
+
+    } catch(Exception $e) {
+      notices::$data['errors'][] = $e->getMessage();
+    }
+  }
+
   if (!empty($_POST['order_action'])) {
 
     try {
@@ -254,10 +274,20 @@ table .fa-star:hover {
       </tfoot>
     </table>
 
-    <?php if ($order_actions) { ?>
     <div class="card-body">
       <ul id="order-actions" class="list-inline">
-        <?php foreach ($order_actions as $module) { ?>
+        <li>
+          <fieldset>
+            <legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>
+            <div class="form-group">
+              <div class="input-group">
+                <?php echo functions::form_draw_order_statuses_list('order_status_id', true); ?>
+                <button class="btn btn-default" name="set_order_status" value="true" type="submit" formtarget="_self"><?php echo language::translate('title_set', 'Set'); ?></button>
+              </div>
+            </div>
+          </fieldset>
+        </li>
+        <?php if ($order_actions) foreach ($order_actions as $module) { ?>
         <li>
           <fieldset title="<?php echo htmlspecialchars($module['description']); ?>">
             <legend><?php echo $module['name']; ?></legend>
@@ -269,7 +299,6 @@ table .fa-star:hover {
         <?php } ?>
       </ul>
     </div>
-    <?php } ?>
 
   <?php echo functions::form_draw_form_end(); ?>
 
