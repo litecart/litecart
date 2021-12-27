@@ -19,8 +19,19 @@
 	}
 
 	$stock_items_query = database::query(
-		"select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
+		"select si.*, sii.name, oi.reserved from ". DB_TABLE_PREFIX ."stock_items si
 		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+		left join (
+      select oi.stock_item_id, sum(oi.quantity) as reserved from ". DB_TABLE_PREFIX ."orders_items oi
+      where oi.order_id in (
+        select id from ". DB_TABLE_PREFIX ."orders o
+        where order_status_id in (
+          select id from ". DB_TABLE_PREFIX ."order_statuses os
+          where stock_action = 'reserve'
+        )
+      )
+      group by oi.stock_item_id
+    ) oi on (oi.stock_item_id = si.id)
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 		order by si.sku, sii.name;"
@@ -72,6 +83,7 @@
           <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
           <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
           <th><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+          <th><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
           <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
           <th></th>
         </tr>
@@ -86,6 +98,7 @@
           <td><?php echo $stock_item['gtin']; ?></td>
           <td><?php echo $stock_item['mpn']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['backordered']; ?></td>
+          <td class="text-end"><?php echo (float)$stock_item['reserved']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
@@ -93,7 +106,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="9"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
+          <td colspan="10"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
         </tr>
       </tfoot>
     </table>

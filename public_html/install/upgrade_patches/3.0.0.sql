@@ -170,9 +170,14 @@ ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `is_archived`,
+ADD COLUMN `stock_action` ENUM('none','reserve','withdraw') NOT NULL DEFAULT 'none' AFTER `is_trackable`,
 ADD COLUMN `state` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '' AFTER `id`,
 DROP COLUMN `keywords`,
 DROP COLUMN `priority`;
+-- --------------------------------------------------------
+UPDATE `lc_order_statuses`
+SET stock_action = 'withdraw'
+WHERE is_sale = 1;
 -- --------------------------------------------------------
 ALTER TABLE `lc_stock_items`
 CHANGE COLUMN `product_id` `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',

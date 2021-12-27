@@ -269,20 +269,20 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `date_updated`, `date_created`) VALUES
-(1, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
-(2, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, NOW(), NOW()),
-(3, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, NOW(), NOW()),
-(4, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, NOW(), NOW()),
-(5, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, NOW(), NOW()),
-(6, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, NOW(), NOW()),
-(7, 'dispatched', 'fa-truck', '#99cc66', 1, 1, 1, NOW(), NOW()),
-(8, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, NOW(), NOW()),
-(9, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, NOW(), NOW()),
-(10, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, NOW(), NOW()),
-(11, 'returned', 'fa-building', '#99cc66', 1, 1, 0, NOW(), NOW()),
-(12, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, NOW(), NOW()),
-(13, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
+(1, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'reserved', NOW(), NOW()),
+(2, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'reserved', NOW(), NOW()),
+(3, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'reserved', NOW(), NOW()),
+(4, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserved', NOW(), NOW()),
+(5, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserved', NOW(), NOW()),
+(6, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserved', NOW(), NOW()),
+(7, 'dispatched', 'fa-truck', '#99cc66', 1, 1, 1, 'withdraw', NOW(), NOW()),
+(8, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'withdraw', NOW(), NOW()),
+(9, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'withdraw', NOW(), NOW()),
+(10, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', NOW(), NOW()),
+(11, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'withdraw', NOW(), NOW()),
+(12, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
+(13, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Created', ''),

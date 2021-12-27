@@ -449,6 +449,7 @@ CREATE TABLE `lc_order_statuses` (
   `is_sale` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `is_archived` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `stock_action` ENUM('none','reserve','withdraw') NOT NULL DEFAULT 'none',
   `notify` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
