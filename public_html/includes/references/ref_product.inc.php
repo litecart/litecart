@@ -254,18 +254,20 @@
           $this->_data['price'] = 0;
 
           $products_prices_query = database::query(
-            "select * from ". DB_TABLE_PREFIX ."products_prices
+            "select
+              case
+                when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
+                when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
+                else `". database::input(settings::get('site_currency_code')) ."`
+              end as price
+            from ". DB_TABLE_PREFIX ."products_prices
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
           );
 
           if (!$product_price = database::fetch($products_prices_query)) return;
 
-          if (!empty($product_price[$this->_currency_code]) && (float)$product_price[$this->_currency_code] != 0) {
-            $this->_data['price'] = currency::convert($product_price[$this->_currency_code], $this->_currency_code, settings::get('site_currency_code'));
-          } else {
-            $this->_data['price'] = $product_price[settings::get('site_currency_code')];
-          }
+          $this->_data['price'] = $product_price['price'];
 
           break;
 
