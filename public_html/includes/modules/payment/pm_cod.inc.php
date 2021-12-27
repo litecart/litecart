@@ -30,7 +30,7 @@
           'name' => $this->name,
           'description' => '',
           'fields' => '',
-          'cost' => $this->settings['fee'],
+          'fee' => $this->settings['fee'],
           'tax_class_id' => $this->settings['tax_class_id'],
           'confirm' => language::translate(__CLASS__.':title_confirm_order', 'Confirm Order'),
         ],

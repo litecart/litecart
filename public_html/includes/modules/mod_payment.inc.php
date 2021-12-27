@@ -47,7 +47,7 @@
         'option_id' => $option_id,
         'icon' => $options[$key]['icon'],
         'name' => $options[$key]['name'],
-        'cost' => $options[$key]['cost'],
+        'fee' => $options[$key]['fee'],
         'tax_class_id' => $options[$key]['tax_class_id'],
         'confirm' => $options[$key]['confirm'],
         'userdata' => $userdata,
@@ -83,6 +83,7 @@
         foreach ($options as $option) {
 
           if (empty($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility LiteCart <3.0.0
+          if (empty($option['fee']) && isset($option['cost'])) $option['fee'] = $option['cost']; // Backwards compatibility LiteCart <3.0.0
 
           $this->_cache['options'][$checksum][] = [
             'id' => $module->id.':'.$option['id'],
@@ -92,7 +93,7 @@
             'name' => $option['name'],
             'description' => !empty($option['fields']) ? $option['description'] : '',
             'fields' => !empty($option['fields']) ? $option['fields'] : '',
-            'cost' => (float)$option['cost'],
+            'fee' => (float)$option['fee'],
             'tax_class_id' => (int)$option['tax_class_id'],
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
             'confirm' => !empty($option['confirm']) ? $option['confirm'] : '',
@@ -119,7 +120,7 @@
       foreach ($options as $option) {
         if (!empty($option['error'])) continue;
         if (!empty($option['exclude_cheapest'])) continue;
-        if (empty($cheapest) || $option['cost'] < $cheapest['cost']) {
+        if (empty($cheapest) || $option['fee'] < $cheapest['fee']) {
           return $option;
         }
       }

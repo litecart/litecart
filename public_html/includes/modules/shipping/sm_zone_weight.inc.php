@@ -28,7 +28,7 @@
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
         if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address'])) continue;
 
-        $cost = $this->calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
+        $fee = $this->calculate_fee($this->settings['weight_rate_table_'.$i], $total_weight);
 
         $options[] = [
           'id' => 'zone_'.$i,
@@ -36,7 +36,7 @@
           'name' => language::translate(__CLASS__.':title_option_name_zone_'.$i, $this->name),
           'description' => language::translate(__CLASS__.':title_option_description_zone_'.$i, ''),
           'fields' => '',
-          'cost' => $cost,
+          'fee' => $fee,
           'tax_class_id' => $this->settings['tax_class_id'],
           'exclude_cheapest' => false,
         ];
@@ -46,7 +46,7 @@
 
         if (empty($this->settings['weight_rate_table_x'])) return;
 
-        $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
+        $fee = $this->calculate_fee($this->settings['weight_rate_table_x'], $total_weight);
 
         $options[] = [
           'id' => 'zone_x',
@@ -54,7 +54,7 @@
           'name' => language::translate(__CLASS__.':title_option_name_zone_x', $this->name),
           'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
           'fields' => '',
-          'cost' => $cost + $this->settings['handling_fee'],
+          'fee' => $fee + $this->settings['handling_fee'],
           'tax_class_id' => $this->settings['tax_class_id'],
         ];
       }
@@ -62,11 +62,11 @@
       return $options;
     }
 
-    private function calculate_cost($rate_table, $shipping_weight) {
+    private function calculate_fee($rate_table, $shipping_weight) {
 
       if (empty($rate_table)) return 0;
 
-      $cost = 0;
+      $fee = 0;
 
       switch ($this->settings['method']) {
 
@@ -74,9 +74,9 @@
         case '&lt;':
         case 'ITEM_WEIGHT_LOWER_THAN_VALUE':
           foreach (array_reverse(preg_split('#[\|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY)) as $rate) {
-            list($rate_weight, $rate_cost) = explode(':', $rate);
+            list($rate_weight, $rate_fee) = explode(':', $rate);
             if ($shipping_weight < $rate_weight) {
-              $cost = $rate_cost;
+              $fee = $rate_fee;
             }
           }
           break;
@@ -85,9 +85,9 @@
         case '&lt;=':
         case 'ITEM_WEIGHT_LOWER_THAN_OR_EQUALS_VALUE':
           foreach (array_reverse(preg_split('#[\|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY)) as $rate) {
-            list($rate_weight, $rate_cost) = explode(':', $rate);
+            list($rate_weight, $rate_fee) = explode(':', $rate);
             if ($shipping_weight <= $rate_weight) {
-              $cost = $rate_cost;
+              $fee = $rate_fee;
             }
           }
           break;
@@ -96,9 +96,9 @@
         case '&gt;':
         case 'ITEM_WEIGHT_HIGHER_THAN_VALUE':
           foreach (preg_split('#[|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY) as $rate) {
-            list($rate_weight, $rate_cost) = explode(':', $rate);
+            list($rate_weight, $rate_fee) = explode(':', $rate);
             if ($shipping_weight > $rate_weight) {
-              $cost = $rate_cost;
+              $fee = $rate_fee;
             }
           }
           break;
@@ -108,15 +108,15 @@
         case 'ITEM_WEIGHT_HIGHER_THAN_OR_EQUALS_VALUE':
         default:
           foreach (preg_split('#[|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY) as $rate) {
-            list($rate_weight, $rate_cost) = explode(':', $rate);
+            list($rate_weight, $rate_fee) = explode(':', $rate);
             if ($shipping_weight >= $rate_weight) {
-              $cost = $rate_cost;
+              $fee = $rate_fee;
             }
           }
           break;
       }
 
-      return $cost;
+      return $fee;
     }
 
     public function select() {}
@@ -150,49 +150,49 @@
           'key' => 'geo_zone_id_1',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 1: '. language::translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
-          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the fee applies.'),
           'function' => 'geo_zone()',
         ],
         [
           'key' => 'weight_rate_table_1',
           'default_value' => '5:8.95;10:15.95',
           'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 1: '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
-          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
+          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping fee. The format must be weight:fee;weight:fee;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'text()',
         ],
         [
           'key' => 'geo_zone_id_2',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 2: '. language::translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
-          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the fee applies.'),
           'function' => 'geo_zone()',
         ],
         [
           'key' => 'weight_rate_table_2',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 2: '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
-          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
+          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping fee. The format must be weight:fee;weight:fee;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'text()',
         ],
         [
           'key' => 'geo_zone_id_3',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 3: '. language::translate(__CLASS__.':title_geo_zone', 'Geo Zone'),
-          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the cost applies.'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Geo zone to which the fee applies.'),
           'function' => 'geo_zone()',
         ],
         [
           'key' => 'weight_rate_table_3',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_zone', 'Zone') .' 3: '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
-          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
+          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping fee. The format must be weight:fee;weight:fee;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'text()',
         ],
         [
           'key' => 'weight_rate_table_x',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_non_matched_zones', 'Non-matched Zones') .': '. language::translate(__CLASS__.':title_weight_rate_table', 'Weight Rate Table'),
-          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping cost. The format must be weight:cost;weight:cost;.. (E.g. 5:8.95;10:15.95;..)'),
+          'description' => language::translate(__CLASS__.':description_weight_rate_table', 'Ascending rate table of the shipping fee. The format must be weight:fee;weight:fee;.. (E.g. 5:8.95;10:15.95;..)'),
           'function' => 'text()',
         ],
         [
@@ -213,7 +213,7 @@
           'key' => 'tax_class_id',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_tax_class', 'Tax Class'),
-          'description' => language::translate(__CLASS__.':description_tax_class', 'The tax class for the shipping cost.'),
+          'description' => language::translate(__CLASS__.':description_tax_class', 'The tax class for the shipping fee.'),
           'function' => 'tax_class()',
         ],
         [

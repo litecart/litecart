@@ -259,7 +259,7 @@
     $cheapest_shipping = $shipping->cheapest($shipping_items, currency::$selected['code'], customer::$data);
 
     if (!empty($cheapest_shipping)) {
-      $_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['cost'], $cheapest_shipping['tax_class_id']);
+      $_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['fee'], $cheapest_shipping['tax_class_id']);
     }
   }
 

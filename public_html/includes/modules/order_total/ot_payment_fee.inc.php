@@ -18,12 +18,12 @@
 
       $output = [];
 
-      if (empty($order->data['payment_option']['cost']) || (float)$order->data['payment_option']['cost'] == 0) return;
+      if (empty($order->data['payment_option']['fee']) || (float)$order->data['payment_option']['fee'] == 0) return;
 
       $output[] = [
         'title' => $order->data['payment_option']['name'],
-        'value' => $order->data['payment_option']['cost'],
-        'tax' => tax::get_tax($order->data['payment_option']['cost'], $order->data['payment_option']['tax_class_id'], $order->data['customer']),
+        'value' => $order->data['payment_option']['fee'],
+        'tax' => tax::get_tax($order->data['payment_option']['fee'], $order->data['payment_option']['tax_class_id'], $order->data['customer']),
         'calculate' => true,
       ];
 

@@ -361,7 +361,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'number()', 0, 10, NOW(), NOW()),
 ('listings', 'local', 'Data Table Rows', 'The number of data table rows to be displayed per page.', 'data_table_rows_per_page', '25', 'text()', 0, 11, NOW(), NOW()),
 ('listings', 'local', 'Display Stock Count', 'Show the available amount of products in stock.', 'display_stock_count', '1', 'toggle()', 0, 12, NOW(), NOW()),
-('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping cost on product page.', 'display_cheapest_shipping', '1', 'toggle()', 0, 13, NOW(), NOW()),
+('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping fee on product page.', 'display_cheapest_shipping', '1', 'toggle()', 0, 13, NOW(), NOW()),
 ('listings', 'local', 'Max Age for New Products', 'Display the "New" sticker for products less than the given age. E.g. 1 month or 14 days', 'new_products_max_age', '1 month', 'text()', 0, 14, NOW(), NOW()),
 ('listings', 'local', 'Similar Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_similar_products_num_items', '8', 'number()', 0, 15, NOW(), NOW()),
 ('listings', 'local', 'Recently Viewed Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_recently_viewed_products_num_items', '6', 'number()', 0, 16, NOW(), NOW()),
