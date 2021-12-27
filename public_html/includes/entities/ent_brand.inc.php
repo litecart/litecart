@@ -90,8 +90,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."brands
-        set
-          status = ". (int)$this->data['status'] .",
+        set status = ". (int)$this->data['status'] .",
           featured = ". (int)$this->data['featured'] .",
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
@@ -119,13 +118,13 @@
         }
 
         database::query(
-          "update ". DB_TABLE_PREFIX ."brands_info set
-          short_description = '". database::input($this->data['short_description'][$language_code]) ."',
-          description = '". database::input($this->data['description'][$language_code], true) ."',
-          head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-          h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
-          meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
-          link = '". database::input($this->data['link'][$language_code]) ."'
+          "update ". DB_TABLE_PREFIX ."brands_info
+          set short_description = '". database::input($this->data['short_description'][$language_code]) ."',
+            description = '". database::input($this->data['description'][$language_code], true) ."',
+            head_title = '". database::input($this->data['head_title'][$language_code]) ."',
+            h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
+            meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
+            link = '". database::input($this->data['link'][$language_code]) ."'
           where brand_id = ". (int)$this->data['id'] ."
           and language_code = '". database::input($language_code) ."'
           limit 1;"

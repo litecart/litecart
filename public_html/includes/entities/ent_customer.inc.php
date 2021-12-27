@@ -105,8 +105,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."customers
-        set
-          code = '". database::input($this->data['code']) ."',
+        set code = '". database::input($this->data['code']) ."',
           status = '". (!empty($this->data['status']) ? '1' : '0') ."',
           email = '". database::input($this->data['email']) ."',
           tax_id = '". database::input($this->data['tax_id']) ."',

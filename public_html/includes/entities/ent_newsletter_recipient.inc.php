@@ -64,8 +64,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."newsletter_recipients
-        set
-          email = '". database::input($this->data['email']) ."',
+        set email = '". database::input($this->data['email']) ."',
           client_ip = '". database::input($this->data['client_ip']) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"

@@ -242,15 +242,15 @@
         }
 
         database::query(
-          "update ". DB_TABLE_PREFIX ."products_info set
-          name = '". database::input($this->data['name'][$language_code]) ."',
-          short_description = '". database::input($this->data['short_description'][$language_code]) ."',
-          description = '". database::input($this->data['description'][$language_code], true) ."',
-          technical_data = '". database::input($this->data['technical_data'][$language_code], true) ."',
-          head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-          meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-          where product_id = ". (int)$this->data['id'] ."
-          and language_code = '". database::input($language_code) ."'
+          "update ". DB_TABLE_PREFIX ."products_info
+          set name = '". database::input($this->data['name'][$language_code]) ."',
+            short_description = '". database::input($this->data['short_description'][$language_code]) ."',
+            description = '". database::input($this->data['description'][$language_code], true) ."',
+            technical_data = '". database::input($this->data['technical_data'][$language_code], true) ."',
+            head_title = '". database::input($this->data['head_title'][$language_code]) ."',
+            meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
+            where product_id = ". (int)$this->data['id'] ."
+            and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
@@ -309,8 +309,8 @@
         $sql_currency_prices = rtrim($sql_currency_prices, ', ');
 
         database::query(
-          "update ". DB_TABLE_PREFIX ."products_prices set
-          $sql_currency_prices
+          "update ". DB_TABLE_PREFIX ."products_prices
+          set $sql_currency_prices
           where product_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
@@ -342,10 +342,10 @@
           $sql_currency_campaigns = rtrim($sql_currency_campaigns, ', ');
 
           database::query(
-            "update ". DB_TABLE_PREFIX ."products_campaigns set
-            start_date = ". (empty($campaign['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['start_date'])) ."'") .",
-            end_date = ". (empty($campaign['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['end_date'])) ."'") .",
-            $sql_currency_campaigns
+            "update ". DB_TABLE_PREFIX ."products_campaigns
+            set start_date = ". (empty($campaign['start_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['start_date'])) ."'") .",
+              end_date = ". (empty($campaign['end_date']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($campaign['end_date'])) ."'") .",
+              $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$campaign['id'] ."
             limit 1;"

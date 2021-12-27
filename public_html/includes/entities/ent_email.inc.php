@@ -82,18 +82,18 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."emails set
-        status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
-        code = '". database::input($this->data['code']) ."',
-        sender = '". database::input(json_encode($this->data['sender'], JSON_UNESCAPED_SLASHES)) ."',
-        recipients = '". database::input(json_encode($this->data['recipients'], JSON_UNESCAPED_SLASHES)) ."',
-        ccs = '". database::input(json_encode($this->data['ccs'], JSON_UNESCAPED_SLASHES)) ."',
-        bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
-        subject = '". database::input($this->data['subject']) ."',
-        multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES)) ."',
-        date_scheduled = '". database::input($this->data['date_scheduled']) ."',
-        date_sent = '". database::input($this->data['date_sent']) ."',
-        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        "update ". DB_TABLE_PREFIX ."emails
+        set status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
+          code = '". database::input($this->data['code']) ."',
+          sender = '". database::input(json_encode($this->data['sender'], JSON_UNESCAPED_SLASHES)) ."',
+          recipients = '". database::input(json_encode($this->data['recipients'], JSON_UNESCAPED_SLASHES)) ."',
+          ccs = '". database::input(json_encode($this->data['ccs'], JSON_UNESCAPED_SLASHES)) ."',
+          bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
+          subject = '". database::input($this->data['subject']) ."',
+          multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES)) ."',
+          date_scheduled = '". database::input($this->data['date_scheduled']) ."',
+          date_sent = '". database::input($this->data['date_sent']) ."',
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] .";"
       );
 

@@ -223,8 +223,7 @@
   // Update order item
     database::query(
       "update ". DB_TABLE_PREFIX ."orders_items
-      set
-        gtin = '". database::input($product['gtin']) ."',
+      set gtin = '". database::input($product['gtin']) ."',
         taric = '". database::input($product['taric']) ."',
         weight = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['weight'] : (float)$product['weight']) .",
         weight_class = '". database::input(!empty($stock_option['weight']) ? $stock_option['weight_class'] : $product['weight_class']) ."',

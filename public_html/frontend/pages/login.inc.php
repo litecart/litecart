@@ -78,8 +78,8 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."customers set
-          num_logins = num_logins + 1,
+        "update ". DB_TABLE_PREFIX ."customers
+        set num_logins = num_logins + 1,
           last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
           last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',

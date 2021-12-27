@@ -159,15 +159,15 @@
         }
 
         database::query(
-          "update ". DB_TABLE_PREFIX ."categories_info set
-          name = '". database::input($this->data['name'][$language_code]) ."',
-          short_description = '". database::input($this->data['short_description'][$language_code]) ."',
-          description = '". database::input($this->data['description'][$language_code], true) ."',
-          head_title = '". database::input($this->data['head_title'][$language_code]) ."',
-          h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
-          meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
-          where category_id = ". (int)$this->data['id'] ."
-          and language_code = '". database::input($language_code) ."'
+          "update ". DB_TABLE_PREFIX ."categories_info
+          set name = '". database::input($this->data['name'][$language_code]) ."',
+            short_description = '". database::input($this->data['short_description'][$language_code]) ."',
+            description = '". database::input($this->data['description'][$language_code], true) ."',
+            head_title = '". database::input($this->data['head_title'][$language_code]) ."',
+            h1_title = '". database::input($this->data['h1_title'][$language_code]) ."',
+            meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
+            where category_id = ". (int)$this->data['id'] ."
+            and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
       }
@@ -192,8 +192,8 @@
         }
 
         database::query(
-          "update ". DB_TABLE_PREFIX ."categories_filters set
-            attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
+          "update ". DB_TABLE_PREFIX ."categories_filters
+          set attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
             select_multiple = ". (!empty($filter['select_multiple']) ? 1 : 0) .",
             priority = ". $filter_priority++ ."
           where category_id = ". (int)$this->data['id'] ."

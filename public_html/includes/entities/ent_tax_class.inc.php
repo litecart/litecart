@@ -63,8 +63,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."tax_classes
-        set
-          code = '". database::input($this->data['code']) ."',
+        set code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'

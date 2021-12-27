@@ -115,8 +115,7 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."quantity_units_info
-          set
-            name = '". database::input($this->data['name'][$language_code]) ."',
+          set name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."'
           where id = ". (int)$quantity_unit_info['id'] ."
           and quantity_unit_id = ". (int)$this->data['id'] ."

@@ -123,8 +123,7 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."slides_info
-          set
-            caption = '". database::input($this->data['caption'][$language_code], true) ."',
+          set caption = '". database::input($this->data['caption'][$language_code], true) ."',
             link = '". database::input($this->data['link'][$language_code]) ."'
           where id = ". (int)$slide_info['id'] ."
           and slide_id = ". (int)$this->data['id'] ."

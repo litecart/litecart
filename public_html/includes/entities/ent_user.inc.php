@@ -84,15 +84,15 @@
       }
 
       database::query(
-        "update ". DB_TABLE_PREFIX ."users set
-        status = '". (empty($this->data['status']) ? 0 : 1) ."',
-        username = '". database::input($this->data['username']) ."',
-        email = '". database::input($this->data['email']) ."',
-        apps = '". database::input(json_encode($this->data['apps'], JSON_UNESCAPED_SLASHES)) ."',
-        widgets = '". database::input(json_encode($this->data['widgets'], JSON_UNESCAPED_SLASHES)) ."',
-        date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
-        date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
-        date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+        "update ". DB_TABLE_PREFIX ."users
+        set status = '". (empty($this->data['status']) ? 0 : 1) ."',
+          username = '". database::input($this->data['username']) ."',
+          email = '". database::input($this->data['email']) ."',
+          apps = '". database::input(json_encode($this->data['apps'], JSON_UNESCAPED_SLASHES)) ."',
+          widgets = '". database::input(json_encode($this->data['widgets'], JSON_UNESCAPED_SLASHES)) ."',
+          date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
+          date_valid_to = ". (empty($this->data['date_valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );

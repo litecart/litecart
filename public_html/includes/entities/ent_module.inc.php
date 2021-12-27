@@ -136,8 +136,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."modules
-        set
-          module_id = '". database::input($this->data['module_id']) ."',
+        set module_id = '". database::input($this->data['module_id']) ."',
           type = '". database::input($this->data['type']) ."',
           status = ". (int)$this->data['status'] .",
           priority = ". (int)$this->data['priority'] .",

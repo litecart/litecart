@@ -112,8 +112,7 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."delivery_statuses_info
-          set
-            name = '". database::input($this->data['name'][$language_code]) ."',
+          set name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."'
           where id = ". (int)$delivery_status_info['id'] ."
           and delivery_status_id = ". (int)$this->data['id'] ."

@@ -101,8 +101,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."products_options
-        set
-          `function` = '". database::input($option_group['function']) ."',
+        set `function` = '". database::input($option_group['function']) ."',
           `sort` = '". database::input($option_group['sort']) ."'
         where group_id = ". (int)$option_group['id'] .";"
       );

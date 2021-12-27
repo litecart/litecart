@@ -114,8 +114,7 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."sold_out_statuses_info
-          set
-            name = '". database::input($this->data['name'][$language_code]) ."',
+          set name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."'
           where id = ". (int)$sold_out_status_info['id'] ."
           and sold_out_status_id = ". (int)$this->data['id'] ."

@@ -129,8 +129,7 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."pages_info
-          set
-            title = '". database::input($this->data['title'][$language_code]) ."',
+          set title = '". database::input($this->data['title'][$language_code]) ."',
             content = '". database::input($this->data['content'][$language_code], true) ."',
             head_title = '". database::input($this->data['head_title'][$language_code]) ."',
             meta_description = '". database::input($this->data['meta_description'][$language_code]) ."'
