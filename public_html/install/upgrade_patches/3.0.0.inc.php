@@ -143,6 +143,7 @@
     FS_DIR_APP . 'images/index.html',
     FS_DIR_APP . 'images/countries/',
     FS_DIR_APP . 'images/languages/',
+    FS_DIR_APP . 'includes/abstracts/abs_module.inc.php',
     FS_DIR_APP . 'includes/boxes/box_account_links.inc.php',
     FS_DIR_APP . 'includes/boxes/box_also_purchased_products.inc.php',
     FS_DIR_APP . 'includes/boxes/box_campaign_products.inc.php',

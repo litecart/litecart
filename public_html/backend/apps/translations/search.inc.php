@@ -119,14 +119,11 @@ th:not(:last-child) {
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <?php if (count($_GET['languages']) > 1) { ?><button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#modal-translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button><?php } ?>
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <div style="max-width: max-content;"><?php echo functions::form_draw_select_field('endpoint', ['' => '-- '. language::translate('title_all', 'All') .' --', 'frontend' => language::translate('title_frontend', 'Frontend'), 'backend' => language::translate('title_backend', 'Backend')]); ?></div>
-      <div>
-        <?php echo functions::form_draw_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?>
-        <?php echo functions::form_draw_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?>
-      </div>
+      <?php echo functions::form_draw_checkbox('untranslated', ['1', language::translate('text_only_untranslated', 'Only untranslated')]); ?>
+      <?php echo functions::form_draw_checkbox('modules', ['1', language::translate('text_inlcude_modules', 'Include modules')]); ?>
       <?php echo functions::form_draw_dropdown_field('languages[]', $language_options, true); ?>
+      <div style="max-width: max-content;"><?php echo functions::form_draw_select_field('endpoint', ['' => '-- '. language::translate('title_all', 'All') .' --', 'frontend' => language::translate('title_frontend', 'Frontend'), 'backend' => language::translate('title_backend', 'Backend')]); ?></div>
       <?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
   <?php echo functions::form_draw_form_end(); ?>
@@ -170,7 +167,8 @@ th:not(:last-child) {
     </div>
 
     <div class="card-action">
-      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
+      <?php if (count($_GET['languages']) > 1) { ?><button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#modal-translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button><?php } ?>
+      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>

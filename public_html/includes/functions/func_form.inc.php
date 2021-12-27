@@ -600,12 +600,12 @@ END;
         }
 
         if ($input === true) {
-          $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+          $option_input = form_reinsert_value($name, $option[0]);
         } else {
           $option_input = $input;
         }
 
-        $html .= '      <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : '') : (($option[0] == $option_input) ? ' selected="selected"' : '')) . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. $option[0] .'</option>' . PHP_EOL;
+        $html .= '      <option value="'. htmlspecialchars($option[0]) .'"'. (($option[0] == $option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. $option[1] .'</option>' . PHP_EOL;
       }
 
       $html .= '    </optgroup>' . PHP_EOL;
