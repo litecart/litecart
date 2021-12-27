@@ -22,7 +22,7 @@
 
       $output[] = [
         'title' => $order->shipping->selected['name'],
-        'value' => $order->shipping->selected['fee'],
+        'amount' => $order->shipping->selected['fee'],
         'tax' => tax::get_tax($order->shipping->selected['fee'], $order->shipping->selected['tax_class_id'], $order->data['customer']),
         'calculate' => true,
       ];
@@ -46,7 +46,7 @@
 
             $output[] = [
               'title' => language::translate('title_free_shipping', 'Free Shipping'),
-              'value' => -$order->shipping->selected['fee'],
+              'amount' => -$order->shipping->selected['fee'],
               'tax' => -tax::get_tax($order->shipping->selected['fee'], $order->shipping->selected['tax_class_id'], $order->data['customer']),
               'tax_class_id' => $order->shipping->selected['tax_class_id'],
               'calculate' => true,

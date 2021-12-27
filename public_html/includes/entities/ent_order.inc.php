@@ -135,7 +135,7 @@
       );
 
       while ($row = database::fetch($order_totals_query)) {
-        $row['value'] = (float)$row['value']; // Turns "1.0000" to 1
+        $row['amount'] = (float)$row['amount']; // Turns "1.0000" to 1
         $row['tax'] = (float)$row['tax']; // Turns "1.0000" to 1
         $this->data['order_total'][] = $row;
       }
@@ -378,7 +378,7 @@
           "update ". DB_TABLE_PREFIX ."orders_totals
           set title = '". database::input($row['title']) ."',
           module_id = '". database::input($row['module_id']) ."',
-          value = '". (float)$row['value'] ."',
+          value = '". (float)$row['amount'] ."',
           tax = '". (float)$row['tax'] ."',
           tax_class_id = ". (int)$item['tax_class_id'] .",
           calculate = '". (empty($row['calculate']) ? 0 : 1) ."',
@@ -482,7 +482,7 @@
 
       foreach ($this->data['order_total'] as $row) {
         if (empty($row['calculate'])) continue;
-        $this->data['total'] += $row['value'] + $row['tax'];
+        $this->data['total'] += $row['amount'] + $row['tax'];
         $this->data['total_tax'] += $row['tax'];
       }
     }

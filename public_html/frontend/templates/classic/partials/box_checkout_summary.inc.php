@@ -19,7 +19,7 @@
       <?php foreach ($order_total as $row) { ?>
       <tr>
         <td class="text-end" style="white-space: normal;" colspan="5"><strong><?php echo $row['title']; ?>:</strong></td>
-        <td class="text-end"><?php echo !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false); ?></td>
+        <td class="text-end"><?php echo !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['amount'] + $row['tax'], false) : currency::format($row['amount'], false); ?></td>
       </tr>
       <?php } ?>
 

@@ -22,7 +22,7 @@
 
       $output[] = [
         'title' => $order->data['payment_option']['name'],
-        'value' => $order->data['payment_option']['fee'],
+        'amount' => $order->data['payment_option']['fee'],
         'tax' => tax::get_tax($order->data['payment_option']['fee'], $order->data['payment_option']['tax_class_id'], $order->data['customer']),
         'calculate' => true,
       ];

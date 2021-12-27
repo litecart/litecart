@@ -135,16 +135,16 @@ table.items tbody tr:nth-child(11) {
             <td class="text-end"><?php echo currency::format(!empty($order['display_prices_including_tax']) ? $order['subtotal'] + $order['subtotal_tax'] : $order['subtotal'], false, $order['currency_code'], $order['currency_value']); ?></td>
           </tr>
 
-          <?php foreach ($order['order_total'] as $ot_row) { ?>
+          <?php foreach ($order['order_total'] as $row) { ?>
           <?php if (!empty($order['display_prices_including_tax'])) { ?>
           <tr>
-            <td class="text-end"><?php echo $ot_row['title']; ?>:</td>
-            <td class="text-end"><?php echo currency::format($ot_row['value'] + $ot_row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo $row['title']; ?>:</td>
+            <td class="text-end"><?php echo currency::format($row['amount'] + $row['tax'], false, $order['currency_code'], $order['currency_value']); ?></td>
           </tr>
           <?php } else { ?>
           <tr>
-            <td class="text-end"><?php echo $ot_row['title']; ?>:</td>
-            <td class="text-end"><?php echo currency::format($ot_row['value'], false, $order['currency_code'], $order['currency_value']); ?></td>
+            <td class="text-end"><?php echo $row['title']; ?>:</td>
+            <td class="text-end"><?php echo currency::format($row['amount'], false, $order['currency_code'], $order['currency_value']); ?></td>
           </tr>
           <?php } ?>
           <?php } ?>

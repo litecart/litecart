@@ -20,7 +20,7 @@
     }
 
     foreach (array_keys($_POST['order_total']) as $key) {
-      $_POST['order_total'][$key]['value'] = $_POST['order_total'][$key]['value'] / $_POST['currency_value'];
+      $_POST['order_total'][$key]['amount'] = $_POST['order_total'][$key]['amount'] / $_POST['currency_value'];
       $_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] / $_POST['currency_value'];
     }
 
@@ -152,7 +152,7 @@
 
         foreach (array_keys($_POST['order_total']) as $key) {
           if (empty($_POST['order_total'][$key]['calculate'])) $_POST['order_total'][$key]['calculate'] = false;
-          $_POST['order_total'][$key]['value'] = (float)$_POST['order_total'][$key]['value'] * (float)$_POST['currency_value'];
+          $_POST['order_total'][$key]['amount'] = (float)$_POST['order_total'][$key]['amount'] * (float)$_POST['currency_value'];
           $_POST['order_total'][$key]['tax'] = (float)$_POST['order_total'][$key]['tax'] * (float)$_POST['currency_value'];
         }
       }

@@ -431,7 +431,7 @@ CREATE TABLE `lc_orders_totals` (
   `order_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `module_id` VARCHAR(32) NOT NULL DEFAULT '',
   `title` VARCHAR(128) NOT NULL DEFAULT '',
-  `value` DECIMAL(11,4) NOT NULL DEFAULT '0',
+  `amount` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `discount` DECIMAL(11,4) NOT NULL DEFAULT '0',
   `discount_tax` DECIMAL(11,4) NOT NULL DEFAULT '0',
