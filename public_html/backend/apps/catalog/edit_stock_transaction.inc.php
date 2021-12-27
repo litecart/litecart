@@ -80,6 +80,18 @@
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php echo functions::form_draw_text_field('name', true); ?>
         </div>
+
+        <?php if (!empty($stock_transaction->data['id'])) { ?>
+        <div class="form-group col-md-4">
+          <label><?php echo language::translate('title_updated', 'Updated'); ?></label>
+          <div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_updated'])); ?></div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label><?php echo language::translate('title_created', 'Created'); ?></label>
+          <div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_created'])); ?></div>
+        </div>
+        <?php } ?>
       </div>
 
       <div class="row">
