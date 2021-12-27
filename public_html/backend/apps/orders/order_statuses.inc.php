@@ -5,6 +5,32 @@
 
   breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'));
 
+
+  if (!empty($_POST['change'])) {
+
+    try {
+
+      if (empty($_POST['from_order_status_id'])) throw new Exception(language::translate('error_missing_from_order_status', 'Please select a from order status'));
+      if (empty($_POST['to_order_status_id'])) throw new Exception(language::translate('error_missing_to_order_status', 'Please select a to order status'));
+
+      database::query(
+        "update ". DB_TABLE_PREFIX ."orders
+        set order_status_id = ". (int)$_POST['to_order_status_id'] ."
+        where order_status_id = ". (int)$_POST['from_order_status_id'] .";"
+      );
+
+      $affected_rows = database::affected_rows();
+
+      notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => $affected_rows]));
+
+      header('Location: '. document::ilink());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Table Rows
   $order_statuses = [];
 
@@ -109,9 +135,35 @@
 
   <?php echo functions::form_draw_form_end(); ?>
 
+  <div class="card-body">
+    <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
+      <fieldset>
+        <legend>Change order status for orders<?php //echo language::translate('title_', ''); ?></legend>
+
+        <div class="row">
+          <div class="col-md-2">
+            <label><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
+            <?php echo functions::form_draw_order_statuses_list('from_order_status_id', true); ?>
+          </div>
+
+          <div class="col-md-2">
+            <label><?php echo language::translate('title_to_order_status', 'To Order Status'); ?></label>
+            <?php echo functions::form_draw_order_statuses_list('to_order_status_id', true); ?>
+          </div>
+
+          <div class="col-md-1">
+            <br />
+            <?php echo functions::form_draw_button('change', [1, language::translate('title_change', 'Change')], 'submit'); ?>
+          </div>
+        </div>
+      </fieldset>
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
+
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
   <?php } ?>
+
 </div>
