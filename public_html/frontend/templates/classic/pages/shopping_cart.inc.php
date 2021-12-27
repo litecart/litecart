@@ -117,7 +117,7 @@
         </ul>
 
         <div class="subtotal text-end">
-          <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
+          <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['amount'] + $subtotal['tax']) : currency::format($subtotal['amount']); ?></strong>
         </div>
 
       </section>

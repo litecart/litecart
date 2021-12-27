@@ -302,7 +302,7 @@ WHERE `function` = 'regional_input()';
 -- --------------------------------------------------------
 UPDATE `lc_orders` o
 LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_subtotal')
-SET o.subtotal = ot.`value`,
+SET o.subtotal = ot.`amount`,
 o.subtotal_tax = ot.`tax`;
 -- --------------------------------------------------------
 DELETE FROM `lc_orders_totals` WHERE module_id = 'ot_subtotal';
