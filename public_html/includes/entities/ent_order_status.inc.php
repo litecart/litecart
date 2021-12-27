@@ -38,6 +38,8 @@
         }
       }
 
+      $this->data['num_orders'] = 0;
+
       $this->previous = $this->data;
     }
 
@@ -71,20 +73,20 @@
         }
       }
 
+      $orders_query = database::query(
+        "select count(*) as num_orders
+        where order_id = ". (int)$this->data['id'] .";"
+      );
+
+      $this->data['num_orders'] = database::fetch($orders_query, 'num_orders');
+
       $this->previous = $this->data;
     }
 
     public function save() {
 
-      if (!empty($this->data['id']) && $this->data['is_sale'] != $this->previous['is_sale']) {
-        $orders_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."orders
-          where order_status_id = ". (int)$this->data['id'] .";"
-        );
-
-        if (database::num_rows($orders_query)) {
-          throw new Exception(language::translate('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" as the order status is already in use by orders'));
-        }
+      if ($this->data['num_orders'] && $this->data['stock_action'] != $this->previous['stock_action']) {
+        throw new Exception(language::translate('error_cannot_change_stock_action_while_used_by_orders', 'You cannot change stock action while there are orders using this status'));
       }
 
       if (empty($this->data['id'])) {
@@ -130,8 +132,7 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."order_statuses_info
-          set
-            name = '". database::input($this->data['name'][$language_code]) ."',
+          set name = '". database::input($this->data['name'][$language_code]) ."',
             description = '". database::input($this->data['description'][$language_code]) ."',
             email_subject = '". database::input($this->data['email_subject'][$language_code], true) ."',
             email_message = '". database::input($this->data['email_message'][$language_code], true) ."'
@@ -149,8 +150,8 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."orders where order_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
-        throw new Exception(language::translate('error_cannot_delete_order_status_while_used', 'Cannot delete the order status because there are orders using it'));
+      if ($this->data['num_orders']) {
+        throw new Exception(language::translate('error_cannot_delete_order_status_while_used', 'Cannot delete the order status while it is in use by orders'));
       }
 
       database::query(
