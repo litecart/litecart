@@ -24,14 +24,7 @@
 
       $tax = 0;
       foreach ($tax_rates as $tax_rate) {
-        switch($tax_rate['type']) {
-          case 'fixed':
-            $tax += $tax_rate['rate'];
-            break;
-          case 'percent':
-            $tax += $value / 100 * $tax_rate['rate'];
-            break;
-        }
+        $tax += $value * $tax_rate['rate'] / 100;
       }
 
       return $tax;
@@ -52,14 +45,7 @@
           ];
         }
 
-        switch($tax_rate['type']) {
-          case 'fixed':
-            $tax_rates[$tax_rate['id']]['tax'] += $tax_rate['rate'];
-            break;
-          case 'percent':
-            $tax_rates[$tax_rate['id']]['tax'] += ($value / 100 * $tax_rate['rate']);
-            break;
-        }
+        $tax_rates[$tax_rate['id']]['tax'] += $value * $tax_rate['rate'] / 100 ;
       }
 
       return $tax_rates;

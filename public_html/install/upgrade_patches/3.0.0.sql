@@ -227,6 +227,10 @@ ADD COLUMN `configuration` VARCHAR(512) NOT NULL DEFAULT '0',
 ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `length_unit`,
 ADD INDEX `cart_id` (`cart_id`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_tax_rates`
+CHANGE COLUMN `rate` `rate` DECIMAL(4,2) NOT NULL DEFAULT '0.0000' AFTER `description`,
+DROP COLUMN `type`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_users`
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',

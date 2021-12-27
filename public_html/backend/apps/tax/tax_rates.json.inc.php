@@ -36,7 +36,7 @@
       if (!isset($_GET['customer']['shipping_address']['city'])) $_GET['customer']['shipping_address']['city'] = '';
 
       $tax_rates_query = database::query(
-        "select `type`, code, name, sum(rate) as rate from ". DB_TABLE_PREFIX ."tax_rates
+        "select code, name, sum(rate) as rate from ". DB_TABLE_PREFIX ."tax_rates
         where tax_class_id = ". (int)$tax_class['id'] ."
         and (
           (
@@ -71,15 +71,10 @@
             'code' => $tax_rate['code'],
             'name' => $tax_rate['name'],
             'rate' => 0,
-            'fixed' => 0,
           ];
         }
 
-        if ($tax_rate['type'] == 'fixed') {
-          $tax_rates[$tax_class['id']]['fixed'] = (float)$tax_rate['rate'];
-        } else {
-          $tax_rates[$tax_class['id']]['rate'] = (float)$tax_rate['rate'];
-        }
+        $tax_rates[$tax_class['id']]['rate'] = (float)$tax_rate['rate'];
       }
     }
 

@@ -68,7 +68,6 @@
           code = '". database::input($this->data['code']) ."',
           name = '". database::input($this->data['name']) ."',
           description = '". database::input($this->data['description']) ."',
-          type = '". database::input($this->data['type']) ."',
           rate = ". (float)$this->data['rate'] .",
           address_type = '". database::input($this->data['address_type']) ."',
           rule_companies_with_tax_id = ". (int)$this->data['rule_companies_with_tax_id'] .",

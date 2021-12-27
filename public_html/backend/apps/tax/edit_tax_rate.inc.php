@@ -39,7 +39,6 @@
         'name',
         'description',
         'rate',
-        'type',
         'address_type',
         'rule_companies_with_tax_id',
         'rule_companies_without_tax_id',
@@ -100,35 +99,33 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_description', 'Description'); ?></label>
-          <?php echo functions::form_draw_text_field('description', true); ?>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
-          <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_description', 'Description'); ?></label>
+        <?php echo functions::form_draw_text_field('description', true); ?>
       </div>
 
       <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-5">
           <label><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></label>
           <?php echo functions::form_draw_geo_zones_list('geo_zone_id', true); ?>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
+          <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
+          <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
+        </div>
+
+        <div class="form-group col-md-3">
           <label><?php echo language::translate('title_rate', 'Rate'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_decimal_field('rate', true, 4); ?>
-            <?php echo functions::form_draw_select_field('type', ['percent' => language::translate('title_percent', 'Percent'), 'fixed' => language::translate('title_fixed', 'Fixed')], true, 'style="width: 150px;"'); ?>
+            <span class="input-group-text">%</span>
           </div>
         </div>
       </div>
 
       <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-5">
           <label><?php echo language::translate('title_address_type', 'Address Type'); ?></label>
           <div>
             <?php echo functions::form_draw_radio_button('address_type', ['shipping', language::translate('title_shipping_address', 'Shipping Address')], true); ?>
@@ -136,7 +133,7 @@
           </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-7">
           <label><?php echo language::translate('title_conditions', 'Conditions'); ?></label>
           <div class="radio">
             <label><?php echo functions::form_draw_checkbox('rule_companies_with_tax_id', ['1', language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
