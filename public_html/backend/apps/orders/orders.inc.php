@@ -4,18 +4,22 @@
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
 
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
-  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
+  if (!empty($_GET['date_from'])) $_GET['date_from'] = date('Y-m-d', strtotime($_GET['date_from']));
+  if (!empty($_GET['date_to'])) $_GET['date_to'] = date('Y-m-d', strtotime($_GET['date_to']));
 
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
+  if (!empty($_GET['date_from']) && !empty($_GET['date_to']) && $_GET['date_from'] > $_GET['date_to']) {
+    list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
+  }
 
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"));
-  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
-  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
+  if (!empty($_GET['date_from'])) {
+    $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"));
+    $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
+    if (empty($date_first_order)) $date_first_order = date('Y-m-d');
+    if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
+  }
 
-  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
-  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
+  if (!empty($_GET['date_from']) && $_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
+  if (!empty($_GET['date_to']) && $_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
 
   document::$snippets['title'][] = language::translate('title_orders', 'Orders');
 
@@ -128,13 +132,27 @@
       break;
   }
 
+  switch($_GET['order_status_id']) {
+    case '':
+      $sql_where_order_status = "and (os.is_archived is null or os.is_archived = 0 or unread = 1)";
+      break;
+    case 'archived':
+      $sql_where_order_status = "and (os.is_archived = 1)";
+      break;
+    case 'all':
+      break;
+    default:
+      $sql_where_order_status =  "and o.order_status_id = ". (int)$_GET['order_status_id'];
+      break;
+  }
+
   $orders_query = database::query(
     "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_PREFIX ."orders o
     left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code'])."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
+    ". (!empty($sql_where_order_status) ? $sql_where_order_status : "") ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
@@ -168,11 +186,43 @@
 // Pagination
   $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 
+// Order Statuses
+  $order_status_options = [
+    [
+      'label' => language::translate('title_collections', 'Collections'),
+      'options' => [
+        '' => language::translate('title_current', 'Current Orders'),
+        'archived' => language::translate('title_archived_orders', 'Archived Orders'),
+        'all' => language::translate('title_all_orders', 'All Orders'),
+      ],
+    ],
+    [
+      'label' => language::translate('title_order_statuses', 'Order Statuses'),
+      'options' => [],
+    ],
+  ];
+
+  $order_statuses_query = database::query(
+    "select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
+    left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
+    left join (
+      select order_status_id, count(id) as num_orders
+      from ". DB_TABLE_PREFIX ."orders
+      group by order_status_id
+    ) o on (o.order_status_id = os.id)
+    order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
+  );
+
+  while ($order_status = database::fetch($order_statuses_query)) {
+    $order_status_options[1]['options'][$order_status['id']] = $order_status['name'] . ' ('. language::number_format($order_status['num_orders'], 0) .')';
+  }
+
 // Actions
   $order_actions = [];
 
   $mod_order = new mod_order();
   if ($modules = $mod_order->actions()) {
+
     foreach ($modules as $module) {
       $order_actions[] = $module;
     }
@@ -216,7 +266,7 @@ table .fa-star:hover {
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <?php echo functions::form_draw_order_statuses_list('order_status_id', true, 'style="width: auto;"'); ?>
+      <?php echo functions::form_draw_select_optgroup_field('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
       <div class="input-group" style="max-width: 380px;">
         <?php echo functions::form_draw_date_field('date_from', true); ?>
         <span class="input-group-text"> - </span>
@@ -310,8 +360,6 @@ table .fa-star:hover {
 </div>
 
 <script>
-  $('select[name="order_status_id"] option[value=""]').text('-- <?php echo language::translate('title_order_status', ''); ?> --');
-
   $('input[name="query"]').keypress(function(e) {
     if (e.which == 13) {
       e.preventDefault();
