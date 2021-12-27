@@ -315,8 +315,13 @@
 
                   <div class="form-group">
                     <div class="input-group">
-                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
-                      <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
+                      <div class="selected-account form-control">
+                        <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
+                        <?php echo language::translate('title_id', 'ID'); ?>:
+                        <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash;
+                        <span class="name"><?php echo $account_name; ?></span>
+                        <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a>
+                      </div>
                       <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
                     </div>
                   </div>
