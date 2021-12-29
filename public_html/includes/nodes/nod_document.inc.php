@@ -34,10 +34,10 @@
       self::$snippets['title'] = [settings::get('site_name')];
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_STORAGE . 'images/favicons/favicon.ico">';
       self::$snippets['head_tags']['webmanifest'] = '<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'" />';
-      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/fontawesome/font-awesome.min.css') .'" />';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/fontawesome/font-awesome.min.css') .'" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/jquery/jquery-3.6.0.min.js') .'"></script>';
-      //self::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/featherlight/featherlight.min.css') .'" />';
-      //self::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/featherlight/featherlight.min.js') .'"></script>';
+      self::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/featherlight/featherlight.min.css') .'" />';
+      self::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/featherlight/featherlight.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$route['page'])) {

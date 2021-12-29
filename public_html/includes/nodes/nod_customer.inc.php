@@ -51,6 +51,7 @@
           }
 
           self::load($customer['id']);
+          session::$data['security.timestamp'] = time();
 
           database::query(
             "update ". DB_TABLE_PREFIX ."customers
@@ -70,7 +71,9 @@
       }
 
       if (!empty(self::$data['id'])) {
+
         try {
+
           $customer_query = database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)self::$data['id'] ."
@@ -87,12 +90,11 @@
 
           if (!empty($customer['date_expire_sessions'])) {
             if (!isset(session::$data['customer_security_timestamp']) || session::$data['customer_security_timestamp'] < strtotime($customer['date_expire_sessions'])) {
-              self::reset();
-              notices::add('errors', language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-              header('Location: '. document::ilink('login'));
-              exit;
+              throw new Exception(language::translate('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
             }
           }
+
+          session::$data['customer'] = array_replace(session::$data['customer'], array_intersect_key($customer, session::$data['customer']));
 
         } catch (Exception $e) {
 
@@ -103,13 +105,15 @@
           }
 
           notices::add('errors', $e->getMessage());
+
+          header('Location: '. document::ilink('login'));
+          exit;
         }
       }
 
       self::identify();
 
       event::register('after_capture', [__CLASS__, 'after_capture']);
-      event::register('before_output', [__CLASS__, 'before_output']);
     }
 
     public static function after_capture() {
@@ -117,18 +121,10 @@
     // Load regional settings screen
       if (!preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'/#', route::$request)) {
         if (settings::get('regional_settings_screen')) {
-          if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
-            functions::draw_lightbox(document::ilink('regional_settings'));
-          }
-        }
-      }
-    }
-
-    public static function before_output() {
-
-      if (!preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'/#', route::$request)) {
-        if (settings::get('regional_settings_screen')) {
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
+            if (empty(customer::$data['id'])) {
+              functions::draw_lightbox(document::ilink('regional_settings'));
+            }
             session::$data['skip_regional_settings_screen'] = true;
             if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
               header('Set-Cookie: skip_regional_settings_screen=1; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
