@@ -44,6 +44,115 @@
           throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
         }
 
+        if (!empty($_POST['reset'])) {
+
+          echo PHP_EOL
+             . 'Wiping data...' . PHP_EOL . PHP_EOL;
+
+          switch ($_POST['type']) {
+
+            case 'attributes':
+
+              database::multi_query(
+                "truncate ". DB_TABLE_PREFIX ."attribute_groups;
+                truncate ". DB_TABLE_PREFIX ."attribute_groups_info;
+                truncate ". DB_TABLE_PREFIX ."attribute_values;
+                truncate ". DB_TABLE_PREFIX ."attribute_values_info;
+                truncate ". DB_TABLE_PREFIX ."products_options;
+                truncate ". DB_TABLE_PREFIX ."products_options_stock;
+                truncate ". DB_TABLE_PREFIX ."products_options_values;"
+              );
+
+              break;
+
+            case 'campaigns':
+
+              database::multi_query(
+                "truncate ". DB_TABLE_PREFIX ."products_campaigns;"
+              );
+
+              break;
+
+            case 'categories':
+
+              database::multi_query(
+                "truncate ". DB_TABLE_PREFIX ."categories;
+                truncate ". DB_TABLE_PREFIX ."categories_filters;
+                truncate ". DB_TABLE_PREFIX ."categories_info;
+                truncate ". DB_TABLE_PREFIX ."products_to_categories;"
+              );
+
+              foreach (functions::file_search(FS_DIR_STORAGE . 'images/categories/*') as $file) {
+                if (preg_match('#index\.html$#', $file)) continue;
+                functions::file_delete($file);
+              }
+
+              break;
+
+            case 'brands':
+
+              database::multi_query(
+                "truncate ". DB_TABLE_PREFIX ."brands`;
+                truncate ". DB_TABLE_PREFIX ."brands_info;"
+              );
+
+              foreach (functions::file_search(FS_DIR_STORAGE . 'images/brands/*') as $file) {
+                if (preg_match('#index\.html$#', $file)) continue;
+                functions::file_delete($file);
+              }
+
+              break;
+
+            case 'products':
+
+              database::multi_query(
+                "truncate ". DB_TABLE_PREFIX ."cart_items;
+                truncate ". DB_TABLE_PREFIX ."products;
+                truncate ". DB_TABLE_PREFIX ."products_attributes;
+                truncate ". DB_TABLE_PREFIX ."products_campaigns;
+                truncate ". DB_TABLE_PREFIX ."products_downloads;
+                truncate ". DB_TABLE_PREFIX ."products_images;
+                truncate ". DB_TABLE_PREFIX ."products_info;
+                truncate ". DB_TABLE_PREFIX ."products_prices;
+                truncate ". DB_TABLE_PREFIX ."products_to_categories;
+                truncate ". DB_TABLE_PREFIX ."products_stock_items;
+                update ". DB_TABLE_PREFIX ."orders_items set product_id = 0;"
+              );
+
+              foreach (functions::file_search(FS_DIR_STORAGE . 'images/products/*') as $file) {
+                if (preg_match('#index\.html$#', $file)) continue;
+                functions::file_delete($file);
+              }
+
+              break;
+
+            case 'stock_items':
+
+              database::multi_query(
+                "truncate ". DB_TABLE_PREFIX ."stock_items;
+                truncate ". DB_TABLE_PREFIX ."stock_items_info;
+                truncate ". DB_TABLE_PREFIX ."stock_transactions;
+                truncate ". DB_TABLE_PREFIX ."stock_transactions_contents;
+                update ". DB_TABLE_PREFIX ."orders_items set stock_item_id = 0;"
+              );
+
+              foreach (functions::file_search(FS_DIR_STORAGE . 'images/stock_items/*') as $file) {
+                if (preg_match('#index\.html$#', $file)) continue;
+                functions::file_delete($file);
+              }
+
+              break;
+
+            case 'suppliers':
+
+              database::multi_query(
+                "truncate ". DB_TABLE_PREFIX ."suppliers;"
+              );
+
+              break;
+          }
+        }
+
         echo 'Creating a batch of '. count($csv) .' lines for processing' . PHP_EOL . PHP_EOL;
 
         session::$data['csv_batch'] = [
@@ -1135,6 +1244,7 @@
             </div>
 
             <div class="form-group">
+              <?php echo functions::form_draw_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
               <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
               <?php echo functions::form_draw_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
             </div>
@@ -1226,4 +1336,12 @@
   });
 
   $('form[name="export_form"] input[name="type"]:checked').trigger('change');
+
+  $('form[name="import_form"] input[name="reset"]').click(function(){
+    if ($(this).is(':checked') && !confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
+  });
+
+  $('form[name="import_form"] input[name="insert"]').change(function(){
+    $('form[name="import_form"] input[name="reset"]').prop('checked', false).prop('disabled', !$(this).is(':checked'));
+  }).trigger('change');
 </script>

@@ -23,6 +23,17 @@
         throw new Exception(language::translate('error_failed_decoding_csv', 'Failed decoding CSV'));
       }
 
+      if (!empty($_POST['reset'])) {
+
+        echo PHP_EOL
+           . 'Wiping data...' . PHP_EOL . PHP_EOL;
+
+        database::multi_query(
+          "truncate ". DB_TABLE_PREFIX ."pages;
+          truncate ". DB_TABLE_PREFIX ."pages_info;"
+        );
+      }
+
       $updated = 0;
       $inserted = 0;
       $line = 1;
@@ -165,7 +176,7 @@
     <div class="row">
 
       <div class="col-sm-6 col-lg-4">
-        <?php echo functions::form_draw_form_begin('import_pages_form', 'post', '', true); ?>
+        <?php echo functions::form_draw_form_begin('import_form', 'post', '', true); ?>
 
           <fieldset>
             <legend><?php echo language::translate('title_import', 'Import'); ?></legend>
@@ -198,6 +209,7 @@
             </div>
 
             <div class="form-group">
+              <?php echo functions::form_draw_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
               <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
               <?php echo functions::form_draw_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
             </div>
@@ -209,7 +221,7 @@
       </div>
 
       <div class="col-sm-6 col-lg-4">
-        <?php echo functions::form_draw_form_begin('export_pages_form', 'post'); ?>
+        <?php echo functions::form_draw_form_begin('export_form', 'post'); ?>
 
           <fieldset>
             <legend><?php echo language::translate('title_export', 'Export'); ?></legend>
@@ -259,3 +271,13 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('form[name="import_form"] input[name="reset"]').click(function(){
+    if ($(this).is(':checked') && !confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
+  });
+
+  $('form[name="import_form"] input[name="insert"]').change(function(){
+    $('form[name="import_form"] input[name="reset"]').prop('checked', false).prop('disabled', !$(this).is(':checked'));
+  }).trigger('change');
+</script>
