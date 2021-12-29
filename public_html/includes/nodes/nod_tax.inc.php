@@ -30,27 +30,6 @@
       return $tax;
     }
 
-    public static function get_tax_by_rate($value, $tax_class_id, $customer=null) {
-
-      if ((float)$value == 0) return 0;
-
-      $tax_rates = [];
-
-      foreach (self::get_rates($tax_class_id, $customer) as $tax_rate) {
-        if (!isset($tax_rates[$tax_rate['id']])) {
-          $tax_rates[$tax_rate['id']] = [
-            'id' => $tax_rate['id'],
-            'name' => $tax_rate['name'],
-            'tax' => 0,
-          ];
-        }
-
-        $tax_rates[$tax_rate['id']]['tax'] += $value * $tax_rate['rate'] / 100 ;
-      }
-
-      return $tax_rates;
-    }
-
     public static function get_rates($tax_class_id, $customer=null) {
 
       if (empty($tax_class_id)) return [];
@@ -164,35 +143,5 @@
       self::$_cache['rates'][$tax_class_id][$checksum] = $tax_rates;
 
       return $tax_rates;
-    }
-
-    public static function get_class_name($tax_class_id) {
-
-      $tax_class_query = database::query(
-        "select name from ". DB_TABLE_PREFIX ."tax_classes
-        where id = " . (int)$tax_class_id . "
-        limit 1;"
-      );
-
-      if ($tax_class = database::fetch($tax_class_query)) {
-        return $tax_class['name'];
-      }
-
-      return false;
-    }
-
-    public static function get_rate_name($tax_rate_id) {
-
-      $tax_rates_query = database::query(
-        "select name from ". DB_TABLE_PREFIX ."tax_rates
-        where id = " . (int)$tax_rate_id . "
-        limit 1;"
-      );
-
-      if ($tax_rate = database::fetch($tax_rates_query)) {
-        return $tax_rate['name'];
-      }
-
-      return false;
     }
   }

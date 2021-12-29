@@ -227,14 +227,6 @@
     $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, 0) : language::translate('title_in_stock', 'In Stock');
   }
 
-// Tax
-  $tax_rates = tax::get_tax_by_rate(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id);
-  if (!empty($tax_rates)) {
-    foreach ($tax_rates as $tax_rate) {
-      $_page->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
-    }
-  }
-
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
 
