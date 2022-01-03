@@ -38,5 +38,15 @@
 </div>
 
 <script>
-  setTimeout(function(){$('#notices').fadeOut();}, 60000);
+  setTimeout(function(){
+    $('#notices .alert').not('.alert-danger').slideUp('fast');
+  }, 20000);
+
+  $('#notices .alert-danger').on('mouseout', function() {
+    $(this).stop().fadeTo(15000, 0.15);
+  }).trigger('mouseout');
+
+  $('#notices .alert-danger').on('mouseover', function() {
+    $(this).stop().fadeTo(200, 1);
+  });
 </script>
