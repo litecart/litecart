@@ -1705,12 +1705,9 @@ html[dir="rtl"] .navbar-right {
 }
 .alert .close {
   float: right;
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 1.25em;
+  color: inherit;
   line-height: 1;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-  opacity: 0.2;
 }
 .alert .close:hover {
   text-decoration: none;
