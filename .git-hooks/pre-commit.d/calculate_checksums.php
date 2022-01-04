@@ -27,16 +27,13 @@
     }
   }
 
-  if (empty($committed_files)) {
-    $committed_files = $tracked_files;
-  }
-
 // Update checksums for committed and tracked files
   foreach ($committed_files as $file) {
     $short_file = preg_replace('#^public_html/#', '', $file);
     if (isset($checksums[$short_file])) {
       echo 'Updating checksum for '. $file . PHP_EOL;
-      $checksums[$short_file] = md5_file($file);
+      $blob = shell_exec('git cat-file blob :'. $short_file .' 2>&1');
+      $checksums[$short_file] = md5($blob);
     }
   }
 
