@@ -2,7 +2,7 @@
 
   $checksums_file = 'public_html/install/checksums.md5';
   $tracked_files = preg_split('#(\r\n?|\n)#', shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);
-  $commmitted_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
+  $committed_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
 
 // Create list of files for checksums
   $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator('public_html/', FilesystemIterator::UNIX_PATHS | RecursiveDirectoryIterator::SKIP_DOTS));
@@ -27,10 +27,15 @@
     }
   }
 
+  if (empty($committed_files)) {
+    $committed_files = $tracked_files;
+  }
+
 // Update checksums for committed and tracked files
-  foreach ($commmitted_files as $file) {
+  foreach ($committed_files as $file) {
     $short_file = preg_replace('#^public_html/#', '', $file);
     if (isset($checksums[$short_file])) {
+      echo 'Updating checksum for '. $file . PHP_EOL;
       $checksums[$short_file] = md5_file($file);
     }
   }
