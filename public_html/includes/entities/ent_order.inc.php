@@ -47,6 +47,7 @@
       }
 
       $this->data = array_merge($this->data, [
+        'order_status_id' => settings::get('default_order_status_id'),
         'weight_unit' => settings::get('site_weight_unit'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
