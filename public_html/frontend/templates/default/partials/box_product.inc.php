@@ -57,7 +57,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
       <?php } ?>
 
       <?php if ($recommended_price) { ?>
-      <div class="recommmended-price" style="margin: 1em 0;">
+      <div class="recommended-price" style="margin: 1em 0;">
         <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
         <span class="value">{{recommended_price|money}}</span>
       </div>
