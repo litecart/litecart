@@ -323,7 +323,7 @@
                 }
               }
 
-              if ($value['price_adjust'] && !empty($this->campaign)) {
+              if ($value['price_adjust'] && !empty($this->campaign['price'])) {
                 $value['price_adjust'] = $value['price_adjust'] * $this->campaign['price'] / $this->price;
               }
 
