@@ -8,15 +8,6 @@
 <link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/printable.min.css'); ?>" />
 {{head_tags}}
 {{style}}
-</head>
-<body>
-
-{{content}}
-
-{{foot_tags}}
-{{javascript}}
-
-<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <style>
 @media print {
   button[name="print"] {
@@ -37,6 +28,13 @@
   }
 }
 </style>
+</head>
+<body>
+
+{{content}}
+
+{{foot_tags}}
+{{javascript}}
 
 <button name="print" class="btn btn-default btn-lg">
   <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
@@ -47,6 +45,5 @@
     window.print();
   });
 </script>
-<?php } ?>
 </body>
 </html>
