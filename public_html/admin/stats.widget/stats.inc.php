@@ -94,9 +94,9 @@
     </div>
 
     <div class="panel-body table-responsive">
-      <div class="row">
+      <div class="row" style="margin-bottom: 0;">
         <div class="col-md-6">
-          <table class="table table-striped table-hover data-table">
+          <table class="table table-striped table-hover data-table" style="margin-bottom: 0;">
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. language::strftime('%B'); ?>:</td>
@@ -122,7 +122,7 @@
           </table>
         </div>
         <div class="col-md-6">
-          <table class="table table-striped table-hover data-table">
+          <table class="table table-striped table-hover data-table" style="margin-bottom: 0;">
             <tbody>
               <tr>
                 <td><?php echo language::translate('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
