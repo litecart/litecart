@@ -57,7 +57,7 @@
           'counters' => [
             'updated' => 0,
             'inserted' => 0,
-            'line' => 1,
+            'line' => 0,
           ],
         ];
 
@@ -71,6 +71,7 @@
       echo 'Processing batch...' . PHP_EOL . PHP_EOL;
 
       while ($row = array_shift($batch['rows'])) {
+        $batch['counters']['line']++;
 
         if (round(microtime(true) - $time_start) > 5) {
           echo PHP_EOL . 'Resuming '. number_format(count($batch['rows']), 0, '', ' ') .' remaining lines for processing...' . PHP_EOL . PHP_EOL;
