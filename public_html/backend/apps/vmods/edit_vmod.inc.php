@@ -8,8 +8,6 @@
 
   if (!$_POST) {
     $_POST = $vmod->data;
-
-    if (!empty($_GET['parent_id'])) $_POST['parent_id'] = $_GET['parent_id'];
   }
 
   breadcrumbs::add(!empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') : language::translate('title_create_new_vmod', 'Create New vMod'));

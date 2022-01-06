@@ -8,7 +8,6 @@
   }
 
   if (!$_POST) {
-
     $_POST = $shopping_cart->data;
 
   // Convert to local currency

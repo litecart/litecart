@@ -12,9 +12,7 @@
   }
 
   if (!$_POST) {
-    foreach (customer::$data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = customer::$data;
   }
 
   if (!empty(customer::$data['id'])) {
