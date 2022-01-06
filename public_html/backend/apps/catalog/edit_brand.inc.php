@@ -95,7 +95,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_featured', 'Featured'); ?></label>
-            <?php echo functions::form_draw_toggle('featured', 'y/n', isset($_POST['featured']) ? $_POST['featured'] : '1'); ?>
+            <?php echo functions::form_draw_toggle('featured', 'y/n', fallback($_POST['featured'], '1')); ?>
           </div>
 
           <div class="form-group">

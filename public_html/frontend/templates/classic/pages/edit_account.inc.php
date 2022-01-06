@@ -110,7 +110,7 @@
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-            <?php echo form_draw_zones_list('zone_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', 'required'); ?>
+            <?php echo form_draw_zones_list('zone_code', fallback($_POST['country_code']), 'required'); ?>
           </div>
         </div>
 

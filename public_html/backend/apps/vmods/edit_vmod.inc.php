@@ -123,7 +123,7 @@ textarea {
         <div class="col-md-4">
           <div class="form-group">
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', 'e/d', isset($_POST['status']) ? $_POST['status'] : '0'); ?>
+            <?php echo functions::form_draw_toggle('status', 'e/d', fallback($_POST['status'], '0')); ?>
           </div>
 
           <div class="form-group">

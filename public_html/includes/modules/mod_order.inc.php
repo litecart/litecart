@@ -33,7 +33,7 @@
             'title' => $action['title'],
             'description' => @$action['description'],
             'function' => $action['function'],
-            'target' => !empty($action['target']) ? $action['target'] : '_self',
+            'target' => fallback($action['target'], '_self'),
           ];
         }
       }

@@ -48,8 +48,8 @@
       'app' => __APP__,
       'doc' => __DOC__,
       'theme' => [
-        'icon' => !empty($app_config['theme']['icon']) ? $app_config['theme']['icon'] : 'fa-plus',
-        'color' => !empty($app_config['theme']['color']) ? $app_config['theme']['color'] : '#97a3b5',
+        'icon' => fallback($app_config['theme']['icon'], 'fa-plus'),
+        'color' => fallback($app_config['theme']['color'], '#97a3b5'),
       ],
       'content' => (string)$_content,
     ];

@@ -58,7 +58,7 @@
       <?php foreach ($categories as $category) { ?>
       <li>
         <a href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']], true); ?>">
-          <?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"'); ?> <?php echo !empty($category['name']) ? $category['name'] : '[untitled]'; ?>
+          <?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
         </a>
       <li>
       <?php } ?>

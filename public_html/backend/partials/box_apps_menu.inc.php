@@ -45,7 +45,7 @@
         $box_apps_menu->snippets['apps'][$app['id']]['menu'][] = [
           'title' => $item['title'],
           'doc' => $item['doc'],
-          'link' => document::ilink($app['id'] .'/'. $item['doc'], !empty($item['params']) ? $item['params'] : []),
+          'link' => document::ilink($app['id'] .'/'. $item['doc'], fallback($item['params'], [])),
           'active' => $selected ? true : false,
         ];
       }

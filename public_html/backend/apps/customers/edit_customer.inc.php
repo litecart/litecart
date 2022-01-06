@@ -60,7 +60,7 @@
       ];
 
       foreach ($fields as $field) {
-        $customer->data['shipping_address'][$field] = !empty($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
+        $customer->data['shipping_address'][$field] = fallback($_POST['shipping_address'][$field], '');
       }
 
       $customer->save();
@@ -205,7 +205,7 @@
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_zone', 'Zone'); ?></label>
-              <?php echo functions::form_draw_zones_list('zone_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', true); ?>
+              <?php echo functions::form_draw_zones_list('zone_code', fallback($_POST['country_code']), true); ?>
             </div>
           </div>
 
@@ -297,7 +297,7 @@
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo functions::form_draw_zones_list('shipping_address[zone_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], true); ?>
+                <?php echo functions::form_draw_zones_list('shipping_address[zone_code]', fallback($_POST['shipping_address']['country_code'], $_POST['country_code']), true); ?>
               </div>
             </div>
 
@@ -330,7 +330,7 @@
                 <?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
               </td>
               <td class="col-md-6"><?php echo language::translate('title_total_sales', 'Total Sales'); ?><br />
-                <?php echo currency::format(!empty($orders['total_sales']) ? $orders['total_sales'] : 0, false, settings::get('site_currency_code')); ?>
+                <?php echo currency::format(fallback($orders['total_sales'], 0), false, settings::get('site_currency_code')); ?>
               </td>
             </tr>
           </table>

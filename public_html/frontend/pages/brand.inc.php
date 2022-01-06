@@ -59,7 +59,7 @@
 
     $products_query = functions::catalog_products_query([
       'brands' => [$brand->id],
-      'product_name' => !empty($_GET['product_name']) ? $_GET['product_name'] : null,
+      'product_name' => fallback($_GET['product_name']),
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ]);

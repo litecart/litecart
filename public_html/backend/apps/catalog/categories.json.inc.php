@@ -16,7 +16,7 @@
 
     $json = [
       'status' => 'ok',
-      'id' => !empty($_GET['parent_id']) ? $_GET['parent_id'] : 0,
+      'id' => fallback($_GET['parent_id'], 0),
       'name' => !empty($_GET['parent_id']) ? $category->name : '['. language::translate('title_root', 'Root') .']',
       'parent' => [
         'id' => $category->parent ? $category->parent->id : 0,

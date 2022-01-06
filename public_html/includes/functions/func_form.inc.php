@@ -953,7 +953,7 @@ END;
         return form_draw_time_field($name, $input, $parameters);
 
       case 'toggle':
-        return form_draw_toggle($name, !empty($options[0]) ? $options[0] : null, $input);
+        return form_draw_toggle($name, fallback($options[0], null), $input);
 
       case 'sold_out_status':
       case 'sold_out_statuses':

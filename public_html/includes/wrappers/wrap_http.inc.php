@@ -29,7 +29,7 @@
       }
 
       if (!empty($parts['user']) && empty($headers['Authorization'])) {
-        $headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. (!empty($parts['pass']) ? $parts['pass'] : ''));
+        $headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. fallback($parts['pass']));
       }
 
       if (empty($headers['User-Agent'])) {

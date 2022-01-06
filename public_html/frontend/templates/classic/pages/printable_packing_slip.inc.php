@@ -64,10 +64,10 @@ table.items tbody tr:nth-child(11) {
       <div class="row">
         <div class="col-6">
           <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
-          <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
+          <div class="value"><?php echo fallback($order['shipping_option']['name'], '-'); ?></div>
 
           <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-          <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
+          <div class="value"><?php echo fallback($order['shipping_tracking_id'], '-'); ?></div>
 
           <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
           <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>

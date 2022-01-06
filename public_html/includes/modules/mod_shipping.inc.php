@@ -92,12 +92,12 @@
             'icon' => $option['icon'],
             'name' => $option['name'],
             'description' => !empty($option['fields']) ? $option['description'] : '',
-            'fields' => !empty($option['fields']) ? $option['fields'] : '',
+            'fields' => fallback($option['fields']),
             'fee' => (float)$option['fee'],
             'tax_class_id' => (int)$option['tax_class_id'],
-            'incoterm' => !empty($option['incoterm']) ? $option['incoterm'] : settings::get('default_incoterm'),
+            'incoterm' => fallback($option['incoterm'], settings::get('default_incoterm')),
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
-            'error' => !empty($option['error']) ? $option['error'] : false,
+            'error' => fallback($option['error'], false),
           ];
         }
       }

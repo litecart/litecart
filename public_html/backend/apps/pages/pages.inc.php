@@ -253,7 +253,7 @@
         </li>
         <li>
           <div>
-            <?php echo functions::form_draw_pages_list('page_id', isset($_POST['page_id']) ? $_POST['page_id'] : ''); ?>
+            <?php echo functions::form_draw_pages_list('page_id', true); ?>
           </div>
         </li>
         <li>
@@ -272,7 +272,7 @@
   <?php echo functions::form_draw_form_end(); ?>
 
 
-  <?php if ($num_pages = (!empty($num_root_rows) ? $num_root_rows : $num_rows) / settings::get('data_table_rows_per_page')) { ?>
+  <?php if ($num_pages = fallback($num_root_rows, $num_rows) / settings::get('data_table_rows_per_page')) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_rows); ?>
   </div>

@@ -20,9 +20,9 @@
 
       if (!empty($_POST['country_code'])) {
         customer::$data['country_code'] = $_POST['country_code'];
-        customer::$data['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
+        customer::$data['zone_code'] = fallback($_POST['zone_code']);
         customer::$data['shipping_address']['country_code'] = $_POST['country_code'];
-        customer::$data['shipping_address']['zone_code'] = !empty($_POST['zone_code']) ? $_POST['zone_code'] : '';
+        customer::$data['shipping_address']['zone_code'] = fallback($_POST['zone_code']);
         if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
           header('Set-Cookie: country_code='. customer::$data['country_code'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
           header('Set-Cookie: zone_code='. customer::$data['zone_code'] .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
@@ -45,7 +45,7 @@
         $redirect_url = new ent_link($_GET['redirect_url']);
         $redirect_url->host = '';
       } else {
-        $redirect_url = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
+        $redirect_url = document::ilink('', [], null, [], fallback($_POST['language_code']));
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));

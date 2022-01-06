@@ -75,7 +75,7 @@
                 continue 2;
               }
 
-              echo 'Updating existing customer '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
+              echo 'Updating existing customer '. ((!empty($row['firstname']) && !empty($row['lastname'])) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
               $updated++;
 
             } else {
@@ -85,7 +85,7 @@
                 continue 2;
               }
 
-              echo 'Inserting new customer: '. (!empty($row['name']) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
+              echo 'Inserting new customer: '. ((!empty($row['firstname']) && !empty($row['lastname'])) ? $row['firstname'] .' '. $row['lastname'] : "on line $line") . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {
@@ -163,7 +163,7 @@
                 continue 2;
               }
 
-              echo 'Updating existing newsletter recipient '. (!empty($row['email']) ? $row['email'] : "on line $line") . PHP_EOL;
+              echo 'Updating existing newsletter recipient '. fallback($row['email'], "on line $line") . PHP_EOL;
               $updated++;
 
             } else {
@@ -173,7 +173,7 @@
                 continue 2;
               }
 
-              echo 'Inserting new newsletter recipient: '. (!empty($row['email']) ? $row['email'] : "on line $line") . PHP_EOL;
+              echo 'Inserting new newsletter recipient: '. fallback($row['email'], "on line $line") . PHP_EOL;
               $inserted++;
 
               if (!empty($row['id'])) {

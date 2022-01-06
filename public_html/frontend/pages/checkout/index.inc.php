@@ -70,7 +70,7 @@
                 document::$template = 'blank';
 
                 echo '<div>'. language::translate('title_redirecting', 'Redirecting') .'...</div>' . PHP_EOL
-                   . '<form name="gateway_form" method="post" action="'. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')) .'">' . PHP_EOL;
+                   . '<form name="gateway_form" method="post" action="'. fallback($gateway['action'], document::ilink('order_process')) .'">' . PHP_EOL;
 
                 if (is_array($gateway['fields'])) {
                   foreach ($gateway['fields'] as $key => $value) echo functions::form_draw_hidden_field($key, $value) . PHP_EOL;
@@ -102,7 +102,7 @@
               case 'GET':
               default:
 
-                header('Location: '. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')));
+                header('Location: '. fallback($gateway['action'], document::ilink('order_process')));
                 exit;
             }
           }

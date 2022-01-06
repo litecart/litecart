@@ -128,7 +128,7 @@
 
       foreach ($fields as $field) {
         if (empty($_POST['different_shipping_address']) && settings::get('customer_shipping_address')) {
-          $customer->data['shipping_address'][$field] = isset($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
+          $customer->data['shipping_address'][$field] = fallback($_POST['shipping_address'][$field]);
         } else {
           $customer->data['shipping_address'][$field] = $customer->data[$field];
         }

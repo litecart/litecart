@@ -92,12 +92,12 @@
             'icon' => $option['icon'],
             'name' => $option['name'],
             'description' => !empty($option['fields']) ? $option['description'] : '',
-            'fields' => !empty($option['fields']) ? $option['fields'] : '',
+            'fields' => fallback($option['fields']),
             'fee' => (float)$option['fee'],
             'tax_class_id' => (int)$option['tax_class_id'],
             'exclude_cheapest' => !empty($option['exclude_cheapest']) ? true : false,
-            'confirm' => !empty($option['confirm']) ? $option['confirm'] : '',
-            'error' => !empty($option['error']) ? $option['error'] : false,
+            'confirm' => fallback($option['confirm']),
+            'error' => fallback($option['error'], false),
           ];
         }
       }

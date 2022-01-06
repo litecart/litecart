@@ -78,7 +78,7 @@
           <?php if (settings::get('customer_field_zone')) { ?>
           <div class="form-group col-6">
             <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-            <?php echo functions::form_draw_zones_list('zone_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', true, 'required'); ?>
+            <?php echo functions::form_draw_zones_list('zone_code', fallback($_POST['country_code']), true, 'required'); ?>
           </div>
           <?php } ?>
         </div>

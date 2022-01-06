@@ -24,7 +24,7 @@
           if (isset($saved_settings[$setting['key']][$language_code])) {
             $settings[$key]['value'][$language_code] = $saved_settings[$setting['key']][$language_code];
           } else {
-            $settings[$key]['value'][$language_code] = !empty($saved_settings[$setting['key']]['en']) ? $saved_settings[$setting['key']]['en'] : $setting['default_value'];
+            $settings[$key]['value'][$language_code] = fallback($saved_settings[$setting['key']]['en'], $setting['default_value']);
           }
         }
 

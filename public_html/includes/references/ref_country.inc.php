@@ -83,21 +83,21 @@
     public function format_address($address) {
 
       $address = [
-        '%code' => !empty($address['code']) ? $address['code'] : '',
-        '%tax_id' => !empty($address['tax_id']) ? $address['tax_id'] : '',
-        '%company' => !empty($address['company']) ? $address['company'] : '',
-        '%firstname' => !empty($address['firstname']) ? $address['firstname'] : '',
-        '%lastname' => !empty($address['lastname']) ? $address['lastname'] : '',
-        '%address1' => !empty($address['address1']) ? $address['address1'] : '',
-        '%address2' => !empty($address['address2']) ? $address['address2'] : '',
-        '%city' => !empty($address['city']) ? $address['city'] : '',
-        '%postcode' => !empty($address['postcode']) ? $address['postcode'] : '',
+        '%code' => fallback($address['code']),
+        '%tax_id' => fallback($address['tax_id']),
+        '%company' => fallback($address['company']),
+        '%firstname' => fallback($address['firstname']),
+        '%lastname' => fallback($address['lastname']),
+        '%address1' => fallback($address['address1']),
+        '%address2' => fallback($address['address2']),
+        '%city' => fallback($address['city']),
+        '%postcode' => fallback($address['postcode']),
         '%country_number' => $this->iso_code_1,
         '%country_code' => $this->iso_code_2,
         '%country_code_3' => $this->iso_code_3,
         '%country_name' => $this->name,
         '%country_comestic_name' => $this->domestic_name,
-        '%zone_code' => !empty($address['zone_code']) ? $address['zone_code'] : '',
+        '%zone_code' => fallback($address['zone_code']),
         '%zone_name' => (!empty($address['zone_code']) && !empty($this->zones[$address['zone_code']])) ? $this->zones[$address['zone_code']]['name'] : '',
       ];
 

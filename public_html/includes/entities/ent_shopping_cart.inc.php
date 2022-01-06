@@ -289,13 +289,13 @@
           }
         }
 
-        if (!empty($stock_option['sku'])) $item['sku'] = $stock_option['sku'];
-        if (!empty($stock_option['weight']) && (float)$stock_option['weight'] != 0) $item['weight'] = (float)$stock_option['weight'];
-        if (!empty($stock_option['weight_unit'])) $item['weight_unit'] = $stock_option['weight_unit'];
-        if (!empty($stock_option['length']) && (float)$stock_option['length'] != 0) $item['length'] = (float)$stock_option['length'];
-        if (!empty($stock_option['width']) && (float)$stock_option['width'] != 0) $item['width'] = (float)$stock_option['width'];
-        if (!empty($stock_option['height']) && (float)$stock_option['height'] != 0) $item['height'] = (float)$stock_option['height'];
-        if (!empty($stock_option['length_unit'])) $item['length_unit'] = $stock_option['length_unit'];
+        $item['sku'] = fallback($stock_option['sku'], $item['sku']);
+        $item['weight'] = (float)fallback($stock_option['weight'], $item['weight']);
+        $item['weight_unit'] = fallback($stock_option['weight_unit'], $item['weight_unit']);
+        $item['length'] = (float)fallback($stock_option['length'], $item['length']);
+        $item['width'] = (float)fallback($stock_option['width'], $item['width']);
+        $item['height'] = (float)fallback($stock_option['height'], $item['height']);
+        $item['length_unit'] = fallback($stock_option['length_unit'], $item['length_unit']);
       }
 
     // Adjust price with extras

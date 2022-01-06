@@ -45,8 +45,8 @@
       'name' => $item['name'],
       'sku' => $item['sku'],
       'image' => [
-        'original' => 'images/' . (!empty($item['image']) ? $item['image'] : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING',
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . (!empty($item['image']) ? $item['image'] : 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
+        'original' => 'images/' . fallback($item['image'], 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING',
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . fallback($item['image'], 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
       ],
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
@@ -58,7 +58,7 @@
       'quantity_min' => $item['quantity_min'],
       'quantity_max' => $item['quantity_max'],
       'quantity_step' => $item['quantity_step'],
-      'error' => !empty($item['error']) ? $item['error'] : null,
+      'error' => fallback($item['error']),
     ];
   }
 

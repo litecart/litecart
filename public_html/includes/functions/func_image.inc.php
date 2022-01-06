@@ -25,15 +25,15 @@
       if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
       $options = [
-        'destination' => !empty($options['destination']) ? $options['destination'] : FS_DIR_STORAGE . 'cache/',
-        'width' => !empty($options['width']) ? $options['width'] : 0,
-        'height' => !empty($options['height']) ? $options['height'] : 0,
-        'clipping' => !empty($options['clipping']) ? $options['clipping'] : 'FIT_ONLY_BIGGER',
-        'quality' => isset($options['quality']) ? $options['quality'] : settings::get('image_quality'),
-        'trim' => !empty($options['trim']) ? $options['trim'] : false,
+        'destination' => fallback($options['destination'], FS_DIR_STORAGE . 'cache/'),
+        'width' => fallback($options['width'], 0),
+        'height' => fallback($options['height'], 0),
+        'clipping' => fallback($options['clipping'], 'FIT_ONLY_BIGGER'),
+        'quality' => fallback($options['quality'], settings)::get('image_quality'),
+        'trim' => fallback($options['trim'], false),
         'interlaced' => !empty($options['interlaced']) ? true : false,
-        'overwrite' => !empty($options['overwrite']) ? $options['overwrite'] : false,
-        'watermark' => !empty($options['watermark']) ? $options['watermark'] : false,
+        'overwrite' => fallback($options['overwrite'], false),
+        'watermark' => fallback($options['watermark'], false),
       ];
 
     // If destination is a directory
@@ -176,7 +176,7 @@
       'width' => $width,
       'height' => $height,
       'clipping' => $clipping,
-      'trim' => !empty($trim) ? $trim : false,
+      'trim' => fallback($trim, false),
       'quality' => settings::get('image_thumbnail_quality'),
       'interlaced' => settings::get('image_thumbnail_interlaced'),
     ]);

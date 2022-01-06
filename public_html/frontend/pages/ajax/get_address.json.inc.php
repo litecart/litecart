@@ -11,19 +11,19 @@
   if (!empty($result['error'])) die('{}');
 
   $json = [
-    'tax_id' => isset($result['tax_id']) ? $result['tax_id'] : '',
-    'company' => isset($result['company']) ? $result['company'] : '',
-    'firstname' => isset($result['firstname']) ? $result['firstname'] : '',
-    'lastname' => isset($result['lastname']) ? $result['lastname'] : '',
-    'address1' => isset($result['address1']) ? $result['address1'] : '',
-    'address2' => isset($result['address2']) ? $result['address2'] : '',
-    'postcode' => isset($result['postcode']) ? $result['postcode'] : '',
-    'city' => isset($result['city']) ? $result['city'] : '',
-    'country_code' => isset($result['country_code']) ? $result['country_code'] : '',
-    'zone_code' => isset($result['zone_code']) ? $result['zone_code'] : '',
-    'phone' => isset($result['phone']) ? $result['phone'] : '',
-    'email' => isset($result['email']) ? $result['email'] : '',
-    'alert' => isset($result['alert']) ? $result['alert'] : '',
+    'tax_id' => fallback($result['tax_id']),
+    'company' => fallback($result['company']),
+    'firstname' => fallback($result['firstname']),
+    'lastname' => fallback($result['lastname']),
+    'address1' => fallback($result['address1']),
+    'address2' => fallback($result['address2']),
+    'postcode' => fallback($result['postcode']),
+    'city' => fallback($result['city']),
+    'country_code' => fallback($result['country_code']),
+    'zone_code' => fallback($result['zone_code']),
+    'phone' => fallback($result['phone']),
+    'email' => fallback($result['email']),
+    'alert' => fallback($result['alert']),
   ];
 
   ob_clean();

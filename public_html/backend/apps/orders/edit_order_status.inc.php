@@ -110,7 +110,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_description', 'Description'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea('description['. $language_code .']', $language_code, (isset($_POST['description'][$language_code]) ? $_POST['description'][$language_code] : ''), 'style="height: 50px;"');  $use_br = true; ?>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
           </div>
 
           <div class="row">

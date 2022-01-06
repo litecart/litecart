@@ -505,7 +505,7 @@
               'pattern' => $find,
               'indexes' => $indexes,
             ],
-            'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
+            'ignoreif' => fallback($ignoreif),
             'insert' => $insert,
           ];
         }
@@ -713,7 +713,7 @@
               'pattern' => $search,
               'indexes' => $indexes,
             ],
-            'ignoreif' => !empty($ignoreif) ? $ignoreif : null,
+            'ignoreif' => fallback($ignoreif),
             'insert' => $add,
           ];
         }

@@ -84,7 +84,7 @@
             <?php } else { ?>
             <li>
               <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-                <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link()); ?>
+                <?php echo functions::form_draw_hidden_field('redirect_url', fallback($_GET['redirect_url'], document::link())); ?>
 
                 <div class="form-group">
                   <?php echo functions::form_draw_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>

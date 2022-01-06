@@ -74,7 +74,7 @@
       <?php if (settings::get('customer_field_zone')) { ?>
       <div class="form-group col-6">
         <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-        <?php echo functions::form_draw_zones_list('zone_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', true); ?>
+        <?php echo functions::form_draw_zones_list('zone_code', fallback($_POST['country_code']), true); ?>
       </div>
       <?php } ?>
     </div>
@@ -152,7 +152,7 @@
         <?php if (settings::get('customer_field_zone')) { ?>
         <div class="form-group col-6">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-          <?php echo functions::form_draw_zones_list('shipping_address[zone_code]', isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], true); ?>
+          <?php echo functions::form_draw_zones_list('shipping_address[zone_code]', fallback($_POST['shipping_address']['country_code'], $_POST['country_code']), true); ?>
         </div>
         <?php } ?>
       </div>

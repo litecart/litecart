@@ -152,8 +152,8 @@
 
         where p.status
         ". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
-        ". (!empty($sql_where_categories) ? $sql_where_categories : null) ."
-        ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
+        ". fallback($sql_where_categories) ."
+        ". fallback($sql_where_attributes) ."
         ". (!empty($filter['brands']) ? "and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
         ". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         and (p.quantity > 0 or ss.hidden != 1)
@@ -201,7 +201,7 @@
         ". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : null) ."
         ". (!empty($filter['product_name']) ? "and pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
         ". (!empty($filter['campaign']) ? "and campaign_price > 0" : null) ."
-        ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
+        ". fallback($sql_where_prices) ."
       )
 
       group by p.id
@@ -272,9 +272,9 @@
         where p.status
           and (p.id
           ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
-          ". (!empty($sql_where_categories) ? $sql_where_categories : null) ."
+          ". fallback($sql_where_categories) ."
           ". (!empty($filter['brands']) ? "or brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
-          ". (!empty($sql_where_attributes) ? $sql_where_attributes : null) ."
+          ". fallback($sql_where_attributes) ."
           ". (!empty($filter['keywords']) ? "or (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         )
         and (p.quantity > 0 or ss.hidden != 1)
@@ -321,7 +321,7 @@
         ". (!empty($filter['sql_where']) ? "or (". $filter['sql_where'] .")" : null) ."
         ". (!empty($filter['product_name']) ? "or pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
         ". (!empty($filter['campaign']) ? "or campaign_price > 0" : null) ."
-        ". (!empty($sql_where_prices) ? $sql_where_prices : null) ."
+        ". fallback($sql_where_prices) ."
       )
 
       group by p.id

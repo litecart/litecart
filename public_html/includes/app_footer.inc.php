@@ -41,7 +41,7 @@
       exec('wget -q -O - '. $url .' > /dev/null 2>&1 &');
     } else if (!in_array('fsockopen', $disabled_functions)) {
       $parts = parse_url($url);
-      $fp = fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $errno, $errstr, 30);
+      $fp = fsockopen($parts['host'], fallback($parts['port'], 80), $errno, $errstr, 30);
       $out = "GET ". $parts['path'] ." HTTP/1.1\r\n"
            . "Host: ". $parts['host'] ."\r\n"
            . "Connection: Close\r\n\r\n";

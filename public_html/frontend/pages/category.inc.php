@@ -90,9 +90,9 @@
   // Products
     $products_query = functions::catalog_products_query([
       'categories' => [$category->id] + array_keys($category->descendants),
-      'brands' => !empty($_GET['brands']) ? $_GET['brands'] : null,
-      'attributes' => !empty($_GET['attributes']) ? $_GET['attributes'] : null,
-      'product_name' => !empty($_GET['product_name']) ? $_GET['product_name'] : null,
+      'brands' => fallback($_GET['brands']),
+      'attributes' => fallback($_GET['attributes']),
+      'product_name' => fallback($_GET['product_name']),
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
     ]);

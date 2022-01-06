@@ -65,10 +65,10 @@ table.items tbody tr:nth-child(11) {
         <div class="row">
           <div class="col-6">
             <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
-            <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
+            <div class="value"><?php echo fallback($order['shipping_option']['name'], '-'); ?></div>
 
             <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-            <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
+            <div class="value"><?php echo fallback($order['shipping_tracking_id'], '-'); ?></div>
 
             <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
             <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
@@ -81,10 +81,10 @@ table.items tbody tr:nth-child(11) {
             </div>
 
             <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-            <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
+            <div class="value"><?php echo fallback($order['customer']['email'], '-'); ?></div>
 
             <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-            <div class="value"><?php echo !empty($order['customer']['shipping_address']['phone']) ? $order['customer']['shipping_address']['phone'] : '-'; ?></div>
+            <div class="value"><?php echo fallback($order['customer']['shipping_address']['phone'], '-'); ?></div>
           </div>
         </div>
       </div>
@@ -147,3 +147,7 @@ table.items tbody tr:nth-child(11) {
     <?php } ?>
   </section>
 </main>
+
+<script>
+  document.title = "<?php echo functions::general_escape_js(language::translate('title_packing_slip', 'Packing Slip')); ?> #<?php echo $order['id']; ?>";
+</script>
