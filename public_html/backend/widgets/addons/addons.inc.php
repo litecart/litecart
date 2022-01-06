@@ -1,12 +1,13 @@
 <?php
 
   $widget_addons_cache_token = cache::token('widget_addons', [], 'memory', 43200);
-  if (cache::capture($widget_addons_cache_token, 43200, false)) {
+  if (cache::capture($widget_addons_cache_token, 43200, true)) {
 
     try {
+
       $url = 'https://www.litecart.net/feeds/addons';
 
-      $site_info = [
+      $client_info = [
         'platform' => PLATFORM_NAME,
         'version' => PLATFORM_VERSION,
         'name' => settings::get('site_name'),
@@ -19,7 +20,7 @@
       $client = new wrap_http();
       $client->timeout = 10;
 
-      $response = $client->call('POST', $url, $site_info);
+      $response = $client->call('POST', $url, $client_info);
 
       if (!$response) throw new Exception('No response');
 
@@ -38,7 +39,7 @@
 ?>
 <style>
 #widget-addons .addons {
-  columns: auto 250px;
+  columns: auto 275px;
 }
 #widget-addons .addon {
   margin-bottom: 1em;

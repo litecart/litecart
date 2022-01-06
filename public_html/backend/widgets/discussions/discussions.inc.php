@@ -1,4 +1,5 @@
 <?php
+
   $widget_discussions_cache_token = cache::token('widget_discussions', [], 'memory', 43200);
   if (cache::capture($widget_discussions_cache_token, 43200, true)) {
 
@@ -6,9 +7,14 @@
 
       $url = 'https://www.litecart.net/feeds/discussions.rss';
 
+      $client_info = [
+        'platform' => PLATFORM_NAME,
+        'version' => PLATFORM_VERSION,
+      ];
+
       $client = new wrap_http();
       $client->timeout = 10;
-      $response = $client->call('GET', $url);
+      $response = $client->call('GET', $url, $client_info);
 
       if (!$response) throw new Exception('No response');
 
@@ -27,7 +33,7 @@
 ?>
 <style>
 #widget-discussions .threads {
-  columns: auto 250px;
+  columns: auto 275px;
 }
 #widget-discussions .thread {
   margin-bottom: 1em;
@@ -55,7 +61,7 @@
       <?php foreach ($discussions as $item) { ?>
       <div class="thread">
         <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
-        <div class="description"><?php echo language::strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></div>
+        <div class="description"><?php echo strtr(language::translate('text_posted_date_by_author', 'Posted %date by %author'), ['%date' => language::strftime('%e %b', strtotime($item->pubDate)), '%author' => (string)$item->author]); ?></div>
       </div>
       <?php } ?>
     </div>
