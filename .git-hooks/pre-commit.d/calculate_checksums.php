@@ -45,3 +45,8 @@
   }
 
   file_put_contents($checksums_file, $output);
+
+  if (in_array($checksums_file, $committed_files)) {
+    echo 'Updating staged checksums file '. $checksums_file . PHP_EOL;
+    shell_exec('git add '. $checksums_file);
+  }
