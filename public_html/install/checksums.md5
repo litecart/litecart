@@ -610,7 +610,7 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 bc9b31011a20ac5246b7a8f2cc2b013b	includes/templates/default.admin/css/app.min.css
 20d4ee6b8d4e838b791f5992bac8cbb4	includes/templates/default.admin/css/app.min.css.map
 871e003833cfbc48a5359df6fce648c2	includes/templates/default.admin/css/framework.min.css
-94e246a4e58a1a2f1d39fb49eea8f51d	includes/templates/default.admin/css/framework.min.css.map
+fcfd70b1166e98bc34e1eb2d95d2e094	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -665,9 +665,9 @@ d4ee5ab179ceb6cde1e2779159ce7b77	includes/templates/default.admin/views/breadcru
 e9f9f38738425e4f2f9d19749821d644	includes/templates/default.catalog/css/checkout.css
 f5d3c581b1f89a8054ace060bd3e0dc7	includes/templates/default.catalog/css/checkout.min.css
 ee40e23e0b5f36b7a4dc3cfb305d179d	includes/templates/default.catalog/css/checkout.min.css.map
-9eb10e7da08ae274cb69f738e834dfaa	includes/templates/default.catalog/css/framework.css
-d303d033e5316fb889f1a931b6119c9b	includes/templates/default.catalog/css/framework.min.css
-41ba7c22408292ea64815c99decf11e7	includes/templates/default.catalog/css/framework.min.css.map
+20f7db30efa63724d3b0c988dd3cc7c3	includes/templates/default.catalog/css/framework.css
+28ac6f113b580080108012997ed01649	includes/templates/default.catalog/css/framework.min.css
+50fce167e50fd2ba5f75120d1c1a4018	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
@@ -710,8 +710,8 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/framewo
 2a36e43aa522ae59c8c0a8e3b2935590	includes/templates/default.catalog/less/framework/lists.less
 e2c70f751c9e8d147651907bccd2cb79	includes/templates/default.catalog/less/framework/loader.less
 15e5d5083191a8e3226f6d3b99139a4e	includes/templates/default.catalog/less/framework/media.less
-53e41bb655ac274bce41b245290d1de3	includes/templates/default.catalog/less/framework/nav.less
-280534c0de6fed4efa536dbd93adecfd	includes/templates/default.catalog/less/framework/navbar.less
+fb51ea4dae70622b9066b8cc21df0f04	includes/templates/default.catalog/less/framework/nav.less
+c398a4e38b7407ed07bc7406595c85da	includes/templates/default.catalog/less/framework/navbar.less
 a351db7db76f996b7e996cbbf1a3a6a3	includes/templates/default.catalog/less/framework/normalize.less
 a55c9e4ca57f98a4f2300e6674491709	includes/templates/default.catalog/less/framework/notices.less
 449629ba91cb5c724d7edd0c123b328e	includes/templates/default.catalog/less/framework/pagination.less
