@@ -519,7 +519,7 @@ e7613a15afa86ee8d5a646042dd96f36	includes/entities/ent_module.inc.php
 6ca9c2719e4943d0ccd5050f2ad3392f	includes/entities/ent_order.inc.php
 941c2c23e4ffdf4d7871fa22046f2d2c	includes/entities/ent_order_status.inc.php
 3eccc257a1c51654084bbe1008e6bfe9	includes/entities/ent_page.inc.php
-fbd82c282c30a1078f1cd296729ae09c	includes/entities/ent_product.inc.php
+bdae08bb1ebdd0dfa05cfbb25dcdf386	includes/entities/ent_product.inc.php
 dbeb8deefec5bec3613a3c1c925b315e	includes/entities/ent_quantity_unit.inc.php
 cdfaf4dde6adc47f529bd6398e186736	includes/entities/ent_slide.inc.php
 23855f664376aacc2197d2894a5122c5	includes/entities/ent_sold_out_status.inc.php
@@ -534,7 +534,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 32b238991acf2438502a5451788e772d	includes/functions/func_captcha.inc.php
 52b184fae7486c5fe1584c63ba92f4f5	includes/functions/func_catalog.inc.php
 08ed2abe48e337109c90d13729983af8	includes/functions/func_csv.inc.php
-dcaf22fd3e52b25990196764b666d980	includes/functions/func_draw.inc.php
+4c0677535fbbca834149af9ef76213a2	includes/functions/func_draw.inc.php
 72f894092e029402cad6be4ee5fae0cb	includes/functions/func_form.inc.php
 9b5b0424eb5fc34a21e36c4bfe5cda44	includes/functions/func_format.inc.php
 e5ca70e9492b96591fc883d131e810f1	includes/functions/func_general.inc.php
@@ -769,7 +769,7 @@ db8d9ad80b54aed1822b50d5acd1162a	includes/templates/default.catalog/views/box_in
 c203fbaa9c07697f27d4a8adffc5f658	includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php
 c48bf30cf296dec69718b70bee9a075d	includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php
 5beab507e4858940defd268e775e5ac7	includes/templates/default.catalog/views/box_popular_products.inc.php
-652e33cecd3a13018d166d8b975cbf67	includes/templates/default.catalog/views/box_product.inc.php
+f0a934840f770803276c0028fc0410b0	includes/templates/default.catalog/views/box_product.inc.php
 7cd76061e2fc15b55a44b2191bc129c3	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 c2eda4079a017eb4a442f623cbad92be	includes/templates/default.catalog/views/box_region.inc.php
 9fe421af787539ad7333176ebaf881bb	includes/templates/default.catalog/views/box_similar_products.inc.php
@@ -779,7 +779,7 @@ c2eda4079a017eb4a442f623cbad92be	includes/templates/default.catalog/views/box_re
 d4ee5ab179ceb6cde1e2779159ce7b77	includes/templates/default.catalog/views/breadcrumbs.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/views/index.html
 44bf2451baa724c1534601193997e32e	includes/templates/default.catalog/views/listing_category.inc.php
-be5b762e03b79ad797b9b72bb309e4cb	includes/templates/default.catalog/views/listing_product.inc.php
+bbe72385a03c7dab5a36e9ac28504911	includes/templates/default.catalog/views/listing_product.inc.php
 42f073deaf87f04bde43afeeaa76bfb4	includes/templates/default.catalog/views/notices.inc.php
 d94627fe9e5e12c46bb6b1e95e3ea0ef	includes/templates/default.catalog/views/pagination.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
@@ -936,7 +936,7 @@ d41d8cd98f00b204e9800998ecf8427e	pages/feeds/index.html
 df77070d5d5853c3dc15e23837fec8c1	pages/feeds/sitemap.xml.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/index.html
 7e231c4fa311df5fd71368983fcf3488	pages/index.inc.php
-b130ee0ab6df5129edf24be99f561c27	pages/information.inc.php
+b204bf68589a7d28aafb2827bd3e79db	pages/information.inc.php
 f2880a476e7b7d6cca846d2ad19a2dbe	pages/login.inc.php
 75ffa128f5a40ad95dcc4c0f7ec724ac	pages/logout.inc.php
 7a6919c51b4bde72accb628c8f894c2a	pages/maintenance_mode.inc.php
@@ -948,7 +948,7 @@ f92fffe3a4007dfd714771240d238d45	pages/manufacturer.inc.php
 a8fb7c25d6e858807b6ecc1cebb108a7	pages/order_success.inc.php
 fbdb8ba238778e576b8d78e4c9a8194f	pages/printable_order_copy.inc.php
 edc54749a9cd1626e9f01ac55965bd04	pages/printable_packing_slip.inc.php
-5e4d2d5995374ee2c0f5b7407a3d072b	pages/product.inc.php
+cf8a4f5e4da828f3ee38970027bde9b0	pages/product.inc.php
 6b85f9c019dbb0e636262b092b99adb4	pages/push_jobs.inc.php
 bfd2ca850a6315b42db05916f3eb512b	pages/regional_settings.inc.php
 5b7855f9f9d40bdcd7b0244a94975c4d	pages/reset_password.inc.php
