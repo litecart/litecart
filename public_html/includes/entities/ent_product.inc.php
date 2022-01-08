@@ -649,32 +649,33 @@
         $this->data['quantity'] = array_sum(array_column($this->data['options_stock'], 'quantity_adjust'));
 
       } else {
-        if (!isset($this->data['quantity_adjustment']) && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
+        if (!isset($this->data['quantity_adjustment']) && (empty($this->previous['quantity']) || (float)$this->data['quantity'] != (float)$this->previous['quantity'])) {
           $this->data['quantity_adjustment'] = (float)$this->data['quantity'] - (float)$this->previous['quantity'];
         }
       }
 
-    // If stock quantity adjustment is set
+    // Adjust quantity
       if (!empty($this->data['options_stock'])) {
 
-        foreach (array_keys($this->data['options_stock']) as $key) {
-          if (!empty($stock_option['quantity_adjustment']) && (float)$stock_option['quantity_adjustment'] != 0) {
-            $this->adjust_quantity($stock_option['quantity_adjustment'], $stock_option['combination']);
-            unset($this->data['options_stock'][$key]['quantity_adjustment']);
+      // If stock options have been removed
+        foreach ($this->previous['options_stock'] as $stock_option) {
+          if (!in_array($stock_option['id'], array_column($this->data['options_stock'], 'id'))) {
+            $this->adjust_quantity(-$stock_option['quantity']);
           }
         }
 
-        database::query(
-          "update ". DB_TABLE_PREFIX ."products
-          set quantity = ". ($this->data['quantity'] = (float)array_sum(array_column($this->data['options_stock'], 'quantity'))) ."
-          where id = ". (int)$this->data['id'] ."
-          limit 1;"
-        );
+      // Current stock options
+        foreach ($this->data['options_stock'] as $key => $stock_option) {
+          if (!empty($stock_option['quantity_adjustment']) && (float)$stock_option['quantity_adjustment'] != 0) {
+            $this->adjust_quantity($stock_option['quantity_adjustment'], $stock_option['combination']);
+            $this->data['options_stock'][$key]['quantity_adjustment'] = 0;
+          }
+        }
 
       } else {
         if (!empty($this->data['quantity_adjustment']) && (float)$this->data['quantity_adjustment'] != 0) {
           $this->adjust_quantity($this->data['quantity_adjustment']);
-          unset($this->data['quantity_adjustment']);
+          $this->data['quantity_adjustment'] = 0;
         }
       }
 
