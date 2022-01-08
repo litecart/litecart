@@ -1,6 +1,6 @@
 <?php
 
-  if (!database::num_rows(database::query("SHOW COLUMNS FROM ". DB_TABLE_PREFIX ."customers LIKE 'num_logins';"))) {
+  if (database::num_rows(database::query("SHOW COLUMNS FROM ". DB_TABLE_PREFIX ."customers LIKE 'num_logins';"))) {
     database::query(
       "ALTER TABLE ". DB_TABLE_PREFIX ."customers
       CHANGE COLUMN `num_logins` `total_logins` INT(11) NOT NULL DEFAULT '0' AFTER `login_attempts`;"
