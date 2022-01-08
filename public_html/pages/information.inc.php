@@ -20,7 +20,7 @@
 
     $mother_page = array_values($page->path)[0];
     if (!in_array('information', $page->dock) && !in_array('information', $mother_page->dock)
-     && !in_array('site_menu', $page->dock) && !in_array('site_menu', $mother_page->dock)) {
+     && !in_array('menu', $page->dock) && !in_array('menu', $mother_page->dock)) {
       http_response_code(404);
       include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
       return;
