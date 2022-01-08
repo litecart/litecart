@@ -247,7 +247,7 @@
     <?php echo functions::form_draw_form_begin('form_order', 'post'); ?>
 
       <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-9">
 
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -315,8 +315,13 @@
 
                   <div class="form-group">
                     <div class="input-group">
-                      <div class="selected-account form-control"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
-                      <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
+                      <div class="selected-account form-control">
+                        <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
+                        <?php echo language::translate('title_id', 'ID'); ?>:
+                        <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash;
+                        <span class="name"><?php echo $account_name; ?></span>
+                        <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customer_picker']); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a>
+                      </div>
                       <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
                     </div>
                   </div>
@@ -534,7 +539,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div id="box-comments" class="panel panel-default" style="margin-bottom: 0;">
             <div class="panel-heading">
               <h2 class="panel-title"><?php echo language::translate('title_comments', 'Comments'); ?></h2>

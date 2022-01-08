@@ -13,7 +13,7 @@
   };
 ?>
 
-<section id="box-information-links" class="box">
+<section id="box-customer-service-links" class="box">
 
   <h2 class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></h2>
 

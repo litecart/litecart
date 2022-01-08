@@ -1,4 +1,4 @@
-<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
   <div class="row">
     <div class="col-md-6">
@@ -131,7 +131,7 @@
           <?php } ?>
         </div>
 
-        <div class="tax" style="margin: 0 0 1em 0;">
+        <div class="tax" style="margin-bottom: 1em;">
          <?php if ($tax_rates) { ?>
           <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
          <?php } else { ?>

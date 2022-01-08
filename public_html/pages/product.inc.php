@@ -28,10 +28,7 @@
   }
 
   if (empty($_GET['category_id']) && empty($_GET['manufacturer_id'])) {
-    if ($product->category_ids) {
-      $category_ids = array_values($product->category_ids);
-      $_GET['category_id'] = array_shift($category_ids);
-    }
+    $_GET['category_id'] = $product->default_category_id;
   }
 
   database::query(
@@ -136,6 +133,7 @@
     'recommended_price' => tax::get_price((float)$product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
+    'final_price' => tax::get_price($product->final_price, $product->tax_class_id),
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => $product->tax,

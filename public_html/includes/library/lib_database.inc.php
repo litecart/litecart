@@ -161,17 +161,23 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      if (self::$_links[$link]->multi_query($query)) {
-        do {
-          if ($result = self::$_links[$link]->use_result()) {
-            while ($row = $result->fetch_row($result)) {
-            }
-            self::free($result);
-          }
-        }
-        while (self::$_links[$link]->next_result());
-      } else {
+      $measure_start = microtime(true);
+
+      if ($result = self::$_links[$link]->multi_query($query) === false) {
         self::_error($query, self::$_links[$link]);
+      }
+
+      $i = 1;
+      while (self::$_links[$link]->more_results()) {
+        if (self::$_links[$link]->next_result() === false) {
+          die('Fatal: Query '. $i .' failed');
+        }
+        $i++;
+      }
+
+      if (class_exists('stats', false)) {
+        stats::set('database_queries', stats::get('database_queries') + $i);
+        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
       }
     }
 

@@ -108,8 +108,3 @@
   --copyright-background-color: #fff;
   --copyright-text-color: #333;
 }
-@media (min-width: 1200px) {
-  :root {
-    --default-text-size: 16px;
-  }
-}

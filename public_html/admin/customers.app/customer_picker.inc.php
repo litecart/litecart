@@ -36,6 +36,8 @@
 </div>
 
 <script>
+  $('#modal-customer-picker input[name="query"]').focus();
+
   var xhr_customer_picker = null;
   $('#modal-customer-picker input[name="query"]').bind('propertyChange input', function(){
     if ($(this).val() == '') {

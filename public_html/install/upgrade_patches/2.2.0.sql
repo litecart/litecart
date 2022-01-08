@@ -85,8 +85,8 @@ INSERT INTO `lc_categories_images` (category_id, filename) (
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers`
 CHANGE COLUMN `password` `password_hash` VARCHAR(256) NOT NULL,
-ADD COLUMN `num_logins` INT(11) NOT NULL AFTER `password_reset_token`,
-ADD COLUMN `last_ip` VARCHAR(39) NOT NULL AFTER `num_logins`,
+ADD COLUMN `total_logins` INT(11) NOT NULL AFTER `password_reset_token`,
+ADD COLUMN `last_ip` VARCHAR(39) NOT NULL AFTER `total_logins`,
 ADD COLUMN `last_host` VARCHAR(128) NOT NULL AFTER `last_ip`,
 ADD COLUMN `last_agent` VARCHAR(256) NOT NULL AFTER `last_host`,
 ADD COLUMN `date_login` DATETIME NOT NULL AFTER `last_agent`;

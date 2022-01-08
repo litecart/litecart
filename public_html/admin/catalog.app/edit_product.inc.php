@@ -531,9 +531,9 @@
 </style>
         <div id="tab-options" class="tab-pane">
 
-          <ul class="list-unstyled">
+          <ul id="options" class="list-unstyled">
             <?php foreach ($_POST['options'] as $group_id => $option) { ?>
-            <li>
+            <li data-group-id="<?php echo htmlspecialchars($group_id); ?>" data-group-name="<?php echo htmlspecialchars($option['name']); ?>">
 
               <div class="float-end">
                 <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>
@@ -567,7 +567,7 @@
 
               <?php if (in_array($option['function'], ['select', 'radio', 'checkbox'])) { ?>
               <div class="table-responsive">
-                <table id="table-options" class="table table-striped table-hover table-dragable data-table">
+                <table class="table table-striped table-hover table-dragable data-table">
                   <thead>
                     <tr>
                       <th class="main"><?php echo language::translate('title_option', 'Option'); ?></th>
@@ -579,7 +579,7 @@
 
                   <tbody>
                   <?php foreach ($option['values'] as $value_id => $value) { ?>
-                    <tr>
+                    <tr data-value-id="<?php echo htmlspecialchars($value['value_id']); ?>" data-value-name="<?php echo htmlspecialchars($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
                       <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
                       <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
                       <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
@@ -757,37 +757,24 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="7"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a href="#" data-toggle="lightbox" data-target="#new-stock-option"><?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
+                  <td colspan="7"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#"><?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></a></td>
                 </tr>
               </tfoot>
             </table>
           </div>
 
           <div id="new-stock-option" class="lightbox" style="display: none; max-width: 640px;">
-            <h3 class="title"><?php echo language::translate('title_new_stock_option', 'New Stock Option'); ?></h3>
+            <h3 class="title"><?php echo language::translate('title_create_stock_option_from_combination_of_options', 'Create a new stock option from a combination of options'); ?></h3>
 
             <table class="table table-striped" style="width: 100%;">
               <thead>
                 <tr>
+                  <th>&nbsp;</th>
                   <th style="width: 50%;"><?php echo language::translate('title_group', 'Group'); ?></th>
                   <th style="width: 50%;"><?php echo language::translate('title_value', 'Value'); ?></th>
-                  <th>&nbsp;</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><?php echo functions::form_draw_attribute_groups_list('new_option[new_1][group_id]', ''); ?></td>
-                  <td><?php echo functions::form_draw_select_field('new_option[new_1][value_id]', [['','']], '', 'disabled'); ?></td>
-                  <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <a class="add" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo language::translate('title_add_to_combination', 'Add To Combination'); ?></a></td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                </tr>
-              </tfoot>
+              <tbody />
             </table>
 
             <button type="button" class="btn btn-default" name="add_stock_option"><?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></button>
@@ -1307,7 +1294,7 @@
     }
 
     if (!$('#tab-options input[name^="options"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
-      var output = '<li>'
+      var output = '<li data-group-id="'+ escapeHTML($(groupElement).val()) +'" data-group-name="'+ escapeHTML($(groupElement).find('option:selected').text()) +'">'
                  + '  <div class="float-end">'
                  + '    <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>'
                  + '    <a class="move-group-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-2x', 'style="color: #3399cc;"'); ?></a>'
@@ -1354,7 +1341,7 @@
       new_option_group_i++;
     }
 
-    var output = '<tr>'
+    var output = '<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">'
                + '  <td class="grabable"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
                + '  <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
                + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
@@ -1519,91 +1506,61 @@
 
 // New Stock Option (Modal)
 
-  var option_index = 2;
-  $('body').on('click', '#new-stock-option .add', function(e) {
+  $('#table-stock').on('click', '.add', function(e) {
     e.preventDefault();
-    var output = '<tr>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_attribute_groups_list('new_option[option_index][group_id]', '')); ?></td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_select_field('new_option[option_index][value_id]', [['','']], '', 'disabled')); ?></td>'
-               + '  <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-               + '</tr>';
-    output = output.replace(/option_index/g, 'new_' + option_index);
-    $(this).closest('table').find('tbody').append(output);
-    option_index++;
-  });
 
-  $('body').on('click', '#new-stock-option .remove', function(e) {
-    e.preventDefault();
-    $(this).closest('tr').remove();
-  });
+    var output = '';
 
-  $('#new-stock-option').on('change', 'select[name^="new_option"][name$="[group_id]"]', function(){
-    var valueField = this.name.replace(/group/, 'value');
-    var modal = $(this).closest('#new-stock-option');
-    $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::link(null, ['doc' => 'attribute_values.json'], ['app']); ?>&group_id=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-      },
-      success: function(data) {
-        $(modal).find('select[name="'+ valueField +'"]').html('');
-        if ($(modal).find('select[name="'+ valueField +'"]').attr('disabled')) $(modal).find('select[name="'+ valueField +'"]').prop('disabled', false);
-        if (data) {
-          $.each(data, function(i, zone) {
-            $(modal).find('select[name="'+ valueField +'"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $(modal).find('select[name="'+ valueField +'"]').prop('disabled', true);
-        }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
+    $('#options li').each(function(i, group) {
+      var group_id = $(this).data('group-id'),
+        group_name = $(this).data('group-name');
+
+      $(group).find('.data-table tbody tr').each(function(j, row) {
+        var value_id = $(row).data('value-id'),
+          value_name = $(row).data('value-name'),
+          combination = group_id + '-' + ((value_id != 0) ? value_id : '0:"' + value_name +'"');
+
+        output += '<tr data-group-id="'+ escapeHTML(group_id) +'" data-group-name="'+ escapeHTML(group_name) +'" data-value-id="'+ escapeHTML(value_id) +'" data-value-name="'+ escapeHTML(value_name) +'">'
+                + '  <td><span class="form-check"><input type="checkbox" name="combination[]" value="'+ escapeHTML(combination) +'" /></span></td>'
+                + '  <td>'+ group_name +'</td>'
+                + '  <td>'+ value_name +'</td>'
+                + '</tr>';
+      });
     });
+
+    $('#new-stock-option table tbody').html(output);
+    $.featherlight('#new-stock-option');
   });
 
   var new_option_stock_i = 1;
   $('body').on('click', '#new-stock-option button[name="add_stock_option"]', function(e) {
     e.preventDefault();
 
-    var modal = $(this).closest('#new-stock-option');
-    var new_option_code = '';
-    var new_option_name = '';
-    var use_comma = false;
+    var modal = $(this).closest('#new-stock-option'),
+      new_option_combination = '',
+      new_option_name = '',
+      use_comma = false;
 
-    $(modal).find('select[name^="new_option"][name$="[group_id]"]').each(function(i, groupElement) {
-      var groupElement = $(modal).find(groupElement);
-      var valueElement = $(modal).find('select[name="'+ $(groupElement).attr('name').replace(/group_id/g, 'value_id') +'"]');
-
-      if (valueElement.val() == '') {
-        alert("<?php echo language::translate('error_empty_option_group', 'Error: Empty option group'); ?>");
-        return false;
-      }
-
-      if (groupElement.val() == '') {
-        alert("<?php echo language::translate('error_empty_option_value', 'Error: Empty option value'); ?>");
-        return false;
-      }
+    $(modal).find('table tbody tr :input[name="combination[]"]:checked').each(function() {
+      var row = $(this).closest('tr');
 
       if (use_comma) {
-        new_option_code += ',';
+        new_option_combination += ',';
         new_option_name += ', ';
       }
 
-      new_option_code += $(groupElement).val() + '-' + $(valueElement).val();
-      new_option_name += $(valueElement).find('option:selected').text();
+      new_option_combination += $(row).data('group-id') + '-' + $(row).data('value-id')
+                              + (($(row).data('value-id') == 0) ? ':"' + $(row).data('value-name')+'"' : '');
+
+      new_option_name += $(row).data('value-name');
+
       use_comma = true;
     });
 
-    if (new_option_code == '') return;
+    if (new_option_combination == '') return;
 
     var output = '<tr>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options_stock[new_option_stock_i][id]', '') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][combination]', 'new_option_code') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][name]['. language::$selected['code'] .']', 'new_option_name')); ?>new_option_name</td>'
+               + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options_stock[new_option_stock_i][id]', '') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][combination]', 'new_option_combination') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][name]['. language::$selected['code'] .']', 'new_option_name')); ?>new_option_name</td>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
@@ -1635,7 +1592,7 @@
 
     while ($('input[name="options_stock[new_'+new_option_stock_i+']"]').length) new_option_stock_i++;
     output = output.replace(/new_option_stock_i/g, 'new_' + new_option_stock_i);
-    output = output.replace(/new_option_code/g, new_option_code);
+    output = output.replace(/new_option_combination/g, escapeHTML(new_option_combination));
     output = output.replace(/new_option_name/g, new_option_name);
 
     $('#table-stock').find('tbody').append(output);
