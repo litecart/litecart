@@ -912,7 +912,7 @@ cc0d9cef919aaf62245c5d27ba4141f4	install/upgrade_patches/2.3.0.sql
 595ea89568daf34d9d95612fd8e657b6	install/upgrade_patches/2.3.1.inc.php
 f6cbaa0b2336160a63a71b387463a033	install/upgrade_patches/2.3.2.inc.php
 d526f1351e0cd600833d5ca982522c5c	install/upgrade_patches/2.3.2.sql
-2ffd790e7a28ce5ff7d6cba59d13d51e	install/upgrade_patches/2.3.3.inc.php
+e90048160c08d1396aee4c184ab3e470	install/upgrade_patches/2.3.3.inc.php
 3cc225993c1c060f827788d44b98073d	install/upgrade_patches/2.3.3.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
