@@ -610,7 +610,7 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 bc9b31011a20ac5246b7a8f2cc2b013b	includes/templates/default.admin/css/app.min.css
 20d4ee6b8d4e838b791f5992bac8cbb4	includes/templates/default.admin/css/app.min.css.map
 871e003833cfbc48a5359df6fce648c2	includes/templates/default.admin/css/framework.min.css
-498a01074b22ab45bb8f5ddad8a54223	includes/templates/default.admin/css/framework.min.css.map
+94e246a4e58a1a2f1d39fb49eea8f51d	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -667,12 +667,12 @@ f5d3c581b1f89a8054ace060bd3e0dc7	includes/templates/default.catalog/css/checkout
 ee40e23e0b5f36b7a4dc3cfb305d179d	includes/templates/default.catalog/css/checkout.min.css.map
 9eb10e7da08ae274cb69f738e834dfaa	includes/templates/default.catalog/css/framework.css
 d303d033e5316fb889f1a931b6119c9b	includes/templates/default.catalog/css/framework.min.css
-9f8f69d12bcefbf1efe6e00a281ee95c	includes/templates/default.catalog/css/framework.min.css.map
+41ba7c22408292ea64815c99decf11e7	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.catalog/css/printable.min.css.map
-e086dee6a3c1fcfa962e973e4351a07f	includes/templates/default.catalog/css/variables.css
+bff75bc7428bf15fb167ff35fa767144	includes/templates/default.catalog/css/variables.css
 bc825e43730131a2cb4d3aea8ddec38c	includes/templates/default.catalog/images/cart.svg
 1a2992d5bd886bc7511847427848b44a	includes/templates/default.catalog/images/cart_filled.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/images/index.html
@@ -720,7 +720,7 @@ a55c9e4ca57f98a4f2300e6674491709	includes/templates/default.catalog/less/framewo
 892ef1c26f36a2a4f2d4f023968437eb	includes/templates/default.catalog/less/framework.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/index.html
 b8d27643da9bce960bb100085d9c408b	includes/templates/default.catalog/less/printable.less
-c2d36e04f5b3d85510cb8ce8ce1d4350	includes/templates/default.catalog/less/variables.less
+ecd176485e9300d47875f08b6fd5676b	includes/templates/default.catalog/less/variables.less
 0635b9848d5099e19025621d9f70d527	includes/templates/default.catalog/pages/categories.inc.php
 8655dd88d2f32acf52c953cb2325ad54	includes/templates/default.catalog/pages/category.inc.php
 9cf827b6f56f998f3b7376592afbec5d	includes/templates/default.catalog/pages/checkout.inc.php
