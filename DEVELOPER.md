@@ -79,11 +79,12 @@ To install Grunt do the following:
 
 Done! Node.js should now have installed all necessary libraries, you can now use any of the following commands:
 
-    grunt         (Launches all grunt tasks)
-    grunt less    (Compile and minify .min.css from .less)
-    grunt uglify  (Uglify and minify .min.js from .js)
-    grunt replace (Update version number in scripts from package.js)
-    grunt phplint (Check scripts for syntax errors)
-    grunt watch   (Watch for changes in .less and .js and update minified versions on the fly)
+    npm run grunt         (Launches all grunt tasks)
+    npm run grunt less    (Compile and minify .min.css from .less)
+    npm run grunt uglify  (Uglify and minify .min.js from .js)
+    npm run grunt replace (Update version number in scripts from package.js)
+    npm run grunt phplint (Check scripts for syntax errors)
+    npm run grunt watch   (Watch for changes in .less and .js and update minified versions on the fly)
+    npm run hash          (Update checksums.md5 for all tracked files)
 
     npm update    (Update your node modules to newer versions)
