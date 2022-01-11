@@ -62,7 +62,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/graphs.widget/index.html
 d41d8cd98f00b204e9800998ecf8427e	admin/languages.app/index.html
 31ca5e7fca33b49f5241bda457c7b41e	admin/languages.app/languages.inc.php
 92f4e32428bc86fc90766821e89ccb42	admin/languages.app/storage_encoding.inc.php
-0e9dd5edcfc5412f2b0bc2f4ebd44418	admin/login.php
+8f37fcd90ee581c7098c712d5622e6bc	admin/login.php
 c0fc0a54978a39a472c4eb39f2a40d07	admin/logout.php
 05544af868785957f8044cbf814c62f4	admin/modules.app/config.inc.php
 7514572cd2626345eb356efb730f1cd3	admin/modules.app/edit_module.inc.php
@@ -97,7 +97,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/settings.app/index.html
 47f3da665e0d875350184e25a5c78902	admin/slides.app/config.inc.php
 b216bbaf39a471ba2e5b0642129ed9cd	admin/slides.app/edit_slide.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/slides.app/index.html
-cb6193a8ac4b7cd9c79486e24ff47b3f	admin/slides.app/slides.inc.php
+0b08b97e23cb4b4725c7ac4434980f1c	admin/slides.app/slides.inc.php
 7eca9481e7fd9f91d939782123ccf355	admin/stats.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/stats.widget/index.html
 76f8d8bbd92fa47c471efe8eda9f9c42	admin/stats.widget/stats.inc.php
@@ -488,7 +488,7 @@ b0297e248d3191d0a1ae48ab1efc0f87	includes/boxes/box_cart.inc.php
 e82f3bcc39c8805e6fcf1bc24c42322b	includes/boxes/box_category_tree.inc.php
 09d47d03da69e6ce82be3d6f5e176466	includes/boxes/box_contact_us.inc.php
 4ec0d5d189dc4f8b5dee0664e6a7961d	includes/boxes/box_customer_service_links.inc.php
-453a13fad01dc4d6fc67749f40fe56a2	includes/boxes/box_filter.inc.php
+7bb72b22f3e49c8103fa2105936bc477	includes/boxes/box_filter.inc.php
 eddd47dec65761f916fd10687c156f41	includes/boxes/box_information_links.inc.php
 4fe80538bb3824bdd37151637527a47d	includes/boxes/box_latest_products.inc.php
 6c0e21fe7f999090ec6479f633dc7b60	includes/boxes/box_manufacturer_links.inc.php
@@ -592,7 +592,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/modules/shipping/index.html
 056725119a2465923438d7f453957fbd	includes/modules/shipping/sm_zone_weight.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/references/index.html
 6117299ebbbd87ecfa90964dd0f08242	includes/references/ref_category.inc.php
-e30f0860f0db48290dd51d10856c0dde	includes/references/ref_country.inc.php
+e135e2de80667cd974b34eba264a81c9	includes/references/ref_country.inc.php
 d7ce7cc3e6bb145211dca586aeceac20	includes/references/ref_customer.inc.php
 fe48e4378706fd2e2180f3ff1d4a4c7a	includes/references/ref_manufacturer.inc.php
 ed1ae851942e9d52f7d4f0e859a84b7f	includes/references/ref_order_status.inc.php
@@ -784,7 +784,7 @@ bbe72385a03c7dab5a36e9ac28504911	includes/templates/default.catalog/views/listin
 d94627fe9e5e12c46bb6b1e95e3ea0ef	includes/templates/default.catalog/views/pagination.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
-7e39e09e085fef46f0125c4d8d2ff31b	includes/wrappers/wrap_http.inc.php
+f2a8f9e1e77ad3b99d29fe74d90e5515	includes/wrappers/wrap_http.inc.php
 034bdf6fbbdcfe260b49db680526f230	includes/wrappers/wrap_smtp.inc.php
 4f7c342043d56461278ce31d5a521127	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
@@ -824,7 +824,7 @@ f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 7196bdf893aa3bbcef13a03855396aa8	install/index.php
 0b13e749888b4e2e5e008758bf7f1724	install/install.php
 61e7486c67205e9a5ed76b17d3ce0471	install/structure.sql
-ebdca957549c019d9ac667c0c65fe34a	install/upgrade.php
+de709fc2d55fc2cf5f2e0fd5d92db42f	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
 d6fc90da968f9154fb0bca5d97717b0c	install/upgrade_patches/1.0.1.4.inc.php
 d98723df3fe55a1b8f995781327b6a38	install/upgrade_patches/1.0.1.5.inc.php
@@ -933,7 +933,7 @@ e1eb0445c1946b7708afc93e87f13e53	pages/checkout.inc.php
 94174489fff336811924d3dc7a448820	pages/edit_account.inc.php
 86c5fb5e100796097d4ee9503b883878	pages/error_document.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/feeds/index.html
-df77070d5d5853c3dc15e23837fec8c1	pages/feeds/sitemap.xml.inc.php
+752162b418a535887bdc7f94cefb6f7f	pages/feeds/sitemap.xml.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/index.html
 7e231c4fa311df5fd71368983fcf3488	pages/index.inc.php
 b204bf68589a7d28aafb2827bd3e79db	pages/information.inc.php
