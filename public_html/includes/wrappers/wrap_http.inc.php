@@ -84,7 +84,7 @@
 
       fclose($socket);
 
-      $response_headers = substr($response, 0, strpos($response, "\r\n\r\n") - 2);
+      $response_headers = substr($response, 0, strpos($response, "\r\n\r\n") + 2);
       $response_body = substr($response, strpos($response, "\r\n\r\n") + 4);
 
     // Decode chunked data
