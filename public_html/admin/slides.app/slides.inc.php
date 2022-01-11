@@ -30,7 +30,7 @@
 
   $slides_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."slides
-    order by priority, name;"
+    order by status desc, priority, name;"
   );
 
   if ($_GET['page'] > 1) database::seek($slides_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));

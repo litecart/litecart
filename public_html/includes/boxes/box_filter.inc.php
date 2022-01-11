@@ -71,6 +71,4 @@
     $box_filter->snippets['attributes'][] = $group;
   }
 
-  if (empty($box_filter->snippets['manufacturers']) && empty($box_filter->snippets['attributes'])) return;
-
   echo $box_filter->stitch('views/box_filter');
