@@ -126,15 +126,17 @@
       $client = new wrap_http();
 
       $update_file = function($file) use ($client) {
+        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
         $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
         if ($client->last_response['status_code'] != 200) return false;
-        file_put_contents(FS_DIR_APP . $file, $response);
+        file_put_contents(FS_DIR_APP . $local_file, $response);
         return true;
       };
 
       $calculate_md5 = function($file) {
-        if (!is_file(FS_DIR_APP . $file)) return;
-        $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $file));
+        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+        if (!is_file(FS_DIR_APP . $local_file)) return;
+        $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
         return md5($contents);
       };
 
