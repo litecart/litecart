@@ -106,11 +106,11 @@
 
       file_put_contents(FS_DIR_APP . 'logs/http_request_last-'. $parts['host'] .'.log',
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
-        $this->last_request['head'] . PHP_EOL .
-        $this->last_request['body'] . PHP_EOL . PHP_EOL .
+        $this->last_request['head'] . "\r\n" .
+        $this->last_request['body'] . "\r\n\r\n" .
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. (float)$this->last_response['bytes'] .' bytes transferred in '. (float)$this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
-        $this->last_response['head'] . PHP_EOL .
-        $this->last_response['body'] . PHP_EOL . PHP_EOL
+        $this->last_response['head'] . "\r\n" .
+        $this->last_response['body']
       );
 
       if (class_exists('stats', false)) {
