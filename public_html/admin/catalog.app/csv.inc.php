@@ -782,7 +782,7 @@
           if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
           $categories_query = database::query(
-            "select c.*, c2.parent_code, ci.name, ci.short_description, ci.description, ci.meta_description, ci.head_title, ci.h1_title
+            "select c.*, c2.parent_id, ci.name, ci.short_description, ci.description, ci.meta_description, ci.head_title, ci.h1_title
             from ". DB_TABLE_PREFIX ."categories c
             left join ". DB_TABLE_PREFIX ."categories c2 on (c2.id = c.parent_id)
             left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_POST['language_code']) ."')
