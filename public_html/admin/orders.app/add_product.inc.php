@@ -30,7 +30,7 @@
     }
 
     $price = currency::format_raw($product->final_price, $_GET['currency_code'], $_GET['currency_value']);
-    $tax = tax::get_tax($product->final_price, $product->tax_class_id, $_GET['customer']);
+    $tax = tax::get_tax($price, $product->tax_class_id, $_GET['customer']);
     $_POST['price'] = $price;
     $_POST['tax'] = $tax;
   }
