@@ -478,7 +478,7 @@ d41d8cd98f00b204e9800998ecf8427e	images/slides/index.html
 0af1945eed23c8c1c8212512bde345c4	includes/abstracts/abs_module.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
 17dd6cd5787a1bb3372fbc34a54b3ec7	includes/app_footer.inc.php
-991591221e10a996b72dfa4d9329e777	includes/app_header.inc.php
+2cfce0537a846b60870c774664c36441	includes/app_header.inc.php
 3c352efd424702fb748a4cacef793de9	includes/autoloader.inc.php
 3762e4cb2077d20baa72f956c45735b6	includes/boxes/box_account_links.inc.php
 50f177914578386923c2baba35a54bb8	includes/boxes/box_also_purchased_products.inc.php
@@ -611,7 +611,7 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 bc9b31011a20ac5246b7a8f2cc2b013b	includes/templates/default.admin/css/app.min.css
 20d4ee6b8d4e838b791f5992bac8cbb4	includes/templates/default.admin/css/app.min.css.map
 871e003833cfbc48a5359df6fce648c2	includes/templates/default.admin/css/framework.min.css
-fcfd70b1166e98bc34e1eb2d95d2e094	includes/templates/default.admin/css/framework.min.css.map
+94e246a4e58a1a2f1d39fb49eea8f51d	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -787,7 +787,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 f2a8f9e1e77ad3b99d29fe74d90e5515	includes/wrappers/wrap_http.inc.php
 034bdf6fbbdcfe260b49db680526f230	includes/wrappers/wrap_smtp.inc.php
-4f7c342043d56461278ce31d5a521127	index.php
+50e2673f3ed7a9dd463d06f2b2e1c214	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
 e23509b874e17922719a2f295cadb31d	install/config
 f304e1b351dac187ad94acf3d855dd16	install/data/AU/AU.sql
@@ -823,9 +823,9 @@ e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
 d8d49900248ac58a8672b8d25e3261f8	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 72eb5f779ef8d5abdda2adc62ed7018c	install/index.php
-0b13e749888b4e2e5e008758bf7f1724	install/install.php
+bf91f86a1c71ce7ad19dbb2c952a1be3	install/install.php
 61e7486c67205e9a5ed76b17d3ce0471	install/structure.sql
-de709fc2d55fc2cf5f2e0fd5d92db42f	install/upgrade.php
+a2f405fc1086d7466d452c4254631900	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
 d6fc90da968f9154fb0bca5d97717b0c	install/upgrade_patches/1.0.1.4.inc.php
 d98723df3fe55a1b8f995781327b6a38	install/upgrade_patches/1.0.1.5.inc.php
@@ -915,6 +915,7 @@ f6cbaa0b2336160a63a71b387463a033	install/upgrade_patches/2.3.2.inc.php
 d526f1351e0cd600833d5ca982522c5c	install/upgrade_patches/2.3.2.sql
 e90048160c08d1396aee4c184ab3e470	install/upgrade_patches/2.3.3.inc.php
 3cc225993c1c060f827788d44b98073d	install/upgrade_patches/2.3.3.sql
+f149dc818c9639f796173ebd39ca32a2	install/upgrade_patches/2.4.0.inc.php
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 c1f6b4f5415e8862da2f742ab0cc159a	pages/ajax/cart.json.inc.php
