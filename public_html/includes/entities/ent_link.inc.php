@@ -172,8 +172,9 @@
       return $output;
     }
 
+    #[\ReturnTypeWillChange] // Fix PHP 8.1
     public function jsonSerialize() {
-      return (string)$this;
+      return $this->__toString();
     }
 
   // Workaround as overloaded array items cannot be set

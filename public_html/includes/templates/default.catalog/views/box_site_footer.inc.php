@@ -6,7 +6,7 @@
     <section class="categories hidden-xs">
       <h3 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
       <ul class="list-unstyled">
-        <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
+        <?php foreach ($categories as $category) echo '<li><a href="'. functions::escape_html($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
       </ul>
     </section>
 
@@ -14,7 +14,7 @@
     <section class="manufacturers hidden-xs hidden-sm">
       <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
       <ul class="list-unstyled">
-      <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
+      <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. functions::escape_html($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
       </ul>
     </section>
     <?php } ?>
@@ -40,7 +40,7 @@
     <section class="information">
       <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
       <ul class="list-unstyled">
-        <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
+        <?php foreach ($pages as $page) echo '<li><a href="'. functions::escape_html($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
       </ul>
     </section>
 

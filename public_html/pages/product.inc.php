@@ -93,7 +93,7 @@
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
       'price' => (float)currency::format_raw(tax::get_price($product->final_price, $product->tax_class_id)),
-      'priceValidUntil' => (!empty($product->campaign) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
+      'priceValidUntil' => (!empty($product->campaign['end_date']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       'url' => document::link(),

@@ -37,7 +37,7 @@
   // Convert charset
     $output = language::convert_characters($output, language::$selected['charset'], $charset);
 
-    return preg_replace('#(\r\n|\r|\n)#', $eol, $output);
+    return preg_replace('#(\r\n?|\n)#', $eol, $output);
   }
 
   function csv_decode($string, $delimiter='', $enclosure='"', $escape='"', $charset='utf-8') {
@@ -47,14 +47,13 @@
   // Remove Byte Order Mark (BOM) if any
     $string = preg_replace("#^(\xEF\xBB\xBF)+#", '', $string);
 
-  // Override line endings
-    $ini_eol = ini_get('auto_detect_line_endings');
-    ini_set('auto_detect_line_endings', true);
+  // Convert EOL format
+    $string = preg_replace('#(\r\n?|\n)#', PHP_EOL, $string);
 
   // Convert charset
     $string = language::convert_characters($string, $charset, language::$selected['charset']);
 
-  // Trim preceding and trailing whitespace
+  // Trim preceeding and trailing whitespace
     $string = trim($string, "\r\n ");
 
   // Auto-detect delimiter
@@ -93,8 +92,6 @@
     }
 
     fclose($fp);
-
-    ini_set('auto_detect_line_endings', $ini_eol);
 
     return $output;
   }

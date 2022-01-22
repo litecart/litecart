@@ -113,9 +113,9 @@
             </td>
             <td style="width: 50%">
               <?php if (!empty($setting['multiple'])) { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['placeholder']) ? ' placeholder="'. htmlspecialchars($setting['placeholder']) .'"' : ''); ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
               <?php } else { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['placeholder']) ? ' placeholder="'. htmlspecialchars($setting['placeholder']) .'"' : ''); ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
               <?php } ?>
             </td>
           </tr>

@@ -108,7 +108,7 @@
 
     // Add meta description
       if (!empty(self::$snippets['description'])) {
-        self::$snippets['head_tags'][] = '<meta name="description" content="'. htmlspecialchars(self::$snippets['description']) .'" />';
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'" />';
         unset(self::$snippets['description']);
       }
 
@@ -272,7 +272,7 @@
     }
 
     public static function href_ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-      return htmlspecialchars(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
+      return functions::escape_html(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
     public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
@@ -286,7 +286,7 @@
     }
 
     public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-      return htmlspecialchars(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
+      return functions::escape_html(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
     public static function rlink($resource) {
@@ -298,6 +298,6 @@
     }
 
     public static function href_rlink($resource) {
-      return htmlspecialchars(self::rlink($resource));
+      return functions::escape_html(self::rlink($resource));
     }
   }

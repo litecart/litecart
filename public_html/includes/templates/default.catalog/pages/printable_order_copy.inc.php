@@ -64,7 +64,7 @@ table.items tbody tr:nth-child(11) {
       <div class="row">
         <div class="col-xs-3 shipping-address">
           <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-          <div class="value"><?php echo nl2br(htmlspecialchars(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address']))); ?></div>
+          <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address']))); ?></div>
         </div>
 
         <div class="col-xs-3">
@@ -72,13 +72,13 @@ table.items tbody tr:nth-child(11) {
           <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></div>
 
           <div class="label"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></div>
-          <div class="value"><?php echo htmlspecialchars($order['customer']['tax_id']); ?></div>
+          <div class="value"><?php echo functions::escape_html($order['customer']['tax_id']); ?></div>
         </div>
 
         <div class="col-xs-6 billing-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
-            <div class="value"><?php echo nl2br(htmlspecialchars(reference::country($order['customer']['country_code'])->format_address($order['customer']))); ?></div>
+            <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['country_code'])->format_address($order['customer']))); ?></div>
           </div>
         </div>
       </div>

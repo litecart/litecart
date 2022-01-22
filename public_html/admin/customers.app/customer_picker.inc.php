@@ -15,7 +15,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+      <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
     <div class="form-group results table-responsive">
@@ -73,7 +73,7 @@
           }
         });
         if ($('#modal-customer-picker .results tbody').html() == '') {
-          $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+          $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
         }
       },
     });
@@ -87,7 +87,7 @@
 
     if (!id) {
       id = 0;
-      name = '(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)';
+      name = '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)';
     }
 
     var field = $.featherlight.current().$currentTarget.closest('.form-control');
@@ -104,7 +104,7 @@
 
     $(field).find(':input').val('0').trigger('change');
     $(field).find('.id').text('0');
-    $(field).find('.name').text('(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)');
+    $(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)');
     $.featherlight.close();
   });
 </script>

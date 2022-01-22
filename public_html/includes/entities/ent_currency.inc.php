@@ -45,7 +45,7 @@
       if ($currency = database::fetch($currency_query)) {
         $this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
       } else {
-        throw new Exception('Could not find currency ('. htmlspecialchars($currency_code) .') in database.');
+        throw new Exception('Could not find currency ('. functions::escape_html($currency_code) .') in database.');
       }
 
       $this->previous = $this->data;

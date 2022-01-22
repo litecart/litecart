@@ -238,7 +238,7 @@ table td {
 </style>
 
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_test_vqmod', 'Test vQmod'); ?></h1>
-<h2><?php echo htmlspecialchars($dom->getElementsByTagName('id')->item(0)->textContent); ?></h2>
+<h2><?php echo functions::escape_html($dom->getElementsByTagName('id')->item(0)->textContent); ?></h2>
 
 <table class="table table-striped table-hover data-table">
   <thead>

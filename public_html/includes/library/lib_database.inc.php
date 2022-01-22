@@ -233,6 +233,8 @@
 
     public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
 
+      if ($string == '') return $string;
+
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
           $string[$key] = self::input($string[$key], $allowable_tags, $trim, $link);
@@ -240,19 +242,21 @@
         return $string;
       }
 
-      if ($allowable_tags !== true) {
-        if ($allowable_tags != '') {
-          $string = strip_tags($string, $allowable_tags);
-        } else {
-          $string = strip_tags($string);
+      //if (is_string($string)) {
+        if ($allowable_tags !== true) {
+          if ($allowable_tags != '') {
+            $string = strip_tags($string, $allowable_tags);
+          } else {
+            $string = strip_tags($string);
+          }
         }
-      }
 
-      if ($trim === true) {
-        $string = trim($string);
-      } else if ($trim != '') {
-        $string = trim($string, $trim);
-      }
+        if ($trim === true) {
+          $string = trim($string);
+        } else if ($trim != '') {
+          $string = trim($string, $trim);
+        }
+      //}
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
