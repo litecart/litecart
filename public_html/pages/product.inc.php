@@ -206,7 +206,7 @@
   }
 
 // Stock Status
-  if ($product->quantity_unit) {
+  if (!empty($product->quantity_unit['name'])) {
     $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
   } else {
     $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, 0) : language::translate('title_in_stock', 'In Stock');
