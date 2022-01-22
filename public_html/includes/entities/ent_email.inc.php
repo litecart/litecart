@@ -270,10 +270,12 @@
       $headers = [
         'Date' => date('r'),
         'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
+        'Sender' => $this->format_contact($this->data['sender']),
         'Reply-To' => $this->format_contact($this->data['sender']),
         'Return-Path' => settings::get('store_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
+        'X-Sender' => $this->format_contact($this->data['sender']),
       ];
 
     // Add "To"
