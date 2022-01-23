@@ -5,14 +5,25 @@
   breadcrumbs::add(language::translate('title_languages', 'Languages'), document::link(WS_DIR_ADMIN, ['doc' => 'languages'], ['app']));
   breadcrumbs::add(language::translate('title_storage_encoding', 'Storage Encoding'));
 
-  $defined_tables = [];
-  foreach (get_defined_constants() as $constant) {
-    if (preg_match('#^`'. preg_quote(DB_DATABASE, '#') .'`\.`(.*)`$#', $constant, $matches)) {
-      $defined_tables[] = $matches[1];
+// Table Rows
+  $tables = [];
+
+  $tables_query = database::query(
+    "select * from `information_schema`.`TABLES`
+    where TABLE_SCHEMA = '". DB_DATABASE ."'
+    order by TABLE_NAME;"
+  );
+
+  while ($table = database::fetch($tables_query)) {
+    if (preg_match('#^'. preg_quote(DB_TABLE_PREFIX, '#') .'#', $table['TABLE_NAME'])) {
+      $tables[] = $table;
     }
   }
 
-  if (empty($_POST)) $_POST['tables'] = $defined_tables;
+// Number of Rows
+  $num_rows = database::num_rows($tables_query);
+
+  if (empty($_POST)) $_POST['tables'] = array_column($tables, 'TABLE_NAME');
 
   if (isset($_POST['convert'])) {
 
@@ -21,7 +32,7 @@
       if (empty($_POST['collation']) && empty($_POST['engine'])) throw new Exception(language::translate('error_must_select_action_to_perform', 'You must select an action to perform'));
 
       foreach ($_POST['tables'] as $table) {
-        if (!in_array($table, $defined_tables)) throw new Exception(strtr(language::translate('error_unknown_defined_table_x', 'Unknown defined table (%table)'), ['%table' => $table]));
+        if (!in_array($table, $tables)) throw new Exception(strtr(language::translate('error_unknown_application_database_table_x', 'Unknown application database table (%table)'), ['%table' => $table]));
       }
 
       $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
@@ -62,22 +73,6 @@
     }
   }
 
-// Table Rows
-  $tables = [];
-
-  $tables_query = database::query(
-    "select * from `information_schema`.`TABLES`
-    where TABLE_SCHEMA = '". DB_DATABASE ."'
-    order by TABLE_NAME;"
-  );
-
-  while ($table = database::fetch($tables_query)) {
-    if (!in_array($table['TABLE_NAME'], $defined_tables)) continue;
-    $tables[] = $table;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($tables_query);
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
