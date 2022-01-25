@@ -8,14 +8,6 @@
 
   $document_root = file_absolute_path(dirname(__FILE__) . '/..') .'/';
 
-  function return_bytes($string) {
-    sscanf($string, '%u%c', $number, $suffix);
-    if (isset($suffix)) {
-      $number = $number * pow(1024, strpos(' KMG', strtoupper($suffix)));
-    }
-    return $number;
-  }
-
   $countries = [
     'AF' => 'Afghanistan',
     'AL' => 'Albania',

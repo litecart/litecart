@@ -1,5 +1,13 @@
 <?php
 
+  function return_bytes($string) {
+    sscanf($string, '%u%c', $number, $suffix);
+    if (isset($suffix)) {
+      $number = $number * pow(1024, strpos(' KMG', strtoupper($suffix)));
+    }
+    return $number;
+  }
+
 // Function to return absolute path from relative path
   function file_absolute_path($path) {
 
