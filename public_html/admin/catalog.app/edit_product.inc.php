@@ -26,7 +26,7 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['categories'])) $_POST['categories'] = [];
+      if (empty($_POST['categories'])) $_POST['categories'] = [0];
       if (empty($_POST['images'])) $_POST['images'] = [];
       if (empty($_POST['attributes'])) $_POST['attributes'] = [];
       if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
@@ -114,6 +114,7 @@
 
       $product->delete();
 
+      if (empty($_POST['categories'])) $_POST['categories'] = [0];
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0]]));
       exit;

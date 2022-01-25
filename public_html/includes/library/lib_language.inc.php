@@ -33,6 +33,8 @@
       self::$_cache_token = cache::token('translations', ['endpoint', 'language'], 'memory');
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
+        self::$_cache['translations'] = [];
+
         $translations_query = database::query(
           "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_PREFIX ."translations
           where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
