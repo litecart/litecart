@@ -175,6 +175,8 @@
         $i++;
       }
 
+      $duration = microtime(true) - $measure_start;
+
       if (class_exists('stats', false)) {
         stats::set('database_queries', stats::get('database_queries') + $i);
         stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
