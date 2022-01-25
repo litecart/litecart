@@ -350,26 +350,40 @@ input[name="development_type"]:checked + div {
 <form name="upgrade_form" method="post">
   <h1>Upgrade</h1>
 
-  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
-  <div class="form-group">
-    <label>Version</label>
-    <ul class="list-inline" style="font-size: 2em;">
-      <li><?php echo PLATFORM_DATABASE_VERSION; ?></li>
-      <li>→</li>
-      <li><?php echo PLATFORM_VERSION; ?></li>
-    </ul>
-  </div>
-  <?php } else { ?>
-  <div class="form-group">
-    <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
-    <select class="form-control" name="from_version">
-      <option value="">-- Select Version --</option>
-      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
-    </select>
-  </div>
-  <?php } ?>
+  <h2>Application</h2>
 
-  <h3>Development</h3>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label>MySQL Server</label>
+      <div class="form-control">
+        <?php echo DB_SERVER; ?>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label>MySQL Database</label>
+      <div class="form-control">
+        <?php echo DB_DATABASE; ?>
+      </div>
+    </div>
+
+  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
+    <div class="form-group col-md-4">
+      <label>Current Version</label>
+      <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
+    </div>
+    <?php } else { ?>
+    <div class="form-group col-md-4">
+      <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
+      <select class="form-control" name="from_version">
+        <option value="">-- Select Version --</option>
+        <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
+      </select>
+    </div>
+    <?php } ?>
+  </div>
+
+  <h2>Development</h2>
 
   <div class="form-group" style="display: flex;">
     <label>
