@@ -4,7 +4,7 @@
 
   <ul class="nav nav-stacked nav-pills">
     <?php foreach ($brands as $brand) { ?>
-    <li<?php echo (!empty($brand['active']) ? ' class="active"' : ''); ?>><a href="<?php echo htmlspecialchars($brand['link']); ?>"><?php echo $brand['name']; ?></a></li>
+    <li<?php echo (!empty($brand['active']) ? ' class="active"' : ''); ?>><a href="<?php echo functions::escape_html($brand['link']); ?>"><?php echo $brand['name']; ?></a></li>
     <?php } ?>
   </ul>
 

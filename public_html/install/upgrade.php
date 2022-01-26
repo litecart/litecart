@@ -238,28 +238,41 @@
 
       ### Installer > Update ########################################
 
-      echo '<p>Check if the installer has the latest updates... ';
-
-      $files_to_update = [
-        'upgrade_patches/'. PLATFORM_VERSION .'.sql',
-        'upgrade_patches/'. PLATFORM_VERSION .'.inc.php',
-      ];
+      echo '<p>Checking for updates... ';
 
       require_once FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php';
       $client = new wrap_http();
 
-      foreach ($files_to_update as $file) {
-        $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/install/'. $file);
-        if ($client->last_response['status_code'] == 200 && (!is_file(__DIR__.'/'. $file) || md5($response) != md5_file(__DIR__.'/'. $file))) {
-          file_put_contents(__DIR__.'/'. $file, $response);
-          $is_updated = true;
-        }
-      }
+      $update_file = function($file) use ($client) {
+        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+        $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+        if ($client->last_response['status_code'] != 200) return false;
+        file_put_contents(FS_DIR_APP . $local_file, $response);
+        return true;
+      };
 
-      if (!empty($is_updated)) {
-        echo 'Updated! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-      } else {
-        echo 'Already up to date! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      $calculate_md5 = function($file) {
+        $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
+        if (!is_file(FS_DIR_APP . $local_file)) return;
+        $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $local_file));
+        return md5($contents);
+      };
+
+      if ($update_file('install/checksums.md5')) {
+
+        $checksum_files = preg_split('#(\r\n?|\n)#', file_get_contents(FS_DIR_APP . 'install/checksums.md5'), -1, PREG_SPLIT_NO_EMPTY);
+
+        $files_updated = 0;
+        foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+          list($checksum, $file) = explode("\t", $line);
+          if ($calculate_md5($file) != $checksum) {
+            if ($update_file($file)) $files_updated++;
+          }
+        }
+
+        if (!empty($files_updated)) {
+          echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+        }
       }
 
       #############################################
@@ -450,6 +463,23 @@ input[name="development_type"]:checked + div {
 <form name="upgrade_form" method="post">
   <h1>Upgrade</h1>
 
+  <h2>Application</h2>
+
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label>MySQL Server</label>
+      <div class="form-control">
+        <?php echo DB_SERVER; ?>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label>MySQL Database</label>
+      <div class="form-control">
+        <?php echo DB_DATABASE; ?>
+      </div>
+    </div>
+
   <h3>Backup</h3>
 
   <div class="form-group">
@@ -459,25 +489,22 @@ input[name="development_type"]:checked + div {
   </div>
 
   <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
-  <div class="form-group">
-    <label>Version</label>
-    <ul class="list-inline" style="font-size: 2em;">
-      <li><?php echo PLATFORM_DATABASE_VERSION; ?></li>
-      <li>→</li>
-      <li><?php echo PLATFORM_VERSION; ?></li>
-    </ul>
+    <div class="form-group col-md-4">
+      <label>Current Version</label>
+      <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
+    </div>
+    <?php } else { ?>
+    <div class="form-group col-md-4">
+      <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
+      <select class="form-control" name="from_version">
+        <option value="">-- Select Version --</option>
+        <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
+      </select>
+    </div>
+    <?php } ?>
   </div>
-  <?php } else { ?>
-  <div class="form-group">
-    <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
-    <select class="form-select" name="from_version">
-      <option value="">-- Select Version --</option>
-      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
-    </select>
-  </div>
-  <?php } ?>
 
-  <h3>Development</h3>
+  <h2>Development</h2>
 
   <div class="form-group" style="display: flex;">
     <label>

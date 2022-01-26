@@ -506,6 +506,7 @@
         (product_id, filename, checksum, priority)
         values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
       );
+
       $image_id = database::insert_id();
 
       $this->data['images'][$image_id] = [

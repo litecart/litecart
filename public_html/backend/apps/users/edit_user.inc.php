@@ -96,12 +96,12 @@
           <div class="row">
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_username', 'Username'); ?></label>
-              <?php echo functions::form_draw_text_field('username', true, 'required'); ?>
+              <?php echo functions::form_draw_text_field('username', true, 'autocomplete="off" required'); ?>
             </div>
 
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_email', 'Email'); ?></label>
-              <?php echo functions::form_draw_email_field('email', true); ?>
+              <?php echo functions::form_draw_email_field('email', true, 'autocomplete="off"'); ?>
             </div>
           </div>
 

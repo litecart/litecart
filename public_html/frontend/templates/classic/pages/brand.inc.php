@@ -19,7 +19,7 @@
       <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_filter.inc.php'); ?>
 
       <?php if ($products) { ?>
-      <section class="listing products <?php echo htmlspecialchars($_GET['list_style']); ?>">
+      <section class="listing products <?php echo functions::escape_html($_GET['list_style']); ?>">
         <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['brand_id']); ?>
       </section>
       <?php } ?>

@@ -66,7 +66,7 @@
     <div class="addons">
       <?php foreach ($addons as $item) { ?>
       <div class="addon">
-        <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
+        <div class="title"><a href="<?php echo functions::escape_html((string)$item->link); ?>" target="_blank"><?php echo functions::escape_html((string)$item->title); ?></a></div>
         <div class="description"><?php echo (string)$item->description; ?></div>
       </div>
       <?php } ?>

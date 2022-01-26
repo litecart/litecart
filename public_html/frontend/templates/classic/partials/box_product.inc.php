@@ -1,4 +1,4 @@
-<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo functions::escape_html($sku); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
   <div class="row">
     <div class="col-md-6">
@@ -6,7 +6,7 @@
 
         <div class="col-12">
           <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo functions::escape_html($name); ?>" />
             <?php echo $sticker; ?>
           </a>
         </div>
@@ -14,7 +14,7 @@
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-4">
           <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo functions::escape_html($name); ?>" />
           </a>
         </div>
         <?php } ?>
@@ -33,9 +33,9 @@
 
       <?php if (!empty($brand)) { ?>
       <div class="brand">
-        <a href="<?php echo htmlspecialchars($brand['link']); ?>">
+        <a href="<?php echo functions::escape_html($brand['link']); ?>">
           <?php if ($brand['image']) { ?>
-          <img src="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" title="<?php echo htmlspecialchars($brand['name']); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" title="<?php echo functions::escape_html($brand['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $brand['name']; ?></h3>
           <?php } ?>
@@ -151,7 +151,7 @@
           <?php } ?>
         </div>
 
-        <div class="tax" style="margin: 0 0 1em 0;">
+        <div class="tax" style="margin-bottom: 1em;">
          <?php if ($tax_rates) { ?>
           <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
          <?php } else { ?>

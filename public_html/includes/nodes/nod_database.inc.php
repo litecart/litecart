@@ -111,17 +111,25 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      if (self::$_links[$link]->multi_query($query)) {
-        do {
-          if ($result = self::$_links[$link]->use_result()) {
-            while ($row = $result->fetch_row($result)) {
-            }
-            self::free($result);
-          }
-        }
-        while (self::$_links[$link]->next_result());
-      } else {
+      $measure_start = microtime(true);
+
+      if ($result = self::$_links[$link]->multi_query($query) === false) {
         self::_error($query, self::$_links[$link]);
+      }
+
+      $i = 1;
+      while (self::$_links[$link]->more_results()) {
+        if (self::$_links[$link]->next_result() === false) {
+          die('Fatal: Query '. $i .' failed');
+        }
+        $i++;
+      }
+
+      $duration = microtime(true) - $measure_start;
+
+      if (class_exists('stats', false)) {
+        stats::set('database_queries', stats::get('database_queries') + $i);
+        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
       }
     }
 
@@ -173,6 +181,8 @@
 
     public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
 
+      if ($string == '') return $string;
+
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
           $string[$key] = self::input($string[$key], $allowable_tags, $trim, $link);
@@ -180,19 +190,21 @@
         return $string;
       }
 
-      if ($allowable_tags !== true) {
-        if ($allowable_tags != '') {
-          $string = strip_tags($string, $allowable_tags);
-        } else {
-          $string = strip_tags($string);
+      //if (is_string($string)) {
+        if ($allowable_tags !== true) {
+          if ($allowable_tags != '') {
+            $string = strip_tags($string, $allowable_tags);
+          } else {
+            $string = strip_tags($string);
+          }
         }
-      }
 
-      if ($trim === true) {
-        $string = trim($string);
-      } else if ($trim != '') {
-        $string = trim($string, $trim);
-      }
+        if ($trim === true) {
+          $string = trim($string);
+        } else if ($trim != '') {
+          $string = trim($string, $trim);
+        }
+      //}
 
       if (!isset(self::$_links[$link])) self::connect($link);
 

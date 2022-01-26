@@ -134,7 +134,7 @@
                 <?php echo functions::form_draw_decimal_field('contents['. $key .'][backordered]', true, 2); ?>
               </div>
             </td>
-            <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+            <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
@@ -161,7 +161,7 @@
 
       <datalist id="available-stock-items">
         <?php foreach ($available_stock_items as $stock_item) { ?>
-        <option value="<?php echo htmlspecialchars($stock_item['sku']); ?>" data-name="<?php echo htmlspecialchars($stock_item['name']); ?>" data-backordered="<?php echo $stock_item['backordered']; ?>">
+        <option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-backordered="<?php echo $stock_item['backordered']; ?>">
         <?php } ?>
       </datalist>
 
@@ -242,7 +242,7 @@
               + '        <?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>'
               + '      </div>'
               + '    </td>'
-              + '    <td><a class="remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
+              + '    <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
               + '  </tr>';
 
     output = output.replace(/new_item_index/g, 'new_' + new_item_index);

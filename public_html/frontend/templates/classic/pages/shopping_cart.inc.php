@@ -67,13 +67,13 @@
 
         <ul class="items list-unstyled">
           <?php foreach ($items as $key => $item) { ?>
-          <li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo htmlspecialchars($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
+          <li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo functions::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
             <div class="row">
               <div class="col-8">
 
                 <div class="row">
                   <div class="col-4 col-md-2">
-                    <a href="<?php echo htmlspecialchars($item['link']); ?>" class="thumbnail float-start" style="max-width: 64px; margin-inline-end: 1em;">
+                    <a href="<?php echo functions::escape_html($item['link']); ?>" class="thumbnail float-start" style="max-width: 64px; margin-inline-end: 1em;">
                       <img src="<?php echo document::href_link(WS_DIR_STORAGE . $item['image']['thumbnail']); ?>" alt="" />
                     </a>
                   </div>
@@ -81,7 +81,7 @@
                   <div class="col-8 col-md-10">
                     <div class="row">
                       <div class="col-md-6">
-                        <div><strong><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
+                        <div><strong><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
                         <?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
                       </div>
 
@@ -95,7 +95,7 @@
                           <?php } else { ?>
                             <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                           <?php } ?>
-                          <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+                          <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
                         </div>
                       </div>
                     </div>
@@ -109,7 +109,7 @@
               </div>
 
               <div class="col-2 text-end">
-                <td><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+                <td><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
               </div>
             </div>
           </li>

@@ -339,10 +339,10 @@ table .fa-star:hover {
         </li>
         <?php if ($order_actions) foreach ($order_actions as $module) { ?>
         <li>
-          <fieldset title="<?php echo htmlspecialchars($module['description']); ?>">
+          <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
             <legend><?php echo $module['name']; ?></legend>
             <div class="btn-group">
-              <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'" title="'. htmlspecialchars($action['description']) .'"'); ?>
+              <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
             </div>
           </fieldset>
         </li>

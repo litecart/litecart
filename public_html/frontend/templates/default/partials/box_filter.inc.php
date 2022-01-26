@@ -45,7 +45,7 @@
     <div class="filter">
 
       <div>
-        <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. htmlspecialchars(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
+        <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_html(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
       </div>
 
       <?php if ($brands) { ?>
@@ -74,7 +74,7 @@
           <ul class="dropdown-menu">
             <?php foreach ($group['values'] as $value) { ?>
             <li>
-              <?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"'); ?>
+              <?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"'); ?>
             </li>
             <?php } ?>
           </ul>

@@ -83,7 +83,7 @@ pre {
           <?php echo !empty($operation->find->attributes()['offset-before']) ? ' (Offset Before: '. $operation->find->attributes()['offset-before'] .')' : ''; ?>
           <?php echo !empty($operation->find->attributes()['offset-after']) ? ' (Offset After: '. $operation->find->attributes()['offset-after'] .')' : ''; ?>
 
-            <pre><code><?php echo htmlspecialchars($operation->find); ?></code></pre>
+            <pre><code><?php echo functions::escape_html($operation->find); ?></code></pre>
           </div>
 
 
@@ -103,7 +103,7 @@ pre {
       break;
   }
 ?>
-            <pre><code><?php echo htmlspecialchars($operation->insert); ?></code></pre>
+            <pre><code><?php echo functions::escape_html($operation->insert); ?></code></pre>
           </div>
         </div>
         <?php } ?>

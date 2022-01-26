@@ -45,7 +45,7 @@
       if ($language = database::fetch($language_query)) {
         $this->data = array_intersect_key(array_merge($this->data, $language), $this->data);
       } else {
-        throw new Exception('Could not find language ('. htmlspecialchars($language_code) .') in database.');
+        throw new Exception('Could not find language ('. functions::escape_html($language_code) .') in database.');
       }
 
       $this->previous = $this->data;

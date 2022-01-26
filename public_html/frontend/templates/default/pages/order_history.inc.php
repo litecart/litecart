@@ -30,12 +30,12 @@
               <tbody>
               <?php if ($orders) foreach ($orders as $order) { ?>
               <tr>
-                <td><a href="<?php echo htmlspecialchars($order['link']); ?>" class="lightbox-iframe"><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
+                <td><a href="<?php echo functions::escape_html($order['link']); ?>" class="lightbox-iframe"><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></a></td>
                 <td class="text-center"><?php echo $order['num_downloads'] ? '<a href="'. document::href_ilink('downloads') .'">'. language::translate('title_downloads', 'Downloads') .'</a>' : ''; ?></td>
                 <td class="text-center"><?php echo $order['order_status']; ?></td>
                 <td class="text-end"><?php echo $order['total']; ?></td>
                 <td class="text-end"><?php echo $order['date_created']; ?></td>
-                <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo htmlspecialchars($order['printable_link']); ?>" target="_blank" title="<?php echo htmlspecialchars(language::translate('title_print', 'Print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
+                <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo functions::escape_html($order['printable_link']); ?>" target="_blank" title="<?php echo functions::escape_html(language::translate('title_print', 'Print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a></td>
               </tr>
               <?php } ?>
               </tbody>

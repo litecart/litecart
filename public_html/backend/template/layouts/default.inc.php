@@ -25,7 +25,7 @@
     </div>
 
     <div id="search">
-      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
+      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
       <div class="results"></div>
     </div>
 
@@ -62,7 +62,7 @@
       </li>
 
       <li class="language dropdown">
-        <a href="#" data-toggle="dropdown"><span style="font-family: monospace" title="<?php echo htmlspecialchars(language::$selected['name']); ?>"><?php echo language::$selected['code']; ?><span> <b class="caret"></b></a>
+        <a href="#" data-toggle="dropdown"><span style="font-family: monospace" title="<?php echo functions::escape_html(language::$selected['name']); ?>"><?php echo language::$selected['code']; ?><span> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>

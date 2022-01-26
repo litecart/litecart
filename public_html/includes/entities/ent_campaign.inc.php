@@ -43,7 +43,7 @@
       if ($campaign = database::fetch($campaign_query)) {
         $this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
       } else {
-        throw new Exception('Could not find campaign ('. htmlspecialchars($campaign_id) .') in database.');
+        throw new Exception('Could not find campaign ('. functions::escape_html($campaign_id) .') in database.');
       }
 
       $this->previous = $this->data;

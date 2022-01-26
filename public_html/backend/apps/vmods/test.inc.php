@@ -44,7 +44,7 @@
   </div>
 
   <div class="card-body">
-    <h2><?php echo htmlspecialchars($vmod['title']); ?></h2>
+    <h2><?php echo functions::escape_html($vmod['title']); ?></h2>
   </div>
 
   <table class="table table-striped table-hover data-table">
@@ -124,7 +124,7 @@
         }
 
       } catch (Exception $e) {
-        echo functions::draw_fonticon('fa-times', 'style="color: #c00;"') .' Error: '. htmlspecialchars($e->getMessage()) .'</div>';
+        echo functions::draw_fonticon('fa-times', 'style="color: #c00;"') .' Error: '. functions::escape_html($e->getMessage()) .'</div>';
         $error = true;
       }
 ?>

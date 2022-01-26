@@ -1,7 +1,7 @@
 <?php
 
   function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
-    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : '') .'>';
+    return  '<form'. (($name) ? ' name="'. functions::escape_html($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. functions::escape_html($action) .'"' : '') . (($parameters) ? ' ' . $parameters : '') .'>';
   }
 
   function form_draw_form_end() {
@@ -49,7 +49,7 @@
       $value = [$value, $value];
     }
 
-    return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value[0]) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. ((!empty($fonticon)) ? functions::draw_fonticon($fonticon) . ' ' : '') . (isset($value[1]) ? $value[1] : $value[0]) .'</button>';
+    return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. ((!empty($fonticon)) ? functions::draw_fonticon($fonticon) . ' ' : '') . (isset($value[1]) ? $value[1] : $value[0]) .'</button>';
   }
 
   function form_draw_captcha_field($name, $id, $parameters='') {
@@ -90,7 +90,7 @@
     if ($input === true) $input = form_reinsert_value($name, $value[0]);
 
     return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
-         . '  <input type="checkbox" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
+         . '  <input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
          . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
          . '</label>';
   }
@@ -99,7 +99,7 @@
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="color" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_csv_field($name, $input=true, $parameters='') {
@@ -210,8 +210,8 @@ END;
     if (empty($currency_code)) $currency_code = settings::get('site_currency_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" step="any" name="'. htmlspecialchars($name) .'" value="'. (($input != 0) ? $input : '') .'"'. (($parameters) ? ' '. $parameters : '') .' />' . PHP_EOL
-         . '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. $currency_code .'</strong>' . PHP_EOL
+         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" step="any" name="'. functions::escape_html($name) .'" value="'. (($input != 0) ? $input : '') .'"'. (($parameters) ? ' '. $parameters : '') .' />' . PHP_EOL
+         . '  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. functions::escape_html($currency_code) .'</strong>' . PHP_EOL
          . '</div>';
   }
 
@@ -244,25 +244,25 @@ END;
   function form_draw_date_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    if (!in_array(substr($input, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
+    if (!empty($input) && !in_array(substr($input, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
       $input = date('Y-m-d', strtotime($input));
     } else {
       $input = '';
     }
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" placeholder="YYYY-MM-DD"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="date" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" placeholder="YYYY-MM-DD"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_datetime_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    if (!in_array(substr($input, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
+    if (!empty($input) && !in_array(substr($input, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
       $input = date('Y-m-d\TH:i', strtotime($input));
     } else {
       $input = '';
     }
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="datetime-local" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="datetime-local" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_decimal_field($name, $input=true, $decimals=2, $parameters='') {
@@ -280,7 +280,7 @@ END;
       $input = round($input, (int)$decimals);
     }
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" '. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" '. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_dropdown_field($name, $options=[], $input=true, $parameters='') {
@@ -319,13 +319,13 @@ END;
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon('fa-envelope-o fa-fw') .'</span>' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />'
+         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="email" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />'
          . '</div>';
   }
 
   function form_draw_file_field($name, $parameters='') {
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="file" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="file" name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_fonticon_field($name, $input=true, $type='text', $icon='', $parameters='') {
@@ -333,28 +333,28 @@ END;
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon($icon) .'</span>' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />' . PHP_EOL
+         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />' . PHP_EOL
          . '</div>';
   }
 
   function form_draw_hidden_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<input type="hidden" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input type="hidden" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_image($name, $src, $parameters='') {
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="image" name="'. htmlspecialchars($name) .'" src="'. htmlspecialchars($src) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="image" name="'. functions::escape_html($name) .'" src="'. functions::escape_html($src) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_input($name, $input=true, $type='text', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_link_button($url, $title, $parameters='', $fonticon='') {
-    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. (!empty($fonticon) ? functions::draw_fonticon($fonticon) . ' ' : '') . $title .'</a>';
+    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. (!empty($fonticon) ? functions::draw_fonticon($fonticon) . ' ' : '') . $title .'</a>';
   }
 
   function form_draw_month_field($name, $input=true, $parameters='') {
@@ -366,7 +366,7 @@ END;
       $input = '';
     }
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="month" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="month" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_number_field($name, $input=true, $parameters='') {
@@ -376,7 +376,7 @@ END;
       $input = round($input);
     }
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" step="1"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" step="1"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_password_field($name, $input='', $parameters='') {
@@ -384,7 +384,7 @@ END;
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon('fa-key fa-fw') .'</span>' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />'
+         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="password" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />'
          . '</div>';
   }
 
@@ -393,7 +393,7 @@ END;
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon('fa-phone fa-fw') .'</span>' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : '') .' />'
+         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="tel" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : '') .' />'
          . '</div>';
   }
 
@@ -440,7 +440,7 @@ END;
     if ($input === true) $input = form_reinsert_value($name, $value[0]);
 
     return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
-         . '  <input type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
+         . '  <input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .' />' . PHP_EOL
          . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
          . '</label>';
   }
@@ -448,7 +448,7 @@ END;
   function form_draw_range_slider($name, $input=true, $min='', $max='', $step='', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-range"' : '') .' type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-range"' : '') .' type="range" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_regional_input_field($name, $language_code='', $input=true, $type='text', $parameters='') {
@@ -463,8 +463,8 @@ END;
     if ($input === true) $input = form_reinsert_value($name);
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
-         . '  <input class="form-input" name="'. htmlspecialchars($name) .'" type="'. htmlspecialchars($type) .'" value="'. htmlspecialchars($input) .'" />' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. functions::escape_html(language::$languages[$language_code]['name']) .'">'. functions::escape_html($language_code) .'</span>' . PHP_EOL
+         . '  <input class="form-input" name="'. functions::escape_html($name) .'" type="'. functions::escape_html($type) .'" value="'. functions::escape_html($input) .'" />' . PHP_EOL
          . '</div>';
   }
 
@@ -473,7 +473,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('site_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. functions::escape_html(language::$languages[$language_code]['name']) .'">'. functions::escape_html($language_code) .'</span>' . PHP_EOL
          . '  ' . form_draw_text_field($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -488,7 +488,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('site_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. functions::escape_html(language::$languages[$language_code]['name']) .'">'. functions::escape_html($language_code) .'</span>' . PHP_EOL
          . '  ' . form_draw_textarea($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -503,7 +503,7 @@ END;
     if (empty($language_code)) $language_code = settings::get('site_language_code');
 
     return '<div class="input-group">' . PHP_EOL
-         . '  <span class="input-group-text" style="font-family: monospace;" title="'. htmlspecialchars(language::$languages[$language_code]['name']) .'">'. htmlspecialchars($language_code) .'</span>' . PHP_EOL
+         . '  <span class="input-group-text" style="font-family: monospace;" title="'. functions::escape_html(language::$languages[$language_code]['name']) .'">'. functions::escape_html($language_code) .'</span>' . PHP_EOL
          . '  ' . form_draw_wysiwyg_field($name, $input, $parameters) . PHP_EOL
          . '</div>';
   }
@@ -513,7 +513,7 @@ END;
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon('fa-search fa-fw') .'</span>' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="search" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />' . PHP_EOL
+         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="search" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />' . PHP_EOL
          . '</div>';
   }
 
@@ -521,7 +521,7 @@ END;
 
     if (preg_match('#\[\]$#', $name)) return form_draw_select_multiple_field($name, $options, $input, $parameters);
 
-    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-select"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL;
+    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-select"' : '') .' name="'. functions::escape_html($name) .'"'. (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL;
 
     $is_numerical_index = (array_keys($options) === range(0, count($options) - 1));
 
@@ -541,7 +541,7 @@ END;
         $option_input = $input;
       }
 
-      $html .= '  <option value="'. htmlspecialchars($option[0]) .'"'. (!strcmp($option[0], $option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+      $html .= '  <option value="'. functions::escape_html($option[0]) .'"'. (!strcmp($option[0], $option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
     }
 
     $html .= '</select>';
@@ -582,7 +582,7 @@ END;
 
     if (!is_array($groups)) $groups = [$groups];
 
-    $html = '<select class="form-select" name="'. htmlspecialchars($name) .'"'. (preg_match('#\[\]$#', $name) ? ' multiple' : '') . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL;
+    $html = '<select class="form-select" name="'. functions::escape_html($name) .'"'. (preg_match('#\[\]$#', $name) ? ' multiple' : '') . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL;
 
     foreach ($groups as $group) {
       $html .= '    <optgroup label="'. $group['label'] .'">' . PHP_EOL;
@@ -605,7 +605,7 @@ END;
           $option_input = $input;
         }
 
-        $html .= '      <option value="'. htmlspecialchars($option[0]) .'"'. (($option[0] == $option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. $option[1] .'</option>' . PHP_EOL;
+        $html .= '      <option value="'. functions::escape_html($option[0]) .'"'. (($option[0] == $option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. $option[1] .'</option>' . PHP_EOL;
       }
 
       $html .= '    </optgroup>' . PHP_EOL;
@@ -619,25 +619,25 @@ END;
   function form_draw_switch($name, $value, $label, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<label><input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-switch"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. htmlspecialchars($label) .'</label>';
+    return '<label><input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-switch"' : '') .' name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. functions::escape_html($label) .'</label>';
   }
 
   function form_draw_textarea($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<textarea'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. htmlspecialchars($input) .'</textarea>';
+    return '<textarea'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. functions::escape_html($input) .'</textarea>';
   }
 
   function form_draw_text_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="text" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_time_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="time" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_toggle($name, $type='t/f', $input=true, $parameters='') {
@@ -710,7 +710,7 @@ END;
       }
 
       $html .= '  <label class="btn btn-default'. ($input == $option[0] ? ' active' : '') .'">' . PHP_EOL
-             . '    <input type="radio" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($option[0]) .'"'. (!strcmp($input, $option[0]) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .' />'. $option[1]
+             . '    <input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($option[0]) .'"'. (!strcmp($input, $option[0]) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .' />'. $option[1]
              . '  </label>'. PHP_EOL;
     }
 
@@ -722,7 +722,7 @@ END;
   function form_draw_url_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="url" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="url" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />';
   }
 
   function form_draw_username_field($name, $input=true, $parameters='') {
@@ -730,7 +730,7 @@ END;
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-icon">'. functions::draw_fonticon('fa-user fa-fw') .'</span>' . PHP_EOL
-         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />'
+         . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="text" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($input) .'"'. (($parameters) ? ' '.$parameters : '') .' />'
          . '</div>';
   }
 
@@ -769,7 +769,7 @@ END;
                                         . '    semantic: false' . PHP_EOL
                                         . '  });';
 
-    return '<textarea name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. htmlspecialchars($input) .'</textarea>';
+    return '<textarea name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. functions::escape_html($input) .'</textarea>';
   }
 
   ######################################################################
@@ -1088,10 +1088,16 @@ END;
         foreach (reference::category($category['id'])->path as $ancestor) {
           $path[] = $ancestor->name;
         }
+
+        $html .= '<li class="list-item" style="display: flex; align-items: center;">'. PHP_EOL
+               . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. functions::escape_html($category['name']) .'"') . PHP_EOL
+               . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('fa-folder', 'style="color: #cccc66;"') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
+               . '  <div><button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button></div>' . PHP_EOL
+               .'</li>';
       }
 
       $html .= '<li class="list-item" style="display: flex;">'. PHP_EOL
-             . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. htmlspecialchars($category['name']) .'"') . PHP_EOL
+             . '  ' . form_draw_hidden_field($name, $category['id'], 'data-name="'. functions::escape_html($category['name']) .'"') . PHP_EOL
              . '  <div style="flex-grow: 1;">' . functions::draw_fonticon('folder') .' '. implode(' &gt; ', $path) .'</div>'. PHP_EOL
              . '  <button class="remove btn btn-default btn-sm" type="button">'. language::translate('title_remove', 'Remove') .'</button>' . PHP_EOL
              .'</li>';
@@ -1100,7 +1106,7 @@ END;
     $html .= '    </ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '  <div class="dropdown">' . PHP_EOL
-           . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. htmlspecialchars(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
+           . '  '. form_draw_search_field('', '', 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_categories', 'Search categories')) .'&hellip;"') . PHP_EOL
            . '    <ul class="dropdown-menu" style="padding: 1em; right: 0; max-height: 480px; overflow-y: auto;"></ul>' . PHP_EOL
            . '  </div>' . PHP_EOL
            . '</div>';
@@ -1119,7 +1125,7 @@ END;
                                                          . '    remove: "'. language::translate('title_remove', 'Remove') .'",' . PHP_EOL
                                                          . '    root: "'. language::translate('title_root', 'Root') .'"' . PHP_EOL
                                                          . '  }' . PHP_EOL
-                                                         . '})';
+                                                         . '});';
 
     return $html;
   }
@@ -1202,7 +1208,7 @@ END;
 
     $options = [];
     foreach (currency::$currencies as $currency) {
-      $options[] = [$currency['code'], $currency['name'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. htmlspecialchars($currency['prefix']) .'" data-suffix="'. htmlspecialchars($currency['suffix']) .'"'];
+      $options[] = [$currency['code'], $currency['name'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. functions::escape_html($currency['prefix']) .'" data-suffix="'. functions::escape_html($currency['suffix']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1261,7 +1267,7 @@ END;
 
     $options = [];
     while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], $row['name'], 'title="'. htmlspecialchars($row['description']) .'"'];
+      $options[] = [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1422,7 +1428,7 @@ END;
 
     $options = [];
     foreach (length::$units as $unit) {
-      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($unit['name']) .'"'];
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. functions::escape_html($unit['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1672,7 +1678,7 @@ END;
         $aliases['%notice'] = language::translate('title_sold_out', 'Sold Out');
       }
 
-      $options[] = [$stock_option['stock_item_id'], strtr('%image %name &ndash; %icon %notice', $aliases), 'data-name="'. htmlspecialchars($stock_option['name']) .'" data-sku="'. htmlspecialchars($stock_option['sku']) .'" data-weight="'. htmlspecialchars($stock_option['weight']) .'" data-weight-unit="'. htmlspecialchars($stock_option['weight_unit']) .'" data-length="'. htmlspecialchars($stock_option['length']) .'" data-width="'. htmlspecialchars($stock_option['width']) .'" data-height="'. htmlspecialchars($stock_option['height']) .'" data-length-unit="'. htmlspecialchars($stock_option['length_unit']) .'"'];
+      $options[] = [$stock_option['stock_item_id'], strtr('%image %name &ndash; %icon %notice', $aliases), 'data-name="'. functions::escape_html($stock_option['name']) .'" data-sku="'. functions::escape_html($stock_option['sku']) .'" data-weight="'. functions::escape_html($stock_option['weight']) .'" data-weight-unit="'. functions::escape_html($stock_option['weight_unit']) .'" data-length="'. functions::escape_html($stock_option['length']) .'" data-width="'. functions::escape_html($stock_option['width']) .'" data-height="'. functions::escape_html($stock_option['height']) .'" data-length-unit="'. functions::escape_html($stock_option['length_unit']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1702,7 +1708,7 @@ END;
 
     $options = [];
     while ($quantity_unit = database::fetch($quantity_units_query)) {
-      $options[] = [$quantity_unit['id'], $quantity_unit['name'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. htmlspecialchars($quantity_unit['description']) .'"'];
+      $options[] = [$quantity_unit['id'], $quantity_unit['name'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. functions::escape_html($quantity_unit['description']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1760,7 +1766,7 @@ END;
 
     $options = [];
     while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], $row['name'], 'title="'. htmlspecialchars($row['description']) .'"'];
+      $options[] = [$row['id'], $row['name'], 'title="'. functions::escape_html($row['description']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1785,7 +1791,7 @@ END;
 
     $options = [];
     while ($supplier = database::fetch($suppliers_query)) {
-      $options[] = [$supplier['id'], $supplier['name'], 'title="'. htmlspecialchars($supplier['description']) .'"'];
+      $options[] = [$supplier['id'], $supplier['name'], 'title="'. functions::escape_html($supplier['description']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1815,7 +1821,7 @@ END;
 
     $options = [];
     while ($tax_class = database::fetch($tax_classes_query)) {
-      $options[] = [$tax_class['id'], $tax_class['name'], 'title="'. htmlspecialchars($tax_class['description']) .'"'];
+      $options[] = [$tax_class['id'], $tax_class['name'], 'title="'. functions::escape_html($tax_class['description']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1918,7 +1924,7 @@ END;
 
     $options = [];
     foreach (weight::$units as $unit) {
-      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($unit['name']) .'"'];
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. functions::escape_html($unit['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {
@@ -1937,7 +1943,7 @@ END;
 
     $options = [];
     foreach (volume::$units as $unit) {
-      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. htmlspecialchars($unit['name']) .'"'];
+      $options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. functions::escape_html($unit['name']) .'"'];
     }
 
     if (preg_match('#\[\]$#', $name)) {

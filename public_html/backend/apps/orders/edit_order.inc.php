@@ -690,7 +690,7 @@
 
                 <div class="actions">
                   <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></a>
-                  <label class="private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
+                  <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::form_draw_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('fa-eye-slash'); ?></label>
                 </div>
               </div>
               <?php } ?>
@@ -820,7 +820,7 @@
             <td><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'class="form-input text-end"'); ?></td>
             <td>
               <div class="input-group">
-              <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
+              <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
               <?php echo functions::form_draw_currency_field('order_total['. $key .'][value]', $_POST['currency_code'], true); ?>
               </div>
             </td>
@@ -850,7 +850,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'"'); ?>
+      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'"'); ?>
     </div>
 
     <div class="form-group results table-responsive">
@@ -1291,8 +1291,8 @@
                + '    <?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '')); ?>'
                + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
                + '    <div class="actions">'
-               + '      <label class="notify" title="<?php echo htmlspecialchars(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>'
-               + '      <label class=" private" title="<?php echo htmlspecialchars(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>'
+               + '      <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>'
+               + '      <label class=" private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::general_escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>'
                + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>'
                + '    </div>'
                + '  </div>';
@@ -1543,7 +1543,7 @@
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'class="form-input text-end"')); ?></td>'
                + '    <td>'
                + '      <div class="input-group">'
-               + '        <span class="input-group-text"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', ['1', functions::draw_fonticon('fa-calculator')], '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
+               + '        <span class="input-group-text"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', ['1', functions::draw_fonticon('fa-calculator')], '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
                + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field('order_total[new_ot_row_index][value]', $_POST['currency_code'], currency::format_raw(0))); ?>'
                + '      </div>'
                + '    </td>'

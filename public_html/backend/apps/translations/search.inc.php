@@ -222,7 +222,7 @@ th:not(:last-child) {
 </div>
 
 <script>
-  $('[data-toggle="dropdown"]').text("-- <?php echo htmlspecialchars(language::translate('title_languages', 'Languages')); ?> --");
+  $('[data-toggle="dropdown"]').text("-- <?php echo functions::escape_html(language::translate('title_languages', 'Languages')); ?> --");
 
   $('body').on('change', '.featherlight select[name="to_language_code"]', function(e){
 

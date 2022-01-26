@@ -442,7 +442,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'"'); ?>
+      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'"'); ?>
     </div>
 
     <div class="form-group results table-responsive">

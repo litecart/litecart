@@ -448,9 +448,9 @@
 
             // Perform resample
               if (($this->width / $destination_width) > ($this->height / $destination_height)) {
-                $result = ImageCopyResampledFixed($_resized, $this->_image, 0, 0, ($this->width - $destination_width * $this->height / $destination_height) / 2, 0, $destination_width, $destination_height, $this->height * $destination_ratio, $this->height, $this->_whitespace);
+                $result = ImageCopyResampledFixed($_resized, $this->_image, 0, 0, round(($this->width - $destination_width * $this->height / $destination_height) / 2), 0, $destination_width, $destination_height, round($this->height * $destination_ratio), $this->height, $this->_whitespace);
               } else {
-                $result = ImageCopyResampledFixed($_resized, $this->_image, 0, 0, 0, ($this->height - $destination_height * $this->width / $destination_width) / 2, $destination_width, $destination_height, $this->width, $this->width / $destination_ratio, $this->_whitespace);
+                $result = ImageCopyResampledFixed($_resized, $this->_image, 0, 0, 0, round(($this->height - $destination_height * $this->width / $destination_width) / 2), $destination_width, $destination_height, $this->width, round($this->width / $destination_ratio), $this->_whitespace);
               }
 
               break;
@@ -470,7 +470,7 @@
               ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
             // Perform resample
-              $result = ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width, $this->height, $this->_whitespace);
+              $result = ImageCopyResampledFixed($_resized, $this->_image, round(($width - $destination_width) / 2), round(($height - $destination_height) / 2), 0, 0, $destination_width, $destination_height, $this->width, $this->height, $this->_whitespace);
 
               break;
 
@@ -516,7 +516,7 @@
                 //ImageColorTransparent($_resized, ImageColorAllocate($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2]));
 
               // Perform resample
-                $result = ImageCopyResampled($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width, $this->height);
+                $result = ImageCopyResampled($_resized, $this->_image, round(($width - $destination_width) / 2), round(($height - $destination_height) / 2), 0, 0, $destination_width, $destination_height, $this->width, $this->height);
 
               } else {
 
@@ -529,7 +529,7 @@
                 ImageFill($_resized, 0, 0, ImageColorAllocateAlpha($_resized, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
 
               // Perform resample
-                $result = ImageCopyResampledFixed($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width, $this->height, $this->_whitespace);
+                $result = ImageCopyResampledFixed($_resized, $this->_image, round(($width - $destination_width) / 2), round(($height - $destination_height) / 2), 0, 0, $destination_width, $destination_height, $this->width, $this->height, $this->_whitespace);
               }
 
               break;

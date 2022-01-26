@@ -128,13 +128,6 @@
       return $this;
     }
 
-    public function set_multiparts($multiparts) {
-
-      $this->data['multiparts'] = $multiparts;
-
-      return $this;
-    }
-
     public function add_body($content, $html=false) {
 
       if (empty($content)) {
@@ -142,9 +135,15 @@
         return $this;
       }
 
-      $this->data['multiparts'][] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. mb_http_output() . "\r\n"
-                                  . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
-                                  . trim($content);
+      if (!$charset) $charset = $this->data['charset'];
+
+      $this->data['multiparts'][] = [
+        'headers' => [
+          'Content-Type' => ($html ? 'text/html' : 'text/plain') .'; charset='. mb_http_output(),
+          'Content-Transfer-Encoding: 8bit',
+        ],
+        'body' => trim($content),
+      ];
 
       return $this;
     }
@@ -163,10 +162,14 @@
         $mime_type = mime_content_type($file);
       }
 
-      $this->data['multiparts'][] = 'Content-Type: '. $mime_type . "\r\n"
-                                   . 'Content-Disposition: attachment; filename="'. basename($filename) . '"' . "\r\n"
-                                   . 'Content-Transfer-Encoding: base64' . "\r\n\r\n"
-                                   . chunk_split(base64_encode($data)) . "\r\n\r\n";
+      $this->data['multiparts'][] = [
+        'headers' => [
+          'Content-Type' => $mime_type,
+          'Content-Disposition' => 'attachment; filename="'. basename($filename) . '"',
+          'Content-Transfer-Encoding' => 'base64',
+        ],
+        'body' => chunk_split(base64_encode($data)) . "\r\n\r\n",
+      ];
 
       return $this;
     }
@@ -257,10 +260,12 @@
       $headers = [
         'Date' => date('r'),
         'From' => $this->format_contact(['name' => settings::get('site_name'), 'email' => settings::get('site_email')]),
+        'Sender' => $this->format_contact($this->data['sender']),
         'Reply-To' => $this->format_contact($this->data['sender']),
         'Return-Path' => settings::get('site_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
+        'X-Sender' => $this->format_contact($this->data['sender']),
       ];
 
     // Add "To"
@@ -286,8 +291,10 @@
     // Prepare subject
       $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
 
-      $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
-      $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
+      if (count($this->data['multiparts']) > 1) {
+        $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
+        $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
+      }
 
       array_walk($headers,
         function (&$v, $k) {
@@ -296,12 +303,22 @@
       );
 
       $headers = implode("\r\n", $headers);
-
-    // Prepare body
       $body = '';
-      foreach ($this->data['multiparts'] as $multipart) {
+
+    // Prepare several multiparts
+      if (count($this->data['multiparts']) > 1) {
+        foreach ($this->data['multiparts'] as $multipart) {
           $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . $multipart . "\r\n\r\n";
+                 . implode("\r\n", $multipart['headers']) . "\r\n"
+                 . $multipart['body'] . "\r\n\r\n";
+        }
+
+        $body .= '--'. $multipart_boundary_string .'--';
+
+    // Prepare one multipart only
+      } else {
+        $headers .= implode("\r\n", $this->data['multiparts'][0]['headers']) . "\r\n";
+        $body .= $this->data['multiparts'][0]['body'];
       }
 
       if (empty($body)) {

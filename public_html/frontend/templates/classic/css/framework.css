@@ -1494,7 +1494,7 @@ ul.list-inline li {
 .nav li > a {
   position: relative;
   display: block;
-  padding: var(--gutter-size);
+  padding: 15px var(--gutter-size);
   color: inherit;
   text-decoration: none;
 }
@@ -1763,7 +1763,7 @@ ul.list-inline li {
 }
 @media (min-width: 768px) {
   .navbar-form {
-    margin: 11px 11px 0 11px;
+    margin: 0.5em 11px 0 11px;
   }
 }
 .navbar-toggle .icon-bar {
@@ -1788,12 +1788,9 @@ ul.list-inline li {
 }
 .alert .close {
   float: right;
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 1.25em;
+  color: inherit;
   line-height: 1;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-  opacity: 0.2;
 }
 .alert .close:hover {
   text-decoration: none;

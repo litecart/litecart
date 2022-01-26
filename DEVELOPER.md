@@ -82,4 +82,16 @@ If you are new to Git we recommend SourceTree or GitHub Desktop as a great graph
 
   The commit message must always reveal what's inside the commit, no surprises or unreferenced work.
 
-  DO NOT COMMIT test data or debug code. All commits should be ready for production.
+    npm install
+
+Done! Node.js should now have installed all necessary libraries, you can now use any of the following commands:
+
+    npm run grunt         (Launches all grunt tasks)
+    npm run grunt less    (Compile and minify .min.css from .less)
+    npm run grunt uglify  (Uglify and minify .min.js from .js)
+    npm run grunt replace (Update version number in scripts from package.js)
+    npm run grunt phplint (Check scripts for syntax errors)
+    npm run grunt watch   (Watch for changes in .less and .js and update minified versions on the fly)
+    npm run hash          (Update checksums.md5 for all tracked files)
+
+    npm update    (Update your node modules to newer versions)

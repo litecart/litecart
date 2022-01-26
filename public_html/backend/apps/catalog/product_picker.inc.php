@@ -13,7 +13,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
     <div class="form-group table-responsive">
@@ -81,6 +81,9 @@
             '</tr>'
           );
         });
+        if ($('#modal-product-picker .results tbody').html() == '') {
+          $('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+        }
       },
     });
   }).focus();

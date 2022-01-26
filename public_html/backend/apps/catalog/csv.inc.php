@@ -10,6 +10,7 @@
     try {
 
       ini_set('memory_limit', -1);
+      set_time_limit(900);
 
       ob_clean();
 
@@ -165,7 +166,7 @@
           'counters' => [
             'updated' => 0,
             'inserted' => 0,
-            'line' => 1,
+            'line' => 0,
           ],
         ];
 
@@ -179,6 +180,7 @@
       echo 'Processing batch...' . PHP_EOL . PHP_EOL;
 
       while ($row = array_shift($batch['rows'])) {
+        $batch['counters']['line']++;
 
         if (round(microtime(true) - $time_start) > 5) {
           echo PHP_EOL . 'Resuming '. number_format(count($batch['rows']), 0, '', ' ') .' remaining lines for processing...' . PHP_EOL . PHP_EOL;
@@ -374,6 +376,15 @@
               } else {
                 $category = new ent_category();
               }
+            }
+
+            if (empty($row['parent_id']) && !empty($row['parent_code'])) {
+              $parent_query = database::query(
+                "select id from ". DB_TABLE_PREFIX ."categories
+                where code = '". database::input($row['parent_code']) ."'
+                limit 1;"
+              );
+              $row['parent_id'] = database::fetch($parent_query, 'id');
             }
 
           // Set new category data
@@ -942,188 +953,217 @@
 
       $csv = [];
 
-        switch ($_POST['type']) {
+      switch ($_POST['type']) {
 
-          case 'attributes':
+        case 'attributes':
 
-            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-            $attributes_query = database::query(
-                "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_PREFIX ."attribute_values av
-                left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
-                left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
-                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
-                order by agi.name, av.priority;"
-            );
+          $attributes_query = database::query(
+              "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_PREFIX ."attribute_values av
+              left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
+              left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
+              left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
+              order by agi.name, av.priority;"
+          );
 
-            while ($attribute = database::fetch($attributes_query)) {
-              $csv[] = $attribute;
-            }
+          while ($attribute = database::fetch($attributes_query)) {
+            $csv[] = $attribute;
+          }
 
-            break;
+          break;
 
-          case 'campaigns':
+        case 'brands':
 
-            $campaign_query = database::query(
-              "select * from ". DB_TABLE_PREFIX ."products_campaigns
-              order by product_id;"
-            );
+          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-            if (!database::num_rows($campaign_query)) {
+          $categories_query = database::query(
+            "select m.*, mi.name, mi.short_description, mi.description, mi.meta_description, mi.head_title, mi.h1_title
+            from ". DB_TABLE_PREFIX ."manufacturers m
+            left join ". DB_TABLE_PREFIX ."manufacturers_info mi on (mi.category_id = m.id and mi.language_code = '". database::input($_POST['language_code']) ."')
+            order by m.priority;"
+          );
 
-              $fields_query = database::query(
-                "show fields from ". DB_TABLE_PREFIX ."products_campaigns;"
-              );
-
-              $csv[] = database::fetch($fields_query);
-
-              break;
-            }
-
-            while ($campaign = database::fetch($campaign_query)) {
-              $csv[] = $campaign;
-            }
-
-            break;
-
-          case 'categories':
-
-            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
-
-            $categories_query = database::query("select id from ". DB_TABLE_PREFIX ."categories order by parent_id;");
-            while ($category = database::fetch($categories_query)) {
-
-              $category = new ref_category($category['id'], $_POST['language_code']);
-
+          while ($manufacturer = database::fetch($manufacturers_query)) {
               $csv[] = [
-                'id' => $category->id,
-                'status' => $category->status,
-                'parent_id' => $category->parent_id,
-                'code' => $category->code,
-                'name' => $category->name,
-                'keywords' => implode(',', $category->keywords),
-                'short_description' => $category->short_description,
-                'description' => $category->description,
-                'meta_description' => $category->meta_description,
-                'head_title' => $category->head_title,
-                'h1_title' => $category->h1_title,
-                'image' => $category->image,
-                'new_image' => '',
-                'priority' => $category->priority,
+              'id' => $manufacturer['id'],
+              'status' => $manufacturer['status'],
+              'code' => $manufacturer['code'],
+              'name' => $manufacturer['name'],
+              'keywords' => $manufacturer['keywords'],
+              'short_description' => $manufacturer['short_description'],
+              'description' => $manufacturer['description'],
+              'meta_description' => $manufacturer['meta_description'],
+              'head_title' => $manufacturer['head_title'],
+              'h1_title' => $manufacturer['h1_title'],
+              'image' => $manufacturer['image'],
+              'new_image' => '',
+              'priority' => $manufacturer['priority'],
                 'language_code' => $_POST['language_code'],
               ];
             }
 
-            break;
+          break;
 
-          case 'brands':
+        case 'campaigns':
 
-            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          $campaign_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."products_campaigns
+            order by product_id;"
+          );
 
-            $brands_query = database::query("select id from ". DB_TABLE_PREFIX ."brands order by id;");
-            while ($brand = database::fetch($brands_query)) {
+          if (!database::num_rows($campaign_query)) {
 
-              $brand = new ref_brand($brand['id'], $_POST['language_code']);
-
-              $csv[] = [
-                'id' => $brand->id,
-                'status' => $brand->status,
-                'code' => $brand->code,
-                'name' => $brand->name,
-                'keywords' => implode(',', $brand->keywords),
-                'short_description' => $brand->short_description,
-                'description' => $brand->description,
-                'meta_description' => $brand->meta_description,
-                'head_title' => $brand->head_title,
-                'h1_title' => $brand->h1_title,
-                'image' => $brand->image,
-                'new_image' => '',
-                'priority' => $brand->priority,
-                'language_code' => $_POST['language_code'],
-              ];
-            }
-
-            break;
-
-          case 'products':
-
-            if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
-            if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
-
-            $products_query = database::query(
-              "select p.id from ". DB_TABLE_PREFIX ."products p
-              left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
-              order by pi.name;"
+            $fields_query = database::query(
+              "show fields from ". DB_TABLE_PREFIX ."products_campaigns;"
             );
 
-            while ($product = database::fetch($products_query)) {
-
-              $product = new ref_product($product['id'], $_POST['language_code'], $_POST['currency_code']);
-
-              $attribute_map = function($attribute) {
-                if (!empty($attribute['custom_value'])) {
-                  return $attribute['group_id'] .':"'. $attribute['custom_value'] .'"';
-                } else {
-                  return $attribute['group_id'] .':'. $attribute['value_id'];
-                }
-              };
-
-              $csv[] = [
-                'id' => $product->id,
-                'status' => $product->status,
-                'categories' => implode(',', array_keys($product->categories)),
-                'brand_id' => $product->brand_id,
-                'supplier_id' => $product->supplier_id,
-                'code' => $product->code,
-                'name' => $product->name,
-                'short_description' => $product->short_description,
-                'description' => $product->description,
-                'keywords' => implode(',', $product->keywords),
-                'technical_data' => $product->technical_data,
-                'head_title' => $product->head_title,
-                'meta_description' => $product->meta_description,
-                'images' => implode(';', $product->images),
-                'new_images' => '',
-                'attributes' => implode("\r\n", array_map($attribute_map, $product->attributes)),
-                'recommended_price' => $product->recommended_price,
-                'price' => $product->price,
-                'tax_class_id' => $product->tax_class_id,
-                'quantity' => $product->quantity,
-                'quantity_unit_id' => $product->quantity_unit['id'],
-                'delivery_status_id' => $product->delivery_status_id,
-                'sold_out_status_id' => $product->sold_out_status_id,
-                'language_code' => $_POST['language_code'],
-                'currency_code' => $_POST['currency_code'],
-                'date_valid_from' => $product->date_valid_from,
-                'date_valid_to' => $product->date_valid_to,
-              ];
-            }
+            $csv[] = database::fetch($fields_query);
 
             break;
+          }
+
+          while ($campaign = database::fetch($campaign_query)) {
+            $csv[] = $campaign;
+            }
+
+          break;
+
+        case 'categories':
+
+          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+
+          $categories_query = database::query(
+            "select c.*, c2.code as parent_code, ci.name, ci.short_description, ci.description, ci.meta_description, ci.head_title, ci.h1_title
+            from ". DB_TABLE_PREFIX ."categories c
+            left join ". DB_TABLE_PREFIX ."categories c2 on (c2.id = c.parent_id)
+            left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_POST['language_code']) ."')
+            order by c.priority;"
+          );
+
+          while ($category = database::fetch($categories_query)) {
+            $csv[] = [
+              'id' => $category['id'],
+              'status' => $category['status'],
+              'parent_id' => $category['parent_id'],
+              'parent_code' => $category['parent_code'],
+              'code' => $category['code'],
+              'name' => $category['name'],
+              'keywords' => $category['keywords'],
+              'short_description' => $category['short_description'],
+              'description' => $category['description'],
+              'meta_description' => $category['meta_description'],
+              'head_title' => $category['head_title'],
+              'h1_title' => $category['h1_title'],
+              'image' => $category['image'],
+              'new_image' => '',
+              'priority' => $category['priority'],
+              'language_code' => $_POST['language_code'],
+            ];
+          }
+
+          break;
+
+
+
+        case 'products':
+
+          if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
+          if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
+
+          $products_query = database::query(
+            "select p.*, pi.name, pi.short_description, pi.meta_description, pi.head_title, pp.price, pa.attributes
+            from ". DB_TABLE_PREFIX ."products p
+            left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
+            left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
+            left join (
+              select product_id, group_concat(concat(group_id, ':', if(custom_value != '', concat('\"', custom_value, '\"'), value_id)) separator '\r\n') as attributes
+              from ". DB_TABLE_PREFIX ."products_attributes
+              group by product_id
+            ) pa on (p.id = pa.product_id)
+            left join (
+              select product_id, group_concat(filename separator ';') as images
+              from ". DB_TABLE_PREFIX ."products_images
+              group by product_id
+              order by priority
+            ) pim on (pim.product_id = p.id)
+            left join (
+              select product_id, `". database::input($_POST['currency_code']) ."` as price
+              from ". DB_TABLE_PREFIX ."products_prices
+            ) pp on (pp.product_id = p.id)
+            order by pi.name, pi.id;"
+          );
+
+          while ($product = database::fetch($products_query)) {
+            $csv[] = [
+              'id' => $product['id'],
+              'status' => $product['status'],
+              'categories' => $product['categories'],
+              'manufacturer_id' => $product['manufacturer_id'],
+              'supplier_id' => $product['supplier_id'],
+              'code' => $product['code'],
+              'sku' => $product['sku'],
+              'mpn' => $product['mpn'],
+              'gtin' => $product['gtin'],
+              'taric' => $product['taric'],
+              'name' => $product['name'],
+              'short_description' => $product['short_description'],
+              'description' => $product['description'],
+              'keywords' => $product['keywords'],
+              'technical_data' => $product['technical_data'],
+              'head_title' => $product['head_title'],
+              'meta_description' => $product['meta_description'],
+              'images' => $product['images'],
+              'new_images' => '',
+              'attributes' => $product['attributes'],
+              'purchase_price' => (float)$product['purchase_price'],
+              'purchase_price_currency_code' => $product['purchase_price_currency_code'],
+              'recommended_price' => (float)$product['recommended_price'],
+              'price' => (float)$product['price'],
+              'tax_class_id' => $product['tax_class_id'],
+              'quantity' => (float)$product['quantity'],
+              'quantity_unit_id' => $product['quantity_unit_id'],
+              'weight' => (float)$product['weight'],
+              'weight_class' => $product['weight_class'],
+              'dim_x' => (float)$product['dim_x'],
+              'dim_y' => (float)$product['dim_y'],
+              'dim_z' => (float)$product['dim_z'],
+              'dim_class' => $product['dim_class'],
+              'delivery_status_id' => $product['delivery_status_id'],
+              'sold_out_status_id' => $product['sold_out_status_id'],
+              'language_code' => $_POST['language_code'],
+              'currency_code' => $_POST['currency_code'],
+              'date_valid_from' => $product['date_valid_from'],
+              'date_valid_to' => $product['date_valid_to'],
+            ];
+          }
 
           case 'stock_items':
 
-            $stock_items_query = database::query("select id from ". DB_TABLE_PREFIX ."stock_items order by id;");
+            $stock_items_query = database::query(
+              "select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
+              left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.product_id = s.id and si.language_code = '". database::input($_POST['language_code']) ."')
+              order by s.id;"
+            );
+
             while ($stock_item = database::fetch($stock_items_query)) {
 
-              $stock_item = reference::stock_item($stock_item['id']);
-
               $csv[] = [
-                'id' => $stock_item->id,
-                'status' => $stock_item->status,
-                'code' => $stock_item->code,
-                'sku' => $stock_item->sku,
-                'mpn' => $stock_item->mpn,
-                'gtin' => $stock_item->gtin,
-                'name' => $stock_item->name[language::$selected],
-                'purchase_price' => $stock_item->purchase_price,
-                'purchase_price_currency_code' => $stock_item->purchase_price_currency_code,
-                'weight' => $stock_item->weight,
-                'weight_unit' => $stock_item->weight_unit,
-                'length' => $stock_item->length,
-                'width' => $stock_item->width,
-                'height' => $stock_item->height,
-                'length_unit' => $stock_item->length_unit,
+                'id' => $stock_item['id'],
+                'status' => $stock_item['status'],
+                'code' => $stock_item['code'],
+                'sku' => $stock_item['sku'],
+                'mpn' => $stock_item['mpn'],
+                'gtin' => $stock_item['gtin'],
+                'name' => $stock_item['name'],
+                'purchase_price' => $stock_item['purchase_price'],
+                'purchase_price_currency_code' => $stock_item['purchase_price_currency_code'],
+                'weight' => $stock_item['weight'],
+                'weight_unit' => $stock_item['weight_unit'],
+                'length' => $stock_item['length'],
+                'width' => $stock_item['width'],
+                'height' => $stock_item['height'],
+                'length_unit' => $stock_item['length_unit'],
                 'language_code' => $_POST['language_code'],
               ];
             }
@@ -1132,29 +1172,30 @@
 
           case 'suppliers':
 
-            $suppliers_query = database::query("select id from ". DB_TABLE_PREFIX ."suppliers order by id;");
+          $suppliers_query = database::query(
+            "select * from ". DB_TABLE_PREFIX ."suppliers
+              order by id;"
+          );
+
             while ($supplier = database::fetch($suppliers_query)) {
-
-              $supplier = reference::supplier($supplier['id']);
-
               $csv[] = [
-                'id' => $supplier->id,
-                'status' => $supplier->status,
-                'code' => $supplier->code,
-                'name' => $supplier->name,
-                'keywords' => $supplier->keywords,
-                'description' => $supplier->description,
-                'email' => $supplier->email,
-                'phone' => $supplier->phone,
-                'link' => $supplier->link,
+                'id' => $supplier['id'],
+                'status' => $supplier['status'],
+                'code' => $supplier['code'],
+                'name' => $supplier['name'],
+                'keywords' => $supplier['keywords'],
+                'description' => $supplier['description'],
+                'email' => $supplier['email'],
+                'phone' => $supplier['phone'],
+                'link' => $supplier['link'],
               ];
             }
 
-            break;
+          break;
 
-          default:
-            throw new Exception('Unknown type');
-        }
+        default:
+          throw new Exception('Unknown type');
+      }
 
       ob_end_clean();
 

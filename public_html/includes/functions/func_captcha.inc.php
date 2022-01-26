@@ -31,7 +31,7 @@
       $code .= substr($possible, mt_rand(0, strlen($possible)-1), 1);
     }
 
-    $font_size = $height * 0.75; // font size will be 75% of the image height
+    $font_size = round($height * 0.75); // font size will be 75% of the image height
 
     $image = imagecreate($width, $height) or trigger_error('Cannot initialize new GD image stream', E_USER_ERROR);
 
@@ -52,8 +52,8 @@
 
   // Create textbox and add text
     $textbox = imagettfbbox($font_size, 0, $font, $code) or die('Error in imagettfbbox function');
-    $x = ($width - $textbox[4])/2;
-    $y = ($height - $textbox[5])/2;
+    $x = round(($width - $textbox[4]) / 2);
+    $y = round(($height - $textbox[5]) / 2);
     imagettftext($image, $font_size, 0, $x, $y, $text_color, $font , $code) or die('Error in imagettftext function');
 
   // Generate base64-encoded image data

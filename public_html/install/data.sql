@@ -408,7 +408,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+(1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, NULL, NULL, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
 (1, 1, 'en', '', '');

@@ -6,7 +6,7 @@
     <?php foreach ($options as $option) { ?>
     <label class="option text-start<?php echo (!empty($selected['id']) && $selected['id'] == $option['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
 
-      <input name="shipping_option[id]" value="<?php echo htmlspecialchars($option['id']); ?>" type="radio" hidden<?php if (!empty($option['error'])) echo ' disabled'; ?><?php if (!empty($selected['id'])) echo ' checked'; ?> />
+      <input name="shipping_option[id]" value="<?php echo functions::escape_html($option['id']); ?>" type="radio" hidden<?php if (!empty($option['error'])) echo ' disabled'; ?><?php if (!empty($selected['id'])) echo ' checked'; ?> />
 
       <div class="header row" style="margin: 0;">
         <div class="col-sm-4 thumbnail">

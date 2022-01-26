@@ -23,7 +23,7 @@
       <section class="information col-6 col-md-4 col-lg-3">
         <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
         <ul class="list-unstyled">
-          <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
+          <?php foreach ($pages as $page) echo '<li><a href="'. functions::escape_html($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
         </ul>
       </section>
 
@@ -61,7 +61,7 @@
         <?php if ($social_bookmarks) { ?>
         <ul class="buttons list-inline text-center">
           <?php foreach ($social_bookmarks as $bookmark) { ?>
-          <li><a href="<?php echo htmlspecialchars($bookmark['link']); ?>" class="thumbnail" target="_blank"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. htmlspecialchars($bookmark['title']) .'"'); ?></a></li>
+          <li><a href="<?php echo functions::escape_html($bookmark['link']); ?>" class="thumbnail" target="_blank"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a></li>
           <?php } ?>
         </ul>
         <?php } ?>

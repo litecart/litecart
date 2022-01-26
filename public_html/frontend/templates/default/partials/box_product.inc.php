@@ -46,9 +46,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
       <?php if (!empty($brand)) { ?>
       <div class="brand">
-        <a href="<?php echo htmlspecialchars($brand['link']); ?>">
+        <a href="<?php echo functions::escape_html($brand['link']); ?>">
           <?php if ($brand['image']) { ?>
-          <img src="<?php echo document::href_link($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($brand['name']); ?>" title="<?php echo htmlspecialchars($brand['name']); ?>" />
+          <img src="<?php echo document::href_link($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" title="<?php echo functions::escape_html($brand['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $brand['name']; ?></h3>
           <?php } ?>

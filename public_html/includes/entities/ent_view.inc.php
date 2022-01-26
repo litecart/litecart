@@ -58,7 +58,7 @@
         }
 
         if (in_array('escape', $modifiers)) {
-          $output = htmlspecialchars($output);
+          $output = functions::escape_html($output);
         }
 
         return $output;

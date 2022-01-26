@@ -129,7 +129,7 @@ textarea[name="html"] {
       <div class="form-group">
         <label><?php echo language::translate('title_html', 'HTML'); ?></label>
         <div class="form-control" style="padding: 0;">
-          <?php echo functions::form_draw_textarea('html', true, 'placeholder="'. htmlspecialchars('<a href="$target_url"><img class="img-responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
+          <?php echo functions::form_draw_textarea('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="img-responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
           <div style="padding: 0.5em; background: #efefef;">
             <?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
           </div>
@@ -188,7 +188,7 @@ textarea[name="html"] {
                  <?php foreach (language::$languages as $language) { ?>
                  '  <td><?php echo functions::form_draw_text_field('values['. $language['code'] .'][key_new_key_i]', true); ?></td>' +
                  <?php } ?>
-                 '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo htmlspecialchars(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
+                 '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
                  '</tr>';
 
     output = output.replace(/new_key_i/g, new_key_i);

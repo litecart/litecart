@@ -24,7 +24,7 @@
         <a href="#" data-toggle="dropdown"><?php echo language::translate('title_products', 'Products'); ?></a>
         <ul class="dropdown-menu">
           <?php foreach ($categories as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+          <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
           <?php } ?>
         </ul>
       </li>
@@ -35,7 +35,7 @@
         <a href="#" data-toggle="dropdown"><?php echo language::translate('title_brands', 'Brands'); ?></a>
         <ul class="dropdown-menu">
           <?php foreach ($brands as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+          <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
           <?php } ?>
         </ul>
       </li>
@@ -46,7 +46,7 @@
         <a href="#" data-toggle="dropdown"><?php echo language::translate('title_information', 'Information'); ?></a>
         <ul class="dropdown-menu">
           <?php foreach ($pages as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+          <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
           <?php } ?>
         </ul>
       </li>

@@ -26,7 +26,7 @@
 
   // Make sure document exists
     if (!file_exists(FS_DIR_APP .'backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
-      notices::add('errors', __APP__ .'/'. htmlspecialchars(__DOC__) . ' is not a valid app document');
+      notices::add('errors', __APP__ .'/'. functions::escape_html(__DOC__) . ' is not a valid app document');
       return;
     }
 

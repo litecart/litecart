@@ -16,7 +16,10 @@
 
     // Load cached links (URL rewrites)
       self::$_links_cache_token = cache::token('links', ['site', 'endpoint', 'language'], 'file', 900);
-      self::$_links_cache = cache::get(self::$_links_cache_token);
+
+      if (!self::$_links_cache = cache::get(self::$_links_cache_token)) {
+        self::$_links_cache = [];
+      }
 
       event::register('after_capture', [__CLASS__, 'after_capture']);
     }

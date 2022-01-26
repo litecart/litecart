@@ -204,7 +204,7 @@ CREATE TABLE `lc_customers` (
   `notes` TEXT NOT NULL DEFAULT '',
   `password_reset_token` VARCHAR(128) NOT NULL DEFAULT '',
   `login_attempts` INT NOT NULL DEFAULT '0',
-  `num_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `total_logins` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `last_ip` VARCHAR(39) NOT NULL DEFAULT '',
   `last_host` VARCHAR(128) NOT NULL DEFAULT '',
   `last_agent` VARCHAR(256) NOT NULL DEFAULT '',
@@ -314,6 +314,7 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
 CREATE TABLE `lc_newsletter_recipients` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(128) NOT NULL DEFAULT '',
+  `client_ip` VARCHAR(64) NOT NULL DEFAULT '',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email`)
