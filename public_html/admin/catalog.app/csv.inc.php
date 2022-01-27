@@ -124,6 +124,9 @@
                   (id)
                   values (". (int)$row['group_id'] .");"
                 );
+                $attribute_group = new ent_attribute_group($row['group_id']);
+              } else {
+                $attribute_group = new ent_attribute_group();
               }
             }
 
