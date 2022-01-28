@@ -11,6 +11,10 @@
     return;
   }
 
+  if (!$_POST) {
+    $_POST['email'] = customer::$data['email'];
+  }
+
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
 
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
