@@ -110,8 +110,9 @@
 
     try {
       $customers_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."customers
-        order by date_created asc;"
+        "select c.*, if(nr.id, 1, 0) as newsletter from ". DB_TABLE_PREFIX ."customers c
+        left join ". DB_TABLE_PREFIX ."newsletter_recipients nr on (nr.email = c.email)
+        order by c.date_created asc;"
       );
 
       $csv = [];
