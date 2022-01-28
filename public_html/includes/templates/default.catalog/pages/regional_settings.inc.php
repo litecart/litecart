@@ -44,6 +44,11 @@
         </div>
 
         <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+          <?php echo functions::form_draw_text_field('postcode', customer::$data['postcode']); ?>
+        </div>
+
+        <div class="form-group col-md-6">
           <label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
           <?php echo functions::form_draw_toggle('display_prices_including_tax', customer::$data['display_prices_including_tax'], 'y/n'); ?>
         </div>
@@ -64,7 +69,13 @@
   }
 
   $('select[name="country_code"]').change(function(){
-    $('body').css('cursor', 'wait');
+
+    if ($(this).find('option:selected').data('postcode-format')) {
+      $('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+    } else {
+      $('input[name="postcode"]').removeAttr('pattern');
+    }
+
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
@@ -85,9 +96,6 @@
           $('select[name="zone_code"]').prop('disabled', true);
         }
       },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
     });
   });
 </script>

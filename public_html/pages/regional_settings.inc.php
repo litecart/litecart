@@ -29,6 +29,11 @@
         }
       }
 
+      if (isset($_POST['postcode'])) {
+        customer::$data['postcode'] = $_POST['postcode'];
+        customer::$data['shipping_address']['postcode'] = $_POST['postcode'];
+      }
+
       if (isset($_POST['display_prices_including_tax'])) {
         customer::$data['display_prices_including_tax'] = (bool)$_POST['display_prices_including_tax'];
         if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
