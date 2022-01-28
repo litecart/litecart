@@ -63,39 +63,34 @@
 </div>
 
 <script>
-  if ($('#regional-settings .title').parents('.modal')) {
-    $('#regional-settings .title').closest('.modal').find('.modal-title').text($('#regional-settings .title').text());
-    $('#regional-settings .title').remove();
+$('select[name="country_code"]').change(function(){
+
+  if ($(this).find('option:selected').data('postcode-format')) {
+    $('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+  } else {
+    $('input[name="postcode"]').removeAttr('pattern');
   }
 
-  $('select[name="country_code"]').change(function(){
-
-    if ($(this).find('option:selected').data('postcode-format')) {
-      $('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
-    } else {
-      $('input[name="postcode"]').removeAttr('pattern');
-    }
-
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
-      },
-      success: function(data) {
-        $('select[name="zone_code"]').html('');
-        if ($('select[name="zone_code"]').attr('disabled')) $('select[name="zone_code"]').prop('disabled', false);
-        if (data) {
-          $.each(data, function(i, zone) {
-            $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name="zone_code"]').prop('disabled', true);
-        }
-      },
-    });
+  $.ajax({
+    url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+    type: 'get',
+    cache: true,
+    async: true,
+    dataType: 'json',
+    error: function(jqXHR, textStatus, errorThrown) {
+      if (console) console.warn(errorThrown.message);
+    },
+    success: function(data) {
+      $('select[name="zone_code"]').html('');
+      if ($('select[name="zone_code"]').attr('disabled')) $('select[name="zone_code"]').prop('disabled', false);
+      if (data) {
+        $.each(data, function(i, zone) {
+          $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+        });
+      } else {
+        $('select[name="zone_code"]').prop('disabled', true);
+      }
+    },
   });
+});
 </script>
