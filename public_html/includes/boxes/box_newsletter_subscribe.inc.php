@@ -8,6 +8,11 @@
 
 			$_POST['email'] = strtolower($_POST['email']);
 
+    // Collect scraps
+      if (empty(customer::$data['id'])) {
+        customer::$data = array_replace(customer::$data, array_filter(array_diff_key($_POST, array_flip(['id']))));
+      }
+
 			database::query(
 				"insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
 				(email, client_ip, date_created)
@@ -30,6 +35,11 @@
 			if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide an email address'));
 
 			$_POST['email'] = strtolower($_POST['email']);
+
+    // Collect scraps
+      if (empty(customer::$data['id'])) {
+        customer::$data = array_replace(customer::$data, array_filter(array_diff_key($_POST, array_flip(['id']))));
+      }
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."newsletter_recipients

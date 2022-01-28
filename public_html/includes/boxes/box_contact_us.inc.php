@@ -13,6 +13,11 @@
       if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide a valid email address'));
       if (empty($_POST['message'])) throw new Exception(language::translate('error_missing_message', 'You must prvide a message'));
 
+    // Collect scraps
+      if (empty(customer::$data['id'])) {
+        customer::$data = array_replace(customer::$data, array_filter(array_diff_key($_POST, array_flip(['id']))));
+      }
+
       $message = strtr(language::translate('email_customer_feedback', "** This is an email message from %sender_name <%sender_email> **\r\n\r\n%message"), [
         '%sender_name' => $_POST['firstname'] .' '. $_POST['lastname'],
         '%sender_email' => $_POST['email'],
