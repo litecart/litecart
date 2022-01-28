@@ -267,7 +267,7 @@
     }
 
     public static function number_format($number, $decimals=2) {
-      return number_format($number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
+      return number_format((float)$number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
     }
 
     public static function strftime($format, $timestamp=null) {
