@@ -563,7 +563,10 @@
 
     preg_match('#^(\w+)(?:\((.*?)\))?$#', $function, $matches);
 
-    if (!isset($matches[1])) trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
+    if (!isset($matches[1])) {
+      trigger_error('Invalid function name ('. $function .')', E_USER_WARNING);
+      return form_draw_textarea($name, $input, $parameters . ' rows="1"');
+    }
 
     $options = [];
     if (isset($matches[2])) {
