@@ -12,7 +12,7 @@
   }
 
   if (!$_POST) {
-    $_POST[$key] = customer::$data;
+    $_POST = customer::$data;
   }
 
   if (!empty(customer::$data['id'])) {
