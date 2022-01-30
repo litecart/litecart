@@ -135,15 +135,15 @@
             if (isset($row['group_name'])) $attribute_group->data['name'][$row['language_code']] = $row['group_name'];
             if (isset($row['sort'])) $attribute_group->data['sort'] = $row['sort'];
 
-            if (!empty($row['value_id'])) {
-              $value_key = array_search($row['value_id'], array_column($attribute_group->data['values'], 'id', 'id'));
+            foreach ($attribute_group->data['values'] as $key => $value) {
+              if (!empty($row['value_id']) && $value['id'] == $row['value_id']) {
+                $value_key = $key;
+                break;
+              }
 
-            } else if (!empty($row['value_name'])) {
-              foreach ($attribute_group->data['values'] as $key => $value) {
-                if ($value['name'][$row['language_code']] == $row['value_name']) {
-                  $value_key = $row['value_id'];
-                  break;
-                }
+              if (!empty($row['value_name']) && isset($value['name'][$row['language_code']]) && $value['name'][$row['language_code']] == $row['value_name']) {
+                $value_key = $key;
+                break;
               }
             }
 
@@ -159,6 +159,9 @@
 
           // Sort values
             uasort($attribute_group->data['values'], function($a, $b){
+              if (!isset($a['priority'])) $a['priority'] = '';
+              if (!isset($b['priority'])) $b['priority'] = '';
+
               if ($a['priority'] == $b['priority']) {
                 return ($a['name'] < $b['name']) ? -1 : 1;
               }

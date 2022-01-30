@@ -232,7 +232,7 @@
 
           database::query(
             "update ". DB_TABLE_PREFIX ."attribute_values_info
-            set name = '". database::input($value['name'][$language_code]) ."'
+            set name = '". (isset($value['name'][$language_code]) ? database::input($value['name'][$language_code]) : '') ."'
             where id = ". (int)$value_info['id'] ."
             and value_id = ". (int)$value['id'] ."
             and language_code = '". database::input($language_code) ."'
