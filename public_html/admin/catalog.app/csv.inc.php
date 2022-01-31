@@ -856,10 +856,16 @@
           if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
 
           $products_query = database::query(
-            "select p.*, pi.name, pi.short_description, pi.meta_description, pi.head_title, pp.price, pa.attributes
+            "select p.*, pi.name, pi.short_description, pi.meta_description, pi.head_title, p2c.categories, pp.price, pa.attributes
             from ". DB_TABLE_PREFIX ."products p
             left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
             left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
+            left join (
+              select product_id, group_concat(category_id separator ',') as categories
+              from ". DB_TABLE_PREFIX ."products_to_categories
+              group by product_id
+              order by category_id
+            ) p2c on (p2c.product_id = p.id)
             left join (
               select product_id, group_concat(concat(group_id, ':', if(custom_value != '', concat('\"', custom_value, '\"'), value_id)) separator '\r\n') as attributes
               from ". DB_TABLE_PREFIX ."products_attributes
