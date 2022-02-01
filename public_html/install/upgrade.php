@@ -105,6 +105,19 @@
       } else {
         echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
+
+      ### PHP > Check PHP Extensisons ###############################
+
+      echo '<p>Checking for PHP extensions... ';
+
+      $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
+
+      if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
+        echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
+      } else {
+        echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
+
       ### App > Check Version #######################################
 
       echo '<p>Checking application database version... ';
