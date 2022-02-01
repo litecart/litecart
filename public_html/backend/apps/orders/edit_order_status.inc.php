@@ -25,6 +25,7 @@
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
       $fields = [
+        'hidden',
         'state',
         'icon',
         'color',
@@ -128,6 +129,11 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
+
+              <div>
+                <strong><?php echo functions::form_draw_checkbox('hidden', ['1', language::translate('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
+                <?php echo language::translate('text_hidden_from_customer', 'Hidden from the customer\'s order history'); ?>
+              </div>
 
               <div>
                 <strong><?php echo functions::form_draw_checkbox('is_sale', ['1', language::translate('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>

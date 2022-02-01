@@ -445,6 +445,7 @@ CREATE TABLE `lc_orders_totals` (
 CREATE TABLE `lc_order_statuses` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `state` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT '',
+  `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `icon` VARCHAR(24) NOT NULL DEFAULT '',
   `color` VARCHAR(7) NOT NULL DEFAULT '',
   `is_sale` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',

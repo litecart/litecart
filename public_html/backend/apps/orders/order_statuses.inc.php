@@ -100,6 +100,7 @@
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_status_state', 'State'); ?></th>
           <th><?php echo language::translate('title_stock_action', 'Stock Action'); ?></th>
+          <th><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
           <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
@@ -119,6 +120,7 @@
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
           <td><?php echo strtr($order_status['state'], $states); ?></td>
           <td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => language::translate('title_none', 'None'), 'reserve' => language::translate('title_reserve_stock', 'Reserve Stock'), 'withdraw' => language::translate('title_withdraw_stock', 'Withdraw Stock')]); ?></td>
+          <td class="text-center"><?php echo !empty($order_status['hidden']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_archived']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>
@@ -132,7 +134,7 @@
 
       <tfoot>
         <tr>
-        <td colspan="13"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
+        <td colspan="14"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>
