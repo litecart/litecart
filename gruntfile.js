@@ -195,6 +195,7 @@ module.exports = function(grunt) {
           'public_html/assets/featherlight/featherlight.js',
           'public_html/backend/template/**/js/*.js',
           'public_html/frontend/templates/**/js/*.js',
+          '!public_html/frontend/templates/**/js/*.min.js',
         ],
         tasks: ['uglify']
       },

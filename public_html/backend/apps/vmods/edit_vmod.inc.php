@@ -295,7 +295,7 @@ textarea {
 
           </div>
 
-          <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
+          <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
 
         </div>
         <?php } ?>
@@ -329,7 +329,7 @@ textarea {
     <div class="operations">
     </div>
 
-    <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
+    <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
 
   </div>
 </div>

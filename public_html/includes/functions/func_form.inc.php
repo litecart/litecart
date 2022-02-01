@@ -41,6 +41,8 @@
 
       return $node;
     }
+
+    return '';
   }
 
   function form_draw_button($name, $value, $type='submit', $parameters='', $fonticon='') {

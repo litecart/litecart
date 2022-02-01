@@ -1,5 +1,5 @@
 <?php
-  $box_brand_links_cache_token = cache::token('box_brand_links', ['language', fallback($_GET['brand_id']]));
+  $box_brand_links_cache_token = cache::token('box_brand_links', ['language', fallback($_GET['brand_id'])]);
   if (cache::capture($box_brand_links_cache_token)) {
 
     $brands_query = database::query(

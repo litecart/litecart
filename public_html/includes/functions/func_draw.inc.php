@@ -213,6 +213,13 @@
 
   function draw_lightbox($selector='', $parameters=[]) {
 
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP . 'assets/featherlight/featherlight.min.css') .'" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/featherlight/featherlight.min.js') .'"></script>';
+    document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL
+                                                      . '  $.featherlight.defaults.targetAttr = \'data-target\';';
+
     $selector = str_replace("'", '"', $selector);
 
     if (empty($selector)) return;

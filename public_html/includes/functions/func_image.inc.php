@@ -29,7 +29,7 @@
         'width' => fallback($options['width'], 0),
         'height' => fallback($options['height'], 0),
         'clipping' => fallback($options['clipping'], 'FIT_ONLY_BIGGER'),
-        'quality' => fallback($options['quality'], settings)::get('image_quality'),
+        'quality' => fallback($options['quality'], settings::get('image_quality')),
         'trim' => fallback($options['trim'], false),
         'interlaced' => !empty($options['interlaced']) ? true : false,
         'overwrite' => fallback($options['overwrite'], false),

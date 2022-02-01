@@ -128,7 +128,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #6c6;"'); ?></a></td>
+            <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?></a></td>
           </tr>
         </tfoot>
       </table>

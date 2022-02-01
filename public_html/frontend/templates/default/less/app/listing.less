@@ -58,13 +58,14 @@
     flex: 1 1;
 
     background: var(--whitespace-color);
-    border: 1px solid var(--default-border-color);
     border-radius: var(--border-radius);
-    transform: scale(1);
-    transition: all 100ms linear;
 
     color: inherit;
     text-decoration: none;
+
+    transform: scale(1);
+    transition: all 100ms linear;
+
 
     @media (min-width: (@media-breakpoint-sm)) {
       &:hover {
@@ -117,9 +118,12 @@
     max-width: 200px;
     position: relative;
     font-size: ~"calc(var(--default-text-size) - 1px)";
-    border: 1px solid transparent;
+
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
 
     @media (min-width: (@media-breakpoint-sm)) {
+      min-width: 175px;
+      max-width: 200px;
       gap: .5em;
       &:hover {
         border-color: var(--listing-border-color);

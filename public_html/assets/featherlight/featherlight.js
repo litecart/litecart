@@ -23,27 +23,6 @@
 		return;
 	}
 
-	/* Featherlight is exported as $.featherlight.
-	   It is a function used to open a featherlight lightbox.
-
-	   [tech]
-	   Featherlight uses prototype inheritance.
-	   Each opened lightbox will have a corresponding object.
-	   That object may have some attributes that override the
-	   prototype's.
-	   Extensions created with Featherlight.extend will have their
-	   own prototype that inherits from Featherlight's prototype,
-	   thus attributes can be overriden either at the object level,
-	   or at the extension level.
-	   To create callbacks that chain themselves instead of overriding,
-	   use chainCallbacks.
-	   For those familiar with CoffeeScript, this correspond to
-	   Featherlight being a class and the Gallery being a class
-	   extending Featherlight.
-	   The chainCallbacks is used since we don't have access to
-	   CoffeeScript's `super`.
-	*/
-
 	function Featherlight($modal, config) {
 		if (this instanceof Featherlight) {  // called with new
 			this.id = Featherlight.id++;
@@ -449,7 +428,7 @@
 					$target.data('featherlight-persisted', fl);
 				}
 				if (elementConfig.$currentTarget.blur) {
-					elementConfig.$currentTarget.trigger('blur'); // Otherwise 'enter' key might trigger the dialog again
+					elementConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
 				}
 				fl.open(e);
 			};
@@ -548,14 +527,14 @@
 				this._$previouslyWithTabIndex.add(this._$previouslyTabbable).attr('tabindex', -1);
 
 				if (document.activeElement.blur) {
-					document.activeElement.trigger('blur');
+					document.activeElement.blur();
 				}
 
 				return _super(e);
 			},
 
 			afterContent: function(_super, e){
-				this.$instance.find('[autofocus]:not([disabled])').trigger('focus');
+				this.$instance.find('[autofocus]:not([disabled])').focus();
 				this.onResize(e);
 				return _super(e);
 			},
@@ -570,7 +549,7 @@
 					$(element).attr('tabindex', self._previousWithTabIndices[i]);
 				});
 
-				this._previouslyActive.trigger('focus');
+				this._previouslyActive.focus();
 
 				this.$instance.off('next.featherlight previous.featherlight');
 

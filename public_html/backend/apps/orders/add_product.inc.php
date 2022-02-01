@@ -22,7 +22,7 @@
 
     $price = !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price;
     $_POST['price'] = currency::format_raw($price, $_GET['currency_code'], $_GET['currency_value']);
-    $_POST['tax'] = tax::get_tax($price, $product->tax_class_id, $_GET['customer']);
+    $_POST['tax'] = tax::get_tax($_POST['price'], $product->tax_class_id, $_GET['customer']);
   }
 ?>
 

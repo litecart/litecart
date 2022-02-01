@@ -183,3 +183,20 @@
     }
   }
 }
+
+@media (max-width: (@media-breakpoint-md - 1px)) {
+  .navbar-sidebar {
+    transition: all 200ms linear;
+    .navbar-menu {
+      width: 0;
+    }
+    &.expanded .navbar-menu {
+      width: 250px
+    }
+    .navbar-menu {
+      position: absolute;
+      width: calc(100vw - 75px);
+      background: var(--navigation-background-color);
+    }
+  }
+}

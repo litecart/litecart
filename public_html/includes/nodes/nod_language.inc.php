@@ -40,17 +40,12 @@
         }
       }
 
-      event::register('before_capture', [__CLASS__, 'before_capture']);
       event::register('before_output', [__CLASS__, 'before_output']);
       event::register('shutdown', [__CLASS__, 'shutdown']);
     }
 
-    public static function before_capture() {
-      header('Content-Language: '. self::$selected['code']);
-    }
-
     public static function before_output() {
-      if (empty(self::$selected['code'])) trigger_error('Error: No language set', E_USER_ERROR);
+      header('Content-Language: '. self::$selected['code']);
     }
 
     public static function shutdown() {
@@ -249,7 +244,7 @@
     }
 
     public static function number_format($number, $decimals=2) {
-      return number_format($number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
+      return number_format((float)$number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
     }
 
     public static function strftime($format, $timestamp=null) {

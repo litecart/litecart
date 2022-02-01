@@ -4,6 +4,8 @@
     $language = new ent_language($_GET['language_code']);
   } else {
     $language = new ent_language();
+    $language->data['direction'] = 'ltr';
+    $language->data['url_type'] = 'path';
   }
 
   if (!$_POST) {
@@ -48,11 +50,11 @@
       }
 
       if (!preg_grep('#'. preg_quote($_POST['charset'], '#') .'#i', mb_list_encodings())) {
-        throw new Exception(strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), ['%charset' => fallback($_POST['charset'], 'NULL'])));
+        throw new Exception(strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), ['%charset' => fallback($_POST['charset'], 'NULL')]));
       }
 
       if (!setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
-        throw new Exception(strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), ['%locale' => fallback($_POST['locale'], 'NULL'])));
+        throw new Exception(strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), ['%locale' => fallback($_POST['locale'], 'NULL')]));
       }
 
       setlocale(LC_ALL, preg_split('#\s*,\s*#', language::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY)); // Restore
@@ -154,7 +156,7 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_direction', 'Direction'); ?></label>
+          <label><?php echo language::translate('title_text_direction', 'Text Direction'); ?></label>
           <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
             <label class="btn btn-default<?php echo ($_POST['direction'] == 'ltr') ? ' active' : ''; ?>" style="text-align: left;"><?php echo functions::form_draw_radio_button('direction', 'ltr', true); ?> <?php echo language::translate('title_left_to_right', 'Left To Right'); ?></label>
             <label class="btn btn-default<?php echo ($_POST['direction'] == 'rtl') ? ' active' : ''; ?>" style="text-align: right;"><?php echo functions::form_draw_radio_button('direction', 'rtl', true); ?><?php echo language::translate('title_right_to_left', 'Right To Left'); ?></label>

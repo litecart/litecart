@@ -28,8 +28,8 @@
         <p><?php echo language::translate('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.'); ?></p>
 
         <div class="form-group">
-          <div class="input-group" style="max-width: 480px; margin: 0 auto;">
-            <?php echo functions::form_draw_text_field('email', true, 'placeholder="your@email.com" required'); ?>
+          <div style="display: flex; flex-direction: row; gap: 1em">
+            <?php echo functions::form_draw_email_field('email', true, 'placeholder="your@email.com" required'); ?>
             <?php echo functions::form_draw_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
           </div>
         </div>

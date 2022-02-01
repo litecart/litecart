@@ -1,6 +1,6 @@
 <?php
 
-  $box_category_tree_cache_token = cache::token('box_category_tree', ['language', fallback($_GET['category_id'], 0]));
+  $box_category_tree_cache_token = cache::token('box_category_tree', ['language', fallback($_GET['category_id'], 0)]);
   if (cache::capture($box_category_tree_cache_token)) {
 
     if (!empty($_GET['category_id'])) {

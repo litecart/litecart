@@ -1,3 +1,4 @@
+
 // Stylesheet Loader
   $.loadStylesheet = function(url, callback, fallback) {
     $('<link/>', {rel: 'stylesheet', href: url}).appendTo('head');
@@ -16,24 +17,6 @@
   };
 
   //$.loadScript('...').done(function(script, textStatus) { ... });
-
-// Load Fontawesome
-  if ($('[class^="fa "]').length) {
-    $.loadStylesheet(window._env.platform.path + 'assets/fontawesome/font-awesome.min.css');
-  }
-
-// Load Featherlight
-  if (typeof $.featherlight == 'undefined') {
-    if ($('[data-toggle="lightbox"]').length) {
-      $.loadStylesheet(window._env.platform.path + 'assets/featherlight/featherlight.min.css');
-      $.loadScript(window._env.platform.path + 'assets/featherlight/featherlight.min.js').done(function(script, textStatus) {
-        $.featherlight.autoBind = '[data-toggle="lightbox"]';
-        $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
-        $.featherlight.defaults.closeIcon = '&#x2716;';
-        $.featherlight.defaults.targetAttr = 'data-target';
-      });
-    }
-  }
 
 $(document).ajaxComplete(function(e, xhr, settings) {
   if (typeof $.featherlight == 'undefined') {
@@ -75,7 +58,7 @@ $(document).ajaxComplete(function(e, xhr, settings) {
     var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
     var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
-    $(window).bind('resize scroll', function(e){
+    $(window).on('resize scroll', function(e){
       if (sidebar_max_offset) {
         var parallax_rate = 0.4;
 

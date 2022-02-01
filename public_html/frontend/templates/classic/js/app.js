@@ -14,7 +14,7 @@
       var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
       var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
-      $(window).bind('resize scroll', function(e){
+      $(window).on('resize scroll', function(e){
         if (sidebar_max_offset) {
           var parallax_rate = 0.4;
 

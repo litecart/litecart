@@ -142,11 +142,11 @@
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
-      if (empty($_POST['redirect_url']) || preg_match('#^'. preg_quote(WS_DIR_APP .'/'. BACKEND_ALIAS .'/', '#') .'#', $_POST['redirect_url'])) {
+      if (!empty($_POST['redirect_url'])) {
         $redirect_url = new ent_link($_POST['redirect_url']);
         $redirect_url->host = '';
       } else {
-        $redirect_url = document::link(BACKEND_ALIAS.'/');
+        $redirect_url = document::ilink('b:');
       }
 
       notices::add('success', str_replace(['%username'], [user::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));

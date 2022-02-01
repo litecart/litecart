@@ -133,7 +133,7 @@
 </main>
 
 <script>
-  $('form[name="customer_form"]').on('input propertyChange', ':input', function() {
+  $('form[name="customer_form"]').on('input', ':input', function() {
     if ($(this).val() == '') return;
     $('body').css('cursor', 'wait');
     $.ajax({

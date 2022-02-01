@@ -1,5 +1,5 @@
 <?php
-  $box_customer_service_links_cache_token = cache::token('box_customer_service_links', ['language', fallback($_GET['page_id']]));
+  $box_customer_service_links_cache_token = cache::token('box_customer_service_links', ['language', fallback($_GET['page_id'])]);
   if (cache::capture($box_customer_service_links_cache_token)) {
 
     if (!empty($_GET['page_id'])) {

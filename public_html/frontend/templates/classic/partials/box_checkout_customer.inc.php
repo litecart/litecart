@@ -429,5 +429,4 @@
   $('#box-checkout-customer').on('focusin', function(){
     clearTimeout(timerSubmitCustomer);
   });
-
 </script>
