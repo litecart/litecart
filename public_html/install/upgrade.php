@@ -326,42 +326,32 @@
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-        $files_to_delete = [
-          FS_DIR_APP . 'frontend/templates/default/css/app.css',
-          FS_DIR_APP . 'frontend/templates/default/css/checkout.css',
-          FS_DIR_APP . 'frontend/templates/default/css/framework.css',
-          FS_DIR_APP . 'frontend/templates/default/css/printable.css',
-        ];
+        perform_action('delete', [
+          FS_DIR_APP . 'frontend/templates/*/css/app.css',
+          FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
+          FS_DIR_APP . 'frontend/templates/*/css/framework.css',
+          FS_DIR_APP . 'frontend/templates/*/css/printable.css',
+        ]);
 
-        foreach ($files_to_delete as $file) {
-          functions::file_delete($file);
-        }
+        perform_action('modify', [
+          FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
+            ['search' => 'app.css',       'replace' => 'app.min.css'],
+            ['search' => 'checkout.css',  'replace' => 'checkout.min.css'],
+            ['search' => 'framework.css', 'replace' => 'framework.min.css'],
+            ['search' => 'printable.css', 'replace' => 'printable.min.css'],
+            ['search' => 'app.js',        'replace' => 'app.min.js'],
+          ],
+        ]);
 
       } else {
 
-        $files_to_delete = [
-          FS_DIR_APP . 'frontend/templates/default/css/*.min.css',
-          FS_DIR_APP . 'frontend/templates/default/css/*.min.css.map',
-          FS_DIR_APP . 'frontend/templates/default/js/*.min.js',
-          FS_DIR_APP . 'frontend/templates/default/js/*.min.js.map',
-          FS_DIR_APP . 'frontend/templates/default/less/',
-        ];
-
-        foreach ($files_to_delete as $file) {
-          functions::file_delete($file);
-        }
-
-        foreach (glob(FS_DIR_APP . 'frontend/templates/default/layouts/*.inc.php') as $file) {
-          $contents = file_get_contents($file);
-          $search_replace = [
-            'app.min.css'  => 'app.css',
-            'checkout.min.css'  => 'checkout.css',
-            'framework.min.css' => 'framework.css',
-            'printable.min.css' => 'printable.css',
-            'app.min.js' => 'app.js',
-          ];
-          file_put_contents($file, strtr($contents, $search_replace));
-        }
+        perform_action('delete', [
+          FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
+          FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
+          FS_DIR_APP . 'frontend/templates/*/js/*.min.js',
+          FS_DIR_APP . 'frontend/templates/*/js/*.min.js.map',
+          FS_DIR_APP . 'frontend/templates/*/less/',
+        ]);
       }
 
       echo PHP_EOL;
