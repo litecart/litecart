@@ -162,7 +162,7 @@
         $redirect_url = new ent_link($_POST['redirect_url']);
         $redirect_url->host = '';
       } else {
-        $redirect_url = document::link(BACKEND_ALIAS.'/');
+        $redirect_url = document::link(WS_DIR_ADMIN);
       }
 
       notices::add('success', str_replace(['%username'], [user::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
