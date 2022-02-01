@@ -296,7 +296,7 @@
     $config = file_get_contents('config');
 
     $map = [
-      '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
+      '{ADMIN_FOLDER}' => $_REQUEST['admin_folder'],
       '{DB_TYPE}' => 'mysql',
       '{DB_SERVER}' => $_REQUEST['db_server'],
       '{DB_USERNAME}' => $_REQUEST['db_username'],
@@ -408,7 +408,7 @@
 
     $htaccess = strtr($htaccess, [
       '{BASE_DIR}' => WS_DIR_APP,
-      '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'],
+      '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'] .'/',
     ]);
 
     if (file_put_contents('../.htaccess', $htaccess)) {
