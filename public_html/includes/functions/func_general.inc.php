@@ -7,6 +7,8 @@
 
   function general_path_friendly($text, $language_code=null) {
 
+    if (empty($text)) return '';
+
     if (empty($language_code)) $language_code = language::$selected['code'];
 
     if (strtoupper(language::$selected['charset']) != 'UTF-8') {

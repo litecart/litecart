@@ -22,7 +22,7 @@
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template
-      if (!empty($_SERVER['REQUEST_URI']) && preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+      if (!empty($_SERVER['REQUEST_URI']) && preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', route::$request)) {
         self::$template = settings::get('store_template_admin');
       } else {
         self::$template = settings::get('store_template_catalog');
