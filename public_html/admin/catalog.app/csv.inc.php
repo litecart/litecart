@@ -856,7 +856,7 @@
           if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
 
           $products_query = database::query(
-            "select p.*, pi.name, pi.description, pi.short_description, pi.meta_description, pi.head_title, p2c.categories, pp.price, pim.images, pa.attributes
+            "select p.*, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, p2c.categories, pp.price, pim.images, pa.attributes
             from ". DB_TABLE_PREFIX ."products p
             left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
             left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
