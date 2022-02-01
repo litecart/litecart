@@ -12,7 +12,7 @@ eaf50b53d6a1e44180cbfb0534c9bb36	admin/appearance.app/template_settings.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
 ba39860e1aa53b76684cb37f6af42b54	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
-5f75a3693b509e02cff2497254e7a1e8	admin/catalog.app/csv.inc.php
+57cc9162b1351e8cb2bdf6ba43b95027	admin/catalog.app/csv.inc.php
 69bf2e637e8191df9b68a64c51b2648e	admin/catalog.app/delivery_statuses.inc.php
 52836bf4fcf6b2be3a7a5a08fd6a4225	admin/catalog.app/edit_attribute_group.inc.php
 a912a7f788f57a8f9ad2d271e4353c42	admin/catalog.app/edit_category.inc.php
@@ -38,7 +38,7 @@ f936817f74c84fdb6d78effc8fcdb685	admin/currencies.app/currencies.inc.php
 aa853809ed4b3fdd14241319b2ee6151	admin/currencies.app/edit_currency.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/currencies.app/index.html
 3d7334d73acd32c1c1387a87a8282010	admin/customers.app/config.inc.php
-affc538ce8620f50caca22ae226a8d17	admin/customers.app/csv.inc.php
+409c2246853ad7ec7c9801b6ad7efa45	admin/customers.app/csv.inc.php
 ddfbc0dcb05dd567c69657c922c4d397	admin/customers.app/customers.inc.php
 4de39944efc2340f301c005f712c7a70	admin/customers.app/customers.json.inc.php
 1ac05558b3c13e78288b2bad7012d127	admin/customers.app/customer_picker.inc.php
@@ -62,7 +62,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/graphs.widget/index.html
 d41d8cd98f00b204e9800998ecf8427e	admin/languages.app/index.html
 31ca5e7fca33b49f5241bda457c7b41e	admin/languages.app/languages.inc.php
 780aa147e01c73b9b5084ee1aaa63273	admin/languages.app/storage_encoding.inc.php
-8f37fcd90ee581c7098c712d5622e6bc	admin/login.php
+4a5812fe3923fe94600969148b64002e	admin/login.php
 c0fc0a54978a39a472c4eb39f2a40d07	admin/logout.php
 05544af868785957f8044cbf814c62f4	admin/modules.app/config.inc.php
 7514572cd2626345eb356efb730f1cd3	admin/modules.app/edit_module.inc.php
@@ -74,7 +74,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 8af0cb515557fcac56a342762443d317	admin/orders.app/edit_order.inc.php
 c4d8062dd0e5e2809f829f66bc05227e	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
-d43697ce289329e2f6f63bb4519462f8	admin/orders.app/orders.inc.php
+8eaad440e54602ca857f1ab7eef7a249	admin/orders.app/orders.inc.php
 bbf826ee1d32d2855ec5cd09f7d0b342	admin/orders.app/order_statuses.inc.php
 8d43111e56233549c13d9083707e34c3	admin/orders.app/product_picker.inc.php
 1133a502b6a64250fc3a847b3bbd9863	admin/orders.widget/config.inc.php
@@ -822,7 +822,7 @@ e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
 d8d49900248ac58a8672b8d25e3261f8	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 7196bdf893aa3bbcef13a03855396aa8	install/index.php
-7fb87476f4a932e44d9040ff2117d754	install/install.php
+c531bcc7249f99eabe732bf5985b1efa	install/install.php
 61e7486c67205e9a5ed76b17d3ce0471	install/structure.sql
 9b097bad57381dee3c09e44b1506c998	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
