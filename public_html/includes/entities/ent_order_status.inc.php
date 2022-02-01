@@ -75,7 +75,8 @@
 
       $orders_query = database::query(
         "select count(*) as num_orders
-        where order_id = ". (int)$this->data['id'] .";"
+        from ". DB_TABLE_PREFIX ."orders
+        where order_status_id = ". (int)$this->data['id'] .";"
       );
 
       $this->data['num_orders'] = database::fetch($orders_query, 'num_orders');
