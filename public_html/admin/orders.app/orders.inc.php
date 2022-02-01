@@ -4,19 +4,6 @@
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
 
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
-  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
-
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
-
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"));
-  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
-  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
-
-  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
-  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
-
   document::$snippets['title'][] = language::translate('title_orders', 'Orders');
 
   breadcrumbs::add(language::translate('title_orders', 'Orders'));
@@ -97,7 +84,7 @@
 
   switch($_GET['order_status_id']) {
     case '':
-      $sql_where_order_status = "and (os.is_archived is null or os.is_archived = 0 or unread = 1)";
+      $sql_where_order_status = "and (os.is_archived = 0 or unread = 1)";
       break;
     case 'archived':
       $sql_where_order_status = "and (os.is_archived = 1)";
@@ -137,7 +124,6 @@
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     ". (!empty($sql_where_order_status) ? $sql_where_order_status : "") ."
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
