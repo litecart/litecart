@@ -1,13 +1,14 @@
 <?php
-  if (!empty($_POST['send'])) {
 
-    if (!$_POST) {
-      $_POST = [
-        'firstname' => customer::$data['firstname'],
-        'lastname' => customer::$data['lastname'],
-        'email' => customer::$data['email'],
-      ];
-    }
+  if (!$_POST) {
+    $_POST = [
+      'firstname' => customer::$data['firstname'],
+      'lastname' => customer::$data['lastname'],
+      'email' => customer::$data['email'],
+    ];
+  }
+
+  if (!empty($_POST['send'])) {
 
     try {
       if (settings::get('captcha_enabled')) {
