@@ -128,7 +128,7 @@
 </section>
 
 <script>
-  $('#box-filter form[name="filter_form"] :input').on('input', function(){
+  $('body').on('input', '#box-filter form[name="filter_form"] :input', function(){
     $('#box-filter .tokens').html('');
 
     $.each($('#box-filter input[data-token-title][type="search"]'), function(i,el) {
@@ -145,7 +145,7 @@
   $('#box-filter form[name="filter_form"] input[name="product_name"]').trigger('input');
 
   var xhr_filter = null;
-  $('#box-filter form[name="filter_form"]').on('input', function(){
+  $('body').on('input', '#box-filter form[name="filter_form"]', function(){
     if (xhr_filter) xhr_filter.abort();
     var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
     history.replaceState(null, null, url);
@@ -161,7 +161,7 @@
     });
   });
 
-  $('#box-filter form[name="filter_form"] .tokens').on('click', '.remove', function(e){
+  $('body').on('click', '#box-filter form[name="filter_form"] .tokens .remove', function(e){
     e.preventDefault();
     var token = $(this).closest('.token');
     switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
