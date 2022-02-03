@@ -155,8 +155,10 @@
       url: url.href,
       dataType: 'html',
       success: function(response){
-        var html = $('section.listing.products', response)[0].outerHTML;
-        $('section.listing.products').replaceWith(html).fadeIn('fast');
+        var content = $('section.listing.products', response)[0].outerHTML;
+        var pagination = $('.pagination', response)[0].outerHTML;
+        $('section.listing.products').replaceWith(content).fadeIn('fast');
+        $('.pagination').replaceWith(pagination).fadeIn('fast');
       }
     });
   });
