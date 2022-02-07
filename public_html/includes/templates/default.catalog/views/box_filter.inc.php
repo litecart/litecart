@@ -156,9 +156,10 @@
       dataType: 'html',
       success: function(response){
         var content = $('section.listing.products', response)[0].outerHTML;
-        var pagination = $('.pagination', response)[0].outerHTML;
-        $('section.listing.products').replaceWith(content).fadeIn('fast');
-        $('.pagination').replaceWith(pagination).fadeIn('fast');
+        var pagination = $('.pagination', response).length ? $('.pagination', response)[0].outerHTML : '';
+        $('.pagination').remove();
+        $('section.listing.products').replaceWith(content).after(pagination);
+        $('section.listing.products').after(pagination);
       }
     });
   });
