@@ -535,7 +535,7 @@
 
           if (!$this->_image->trimImage(0)) return false;
 
-          $this->resample($this->width() * 1.15, $this->height() * 1.15, 'FIT_ONLY_BIGGER_USE_WHITESPACING');  // Add 15% padding
+          $this->resample(round($this->width() * 1.15), round($this->height() * 1.15), 'FIT_ONLY_BIGGER_USE_WHITESPACING');  // Add 15% padding
 
           return true;
 
@@ -610,9 +610,9 @@
           } while (0);
 
           //$padding = 50; // Set padding size in px
-          $padding = $width * 0.15; // Set padding size in percentage
+          $padding = round($width * 0.15); // Set padding size in percentage
 
-          $_image = ImageCreateTrueColor($width + ($padding * 2), $height + ($padding * 2));
+          $_image = ImageCreateTrueColor($width + $padding * 2, $height + $padding * 2);
           ImageAlphaBlending($_image, true);
           ImageFill($_image, 0, 0, ImageColorAllocateAlpha($_image, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
 
@@ -621,8 +621,8 @@
           if ($result) {
             ImageDestroy($this->_image);
             $this->_image = $_image;
-            $this->_width = $width + ($padding*2);
-            $this->_height = $height + ($padding*2);
+            $this->_width = $width + $padding * 2;
+            $this->_height = $height + $padding * 2;
           }
 
           return $result;
