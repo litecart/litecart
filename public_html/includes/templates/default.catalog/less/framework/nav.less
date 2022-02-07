@@ -100,10 +100,10 @@
 }
 
 .nav-tabs {
-  background: var(--tabs-background-color);
+  background: var(--tabs-pane-background-color);
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
-  border-bottom: 1px solid var(--tabs-border-color);
+  border-bottom: 1px solid var(--tabs-pane-border-color);
   padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size) 0 var(--gutter-size);
   color: var(--tabs-text-color);
   padding-bottom: 0;
@@ -111,26 +111,31 @@
     flex: 0 0 auto;
     > a {
       margin-inline-end: ~"calc(var(--gutter-size)/2)";
-      line-height: 1.42857143;
+      line-height: 1.4;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
-      background-color: #e9e9e9;
+      background-color: var(--tabs-background-color);
+      color: var(--tabs-text-color);
+      border: 1px solid var(--tabs-border-color);
+      border-bottom-color: var(--tabs-background-color);
     }
     &:hover a {
-      background-color: rgba(255, 255, 255, .75);
+      background-color: rgba(255, 255, 255, .25);
     }
     &.active a {
-      background: var(--tabs-background-color-active);
+      background-color: var(--tabs-background-color-active);
       color: var(--tabs-text-color-active);
+      margin-top: 1px;
       margin-bottom: -1px;
-      border: 1px solid var(--tabs-border-color);
-      border-bottom-color: #fff;
+      border: 1px solid var(--tabs-border-color-active);
+      border-bottom-color: var(--tabs-content-background-color);
     }
   }
 }
 
 .tab-content {
   padding: var(--gutter-size) 0;
+  background: var(--tabs-content-background-color);
   .tab-pane {
     > .title {
      margin-top: 0;
