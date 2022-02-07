@@ -36,7 +36,7 @@
     private $_type;
     private $_width;
     private $_height;
-    private $_whitespace;
+    private $_whitespace = [255, 255, 255];
 
     public function __construct($file=null, $force_library=null) {
 
