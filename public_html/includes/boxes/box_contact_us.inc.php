@@ -24,7 +24,7 @@
 
     // Collect scraps
       if (empty(customer::$data['id'])) {
-        customer::$data = array_replace(customer::$data, array_filter(array_diff_key($_POST, array_flip(['id']))));
+        customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
       }
 
       $message = strtr(language::translate('email_customer_feedback', "** This is an email message from %sender_name <%sender_email> **\r\n\r\n%message"), [
