@@ -106,12 +106,26 @@
       }
 
       switch($this->_library) {
+
         case 'imagick':
+
+          // Prevent DoS attack
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 128e6);
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 128e6);
+
             $this->_image = new imagick($this->_src);
+
             return true;
 
         case 'gd':
+
+          if ($this->width() * $this->height() > 64e6) {
+            throw new Exception('Refused to load image larger than 64 Megapixels');
+          }
+
           switch(strtolower(pathinfo($this->_src, PATHINFO_EXTENSION))) {
+
             case 'gif':
               $this->_type = 'gif';
               $this->_image = ImageCreateFromGIF($this->_src);
@@ -153,7 +167,13 @@
 
         case 'imagick':
 
+        // Prevent DoS attack
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 128e6);
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 128e6);
+
           $this->_image = new imagick();
+
           $this->_image->readImageBlob($binary);
           $this->_type = $this->_image->getImageFormat();
 
@@ -161,13 +181,14 @@
 
         case 'gd':
 
-          $this->_image = ImageCreateFromString($binary);
-          if (!$this->_image) return false;
+          if (!$info = GetImageSizeFromString($binary)) {
+            throw new Exception('Could not extract image type and dimensions from binary string data');
+          }
 
-          $params = GetImageSizeFromString($binary);
-          $image_type = $params[2];
+          $this->_width = $info[0];
+          $this->_height = $info[1];
 
-          switch($image_type) {
+          switch($info[2]) {
             case 1:
               $this->_type = 'gif';
               break;
@@ -182,6 +203,12 @@
               $this->_type = 'png';
               break;
           }
+
+          if ($this->width() * $this->height() > 64e6) {
+            throw new Exception('Refused to load image larger than 64 Megapixels');
+          }
+
+          $this->_image = ImageCreateFromString($binary);
 
           return true;
       }
@@ -901,18 +928,22 @@
           }
 
           $this->_width = $this->_image->getImageWidth();
-          return $this->_width;
+          break;
 
         case 'gd':
 
           if (!$this->_image) {
             list($this->_width, $this->_height) = getimagesize($this->_src);
-            return $this->_width;
+            break;
           }
 
           $this->_width = ImageSX($this->_image);
-          return $this->_width;
+          break;
       }
+
+      if ($this->_width == 0) throw new Exception('Failed to detect image width');
+
+      return $this->_width;
     }
 
     public function height() {
@@ -929,18 +960,22 @@
           }
 
           $this->_height = $this->_image->getImageHeight();
-          return $this->_height;
+          break;
 
         case 'gd':
 
           if (!$this->_image) {
             list($this->_width, $this->_height) = getimagesize($this->_src);
-            return $this->_height;
+            break;
           }
 
           $this->_height = ImageSY($this->_image);
-          return $this->_height;
+          break;
       }
+
+      if ($this->_height == 0) throw new Exception('Failed to detect image height');
+
+      return $this->_height;
     }
 
     public function type() {
@@ -951,28 +986,34 @@
 
         if (function_exists('exif_imagetype')) {
           $image_type = exif_imagetype($this->_src);
-        } else {
+        }
+
+        if (empty($image_type) && function_exists('getimagesize')) {
           $params = getimagesize($this->_src);
+          $this->_width = $params[0];
+          $this->_height = $params[1];
           $image_type = $params[2];
         }
 
-        switch($image_type) {
-          case 1:
-            $this->_type = 'gif';
-            break;
-          case 2:
-            $this->_type = 'jpg';
-            break;
-          case 18:
-            $this->_type = 'webp';
-            break;
-          case 3:
-          default:
-            $this->_type = 'png';
-            break;
-        }
+        if (!empty($image_type)) {
+          switch($image_type) {
+            case 1:
+              $this->_type = 'gif';
+              break;
+            case 2:
+              $this->_type = 'jpg';
+              break;
+            case 18:
+              $this->_type = 'webp';
+              break;
+            case 3:
+            default:
+              $this->_type = 'png';
+              break;
+          }
 
-        return $this->_type;
+          return $this->_type;
+        }
       }
 
       if (empty($this->_image)) $this->load();
