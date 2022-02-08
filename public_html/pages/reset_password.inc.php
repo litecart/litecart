@@ -39,6 +39,8 @@
         if ($_POST['new_password'] != $_POST['confirmed_password']) {
           throw new Exception(language::translate('error_passwords_did_not_match', 'Passwords did not match'));
         }
+
+        if (!functions::password_check_strength($_POST['new_password'], 6)) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
       }
 
       if (settings::get('captcha_enabled')) {

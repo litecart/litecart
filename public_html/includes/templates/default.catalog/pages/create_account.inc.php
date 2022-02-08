@@ -97,7 +97,7 @@
       <div class="row">
         <div class="form-group col-xs-6">
           <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-          <?php echo functions::form_draw_password_field('password', '', 'required autocomplete="new-password"'); ?>
+          <?php echo functions::form_draw_password_field('password', '', 'required autocomplete="new-password" data-toggle="password-strength"'); ?>
         </div>
 
         <div class="form-group col-xs-6">

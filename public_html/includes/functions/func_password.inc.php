@@ -26,14 +26,17 @@
     return $password;
   }
 
-  function password_validate($password, $min_length=8, $min_lowercases=1, $min_uppercases=1, $min_numbers=1, $min_specials=0) {
+  function password_check_strength($password) {
 
     preg_replace('#[a-z]#', '', $password, -1, $lowercases);
     preg_replace('#[A-Z]#', '', $password, -1, $uppercases);
     preg_replace('#[0-9]#', '', $password, -1, $numbers);
-    preg_replace('#[^\w]#', '', $password, -1, $specials);
+    preg_replace('#[^\w]#', '', $password, -1, $symbols);
 
-    return (mb_strlen($password) >= $min_length && $lowercases >= $min_lowercases && $uppercases >= $min_uppercases && $numbers >= $min_numbers && $specials >= $min_specials);
+    $score = ($numbers * 9) + ($lowercases * 11.25) + ($uppercases * 11.25) + ($symbols * 15)
+           + ($numbers ? 10 : 0) + ($lowercases ? 10 : 0) + ($uppercases ? 10 : 0) + ($symbols ? 10 : 0);
+
+    return ($score >= 80) ? true : false;
   }
 
 // Deprecated in LiteCart 2.2.0 in favour of PHP password_hash() - Keep for backwards compatibility and migration
