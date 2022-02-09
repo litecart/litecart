@@ -76,9 +76,9 @@
       );
 
       if (database::num_rows($newsletter_recipient_query)) {
-        $this->data['newsletter'] = true;
+        $this->data['newsletter'] = 1;
       } else {
-        $this->data['newsletter'] = false;
+        $this->data['newsletter'] = 0;
       }
 
       $this->previous = $this->data;

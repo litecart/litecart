@@ -133,7 +133,7 @@
   function form_draw_checkbox($name, $value, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input === $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+    return '<input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input == $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
   }
 
   function form_draw_color_field($name, $value=true, $parameters='') {
@@ -336,7 +336,7 @@
   function form_draw_radio_button($name, $value, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input === $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
+    return '<input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($input == $value ? ' checked' : false) . (($parameters) ? ' ' . $parameters : false) .' />';
   }
 
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='') {
