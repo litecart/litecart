@@ -65,8 +65,8 @@
           if (empty($product->data[$field])) continue;
           foreach (array_keys($product->data[$field]) as $key) {
             $product->data[$field][$key]['id'] = null;
-            if ($field == 'options') {
-              foreach (array_keys($product->data[$field]['options'][$key]['values']) as $k) {
+            if ($field == 'options' && empty($product->data['options'][$key]['values'])) {
+              foreach (array_keys($product->data['options'][$key]['values']) as $k) {
                 $product->data[$field]['options'][$key]['values'][$k]['id'] = null;
               }
             }
