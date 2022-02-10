@@ -37,7 +37,7 @@
           case 'customer_country_code':
           case 'customer_zone_code':
           case 'customer_phone':
-            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = null;
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = '';
             break;
 
           case 'shipping_company':
@@ -50,21 +50,21 @@
           case 'shipping_country_code':
           case 'shipping_zone_code':
           case 'shipping_phone':
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = null;
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = '';
             break;
 
           case 'payment_option_id':
           case 'payment_option_name':
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = null;
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = '';
             break;
 
           case 'shipping_option_id':
           case 'shipping_option_name':
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = null;
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = '';
             break;
 
           default:
-            $this->data[$field['Field']] = null;
+            $this->data[$field['Field']] = '';
             break;
         }
       }
@@ -507,10 +507,10 @@
       while (isset($this->data['items']['new_'.$i])) $i++;
       $item_key = 'new_'.$i;
 
-      $this->data['items']['new_'.$i]['id'] = null;
+      $this->data['items']['new_'.$i]['id'] = '';
 
       foreach ($fields as $field) {
-        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
+        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : '';
       }
 
       $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
@@ -682,7 +682,7 @@
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
 
-      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : null;
+      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : '';
 
       $aliases = [
         '%order_id' => $this->data['id'],

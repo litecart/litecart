@@ -24,7 +24,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = null;
+        $this->data[$field['Field']] = '';
       }
 
       $this->data['sender'] = [

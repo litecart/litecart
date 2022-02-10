@@ -25,12 +25,12 @@
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
           $this->data['shipping_address'][$matches[1]] = '';
         } else {
-          $this->data[$field['Field']] = null;
+          $this->data[$field['Field']] = '';
         }
       }
 
       $this->data['status'] = 1;
-      $this->data['newsletter'] = null;
+      $this->data['newsletter'] = '';
 
       $this->previous = $this->data;
     }
@@ -63,7 +63,7 @@
 
       if (empty($this->data['different_shipping_address'])) {
         foreach (array_keys($this->data['shipping_address']) as $key) {
-          $this->data['shipping_address'][$key] = null;
+          $this->data['shipping_address'][$key] = '';
         }
         $this->data['shipping_address']['country_code'] = $this->data['country_code'];
         $this->data['shipping_address']['zone_code'] = $this->data['zone_code'];
