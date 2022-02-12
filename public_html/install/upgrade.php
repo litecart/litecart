@@ -331,26 +331,24 @@
           FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
           FS_DIR_APP . 'frontend/templates/*/css/framework.css',
           FS_DIR_APP . 'frontend/templates/*/css/printable.css',
+          FS_DIR_APP . 'frontend/templates/*/js/app.js',
+        ]);
+
+      } else {
+        perform_action('delete', [
+          FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
+          FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
+          FS_DIR_APP . 'frontend/templates/*/less/',
         ]);
 
         perform_action('modify', [
           FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
-            ['search' => 'app.css',       'replace' => 'app.min.css'],
-            ['search' => 'checkout.css',  'replace' => 'checkout.min.css'],
-            ['search' => 'framework.css', 'replace' => 'framework.min.css'],
-            ['search' => 'printable.css', 'replace' => 'printable.min.css'],
-            ['search' => 'app.js',        'replace' => 'app.min.js'],
+            ['search' => 'app.min.css',       'replace' => 'app.css'],
+            ['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
+            ['search' => 'framework.min.css', 'replace' => 'framework.css'],
+            ['search' => 'printable.min.css', 'replace' => 'printable.css'],
+            ['search' => 'app.min.js',        'replace' => 'app.js'],
           ],
-        ]);
-
-      } else {
-
-        perform_action('delete', [
-          FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
-          FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
-          FS_DIR_APP . 'frontend/templates/*/js/*.min.js',
-          FS_DIR_APP . 'frontend/templates/*/js/*.min.js.map',
-          FS_DIR_APP . 'frontend/templates/*/less/',
         ]);
       }
 
