@@ -436,7 +436,7 @@
           $warning = $e->getMessage();
         }
 
-        $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
+        $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">' . PHP_EOL
                  . '  <td>'. functions::form_draw_checkbox('products[]', $product['id'], true) .'</td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>' . PHP_EOL
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;

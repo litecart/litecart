@@ -79,7 +79,7 @@
 
       <tbody>
         <?php foreach ($campaigns as $campaign) { ?>
-        <tr class="<?php echo (!empty($campaign['end_date']) && $campaign['end_date'] > 1970 && $campaign['end_date'] < date('Y-m-d H:i:s')) ? 'semi-transparent' : null; ?>">
+        <tr class="<?php echo (!empty($campaign['end_date']) && $campaign['end_date'] > 1970 && $campaign['end_date'] < date('Y-m-d H:i:s')) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('campaigns[]', $campaign['id']); ?></td>
           <td class="text-end"><?php echo (!empty($campaign['start_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['start_date'])) : ''; ?></td>
           <td class="text-end"><?php echo (!empty($campaign['end_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['end_date'])) : ''; ?></td>

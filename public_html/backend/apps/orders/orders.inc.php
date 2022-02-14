@@ -152,7 +152,7 @@
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code'])."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-    ". fallback($sql_where_order_status, "") ."
+    ". fallback($sql_where_order_status) ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
@@ -373,9 +373,9 @@ table .fa-star:hover {
 
   $('.data-table input[name^="orders["]').change(function() {
     if ($('.data-table input[name^="orders["]:checked').length > 0) {
-      $('#order-actions button').prop('disabled', false);
+      $('#order-actions fieldset').prop('disabled', false);
     } else {
-      $('#order-actions button').prop('disabled', true);
+      $('#order-actions fieldset').prop('disabled', true);
     }
   }).trigger('change');
 

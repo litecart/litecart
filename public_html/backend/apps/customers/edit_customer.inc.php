@@ -325,14 +325,16 @@
 
           <?php if (!empty($customer->data['id'])) { ?>
           <table class="table table-striped table-hover data-table">
-            <tr>
-              <td class="col-md-6"><?php echo language::translate('title_orders', 'Orders'); ?><br />
-                <?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
-              </td>
-              <td class="col-md-6"><?php echo language::translate('title_total_sales', 'Total Sales'); ?><br />
-                <?php echo currency::format(fallback($orders['total_sales'], 0), false, settings::get('site_currency_code')); ?>
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td><?php echo language::translate('title_orders', 'Orders'); ?><br />
+                  <?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
+                </td>
+                <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?><br />
+                  <?php echo currency::format(fallback($orders['total_sales'], 0), false, settings::get('site_currency_code')); ?>
+                </td>
+              </tr>
+            </tbody>
           </table>
           <?php } ?>
         </div>

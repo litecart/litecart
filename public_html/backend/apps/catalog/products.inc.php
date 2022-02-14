@@ -169,13 +169,11 @@
   while ($product = database::fetch($products_query)) {
 
     try {
-      $warning = null;
-
-      if (strtotime($product['date_valid_from']) > time()) {
+      if (!empty($product['date_valid_from']) && strtotime($product['date_valid_from']) > time()) {
         throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
       }
 
-      if (strtotime($product['date_valid_to']) > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
+      if (!empty($product['date_valid_to']) && strtotime($product['date_valid_to']) > '1971' && $product['date_valid_to'] < date('Y-m-d H:i:s')) {
         throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
       }
 
@@ -200,7 +198,7 @@
   functions::draw_lightbox();
 ?>
 <style>
-.warning {
+.fa-exclamation-triangle {
   color: #f00;
 }
 table .thumbnail {
@@ -250,7 +248,7 @@ table .thumbnail {
         <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-          <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
+          <td class="warning"><?php echo !empty($product['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($product['warning']) .'"') : ''; ?></td>
           <td class="text-center"><?php echo $product['id']; ?></td>
           <td><img class="thumbnail" src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" /></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name']; ?></a></td>

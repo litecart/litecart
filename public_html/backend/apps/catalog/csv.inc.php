@@ -709,7 +709,7 @@
                 }
 
                 $product->data['attributes'][] = [
-                  'id' => isset($product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]) ? $product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]['id'] : null,
+                  'id' => isset($product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]) ? $product->previous['attributes'][$attribute['group_id'].'-'.$attribute['value_id']]['id'] : '',
                   'group_id' => $attribute['group_id'],
                   'value_id' => $attribute['value_id'],
                   'custom_value' => $attribute['custom_value'],

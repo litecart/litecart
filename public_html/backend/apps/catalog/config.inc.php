@@ -20,16 +20,6 @@
         'params' => [],
       ],
       [
-        'title' => language::translate('title_campaigns', 'Campaigns'),
-        'doc' => 'campaigns',
-        'params' => [],
-      ],
-      [
-        'title' => language::translate('title_attributes', 'Attributes'),
-        'doc' => 'attribute_groups',
-        'params' => [],
-      ],
-      [
         'title' => language::translate('title_brands', 'Brands'),
         'doc' => 'brands',
         'params' => [],
@@ -40,13 +30,13 @@
         'params' => [],
       ],
       [
-        'title' => language::translate('title_delivery_statuses', 'Delivery Statuses'),
-        'doc' => 'delivery_statuses',
+        'title' => language::translate('title_attributes', 'Attributes'),
+        'doc' => 'attribute_groups',
         'params' => [],
       ],
       [
-        'title' => language::translate('title_sold_out_statuses', 'Sold Out Statuses'),
-        'doc' => 'sold_out_statuses',
+        'title' => language::translate('title_campaigns', 'Campaigns'),
+        'doc' => 'campaigns',
         'params' => [],
       ],
       [
@@ -57,6 +47,16 @@
       [
         'title' => language::translate('title_stock_transactions', 'Stock Transactions'),
         'doc' => 'stock_transactions',
+        'params' => [],
+      ],
+      [
+        'title' => language::translate('title_delivery_statuses', 'Delivery Statuses'),
+        'doc' => 'delivery_statuses',
+        'params' => [],
+      ],
+      [
+        'title' => language::translate('title_sold_out_statuses', 'Sold Out Statuses'),
+        'doc' => 'sold_out_statuses',
         'params' => [],
       ],
       [

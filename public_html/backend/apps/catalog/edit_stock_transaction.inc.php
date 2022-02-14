@@ -53,7 +53,7 @@
   $available_stock_items = [];
 
   $stock_items_query = database::query(
-    "select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
+    "select si.id, si.sku, si.quantity, si.backordered, sii.name from ". DB_TABLE_PREFIX ."stock_items si
     left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
     order by sku, name;"
   );
@@ -75,19 +75,19 @@
   <div class="card-body">
     <?php echo functions::form_draw_form_begin('form_stock_transaction', 'post'); ?>
 
-      <div class="row" style="max-width: 980px;">
-        <div class="form-group col-md-4">
+      <div class="row">
+        <div class="form-group col-md-3">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php echo functions::form_draw_text_field('name', true); ?>
         </div>
 
         <?php if (!empty($stock_transaction->data['id'])) { ?>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-2">
           <label><?php echo language::translate('title_updated', 'Updated'); ?></label>
           <div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_updated'])); ?></div>
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-2">
           <label><?php echo language::translate('title_created', 'Created'); ?></label>
           <div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($stock_transaction->data['date_created'])); ?></div>
         </div>
@@ -95,7 +95,7 @@
       </div>
 
       <div class="row">
-        <div class="form-group col-md-8">
+        <div class="form-group col-md-7">
           <label><?php echo language::translate('title_description', 'Description'); ?></label>
           <?php echo functions::form_draw_textarea('description', true, 'style="height: 100px;"'); ?>
         </div>
@@ -106,10 +106,11 @@
       <table id="transaction-contents" class="table table-striped table-hover data-table">
         <thead>
           <tr>
-            <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+            <th style="min-width: 225px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
             <th class="main"><?php echo language::translate('title_item', 'Item'); ?></th>
+            <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
             <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></th>
-            <th class="text-end" style="min-width: 150px;"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+            <th class="text-end" style="min-width: 175px;"><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -119,9 +120,12 @@
             <td>
               <?php echo functions::form_draw_hidden_field('contents['.$key.'][id]', true); ?>
               <?php echo functions::form_draw_hidden_field('contents['.$key.'][stock_item_id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('contents['. $key .'][sku]', true); ?><?php echo $_POST['contents'][$key]['sku']; ?>
+              <?php echo functions::form_draw_hidden_field('contents['. $key .'][sku]', true); ?>
+              <?php echo functions::form_draw_hidden_field('contents['. $key .'][name]', true); ?>
+              <?php echo $_POST['contents'][$key]['sku']; ?>
             </td>
             <td><?php echo $_POST['contents'][$key]['name']; ?></td>
+            <td><?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity]', true, 2, 'readonly'); ?></td>
             <td class="text-center">
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
@@ -142,6 +146,7 @@
           <tr>
             <td><?php echo functions::form_draw_text_field('new[sku]', true, 'list="available-stock-items"'); ?></td>
             <td><?php echo functions::form_draw_text_field('new[name]', true, 'tabindex="-1"'); ?></td>
+            <td><?php echo functions::form_draw_decimal_field('new[quantity]', true, 2, 'tabindex="-1" readonly'); ?></td>
             <td>
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
@@ -150,7 +155,7 @@
             </td>
             <td class="text-center">
               <div class="input-group">
-                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button', 'tabindex="-1"'); ?>
                 <?php echo functions::form_draw_decimal_field('new[backordered]', true, 2); ?>
               </div>
             </td>
@@ -161,7 +166,7 @@
 
       <datalist id="available-stock-items">
         <?php foreach ($available_stock_items as $stock_item) { ?>
-        <option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-backordered="<?php echo $stock_item['backordered']; ?>">
+        <option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-quantity="<?php echo (float)$stock_item['quantity']; ?>" data-backordered="<?php echo (float)$stock_item['backordered']; ?>"><?php echo functions::escape_html($stock_item['name']); ?></option>
         <?php } ?>
       </datalist>
 
@@ -173,9 +178,6 @@
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
-
-  <div class="card-footer">
-  </div>
 </div>
 
 <script>
@@ -183,7 +185,8 @@
     var row = $(this).closest('tr');
     if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
       $(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
-      $(row).find('input[name="new[backordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('backordered'));
+      $(row).find('input[name="new[quantity]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('quantity') || 0);
+      $(row).find('input[name="new[backordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('backordered') || '');
     } else {
       $(row).find('input[name="new[name]"]').prop('readonly', false);
     }
@@ -230,6 +233,7 @@
               + '       ' + $(option).attr('value')
               + '    </td>'
               + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
+              + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>'
               + '    <td>'
               + '      <div class="input-group">'
               + '        <span class="input-group-text">&plusmn;</span>'
@@ -246,18 +250,23 @@
               + '  </tr>';
 
     output = output.replace(/new_item_index/g, 'new_' + new_item_index);
-    $('#transaction-contents tbody').append(output);
+
+    var $output = $(output);
 
   // Insert values
     var inserted = $('#transaction-contents tbody tr.item').last();
-    $(inserted).find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id'));
-    $(inserted).find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku'));
-    $(inserted).find('[name$="[name]"]').val($('input[name="new[name]"]').val());
-    $(inserted).find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val());
-    $(inserted).find('[name$="[backordered]"]').val($('input[name="new[backordered]"]').val());
+    $output.find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id') || '');
+    $output.find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku') || '');
+    $output.find('[name$="[name]"]').val($('input[name="new[name]"]').val() || '');
+    $output.find('[name$="[quantity]"]').val($('input[name="new[quantity]"]').val() || 0);
+    $output.find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val() || '');
+    $output.find('[name$="[backordered]"]').val($('input[name="new[backordered]"]').val() || '');
+
+    $('#transaction-contents tbody').append($output);
 
     $('input[name="new[sku]"]').val('');
     $('input[name="new[name]"]').val('');
+    $('input[name="new[quantity]"]').val('');
     $('input[name="new[quantity_adjustment]"]').val('');
     $('input[name="new[sku]"]').focus();
   });
