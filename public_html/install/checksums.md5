@@ -8,7 +8,7 @@ e935fd4c1c676c77664b7aead4014f79	admin/appearance.app/edit_styling.inc.php
 eaf50b53d6a1e44180cbfb0534c9bb36	admin/appearance.app/template_settings.inc.php
 050f9c8b6f0ea711718c1fd72a7ba719	admin/catalog.app/attribute_groups.inc.php
 7d829528c1412da24a7d3d3503c315ff	admin/catalog.app/attribute_values.json.inc.php
-662e55062cf110c114d70623aeda4fd6	admin/catalog.app/catalog.inc.php
+843b1b5aa21aafe8648a00889eec0d0f	admin/catalog.app/catalog.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
 ba39860e1aa53b76684cb37f6af42b54	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
@@ -89,7 +89,7 @@ afac2b8f30104ee5eea205d709edc0d6	admin/reports.app/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/reports.app/index.html
 d9a8032558bc7b330c66efc993251a20	admin/reports.app/monthly_sales.inc.php
 0aa4483a70a765b01be95540441bf780	admin/reports.app/most_shopping_customers.inc.php
-64d6820c3f76ab46db3f115988d9ffa3	admin/reports.app/most_sold_products.inc.php
+4b447bbd3b7daf1e13709d89a6534c46	admin/reports.app/most_sold_products.inc.php
 0dcae55f0a3d5cffeaf3fd2b968af0d6	admin/search_results.json.php
 caaff3f8682057a3e0d1d6088428adeb	admin/settings.app/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/settings.app/index.html
