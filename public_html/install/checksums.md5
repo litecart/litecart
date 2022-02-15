@@ -8,7 +8,7 @@ e935fd4c1c676c77664b7aead4014f79	admin/appearance.app/edit_styling.inc.php
 eaf50b53d6a1e44180cbfb0534c9bb36	admin/appearance.app/template_settings.inc.php
 050f9c8b6f0ea711718c1fd72a7ba719	admin/catalog.app/attribute_groups.inc.php
 7d829528c1412da24a7d3d3503c315ff	admin/catalog.app/attribute_values.json.inc.php
-e1030a98cb60c39b8f9704d34515047c	admin/catalog.app/catalog.inc.php
+176119350e2cbccbb71414da9c06f06e	admin/catalog.app/catalog.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
 ba39860e1aa53b76684cb37f6af42b54	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
@@ -71,7 +71,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 451c654ae359640d3822c0a31373257f	admin/modules.app/run_job.inc.php
 51cf1391e3ef3e33d823cefdd57adac2	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-504ff8b58c9fca59a1295e2be3f06d58	admin/orders.app/edit_order.inc.php
+255da7bc24d8859002c41dfbffa56d85	admin/orders.app/edit_order.inc.php
 c4d8062dd0e5e2809f829f66bc05227e	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 8caa03a39f30512ceb98b521f6b13ef0	admin/orders.app/orders.inc.php
@@ -89,7 +89,7 @@ afac2b8f30104ee5eea205d709edc0d6	admin/reports.app/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/reports.app/index.html
 d9a8032558bc7b330c66efc993251a20	admin/reports.app/monthly_sales.inc.php
 0aa4483a70a765b01be95540441bf780	admin/reports.app/most_shopping_customers.inc.php
-77cf107989c44e895b1056739e3a34da	admin/reports.app/most_sold_products.inc.php
+769eb1be1bfa6e797b48c0c5244d6876	admin/reports.app/most_sold_products.inc.php
 0dcae55f0a3d5cffeaf3fd2b968af0d6	admin/search_results.json.php
 caaff3f8682057a3e0d1d6088428adeb	admin/settings.app/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/settings.app/index.html
