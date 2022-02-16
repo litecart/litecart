@@ -237,6 +237,20 @@
       return mysqli_info(self::$_links[$link]);
     }
 
+    public static function create_variable($column_type, $value='') {
+
+      switch (true) {
+        case (preg_match('#^(bit|int|tinyint|smallint|mediumint|bigint)#i', $column_type)):
+          return intval($value);
+
+      case (preg_match('#^(decimal|double|float)#i', $column_type)):
+        return floatval($value);
+
+        default:
+          return strval($value);
+      }
+    }
+
     public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
 
       if (empty($string) || in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
