@@ -108,10 +108,14 @@
     </table>
 
     <div class="card-body">
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+      <fieldset>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+        </div>
+      </fieldset>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>
@@ -122,3 +126,13 @@
   </div>
   <?php } ?>
 </div>
+
+<script>
+  $('.data-table input[name^="currencies["]').change(function() {
+    if ($('.data-table input[name^="currencies["]:checked').length > 0) {
+      $('fieldset').prop('disabled', false);
+    } else {
+      $('fieldset').prop('disabled', true);
+    }
+  }).trigger('change');
+</script>

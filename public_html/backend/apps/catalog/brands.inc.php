@@ -100,10 +100,14 @@
     </table>
 
     <div class="card-body">
-      <div class="btn-group">
-        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-      </div>
+      <fieldset>
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+
+        <div class="btn-group">
+          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+        </div>
+      </fieldset>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>
@@ -114,3 +118,9 @@
   </div>
   <?php } ?>
 </div>
+
+<script>
+  $('.data-table input[type="checkbox"]').change(function() {
+    $('#actions').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  }).first().trigger('change');
+</script>

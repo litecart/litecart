@@ -100,7 +100,11 @@
     </table>
 
     <div class="card-body">
-      <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'fa-file-copy'); ?>
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+        <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'fa-file-copy'); ?>
+      </fieldset>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>
@@ -111,3 +115,9 @@
   </div>
   <?php } ?>
 </div>
+
+<script>
+  $('.data-table input[type="checkbox"]').change(function() {
+    $('#actions').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  }).first().trigger('change');
+</script>

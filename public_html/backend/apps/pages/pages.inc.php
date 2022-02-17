@@ -243,30 +243,27 @@
     </table>
 
     <div class="card-body">
-      <ul class="list-inline">
-        <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-          </div>
-        </li>
-        <li>
-          <div>
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+        <ul class="list-inline">
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+            </div>
+          </li>
+          <li>
             <?php echo functions::form_draw_pages_list('page_id', true); ?>
-          </div>
-        </li>
-        <li>
-          <div class="btn-group">
+          </li>
+          <li>
             <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-          </div>
-        </li>
-        <li>
-          <div class="btn-group">
+          </li>
+          <li>
             <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </fieldset>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>
@@ -290,4 +287,8 @@
   $('form[name="search_form"] select').change(function(){
     $(this).closest('form').submit();
   });
+
+  $('.data-table input[type="checkbox"]').change(function() {
+    $('#actions').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  }).first().trigger('change');
 </script>

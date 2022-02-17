@@ -110,7 +110,7 @@
     <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('vmods_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -157,35 +157,43 @@
       </tfoot>
     </table>
 
-    <?php if ($vmods) { ?>
     <div class="card-body">
-      <ul class="list-inline">
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+      <div class="row">
+        <div class="col-md-6">
+          <fieldset id="actions">
+            <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+            <ul class="list-inline">
+              <li>
+                <div class="btn-group">
+                  <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+                  <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+                </div>
+              </li>
+              <li>
+                <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="'. functions::escape_html('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
+              </li>
+            </ul>
+          </fieldset>
+      </div>
+
+      <div class="col-md-6">
+        <fieldset>
+          <legend><?php echo language::translate('title_upload_new_vmod', 'Upload a New vMod'); ?>:</legend>
+
+          <div class="input-group">
+            <?php echo functions::form_draw_file_field('vmod', 'accept="application/xml"'); ?>
+            <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
           </div>
-        </li>
-        <li>
-          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="'. functions::escape_html('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
-        </li>
-      </ul>
-    </div>
-    <?php } ?>
-
-  <?php echo functions::form_draw_form_end(); ?>
-
-  <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>
-
-    <div class="card-body">
-      <div class="form-group" style="max-width: 320px;">
-        <label><?php echo language::translate('title_upload_new_vmod', 'Upload a New vMod'); ?> (*.xml)</label>
-        <div class="input-group">
-          <?php echo functions::form_draw_file_field('vmod', 'accept="application/xml"'); ?>
-          <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
-        </div>
+        </fieldset>
       </div>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>
 </div>
+
+<script>
+  $('.data-table input[type="checkbox"]').change(function() {
+    $('#actions').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  }).first().trigger('change');
+</script>

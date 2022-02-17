@@ -143,8 +143,9 @@
 
   <div class="card-body">
     <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
-      <fieldset>
-        <legend>Change order status for orders<?php //echo language::translate('title_', ''); ?></legend>
+
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_change_status_for_orders', 'Change status for orders'); ?></legend>
 
         <div class="row">
           <div class="col-md-2">
@@ -163,6 +164,7 @@
           </div>
         </div>
       </fieldset>
+
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
@@ -173,3 +175,9 @@
   <?php } ?>
 
 </div>
+
+<script>
+  $('.data-table input[type="checkbox"]').change(function() {
+    $('#actions').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  }).first().trigger('change');
+</script>

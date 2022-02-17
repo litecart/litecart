@@ -371,13 +371,9 @@ table .fa-star:hover {
     $(this).closest('form').submit();
   });
 
-  $('.data-table input[name^="orders["]').change(function() {
-    if ($('.data-table input[name^="orders["]:checked').length > 0) {
-      $('#order-actions fieldset').prop('disabled', false);
-    } else {
-      $('#order-actions fieldset').prop('disabled', true);
-    }
-  }).trigger('change');
+  $('.data-table input[type="checkbox"]').change(function() {
+    $('#actions fieldset').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  }).first().trigger('change');
 
   $('table').on('click', '.fa-star-o', function(e){
     e.stopPropagation();
