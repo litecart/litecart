@@ -6,7 +6,7 @@
 
     public function __construct($filename=null) {
 
-      if ($filename !== null) {
+      if (!empty($filename)) {
         $this->load($filename);
       } else {
         $this->reset();

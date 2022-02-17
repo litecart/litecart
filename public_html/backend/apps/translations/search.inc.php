@@ -160,7 +160,7 @@ th:not(:last-child) {
 
         <tfoot>
           <tr>
-            <td colspan="<?php echo 3 + count($_GET['languages']); ?>"><?php echo language::translate('title_translations', 'Translations'); ?>: <?php echo language::number_format($num_rows, 0); ?></td>
+            <td colspan="<?php echo 3 + count($_GET['languages']); ?>"><?php echo language::translate('title_translations', 'Translations'); ?>: <?php echo language::number_format($num_rows); ?></td>
           </tr>
         </tfoot>
       </table>

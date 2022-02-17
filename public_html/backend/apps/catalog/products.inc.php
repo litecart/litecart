@@ -260,7 +260,7 @@ table .thumbnail {
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="9"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows, 0); ?></td>
+          <td colspan="9"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

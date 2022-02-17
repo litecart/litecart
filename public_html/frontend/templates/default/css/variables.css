@@ -5,18 +5,18 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firasans/v11/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/firasans/v15/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Fira Sans';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firasans/v11/va9B4kDNxMZdWfMOD5VnLK3uQQ.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/firasans/v15/va9B4kDNxMZdWfMOD5VnLK3uQQ.ttf) format('truetype');
 }
 /* Variables */
 :root {
-  --border-radius: 0.33em;
+  --border-radius: 8px;
   --gutter-size: 0.75rem;
   --link-text-color: #5292b1;
   --whitespace-color: #fff;
@@ -30,7 +30,7 @@
   --default-line-height: 1.5;
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
-  --navigation-background-color: rgba(229, 229, 234, 0.75);
+  --navigation-background-color: rgba(229, 229, 234, 0.8);
   --navigation-text-color: #333;
   --navigation-cart-color: #b7d851;
   --button-default-background-color: #d6dbe0;
@@ -99,11 +99,16 @@
 }
 @media (min-width: 576px) {
   :root {
-    --gutter-size: 0.87rem;
+    --gutter-size: 1rem;
   }
 }
 @media (min-width: 768px) {
   :root {
-    --gutter-size: 1rem;
+    --gutter-size: 2rem;
+  }
+}
+@media (min-width: 992px) {
+  :root {
+    --gutter-size: 3rem;
   }
 }

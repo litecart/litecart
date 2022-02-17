@@ -85,7 +85,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="4"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="4"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

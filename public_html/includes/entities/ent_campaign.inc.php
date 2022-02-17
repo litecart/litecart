@@ -6,7 +6,7 @@
 
     public function __construct($campaign_id=null) {
 
-      if ($campaign_id !== null) {
+      if (!empty($campaign_id)) {
         $this->load($campaign_id);
       } else {
         $this->reset();

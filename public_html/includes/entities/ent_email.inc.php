@@ -6,7 +6,7 @@
 
     public function __construct($email_id=null) {
 
-      if ($email_id !== null) {
+      if (!empty($email_id)) {
         $this->load($email_id);
       } else {
         $this->reset();

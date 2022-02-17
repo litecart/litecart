@@ -6,7 +6,7 @@
 
     public function __construct($stock_item_id=null) {
 
-      if ($stock_item_id !== null) {
+      if (!empty($stock_item_id)) {
         $this->load((int)$stock_item_id);
       } else {
         $this->reset();
@@ -38,6 +38,7 @@
         }
       }
 
+      $this->data['quantity_adjustment'] = 0;
       $this->data['references'] = [];
 
       $this->previous = $this->data;
@@ -93,11 +94,10 @@
 
      // Create sku if missing
       if (empty($this->data['sku'])) {
-        $this->data['sku'] = $missing_sku['id'] .'-'. ($this->data['name'][settings::get('site_language_code')] ? strtoupper(substr($this->data['name'][settings::get('site_language_code')], 0, 4)) : 'UNKN');
-
         $i = 1;
-        while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;"))) {
+        while (true) {
           $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('site_language_code')] ? strtoupper(substr($this->data['name'][settings::get('site_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
+          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;"))) break;
         }
       }
 
@@ -183,7 +183,7 @@
     // References
 
       database::query(
-        "delete from ". DB_TABLE_PREFIX ."references
+        "delete from ". DB_TABLE_PREFIX ."stock_items_references
         where stock_item_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['references'], 'id')) ."');"
       );
@@ -192,7 +192,7 @@
         foreach ($this->data['references'] as $key => $reference) {
           if (empty($reference['id'])) {
             database::query(
-              "insert into ". DB_TABLE_PREFIX ."references
+              "insert into ". DB_TABLE_PREFIX ."stock_items_references
               (stock_item_id, date_created)
               values (". (int)$this->data['id'] .", '". date('Y-m-d H:i:s') ."');"
             );
@@ -200,7 +200,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_PREFIX ."references
+            "update ". DB_TABLE_PREFIX ."stock_items_references
             set source_type = '". database::input($reference['source_type']) ."',
               source = '". database::input($reference['source']) ."',
               type = '". database::input($reference['type']) ."',

@@ -7,31 +7,13 @@
   $.loadScript = function(url, options) {
 
     options = $.extend(options || {}, {
+      mtehod: 'GET',
       dataType: 'script',
-      cache: true,
-      url: url
+      cache: true
     });
 
-    return jQuery.ajax(options);
+    return jQuery.ajax(url, options);
   };
-
-// Load Fontawesome
-  if ($('[class^="fa "]').length) {
-    $.loadStylesheet(window._env.platform.path + 'assets/fontawesome/font-awesome.min.css');
-  }
-
-// Load Featherlight
-  if ($('[data-toggle="lightbox"]').length) {
-    if (typeof $.featherlight == 'undefined') {
-      $.loadStylesheet(window._env.platform.path + 'assets/featherlight/featherlight.min.css');
-      $.loadScript(window._env.platform.path + 'assets/featherlight/featherlight.min.js').done(function(script, textStatus) {
-        $.featherlight.autoBind = '[data-toggle="lightbox"]';
-        $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
-        $.featherlight.defaults.closeIcon = '&#x2716;';
-        $.featherlight.defaults.targetAttr = 'data-target';
-      });
-    }
-  }
 
 // Alerts
   $('body').on('click', '.alert .close', function(e){

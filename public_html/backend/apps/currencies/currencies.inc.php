@@ -102,7 +102,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="13"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="13"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

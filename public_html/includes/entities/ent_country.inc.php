@@ -6,7 +6,7 @@
 
     public function __construct($country_code=null) {
 
-      if ($country_code !== null) {
+      if (!empty($country_code)) {
         $this->load($country_code);
       } else {
         $this->reset();

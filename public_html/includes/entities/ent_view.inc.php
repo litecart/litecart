@@ -10,7 +10,9 @@
     public function __construct($view='') {
 
       if ($view) {
-        $view = preg_replace('#^(.*?)(\.inc\.php)?$#', '$1.inc.php', $view);
+
+      // Set filename
+        $view = preg_replace('#\.inc\.php$#', '', $view) . '.inc.php';
 
       // Absolute path
         if (preg_match('#^([a-zA-Z]:)?/#', $view)) {
@@ -114,30 +116,29 @@
 
     public function __toString() {
 
-    // Load view - and process it in an isolated scope
+    // Load view and process it in an isolated scope
       if ($this->view) {
-        $load = function(){
+        $this->html = (function(){
           ob_start();
           extract(func_get_arg(1));
           include vmod::check(func_get_arg(0));
           return ob_get_clean();
-        };
-
-        $this->html = $load($this->view, $this->snippets);
+        })($this->view, $this->snippets);
       }
 
       if (empty($this->html)) return '';
 
-    // Replace any logic in snippets
-      foreach (array_keys($this->snippets) as $key) {
-        if (!is_string($this->snippets[$key])) continue;
-        $this->snippets[$key] = preg_replace_callback_array($this->_parsers, $this->snippets[$key], -1, $count);
+      foreach ($this->snippets as $key => $snippet) {
+        if (!is_string($snippet)) continue;
+        $this->snippets[$key] = preg_replace_callback_array($this->_parsers, $snippet);
       }
 
-      $this->html = preg_replace_callback_array($this->_parsers, $this->html, -1, $count);
+      if (is_string($this->html)) {
+        $this->html = preg_replace_callback_array($this->_parsers, $this->html);
+      }
 
       if ($this->cleanup) {
-        $this->html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'(if|each) .*?'. preg_quote($this->wrapper[0], '#') .'\1'. preg_quote($this->wrapper[1], '#') .'#', '', $this->html);
+        //$this->html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'(if|each) .*?'. preg_quote($this->wrapper[0], '#') .'\1'. preg_quote($this->wrapper[1], '#') .'#', '', $this->html);
         $this->html = preg_replace('#'. preg_quote($this->wrapper[0], '#') .'.*?'. preg_quote($this->wrapper[1], '#') .'#', '', $this->html);
       }
 
@@ -146,9 +147,11 @@
 
     public function stitch($view=null, $cleanup=false) {
 
-      //trigger_error('ent_view->stitch() is deprecated. Instead set the view file when constructing view object, and use echo to output.', E_USER_DEPRECATED);
+      //trigger_error('ent_view->stitch() is deprecated. Instead set the view file when constructing view object and use echo to output the rendered view.', E_USER_DEPRECATED);
 
-      if ($cleanup) $this->cleanup = true;
+      if ($cleanup) {
+        $this->cleanup = true;
+      }
 
       if ($view) {
         $view = preg_replace('#^(.*?)(\.inc\.php)?$#', '$1.inc.php', $view);
@@ -164,10 +167,6 @@
         }
       }
 
-      $this->render();
-    }
-
-    public function render() {
       return $this->__toString();
     }
   }

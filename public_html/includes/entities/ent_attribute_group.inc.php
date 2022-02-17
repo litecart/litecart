@@ -6,7 +6,7 @@
 
     public function __construct($group_id=null) {
 
-      if ($group_id !== null) {
+      if (!empty($group_id)) {
         $this->load($group_id);
       } else {
         $this->reset();

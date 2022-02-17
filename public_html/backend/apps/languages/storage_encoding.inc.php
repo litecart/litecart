@@ -109,7 +109,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="12"><?php echo language::translate('title_tables', 'Tables'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="12"><?php echo language::translate('title_tables', 'Tables'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

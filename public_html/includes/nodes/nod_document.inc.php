@@ -10,6 +10,7 @@
     public static function init() {
       event::register('before_capture', [__CLASS__, 'before_capture']);
       event::register('after_capture', [__CLASS__, 'after_capture']);
+      event::register('prepare_output',  [__CLASS__, 'prepare_output']);
       event::register('before_output',  [__CLASS__, 'before_output']);
     }
 
@@ -36,8 +37,6 @@
       self::$snippets['head_tags']['webmanifest'] = '<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'" />';
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/fontawesome/font-awesome.min.css') .'" />';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/jquery/jquery-3.6.0.min.js') .'"></script>';
-      self::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/featherlight/featherlight.min.css') .'" />';
-      self::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/featherlight/featherlight.min.js') .'"></script>';
 
     // Hreflang
       if (!empty(route::$route['page'])) {
@@ -107,6 +106,9 @@
       }
 
       self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .";</script>";
+    }
+
+    public static function prepare_output() {
 
     // Prepare title
       if (!empty(self::$snippets['title'])) {
@@ -117,7 +119,7 @@
 
     // Add meta description
       if (!empty(self::$snippets['description'])) {
-        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'" />';
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. htmlspecialchars(self::$snippets['description']) .'" />';
         unset(self::$snippets['description']);
       }
 
@@ -156,7 +158,7 @@
         }, $matches[2]);
 
         $matches[2] = preg_replace_callback('#<style>(.*?)</style>\R?#is', function($match) use (&$stylesheets, &$styles) {
-              $styles[] = trim($match[1]);
+          $styles[] = trim($match[1]);
         }, $matches[2]);
 
         return $matches[1] . $matches[2] . $matches[3];
@@ -198,9 +200,9 @@
         ];
 
         $styles = '<style>' . PHP_EOL
-               . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+               //. '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                . preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL . PHP_EOL, $styles)) . PHP_EOL
-               . '/*]]>*/-->' . PHP_EOL
+               //. '/*]]>*/-->' . PHP_EOL
                . '</style>' . PHP_EOL;
 
         $GLOBALS['output'] = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $GLOBALS['output'], 1);
@@ -213,14 +215,12 @@
 
       if (!empty($javascript)) {
         $javascript = '<script>' . PHP_EOL
-                    . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                    //. '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                     . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
-                    . '/*]]>*/-->' . PHP_EOL
+                    //. '/*]]>*/-->' . PHP_EOL
                     . '</script>' . PHP_EOL;
 
-            if (!$GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $GLOBALS['output'], 1)) {
-              trigger_error('Failed extracting javascripts', E_USER_ERROR);
-        }
+        $GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $GLOBALS['output'], 1);
       }
 
     // Define some resources for preloading
@@ -248,23 +248,18 @@
       }
 
       stats::stop_watch('output_optimization');
+
+    // Remove HTML comments
+      $GLOBALS['output'] = preg_replace('#<!--.*?-->#ms', '', $GLOBALS['output']);
+
+    // Static domain
+      if ($static_domain = settings::get('static_domain')) {
+        $GLOBALS['output'] = preg_replace('# (src|href)="(/[^"]+\.(css|eot|gif|ico|jpe?g|js|map|otf|png|svg|ttf|woff2?)(\?[^"]+)?)"#', ' $1="'. rtrim($static_domain, '/') .'$2"', $GLOBALS['output']);
+        $GLOBALS['output'] = preg_replace('# (src|href)="(https?://'. preg_quote($_SERVER['HTTP_HOST'], '#') .')(/[^"]+\.(css|eot|gif|ico|jpe?g|js|otf|png|svg|ttf|woff2?)(\?[^"]+)?)(\?[^"]*)?"#', ' $1="'. rtrim($static_domain, '/') .'$3"', $GLOBALS['output']);
+      }
     }
 
     ######################################################################
-
-    public static function expires($string=false) {
-      if (strtotime($string) > time()) {
-        header('Pragma:');
-        header('Cache-Control: max-age='. (strtotime($string) - time()));
-        header('Expires: '. date('r', strtotime($string)));
-        self::$snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="public">' .PHP_EOL
-                                                    . '<meta http-equiv="expires" content="'. date('r', strtotime($string)) .'">';
-      } else {
-        header('Cache-Control: no-cache');
-        self::$snippets['head_tags']['meta_expire'] = '<meta http-equiv="cache-control" content="no-cache">' . PHP_EOL
-                                                    . '<meta http-equiv="expires" content="'. date('r', strtotime($string)) .'">';
-      }
-    }
 
     public static function ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
@@ -315,11 +310,14 @@
     }
 
     public static function rlink($resource) {
+
+      $path = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
+
       if (!is_file($resource)) {
-        trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
-        return '';
+        return document::link($path);
       }
-      return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => filemtime($resource)]);
+
+      return document::link($path, ['_' => filemtime($resource)]);
     }
 
     public static function href_rlink($resource) {

@@ -6,7 +6,7 @@
 
     public function __construct($geo_zone_id=null) {
 
-      if ($geo_zone_id !== null) {
+      if (!empty($geo_zone_id)) {
         $this->load($geo_zone_id);
       } else {
         $this->reset();

@@ -262,7 +262,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, group_concat(concat(pa.group_id, '-', if(pa.custom_value != '', pa.custom_value, pa.value_id)) separator ',') as attributes, (0
+      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."

@@ -6,7 +6,7 @@
 
     public function __construct($page_id=null) {
 
-      if ($page_id !== null) {
+      if (!empty($page_id)) {
         $this->load($page_id);
       } else {
         $this->reset();

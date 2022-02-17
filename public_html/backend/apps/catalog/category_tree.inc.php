@@ -537,7 +537,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="6"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_product_rows, 0); ?></td>
+          <td colspan="6"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_product_rows); ?></td>
         </tr>
       </tfoot>
 <?php

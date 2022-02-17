@@ -6,7 +6,7 @@
 
     public function __construct($delivery_status_id=null) {
 
-      if ($delivery_status_id !== null) {
+      if (!empty($delivery_status_id)) {
         $this->load($delivery_status_id);
       } else {
         $this->reset();

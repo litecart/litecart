@@ -116,7 +116,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="8"><?php echo language::translate('title_shopping_carts', 'Shopping Carts'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="8"><?php echo language::translate('title_shopping_carts', 'Shopping Carts'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

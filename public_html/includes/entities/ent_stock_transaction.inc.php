@@ -4,27 +4,10 @@
     public $data;
     public $previous;
 
-    public function __construct($transaction_id='') {
+    public function __construct($transaction_id=null) {
 
-      if ($transaction_id == 'system') {
-        $this->reset();
-
-        $transactions_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."stock_transactions
-          where name like 'System Generated%'
-          and date(date_created) = '". date('Y-m-d') ."'
-          limit 1;"
-        );
-
-        if ($transaction = database::fetch($transactions_query)) {
-          $this->load($transaction['id']);
-        } else {
-          $this->data['name'] = 'System Generated '. date('Y-m-d');
-        }
-
-      } else if (!empty($transaction_id)) {
-        $this->load((int)$transaction_id);
-
+      if (!empty($transaction_id)) {
+        $this->load($transaction_id);
       } else {
         $this->reset();
       }
@@ -53,7 +36,25 @@
 
       $this->reset();
 
-      $transactions_query = database::query(
+      if ($transaction_id == 'system') {
+
+        $transaction_query = database::query(
+          "select * from ". DB_TABLE_PREFIX ."stock_transactions
+          where name like 'System Generated%'
+          and date(date_created) = '". date('Y-m-d') ."'
+          limit 1;"
+        );
+
+        if ($transaction = database::fetch($transactions_query)) {
+          $this->load($transaction['id']);
+        } else {
+          $this->data['name'] = 'System Generated '. date('Y-m-d');
+        }
+
+        return;
+      }
+
+      $transaction_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_transactions
         where id = ". (int)$transaction_id ."
         limit 1;"
@@ -66,7 +67,8 @@
       }
 
       $contents_query = database::query(
-        "select stc.*, si.sku, sii.name from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
+        "select stc.*, si.sku, si.quantity, si.backordered, sii.name
+        from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
         left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = stc.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where stc.transaction_id = ". (int)$this->data['id'] .";"

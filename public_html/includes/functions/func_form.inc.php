@@ -1071,6 +1071,10 @@ END;
       $input = form_reinsert_value($name);
     }
 
+    if (preg_match('#\[\]$#', $name) && !is_array($input)) {
+      $input = [$input];
+    }
+
     $html = '<div data-toggle="category-picker"' . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
           . '  <div class="form-input" style="overflow-y: auto; min-height: 100px; max-height: 480px;">' . PHP_EOL
           . '    <ul class="categories list-unstyled">' . PHP_EOL;
@@ -1661,7 +1665,7 @@ END;
       if ($product->quantity_unit) {
         $qty = language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
       } else {
-        $qty = language::number_format($product->quantity, 0);
+        $qty = language::number_format($product->quantity);
       }
 
       if (!empty($stock_option['image'])) {

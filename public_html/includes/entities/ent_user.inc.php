@@ -6,7 +6,7 @@
 
     public function __construct($user_id=null) {
 
-      if ($user_id !== null) {
+      if (!empty($user_id)) {
         $this->load($user_id);
       } else {
         $this->reset();

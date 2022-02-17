@@ -62,7 +62,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="3"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="3"><?php echo language::translate('title_suppliers', 'Suppliers'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

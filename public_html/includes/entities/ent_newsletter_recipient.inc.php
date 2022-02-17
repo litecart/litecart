@@ -6,7 +6,7 @@
 
     public function __construct($recipient_id=null) {
 
-      if ($recipient_id !== null) {
+      if (!empty($recipient_id)) {
         $this->load($recipient_id);
       } else {
         $this->reset();

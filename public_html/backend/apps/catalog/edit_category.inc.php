@@ -105,47 +105,13 @@
     <?php echo functions::form_draw_form_begin('category_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 980px;">
+        <div id="tab-general" class="tab-pane active">
 
-          <div class="row">
-            <div class="col-md-4">
+          <div class="row" style="max-width: 980px;">
+            <div class="col-md-6">
               <div class="form-group">
                 <label><?php echo language::translate('title_status', 'Status'); ?></label>
                 <?php echo functions::form_draw_toggle('status', 'e/d', true); ?>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
-                <?php echo functions::form_draw_category_field('parent_id', true); ?>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                <?php echo functions::form_draw_number_field('google_taxonomy_id', true); ?>
-              </div>
-
-              <?php if (!empty($category->data['id'])) { ?>
-              <div class="form-group">
-                <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-                <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-                <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
-              </div>
-              <?php } ?>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-                <?php echo functions::form_draw_number_field('priority', true); ?>
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="form-group">
-                <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
@@ -154,12 +120,46 @@
               </div>
 
               <div class="form-group">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php echo functions::form_draw_regional_text_field('name['. language::$selected['code'] .']', language::$selected['code'], true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
+                <?php echo functions::form_draw_category_field('parent_id', true); ?>
+              </div>
+
+              <div class="form-group col-md-5">
+                <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+                <?php echo functions::form_draw_number_field('google_taxonomy_id', true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
+                <?php echo functions::form_draw_number_field('priority', true); ?>
+              </div>
+
+              <div class="form-group">
                 <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
                 <?php echo functions::form_draw_text_field('keywords', true); ?>
               </div>
+
+              <?php if (!empty($category->data['id'])) { ?>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_updated'])); ?></div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($category->data['date_created'])); ?></div>
+                </div>
+              </div>
+              <?php } ?>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div id="image">
                 <div class="thumbnail" style="margin-bottom: 15px;">
                   <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
@@ -192,9 +192,11 @@
             <?php foreach (array_keys(language::$languages) as $language_code) { ?>
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                  <?php echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+                </div>
               </div>
 
               <div class="form-group">
@@ -207,18 +209,20 @@
                 <?php echo functions::form_draw_regional_wysiwyg_field('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
               </div>
 
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
-                </div>
+              <div class="form-group">
+                <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
+                <?php echo functions::form_draw_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
+              <div class="form-group">
+                <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+                <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+                <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
+              </div>
             </div>
             <?php } ?>
 

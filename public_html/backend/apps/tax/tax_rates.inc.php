@@ -73,7 +73,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="8"><?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="8"><?php echo language::translate('title_tax_rates', 'Tax Rates'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

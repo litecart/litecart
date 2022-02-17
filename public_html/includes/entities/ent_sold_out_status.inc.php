@@ -6,7 +6,7 @@
 
     public function __construct($sold_out_status_id=null) {
 
-      if ($sold_out_status_id !== null) {
+      if (!empty($sold_out_status_id)) {
         $this->load($sold_out_status_id);
       } else {
         $this->reset();

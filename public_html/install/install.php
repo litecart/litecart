@@ -12,7 +12,7 @@
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
-      . "  --db_server          Set database hostname (Default: 127.0.0.1)\n"
+      . "  --db_server          Set database hostname (Default: localhost)\n"
       . "  --db_username        Set database username\n"
       . "  --db_password        Set database user password\n\n"
       . "  --db_database        Set database name\n"
@@ -21,7 +21,7 @@
       . "  --db_engine          Set table storage engine (Default: Aria / MyISAM)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
-      . "  --admin_folder       Set admin folder name (Default admin)\n"
+      . "  --admin_folder       Set admin folder name (Default: admin)\n"
       . "  --username           Set admin username\n"
       . "  --password           Set admin user password\n\n"
       . "  --development_type   Set development type 'standard' or 'development' (Default: standard)\n\n";
@@ -35,7 +35,6 @@
 
     $_REQUEST = getopt(null, $options);
     $_REQUEST['install'] = true;
-
   }
 
   if (empty($_REQUEST['install'])) {

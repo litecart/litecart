@@ -94,7 +94,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

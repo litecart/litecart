@@ -6,7 +6,7 @@
 
     public function __construct($slide_id=null) {
 
-      if ($slide_id !== null) {
+      if (!empty($slide_id)) {
         $this->load($slide_id);
       } else {
         $this->reset();

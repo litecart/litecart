@@ -214,7 +214,7 @@
   );
 
   while ($order_status = database::fetch($order_statuses_query)) {
-    $order_status_options[1]['options'][$order_status['id']] = $order_status['name'] . ' ('. language::number_format($order_status['num_orders'], 0) .')';
+    $order_status_options[1]['options'][$order_status['id']] = $order_status['name'] . ' ('. language::number_format($order_status['num_orders']) .')';
   }
 
 // Actions
@@ -243,12 +243,6 @@ table .fa-star:hover {
 
 #order-actions li {
   vertical-align: middle;
-}
-#order-actions li fieldset {
-  border: 1px #ccc solid;
-}
-#order-actions li fieldset legend {
-  color: #999;
 }
 </style>
 
@@ -319,13 +313,13 @@ table .fa-star:hover {
 
       <tfoot>
         <tr>
-          <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>
 
     <div class="card-body">
-      <ul id="order-actions" class="list-inline">
+      <ul id="actions" class="list-inline">
         <li>
           <fieldset>
             <legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>

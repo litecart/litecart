@@ -6,7 +6,7 @@
 
     public function __construct($tax_class_id=null) {
 
-      if ($tax_class_id !== null) {
+      if (!empty($tax_class_id)) {
         $this->load($tax_class_id);
       } else {
         $this->reset();
