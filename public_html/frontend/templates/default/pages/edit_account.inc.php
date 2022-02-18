@@ -51,20 +51,26 @@
           <?php echo functions::form_draw_form_begin('customer_details_form', 'post', null, false, 'style="max-width: 640px;"'); ?>
 
             <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
-            <div class="row">
-              <?php if (settings::get('customer_field_company')) { ?>
-              <div class="form-group col-6">
-                <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
-                <?php echo functions::form_draw_text_field('company', true); ?>
-              </div>
-              <?php } ?>
+            <div class="form-group">
+              <?php echo functions::form_draw_toggle_buttons('type', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['type']) ? 'individual' : true); ?>
+            </div>
 
-              <?php if (settings::get('customer_field_tax_id')) { ?>
-              <div class="form-group col-6">
-                <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-                <?php echo functions::form_draw_text_field('tax_id', true); ?>
+            <div class="business-details" <?php echo (empty($_POST['type']) || $_POST['type'] == 'individual') ? 'style="display: none;"' : ''; ?>>
+              <div class="row">
+                <?php if (settings::get('customer_field_company')) { ?>
+                <div class="form-group col-6">
+                  <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
+                  <?php echo functions::form_draw_text_field('company', true); ?>
+                </div>
+                <?php } ?>
+
+                <?php if (settings::get('customer_field_tax_id')) { ?>
+                <div class="form-group col-6">
+                  <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+                  <?php echo functions::form_draw_text_field('tax_id', true); ?>
+                </div>
+                <?php } ?>
               </div>
-              <?php } ?>
             </div>
             <?php } ?>
 
@@ -216,7 +222,17 @@
 </main>
 
 <script>
-  $('form[name="customer_form"]').on('input propertyChange', ':input', function() {
+  $('input[name="type"]').change(function(){
+    if ($(this).val() == 'business') {
+      $('.business-details :input').prop('disabled', false);
+      $('.business-details').slideDown('fast');
+    } else {
+      $('.business-details :input').prop('disabled', true);
+      $('.business-details').slideUp('fast');
+    }
+  }).first().trigger('change');
+
+  $('form[name="customer_form"]').on('input', ':input', function() {
     if ($(this).val() == '') return;
     $('body').css('cursor', 'wait');
     $.ajax({
