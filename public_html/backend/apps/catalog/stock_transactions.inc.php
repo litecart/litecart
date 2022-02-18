@@ -22,8 +22,8 @@
         )
       )
     )" : "") ."
-    ". (!empty($_GET['date_from']) ? "and t.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : null) ."
-    ". (!empty($_GET['date_to']) ? "and t.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : null) ."
+    ". (!empty($_GET['date_from']) ? "and t.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
+    ". (!empty($_GET['date_to']) ? "and t.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
     order by date_created desc;"
   );
 
@@ -59,9 +59,9 @@
   <div class="card-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
       <div class="input-group">
-        <?php echo functions::form_draw_date_field('date_from', true, 'style="width: 50%;"'); ?>
+        <?php echo functions::form_draw_datetime_field('date_from', true, 'style="width: 50%;"'); ?>
         <span class="input-group-text">-</span>
-        <?php echo functions::form_draw_date_field('date_to', true, 'style="width: 50%;"'); ?>
+        <?php echo functions::form_draw_datetime_field('date_to', true, 'style="width: 50%;"'); ?>
       </div>
       <div>
         <?php echo functions::form_draw_button('search', language::translate('title_filter', 'Filter'), 'submit'); ?>

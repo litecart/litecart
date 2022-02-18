@@ -1,15 +1,15 @@
 <header id="header" class="hidden-print">
   <div class="container">
     <div class="row">
-      <div class="col-sm-6 col-md-4">
+      <div class="col-sm-6">
         <div class="logotype text-center text-md-start">
           <a href="<?php echo document::href_ilink(''); ?>">
-            <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
+
           </a>
         </div>
       </div>
 
-      <div class="hidden-xs col-sm-6 col-md-8 text-center">
+      <div class="hidden-xs col-sm-6">
         <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
           <div class="input-group">
             <span class="input-group-icon">

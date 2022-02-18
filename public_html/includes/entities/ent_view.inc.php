@@ -25,7 +25,7 @@
         }
       }
 
-    // Parser for Variables {{var|modifier1|modifier2}}
+    // Register default parser for snippets {{var|modifier1|modifier2}}
       $this->register_parser('([0-9a-zA-Z_\.]+)(|[^'. preg_quote($this->wrapper[1][0], '#') .']+)?', function($matches) {
 
         if (!isset($this->snippets[$matches[1]])) return $matches[0];

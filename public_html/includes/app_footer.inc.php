@@ -1,23 +1,33 @@
 <?php
 
 // Store the captured output buffer
-  document::$snippets['content'] = ob_get_clean();
+  $content = ob_get_contents();
+  ob_clean();
 
 // Run after capture processes
   event::fire('after_capture');
 
-// Stitch with layout snippets
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'layouts/'.document::$layout);
-  $_page->snippets = document::$snippets;
+// Stitch content with layout
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'layouts/'.document::$layout.'.inc.php');
+  $_page->snippets = ['content' => $content];
+  $output = (string)$_page;
+
+// Run prepare output processes
+  event::fire('prepare_output');
+
+// Output page
+  $_page = new ent_view();
+  $_page->html = $output;
+  $_page->snippets = &document::$snippets;
   $_page->cleanup = true;
-  $GLOBALS['output'] = (string)$_page;
+  $output = (string)$_page;
 
 // Run before output processes
   event::fire('before_output');
 
 // Output page
-  header('Content-Language: '. language::$selected['code']);
-  echo $GLOBALS['output'];
+  echo $output;
+
 
 // Run after processes
   event::fire('shutdown');

@@ -29,7 +29,7 @@
             </div>
 
             <p class="text-center">
-              <a href="<?php echo document::ilink('reset_password', ['email' => fallback($_POST['email'], ''])); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
+              <a href="<?php echo document::ilink('reset_password', ['email' => fallback($_POST['email'])]); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
             </p>
 
           <?php echo functions::form_draw_form_end(); ?>

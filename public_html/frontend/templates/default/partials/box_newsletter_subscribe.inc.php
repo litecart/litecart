@@ -1,6 +1,6 @@
 <style>
 #box-newsletter-subscribe {
-  padding: calc(var(--gutter-size) * 2);
+  padding: var(--gutter-size);
   background: #f9f9f9;
 }
 #box-newsletter-subscribe .row > div:last-child {
@@ -8,7 +8,7 @@
 }
 #box-newsletter-subscribe .wrapper {
   display: inline-flex;
-  gap: calc(var(--gutter-size) * 2);
+  gap: var(--gutter-size);
   justify-content: center;
 }
 </style>

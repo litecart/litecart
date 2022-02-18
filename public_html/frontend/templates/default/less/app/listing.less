@@ -1,43 +1,36 @@
 .listing {
   display: flex;
   flex-wrap: wrap;
+  gap: .5em;
+
+  @media (min-width: (@media-breakpoint-sm)) {
+    gap: 1em;
+  }
+  @media (min-width: (@media-breakpoint-md)) {
+    gap: 2em;
+  }
 
   &[data-toggle="momentumScroll"] {
     flex-wrap: nowrap;
-    padding: 2em;
+    padding: var(--gutter-size);
     overflow-x: auto;
     overflow-y: hidden;
     max-width: 100%;
 
+    &::before {
+      content: '';
+      margin: calc(0px - var(--gutter-size));
+    }
+
     &::-webkit-scrollbar {
-      height: 7.5px;
+      height: .5em;
       * {
         background: transparent;
       }
     }
     &::-webkit-scrollbar-thumb {
-      background: rgba(0,0,0,.25) !important;
+      background: rgba(0, 0, 0, .25) !important;
       border-radius: 6px;
-    }
-  }
-
-  &.categories {
-    gap: .5em;
-    @media (min-width: (@media-breakpoint-sm)) {
-      gap: .75em;
-    }
-    @media (min-width: (@media-breakpoint-md)) {
-      gap: 1em;
-    }
-  }
-
-  &.products {
-    gap: .25em;
-    @media (min-width: (@media-breakpoint-sm)) {
-      gap: .5em;
-    }
-    @media (min-width: (@media-breakpoint-md)) {
-      gap: 1em;
     }
   }
 
@@ -76,8 +69,7 @@
   }
 
   .category {
-    min-width: 200px;
-    max-width: 100%;
+    width: 33.33%;
     @media (min-width: (@media-breakpoint-sm)) {
       //grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
@@ -114,17 +106,14 @@
   }
 
   .product {
-    min-width: 160px;
-    max-width: 200px;
+    flex: 0 0 calc(50% - .5em);
     position: relative;
     font-size: ~"calc(var(--default-text-size) - 1px)";
 
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
 
     @media (min-width: (@media-breakpoint-sm)) {
-      min-width: 175px;
-      max-width: 200px;
-      gap: .5em;
+      flex: 0 0 calc(33.34% - 1em);
       &:hover {
         border-color: var(--listing-border-color);
         transform: scale(1.01);
@@ -132,7 +121,11 @@
     }
 
     @media (min-width: (@media-breakpoint-md)) {
-      gap: 1em;
+      flex: 0 0 calc(25% - 2em);
+    }
+
+    @media (min-width: (@media-breakpoint-lg)) {
+      flex: 0 0 calc(16.66% - 2em);
     }
 
     .link {
@@ -238,7 +231,7 @@
     }
 
     .info {
-      padding: ~"calc(var(--gutter-size)/2)";
+      padding: .5em;
       text-align: center;
     }
 

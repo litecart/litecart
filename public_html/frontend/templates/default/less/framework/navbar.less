@@ -5,6 +5,7 @@
   flex-direction: column;
   position: relative;
   border-radius: var(--border-radius);
+  gap: var(--gutter-size);
 
   .navbar-header {
     display: flex;
@@ -17,14 +18,16 @@
 
     .navbar-brand {
       a {
-        padding: var(--gutter-size);
+        display: block;
+        padding: 1em;
         text-decoration: none;
         &:hover {
           background-color: rgba(0, 0, 0, .05);
         }
       }
-      > img {
+      img {
         display: block;
+        max-height: 52px;
       }
     }
   }
@@ -32,7 +35,7 @@
   .navbar-toggle {
     position: relative;
     flex: 0 1 auto;
-    padding: .5em;
+    padding: 1em;
     margin: .5em;
     background-color: rgba(0, 0, 0, 0.05);
     border: none;
@@ -76,6 +79,7 @@
     flex-direction: column;
     margin: 0;
     padding: 0;
+    align-content: center;
     > li {
       flex: 0 0 auto;
       padding: 0;
@@ -84,7 +88,7 @@
     > li > a {
       position: relative;
       display: block;
-      padding: var(--gutter-size);
+      padding: 1em;
       color: inherit;
       text-decoration: none;
       transition: all 125ms linear;
@@ -172,13 +176,9 @@
     .navbar-nav {
       //display: flex;
       flex-direction: row;
-      align-self: flex-start;
       flex-wrap: wrap;
       > li {
         flex: 0 0 auto;
-      }
-      &.navbar-end {
-        align-self: flex-end;
       }
     }
   }

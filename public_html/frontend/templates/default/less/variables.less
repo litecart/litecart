@@ -7,7 +7,7 @@
 /* Variables */
 
 :root {
-  --border-radius: .33em;
+  --border-radius: 8px;
   --gutter-size: .75rem;
   --link-text-color: #5292b1;
   --whitespace-color: #fff;
@@ -26,7 +26,7 @@
   --default-title-color: #333;
   --default-title-border-color: #f0f0f0;
 
-  --navigation-background-color: rgba(229, 229, 234, .75);
+  --navigation-background-color: rgba(229, 229, 234, .80);
   --navigation-text-color: #333;
   --navigation-cart-color: #b7d851;
 
@@ -115,11 +115,16 @@
 
 @media (min-width: @media-breakpoint-sm) {
   :root {
-    --gutter-size: .87rem;
+    --gutter-size: 1rem;
   }
 }
 @media (min-width: @media-breakpoint-md) {
   :root {
-    --gutter-size: 1rem;
+    --gutter-size: 2rem;
+  }
+}
+@media (min-width: @media-breakpoint-lg) {
+  :root {
+    --gutter-size: 3rem;
   }
 }

@@ -11,11 +11,11 @@
 
 .thumbnail {
   display: block;
-  padding: ~"calc(var(--gutter-size)/4)";
   line-height: var(--default-line-height);
   background-color: var(--whitespace-color);
   border-radius: var(--border-radius);
   transition: border .2s ease-in-out;
+  overflow: hidden;
   > img,
   a > img {
     margin-inline-end: auto;
@@ -24,11 +24,11 @@
 }
 
 .img-thumbnail {
-  padding: ~"calc(var(--gutter-size)/4)";
   max-width: 100%;
   height: auto;
-  background-color: #fff;
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
+  background-color: var(--whitespace-color);
   transition: all .1s ease-in-out;
+  overflow: hidden;
 }

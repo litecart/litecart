@@ -227,6 +227,7 @@
             quantity = ". (float)$item['quantity'] .",
             quantity_unit_id = ". (int)$item['quantity_unit_id'] .",
             price = ". (float)$item['price'] .",
+            final_price = ". (float)$item['final_price'] .",
             tax = ". (float)$item['tax'] .",
             tax_class_id = ". (int)$item['tax_class_id'] .",
             discount = ". (float)$this->data['discount'] .",

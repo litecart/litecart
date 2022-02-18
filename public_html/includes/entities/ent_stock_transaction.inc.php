@@ -45,7 +45,7 @@
           limit 1;"
         );
 
-        if ($transaction = database::fetch($transactions_query)) {
+        if ($transaction = database::fetch($transaction_query)) {
           $this->load($transaction['id']);
         } else {
           $this->data['name'] = 'System Generated '. date('Y-m-d');
@@ -60,7 +60,7 @@
         limit 1;"
       );
 
-      if ($transaction = database::fetch($transactions_query)) {
+      if ($transaction = database::fetch($transaction_query)) {
         $this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
       } else {
         trigger_error('Could not find stock transacction (ID: '. (int)$transaction_id .') in database.', E_USER_ERROR);

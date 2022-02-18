@@ -19,10 +19,13 @@
 	}
 
 	$stock_items_query = database::query(
-		"select si.*, sii.name, oi.reserved from ". DB_TABLE_PREFIX ."stock_items si
-		left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
-		left join (
-      select oi.stock_item_id, sum(oi.quantity) as reserved from ". DB_TABLE_PREFIX ."orders_items oi
+		"select si.*, sii.name, oi.reserved, stt.total_deposited, oit.total_withdrawn from ". DB_TABLE_PREFIX ."stock_items si
+
+    left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+
+    left join (
+      select oi.stock_item_id, sum(oi.quantity) as reserved
+      from ". DB_TABLE_PREFIX ."orders_items oi
       where oi.order_id in (
         select id from ". DB_TABLE_PREFIX ."orders o
         where order_status_id in (
@@ -32,6 +35,26 @@
       )
       group by oi.stock_item_id
     ) oi on (oi.stock_item_id = si.id)
+
+    left join (
+      select stock_item_id, sum(quantity_adjustment) as total_deposited
+      from ". DB_TABLE_PREFIX ."stock_transactions_contents
+      group by stock_item_id
+    ) stt on (stt.stock_item_id = si.id)
+
+    left join (
+      select stock_item_id, sum(quantity) as total_withdrawn
+      from ". DB_TABLE_PREFIX ."orders_items oi
+      where oi.order_id in (
+        select id from ". DB_TABLE_PREFIX ."orders o
+        where order_status_id in (
+          select id from ". DB_TABLE_PREFIX ."order_statuses os
+          where stock_action = 'withdraw'
+        )
+      )
+      group by oi.stock_item_id
+    ) oit on (oit.stock_item_id = si.id)
+
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 		order by si.sku, sii.name;"
@@ -41,6 +64,11 @@
 
   $page_items = 0;
   while ($stock_item = database::fetch($stock_items_query)) {
+
+    if ($stock_item['quantity'] != $stock_item['total_deposited'] - $stock_item['total_withdrawn']) {
+      $stock_item['warning'] = language::translate('text_stock_inconsistency_detected', 'Stock inconsistency detected');
+    }
+
     $stock_items[] = $stock_item;
     if (++$page_items == settings::get('data_table_rows_per_page')) break;
 	}
@@ -51,6 +79,12 @@
 // Pagination
   $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
+<style>
+.fa-exclamation-triangle {
+  color: #f00;
+}
+</style>
+
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
@@ -78,13 +112,14 @@
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw'); ?></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
           <th><?php echo language::translate('title_gtin', 'GTIN'); ?></th>
           <th><?php echo language::translate('title_mpn', 'MPN'); ?></th>
-          <th><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
+          <th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
           <th><?php echo language::translate('title_reserved', 'Reserved'); ?></th>
-          <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+          <th><?php echo language::translate('title_backordered', 'Backordered'); ?></th>
           <th></th>
         </tr>
       </thead>
@@ -93,20 +128,21 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('stock_items['. $stock_item['id'] .']', $stock_item['id']); ?></td>
           <td><?php echo $stock_item['id']; ?></td>
+          <td><?php echo !empty($stock_item['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($stock_item['warning']) .'"') : ''; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
           <td><?php echo $stock_item['sku']; ?></td>
           <td><?php echo $stock_item['gtin']; ?></td>
           <td><?php echo $stock_item['mpn']; ?></td>
-          <td class="text-end"><?php echo (float)$stock_item['backordered']; ?></td>
-          <td class="text-end"><?php echo (float)$stock_item['reserved']; ?></td>
           <td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
+          <td class="text-end"><?php echo (float)$stock_item['reserved']; ?></td>
+          <td class="text-end"><?php echo (float)$stock_item['backordered']; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="10"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
+          <td colspan="11"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
         </tr>
       </tfoot>
     </table>

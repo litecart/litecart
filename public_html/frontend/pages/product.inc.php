@@ -23,7 +23,7 @@
     notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
   }
 
-  if (strtotime($product->date_valid_to) > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
+  if (!empty($product->date_valid_to) && strtotime($product->date_valid_to) > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
     notices::add('errors', language::translate('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
   }
 
@@ -224,7 +224,7 @@
   if (!empty($product->quantity_unit['name'])) {
     $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
   } else {
-    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, 0) : language::translate('title_in_stock', 'In Stock');
+    $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity) : language::translate('title_in_stock', 'In Stock');
   }
 
 // Cheapest shipping

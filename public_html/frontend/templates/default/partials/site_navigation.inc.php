@@ -3,7 +3,9 @@
 
     <div class="navbar-header">
       <div class="navbar-brand">
-        <a href="<?php echo document::href_ilink(''); ?>"><?php echo settings::get('site_name'); ?></a>
+        <a href="<?php echo document::href_ilink(''); ?>">
+          <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
+        </a>
       </div>
 
       <button type="button" class="navbar-toggle">
@@ -54,70 +56,47 @@
           </ul>
         </li>
         <?php } ?>
-
-        <li class="customer-service">
-          <a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
-        </li>
       </ul>
 
       <ul class="navbar-nav navbar-end">
 
-        <li class="regional-settings">
-          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
-            <ul class="list-inline">
-              <li><?php echo functions::draw_fonticon('fa-globe'); ?></li>
-              <li class="language"><?php echo language::$selected['code']; ?></li>
-              <li class="country">/ <?php echo customer::$data['country_code']; ?></li>
-              <li class="currency">/ <?php echo currency::$selected['code']; ?></li>
-            </ul>
+        <li class="customer-service">
+          <a href="<?php echo document::href_ilink('customer_service'); ?>">
+            <?php echo functions::draw_fonticon('fa-envelope-o'); ?> <?php echo language::translate('title_contact', 'Contact'); ?>
           </a>
         </li>
 
         <?php if (settings::get('accounts_enabled')) { ?>
+        <?php if (!empty(customer::$data['id'])) { ?>
         <li class="account dropdown">
-          <a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
+          <a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user-o'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
           <ul class="dropdown-menu">
-            <?php if (!empty(customer::$data['id'])) { ?>
             <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
             <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
             <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
-            <?php } else { ?>
-            <li>
-              <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-                <?php echo functions::form_draw_hidden_field('redirect_url', fallback($_GET['redirect_url'], document::link())); ?>
-
-                <div class="form-group">
-                  <?php echo functions::form_draw_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
-                </div>
-
-                <div class="form-group">
-                  <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
-                </div>
-
-                <div class="form-group">
-                  <?php echo functions::form_draw_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
-                </div>
-
-                <div class="btn-group btn-block">
-                  <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
-                </div>
-              <?php echo functions::form_draw_form_end(); ?>
-            </li>
-            <li class="text-center">
-              <a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
-            </li>
-
-            <li class="text-center">
-              <a href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
-            </li>
-            <?php } ?>
           </ul>
         </li>
+        <?php } else { ?>
+        <li class="account">
+          <a href="<?php echo document::href_ilink('login'); ?>">
+            <?php echo functions::draw_fonticon('fa-user-o'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
+          </a>
+        </li>
         <?php } ?>
+        <?php } ?>
+
+        <li class="regional-settings">
+          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
+            <?php echo functions::draw_fonticon('fa-globe'); ?>
+            <span class="language"><?php echo language::$selected['code']; ?></span>
+            / <span class="country"><?php echo customer::$data['country_code']; ?></span>
+            / <span class="currency"><?php echo currency::$selected['code']; ?></span>
+          </a>
+        </li>
 
         <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
           <a href="#" data-toggle="dropdown">
-            <?php echo functions::draw_fonticon('fa-shopping-basket fa-lg'); ?> <span class="hidden-sm hidden-md hidden-lg hidden-xl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
+            <?php echo functions::draw_fonticon('fa-shopping-basket'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>
 
             <?php if (!empty($shopping_cart['items'])) { ?>
             <span class="badge"><?php echo $shopping_cart['num_items']; ?></span>

@@ -1,16 +1,12 @@
 <style>
-html, body {
-}
-
 html {
-  display: table;
-  width: 100%;
-  height: 100%;
   background: #f8f8f8;
 }
 
 body {
-  display: table-row;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
   background: url({{template_path}}images/background.svg);
   background-size: cover;
 }
@@ -24,47 +20,24 @@ body {
   margin-inline-start: -64px;
 }
 
-#box-login-wrapper {
-  position: relative;
-  display: table-cell;
-  height: 100%;
-  vertical-align: middle;
-  padding: 30px;
-}
-
 #box-login {
-  max-width: 360px;
+  width: 360px;
   margin: auto;
-
-  padding: 0px;
-
-  background: #fff;
-
-  text-align: center;
-
   border-radius: 0px 25px 0px 25px;
-
   box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
 }
-
-#box-login .header {
-  padding: 10px;
+#box-login .card-header a {
+  display: block;
 }
-#box-login .header img {
-  margin: 1em;
+#box-login .card-header img {
+  margin: 0 auto;
   max-width: 250px;
   max-height: 100px;
 }
-
-#box-login .content {
-  padding: 0 30px;
-  margin: 0 auto;
-}
-
 #box-login .footer {
   background: #f6f6f6;
   padding: 10px;
-  text-align: end;
+  text-align: text-end;
   border-radius: 0px 0px 0px 25px;
   box-shadow: inset 0px 2px 3px -2px #ccc;
 }
@@ -74,20 +47,22 @@ body {
   <div class="loader" style="width: 128px; height: 128px;"></div>
 </div>
 
-<div id="box-login-wrapper">
 
-  <div id="box-login">
-
-    <div class="header">
+  <div id="box-login" class="card">
+    <div class="card-header">
       <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('site_name'); ?>" /></a>
     </div>
 
     <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
+      <?php echo functions::form_draw_hidden_field('login', 'true'); ?>
+      <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 
-      <div class="content">
-        <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
+      <div class="card-body">
 
         {{notices}}
+
+        <h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
+
 
         <div class="form-group">
           <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
@@ -102,15 +77,19 @@ body {
         </div>
       </div>
 
-      <div class="footer">
-        <?php echo functions::form_draw_hidden_field('login', 'true'); ?>
-        <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?>
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-md-6">
+            <a class="btn btn-default btn-lg" href="<?php echo document::href_ilink('f:'); ?>"><?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?></a>
+          </div>
+          <div class="col-md-6 text-end">
+            <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+          </div>
+        </div>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
-
-</div>
 
 <script>
   if ($('input[name="username"]').val() == '') {
@@ -122,8 +101,8 @@ body {
   $('form[name="login_form"]').submit(function(e) {
     e.preventDefault();
     var form = this;
-    $('#box-login-wrapper .content').slideUp(100, function(){
-      $('#box-login-wrapper').fadeOut(250, function(){
+    $('#box-login .card-body').slideUp(100, function(){
+      $('#box-login').fadeOut(250, function(){
         $('.loader-wrapper').fadeIn(100, function(){
           form.submit();
         });

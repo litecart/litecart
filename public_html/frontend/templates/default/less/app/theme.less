@@ -31,8 +31,6 @@ body {
   }
 
   form[name="search_form"] {
-    max-width: 640px;
-    margin: 0 auto;
     .input-group {
       border-radius: 1em;
       background: var(--site-background-color);
@@ -44,7 +42,6 @@ body {
   }
 
   @media (min-width: @media-breakpoint-sm) {
-    padding: 1rem;
     flex-direction: row;
   }
 
@@ -59,15 +56,27 @@ body {
 
 #site-navigation {
   background-color: var(--navigation-background-color);
-  margin-bottom: ~"calc(var(--gutter-size) *2)";
+  margin-bottom: var(--gutter-size);
   color: ~"var(--navigation-text-color)";
   position: sticky;
-  top: 0;
+  top: -1px;
   z-index: 1;
   backdrop-filter: saturate(200%) blur(5px);
+
   a {
     color: inherit;
   }
+
+  .navbar {
+    @media (min-width: @media-breakpoint-md) {
+      .navbar-nav a > .fa {
+        display: block;
+        font-size: 2em;
+        text-align: center;
+      }
+    }
+  }
+
   .search form {
     padding: var(--gutter-size);
   }

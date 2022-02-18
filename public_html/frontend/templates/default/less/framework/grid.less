@@ -18,11 +18,11 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: var(--gutter-size);
-  margin-bottom: ~"calc(var(--gutter-size)*2)";
+  margin-bottom: var(--gutter-size);
   &.layout {
     @media (min-width: @media-breakpoint-lg) {
-      grid-gap: ~"calc(var(--gutter-size)*2)";
-      margin-bottom: ~"calc(var(--gutter-size)*2)";
+      grid-gap: var(--gutter-size);
+      margin-bottom: var(--gutter-size);
     }
   }
   &.half-gutter {

@@ -3,8 +3,8 @@
   define('PLATFORM_VERSION', '3.0.0');
   define('SCRIPT_TIMESTAMP_START', microtime(true));
 
-// Capture output buffer (use compression)
-  if (!ob_start('ob_gzhandler')) ob_start();
+// Capture output buffer
+  ob_start();
 
 // Get config
   if (!defined('FS_DIR_APP')) {

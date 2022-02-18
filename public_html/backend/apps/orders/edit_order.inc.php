@@ -1272,7 +1272,7 @@
     var output = '  <div class="bubble local me">'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][id]', ''); ?>'
                + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][author]', 'staff'); ?>'
-               + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][date_created]', strftime(language::$selected['format_datetime'])); ?>'
+               + '    <?php echo functions::form_draw_hidden_field('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>'
                + '    <?php echo functions::general_escape_js(functions::form_draw_textarea('comments[new_comment_index][text]', '')); ?>'
                + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
                + '    <div class="actions">'

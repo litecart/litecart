@@ -111,7 +111,7 @@
     </table>
 
     <div class="card-body">
-      <fieldset>
+      <fieldset id="actions">
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
 
         <div class="btn-group">
