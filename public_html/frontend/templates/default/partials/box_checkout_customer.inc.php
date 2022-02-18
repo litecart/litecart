@@ -12,20 +12,26 @@
   <div class="address billing-address">
 
     <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
-    <div class="row">
-      <?php if (settings::get('customer_field_company')) { ?>
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
-        <?php echo functions::form_draw_text_field('company', true); ?>
-      </div>
-      <?php } ?>
+    <div class="form-group">
+      <?php echo functions::form_draw_toggle_buttons('customer[type]', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['customer']['type']) ? 'individual' : true); ?>
+    </div>
 
-      <?php if (settings::get('customer_field_tax_id')) { ?>
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-        <?php echo functions::form_draw_text_field('tax_id', true); ?>
+    <div class="business-details" <?php echo (empty($_POST['customer']['type']) || $_POST['customer']['type'] == 'individual') ? 'style="display: none;"' : ''; ?>>
+      <div class="row">
+        <?php if (settings::get('customer_field_company')) { ?>
+        <div class="form-group col-6">
+          <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
+          <?php echo functions::form_draw_text_field('customer[company]', true); ?>
+        </div>
+        <?php } ?>
+
+        <?php if (settings::get('customer_field_tax_id')) { ?>
+        <div class="form-group col-6">
+          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+          <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
+        </div>
+        <?php } ?>
       </div>
-      <?php } ?>
     </div>
     <?php } ?>
 
@@ -223,6 +229,15 @@
   <?php } ?>
 
 // Customer Form: Initiate fields
+  $('input[name="customer[type]"]').change(function(){
+    if ($(this).val() == 'business') {
+      $('.business-details :input').prop('disabled', false);
+      $('.business-details').slideDown('fast');
+    } else {
+      $('.business-details :input').prop('disabled', true);
+      $('.business-details').slideUp('fast');
+    }
+  }).first().trigger('change');
 
   if ($('select[name="country_code"] option:selected').data('tax-id-format')) {
     $('input[name="tax_id"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'));
