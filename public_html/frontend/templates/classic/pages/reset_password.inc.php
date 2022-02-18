@@ -25,12 +25,12 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-        <?php echo functions::form_draw_password_field('new_password', ''); ?>
+        <?php echo functions::form_draw_password_field('new_password', '', 'required autocomplete="new-password" data-toggle="password-strength"'); ?>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_confirmed_password', 'Confirmed Password'); ?></label>
-        <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
+        <?php echo functions::form_draw_password_field('confirmed_password', '', 'required autocomplete="off"'); ?>
       </div>
       <?php } ?>
 

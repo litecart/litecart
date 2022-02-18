@@ -485,6 +485,7 @@
 
     $htaccess = strtr($htaccess, [
       '{BASE_DIR}' => WS_DIR_APP,
+      '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'] .'/',
       '{APP_DIR}' => FS_DIR_APP,
     ]);
 

@@ -166,12 +166,11 @@
 
     public static function strip_url_logic($path) {
 
-      if (empty($path)) return;
+      if (empty($path)) return '';
 
-      $path = parse_url($path, PHP_URL_PATH);
-
-      $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
-      //return preg_replace('#^'. WS_DIR_APP . '(index\.php/)?('. implode('|', array_keys(language::$languages)) .')?(/|$)#', '', parse_url($path, PHP_URL_PATH));
+      if ($path = parse_url($path, PHP_URL_PATH)) {
+        $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+      }
 
       return $path;
     }

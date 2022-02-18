@@ -784,7 +784,7 @@ END;
     }
 
     if (!preg_match('#(\w*)\((.*?)\)$#i', $function, $matches)) {
-      trigger_error('Invalid function name ('. $function .')', E_USER_ERROR);
+      trigger_error('Invalid function name ('. $function .')', E_USER_WARNING);
     }
 
     $options = [];
@@ -1181,8 +1181,8 @@ END;
         $input = settings::get('default_country_code');
         break;
       case 'site_country_code':
-      case 'store_country_code':
-        $input = settings::get('store_country_code');
+      case 'site_country_code':
+        $input = settings::get('site_country_code');
         break;
     }
 
@@ -1373,17 +1373,17 @@ END;
   function form_draw_incoterms_list($name, $input=true, $multiple=false, $parameters='') {
 
     $options = [
-      ['EXW', 'EXW – '. language::translate('title_incoterm_exw', 'Ex Works')],
-      ['FCA', 'FCA – '. language::translate('title_incoterm_fca', 'Free Carrier')],
-      ['FAS', 'FAS – '. language::translate('title_incoterm_fas', 'Free Alongside Ship')],
-      ['FOB', 'FOB – '. language::translate('title_incoterm_fob', 'Free On Board')],
-      ['CFR', 'CFR – '. language::translate('title_incoterm_cfr', 'Cost and Freight')],
-      ['CIF', 'CIF – '. language::translate('title_incoterm_cif', 'Cost, Insurance and Freight')],
-      ['CPT', 'CPT – '. language::translate('title_incoterm_cpt', 'Carriage Paid To')],
-      ['CIP', 'CIP – '. language::translate('title_incoterm_cip', 'Carriage and Insurance Paid')],
-      ['DDP', 'DDP – '. language::translate('title_incoterm_ddp', 'Delivered Duty Paid')],
-      ['DPU', 'DPU – '. language::translate('title_incoterm_dpu', 'Delivered At Place Unloaded')],
-      ['DAP', 'DAP – '. language::translate('title_incoterm_dap', 'Delivered At Place')],
+      ['EXW', 'EXW &ndash; '. language::translate('title_incoterm_exw', 'Ex Works')],
+      ['FCA', 'FCA &ndash; '. language::translate('title_incoterm_fca', 'Free Carrier')],
+      ['FAS', 'FAS &ndash; '. language::translate('title_incoterm_fas', 'Free Alongside Ship')],
+      ['FOB', 'FOB &ndash; '. language::translate('title_incoterm_fob', 'Free On Board')],
+      ['CFR', 'CFR &ndash; '. language::translate('title_incoterm_cfr', 'Cost and Freight')],
+      ['CIF', 'CIF &ndash; '. language::translate('title_incoterm_cif', 'Cost, Insurance and Freight')],
+      ['CPT', 'CPT &ndash; '. language::translate('title_incoterm_cpt', 'Carriage Paid To')],
+      ['CIP', 'CIP &ndash; '. language::translate('title_incoterm_cip', 'Carriage and Insurance Paid')],
+      ['DDP', 'DDP &ndash; '. language::translate('title_incoterm_ddp', 'Delivered Duty Paid')],
+      ['DPU', 'DPU &ndash; '. language::translate('title_incoterm_dpu', 'Delivered At Place Unloaded')],
+      ['DAP', 'DAP &ndash; '. language::translate('title_incoterm_dap', 'Delivered At Place')],
     ];
 
     if ($multiple) {
@@ -1606,14 +1606,14 @@ END;
   function form_draw_payment_terms_list($name, $input=true, $multiple=false, $parameters='') {
 
     $options = [
-      ['PIA', 'PIA – '. language::translate('title_payment_terms_pia', 'Payment In Advance')],
-      ['PWO', 'PWO – '. language::translate('title_payment_terms_pwo', 'Payment With Order')],
-      ['CBS', 'CBS – '. language::translate('title_payment_terms_cbs', 'Cash Before Shipment')],
-      ['COD', 'COD – '. language::translate('title_payment_terms_cod', 'Cash On Delivery')],
-      ['NET7', 'NET7 – '. language::translate('title_payment_terms_net7', 'Payment 7 days after invoice date')],
-      ['NET10', 'NET10 – '. language::translate('title_payment_terms_net10', 'Payment 10 days after invoice date')],
-      ['NET20', 'NET20 – '. language::translate('title_payment_terms_net20', 'Payment 20 days after invoice date')],
-      ['NET30', 'NET30 – '. language::translate('title_payment_terms_net30', 'Payment 30 days after invoice date')],
+      ['PIA', 'PIA &ndash; '. language::translate('title_payment_terms_pia', 'Payment In Advance')],
+      ['PWO', 'PWO &ndash; '. language::translate('title_payment_terms_pwo', 'Payment With Order')],
+      ['CBS', 'CBS &ndash; '. language::translate('title_payment_terms_cbs', 'Cash Before Shipment')],
+      ['COD', 'COD &ndash; '. language::translate('title_payment_terms_cod', 'Cash On Delivery')],
+      ['NET7', 'NET7 &ndash; '. language::translate('title_payment_terms_net7', 'Payment 7 days after invoice date')],
+      ['NET10', 'NET10 &ndash; '. language::translate('title_payment_terms_net10', 'Payment 10 days after invoice date')],
+      ['NET20', 'NET20 &ndash; '. language::translate('title_payment_terms_net20', 'Payment 20 days after invoice date')],
+      ['NET30', 'NET30 &ndash; '. language::translate('title_payment_terms_net30', 'Payment 30 days after invoice date')],
     ];
 
     if ($multiple) {

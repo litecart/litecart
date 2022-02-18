@@ -119,7 +119,7 @@
 </section>
 
 <script>
-  $('#box-filter form[name="filter_form"] :input').on('input', function(){
+  $('body').on('input', '#box-filter form[name="filter_form"] :input', function(){
     $('#box-filter .tokens').html('');
 
     $.each($('#box-filter input[data-token-title][type="search"]'), function(i,el) {
@@ -128,13 +128,13 @@
     });
 
     $.each($('#box-filter input[data-token-title][type="checkbox"]:checked'), function(i,el) {
-      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">×</a></span>');
+      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">&times;</a></span>');
     });
 
   }).first().trigger('change');
 
   var xhr_filter = null;
-  $('#box-filter form[name="filter_form"]').on('input', function(){
+  $('body').on('input', '#box-filter form[name="filter_form"]', function(){
     if (xhr_filter) xhr_filter.abort();
     var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
     $('section.listing.products').hide();
@@ -143,14 +143,17 @@
       url: url.href,
       dataType: 'html',
       success: function(response){
-        var html = $('section.listing.products', response)[0].outerHTML;
-        console.log(html);
-        $('section.listing.products').replaceWith(html).fadeIn('fast');
+        var content = $('section.listing.products', response)[0].outerHTML;
+        var pagination = $('.pagination', response).length ? $('.pagination', response)[0].outerHTML : '';
+        $('.pagination').remove();
+        $('section.listing.products').replaceWith(content).after(pagination);
+        $('section.listing.products').after(pagination);
       }
     });
   });
 
-  $('#box-filter form[name="filter_form"] .tokens').on('click', '.remove', function(){
+  $('body').on('click', '#box-filter form[name="filter_form"] .tokens .remove', function(e){
+    e.preventDefault();
     var token = $(this).closest('.token');
     switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
       case 'radio':

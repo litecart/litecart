@@ -74,11 +74,15 @@
   --pills-text-color: #333;
   --pills-text-color-active: var(--pills-text-color);
   /* Tabs */
-  --tabs-background-color: #f3f3f3;
+  --tabs-pane-background-color: #f3f3f3;
+  --tabs-pane-border-color: var(--tabs-pane-background-color);
+  --tabs-background-color: #e9e9e9;
   --tabs-background-color-active: #fff;
-  --tabs-borde-color: var(--default-border-color);
   --tabs-text-color: #333;
   --tabs-text-color-active: var(--tabs-text-color);
+  --tabs-border-color: var(--tabs-background-color);
+  --tabs-border-color-active: var(--tabs-background-color-active);
+  --tabs-content-background-color: #fff;
   /* Tables */
   --table-striped-row-background-odd: #f9f9f9;
   --table-striped-row-background-even: #fff;

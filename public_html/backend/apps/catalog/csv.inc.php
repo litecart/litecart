@@ -233,6 +233,9 @@
                   (id)
                   values (". (int)$row['group_id'] .");"
                 );
+                $attribute_group = new ent_attribute_group($row['group_id']);
+              } else {
+                $attribute_group = new ent_attribute_group();
               }
             }
 
@@ -241,15 +244,15 @@
             if (isset($row['group_name'])) $attribute_group->data['name'][$row['language_code']] = $row['group_name'];
             if (isset($row['sort'])) $attribute_group->data['sort'] = $row['sort'];
 
-            if (!empty($row['value_id'])) {
-              $value_key = array_search($row['value_id'], array_column($attribute_group->data['values'], 'id', 'id'));
+            foreach ($attribute_group->data['values'] as $key => $value) {
+              if (!empty($row['value_id']) && $value['id'] == $row['value_id']) {
+                $value_key = $key;
+                break;
+              }
 
-            } else if (!empty($row['value_name'])) {
-              foreach ($attribute_group->data['values'] as $key => $value) {
-                if ($value['name'][$row['language_code']] == $row['value_name']) {
-                  $value_key = $row['value_id'];
-                  break;
-                }
+              if (!empty($row['value_name']) && isset($value['name'][$row['language_code']]) && $value['name'][$row['language_code']] == $row['value_name']) {
+                $value_key = $key;
+                break;
               }
             }
 
@@ -265,6 +268,9 @@
 
           // Sort values
             uasort($attribute_group->data['values'], function($a, $b){
+              if (!isset($a['priority'])) $a['priority'] = '';
+              if (!isset($b['priority'])) $b['priority'] = '';
+
               if ($a['priority'] == $b['priority']) {
                 return ($a['name'] < $b['name']) ? -1 : 1;
               }
@@ -1072,10 +1078,16 @@
           if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
 
           $products_query = database::query(
-            "select p.*, pi.name, pi.short_description, pi.meta_description, pi.head_title, pp.price, pa.attributes
+            "select p.*, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, p2c.categories, pp.price, pim.images, pa.attributes
             from ". DB_TABLE_PREFIX ."products p
             left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
             left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
+            left join (
+              select product_id, group_concat(category_id separator ',') as categories
+              from ". DB_TABLE_PREFIX ."products_to_categories
+              group by product_id
+              order by category_id
+            ) p2c on (p2c.product_id = p.id)
             left join (
               select product_id, group_concat(concat(group_id, ':', if(custom_value != '', concat('\"', custom_value, '\"'), value_id)) separator '\r\n') as attributes
               from ". DB_TABLE_PREFIX ."products_attributes

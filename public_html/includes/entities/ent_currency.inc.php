@@ -22,7 +22,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = null;
+        $this->data[$field['Field']] = database::create_variable($field['Type']);
       }
 
       $this->previous = $this->data;
@@ -30,7 +30,7 @@
 
     public function load($currency_code) {
 
-      if (!preg_match('#^([0-9]{1,3}|[A-Z]{3})$#', $currency_code)) throw new Exception('Invalid currency code ('. $currency_code .')');
+      if (!preg_match('#^([0-9]{1,3}|[A-Z]{3}|[a-z A-Z]{4,})$#', $currency_code)) throw new Exception('Invalid currency ('. $currency_code .')');
 
       $this->reset();
 
@@ -39,6 +39,7 @@
         ". (preg_match('#^[0-9]{1,2}$#', $currency_code) ? "where id = '". (int)$currency_code ."'" : "") ."
         ". (preg_match('#^[0-9]{3}$#', $currency_code) ? "where number = '". database::input($currency_code) ."'" : "") ."
         ". (preg_match('#^[A-Z]{3}$#', $currency_code) ? "where code = '". database::input($currency_code) ."'" : "") ."
+        ". (preg_match('#^[a-z A-Z]{4,}$#', $currency_code) ? "where name like '". database::input($currency_code) ."'" : "") ."
         limit 1;"
       );
 

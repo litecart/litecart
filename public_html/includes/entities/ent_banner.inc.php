@@ -20,7 +20,7 @@
         "show fields from ". DB_TABLE_PREFIX ."banners;"
       );
       while ($field = database::fetch($categories_query)) {
-        $this->data[$field['Field']] = null;
+        $this->data[$field['Field']] = database::create_variable($field['Type']);
       }
     }
 
@@ -119,7 +119,7 @@
 
       if (file_exists(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
 
-      $this->data['id'] = null;
+      $this->data['id'] = 0;
 
       cache::clear_cache('banners');
     }

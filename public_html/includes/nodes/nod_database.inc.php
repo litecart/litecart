@@ -7,22 +7,30 @@
 
       if (!isset(self::$_links[$link])) {
 
-        stats::start_watch('database_execution');
-
-        self::$_links[$link] = new mysqli($server, $username, $password, $database);
-
-        if (($duration = stats::get_watch('database_execution')) > 1) {
-          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
+        if (class_exists('stats', false)) {
+          stats::start_watch('database_execution');
         }
 
-        stats::start_watch('database_execution');
+        self::$_links[$link] = mysqli_init();
+
+        mysqli_options(self::$_links[$link], MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+
+        if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
+          trigger_error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
+        }
+
+        if (($duration = stats::get_watch('database_execution')) > 1) {
+          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
+        }
+
+        if (class_exists('stats', false)) {
+          stats::stop_watch('database_execution');
+        }
       }
 
       if (!is_object(self::$_links[$link])) {
-        trigger_error('Error: Invalid database link', E_USER_ERROR);
+        trigger_error('Invalid database link', E_USER_ERROR);
       }
-
-      if (self::$_links[$link]->connect_error) exit;
 
       if (!$result = self::$_links[$link]->set_charset($charset)) {
         trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
@@ -51,10 +59,6 @@
       self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
       self::query("SET names '". database::input($charset) ."';", $link);
 
-      if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
-        self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, true, $link);
-      }
-
       event::register('shutdown', [__CLASS__, 'disconnect']);
 
       return self::$_links[$link];
@@ -77,7 +81,7 @@
         if (!is_object($link)) {
           $errors = true;
         } else {
-          self::$_links[$link]->close();
+          mysqli_close(self::$_links[$link]);
           unset(self::$_links[$link]);
         }
       }
@@ -89,10 +93,12 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      stats::start_watch('database_execution');
+      if (class_exists('stats', false)) {
+        stats::start_watch('database_execution');
+      }
 
-      if (!$result = self::$_links[$link]->query($query)) {
-        self::_error($query, self::$_links[$link]);
+      if (($result = mysqli_query(self::$_links[$link], $query)) === false) {
+        trigger_error(mysqli_errno() .' - '. preg_replace('#\r#', ' ', mysqli_error()) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       if (($duration = stats::get_watch('database_execution')) > 3) {
@@ -111,35 +117,38 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      $measure_start = microtime(true);
+      if (class_exists('stats', false)) {
+        stats::start_watch('database_execution');
+      }
 
-      if ($result = self::$_links[$link]->multi_query($query) === false) {
-        self::_error($query, self::$_links[$link]);
+      if (($result = mysqli_multi_query(self::$_links[$link], $query)) === false) {
+        trigger_error(mysqli_errno() .' - '. preg_replace('#\r#', ' ', mysqli_error()) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       $i = 1;
-      while (self::$_links[$link]->more_results()) {
-        if (self::$_links[$link]->next_result() === false) {
+      while (mysqli_more_results(self::$_links[$link])) {
+        if (mysqli_next_result(self::$_links[$link]) === false) {
           die('Fatal: Query '. $i .' failed');
         }
         $i++;
       }
 
-      $duration = microtime(true) - $measure_start;
-
       if (class_exists('stats', false)) {
-        stats::set('database_queries', stats::get('database_queries') + $i);
-        stats::set('database_execution_time', stats::get('database_execution_time') + $duration);
+        stats::increase_count('database_queries', $i);
+        stats::stop_watch('database_execution');
       }
     }
 
     public static function fetch($result, $column='') {
+      if (class_exists('stats', false)) {
+        stats::start_watch('database_execution');
+      }
 
-      stats::start_watch('database_execution');
+      $row = mysqli_fetch_assoc($result);
 
-      $row = $result->fetch_assoc();
-
-      stats::stop_watch('database_execution');
+      if (class_exists('stats', false)) {
+        stats::stop_watch('database_execution');
+      }
 
       if ($column) {
         if (isset($row[$column])) {
@@ -153,35 +162,51 @@
     }
 
     public static function seek($result, $offset) {
-      return $result->data_seek($offset);
+      return mysqli_data_seek($result, $offset);
     }
 
     public static function num_rows($result) {
-      return $result->num_rows;
+      return mysqli_num_rows($result);
     }
 
     public static function free($result) {
-      return $result->close();
+      return mysqli_free_result($result);
     }
 
     public static function insert_id($link='default') {
-      return self::$_links[$link]->insert_id;
+      return mysqli_insert_id(self::$_links[$link]);
     }
 
     public static function affected_rows($link='default') {
-      return self::$_links[$link]->affected_rows;
+      return mysqli_affected_rows(self::$_links[$link]);
     }
 
     public static function info($link='default') {
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      return self::$_links[$link]->info;
+      return mysqli_info(self::$_links[$link]);
+    }
+
+    public static function create_variable($column_type, $value='') {
+
+      switch (true) {
+        case (preg_match('#^(bit|int|tinyint|smallint|mediumint|bigint)#i', $column_type)):
+          return intval($value);
+
+      case (preg_match('#^(decimal|double|float)#i', $column_type)):
+        return floatval($value);
+
+        default:
+          return strval($value);
+      }
     }
 
     public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
 
-      if ($string == '') return $string;
+      if (empty($string) || in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
+        return $string;
+      }
 
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
@@ -190,31 +215,22 @@
         return $string;
       }
 
-      //if (is_string($string)) {
-        if ($allowable_tags !== true) {
-          if ($allowable_tags != '') {
-            $string = strip_tags($string, $allowable_tags);
-          } else {
-            $string = strip_tags($string);
-          }
+      if ($allowable_tags !== true) {
+        if ($allowable_tags != '') {
+          $string = strip_tags($string, $allowable_tags);
+        } else {
+          $string = strip_tags($string);
         }
+      }
 
-        if ($trim === true) {
-          $string = trim($string);
-        } else if ($trim != '') {
-          $string = trim($string, $trim);
-        }
-      //}
+      if ($trim === true) {
+        $string = trim($string);
+      } else if ($trim != '') {
+        $string = trim($string, $trim);
+      }
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      return self::$_links[$link]->escape_string($string);
-    }
-
-    private static function _error($query, $object) {
-
-      $query = preg_replace('#^\s+#m', '', $query) . PHP_EOL;
-
-      trigger_error($object->errno .' - '. preg_replace('#\r#', ' ', $object->error) . PHP_EOL . $query, E_USER_ERROR);
+      return mysqli_real_escape_string(self::$_links[$link], $string);
     }
   }

@@ -300,10 +300,6 @@ ul.breadcrumb li a {
 .btn.btn-default:hover:not(.active):not(.disabled):not([disabled]) {
   background-color: var(--default-button-background-color-hover);
 }
-.btn.btn-default.active {
-  background: var(--default-button-background-color-active);
-  border-color: var(--default-button-border-color);
-}
 .btn.btn-primary {
   background-color: var(--primary-button-background-color);
   color: var(--primary-button-text-color);
@@ -312,10 +308,6 @@ ul.breadcrumb li a {
 }
 .btn.btn-primary:hover:not(.active):not(.disabled):not([disabled]) {
   background-color: var(--primary-button-background-color-hover);
-}
-.btn.btn-primary.active {
-  background: var(--primary-button-background-color-active);
-  border-color: var(--primary-button-border-color);
 }
 .btn.btn-success {
   background-color: var(--success-button-background-color);
@@ -326,10 +318,6 @@ ul.breadcrumb li a {
 .btn.btn-success:hover:not(.active):not(.disabled):not([disabled]) {
   background-color: var(--success-button-background-color-hover);
 }
-.btn.btn-success.active {
-  background: var(--success-button-background-color-active);
-  border-color: var(--success-button-border-color);
-}
 .btn.btn-danger {
   background-color: var(--danger-button-background-color);
   color: var(--danger-button-text-color);
@@ -338,10 +326,6 @@ ul.breadcrumb li a {
 }
 .btn.btn-danger:hover:not(.active):not(.disabled):not([disabled]) {
   background-color: var(--danger-button-background-color-hover);
-}
-.btn.btn-danger.active {
-  background: var(--danger-button-background-color-active);
-  border-color: var(--danger-button-border-color);
 }
 .btn.btn-sm {
   font-size: 0.8em;
@@ -1571,10 +1555,10 @@ ul.list-inline li {
   margin-inline-start: 2px;
 }
 .nav-tabs {
-  background: var(--tabs-background-color);
+  background: var(--tabs-pane-background-color);
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
-  border-bottom: 1px solid var(--tabs-border-color);
+  border-bottom: 1px solid var(--tabs-pane-border-color);
   padding: calc(var(--gutter-size)/2) var(--gutter-size) 0 var(--gutter-size);
   color: var(--tabs-text-color);
   padding-bottom: 0;
@@ -1584,23 +1568,28 @@ ul.list-inline li {
 }
 .nav-tabs > li > a {
   margin-inline-end: calc(var(--gutter-size)/2);
-  line-height: 1.42857143;
+  line-height: 1.4;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: calc(var(--gutter-size)/2) var(--gutter-size);
-  background-color: #e9e9e9;
+  background-color: var(--tabs-background-color);
+  color: var(--tabs-text-color);
+  border: 1px solid var(--tabs-border-color);
+  border-bottom-color: var(--tabs-background-color);
 }
 .nav-tabs > li:hover a {
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.25);
 }
 .nav-tabs > li.active a {
-  background: var(--tabs-background-color-active);
+  background-color: var(--tabs-background-color-active);
   color: var(--tabs-text-color-active);
+  margin-top: 1px;
   margin-bottom: -1px;
-  border: 1px solid var(--tabs-border-color);
-  border-bottom-color: #fff;
+  border: 1px solid var(--tabs-border-color-active);
+  border-bottom-color: var(--tabs-content-background-color);
 }
 .tab-content {
   padding: var(--gutter-size) 0;
+  background: var(--tabs-content-background-color);
 }
 .tab-content .tab-pane > .title {
   margin-top: 0;

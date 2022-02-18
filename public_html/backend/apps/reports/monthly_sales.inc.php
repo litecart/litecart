@@ -22,17 +22,17 @@
       sum(o.total) - sum(o.total_tax) as total_sales,
       sum(o.total_tax) as total_tax,
       sum(o.subtotal) as total_subtotal,
-      sum(otsf.value) as total_shipping_fees,
-      sum(otpf.value) as total_payment_fees,
+      sum(otsf.amount) as total_shipping_fees,
+      sum(otpf.amount) as total_payment_fees,
       date_format(o.date_created, '%Y-%m') as `year_month`
     from ". DB_TABLE_PREFIX ."orders o
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_PREFIX ."orders_totals
+      select order_id, sum(amount) as amount from ". DB_TABLE_PREFIX ."orders_totals
       where module_id = 'ot_shipping_fee'
       group by order_id
     ) otsf on (o.id = otsf.order_id)
     left join (
-      select order_id, sum(value) as value from ". DB_TABLE_PREFIX ."orders_totals
+      select order_id, sum(amount) as amount from ". DB_TABLE_PREFIX ."orders_totals
       where module_id = 'ot_payment_fee'
       group by order_id
     ) otpf on (o.id = otpf.order_id)

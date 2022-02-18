@@ -34,7 +34,7 @@
     private $_file = null;
     private $_library = null;
     private $_image = null;
-    private $_whitespace = null;
+    private $_whitespace = [255, 255, 255];
 
     public function __construct($file=null, $library=null) {
 
@@ -207,11 +207,7 @@
           throw new Exception('Remote image location '. $file .' returned an unexpected http response code ('. $client->last_response['status_code'] .')');
         }
 
-        $tmpfile = tempnam(sys_get_temp_dir(), '') .'.'. pathinfo(parse_url($file, PHP_URL_PATH), PATHINFO_EXTENSION);
-        file_put_contents($tmpfile, $response);
-
-        $this->_file = $tmpfile;
-        return true;
+        return $this->load_from_string($response);
       }
 
       if (!is_file($file)) {
@@ -238,10 +234,18 @@
 
       switch ($this->_library) {
 
+
         case 'imagick':
 
           try {
+
+          // Prevent DoS attack
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 128e6);
+            Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 128e6);
+
             $this->_image = new Imagick($this->_file);
+
             return true;
 
           } catch (\ImagickException $e) {
@@ -251,6 +255,10 @@
           break;
 
         case 'gd':
+
+          if ($this->width * $this->height > 64e6) {
+            throw new Exception('Refused to load image larger than 64 Megapixels');
+          }
 
           switch ($this->type) {
 
@@ -287,46 +295,10 @@
 
     public function load_from_string($binary) {
 
-      unset($this->_data['type']);
-      unset($this->_data['width']);
-      unset($this->_data['height']);
+      $file = stream_get_meta_data(tmpfile())['uri'];
+      file_put_contents($file, $binary);
 
-      switch($this->_library) {
-
-        case 'imagick':
-          $this->_data['type'] = $this->_image->getImageFormat();
-          return $this->_image->readImageBlob($binary);
-
-        case 'gd':
-
-          $this->_type = $type;
-          $this->_image = ImageCreateFromString($binary);
-          if (!$this->_image) return false;
-
-          $params = GetImageSizeFromString($binary);
-          $image_type = $params[2];
-
-          switch($image_type) {
-            case 1:
-              $this->_type = 'gif';
-              break;
-            case 2:
-              $this->_type = 'jpg';
-              break;
-            case 18:
-              $this->_type = 'webp';
-              break;
-            case 3:
-            default:
-              $this->_type = 'png';
-              break;
-          }
-
-          $this->_data['width'] = $params[0];
-          $this->_data['height'] = $params[1];
-
-          return true;
-      }
+      $this->load($file);
     }
 
     public function resample($width=1024, $height=1024, $clipping='FIT_ONLY_BIGGER') {
@@ -340,8 +312,8 @@
       }
 
     // Convert percentage dimensions to pixels
-      if (strpos($width, '%')) $width = $this->width * str_replace('%', '', $width) / 100;
-      if (strpos($height, '%')) $height = $this->height * str_replace('%', '', $height) / 100;
+      if (strpos($width, '%')) $width = round($this->width * str_replace('%', '', $width) / 100);
+      if (strpos($height, '%')) $height = round($this->height * str_replace('%', '', $height) / 100);
 
     // Calculate source proportion
       $source_ratio = $this->width / $this->height;
@@ -650,7 +622,7 @@
 
           try {
             $this->_image->trimImage(0);
-            $this->resample($this->width * 1.15, $this->height * 1.15, 'FIT_ONLY_BIGGER_USE_WHITESPACING');  // Add 15% padding
+            $this->resample(rounnd($this->width * 1.15), round($this->height * 1.15), 'FIT_ONLY_BIGGER_USE_WHITESPACING');  // Add 15% padding
 
           } catch (\ImagickException $e) {
             throw new Exception("Error applying filter on image ($this->_file)");
@@ -725,9 +697,9 @@
           } while (0);
 
           //$padding = 50; // Set padding size in px
-          $padding = $width * 0.15; // Set padding size in percentage
+          $padding = round($width * 0.15); // Set padding size in percentage
 
-          $_image = ImageCreateTrueColor($width + ($padding * 2), $height + ($padding * 2));
+          $_image = ImageCreateTrueColor($width + $padding * 2, $height + $padding * 2);
           ImageAlphaBlending($_image, true);
           ImageFill($_image, 0, 0, ImageColorAllocateAlpha($_image, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 0));
 
@@ -964,5 +936,9 @@
 
           break;
       }
+
+      if ($this->_width == 0) throw new Exception('Failed to detect image width');
+
+      return $this->_width;
     }
   }

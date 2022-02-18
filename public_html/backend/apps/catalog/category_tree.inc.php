@@ -57,8 +57,8 @@
 
           foreach (array_keys($new_category->data['name']) as $language_code) {
             $new_category->data['name'][$language_code] .= ' (copy)';
-            if ($field == 'options') {
-              foreach (array_keys($product->data[$field]['options'][$key]['values']) as $k) {
+            if ($field == 'options' && empty($product->data['options'][$key]['values'])) {
+              foreach (array_keys($product->data['options'][$key]['values']) as $k) {
                 $product->data[$field]['options'][$key]['values'][$k]['id'] = null;
               }
             }
@@ -295,6 +295,7 @@
           <th></th>
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+            <th><?php echo language::translate('title_price', 'Price'); ?></th>
           <th></th>
           <th></th>
         </tr>
@@ -310,7 +311,7 @@
     $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
     $products_query = database::query(
-      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name,
+      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name, pp.price,
       (
         if(p.id = '". database::input($_GET['query']) ."', 10, 0)
         + (match(pi.name) against ('*". database::input($query_fulltext) ."*'))
@@ -340,6 +341,10 @@
       left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
       left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
       left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
+      left join (
+        select product_id, `". database::input(settings::get('site_currency_code')) ."` as price
+        from ". DB_TABLE_PREFIX ."products_prices
+      ) pp on (pp.product_id = p.id)
       having relevance > 0
       order by relevance desc;"
     );
@@ -371,7 +376,8 @@
           <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
-          <td><?php echo '<img class="thumbnail" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 24, 24, 'FIT_USE_WHITESPACING')) .'" alt="" />'; ?><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
+          <td><?php echo '<img class="img-thumbnail" src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 24, 24, 'FIT_USE_WHITESPACING')) .'" alt="" />'; ?><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
+          <td class="text-end"><?php echo currency::format($product['price']); ?></td>
           <td><a href="<?php echo document::href_ilink('f:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
@@ -379,12 +385,12 @@
       }
     }
 ?>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="6"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-        </tr>
-      </tfoot>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+          </tr>
+        </tfoot>
 <?php
 
   } else {
@@ -398,9 +404,13 @@
       $output = '';
 
       $products_query = database::query(
-        "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
+        "select p.id, p.status, p.sku, pp.price, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PREFIX ."products_to_categories p2c on (p2c.product_id = p.id)
+        left join (
+          select product_id, `". database::input(settings::get('site_currency_code')) ."` as price
+          from ". DB_TABLE_PREFIX ."products_prices
+        ) pp on (pp.product_id = p.id)
         where ". (!empty($category_id) ? "p.id in (
           select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
           where category_id = ". (int)$category_id ."
@@ -447,7 +457,8 @@
           $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
 
-        $output .= '  <td><a href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+        $output .= '  <td class="text-end">'. currency::format($product['price']) .'</td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
       }
@@ -465,6 +476,7 @@
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cc6;"') .' <strong><a href="'. document::href_ilink(null, ['category_id' => '0']) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
@@ -495,7 +507,8 @@
           $output .= '  <td>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cc6; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
-        $output .= '  <td><a href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
+        $output .= '  <td></td>' . PHP_EOL
+                 . '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-end"><a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
 
@@ -519,6 +532,7 @@
                      . '  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
                      . '</tr>' . PHP_EOL;
           }
         }
@@ -534,12 +548,12 @@
 
     echo $category_iterator(0, 1);
 ?>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="6"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_product_rows); ?></td>
-        </tr>
-      </tfoot>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+          </tr>
+        </tfoot>
 <?php
   }
 ?>

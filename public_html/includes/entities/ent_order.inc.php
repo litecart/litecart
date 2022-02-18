@@ -25,23 +25,23 @@
 
         switch (true) {
           case (preg_match('#^customer_#', $field['Field'])):
-            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = null;
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case (preg_match('#^shipping_(?!option)#', $field['Field'])):
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = null;
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case (preg_match('#^payment_option#', $field['Field'])):
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = null;
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case (preg_match('#^shipping_option#', $field['Field'])):
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = null;
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           default:
-            $this->data[$field['Field']] = null;
+            $this->data[$field['Field']] = database::create_variable($field['Type']);
             break;
         }
       }
@@ -188,7 +188,7 @@
       if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username'), [
+          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('site_language_code')), [
             '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
             '%new_status' => reference::order_status($this->data['order_status_id'])->name,
           ]),
@@ -529,7 +529,7 @@
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
 
-      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : null;
+      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : '';
 
       $aliases = [
         '%order_id' => $this->data['id'],
