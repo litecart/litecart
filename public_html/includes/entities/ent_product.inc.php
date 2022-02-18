@@ -104,7 +104,7 @@
         left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
         where product_id = ". (int)$product_id ."
-        order by group_name, value_name, custom_value;"
+        order by priority, group_name, value_name, custom_value;"
       );
 
       while ($attribute = database::fetch($product_attributes_query)) {
@@ -263,6 +263,7 @@
       );
 
       if (!empty($this->data['attributes'])) {
+        $i = 0;
         foreach ($this->data['attributes'] as $key => $attribute) {
           if (empty($attribute['id'])) {
             database::query(
@@ -277,7 +278,8 @@
             "update ". DB_TABLE_PREFIX ."products_attributes
             set group_id = ". (int)$attribute['group_id'] .",
               value_id = ". (int)$attribute['value_id'] .",
-              custom_value = '". database::input($attribute['custom_value']) ."'
+              custom_value = '". database::input($attribute['custom_value']) ."',
+              priority = ". (int)$attribute['priority'] .",
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$attribute['id'] ."
             limit 1;"

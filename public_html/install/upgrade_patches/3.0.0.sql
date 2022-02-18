@@ -149,6 +149,9 @@ DROP COLUMN `upc`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
+ALTER TABLE `lc_products_attributes`
+ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `custom_value`;
+-- --------------------------------------------------------
 ALTER TABLE `lc_products_images`
 CHANGE COLUMN `checksum` `checksum` VARCHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------

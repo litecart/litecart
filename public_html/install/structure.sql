@@ -555,6 +555,7 @@ CREATE TABLE `lc_products_attributes` (
   `group_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `value_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `custom_value` VARCHAR(256) NOT NULL DEFAULT '',
+  `priority` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id` (`id`, `product_id`, `group_id`, `value_id`),
   KEY `product_id` (`product_id`),

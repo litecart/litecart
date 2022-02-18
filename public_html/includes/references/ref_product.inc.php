@@ -80,7 +80,7 @@
             left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input($this->_language_codes[0]) ."')
             left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input($this->_language_codes[0]) ."')
             where product_id = ". (int)$this->_data['id'] ."
-            order by group_name, value_name, custom_value;"
+            order by priority, group_name, value_name, custom_value;"
           );
 
           while ($attribute = database::fetch($product_attributes_query)) {

@@ -436,7 +436,7 @@
 
         <div id="tab-attributes" class="tab-pane" style="max-width: 960px;">
 
-          <table class="table table-striped data-table">
+          <table class="table table-striped table-dragable data-table">
             <thead>
               <tr>
                 <th style="width: 320px;"><?php echo language::translate('title_group', 'Group'); ?></th>
@@ -454,9 +454,9 @@
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_name]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][custom_value]', true); ?>
-                <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
+                <td class="grabable"><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
+                <td class="grabable"><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
+                <td class="grabable"><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
                 <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
               </tr>
               <?php } ?>
