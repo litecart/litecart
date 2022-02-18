@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>" />
 {{head_tags}}
 {{style}}
+<style>
+:root {
+  --default-text-size: <?php echo !empty($_COOKIE['font_size']) ? $_COOKIE['font_size'] : '14'; ?>px;
+}
+</style>
 </head>
 <body>
 
@@ -55,7 +60,14 @@
       <li style="flex-grow: 1;"></li>
 
       <li>
-        <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
+        <div class="btn-group btn-group-inline" data-toggle="buttons">
+          <button name="font_size" class="btn btn-default btn-sm" type="button" value="decrease"><span style="font-size: .8em;">A</span></button>
+          <button name="font_size" class="btn btn-default btn-sm" type="button" value="increase"><span style="font-size: 1.25em;">A</span></button>
+        </div>
+      </li>
+
+      <li>
+        <div class="btn-group btn-group-inline" data-toggle="buttons">
           <label class="btn btn-default btn-sm<?php echo empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>"><input type="radio" name="dark_mode" value="0" <?php echo empty($_COOKIE['dark_mode']) ? ' checked ' : ''; ?>/> <?php echo language::translate('title_light', 'Light'); ?></label>
           <label class="btn btn-default btn-sm<?php echo !empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>"><input type="radio" name="dark_mode" value="1" <?php echo !empty($_COOKIE['dark_mode']) ? ' checked ' : ''; ?>/> <?php echo language::translate('title_dark', 'Dark'); ?></label>
         </div>
@@ -128,6 +140,12 @@
 {{javascript}}
 
 <script>
+  $('button[name="font_size"]').click(function(){
+    var new_size = parseInt($(':root').css('--default-text-size').split('px')[0]) + (($(this).val() == 'increase') ? 1 : -1);
+    $(':root').css('--default-text-size', new_size + 'px');
+    document.cookie = 'font_size='+ new_size +';Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
+  });
+
   $('input[name="dark_mode"]').click(function(){
     if ($(this).val() == 1) {
       document.cookie = 'dark_mode=1;Path=<?php echo WS_DIR_APP; ?>;Max-Age=2592000';
