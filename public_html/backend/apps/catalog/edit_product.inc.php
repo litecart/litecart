@@ -165,8 +165,8 @@
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
+    <li><a data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li>
     <li><a data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a></li>
   </ul>
 
@@ -174,7 +174,7 @@
     <?php echo functions::form_draw_form_begin('product_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 960px;">
+        <div id="tab-general" class="tab-pane active">
 
           <div class="row">
             <div class="col-md-4">
@@ -196,12 +196,12 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
-                <?php echo functions::form_draw_date_field('date_valid_from', true); ?>
+                <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
-                <?php echo functions::form_draw_date_field('date_valid_to', true); ?>
+                <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
               </div>
 
               <?php if (!empty($product->data['id'])) { ?>
@@ -223,7 +223,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                 <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_draw_regional_text_field('name['. language::$selected['code'] .']', language::$selected['code'], true); ?>
               </div>
 
               <div class="form-group">
@@ -305,7 +305,7 @@
                 </div>
 
                 <div class="form-group">
-                  <a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('add'); ?></a>
+                  <a href="#" class="add btn btn-default btn-sm" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('add'); ?></a>
                 </div>
               </div>
             </div>
@@ -324,6 +324,13 @@
           <div class="tab-content">
             <?php foreach (array_keys(language::$languages) as $language_code) { ?>
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
+
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                  <?php echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+                </div>
+              </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
@@ -357,44 +364,6 @@
             <?php } ?>
 
           </div>
-        </div>
-
-        <div id="tab-attributes" class="tab-pane" style="max-width: 960px;">
-
-          <table class="table table-striped data-table">
-            <thead>
-              <tr>
-                <th style="width: 320px;"><?php echo language::translate('title_group', 'Group'); ?></th>
-                <th style="width: 320px;"><?php echo language::translate('title_value', 'Value'); ?></th>
-                <th><?php echo language::translate('title_custom_value', 'Custom Value'); ?></th>
-                <th style="width: 60px;"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if (!empty($_POST['attributes'])) foreach (array_keys($_POST['attributes']) as $key) { ?>
-              <tr>
-                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_name]', true); ?>
-                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_name]', true); ?>
-                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][custom_value]', true); ?>
-                <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
-                <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
-              </tr>
-              <?php } ?>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute[group_id]', ''); ?></td>
-                <td><?php echo functions::form_draw_select_field('new_attribute[value_id]', [], ''); ?></td>
-                <td><?php echo functions::form_draw_text_field('new_attribute[custom_value]', ''); ?></td>
-                <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
-              </tr>
-            </tfoot>
-          </table>
         </div>
 
         <div id="tab-prices" class="tab-pane">
@@ -452,7 +421,7 @@
                     <?php echo functions::form_draw_currency_field('campaigns['.$key.']['. $currency_code. ']', $currency_code, isset($_POST['campaigns'][$key][$currency_code]) ? number_format((float)$_POST['campaigns'][$key][$currency_code], 4, '.', '') : ''); ?>
                   </td>
                    <?php } ?>
-                  <td><br /><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+                  <td><br /><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
                 </tr>
               <?php } ?>
               </tbody>
@@ -463,6 +432,44 @@
               </tfoot>
             </table>
           </div>
+        </div>
+
+        <div id="tab-attributes" class="tab-pane" style="max-width: 960px;">
+
+          <table class="table table-striped data-table">
+            <thead>
+              <tr>
+                <th style="width: 320px;"><?php echo language::translate('title_group', 'Group'); ?></th>
+                <th style="width: 320px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+                <th><?php echo language::translate('title_custom_value', 'Custom Value'); ?></th>
+                <th style="width: 60px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if (!empty($_POST['attributes'])) foreach (array_keys($_POST['attributes']) as $key) { ?>
+              <tr>
+                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][group_name]', true); ?>
+                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_name]', true); ?>
+                <?php echo functions::form_draw_hidden_field('attributes['.$key.'][custom_value]', true); ?>
+                <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
+                <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
+                <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
+                <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+              </tr>
+              <?php } ?>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><?php echo functions::form_draw_attribute_groups_list('new_attribute[group_id]', ''); ?></td>
+                <td><?php echo functions::form_draw_select_field('new_attribute[value_id]', [], ''); ?></td>
+                <td><?php echo functions::form_draw_text_field('new_attribute[custom_value]', ''); ?></td>
+                <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
 
         <div id="tab-stock" class="tab-pane">
@@ -595,14 +602,20 @@
 
 <script>
 // Initiate
-
-  $('#tab-general input[name^="name"]').bind('input propertyChange', function(e){
-    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+  $('#tab-general input[name="name[<?php echo settings::get('site_language_code'); ?>]"]').on('input', function(e){
+    $('#tab-info input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
+  });
+
+  $('#tab-info input[name^="name"]').on('input', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('#tab-general input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+    $('input[name="head_title['+ language_code +']"]').attr('placeholder', $(this).val());
+    $('input[name="h1_title['+ language_code +']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 
-  $('#tab-general input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('#tab-general input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
@@ -628,7 +641,7 @@
 
 // SKU
 
-  $('input[name="sku"]').change(function() {
+  $('input[name="sku"]').on('input', function() {
     $('input[name="sku"]').not(this).val($(this).val());
   });
 
@@ -824,12 +837,12 @@
   }
 
 // Update prices
-  $('select[name="tax_class_id"]').change('change', function(){
-    $('input[name^="prices"]').trigger('change');
+  $('select[name="tax_class_id"]').change('input', function(){
+    $('input[name^="prices"]').trigger('input');
   });
 
 // Update gross price
-  $('input[name^="prices"]').bind('input change', function() {
+  $('input[name^="prices"]').on('input', function() {
     var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1],
         decimals = get_currency_decimals(currency_code),
         gross_field = $('input[name="gross_prices['+ currency_code +']"]');
@@ -843,10 +856,10 @@
     }
 
     update_currency_prices();
-  }).trigger('change');
+  }).trigger('input');
 
 // Update net price
-  $('input[name^="gross_prices"]').bind('input change', function() {
+  $('input[name^="gross_prices"]').on('input', function() {
     var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1],
         decimals = get_currency_decimals(currency_code),
         net_field = $('input[name="prices['+ currency_code +']"]');
@@ -961,7 +974,7 @@
 <?php
   }
 ?>
-               + '  <td><br /><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('remove')); ?></a></td>'
+               + '  <td><br /><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + '</tr>';
     while ($('input[name="campaigns[new_'+new_campaign_i+']"]').length) new_campaign_i++;
     output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);

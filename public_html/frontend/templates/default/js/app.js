@@ -18,20 +18,6 @@
 
   //$.loadScript('...').done(function(script, textStatus) { ... });
 
-$(document).ajaxComplete(function(e, xhr, settings) {
-  if (typeof $.featherlight == 'undefined') {
-    if ($('[data-toggle="lightbox"]').length) {
-      $.loadStylesheet(window._env.platform.path + 'assets/featherlight/featherlight.min.css');
-      $.loadScript(window._env.platform.path + 'assets/featherlight/featherlight.min.js').done(function(script, textStatus) {
-        $.featherlight.autoBind = '[data-toggle="lightbox"]';
-        $.featherlight.defaults.loading = '<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>';
-        $.featherlight.defaults.closeIcon = '&#x2716;';
-        $.featherlight.defaults.targetAttr = 'data-target';
-      });
-    }
-  }
-});
-
 // Toggle Cart
   $('[data-toggle="cart"]').click(function(e){
     e.preventDefault();
@@ -72,12 +58,14 @@ $(document).ajaxComplete(function(e, xhr, settings) {
       }
     }).trigger('resize');
   }
-/*
+
 // Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
     e.preventDefault();
     var form = $(this);
-    $(this).find('button[name="add_cart_product"]').animate_from_to('#site-menu .cart', {
+    $('#site-navigation .shopping-cart .dropdown-menu .checkout').before('<li class="new-item"></li>');
+    $('#site-navigation .shopping-cart.dropdown').addClass('open');
+    $(this).find('button[name="add_cart_product"]').animate_from_to('#site-navigation .shopping-cart .new-item', {
       pixels_per_second: 2000,
       initial_css: {
         'border': '1px rgba(0,136,204,1) solid',
@@ -91,7 +79,7 @@ $(document).ajaxComplete(function(e, xhr, settings) {
       }
     });
   });
-*/
+
 // Bootstrap Compatible (data-toggle="tab")
   $('body').on('click', '[data-toggle="tab"]', function(e) {
     e.preventDefault();
@@ -185,7 +173,7 @@ $(document).ajaxComplete(function(e, xhr, settings) {
       }
     },
   });
-/*
+
 // Update cart / Keep alive
   if (typeof(window._env) !== 'undefined') {
     window.updateCart = function(data) {

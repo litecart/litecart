@@ -166,7 +166,9 @@
 
       <datalist id="available-stock-items">
         <?php foreach ($available_stock_items as $stock_item) { ?>
-        <option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-quantity="<?php echo (float)$stock_item['quantity']; ?>" data-backordered="<?php echo (float)$stock_item['backordered']; ?>"><?php echo functions::escape_html($stock_item['name']); ?></option>
+        <option value="<?php echo functions::escape_html($stock_item['sku']); ?>" data-name="<?php echo functions::escape_html($stock_item['name']); ?>" data-quantity="<?php echo (float)$stock_item['quantity']; ?>" data-backordered="<?php echo (float)$stock_item['backordered']; ?>">
+          <?php echo htmlspecialchars($stock_item['name']); ?> &ndash; (<?php echo language::translate('title_in_stock', 'In Stock'); ?>: <?php echo (float)$stock_item['quantity']; ?>)
+        </option>
         <?php } ?>
       </datalist>
 
