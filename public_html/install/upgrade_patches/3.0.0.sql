@@ -145,6 +145,7 @@ CHANGE COLUMN `dim_x` `length` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_y` `width` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
+DROP COLUMN `upc`,
 DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
