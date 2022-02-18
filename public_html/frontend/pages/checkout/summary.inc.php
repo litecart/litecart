@@ -2,17 +2,17 @@
 
   header('X-Robots-Tag: noindex');
 
-  $order = &session::$data['order'];
+  $shopping_cart = &session::$data['checkout']['shopping_cart'];
 
-  if (empty($order->data['items'])) return;
+  if (empty($shopping_cart->data['items'])) return;
 
   $box_checkout_summary = new ent_view(FS_DIR_TEMPLATE . 'partials/box_checkout_summary.inc.php');
 
   $box_checkout_summary->snippets = [
-    'order' => $order->data,
-    'error' => $order->validate(),
+    'shopping_cart' => $shopping_cart->data,
+    'error' => $shopping_cart->validate(),
     'consent' => null,
-    'confirm' => !empty($order->payment->selected['confirm']) ? $order->payment->selected['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
+    'confirm' => !empty($shopping_cart->payment->selected['confirm']) ? $shopping_cart->payment->selected['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   ];
 
   $privacy_policy_id = settings::get('privacy_policy');

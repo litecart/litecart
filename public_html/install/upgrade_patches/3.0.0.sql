@@ -32,7 +32,7 @@ CREATE TABLE `lc_shopping_carts` (
   `customer_country_code` VARCHAR(2) NOT NULL DEFAULT '',
   `customer_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
   `customer_phone` VARCHAR(24) NOT NULL DEFAULT '',
-  `different_shipping_adddress` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `different_shipping_address` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `shipping_company` VARCHAR(64) NOT NULL DEFAULT '',
   `shipping_firstname` VARCHAR(64) NOT NULL DEFAULT '',
   `shipping_lastname` VARCHAR(64) NOT NULL DEFAULT '',
@@ -44,22 +44,23 @@ CREATE TABLE `lc_shopping_carts` (
   `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
   `shipping_phone` VARCHAR(24) NOT NULL DEFAULT '',
   `shipping_option_id` VARCHAR(32) NOT NULL DEFAULT '',
+  `shipping_option_userdata` VARCHAR(512) NOT NULL DEFAULT '',
   `payment_option_id` VARCHAR(32) NOT NULL DEFAULT '',
+  `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '',
   `weight_total` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
   `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
   `language_code` VARCHAR(2) NOT NULL DEFAULT '',
   `currency_code` VARCHAR(3) NOT NULL DEFAULT '',
-  `currency_value` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  `lock_prices` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `display_prices_including_tax` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-  `total_amount` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
-  `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+  `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
   `client_ip` VARCHAR(39) NOT NULL DEFAULT '',
   `user_agent` VARCHAR(256) NOT NULL DEFAULT '',
   `date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   `date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `customer_id` (`customer_id`),
-  KEY `uid` (`uid`)
+  KEY `customer_id` (`customer_id`)
 );
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_to_stock_items` (
@@ -72,6 +73,21 @@ CREATE TABLE `lc_products_to_stock_items` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `stock_option` (`product_id`, `stock_item_id`),
   INDEX `product_id` (`product_id`)
+);
+-- --------------------------------------------------------
+CREATE TABLE `lc_stock_items_references` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stock_item_id` INT UNSIGNED NOT NULL,
+  `source_type` VARCHAR(32) NOT NULL DEFAULT '',
+  `source` VARCHAR(32) NOT NULL DEFAULT '',
+  `type` VARCHAR(32) NOT NULL DEFAULT '',
+  `code` VARCHAR(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX `stock_item_id` (`stock_item_id`),
+  INDEX `type` (`type`),
+  INDEX `source` (`source`),
+  INDEX `source_type` (`source_type`),
+  UNIQUE INDEX `code` (`code`, `type`, `source`, `source_type`, `stock_item_id`)
 );
 -- --------------------------------------------------------
 CREATE TABLE `lc_stock_transactions` (
@@ -142,11 +158,17 @@ CHANGE COLUMN `payment_due` `total` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `tax_total` `total_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 ADD COLUMN `subtotal` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
 ADD COLUMN `subtotal_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
+ADD COLUMN `discount` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal_tax`,
+ADD COLUMN `discount_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount`,
 ADD COLUMN `shipping_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `shipping_option_name`,
+ADD COLUMN `shipping_option_fee` DECIMAL(11,4) NOT NULL DEFAULT 0 AFTER `shipping_option_userdata`,
+ADD COLUMN `shipping_option_tax` DECIMAL(11,4) NOT NULL DEFAULT 0 AFTER `shipping_option_fee`,
 ADD COLUMN `shipping_progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 AFTER `shipping_tracking_url`,
 ADD COLUMN `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_progress`,
 ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_current_status`,
 ADD COLUMN `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `payment_option_name`,
+ADD COLUMN `payment_option_fee` DECIMAL(11,4) NOT NULL DEFAULT 0 AFTER `payment_option_userdata`,
+ADD COLUMN `payment_option_tax` DECIMAL(11,4) NOT NULL DEFAULT 0 AFTER `payment_option_fee`,
 ADD COLUMN `payment_receipt_url` VARCHAR(256) NOT NULL DEFAULT '' AFTER `payment_transaction_id`,
 ADD COLUMN `payment_terms` VARCHAR(8) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
@@ -163,12 +185,17 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 ADD COLUMN `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
+ADD COLUMN `discount` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `tax`,
+ADD COLUMN `discount_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount`,
+ADD COLUMN `sum` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount_tax`,
+ADD COLUMN `sum_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `sum`,
 ADD COLUMN `downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `downloads`,
 ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_totals`
+ADD COLUMN `discount` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `tax`
 CHANGE COLUMN `value` `amount` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `title`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
@@ -225,6 +252,7 @@ ADD COLUMN `cart_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `customer_id`,
 CHANGE COLUMN `data` `userdata` VARCHAR() NOT NULL DEFAULT '' AFTER `name`,
 ADD COLUMN `type` ENUM('product','stock_item','custom') NOT NULL DEFAULT 'product' AFTER `cart_id`,
 ADD COLUMN `configuration` VARCHAR(512) NOT NULL DEFAULT '0',
+ADD COLUMN `discount` DECIMAL(11,4) NOT NULL DEFAULT '0.0000' AFTER `tax`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `length_unit`,
 ADD INDEX `cart_id` (`cart_id`);
 -- --------------------------------------------------------
@@ -311,11 +339,28 @@ LEFT JOIN `lc_orders_totals` ot ON (ot.order_id = o.id AND ot.module_id = 'ot_su
 SET o.subtotal = ot.`amount`,
 o.subtotal_tax = ot.`tax`;
 -- --------------------------------------------------------
+UPDATE `lc_orders` o
+LEFT JOIN (
+  SELECT order_id, sum(`amount`) as discount, sum(`tax`) as discount_tax
+  FROM `lc_orders_totals`
+  WHERE `amount` < 0 AND calculate
+  GROUP BY order_id
+) ot ON (ot.order_id = o.id)
+SET o.discount = 0 - if(ot.discount, ot.discount, 0),
+o.discount_tax = 0 - if(ot.discount_tax, ot.discount_tax, 0);
+-- --------------------------------------------------------
 DELETE FROM `lc_orders_totals` WHERE module_id = 'ot_subtotal';
 -- --------------------------------------------------------
 UPDATE `lc_orders_items` oi
 LEFT JOIN `lc_stock_items` si ON (si.product_id = oi.product_id AND si.attributes = oi.attributes)
 SET oi.stock_item_id = si.id;
+-- --------------------------------------------------------
+UPDATE `lc_orders_items`
+SET sum = price * quantity,
+sum_tax = tax * quantity;
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_items`
+DROP COLUMN `tax`;
 -- --------------------------------------------------------
 INSERT INTO `lc_products_to_stock_items`
 (product_id, stock_item_id)

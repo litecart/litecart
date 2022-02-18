@@ -679,10 +679,10 @@
     if (!empty($_POST['comments'][$key]['hidden'])) $type .= ' semi-transparent';
 ?>
               <div class="bubble <?php echo $type; ?>">
-                <?php echo functions::form_draw_hidden_field('comments['. $key .'][id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('comments['. $key .'][order_id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
-                <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['.$key.'][id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['.$key.'][order_id]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['.$key.'][author]', true); ?>
+                <?php echo functions::form_draw_hidden_field('comments['.$key.'][text]', true); ?>
 
                 <?php echo nl2br($_POST['comments'][$key]['text']); ?>
 
@@ -709,82 +709,80 @@
       <h2><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
     </div>
 
-    <div class="table-responsive">
-      <table class="table table-striped table-hover table-input table-dragable">
-        <thead>
-          <tr>
-            <th style="width: 50px;"><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_item', 'Item'); ?></th>
-            <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-            <th><?php echo language::translate('title_weight', 'Weight'); ?></th>
-            <th><?php echo language::translate('title_dimensions', 'Dimensions'); ?></th>
-            <th style="width: 125px;" class="text-center"><?php echo language::translate('title_qty', 'Qty'); ?></th>
-            <th style="width: 200px;" class="text-center"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
-            <th style="width: 200px;" class="text-center"><?php echo language::translate('title_discount', 'Discount'); ?></th>
-            <th style="width: 200px;" class="text-center"><?php echo language::translate('title_sum', 'Sum'); ?></th>
-            <th style="width: 200px;" class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-            <th style="width: 50px;"></th>
-            <th style="width: 50px;"></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover table-input table-dragable data-table">
+      <thead>
+        <tr>
+          <th style="width: 50px;"><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_item', 'Item'); ?></th>
+          <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
+          <th style="width: 125px;" class="text-center"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+          <th style="width: 125px;" class="text-center"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
+          <th style="width: 185px;" class="text-center"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+          <th style="width: 185px;" class="text-center"><?php echo language::translate('title_discount', 'Discount'); ?></th>
+          <th style="width: 150px;" class="text-center"><?php echo language::translate('title_tax_rate', 'Tax Rate'); ?></th>
+          <th style="width: 185px;" class="text-center"><?php echo language::translate('title_sum', 'Sum'); ?></th>
+          <th style="width: 185px;" class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+          <th style="width: 50px;"></th>
+          <th style="width: 50px;"></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
-          <tr class="item">
-            <td><?php echo functions::form_draw_checkbox('selected_items[]', $key, true); ?></td>
-            <td class="grabable">
-              <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
-              <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['.$key.'][stock_item_id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['.$key.'][data]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][gtin]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][taric]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][weight]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][weight_unit]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][length]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][width]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][height]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][length_unit]', true); ?>
-              <?php echo functions::form_draw_hidden_field('items['. $key .'][tax_class_id]', true); ?>
-            </td>
-            <td class="grabable sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
-            <td class="grabable">
-              <span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_unit"><?php echo $_POST['items'][$key]['weight_unit']; ?></span>
-            </td>
-            <td class="grabable">
-              <span class="length"><?php echo (float)$_POST['items'][$key]['length']; ?></span> x <span class="width"><?php echo (float)$_POST['items'][$key]['width']; ?></span> x <span class="height"><?php echo (float)$_POST['items'][$key]['height']; ?></span> <span class="length_unit"><?php echo $_POST['items'][$key]['length_unit']; ?></span>
-            </td>
-            <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
-            <td><?php echo functions::form_draw_currency_field('items['. $key .'][price]', $_POST['currency_code'], true); ?></td>
-            <td><?php echo functions::form_draw_currency_field('items['. $key .'][discount]', $_POST['currency_code'], true); ?></td>
-            <td><?php echo functions::form_draw_currency_field('items['. $key .'][sum]', $_POST['currency_code'], true, 'readonly'); ?></td>
-            <td><?php echo functions::form_draw_currency_field('items['. $key .'][sum_tax]', $_POST['currency_code'], true, 'readonly'); ?></td>
-            <td class="text-end">
-              <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"'); ?></a>
-            </td>
-            <td class="text-end">
-              <a class="btn btn-default btn-sm edit" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
-            </td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
+        <tr class="item">
+          <td><?php echo functions::form_draw_checkbox('selected_items[]', $key, true); ?></td>
+          <td class="grabable">
+            <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][stock_item_id]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][name]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][data]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][sku]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][gtin]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][taric]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][weight]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][weight_unit]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][length]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][width]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][height]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][length_unit]', true); ?>
+            <?php echo functions::form_draw_hidden_field('items['.$key.'][tax_class_id]', true); ?>
+          </td>
+          <td class="grabable sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
+          <td><?php echo functions::form_draw_decimal_field('items['.$key.'][quantity]', true, 2); ?></td>
+          <td class="text-center"><?php if (isset($_POST['items'][$key]['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. functions::draw_fonticon('fa-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. functions::draw_fonticon('fa-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
+          <td><?php echo functions::form_draw_currency_field('items['.$key.'][price]', $_POST['currency_code'], true); ?></td>
+          <td><?php echo functions::form_draw_currency_field('items['.$key.'][discount]', $_POST['currency_code'], true); ?></td>
+          <td>
+            <div class="input-group">
+              <?php echo functions::form_draw_decimal_field('items['.$key.'][tax_rate]', true, 2); ?>
+              <span class="input-group-text">%</span>
+            </div>
+          </td>
+          <td><?php echo functions::form_draw_currency_field('items['.$key.'][sum]', $_POST['currency_code'], true, 'readonly'); ?></td>
+          <td><?php echo functions::form_draw_currency_field('items['.$key.'][tax]', $_POST['currency_code'], true, 'readonly'); ?></td>
+          <td class="text-end">
+            <a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"'); ?></a>
+          </td>
+          <td class="text-end">
+            <a class="btn btn-default btn-sm edit" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+          </td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="12">
-              <a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
-              <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
-              <?php echo functions::form_draw_button('return', language::translate('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"'); ?>
-              <?php echo functions::form_draw_button('split', language::translate('title_split_order', 'Split Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"'); ?>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-
-    </div>
+      <tfoot>
+        <tr>
+          <td colspan="12">
+            <a class="btn btn-default add-product" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
+            <div class="btn btn-default add-custom-item"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></div>
+            <?php echo functions::form_draw_button('return', language::translate('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"'); ?>
+            <?php echo functions::form_draw_button('split', language::translate('title_split_order', 'Split Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"'); ?>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 
   <div id="order-total" class="card card-default">
@@ -792,26 +790,25 @@
       <h2><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
     </div>
 
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th style="width: 30px;"></th>
-            <th style="width: 250px;"><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
-            <th class="text-end"><?php echo language::translate('title_title', 'Title'); ?></th>
-            <th class="text-center" style="width: 250px;"><?php echo language::translate('title_value', 'Value'); ?></th>
-            <th class="text-center" style="width: 250px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-            <th style="width: 30px;"></th>
-          </tr>
-        </thead>
+    <table class="table table-striped data-table">
+      <thead>
+        <tr>
+          <th style="width: 30px;"></th>
+          <th style="width: 250px;"><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
+          <th class="text-end"><?php echo language::translate('title_title', 'Title'); ?></th>
+          <th class="text-center" style="width: 250px;"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+          <th class="text-center" style="width: 250px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+          <th style="width: 30px;"></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <tr>
-            <td colspan="3" class="text-end"><?php echo language::translate('title_subtotal'); ?></td>
-            <td class="text-end"><div class="form-input subtotal" readonly><?php echo language::number_format($_POST['subtotal']); ?></div></td>
-            <td class="text-end"><div class="form-input subtotal-tax" readonly><?php echo language::number_format($_POST['subtotal_tax']); ?></div></td>
-            <td></td>
-          </tr>
+      <tbody>
+        <tr>
+          <td colspan="3" class="text-end"><?php echo language::translate('title_subtotal'); ?></td>
+          <td class="text-end"><?php echo functions::form_draw_currency_field('subtotal', $_POST['currency_code'], true, 'readonly'); ?></td>
+          <td class="text-end"><?php echo functions::form_draw_currency_field('subtotal_tax', $_POST['currency_code'], true, 'readonly'); ?></td>
+          <td></td>
+        </tr>
 
           <?php foreach (array_keys($_POST['order_total']) as $key) { ?>
           <tr>
@@ -830,15 +827,48 @@
           <?php } ?>
         </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="2"><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_row', 'Add Row'); ?></a></td>
-            <td colspan="3" class="text-end" style="font-size: 1.5em;"><?php echo language::translate('title_total', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['total'], false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+        <tr>
+          <td colspan="3" class="text-end"><?php echo language::translate('title_payment_fee', 'Payment Fee'); ?></td>
+          <td><?php echo functions::form_draw_currency_field('payment_option[fee]', $_POST['currency_code'], true); ?></td>
+          <td><?php echo functions::form_draw_currency_field('payment_option[tax]', $_POST['currency_code'], true, 'readonly'); ?></td>
+          <td></td>
+        </tr>
+
+        <?php foreach (array_keys($_POST['order_total']) as $key) { ?>
+        <tr>
+          <td class="text-end"><a href="#" class="btn btn-default add" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?></a></td>
+          <td class="text-end"><?php echo functions::form_draw_hidden_field('order_total['.$key.'][id]', true) . functions::form_draw_text_field('order_total['.$key.'][module_id]', true); ?></td>
+          <td><?php echo functions::form_draw_text_field('order_total['.$key.'][title]', true, 'class="form-input text-end"'); ?></td>
+          <td>
+            <div class="input-group">
+            <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['.$key.'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
+            <?php echo functions::form_draw_currency_field('order_total['.$key.'][value]', $_POST['currency_code'], true); ?>
+            </div>
+          </td>
+          <td><?php echo functions::form_draw_currency_field('order_total['.$key.'][tax]', $_POST['currency_code'], true); ?></td>
+          <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+        </tr>
+        <?php } ?>
+        <tr>
+          <td colspan="3" class="text-end"><?php echo language::translate('title_discount_received', 'Discount Received'); ?></td>
+          <td><?php echo functions::form_draw_currency_field('discount', $_POST['currency_code'], true, 'readonly'); ?></td>
+          <td><?php echo functions::form_draw_currency_field('discount_tax', $_POST['currency_code'], true, 'readonly'); ?></td>
+          <td></td>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td colspan="2"><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_row', 'Add Row'); ?></a></td>
+          <td colspan="3" class="text-end" style="font-size: 1.5em;"><?php echo language::translate('title_grand_total', 'Grand Total'); ?>: <strong class="total"><?php echo currency::format($order->data['total'], false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="5" class="text-end"><?php echo language::translate('title_whereof_tax', 'Whereof Tax'); ?>: <strong class="total-tax"><?php echo currency::format($order->data['total_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 
 </div>
@@ -1048,51 +1078,6 @@
     calculate_total();
   });
 
-// Tax
-
-  var tax_rates = [];
-
-  window.calculate_tax = function (amount, tax_class_id) {
-    var tax = 0;
-    console.log(tax_class_id);
-    $.each(tax_rates, function(nth_tax_class_id, nth_tax_rate) {
-      if (nth_tax_class_id == tax_class_id) {
-        console.log(amount, nth_tax_rate.rate, nth_tax_rate.fixed);
-        tax =  amount * nth_tax_rate.rate / 100 + nth_tax_rate.fixed;
-      }
-    });
-    return tax;
-  }
-
-  $('#order-items').on('keyup change', ':input[name$="[price]"]', function(){
-    var row = $(this).closest('tr');
-    var tax = calculate_tax(parseFloat($(this).val() || 0), $(row).find(':input[name$="[tax_class_id]"]').val());
-    $(row).find(':input[name$="[tax]"]').val(tax);
-  });
-
-  $('#order-total').on('keyup change', ':input[name$="[value]"]', function(){
-    var tax = calculate_tax(parseFloat($(this).val() || 0));
-    $(this).closest('tr').find(':input[name$="[tax]"]').val(tax)
-  });
-
-  $('#customer-details :input').change(function() {
-    $.ajax({
-      url: '<?php echo document::ilink('tax/tax_rates.json'); ?>?' + $('#customer-details :input').serialize(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
-      },
-      success: function(data) {
-        tax_rates = data;
-        $('#order-items :input[name$="[price]"]').trigger('change');
-        $('#order-total :input[name$="[value]"]').trigger('change');
-      },
-    });
-  }).first().trigger('change');
-
 // Customer
 
   $('#customer-details button[name="get_address"]').click(function() {
@@ -1247,7 +1232,7 @@
     $('input[name="customer[shipping_address][phone]"]').removeAttr('placeholder');
   }
 
-  $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').bind('input change', function(){
+  $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', function(){
     var params = {
       language_code: $('select[name="language_code"]').val(),
       currency_code: $('select[name="currency_code"]').val(),
@@ -1322,7 +1307,47 @@
     }
   });
 
+// Tax
+
+  var tax_rates = [];
+
+  function get_tax(tax_class_id) {
+    $.each(tax_rates, function(i, tax_rate) {
+      if (tax_class_id == i) return tax_rate;
+    });
+  }
+
+  $('#customer-details').on('input', function(){
+    $.ajax({
+      url: '<?php echo document::ilink('tax/tax_rates.json'); ?>?' + $(':input[name^="customer\["]').serialize(),
+      type: 'get',
+      cache: true,
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+        tax_rates = [];
+        $.each(data, function(i, tax_rate) {
+          tax_rates[tax_rate.tax_class_id] = tax_rate.rate;
+        });
+      },
+    });
+  });
+
 // Order items
+
+  $('#order-items').on('input change', ':input[name$="[quantity]"], :input[name$="[price]"], :input[name$="[tax_rate]"], :input[name$="[discount]"]', function(){
+    var row = $(this).closest('tr'),
+      quantity = parseFloat($(row).find(':input[name$="[quantity]"]').val() || 0),
+      price = parseFloat($(row).find(':input[name$="[price]"]').val() || 0),
+      tax_rate = parseFloat($(row).find(':input[name$="[tax_rate]"]').val() || 0),
+      discount = parseFloat($(row).find(':input[name$="[discount]"]').val() || 0),
+      sum = quantity * (price - discount),
+      sum_tax = (sum * tax_rate / 100),
+      decimals = $('select[name="currency_code"] option:selected').data('decimals') || 0;
+
+    $(row).find(':input[name$="[sum]"]').val(sum.toFixed(decimals)).trigger('change');
+    $(row).find(':input[name$="[tax]"]').val(sum_tax.toFixed(decimals)).trigger('change');
+  });
 
   $('#order-items').on('click', '.edit', function(){
     $.featherlight('#modal-edit-order-item');
@@ -1513,6 +1538,7 @@
     $(row).find('*[name$="[quantity]"]').val(item.quantity);
     $(row).find('*[name$="[price]"]').val(item.price);
     $(row).find('*[name$="[tax]"]').val(item.tax);
+    $(row).find('*[name$="[tax_rate]"]').val(item.tax_rate);
     $(row).find('*[name$="[tax_class_id]"]').val(item.tax_class_id);
 
     $(row).find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
@@ -1562,40 +1588,43 @@
 
   function calculate_total() {
 
-    var subtotal = 0;
-    $('input[name^="items["][name$="[price]"]').each(function() {
-      subtotal += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
+    var subtotal = 0,
+     subtotal_tax = 0,
+     total = 0;
+     total_tax = 0,
+     decimals = $('select[name="currency_code"] option:selected').data('decimals') || 0,
+     prefix = $('select[name="currency_code"] option:selected').data('prefix'),
+     suffix = $('select[name="currency_code"] option:selected').data('suffix');
+
+    $('#order-items tbody tr').each(function() {
+      subtotal += parseFloat($(this).find(':input[name$="[sum]"]').val() || 0);
+      subtotal_tax += parseFloat($(this).find(':input[name$="[tax]"]').val() || 0);
     });
 
-    subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('#order-total .subtotal').val(subtotal);
+    total += subtotal;
+    total_tax += subtotal_tax;
 
-    var subtotal_tax = 0;
-    $('input[name^="items["][name$="[tax]"]').each(function() {
-      subtotal_tax += parseFloat($(this).val() || 0) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val() || 0);
+    $('#order-total tbody tr').each(function() {
+      var row = this,
+        amount = parseFloat($(row).find(':input[name$="[amount]"]').val() || 0),
+        tax_rate = parseFloat($(row).find(':input[name$="[tax_rate]"]').val() || 0),
+        discount = parseFloat($(row).find(':input[name$="[discount]"]').val() || 0),
+        tax = (amount - discount) * tax_rate / 100;
+
+      if (!$(row).find(':input[name$="[calculate]"]:checked').length) return;
+
+      total += amount - discount;
+      total_tax += tax;
     });
 
-    subtotal_tax = parseFloat(subtotal_tax.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('#order-total .subtotal-tax').val(subtotal_tax);
-
-    var order_total = subtotal + subtotal_tax;
-    $('input[name^="order_total["][name$="[value]"]').each(function() {
-      if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += parseFloat($(this).val() || 0);
-      }
-    });
-
-    $('input[name^="order_total["][name$="[tax]"]').each(function() {
-      if ($(this).closest('tr').find('input[name^="order_total["][name$="[calculate]"]').is(':checked')) {
-        order_total += parseFloat($(this).val() || 0);
-      }
-    });
-
-    order_total = parseFloat(order_total.toFixed($('select[name="currency_code"] option:selected').data('decimals')) || 0);
-    $('#order-total .total').text($('select[name="currency_code"] option:selected').data('prefix') + order_total + $('select[name="currency_code"] option:selected').data('suffix'));
+    $('#order-total :input[name="subtotal"]').val(subtotal.toFixed(decimals)).trigger('change');
+    $('#order-total :input[name="subtotal_tax"]').val(subtotal_tax.toFixed(decimals)).trigger('change');
+    $('#order-total .total').text(prefix + total.toFixed(decimals) + suffix);
+    $('#order-total .total-tax').text(prefix + total_tax.toFixed(decimals) + suffix);
   }
 
-  $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
+  $('body').on('input change', '#order-items :input[name$="[sum]"], #order-items :input[name$="[tax]"], #order-items a.remove, #order-total :input[name$="[amount]"], #order-total :input[name$="[tax]"], #order-total [name$="[calculate]"], #order-total a.remove', function() {
     calculate_total();
   });
+
 </script>

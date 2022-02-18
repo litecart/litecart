@@ -61,7 +61,7 @@
     </div>
 
     <div class="col-md-3">
-      <button class="btn btn-block btn-lg btn-success" type="submit" name="confirm_order" value="true"<?php echo !empty($error) ? ' disabled' : ''; ?>><?php echo $confirm; ?></button>
+      <button class="btn btn-block btn-lg btn-success" type="submit" name="confirm" value="true"<?php echo !empty($error) ? ' disabled' : ''; ?>><?php echo $confirm; ?></button>
     </div>
   </div>
 </section>

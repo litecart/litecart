@@ -9,17 +9,17 @@
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
 
 // If Confirm Order button was pressed
-  if (isset($_POST['confirm_order'])) {
+  if (isset($_POST['confirm'])) {
 
     try {
 
-      if (empty(session::$data['order'])) {
+      if (empty(session::$data['checkout']['shopping_cart'])) {
         notices::add('errors', 'Missing order object');
-        header('Location: '. document::ilink('checkout'));
+        header('Location: '. document::ilink('checkout/index'));
         exit;
       }
 
-      $order = &session::$data['order'];
+      $shopping_cart = &session::$data['checkout']['shopping_cart'];
 
       ob_start();
       include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/customer.inc.php');
@@ -29,36 +29,36 @@
       ob_end_clean();
 
       if (!empty(notices::$data['errors'])) {
-        header('Location: '. document::ilink('checkout'));
+        header('Location: '. document::ilink('checkout/index'));
         exit;
       }
 
-      if ($order->payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
+      if ($shopping_cart->payment->options()) {
 
-        if (empty($order->payment->selected)) {
+        if (empty($shopping_cart->payment->selected)) {
           notices::add('errors', language::translate('error_no_payment_method_selected', 'No payment method selected'));
-          header('Location: '. document::ilink('checkout'));
+          header('Location: '. document::ilink('checkout/index'));
           exit;
         }
 
-        if ($payment_error = $order->payment->pre_check($order)) {
+        if ($payment_error = $shopping_cart->payment->pre_check($shopping_cart)) {
           notices::add('errors', $payment_error);
-          header('Location: '. document::ilink('checkout'));
+          header('Location: '. document::ilink('checkout/index'));
           exit;
         }
 
         if (!empty($_POST['comments'])) {
-          $order->data['comments']['session'] = [
+          $shopping_cart->data['comments']['session'] = [
             'author' => 'customer',
             'text' => $_POST['comments'],
           ];
         }
 
-        if ($gateway = $order->payment->transfer($order)) {
+        if ($gateway = $shopping_cart->payment->transfer($shopping_cart, (string)document::ilink('checkout/process'))) {
 
           if (!empty($gateway['error'])) {
             notices::add('errors', $gateway['error']);
-            header('Location: '. document::ilink('checkout'));
+            header('Location: '. document::ilink('checkout/index'));
             exit;
           }
 
@@ -70,7 +70,7 @@
                 document::$template = 'blank';
 
                 echo '<div>'. language::translate('title_redirecting', 'Redirecting') .'...</div>' . PHP_EOL
-                   . '<form name="gateway_form" method="post" action="'. fallback($gateway['action'], document::ilink('order_process')) .'">' . PHP_EOL;
+                   . '<form name="gateway_form" method="post" action="'. fallback($gateway['action'], document::ilink('checkout/process')) .'">' . PHP_EOL;
 
                 if (is_array($gateway['fields'])) {
                   foreach ($gateway['fields'] as $key => $value) echo functions::form_draw_hidden_field($key, $value) . PHP_EOL;
@@ -102,15 +102,15 @@
               case 'GET':
               default:
 
-                header('Location: '. fallback($gateway['action'], document::ilink('order_process')));
+                header('Location: '. fallback($gateway['action'], document::ilink('checkout/process')));
                 exit;
             }
           }
         }
       }
 
-      $order->data['processable'] = true;
-      header('Location: '. document::ilink('order_process'));
+      $shopping_cart->data['processable'] = true;
+      header('Location: '. document::ilink('checkout/process'));
       exit;
 
     } catch (Exception $e) {
@@ -119,55 +119,26 @@
   }
 
 // Load an existing order
-  if (!empty($_GET['order_id']) && !empty($_GET['public_key'])) {
+  if (!empty($_GET['cart_uid']) && !empty($_GET['public_key'])) {
 
-    $order = new ent_order($_GET['order_id']);
+    if (!empty($_GET['cart_uid'])) {
+      session::$data['checkout']['shopping_cart'] = new ent_shopping_cart($_GET['cart_uid']);
+    }
 
-    if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
+    if (empty($shopping_cart->data['id']) || $_GET['public_key'] != $shopping_cart->data['public_key']) {
       http_response_code(404);
       include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
       return;
     }
 
-// Resume an incomplete order in session
-  } else if (!empty(session::$data['order'])) {
-
-    $previous_order = session::$data['order'];
-    session::$data['order'] = new ent_order();
-
-    if (empty(session::$data['order']->data['order_status_id']) || !reference::order_status(session::$data['order']->data['order_status_id'])->is_sale) {
-      if (strtotime($previous_order->data['date_created']) > strtotime('-15 minutes')) {
-        session::$data['order']->data['id'] = $previous_order->data['id'];
-      }
-    }
-
-    session::$data['order']->data['customer'] = $previous_order->data['customer'];
-    session::$data['order']->shipping->selected = $previous_order->shipping->selected;
-    session::$data['order']->payment->selected = $previous_order->payment->selected;
-
-// Start off with a fresh new order
   } else {
-    session::$data['order'] = new ent_order();
-    session::$data['order']->data['customer'] = customer::$data;
+    session::$data['checkout']['shopping_cart'] = &cart::$cart;
   }
 
-  $order = &session::$data['order'];
+  $shopping_cart = &session::$data['checkout']['shopping_cart'];
+  $shopping_cart->data['processable'] = false; // Whether or not it is allowed to be processed in checkout/process
 
-// Build Order
-  $order->data['processable'] = false; // Whether or not it is allowed to be processed in order_process
-  $order->data['weight_unit'] = settings::get('site_weight_unit');
-  $order->data['currency_code'] = currency::$selected['code'];
-  $order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
-  $order->data['language_code'] = language::$selected['code'];
-  $order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
-
-  foreach (cart::$items as $item) {
-    $order->add_item($item);
-  }
-
-  $order->calculate_total();
+  functions::draw_lightbox();
 
   $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/checkout.inc.php');
   echo $_page;
-
-  functions::draw_lightbox();

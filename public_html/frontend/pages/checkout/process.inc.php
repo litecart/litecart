@@ -4,76 +4,97 @@
 
   if (settings::get('catalog_only_mode')) return;
 
-  if (empty(session::$data['order'])) {
-    notices::add('errors', 'Missing order object');
-    header('Location: '. document::ilink('checkout'));
+  if (empty(session::$data['checkout']['shopping_cart'])) {
+    notices::add('errors', 'Missing shopping cart object');
+    header('Location: '. document::ilink('checkout/index'));
     exit;
   }
 
-  $order = &session::$data['order'];
+  $shopping_cart = &session::$data['checkout']['shopping_cart'];
 
-  if (empty($order->data['processable'])) {
-    notices::add('errors', 'The order is not yet processable');
-    header('Location: '. document::ilink('checkout'));
+  if (empty($shopping_cart->data['processable'])) {
+    notices::add('errors', 'The shopping cart is not yet processable for creating an order');
+    header('Location: '. document::ilink('checkout/index'));
     exit;
   }
 
-  if ($error_message = $order->validate()) {
+  if ($error_message = $shopping_cart->validate()) {
     notices::add('errors', $error_message);
-    header('Location: '. document::ilink('checkout'));
+    header('Location: '. document::ilink('checkout/index'));
     exit;
   }
 
 // If there is an amount to pay
-  if (currency::format_raw($order->data['total'], $order->data['currency_code'], $order->data['currency_value']) > 0) {
+  if (currency::format_raw($shopping_cart->data['total'], $shopping_cart->data['currency_code'], $shopping_cart->data['currency_value']) > 0) {
 
-  // Refresh the order if it's in the database in case a callback might have tampered with it
-    if (!empty($order->data['id'])) {
-      $order->load($order->data['id']);
+  // Refresh the shopping cart if it's in the database in case a callback have tampered with it
+    if (!empty($shopping_cart->data['id'])) {
+      $shopping_cart->load($shopping_cart->data['id']);
     }
 
   // Verify transaction
-    if (!empty($order->payment->modules) && count($order->payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) > 0) {
-      $result = $order->payment->verify($order);
+    if (!empty($shopping_cart->payment->modules) && count($shopping_cart->payment->options()) > 0) {
+      $result = $shopping_cart->payment->verify($shopping_cart);
 
     // If payment error
       if (!empty($result['error'])) {
-        if (!empty($order->data['id'])) {
-          $order->data['comments'][] = [
-            'author' => 'system',
-            'text' => 'Payment Error: '. $result['error'],
-            'hidden' => true,
-          ];
-          $order->save();
-        }
         notices::add('errors', $result['error']);
-        header('Location: '. document::ilink('checkout'));
+        header('Location: '. document::ilink('checkout/index'));
         exit;
       }
-
-    // Set order status id
-      if (isset($result['order_status_id'])) $order->data['order_status_id'] = $result['order_status_id'];
-
-    // Set transaction id
-      if (isset($result['transaction_id'])) $order->data['payment_transaction_id'] = $result['transaction_id'];
-
-    // Set transaction date
-      if (isset($result['receipt_url'])) $order->data['payment_receipt_url'] = $result['receipt_url'];
-
-    // Set payment terms
-      if (isset($result['payment_terms'])) $order->data['payment_terms'] = $result['payment_terms'];
-
-    // Set transaction date
-      if (isset($result['date_paid'])) $order->data['date_paid'] = $result['date_paid'];
     }
   }
 
 // Save order
+  $order = new ent_order();
+
+  $fields = [
+    'customer',
+    'currency_code',
+    'language_code',
+    'shipping_option',
+    'payment_option',
+  ];
+
+  $order->data = array_replace($shopping_cart->data, array_intersect_key($shopping_cart->data, array_flip($fields)));
+  $order->data['currency_value'] = currency::$currencies[$order->data['currency_code']]['value'];
   $order->data['unread'] = true;
+
+// Set items
+  foreach ($order->data['items'] as $item) {
+    $order->add_item($item);
+  }
+
+// Set order status id
+  if (isset($result['order_status_id'])) {
+    $order->data['order_status_id'] = $result['order_status_id'];
+  }
+
+// Set transaction id
+  if (isset($result['transaction_id'])) {
+    $order->data['payment_transaction_id'] = $result['transaction_id'];
+  }
+
+// Set transaction date
+  if (isset($result['receipt_url'])) {
+    $order->data['payment_receipt_url'] = $result['receipt_url'];
+  }
+
+// Set payment terms
+  if (isset($result['payment_terms'])) {
+    $order->data['payment_terms'] = $result['payment_terms'];
+  }
+
+// Set transaction date
+  if (isset($result['date_paid'])) {
+    $order->data['date_paid'] = $result['date_paid'];
+  }
+
   $order->save();
 
 // Clean up cart
-  cart::clear();
+  $shopping_cart->delete();
+  session::$data['checkout']['shopping_cart'] = null;
 
 // Send order confirmation email
   if (settings::get('send_order_confirmation')) {
@@ -96,5 +117,5 @@
   $order_process = new mod_order();
   $order_process->after_process($order);
 
-  header('Location: '. document::ilink('order_success'));
+  header('Location: '. document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
   exit;

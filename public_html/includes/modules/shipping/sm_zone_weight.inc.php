@@ -11,13 +11,13 @@
       $this->name = language::translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
 
-    public function options($items, $subtotal, $tax, $currency_code, $customer) {
+    public function options($shopping_cart) {
 
       if (empty($this->settings['status'])) return;
 
     // Calculate cart weight
       $total_weight = 0;
-      foreach ($items as $item) {
+      foreach ($shopping_cart->data['items'] as $item) {
         $total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_unit'], $this->settings['weight_unit']);
       }
 
@@ -26,7 +26,7 @@
       for ($i=1; $i <= 3; $i++) {
 
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
-        if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address'])) continue;
+        if (!reference::country($shopping_cart->data['customer']['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $shopping_cart->data['customer']['shipping_address'])) continue;
 
         $fee = $this->calculate_fee($this->settings['weight_rate_table_'.$i], $total_weight);
 

@@ -22,8 +22,8 @@
   $_page->snippets = [
     'items' => [],
     'subtotal' => [
-      'value' => cart::$total['value'],
-      'tax' => cart::$total['tax'],
+      'value' => cart::$cart->data['subtotal'],
+      'tax' => cart::$cart->data['subtotal_tax'],
     ],
     'error' => false,
   ];
@@ -51,6 +51,7 @@
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
       'price' => $item['price'],
+      'final_price' => $item['final_price'],
       'tax' => $item['tax'],
       'tax_class_id' => $item['tax_class_id'],
       'quantity' => (float)$item['quantity'],

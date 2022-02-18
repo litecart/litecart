@@ -123,7 +123,7 @@
       </section>
 
       <ul class="list-inline text-end">
-        <li><a class="btn btn-success btn-lg" href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_checkout', 'Checkout'); ?></a></li>
+        <li><a class="btn btn-success btn-lg" href="<?php echo document::href_ilink('checkout/index'); ?>"><?php echo language::translate('title_checkout', 'Checkout'); ?></a></li>
       </ul>
 
     <?php echo functions::form_draw_form_end(); ?>

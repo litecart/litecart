@@ -2,37 +2,40 @@
 
   class mod_payment extends abs_modules {
     private $_cache = [];
+    private $_shopping_cart;
+    private $_options = [];
     public $selected = [];
 
-    public function __construct($selected=[]) {
+    public function __construct(&$shopping_cart, $selected=[]) {
 
-      if (!empty($selected)) {
+      $this->_shopping_cart = $shopping_cart;
+
+      if (!empty($selected['id'])) {
         $this->selected = $selected;
+        list($module_id, $option_id) = explode(':', $this->selected['id']);
+        $this->selected['module_id'] = $module_id;
+        $this->selected['option_id'] = $option_id;
       }
 
     // Load modules
       $this->load();
 
-    // Attach userdata to module
-      if (!empty($this->selected)) {
-        list($module_id, $option_id) = explode(':', $this->selected['id']);
-        if (!empty($this->modules[$module_id])) $this->modules[$module_id]->userdata = &$this->selected['userdata'][$module_id];
+    // Rettach userdata to module
+      if (!empty($this->selected['userdata']) && !empty($this->modules[$this->selected['module_id']])) {
+        $this->modules[$this->selected['module_id']]->userdata = &$this->selected['userdata'];
       }
     }
 
     public function select($id, $userdata=[]) {
 
-      if (empty($this->_cache['options'])) return;
-
       $this->selected = [];
 
-      $options = array_slice($this->_cache['options'], -1)[0];
+      if (empty($this->_options)) return;
 
-      if (($key = array_search($id, array_combine(array_keys($options), array_column($options, 'id')))) === false) {
-        return;
-      }  if (!empty($this->data['options'][$key]['error'])) {
-        return;
-      }
+      $options = array_slice($this->_options, -1)[0];
+
+      if (($key = array_search($id, array_combine(array_keys($options), array_column($options, 'id')))) === false) return;
+      if (!empty($this->data['options'][$key]['error'])) return;
 
       list($module_id, $option_id) = explode(':', $id);
       if (method_exists($this->modules[$module_id], 'select')) {
@@ -54,31 +57,31 @@
       ];
     }
 
-    public function options($items, $currency_code=null, $customer=null) {
+    public function options() {
 
-      if (empty($items) || empty($this->modules)) return [];
+      if (empty($this->modules)) return [];
 
-      if ($currency_code === null) $currency_code = currency::$selected['code'];
-      if ($customer === null) $customer = customer::$data;
+      if (empty($this->_shopping_cart->data['items'])) return [];
 
       $subtotal = ['amount' => 0, 'tax' => 0];
-      foreach ($items as $item) {
+      foreach ($this->_shopping_cart->data['items'] as $item) {
         $subtotal['amount'] += $item['price'] * $item['quantity'];
         $subtotal['tax'] += $item['tax'] * $item['quantity'];
       }
 
-      $checksum = crc32(http_build_query($items).http_build_query($customer));
-
-      if (isset($this->_cache['options'][$checksum])) {
-        return $this->_cache['options'][$checksum];
+      if (!empty($this->_options)) {
+        return $this->_options;
       }
 
-      $this->_cache['options'][$checksum] = [];
+      $this->_options = [];
 
       foreach ($this->modules as $module) {
 
-        if (!$options = $module->options($items, $subtotal['amount'], $subtotal['tax'], $currency_code, $customer)) continue;
-        if (!empty($options['options'])) $options = $options['options']; // Backwards compatibility LiteCart <3.0.0
+        if (!$options = $module->options($this->_shopping_cart, (string)document::ilink('checkout/process'))) continue;
+
+        if (!empty($options['options'])) {
+          $options = $options['options']; // Backwards compatibility LiteCart <3.0.0
+        }
 
         foreach ($options as $option) {
 
@@ -102,17 +105,13 @@
         }
       }
 
-      return $this->_cache['options'][$checksum];
+      return $this->_options;
     }
 
-    public function cheapest($items, $currency_code=null, $customer=null) {
+    public function cheapest() {
 
-      $checksum = crc32(http_build_query($items).http_build_query($customer));
-
-      if (isset($this->_cache['options'][$checksum])) {
-        $options = $this->_cache['options'][$checksum];
-      } else {
-        $options = $this->options($items, $currency_code, $customer);
+      if (empty($this->_options)) {
+        $options = $this->options($this->_shopping_cart->data['items'], $this->_shopping_cart->data['currency_code'], $this->_shopping_cart->data['customer']);
       }
 
       if (empty($options)) return false;
@@ -124,25 +123,5 @@
           return $option;
         }
       }
-    }
-
-    public function pre_check($order) {
-      return $this->run('pre_check', null, $order);
-    }
-
-    public function transfer($order) {
-      return $this->run('transfer', null, $order);
-    }
-
-    public function verify($order) {
-      return $this->run('verify', null, $order);
-    }
-
-    public function after_process($order) {
-      return $this->run('after_process', null, $order);
-    }
-
-    public function receipt($order) {
-      return $this->run('receipt', null, $order);
     }
   }

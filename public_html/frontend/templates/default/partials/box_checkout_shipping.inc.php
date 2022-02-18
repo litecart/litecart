@@ -5,6 +5,9 @@
 
     <?php foreach ($options as $option) { ?>
     <label class="option text-start<?php echo (!empty($selected['id']) && $selected['id'] == $option['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
+      <div class="sticker">
+        <?php echo language::translate('title_selected', 'Selected'); ?>
+      </div>
 
       <input name="shipping_option[id]" value="<?php echo functions::escape_html($option['id']); ?>" type="radio" hidden<?php if (!empty($option['error'])) echo ' disabled'; ?><?php if (!empty($selected['id'])) echo ' checked'; ?> />
 
@@ -14,7 +17,7 @@
         </div>
 
         <div class="col-sm-8">
-          <h3 class="title"><?php echo $option['title']; ?></h3>
+          <h3 class="name"><?php echo $option['name']; ?></h3>
 
           <?php if (!empty($option['description'])) { ?>
           <p class="description"><?php echo $option['description']; ?></p>

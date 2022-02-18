@@ -2,23 +2,30 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
-        <section id="box-regional-settings">
+        <section id="box-regional-settings" class="box box-default">
 
           <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-6">
               <small><?php echo language::translate('title_language', 'Language'); ?></small>
-              <div style="line-height: 200%"><?php echo language::$selected['name']; ?></div>
+              <div style="line-height: 2;"><?php echo language::$selected['name']; ?></div>
             </div>
 
-            <div class="form-group col-md-6">
+            <div class="form-group col-6">
               <small><?php echo language::translate('title_currency', 'Currency'); ?></small>
-              <div style="line-height: 200%"><?php echo currency::$selected['code']; ?></div>
+              <div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
             </div>
           </div>
 
-          <div class="form-group">
-            <small><?php echo language::translate('title_country', 'Country'); ?></small>
-            <div style="line-height: 200%"><?php echo reference::country(customer::$data['country_code'])->name; ?></div>
+          <div class="row">
+            <div class="form-group col-6">
+              <small><?php echo language::translate('title_country', 'Country'); ?></small>
+              <div style="line-height: 2;"><?php echo customer::$data['different_shipping_address'] ? reference::country(customer::$data['shipping_address']['country_code'])->name : reference::country(customer::$data['country_code'])->name; ?></div>
+            </div>
+
+            <div class="form-group col-6">
+              <small><?php echo language::translate('title_postcode', 'Postcode'); ?></small>
+              <div style="line-height: 2;"><?php echo customer::$data['different_shipping_address'] ? customer::$data['shipping_address'] : customer::$data['postcode']; ?></div>
+            </div>
           </div>
 
           <div>
@@ -55,6 +62,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div><strong><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
+                            <?php if (!empty($item['sku'])) echo '<div class="sku">'. $item['sku'] .'</div>'; ?>
                             <?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
                           </div>
 
@@ -78,7 +86,11 @@
                   </div>
 
                   <div class="col-2 text-end">
-                    <?php echo currency::format($item['display_price'] * $item['quantity']); ?>
+                    <?php if ($item['price'] != $item['final_price']) { ?>
+                    <del class="regular-price"><?php echo currency::format($item['price'] * $item['quantity']); ?></del> <strong class="final-price"><?php echo currency::format($item['final_price'] * $item['quantity']); ?></strong>
+                    <?php } else { ?>
+                    <span class="price"><?php echo currency::format($item['price'] * $item['quantity']); ?></span>
+                    <?php } ?>
                   </div>
 
                   <div class="col-2 text-end">
@@ -89,15 +101,15 @@
               <?php } ?>
             </ul>
 
-            <div class="subtotal">
+            <div class="subtotal text-end">
               <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
             </div>
 
-          </section>
+            <div class="text-end">
+              <a class="btn btn-success btn-lg" href="<?php echo document::href_ilink('checkout/index'); ?>"><?php echo language::translate('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('fa-chevron-right'); ?></a>
+            </div>
 
-          <ul class="list-inline text-end">
-            <li><a class="btn btn-success btn-lg" href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_checkout', 'Checkout'); ?></a></li>
-          </ul>
+          </section>
 
         <?php echo functions::form_draw_form_end(); ?>
     </div>

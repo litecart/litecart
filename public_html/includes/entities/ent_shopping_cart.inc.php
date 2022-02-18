@@ -1,19 +1,19 @@
 <?php
 
-	class ent_shopping_cart {
-		public $data;
-		public $previous;
+  class ent_shopping_cart {
+    public $data;
+    public $previous;
 
-		public function __construct($cart_id=null, $customer_id=null, $create_if_missing=false) {
+    public function __construct($shopping_cart_id=null) {
 
-			if (!empty($cart_id)) {
-				$this->load($cart_id, $customer_id, $create_if_missing);
-			} else {
-				$this->reset();
-			}
-		}
+      if (!empty($shopping_cart_id)) {
+        $this->load($shopping_cart_id);
+      } else {
+        $this->reset();
+      }
+    }
 
-		public function reset() {
+    public function reset() {
 
       $this->data = [];
 
@@ -22,6 +22,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
+
         switch (true) {
           case (preg_match('#^customer_#', $field['Field'])):
             $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = null;
@@ -29,6 +30,10 @@
 
           case (preg_match('#^shipping_(?!option)#', $field['Field'])):
             $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = null;
+            break;
+
+          case (preg_match('#^payment_option#', $field['Field'])):
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = null;
             break;
 
           case (preg_match('#^shipping_option#', $field['Field'])):
@@ -47,89 +52,92 @@
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
+        'incoterm' => settings::get('default_incoterm'),
         'items' => [],
-        'subtotal' => ['amount' => 0, 'tax' => 0],
+        'num_items' => 0,
+        'order_total' => [],
+        'subtotal' => 0,
+        'subtotal_tax' => 0,
+        'total' => 0,
+        'total_tax' => 0,
+        'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
       ]);
 
+      $this->data['shipping_option']['userdata'] = [];
+      $this->data['payment_option']['userdata'] = [];
+
+      $this->shipping = new mod_shipping($this);
+      $this->payment = new mod_payment($this);
+      $this->order_total = new mod_order_total($this);
+
       $this->previous = $this->data;
-		}
+    }
 
-		public function load($cart_id, $customer_id='', $create_if_missing=false) {
+    public function load($shopping_cart_id) {
 
-			if (!preg_match('#^([0-9]+|[a-f0-9]{13})$#', $cart_id)) throw new Exception('Invalid cart (ID: '. $cart_id .')');
-			if (!preg_match('#^([0-9]+|0|$)$#', $customer_id)) throw new Exception('Invalid customer ID ('. $customer_id .')');
+      if (!preg_match('#^([0-9]+|[a-f0-9]{13})$#', $shopping_cart_id)) throw new Exception('Invalid shopping cart (ID: '. $shopping_cart_id .')');
 
-			$this->reset();
+      $this->reset();
 
-      $sql_where = [];
-
-      if (preg_match('#^[a-f0-9]{13}$#', $cart_id)) {
-        $sql_where[] = "uid = '". database::input($cart_id) ."'";
-      }
-
-      if (preg_match('#^[0-9]+$#', $cart_id)) {
-        $sql_where[] = "id = '". database::input($cart_id) ."'";
-      }
-
-      if (preg_match('#^[0-9]+$#', $customer_id)) {
-        $sql_where[] = "customer_id = ". (int)$customer_id;
-      }
-
-			$shopping_cart_query = database::query(
-				"select * from ". DB_TABLE_PREFIX ."shopping_carts
-				where ". implode(" or ", $sql_where) ."
+      $shopping_cart_query = database::query(
+        "select * from ". DB_TABLE_PREFIX ."shopping_carts
+        where ". (preg_match('#^[a-f0-9]{13}$#', $shopping_cart_id) ? "uid = '". database::input($shopping_cart_id) ."'" : "id = '". database::input($shopping_cart_id) ."'") ."
         order by id;"
-			);
+      );
 
       if ($shopping_cart = database::fetch($shopping_cart_query)) {
         $this->data = array_replace($this->data, array_intersect_key($shopping_cart, $this->data));
-
-        foreach ($shopping_cart as $field => $value) {
-          switch (true) {
-            case (preg_match('#^customer_#', $field)):
-              $this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
-              break;
-
-            case (preg_match('#^shipping_(?!option)#', $field)):
-              $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
-              break;
-
-            case (preg_match('#^shipping_option#', $field)):
-              $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field)] = $value;
-              break;
-          }
-        }
-
       } else {
-        if ($create_if_missing) {
-          if (preg_match('#^[a-f0-9]{13}$#', $cart_id)) {
-          $this->data['uid'] = $cart_id;
-          } else if (preg_match('#^[0-9]+$#', $cart_id)) {
-            $this->data['id'] = $cart_id;
-          }
-        } else {
-          throw new Exception('Could not find shopping cart in database (ID: '. (int)$cart_id .')');
+        throw new Exception('Could not find shopping cart in database (ID: '. $shopping_cart_id .')');
+      }
+
+      foreach ($shopping_cart as $field => $value) {
+        switch (true) {
+          case (preg_match('#^customer_#', $field)):
+
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
+            break;
+
+          case (preg_match('#^shipping_(?!option)#', $field)):
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field)] = $value;
+            break;
+
+          case (preg_match('#^payment_option#', $field)):
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field)] = $value;
+            break;
+
+          case (preg_match('#^shipping_option#', $field)):
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field)] = $value;
+            break;
         }
       }
 
-			$items_query = database::query(
-				"select sci.*, p.quantity_min, p.quantity_max, p.quantity_step, qui.name as quantity_unit_name from ". DB_TABLE_PREFIX ."shopping_carts_items sci
+      $items_query = database::query(
+        "select sci.*, p.quantity_min, p.quantity_max, p.quantity_step, qui.name as quantity_unit_name from ". DB_TABLE_PREFIX ."shopping_carts_items sci
         left join ". DB_TABLE_PREFIX ."products p on (p.id = sci.product_id)
         left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qui.id = p.quantity_unit_id and qui.language_code = '". database::input(language::$selected['code']) ."')
-				where sci.cart_id = ". (int)$this->data['id'] ."
-        order by sci.id;"
-			);
+        where sci.cart_id = ". (int)$this->data['id'] ."
+        order by sci.priority, sci.id;"
+      );
 
-			while ($item = database::fetch($items_query)) {
-        $this->data['items'][$item['key']] = $item;
-			}
+      while ($item = database::fetch($items_query)) {
+        $item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
+        $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
+        $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
+        $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
+        $this->data['items'][] = $item;
+      }
 
-      $this->_calculate_total();
+      $this->shipping = new mod_shipping($this, $this->data['shipping_option']);
+      $this->payment = new mod_payment($this, $this->data['payment_option']);
+      $this->order_total = new mod_order_total($this);
 
-			$this->previous = $this->data;
-		}
+      $this->_refresh_total();
 
-		public function save() {
+      $this->previous = $this->data;
+    }
+
+    public function save() {
 
       if (empty($this->data['public_key'])) {
         $this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
@@ -149,12 +157,52 @@
         "update ". DB_TABLE_PREFIX ."shopping_carts
         set uid = '". database::input($this->data['uid']) ."',
           customer_id = ". (int)$this->data['customer']['id'] .",
+          customer_email = '". database::input($this->data['customer']['email']) ."',
+          customer_tax_id = '". database::input($this->data['customer']['tax_id']) ."',
+          customer_company = '". database::input($this->data['customer']['company']) ."',
+          customer_firstname = '". database::input($this->data['customer']['firstname']) ."',
+          customer_lastname = '". database::input($this->data['customer']['lastname']) ."',
+          customer_address1 = '". database::input($this->data['customer']['address1']) ."',
+          customer_address2 = '". database::input($this->data['customer']['address2']) ."',
+          customer_city = '". database::input($this->data['customer']['city']) ."',
+          customer_postcode = '". database::input($this->data['customer']['postcode']) ."',
+          customer_country_code = '". database::input($this->data['customer']['country_code']) ."',
+          customer_zone_code = '". database::input($this->data['customer']['zone_code']) ."',
+          customer_phone = '". database::input($this->data['customer']['phone']) ."',
+          shipping_company = '". database::input($this->data['customer']['shipping_address']['company']) ."',
+          shipping_firstname = '". database::input($this->data['customer']['shipping_address']['firstname']) ."',
+          shipping_lastname = '". database::input($this->data['customer']['shipping_address']['lastname']) ."',
+          shipping_address1 = '". database::input($this->data['customer']['shipping_address']['address1']) ."',
+          shipping_address2 = '". database::input($this->data['customer']['shipping_address']['address2']) ."',
+          shipping_city = '". database::input($this->data['customer']['shipping_address']['city']) ."',
+          shipping_postcode = '". database::input($this->data['customer']['shipping_address']['postcode']) ."',
+          shipping_country_code = '". database::input($this->data['customer']['shipping_address']['country_code']) ."',
+          shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
+          shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
+          shipping_option_id = '". (!empty($this->shipping->selected['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
+          shipping_option_name = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['name']) : '') ."',
+          shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(json_encode($this->data['shipping_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
+          payment_option_id = '". (!empty($this->data['payment_option']['id']) ? database::input($this->data['payment_option']['id']) : '') ."',
+          payment_option_name = '". (!empty($this->data['payment_option']['name']) ? database::input($this->data['payment_option']['name']) : '') ."',
+          payment_option_userdata = '". (!empty($this->payment->selected['userdata']) ? database::input(json_encode($this->data['payment_option']['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
+          payment_terms = '". database::input($this->data['payment_terms']) ."',
+          incoterm = '". database::input($this->data['incoterm']) ."',
+          language_code = '". database::input($this->data['language_code']) ."',
+          currency_code = '". database::input($this->data['currency_code']) ."',
+          weight_total = ". (float)$this->data['weight_total'] .",
+          weight_unit = '". database::input($this->data['weight_unit']) ."',
+          display_prices_including_tax = ". (int)$this->data['display_prices_including_tax'] .",
+          subtotal = ". (float)$this->data['subtotal'] .",
+          subtotal_tax = ". (float)$this->data['subtotal_tax'] .",
+          public_key = '". database::input($this->data['public_key']) ."',
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
 
-			foreach ($this->data['items'] as $key => $item) {
+    // Insert/update items
+      $i = 0;
+      foreach ($this->data['items'] as $key => $item) {
 
         if (empty($item['id'])) {
           database::query(
@@ -168,35 +216,38 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."shopping_carts_items
-          set cart_id = ". (int)$this->data['id'] .",
-            product_id = ". (int)$item['product_id'] .",
+          set product_id = ". (int)$item['product_id'] .",
             stock_item_id = ". (int)$item['stock_item_id'] .",
-            `key` = '". database::input($item['key']) ."',
             name = '". database::input($item['name']) ."',
+            userdata = '". (!empty($item['userdata']) ? database::input(json_encode($item['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
             image = '". database::input($item['image']) ."',
             sku = '". database::input($item['sku']) ."',
             gtin = '". database::input($item['gtin']) ."',
             taric = '". database::input($item['taric']) ."',
             quantity = ". (float)$item['quantity'] .",
             quantity_unit_id = ". (int)$item['quantity_unit_id'] .",
-            discount = ". (float)$item['discount'] .",
-            discount_tax = ". (float)$item['discount_tax'] .",
             price = ". (float)$item['price'] .",
             tax = ". (float)$item['tax'] .",
+            tax_class_id = ". (int)$item['tax_class_id'] .",
+            discount = ". (float)$this->data['discount'] .",
+            discount_tax = ". (float)$this->data['discount_tax'] .",
+            sum = ". (float)$item['sum'] .",
+            sum_tax = ". (float)$item['sum_tax'] .",
             weight = ". (float)$item['weight'] .",
             weight_unit = '". database::input($item['weight_unit']) ."',
             length = ". (float)$item['length'] .",
             width = ". (float)$item['width'] .",
             height = ". (float)$item['height'] .",
-            length_unit = '". database::input($item['length_unit']) ."'
+            length_unit = '". database::input($item['length_unit']) ."',
+            priority = ". ++$i ."
           where id = ". (int)$item['id'] ."
           and cart_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
-			}
+      }
 
-			$this->previous = $this->data;
-		}
+      $this->previous = $this->data;
+    }
 
     public function add_product($product_id, $stock_item_id='', $quantity=1, $halt_on_error=false) {
 
@@ -210,7 +261,7 @@
         $item_key = crc32(json_encode([$product->id, $stock_item_id]));
       }
 
-			$item = [
+      $item = [
         'id' => null,
         'product_id' => (int)$product->id,
         'stock_item_id' => $stock_item_id,
@@ -221,11 +272,13 @@
         'sku' => $product->sku,
         'gtin' => $product->gtin,
         'taric' => $product->taric,
-        'price' => (!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price,
-        'discount' => 0,
-        'discount_tax' => 0,
+        'price' => $product->final_price,
+        'tax' => tax::get_tax($product->final_price, $product->tax_class_id),
+        'discount' => $product->price - $product->final_price,
+        'discount_tax' => tax::get_tax($product->price - $product->final_price, $product->tax_class_id),
+        'sum' => 0,
+        'sum_tax' => 0,
         'extras' => 0,
-        'tax' => tax::get_tax((!empty($product->campaign) && $product->campaign['price'] > 0) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
         'tax_class_id' => $product->tax_class_id,
         'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
         'quantity_unit_id' => $product->quantity_unit['id'],
@@ -240,6 +293,9 @@
         'length_unit' => $product->length_unit,
         'error' => '',
       ];
+
+      $item['sum'] = $item['quantity'] * ($item['price'] - $item['discount']);
+      $item['sum_tax'] = $item['quantity'] * ($item['tax'] - $item['discount_tax']);
 
     // Validate
       if (!$product->id) {
@@ -313,7 +369,7 @@
         $this->data['items'][$item_key] = $item;
       }
 
-      $this->_calculate_total();
+      $this->_refresh_total();
 
       return true;
     }
@@ -340,7 +396,7 @@
 
       $this->add($item['product_id'], $quantity, true, $item_key);
 
-      self::_calculate_total();
+      self::_refresh_total();
     }
 
     public function remove_item($item_key) {
@@ -356,16 +412,18 @@
 
       unset($this->data['items'][$item_key]);
 
-      $this->_calculate_total();
+      $this->_refresh_total();
     }
 
-    private function _calculate_total() {
+    private function _refresh_total() {
 
-      $this->data['total'] = [
-        'items' => 0,
-        'value' => 0,
-        'tax' => 0,
-      ];
+      $this->data['num_items'] = 0;
+
+      $this->data['subtotal'] = 0;
+      $this->data['subtotal_tax'] = 0;
+
+      $this->data['total'] = 0;
+      $this->data['total_tax'] = 0;
 
       foreach ($this->data['items'] as $item) {
         $num_items = $item['quantity'];
@@ -374,23 +432,177 @@
           $num_items = 1;
         }
 
-        $this->data['total']['value'] += $item['price'] * $item['quantity'];
-        $this->data['total']['tax'] += $item['tax'] * $item['quantity'];
-        $this->data['total']['items'] += $num_items;
+        $this->data['num_items'] += $num_items;
+        $this->data['subtotal'] += $item['price'] * $item['quantity'];
+        $this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
+        $this->data['total'] += $item['price'] * $item['quantity'];
+        $this->data['total_tax'] += $item['tax'] * $item['quantity'];
+      }
+
+      $this->data['order_total'] = [];
+      foreach ($this->order_total->process() as $row) {
+
+        $this->data['order_total'][] = [
+          'id' => null,
+          'module_id' => $row['module_id'],
+          'title' =>  $row['title'],
+          'amount' => $row['amount'],
+          'tax' => $row['tax'],
+          'calculate' => !empty($row['calculate']) ? 1 : 0,
+        ];
+
+        if (!empty($row['calculate'])) {
+          $this->data['total'] += $item['price'] * $item['quantity'];
+          $this->data['total_tax'] += $item['tax'] * $item['quantity'];
+        }
       }
     }
 
-		public function delete() {
+    public function validate() {
 
-			if (empty($this->data['id'])) return;
+    // Validate items
+      if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
 
-			database::query(
-				"delete sc, sci
+      foreach ($this->data['items'] as $item) {
+        if (!empty($item['error'])) return language::translate('error_cart_contains_errors', 'Your cart contains errors');
+      }
+
+    // Validate customer details
+      try {
+        if (empty($this->data['customer']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
+        if (empty($this->data['customer']['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
+        if (empty($this->data['customer']['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+        if (empty($this->data['customer']['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+        if (empty($this->data['customer']['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
+        if (empty($this->data['customer']['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
+        if (empty($this->data['customer']['phone'])) throw new Exception(language::translate('error_missing_phone', 'You must enter a phone number.'));
+
+        if (!functions::validate_email($this->data['customer']['email'])) throw new Exception(language::translate('error_invalid_email_address', 'Invalid email address'));
+
+        if (reference::country($this->data['customer']['country_code'])->tax_id_format) {
+          if (!empty($this->data['customer']['tax_id'])) {
+            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->tax_id_format .'#i', $this->data['customer']['tax_id'])) {
+              throw new Exception(language::translate('error_invalid_tax_id_format', 'Invalid tax ID format'));
+            }
+          }
+        }
+
+        if (reference::country($this->data['customer']['country_code'])->postcode_format) {
+          if (!empty($this->data['customer']['postcode'])) {
+            if (!preg_match('#'. reference::country($this->data['customer']['country_code'])->postcode_format .'#i', $this->data['customer']['postcode'])) {
+              throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format'));
+            }
+          } else {
+            throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode'));
+          }
+        }
+
+        if (settings::get('customer_field_zone') && reference::country($this->data['customer']['country_code'])->zones) {
+          if (empty($this->data['customer']['zone_code']) && reference::country($this->data['customer']['country_code'])->zones) throw new Exception(language::translate('error_missing_zone', 'You must select a zone.'));
+        }
+
+        if (empty($this->data['customer']['id'])) {
+          $customer_query = database::query(
+            "select id from ". DB_TABLE_PREFIX ."customers
+            where email = '". database::input($this->data['customer']['email']) ."'
+            and status = 0
+            limit 1;"
+          );
+
+          if (database::num_rows($customer_query)) {
+            throw new Exception(language::translate('error_customer_account_is_disabled', 'The customer account is disabled'));
+          }
+        }
+
+      } catch (Exception $e) {
+        return language::translate('title_customer_details', 'Customer Details') .': '. $e->getMessage();
+      }
+
+      try {
+        if (!empty($this->data['customer']['different_shipping_address'])) {
+          if (empty($this->data['customer']['shipping_address']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
+          if (empty($this->data['customer']['shipping_address']['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
+          if (empty($this->data['customer']['shipping_address']['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
+          if (empty($this->data['customer']['shipping_address']['city'])) throw new Exception(language::translate('error_missing_city', 'You must enter a city.'));
+          if (empty($this->data['customer']['shipping_address']['country_code'])) throw new Exception(language::translate('error_missing_country', 'You must select a country.'));
+
+          if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) {
+            if (!empty($this->data['customer']['shipping_address']['postcode'])) {
+              if (!preg_match('#'. reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format .'#i', $this->data['customer']['shipping_address']['postcode'])) {
+                throw new Exception(language::translate('error_invalid_postcode_format', 'Invalid postcode format.'));
+              }
+            } else {
+              throw new Exception(language::translate('error_missing_postcode', 'You must enter a postcode.'));
+            }
+          }
+
+          if (settings::get('customer_field_zone') && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) {
+            if (empty($this->data['customer']['shipping_address']['zone_code']) && reference::country($this->data['customer']['shipping_address']['country_code'])->zones) return language::translate('error_missing_zone', 'You must select a zone.');
+          }
+        }
+
+      } catch (Exception $e) {
+        return language::translate('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
+      }
+
+    // Additional customer validation
+      $mod_customer = new mod_customer();
+      $result = $mod_customer->validate($this->data['customer']);
+
+      if (!empty($result['error'])) {
+        return $result['error'];
+      }
+
+    // Validate shipping option
+      $shipping_options = $this->shipping->options();
+      if (!empty($this->shipping->modules) && count($shipping_options)) {
+        if (empty($this->shipping->selected)) {
+          return language::translate('error_no_shipping_method_selected', 'No shipping method selected');
+        } else {
+          if (($key = array_search($this->shipping->selected['id'], array_combine(array_keys($shipping_options), array_column($shipping_options, 'id')))) === false) {
+            return language::translate('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
+          } else if (!empty($shipping_options[$key]['error'])) {
+            return language::translate('error_shipping_method_contains_error', 'The selected shipping method contains errors');
+          }
+        }
+      }
+
+    // Validate payment option
+      $payment_options = $this->payment->options();
+      if (!empty($this->payment->modules) && count($payment_options)) {
+        if (empty($this->payment->selected)) {
+          return language::translate('error_no_payment_method_selected', 'No payment method selected');
+        } else {
+          if (($key = array_search($this->payment->selected['id'], array_combine(array_keys($payment_options), array_column($payment_options, 'id')))) === false) {
+            return language::translate('error_invalid_payment_method_selected', 'Invalid payment method selected');
+          } else if (!empty($payment_options[$key]['error'])) {
+            return language::translate('error_payment_method_contains_error', 'The selected payment method contains errors');
+          }
+        }
+      }
+
+    // Additional order validation
+      $mod_order = new mod_order();
+      $result = $mod_order->validate($this);
+
+      if (!empty($result['error'])) {
+        return $result['error'];
+      }
+
+      return false;
+    }
+
+    public function delete() {
+
+      if (empty($this->data['id'])) return;
+
+      database::query(
+        "delete sc, sci
         from ". DB_TABLE_PREFIX ."shopping_carts sc
         left join ". DB_TABLE_PREFIX ."shopping_carts_items sci on (sci.cart_id = sc.id)
-				where sc.id = ". (int)$this->data['id'] .";"
-			);
+        where sc.id = ". (int)$this->data['id'] .";"
+      );
 
-			$this->reset();
-		}
-	}
+      $this->reset();
+    }
+  }

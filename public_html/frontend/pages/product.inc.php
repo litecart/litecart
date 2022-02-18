@@ -230,25 +230,32 @@
 // Cheapest shipping
   if (settings::get('display_cheapest_shipping')) {
 
-    $shipping = new mod_shipping();
-
-    $shipping_items = [
-      [
-        'quantity' => 1,
-        'product_id' => $product->id,
-        'price' => $product->final_price,
-        'tax' => tax::get_tax($product->final_price, $product->tax_class_id),
-        'tax_class_id' => $product->tax_class_id,
-        'weight' => $product->weight,
-        'weight_unit' => $product->weight_unit,
-        'length' => $product->length,
-        'width' => $product->width,
-        'height' => $product->height,
-        'length_unit' => $product->length_unit,
+    $tmp_order = (object)[
+      'data' => [
+        'items' => [
+          [
+            'quantity' => 1,
+            'product_id' => $product->id,
+            'price' => $product->final_price,
+            'tax' => tax::get_tax($product->final_price, $product->tax_class_id),
+            'tax_class_id' => $product->tax_class_id,
+            'weight' => $product->weight,
+            'weight_unit' => $product->weight_unit,
+            'length' => $product->length,
+            'width' => $product->width,
+            'height' => $product->height,
+            'length_unit' => $product->length_unit,
+          ],
+        ],
+        'subtotal' => $product->final_price,
+        'subtotal_tax' => $product->tax,
+        'customer' => customer::$data,
+        'currency_code' => currency::$selected['code'],
       ],
     ];
 
-    $cheapest_shipping = $shipping->cheapest($shipping_items, currency::$selected['code'], customer::$data);
+    $shipping = new mod_shipping($tmp_order);
+    $cheapest_shipping = $shipping->cheapest();
 
     if (!empty($cheapest_shipping)) {
       $_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['fee'], $cheapest_shipping['tax_class_id']);

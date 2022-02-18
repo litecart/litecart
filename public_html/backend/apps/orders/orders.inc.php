@@ -175,6 +175,23 @@
     if (empty($order['order_status_id'])) $order['css_classes'][]= 'semi-transparent';
     if (!empty($order['unread'])) $order['css_classes'][]= 'bold';
 
+
+    $items_query = database::query(
+      "select oi.product_id, oi.sku, oi.quantity, si.quantity as stock_quantity
+      from ". DB_TABLE_PREFIX ."orders_items oi
+      join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
+      where oi.order_id = ". (int)$order['id'] .";"
+    );
+
+    $order['sufficient_stock'] = database::num_rows($items_query) ? true : null;
+
+    while ($item = database::fetch($items_query)) {
+      if ($item['quantity'] < $item['stock_quanity']) {
+        $order['sufficient_stock'] = false;
+        break;
+      }
+    }
+
     $orders[] = $order;
 
     if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -284,6 +301,7 @@ table .fa-star:hover {
           <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
           <th data-sort="order_status"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
           <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+          <th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
           <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
           <th></th>
         </tr>
@@ -301,6 +319,7 @@ table .fa-star:hover {
           <td><?php echo $order['payment_option_name']; ?></td>
           <td><?php echo $order['order_status_id'] ? $order['order_status_name'] : language::translate('title_uncompleted', 'Uncompleted'); ?></td>
           <td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
+          <td class="text-center"><?php if (!is_null($order['sufficient_stock'])) echo $order['sufficient_stock'] ? functions::draw_fonticon('fa-check', 'style="color: #88cc44;"') : functions::draw_fonticon('fa-times', 'style="color: #ff6644;"'); ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
           <td>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="<?php echo language::translate('title_packing_slip', 'Packing Slip'); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
