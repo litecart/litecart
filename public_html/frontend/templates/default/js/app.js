@@ -278,15 +278,20 @@
     this.each(function() {
 
       var $self = $(this),
+        $content = $self.find('.scroll-content')
         direction = '',
         velX = 0,
+        clickX = 0,
+        scrollX = 0,
+        clicked = false,
+        dragging = false,
         momentumID = null;
 
       var momentumLoop = function() {
         if (direction == 'left') {
-          $self.scrollLeft($self.scrollLeft() - velX); // Apply the velocity to the scroll position
+          $content.scrollLeft($content.scrollLeft() - velX); // Apply the velocity to the scroll position
         } else {
-          $self.scrollLeft($self.scrollLeft() + velX);
+          $content.scrollLeft($content.scrollLeft() + velX);
         }
         velX *= 1 - 5 / 100; // Slow down the velocity 5%
         if (Math.abs(velX) > 0.5) { // Still moving?
@@ -294,51 +299,85 @@
         }
       }
 
-      $self.css({
-        "user-select": "none",
-        "touch-action": "pan-x",
+      $content.on({
+
+        'click': function(e) {
+          if (dragging) {
+            e.preventDefault();
+          }
+          dragging = false;
+        },
+
+        'mousemove': function(e) {
+          if (!clicked) return;
+          dragging = true;
+          var prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
+            currentDrag = (clickX - e.pageX);
+          $content.scrollLeft(scrollX + (clickX - e.pageX));
+          if (currentDrag > 0) {
+            direction = 'right';
+          } else {
+            direction = 'left';
+          }
+          velX = Math.abs($content.scrollLeft() - prevScrollLeft); // Compare change in position to work out drag speed
+        },
+
+        'mousedown': function(e) {
+          e.preventDefault();
+          clicked = true;
+          scrollX = $content.scrollLeft();
+          clickX = e.pageX;
+          $content.css('cursor', 'grabbing');
+        },
+
+        'mouseup': function(e) {
+          e.preventDefault();
+          self = this;
+          clicked = false;
+          cancelAnimationFrame(momentumID);
+          momentumID = requestAnimationFrame(momentumLoop);
+          $content.css('cursor', '');
+        },
+
+        'mouseleave': function(e) {
+          clicked = false;
+          $content.css('cursor', '');
+        }
       });
 
       $(window).on('resize', function(){
 
-        if ($self.prop('scrollWidth') > $self.outerWidth()) {
+        if ($content.prop('scrollWidth') > $self.outerWidth()) {
 
-          if ($self.find('button[name="left"], button[name="right"]').length) return;
+          if (!$self.find('button[name="left"], button[name="right"]').length) {
 
-          $self.append(
-            '<button name="left" class="btn btn-default" type="button"><i class="fa fa-chevron-left"></i></button>' +
-            '<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
-          );
+            $self.append(
+              '<button name="left" class="btn btn-default" type="button"><i class="fa fa-chevron-left"></i></button>' +
+              '<button name="right" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>'
+            );
 
-          $self.find('button[name="left"], button[name="right"]').css({
-            "position": "absolute",
-            "top": "40%",
-            "width": "3em",
-            "height": "3em",
-            "border-radius": "50%",
-            "padding": 0,
-          });
+            $self.on('click', 'button[name="left"], button[name="right"]', function(e) {
+              if (direction != $(this).attr('name')) {
+                velX = 0;
+              }
+              cancelAnimationFrame(momentumID);
+              velX += Math.round($self.outerWidth() * 0.05);
+              direction = $(this).attr('name');
+              momentumID = requestAnimationFrame(momentumLoop);
 
-          $self.find('button[name="left"]').css({
-            "left": "-1.5em",
-          });
-
-          $self.find('button[name="right"]').css({
-            "right": "-1.5em",
-          });
-
-          $self.on('click', 'button[name="left"], button[name="right"]', function(e) {
-            if (direction != $(this).attr('name')) {
-              velX = 0;
-            }
-            cancelAnimationFrame(momentumID);
-            velX += 30;
-            direction = $(this).attr('name');
-            momentumID = requestAnimationFrame(momentumLoop);
-          });
+            });
+          }
 
         } else {
           $self.find('button[name="left"], button[name="right"]').remove();
+        }
+
+        if ($(window).width() > ($self.outerWidth() + 45)) {
+          $self.find('button[name="left"]').css('left', '');
+          $self.find('button[name="right"]').css('right', '');
+        } else {
+          $self.find('button[name="left"]').css('left', 0);
+          $self.find('button[name="right"]').css('right', 0);
         }
 
       }).trigger('resize');

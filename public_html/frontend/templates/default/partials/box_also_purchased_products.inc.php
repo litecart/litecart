@@ -2,8 +2,8 @@
 
   <h2 class="title"><?php echo language::translate('title_also_purchased_products', 'Also Purchased Products'); ?></h2>
 
-  <div style="position: relative; margin: -2em;">
-    <div class="listing products" data-toggle="momentumScroll">
+  <div data-toggle="momentumScroll">
+    <div class="listing products scroll-content">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
     </div>
   </div>

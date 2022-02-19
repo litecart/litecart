@@ -10,30 +10,6 @@
     gap: 2em;
   }
 
-  &[data-toggle="momentumScroll"] {
-    flex-wrap: nowrap;
-    padding: var(--gutter-size);
-    overflow-x: auto;
-    overflow-y: hidden;
-    max-width: 100%;
-
-    &::before {
-      content: '';
-      margin: calc(0px - var(--gutter-size));
-    }
-
-    &::-webkit-scrollbar {
-      height: .5em;
-      * {
-        background: transparent;
-      }
-    }
-    &::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, .25) !important;
-      border-radius: 6px;
-    }
-  }
-
   h1, h2, h3 {
     padding-bottom: 0;
     border: none;
@@ -284,4 +260,50 @@
       }
     }
   }
+}
+
+[data-toggle="momentumScroll"] {
+  position: relative;
+  margin: ~"calc(0px - var(--gutter-size))";
+  //margin-top: 0;
+
+  .scroll-content {
+    padding: var(--gutter-size);
+    overflow-x: auto;
+    overflow-y: hidden;
+    user-select: none;
+    touch-action: pan-x;
+    cursor: grab;
+
+    &::-webkit-scrollbar {
+      height: .5em;
+      * {
+        background: transparent;
+      }
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, .25) !important;
+      border-radius: 6px;
+    }
+  }
+
+  button[name="left"], button[name="right"] {
+    position: absolute;
+    top: 40%;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    padding: 0;
+  }
+  button[name="left"] {
+    left: -20px;
+  }
+  button[name="right"] {
+    right: -20px;
+  }
+}
+
+[data-toggle="momentumScroll"] .listing {
+  flex-wrap: nowrap;
+  //max-width: 100%;
 }
