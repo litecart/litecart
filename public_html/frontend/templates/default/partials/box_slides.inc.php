@@ -1,10 +1,11 @@
 <style>
 #box-slides {
   box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
+  margin-bottom: var(--gutter-size);
 }
 </style>
 
-<section id="box-slides" class="box carousel slide" data-ride="carousel">
+<section id="box-slides" class="carousel slide" data-ride="carousel">
 
   <div class="carousel-inner">
 <?php

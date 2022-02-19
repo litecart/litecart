@@ -61,7 +61,7 @@
         <?php if ($social_bookmarks) { ?>
         <ul class="buttons list-inline text-center">
           <?php foreach ($social_bookmarks as $bookmark) { ?>
-          <li><a href="<?php echo functions::escape_html($bookmark['link']); ?>" class="thumbnail" target="_blank"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a></li>
+          <li><a href="<?php echo functions::escape_html($bookmark['link']); ?>" target="_blank"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-lg fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a></li>
           <?php } ?>
         </ul>
         <?php } ?>

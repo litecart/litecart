@@ -12,9 +12,11 @@
         {{notices}}
         {{breadcrumbs}}
 
-        <article id="box-brand" class="box box-default">
+        <article id="box-brand" class="card">
 
-          <h1 class="title">{{title}}</h1>
+          <div class="card-header">
+            <h1 class="card-title">{{title}}</h1>
+          </div>
 
           <?php if ($_GET['page'] == 1 && $description) { ?>
           <p class="description">{{description}}</p>

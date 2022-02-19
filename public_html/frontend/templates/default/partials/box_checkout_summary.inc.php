@@ -13,7 +13,7 @@
 }
 </style>
 
-<section id="box-checkout-summary" class="box">
+<section id="box-checkout-summary">
   <h2 class="title"><?php echo language::translate('title_order_summary', 'Order Summary'); ?></h2>
 
   <table class="table table-striped table-bordered data-table">

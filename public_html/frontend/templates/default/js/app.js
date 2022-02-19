@@ -53,7 +53,7 @@
           if (offset > sidebar_max_offset) offset = sidebar_max_offset;
           if (offset > 0) $(column).css('margin-top', offset + 'px');
         } else {
-          $(column).css('margin', 0);
+          $(column).css('margin-top', 0);
         }
       }
     }).trigger('resize');
@@ -347,7 +347,7 @@
 
       $(window).on('resize', function(){
 
-        if ($content.prop('scrollWidth') > $self.outerWidth()) {
+        if ($content.prop('scrollWidth') > ($self.outerWidth() + 20)) {
 
           if (!$self.find('button[name="left"], button[name="right"]').length) {
 
@@ -361,7 +361,7 @@
                 velX = 0;
               }
               cancelAnimationFrame(momentumID);
-              velX += Math.round($self.outerWidth() * 0.05);
+              velX += Math.round($self.outerWidth() * 0.03);
               direction = $(this).attr('name');
               momentumID = requestAnimationFrame(momentumLoop);
 

@@ -18,7 +18,9 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: var(--gutter-size);
-  margin-bottom: var(--gutter-size);
+  &:not(last-child){
+    margin-bottom: var(--gutter-size);
+  }
   &.layout {
     @media (min-width: @media-breakpoint-lg) {
       grid-gap: var(--gutter-size);

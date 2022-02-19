@@ -27,9 +27,10 @@
 }
 
 #box-recently-viewed-products {
+  margin-bottom: 0;
   .products {
     display: grid;
-    grid-gap: var(--gutter-size);
+    grid-gap: ~"calc(var(--gutter-size) / 2)";
     grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
   }
 }

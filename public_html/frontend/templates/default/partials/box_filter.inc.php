@@ -39,7 +39,7 @@
 }
 </style>
 
-<section id="box-filter" class="box">
+<section id="box-filter">
   <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
 
     <div class="filter">

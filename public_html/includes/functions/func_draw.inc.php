@@ -175,7 +175,7 @@
         'original' => ltrim($product['image'] ? 'images/' . $product['image'] : '', '/'),
         'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
         'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-        'aspect_ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
+        'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
         'viewport' => [
           'width' => $width,
           'height' => $height,

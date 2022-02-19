@@ -10,9 +10,13 @@
       <div id="content">
         {{notices}}
 
-        <section id="box-information" class="box box-default">
-          {{content}}
+        <section id="box-information" class="card">
+          <div class="card-body">
+            {{content}}
+          </div>
         </section>
+
+      </div>
     </div>
   </div>
 </main>

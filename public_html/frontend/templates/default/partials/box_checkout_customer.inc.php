@@ -1,126 +1,43 @@
-<section id="box-checkout-customer" class="box box-default">
+<section id="box-checkout-customer" class="card">
 
-  <?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
-  <div class="float-end">
-    <a class="btn btn-outline" href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
-  </div>
-  <?php } ?>
+  <div class="card-body">
 
-  <h2 class="title"><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h2>
-
-  <?php if ($account_exists) { ?>
-  <div class="alert alert-default">
-    <?php echo functions::draw_fonticon('fa-info-circle'); ?> <?php echo language::translate('notice_existing_customer_account_will_be_used', 'We have an existing customer account that will be used for this order'); ?>
-  </div>
-  <?php } ?>
-
-  <div class="address billing-address">
-
-    <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
-    <div class="form-group">
-      <?php echo functions::form_draw_toggle_buttons('customer[type]', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['customer']['type']) ? 'individual' : true); ?>
-    </div>
-
-    <div class="business-details" <?php echo (empty($_POST['customer']['type']) || $_POST['customer']['type'] == 'individual') ? 'style="display: none;"' : ''; ?>>
-      <div class="row">
-        <?php if (settings::get('customer_field_company')) { ?>
-        <div class="form-group col-6">
-          <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[company]', true); ?>
-        </div>
-        <?php } ?>
-
-        <?php if (settings::get('customer_field_tax_id')) { ?>
-        <div class="form-group col-6">
-          <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
-        </div>
-        <?php } ?>
-      </div>
+    <?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
+    <div class="float-end">
+      <a class="btn btn-outline" href="<?php echo document::ilink('login', ['redirect_url' => document::ilink('checkout/index')]) ?>" data-toggle="lightbox" data-require-window-width="768" data-seamless="true"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a>
     </div>
     <?php } ?>
 
-    <div class="row">
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-        <?php echo functions::form_draw_text_field('customer[firstname]', true, 'required'); ?>
-      </div>
+    <h2 class="title"><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h2>
 
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-        <?php echo functions::form_draw_text_field('customer[lastname]', true, 'required'); ?>
-      </div>
+    <?php if ($account_exists) { ?>
+    <div class="alert alert-default">
+      <?php echo functions::draw_fonticon('fa-info-circle'); ?> <?php echo language::translate('notice_existing_customer_account_will_be_used', 'We have an existing customer account that will be used for this order'); ?>
     </div>
+    <?php } ?>
 
-    <div class="row">
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-        <?php echo functions::form_draw_text_field('customer[address1]', true, 'required'); ?>
+    <div class="address billing-address">
+
+      <?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
+      <div class="form-group">
+        <?php echo functions::form_draw_toggle_buttons('customer[type]', ['individual' => language::translate('title_individual', 'Individual'), 'business' => language::translate('title_business', 'Business')], empty($_POST['customer']['type']) ? 'individual' : true); ?>
       </div>
 
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-        <?php echo functions::form_draw_text_field('customer[address2]', true); ?>
-      </div>
-    </div>
+      <div class="business-details" <?php echo (empty($_POST['customer']['type']) || $_POST['customer']['type'] == 'individual') ? 'style="display: none;"' : ''; ?>>
+        <div class="row">
+          <?php if (settings::get('customer_field_company')) { ?>
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[company]', true); ?>
+          </div>
+          <?php } ?>
 
-    <div class="row">
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-        <?php echo functions::form_draw_text_field('customer[postcode]', true); ?>
-      </div>
-
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_city', 'City'); ?></label>
-        <?php echo functions::form_draw_text_field('customer[city]', true); ?>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
-        <label><?php echo language::translate('title_country', 'Country'); ?></label>
-        <?php echo functions::form_draw_countries_list('customer[country_code]', true); ?>
-      </div>
-
-      <?php if (settings::get('customer_field_zone')) { ?>
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-        <?php echo functions::form_draw_zones_list('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
-      </div>
-      <?php } ?>
-    </div>
-
-    <div class="row">
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-        <?php echo functions::form_draw_email_field('customer[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
-      </div>
-
-      <div class="form-group col-6">
-        <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-        <?php echo functions::form_draw_phone_field('customer[phone]', true, 'required'); ?>
-      </div>
-    </div>
-  </div>
-
-  <?php if (!$subscribed_to_newsletter) { ?>
-  <div class="form-group">
-    <?php echo functions::form_draw_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
-  </div>
-  <?php } ?>
-
-  <?php if (settings::get('customer_shipping_address')) { ?>
-  <div class="address shipping-address">
-
-    <h3><?php echo functions::form_draw_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['customer']['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
-
-    <fieldset<?php echo (empty($_POST['customer']['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
-
-      <?php if (settings::get('customer_field_company')) { ?>
-      <div class="row">
-        <div class="form-group col-6">
-        <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[shipping_address][company]', true); ?>
+          <?php if (settings::get('customer_field_tax_id')) { ?>
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
+          </div>
+          <?php } ?>
         </div>
       </div>
       <?php } ?>
@@ -128,103 +45,189 @@
       <div class="row">
         <div class="form-group col-6">
           <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[shipping_address][firstname]', true); ?>
+          <?php echo functions::form_draw_text_field('customer[firstname]', true, 'required'); ?>
         </div>
 
         <div class="form-group col-6">
           <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[shipping_address][lastname]', true); ?>
+          <?php echo functions::form_draw_text_field('customer[lastname]', true, 'required'); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-6">
           <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[shipping_address][address1]', true); ?>
+          <?php echo functions::form_draw_text_field('customer[address1]', true, 'required'); ?>
         </div>
 
         <div class="form-group col-6">
           <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[shipping_address][address2]', true); ?>
+          <?php echo functions::form_draw_text_field('customer[address2]', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-6">
           <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[shipping_address][postcode]', true); ?>
+          <?php echo functions::form_draw_text_field('customer[postcode]', true); ?>
         </div>
 
         <div class="form-group col-6">
           <label><?php echo language::translate('title_city', 'City'); ?></label>
-          <?php echo functions::form_draw_text_field('customer[shipping_address][city]', true); ?>
+          <?php echo functions::form_draw_text_field('customer[city]', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
-          <?php echo functions::form_draw_countries_list('customer[shipping_address][country_code]', true); ?>
+          <?php echo functions::form_draw_countries_list('customer[country_code]', true); ?>
         </div>
 
         <?php if (settings::get('customer_field_zone')) { ?>
         <div class="form-group col-6">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-          <?php echo functions::form_draw_zones_list('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code'], $_POST['customer']['country_code']), true); ?>
+          <?php echo functions::form_draw_zones_list('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
         </div>
         <?php } ?>
       </div>
 
       <div class="row">
         <div class="form-group col-6">
+          <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+          <?php echo functions::form_draw_email_field('customer[email]', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
+        </div>
+
+        <div class="form-group col-6">
           <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-          <?php echo functions::form_draw_phone_field('customer[shipping_address][phone]', true); ?>
+          <?php echo functions::form_draw_phone_field('customer[phone]', true, 'required'); ?>
         </div>
       </div>
+    </div>
 
-    </fieldset>
-  </div>
-  <?php } ?>
-
-  <?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
-
-  <?php if (!empty(customer::$data['id'])) { ?>
-  <div class="form-group">
-    <?php echo functions::form_draw_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
-  </div>
-  <?php } ?>
-
-  <div class="account">
-
-    <?php if (!$account_exists) { ?>
-    <h3><?php echo functions::form_draw_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['customer']['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : false)); ?></h3>
-    <?php if (settings::get('register_guests')) echo functions::form_draw_hidden_field('create_account', '1'); ?>
-
-    <fieldset<?php echo (empty($_POST['customer']['create_account'])) ? ' style="display: none;" disabled' : false; ?>>
-
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-            <?php echo functions::form_draw_password_field('password', '', 'autocomplete="new-password"'); ?>
-          </div>
-        </div>
-
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-            <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
-          </div>
-        </div>
-      </div>
-
-    </fieldset>
+    <?php if (!$subscribed_to_newsletter) { ?>
+    <div class="form-group">
+      <?php echo functions::form_draw_checkbox('newsletter', ['1', language::translate('consent_newsletter', 'I would like to be notified occasionally via e-mail when there are new products or campaigns.')], true); ?>
+    </div>
     <?php } ?>
-  </div>
-  <?php } ?>
 
-  <div>
-    <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
+    <?php if (settings::get('customer_shipping_address')) { ?>
+    <div class="address shipping-address">
+
+      <h3><?php echo functions::form_draw_checkbox('different_shipping_address', ['1', language::translate('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['customer']['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
+
+      <fieldset<?php echo (empty($_POST['customer']['different_shipping_address'])) ? ' style="display: none;" disabled' : false; ?>>
+
+        <?php if (settings::get('customer_field_company')) { ?>
+        <div class="row">
+          <div class="form-group col-6">
+          <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[shipping_address][company]', true); ?>
+          </div>
+        </div>
+        <?php } ?>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[shipping_address][firstname]', true); ?>
+          </div>
+
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[shipping_address][lastname]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[shipping_address][address1]', true); ?>
+          </div>
+
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[shipping_address][address2]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[shipping_address][postcode]', true); ?>
+          </div>
+
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_city', 'City'); ?></label>
+            <?php echo functions::form_draw_text_field('customer[shipping_address][city]', true); ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
+            <label><?php echo language::translate('title_country', 'Country'); ?></label>
+            <?php echo functions::form_draw_countries_list('customer[shipping_address][country_code]', true); ?>
+          </div>
+
+          <?php if (settings::get('customer_field_zone')) { ?>
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
+            <?php echo functions::form_draw_zones_list('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code'], $_POST['customer']['country_code']), true); ?>
+          </div>
+          <?php } ?>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+            <?php echo functions::form_draw_phone_field('customer[shipping_address][phone]', true); ?>
+          </div>
+        </div>
+
+      </fieldset>
+    </div>
+    <?php } ?>
+
+    <?php if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id'])) { ?>
+
+    <?php if (!empty(customer::$data['id'])) { ?>
+    <div class="form-group">
+      <?php echo functions::form_draw_checkbox('save_to_account', ['1', language::translate('title_save_details_to_my_account', 'Save details to my account')], true, 'style="margin: 0px;"'); ?>
+    </div>
+    <?php } ?>
+
+    <div class="account">
+
+      <?php if (!$account_exists) { ?>
+      <h3><?php echo functions::form_draw_checkbox('create_account', ['1', language::translate('title_create_account', 'Create Account')], (!empty($_POST['customer']['create_account']) || settings::get('register_guests')) ? '1' : '', 'style="margin: 0px;"' . (settings::get('register_guests') ? ' disabled' : false)); ?></h3>
+      <?php if (settings::get('register_guests')) echo functions::form_draw_hidden_field('create_account', '1'); ?>
+
+      <fieldset<?php echo (empty($_POST['customer']['create_account'])) ? ' style="display: none;" disabled' : false; ?>>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
+              <?php echo functions::form_draw_password_field('password', '', 'autocomplete="new-password"'); ?>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
+              <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
+            </div>
+          </div>
+        </div>
+
+      </fieldset>
+      <?php } ?>
+    </div>
+    <?php } ?>
+
+    <div>
+      <button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button>
+    </div>
   </div>
 </section>
 

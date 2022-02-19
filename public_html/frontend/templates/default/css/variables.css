@@ -33,14 +33,21 @@
   --navigation-background-color: rgba(229, 229, 234, 0.8);
   --navigation-text-color: #333;
   --navigation-cart-color: #b7d851;
-  --button-default-background-color: #d6dbe0;
-  --button-default-background-color-hover: #e4e4e4;
-  --button-default-background-color-active: #ccc;
-  --button-default-border-color: #eee;
+  --card-background-color: #fff;
+  --card-text-color: #444;
+  --card-border-color: transparent;
+  --card-header-background-color: transparent;
+  --card-header-text-color: var(--card-text-color);
+  --card-body-background-color: transparent;
+  --card-footer-backgorund-color: #f2f3f6;
   --primary-background-color: #3b4763;
   --primary-background-color-hover: #4aaac7;
   --primary-background-color-active: #3596b3;
   --primary-text-color: #fff;
+  --button-default-background-color: #e1e1e1;
+  --button-default-background-color-hover: #e4e4e4;
+  --button-default-background-color-active: #ccc;
+  --button-default-border-color: #eee;
   --button-success-background-color: #91C231;
   --button-success-background-color-hover: calc(var(--button-success-background-color) * 1.1);
   --button-success-background-color-active: calc(var(--button-success-background-color) * .9);
@@ -94,7 +101,8 @@
   --copyright-background-color: #d4d4dc;
   --copyright-text-color: var(--footer-text-color);
 }
-.box.box-default {
+.box.box-default,
+.card {
   --input-background-color: #f4f3f5;
 }
 @media (min-width: 576px) {

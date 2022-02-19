@@ -14,7 +14,7 @@
 <main id="main">
   {{notices}}
 
-  <article class="box text-center">
+  <article class="text-center">
     <div class="code">HTTP {{code}}</div>
     <div class="title">{{title}}</div>
     <p class="description">{{description}}</p>

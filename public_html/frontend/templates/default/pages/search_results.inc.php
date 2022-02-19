@@ -12,10 +12,14 @@
         {{notices}}
         {{breadcrumbs}}
 
-        <section id="box-search-results" class="box box-default">
+        <section id="box-search-results" class="card">
+          <div class="card-header">
+            <h1 class="card-title">{{title}}</h1>
+          </div>
 
-          <?php if ($products) { ?>
-          <div class="btn-group float-end hidden-xs">
+          <div class="card-body">
+            <?php if ($products) { ?>
+            <div class="btn-group float-end hidden-xs">
 <?php
   $separator = false;
   foreach ($sort_alternatives as $key => $value) {
@@ -26,21 +30,28 @@
     }
   }
 ?>
+            </div>
+            <?php } ?>
+
+
+            <?php if ($products) { ?>
+            <section class="listing products">
+              <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
+            </section>
+            <?php } else { ?>
+            <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
+            <?php } ?>
+
+          </div>
+
+          <?php if ($pagination) { ?>
+          <div class="card-footer">
+            {{pagination}}
           </div>
           <?php } ?>
-
-          <h1 class="title">{{title}}</h1>
-
-          <?php if ($products) { ?>
-          <section class="listing products">
-            <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
-          </section>
-          <?php } else { ?>
-          <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>
-          <?php } ?>
-
-          {{pagination}}
         </section>
+
+      </div>
     </div>
   </div>
 </main>

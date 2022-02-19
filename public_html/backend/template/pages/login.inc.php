@@ -80,7 +80,9 @@ body {
       <div class="card-footer">
         <div class="row">
           <div class="col-md-6">
-            <a class="btn btn-default btn-lg" href="<?php echo document::href_ilink('f:'); ?>"><?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_frontend', 'Frontend'); ?></a>
+            <a class="btn btn-outlined" href="<?php echo document::href_ilink('f:'); ?>">
+              <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
+            </a>
           </div>
           <div class="col-md-6 text-end">
             <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>

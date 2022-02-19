@@ -11,15 +11,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 </style>
 
-<article id="box-product" class="box<?php echo (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') ? ' white' : ''; ?>" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
-  <div class="row layout">
+  <div class="row layout" style="margin-bottom: 0;">
     <div class="col-sm-4 col-md-6">
-      <div class="images row">
+      <div class="images row" style="margin-bottom: 0;">
 
         <div class="col-12">
           <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}"  style="aspect-ratio: <?php echo $image['ratio']; ?>;" />
             {{sticker}}
           </a>
         </div>
@@ -27,7 +27,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-4">
           <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['ratio']; ?>;" />
           </a>
         </div>
         <?php } ?>
@@ -185,19 +185,26 @@ form[name="buy_now_form"] .dropdown-menu .image {
   </div>
 
   <?php if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
-  <ul class="nav nav-tabs">
-    <?php if ($description) { ?><li><a data-toggle="tab" href="#tab-description"><?php echo language::translate('title_description', 'Description'); ?></a></li><?php } ?>
-    <?php if ($technical_data) { ?><li><a data-toggle="tab" href="#tab-technical-data"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></a></li><?php } ?>
-  </ul>
+  <div class="card" style="margin: var(--gutter-size) 0;">
+    <div class="card-body">
+      <div class="row layout" style="margin-bottom: 0;">
 
-  <div class="tab-content">
-    <div id="tab-description" class="tab-pane description">
-      {{description}}
-    </div>
+        <?php if ($description) { ?>
+        <div class="col-md-<?php echo ($technical_data) ? 6 : 12; ?>">
+          <h2 style="margin-top: 0;"><?php echo language::translate('title_description', 'Description'); ?></h2>
 
-    <?php if ($technical_data) { ?>
-    <div id="tab-technical-data" class="tab-pane technical-data">
-      <table class="table table-striped table-hover">
+          <div class="description">
+            {{description}}
+          </div>
+        </div>
+        <?php } ?>
+
+        <?php if ($technical_data) { ?>
+        <div class="col-md-<?php echo ($description) ? 6 : 12; ?>">
+          <h2 style="margin-top: 0;"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></h2>
+
+          <div class="technical-data" <?php echo (!$description) ? 'style="columns: 2 auto;"' : ''; ?>>
+            <table class="table table-striped table-hover">
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
@@ -220,9 +227,13 @@ form[name="buy_now_form"] .dropdown-menu .image {
     }
   }
 ?>
-      </table>
+              </table>
+            </div>
+          </div>
+        <?php } ?>
+      </div>
+
     </div>
-    <?php } ?>
   </div>
   <?php } ?>
 
