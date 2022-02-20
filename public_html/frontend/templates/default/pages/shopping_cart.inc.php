@@ -30,7 +30,7 @@
             </div>
 
             <div>
-              <a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', array('redirect_url' => document::link())); ?>" data-toggle="lightbox"><?php echo language::translate('title_change', 'Change'); ?></a>
+              <a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', array('redirect_url' => document::link())); ?>" data-toggle="lightbox" data-seamless="true"><?php echo language::translate('title_change', 'Change'); ?></a>
             </div>
           </div>
         </section>
