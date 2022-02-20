@@ -66,6 +66,15 @@
           </a>
         </li>
 
+        <li class="regional-settings">
+          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
+            <?php echo functions::draw_fonticon('fa-globe'); ?>
+            <span class="language"><?php echo language::$selected['code']; ?></span>
+            / <span class="country"><?php echo customer::$data['country_code']; ?></span>
+            / <span class="currency"><?php echo currency::$selected['code']; ?></span>
+          </a>
+        </li>
+
         <?php if (settings::get('accounts_enabled')) { ?>
         <?php if (!empty(customer::$data['id'])) { ?>
         <li class="account dropdown">
@@ -84,15 +93,6 @@
         </li>
         <?php } ?>
         <?php } ?>
-
-        <li class="regional-settings">
-          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
-            <?php echo functions::draw_fonticon('fa-globe'); ?>
-            <span class="language"><?php echo language::$selected['code']; ?></span>
-            / <span class="country"><?php echo customer::$data['country_code']; ?></span>
-            / <span class="currency"><?php echo currency::$selected['code']; ?></span>
-          </a>
-        </li>
 
         <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
           <a href="#" data-toggle="dropdown">

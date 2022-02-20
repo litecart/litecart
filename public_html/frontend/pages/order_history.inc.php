@@ -16,7 +16,7 @@
 
   $orders_query = database::query(
     "select o.*, osi.name as order_status_name from ". DB_TABLE_PREFIX ."orders o
-    left join ". DB_TABLE_PREFIX ."order_statuses_info os on (os.id = o.order_status_id)
+    left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where os.hidden != 0
     and o.customer_id = ". (int)customer::$data['id'] ."

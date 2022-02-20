@@ -13,9 +13,4 @@
 
     echo $box_account;
 
-  } else if (empty(route::$route['page']) || route::$route['page'] != 'login') {
-
-    $box_account_login = new ent_view(FS_DIR_TEMPLATE . 'partials/box_account_login.inc.php');
-
-    echo $box_account_login;
   }

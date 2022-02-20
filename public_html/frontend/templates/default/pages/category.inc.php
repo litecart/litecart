@@ -2,7 +2,7 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
-        <h2 style="margin-top: 0;"><?php echo $name; ?></h2>
+        <h1 style="margin-top: 0;"><?php echo $name; ?></h1>
 
         <?php if (!empty($image)) { ?>
         <div class="thumbnail" style="margin-bottom: 2em;">
@@ -22,7 +22,7 @@
 
         <article id="box-category" class="card">
           <div class="card-header">
-            <h1 class="card-title"><?php echo $h1_title; ?></h1>
+            <h2 class="card-title"><?php echo $h1_title; ?></h2>
           </div>
 
           <div class="card-body">
