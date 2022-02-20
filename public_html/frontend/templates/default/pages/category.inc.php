@@ -2,6 +2,14 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
+        <h2 style="margin-top: 0;"><?php echo $name; ?></h2>
+
+        <?php if (!empty($image)) { ?>
+        <div class="thumbnail" style="margin-bottom: 2em;">
+          <img src="<?php echo document::href_link($image['thumbnail_1x']); ?>" />
+        </div>
+        <?php } ?>
+
         <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_category_tree.inc.php'); ?>
         <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_recently_viewed_products.inc.php'); ?>
       </div>
@@ -14,26 +22,15 @@
 
         <article id="box-category" class="card">
           <div class="card-header">
-            <div class="row" style="margin-bottom: 0;">
-              <?php if ($_GET['page'] == 1 && $image) { ?>
-              <div class="col-md-4">
-                <div class="thumbnail">
-                  <img src="<?php echo document::href_link($image['thumbnail_1x']); ?>" />
-                </div>
-              </div>
-              <?php } ?>
-
-              <div class="<?php echo $image ? 'col-md-8' : 'col-md-12'; ?>">
-                <h1 class="card-title"><?php echo $h1_title; ?></h1>
-
-                <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
-                <p class="description">{{description}}</p>
-                <?php } ?>
-              </div>
-            </div>
+            <h1 class="card-title"><?php echo $h1_title; ?></h1>
           </div>
 
           <div class="card-body">
+
+            <?php if ($description) { ?>
+            <p class="description">{{description}}</p>
+            <?php } ?>
+
             <ul class="nav nav-pills">
               <li><a href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-angle-left'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
               <?php foreach ($subcategories as $subcategory) { ?><li><a href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a></li><?php } ?>

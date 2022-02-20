@@ -118,7 +118,7 @@
   }
 
 // Bootstrap Compatible (data-toggle="buttons")
-  $('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
+  $('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');
     } else {
@@ -126,7 +126,7 @@
     }
   });
 
-  $('body').on('click', '[data-toggle="buttons"] input[type="radio"]', function(){
+  $('body').on('click', '[data-toggle="buttons"] :radio', function(){
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
@@ -138,10 +138,10 @@
     return false;
   });
 
-  $('.data-table tbody').on('click', 'tr', function(e) {
+  $('body').on('click', '.data-table tbody tr', function(e) {
     if ($(e.target).is('a') || $(e.target).closest('a').length) return;
     if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
-    $(this).find('input:checkbox').trigger('click');
+    $(this).find(':checkbox, :radio').trigger('click');
   });
 
 // Data-Table Dragable
@@ -189,9 +189,9 @@
 
 // Data-Table Shift Check Multiple Checkboxes
   var lastTickedCheckbox = null;
-  $('.data-table input[type="checkbox"]').click(function(e){
+  $('.data-table :checkbox').click(function(e){
 
-    var $chkboxes = $('.data-table input[type="checkbox"]');
+    var $chkboxes = $('.data-table :checkbox');
 
     if (!lastTickedCheckbox) {
       lastTickedCheckbox = this;

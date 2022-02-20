@@ -719,10 +719,6 @@ ul.breadcrumb li a {
   transition: 250ms;
   opacity: 0;
 }
-.dropdown .dropdown-menu.float-end {
-  right: 0;
-  left: auto;
-}
 .dropdown .dropdown-menu .divider {
   height: 1px;
   margin: 9px 0;
@@ -787,26 +783,14 @@ ul.breadcrumb li a {
   top: 0;
   z-index: 990;
 }
-.float-end > .dropdown-menu {
-  right: 0;
-  left: auto;
-}
-@media (min-width: 768px) {
-  .navbar-right .dropdown-menu {
-    left: auto;
+@media (min-width: 992px) {
+  html[dir="ltr"] .dropdown-menu-end {
     right: 0;
+    left: auto;
   }
-  .navbar-right .dropdown-menu-left {
+  html[dir="rtl"] .dropdown-menu-end {
     left: 0;
     right: auto;
-  }
-  html[dir="rtl"] .navbar-right .dropdown-menu {
-    left: 0;
-    right: auto;
-  }
-  html[dir="rtl"] .navbar-right .dropdown-menu-left {
-    left: auto;
-    right: 0;
   }
 }
 /* Effects */

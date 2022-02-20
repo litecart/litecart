@@ -103,7 +103,7 @@
             <?php } ?>
           </a>
 
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu dropdown-menu-end">
             <?php if (!empty($shopping_cart['items'])) { ?>
             <?php foreach ($shopping_cart['items'] as $item) { ?>
             <li>

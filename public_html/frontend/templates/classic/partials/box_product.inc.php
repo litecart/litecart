@@ -278,7 +278,7 @@
     var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
     var tax = <?php echo currency::format_raw($total_tax); ?>;
 
-    $(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
+    $(this).find(':radio:checked, :checkbox:checked').each(function(){
       if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
       if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
       if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');

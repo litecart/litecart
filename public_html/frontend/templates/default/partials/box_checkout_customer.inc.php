@@ -276,7 +276,7 @@
     $('input[name="customer[shipping_address][phone]"]').removeAttr('placeholder');
   }
 
-  $('input[name="create_account"][type="checkbox"]').trigger('change');
+  $('input[name="create_account"]:checkbox').trigger('change');
 
 // Toggles
 
@@ -444,7 +444,7 @@
 
 // Prevent losing form focus when clicking the label of a checkbox
   $('#box-checkout-customer .form-check').click(function(e){
-    $(this).find('input[type="checkbox"]').trigger('focusin').focus();
+    $(this).find(':checkbox').trigger('focusin').focus();
   });
 
 // Auto-Save

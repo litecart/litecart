@@ -100,7 +100,7 @@
   }
 
 // Bootstrap Compatible (data-toggle="buttons")
-  $('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
+  $('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');
     } else {
@@ -108,7 +108,7 @@
     }
   });
 
-  $('body').on('click', '[data-toggle="buttons"] input[type="radio"]', function(){
+  $('body').on('click', '[data-toggle="buttons"] :radio', function(){
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
@@ -142,7 +142,7 @@
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;
-    $(this).find('input:checkbox').trigger('click');
+    $(this).find(':checkbox').trigger('click');
   });
 
 // Password Strength

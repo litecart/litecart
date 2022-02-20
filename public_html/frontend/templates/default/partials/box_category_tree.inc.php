@@ -14,7 +14,6 @@
 ?>
 
 <section id="box-category-tree" class="hidden-xs">
-  <h2 style="margin-top: 0;">{{title}}</h2>
 
   <ul class="nav nav-stacked nav-pills">
     <li><a href="<?php echo document::href_ilink('categories'); ?>"><?php echo functions::draw_fonticon('fa-angle-left fa-fw'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>

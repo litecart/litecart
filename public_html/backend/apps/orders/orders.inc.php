@@ -384,8 +384,8 @@ table .fa-star:hover {
     $(this).closest('form').submit();
   });
 
-  $('.data-table input[type="checkbox"]').change(function() {
-    $('#actions fieldset').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  $('.data-table :checkbox').change(function() {
+    $('#actions fieldset').prop('disabled', !$('.data-table :checked').length);
   }).first().trigger('change');
 
   $('table').on('click', '.fa-star-o', function(e){

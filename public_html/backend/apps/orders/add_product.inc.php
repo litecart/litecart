@@ -78,24 +78,27 @@
         <table class="table table-default table-striped data-table">
           <thead>
             <tr>
+              <th></th>
               <th><?php echo language::translate('title_stock_option', 'Stock Option'); ?></th>
               <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
-              <th><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
+              <th class="text-end"><?php echo language::translate('title_in_stock', 'In Stock'); ?></th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($product->stock_options as $stock_option) { ?>
             <tr>
+              <td><?php echo functions::form_draw_radio_button('stock_item_id', $stock_option['stock_item_id'], true, 'required'); ?></td>
               <td><?php echo $stock_option['name']; ?></td>
               <td><?php echo $stock_option['sku']; ?></td>
-              <td class="text-center"><?php echo (float)$stock_option['quantity']; ?></td>
+              <td class="text-end"><?php echo (float)$stock_option['quantity']; ?></td>
             </tr>
             <?php } ?>
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="2"></td>
-              <td class="text-end"><strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?></td>
+              <td class="text-end" colspan="4">
+                <strong><?php echo language::translate('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?>
+              </td>
             </tr>
           </tfoot>
         </table>

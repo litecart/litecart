@@ -288,7 +288,7 @@
     $(this).closest('form').submit();
   });
 
-  $('.data-table input[type="checkbox"]').change(function() {
-    $('#actions').prop('disabled', !$('.data-table [type="checkbox"]:checked').length);
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
   }).first().trigger('change');
 </script>

@@ -34,12 +34,10 @@ body {
   max-width: 250px;
   max-height: 100px;
 }
-#box-login .footer {
-  background: #f6f6f6;
-  padding: 10px;
-  text-align: text-end;
-  border-radius: 0px 0px 0px 25px;
-  box-shadow: inset 0px 2px 3px -2px #ccc;
+#box-login .card-footer a {
+  display: inline-block;
+  padding: .75em 0;
+  color: inherit;
 }
 </style>
 
@@ -49,7 +47,7 @@ body {
 
 
   <div id="box-login" class="card">
-    <div class="card-header">
+    <div class="card-header text-center">
       <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('site_name'); ?>" /></a>
     </div>
 
@@ -62,7 +60,6 @@ body {
         {{notices}}
 
         <h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
-
 
         <div class="form-group">
           <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
@@ -80,7 +77,7 @@ body {
       <div class="card-footer">
         <div class="row">
           <div class="col-md-6">
-            <a class="btn btn-outlined" href="<?php echo document::href_ilink('f:'); ?>">
+            <a href="<?php echo document::href_ilink('f:'); ?>">
               <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
             </a>
           </div>

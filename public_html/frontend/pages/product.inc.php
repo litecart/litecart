@@ -92,7 +92,7 @@
     'mpn' => $product->mpn,
     'name' => $product->name,
     'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
-    'description' => !empty($product->description) ? strip_tags($product->description) : '',
+    'description' => (!empty($product->description) && (trim(strip_tags($product->description)) != '')) ? $product->description : '',
     'brand' => [],
     'offers' => [
       '@type' => 'Offer',
