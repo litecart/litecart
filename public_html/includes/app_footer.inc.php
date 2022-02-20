@@ -20,14 +20,13 @@
   $_page->html = $output;
   $_page->snippets = &document::$snippets;
   $_page->cleanup = true;
-  $output = (string)$_page;
+  $GLOBALS['output'] = (string)$_page;
 
 // Run before output processes
   event::fire('before_output');
 
 // Output page
-  echo $output;
-
+  echo $GLOBALS['output'];
 
 // Run after processes
   event::fire('shutdown');

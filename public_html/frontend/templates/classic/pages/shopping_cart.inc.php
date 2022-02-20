@@ -9,7 +9,7 @@
     $language_options[$language['code']] = $language['name'];
   }
 ?>
-<main id="main" class="container">
+<main id="main">
   <aside id="sidebar">
     <section id="box-checkout-region">
 
@@ -117,7 +117,7 @@
         </ul>
 
         <div class="subtotal text-end">
-          <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['amount'] + $subtotal['tax']) : currency::format($subtotal['amount']); ?></strong>
+          <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty($display_prices_including_tax) ?  currency::format($subtotal + $subtotal_tax) : currency::format($subtotal); ?></strong>
         </div>
 
       </section>

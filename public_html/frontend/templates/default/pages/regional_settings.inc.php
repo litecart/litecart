@@ -19,7 +19,7 @@
         <h1 class="card-title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
       </div>
 
-      <div class="card-footer">
+      <div class="card-body">
         <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>
 
           <div class="row">

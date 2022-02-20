@@ -1,4 +1,4 @@
-<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo functions::escape_html($sku); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
+<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-code="<?php echo functions::escape_html($code); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
   <div class="row">
     <div class="col-md-6">

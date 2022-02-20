@@ -164,7 +164,7 @@
         return $matches[1] . $matches[2] . $matches[3];
       }, $GLOBALS['output']);
 
-    // Extract javascript and on page javascripting
+    // Extract javascripts and on page javascripting
       $GLOBALS['output'] = preg_replace_callback('#(<body[^>]*>)(.*)(</body>)#is', function($matches) use (&$javascripts, &$javascript) {
 
         $javascripts = [];
@@ -250,7 +250,9 @@
       stats::stop_watch('output_optimization');
 
     // Remove HTML comments
-      $GLOBALS['output'] = preg_replace('#<!--.*?-->#ms', '', $GLOBALS['output']);
+      $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function() {
+        return preg_replace('#<!--.*?-->#ms', '', $GLOBALS['output']);
+      }, $GLOBALS['output']);
 
     // Static domain
       if ($static_domain = settings::get('static_domain')) {

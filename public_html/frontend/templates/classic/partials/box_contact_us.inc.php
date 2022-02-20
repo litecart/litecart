@@ -1,7 +1,7 @@
 <section id="box-contact-us" class="box">
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
 
       <h1><?php echo language::translate('title_contact_us', 'Contact Us'); ?></h1>
 
@@ -48,7 +48,7 @@
       <?php echo functions::form_draw_form_end(); ?>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
       <h2><?php echo language::translate('title_contact_details', 'Contact Details'); ?></h2>
 
       <p class="address"><?php echo nl2br(settings::get('site_postal_address')); ?></p>

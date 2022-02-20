@@ -5,8 +5,8 @@
   $box_shopping_cart->snippets = [
     'items' => [],
     'link' => document::ilink('shopping_cart'),
-    'num_items' => cart::$total['items'],
-    'cart_total' => null,
+    'num_items' => count(cart::$items),
+    'subtotal' => cart::$items,
   ];
 
   foreach (cart::$items as $key => $item) {
@@ -15,9 +15,9 @@
   }
 
   if (!empty(customer::$data['display_prices_including_tax'])) {
-    $box_shopping_cart->snippets['cart_total'] = currency::format(cart::$total['value'] + cart::$total['tax']);
+    $box_shopping_cart->snippets['subtotal'] = currency::format(cart::$cart->data['subtotal'] + cart::$cart->data['subtotal_tax']);
   } else {
-    $box_shopping_cart->snippets['cart_total'] = currency::format(cart::$total['value']);
+    $box_shopping_cart->snippets['subtotal'] = currency::format(cart::$cart->data['subtotal']);
   }
 
   echo $box_shopping_cart;

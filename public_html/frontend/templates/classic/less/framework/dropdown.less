@@ -1,7 +1,15 @@
 .dropdown {
   position: relative;
   perspective: 400px;
-  z-index: 1;
+
+  [data-toggle="dropdown"] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1em center;
+    background-size: .8em;
+    padding-inline-end: 2.5em !important;
+    z-index: 1;
+  }
 
   &.open {
     z-index: 1;
@@ -17,17 +25,17 @@
   }
 
   .dropdown-menu {
+    //display: none;
     position: absolute;
     visibility: hidden;
     top: 100%;
     left: 0;
-    //display: none;
     float: left;
     min-width: 160px;
-    margin: 0;
-    padding: 0;
+    padding: .5em;
+    margin: 2px 0 0;
     list-style: none;
-    text-align: left;
+    text-align: start;
     background-color: #fff;
     border: 1px solid var(--default-border-color);
     border-radius: var(--border-radius);
@@ -53,16 +61,14 @@
 
     > li > a, > li > span, > li > label {
       display: block;
-      padding: ~"calc(var(--gutter-size)/4)" var(--gutter-size);
+       padding: .25rem 1rem;
       clear: both;
       font-weight: normal;
-      line-height: 1.42857143;
       color: #333;
       white-space: nowrap;
       &a:hover,
       &a:focus {
         text-decoration: none;
-        color: #262626;
         background-color: #f5f5f5;
       }
     }
@@ -79,7 +85,7 @@
     > .disabled > a,
     > .disabled > a:hover,
     > .disabled > a:focus {
-      color: #777777;
+      color: #777;
     }
 
     > .disabled > a:hover,
@@ -94,18 +100,17 @@
     @media (min-width: @media-breakpoint-sm) {
       .navbar-form {
         min-width: 320px;
-        margin: var(--gutter-size);
+        margin: 1rem;
       }
     }
   }
 
-// Multi-level dropdown
+  // Multi-level dropdown
   .dropdown {
     .dropdown-menu {
       top: 0;
       left: 100%;
     }
-
   }
 }
 
@@ -121,12 +126,6 @@
 .float-end > .dropdown-menu {
   right: 0;
   left: auto;
-}
-
-.navbar-fixed-bottom .dropdown .dropdown-menu {
-  top: auto;
-  bottom: 100%;
-  margin-bottom: 2px;
 }
 
 @media (min-width: @media-breakpoint-sm) {

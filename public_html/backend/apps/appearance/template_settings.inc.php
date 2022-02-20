@@ -171,8 +171,4 @@
     </table>
 
   <?php echo functions::form_draw_form_end(); ?>
-
-  <div class="card-body">
-  </div>
-
 </div>

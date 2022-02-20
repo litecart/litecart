@@ -18,19 +18,25 @@
             <h1 class="card-title">{{title}}</h1>
           </div>
 
-          <?php if ($_GET['page'] == 1 && $description) { ?>
-          <p class="description">{{description}}</p>
+          <div class="card-body">
+            <?php if ($_GET['page'] == 1 && $description) { ?>
+            <p class="description">{{description}}</p>
+            <?php } ?>
+
+            <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_filter.inc.php'); ?>
+
+            <?php if ($products) { ?>
+            <section class="listing products">
+              <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', ['brand_id']); ?>
+            </section>
+            <?php } ?>
+          </div>
+
+          <?php if ($pagination) { ?>
+          <div class="card-footer">
+            {{pagination}}
+          </div>
           <?php } ?>
-
-          <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_filter.inc.php'); ?>
-
-          <?php if ($products) { ?>
-          <section class="listing products">
-            <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', ['brand_id']); ?>
-          </section>
-          <?php } ?>
-
-          {{pagination}}
         </article>
       </div>
     </div>

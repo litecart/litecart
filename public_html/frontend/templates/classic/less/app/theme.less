@@ -114,6 +114,7 @@ html {
 }
 
 #site-navigation {
+  background: var(--navigation-background-color);
   margin: 0 ~"calc(var(--gutter-size)/2)" var(--gutter-size) ~"calc(var(--gutter-size)/2)";
   @media (min-width: (@media-breakpoint-sm)) {
     margin: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
@@ -196,6 +197,11 @@ html {
     li {
       padding: 0;
     }
+  }
+
+  .logotype {
+    padding: 1em 0;
+    filter: ~"grayscale(85%)";
   }
 }
 

@@ -13,16 +13,12 @@
   };
 ?>
 
-<section id="box-information-links" class="card">
+<section id="box-information-links">
 
-  <div class="card-header">
-    <h2 class="card-title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></h2>
-  </div>
+  <h2 class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></h2>
 
-  <div class="card-body">
-    <ul class="nav nav-stacked nav-pills">
-      <?php foreach ($pages as $page) $draw_page($page, $page_path, 0); ?>
-    </ul>
-  </div>
+  <ul class="nav nav-stacked nav-pills">
+    <?php foreach ($pages as $page) $draw_page($page, $page_path, 0); ?>
+  </ul>
 
 </section>

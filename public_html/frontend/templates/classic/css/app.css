@@ -112,6 +112,7 @@ html {
   }
 }
 #site-navigation {
+  background: var(--navigation-background-color);
   margin: 0 calc(var(--gutter-size)/2) var(--gutter-size) calc(var(--gutter-size)/2);
 }
 @media (min-width: 768px) {
@@ -197,6 +198,10 @@ html {
 }
 #footer ul.list-vertical li {
   padding: 0;
+}
+#footer .logotype {
+  padding: 1em 0;
+  filter: grayscale(85%);
 }
 #copyright {
   background: var(--copyright-background-color);

@@ -21,10 +21,9 @@
 
   $_page->snippets = [
     'items' => [],
-    'subtotal' => [
-      'value' => cart::$cart->data['subtotal'],
-      'tax' => cart::$cart->data['subtotal_tax'],
-    ],
+    'subtotal' => cart::$cart->data['subtotal'],
+    'subtotal_tax' => cart::$cart->data['subtotal_tax'],
+    'display_prices_including_tax' => cart::$cart->data['display_prices_including_tax'],
     'error' => false,
   ];
 

@@ -112,6 +112,14 @@
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
+// Data-Table Toggle Checkboxes
+  $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
+    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
+      $(this).prop('checked', !$(this).prop('checked'));
+    });
+    return false;
+  });
+
 // Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
   $('[data-toggle="offcanvas"]').on('click', function() {
     $(this).closest('.navbar').toggleClass('expanded');
@@ -130,19 +138,36 @@
     $(dropdown).trigger('click.bs.dropdown');
   });
 
-// Data-Table Toggle Checkboxes
-  $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
-    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
-      $(this).prop('checked', !$(this).prop('checked'));
-    });
-    return false;
-  });
-
   $('.data-table tbody tr').click(function(e) {
     if ($(e.target).is(':input')) return;
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
+  });
+
+// Password Strength
+  $('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function(){
+
+    $(this).siblings('meter').remove();
+
+    if ($(this).val() == '') return;
+
+    var numbers = ($(this).val().match(/[0-9]/g) || []).length,
+     lowercases = ($(this).val().match(/[a-z]/g) || []).length,
+     uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
+     symbols =   ($(this).val().match(/[^\w]/g) || []).length,
+
+     score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
+           + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0);
+
+    var meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
+      position: 'absolute',
+      bottom: '-1em',
+      width: '100%',
+      height: '1em'
+    });
+
+    $(this).after(meter);
   });
 
 // Scroll Up
@@ -177,7 +202,6 @@
 // Update cart / Keep alive
   if (typeof(window._env) !== 'undefined') {
     window.updateCart = function(data) {
-      console.log(window._env.platform.url + 'ajax/cart.json');
       if (data) $('*').css('cursor', 'wait');
       $.ajax({
         url: window._env.platform.url + 'ajax/cart.json',
