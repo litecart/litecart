@@ -210,7 +210,7 @@
 // Keep-alive
   var keepAlive = setInterval(function(){
     $.get({
-      url: window._env.platform.url + 'ajax/cart.json',
+      url: window._env.platform.path + 'ajax/cart.json',
       cache: false
     });
   }, 60e3);

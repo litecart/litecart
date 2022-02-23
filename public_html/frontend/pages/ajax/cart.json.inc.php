@@ -2,9 +2,9 @@
 
   $json = [
     'items' => [],
-    'quantity' => cart::$total['items'],
-    'value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['value'] + cart::$total['tax'] : cart::$total['value'],
-    'formatted_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format(cart::$total['value']),
+    'num_items' => cart::$total['num_items'],
+    'total_value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['subtotal'] + cart::$total['subtotal_tax'] : cart::$total['subtotal'],
+    'formatted_total_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['subtotal'] + cart::$total['subtotal_tax']) : currency::format(cart::$total['subtotal']),
     'text_total' => language::translate('title_total', 'Total'),
   ];
 
@@ -12,19 +12,24 @@
     $json['items'][] = [
       'key' => $key,
       'product_id' => $item['product_id'],
-      'options' => $item['data'],
+      'stock_item_id' => $item['stock_item_id'],
+      'userdata' => $item['userdata'],
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'thumbnail' => document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 320, 320, 'FIT_USE_WHITESPACING')),
       'name' => $item['name'],
+      'code' => $item['code'],
       'sku' => $item['sku'],
       'gtin' => $item['gtin'],
       'taric' => $item['taric'],
-      'price' => !empty(customer::$data['display_prices_including_tax']) ? $item['price'] + $item['tax']: (float)$item['price'],
-      'formatted_price' => currency::format(!empty(customer::$data['display_prices_including_tax']) ? $item['price'] + $item['tax']: (float)$item['price']),
+      'price' => !empty(customer::$data['display_prices_including_tax']) ? $item['price'] + $item['tax']: $item['price'],
+      'formatted_price' => currency::format(!empty(customer::$data['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price']),
       'tax' => $item['tax'],
       'tax_class_id' => $item['tax_class_id'],
-      'quantity' => (float)$item['quantity'],
-      'quantity_unit' => $item['quantity_unit'],
+      'quantity' => $item['quantity'],
+      'quantity_unit' => [
+        'id' => $item['quantity_unit_id'],
+        'name' => $item['quantity_unit_id'] ? reference::quantity_unit($item['quantity_unit_id'])->name : '',
+      ],
     ];
   }
 

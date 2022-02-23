@@ -122,10 +122,7 @@
 
       while ($item = database::fetch($items_query)) {
         $item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
-        $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
-        $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
-        $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
-        $this->data['items'][] = $item;
+        $this->data['items'][$item['key']] = $item;
       }
 
       $this->shipping = new mod_shipping($this, $this->data['shipping_option']);
@@ -201,7 +198,7 @@
       );
 
     // Insert/update items
-      $i = 0;
+      $i = 1;
       foreach ($this->data['items'] as $key => $item) {
 
         if (empty($item['id'])) {
@@ -216,14 +213,16 @@
 
         database::query(
           "update ". DB_TABLE_PREFIX ."shopping_carts_items
-          set product_id = ". (int)$item['product_id'] .",
+          set `key` = '". database::input($item['key']) ."',
+            product_id = ". (int)$item['product_id'] .",
             stock_item_id = ". (int)$item['stock_item_id'] .",
             name = '". database::input($item['name']) ."',
             userdata = '". (!empty($item['userdata']) ? database::input(json_encode($item['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
-            image = '". database::input($item['image']) ."',
+            code = '". database::input($item['code']) ."',
             sku = '". database::input($item['sku']) ."',
             gtin = '". database::input($item['gtin']) ."',
             taric = '". database::input($item['taric']) ."',
+            image = '". database::input($item['image']) ."',
             quantity = ". (float)$item['quantity'] .",
             quantity_unit_id = ". (int)$item['quantity_unit_id'] .",
             price = ". (float)$item['price'] .",
@@ -240,7 +239,7 @@
             width = ". (float)$item['width'] .",
             height = ". (float)$item['height'] .",
             length_unit = '". database::input($item['length_unit']) ."',
-            priority = ". ++$i ."
+            priority = ". (int)$i++ ."
           where id = ". (int)$item['id'] ."
           and cart_id = ". (int)$this->data['id'] ."
           limit 1;"
@@ -253,7 +252,7 @@
     public function add_product($product_id, $stock_item_id='', $quantity=1, $halt_on_error=false) {
 
       $product = reference::product($product_id);
-      $quantity = round((float)$quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
+      $quantity = round($quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
 
     // Set item key
       if (!empty($product->quantity_unit['separate'])) {
@@ -322,7 +321,7 @@
       $available_quantity_after_purchase = $product->quantity - $quantity - (isset($this->data['items'][$item_key]) ? $this->data['items'][$item_key]['quantity'] : 0);
 
       if ($available_quantity_after_purchase < 0 && empty($product->sold_out_status['orderable'])) {
-        throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round((float)$product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
+        throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
       }
 
     // Stock Option
@@ -347,11 +346,11 @@
         }
 
         $item['sku'] = fallback($stock_option['sku'], $item['sku']);
-        $item['weight'] = (float)fallback($stock_option['weight'], $item['weight']);
+        $item['weight'] = fallback($stock_option['weight'], $item['weight']);
         $item['weight_unit'] = fallback($stock_option['weight_unit'], $item['weight_unit']);
-        $item['length'] = (float)fallback($stock_option['length'], $item['length']);
-        $item['width'] = (float)fallback($stock_option['width'], $item['width']);
-        $item['height'] = (float)fallback($stock_option['height'], $item['height']);
+        $item['length'] = fallback($stock_option['length'], $item['length']);
+        $item['width'] = fallback($stock_option['width'], $item['width']);
+        $item['height'] = fallback($stock_option['height'], $item['height']);
         $item['length_unit'] = fallback($stock_option['length_unit'], $item['length_unit']);
       }
 
@@ -406,8 +405,8 @@
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."shopping_carts_items
-        where cart_uid = '". database::input($this->data['uid']) ."'
-        and id = ". (int)$this->data['items'][$item_key]['id'] ."
+        where cart_id = '". database::input($this->data['id']) ."'
+        and `key` = '". database::input($this->data['items'][$item_key]['key']) ."'
         limit 1;"
       );
 

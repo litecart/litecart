@@ -255,6 +255,7 @@ ALTER TABLE `lc_shopping_carts_items`
 ADD COLUMN `cart_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `customer_id`,
 CHANGE COLUMN `data` `userdata` VARCHAR() NOT NULL DEFAULT '' AFTER `name`,
 ADD COLUMN `type` ENUM('product','stock_item','custom') NOT NULL DEFAULT 'product' AFTER `cart_id`,
+ADD COLUMN `code` VARCHAR(32) NOT NULL DEFAULT '' BEFORE `sku`,
 ADD COLUMN `configuration` VARCHAR(512) NOT NULL DEFAULT '0',
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `tax`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `length_unit`,

@@ -34,7 +34,11 @@
 
       self::$cart = &self::$_instance;
       self::$items = &self::$_instance->data['items'];
-      self::$total = &self::$_instance->data['total'];
+      self::$total = [
+        'num_items' => &self::$_instance->data['num_items'],
+        'subtotal' => &self::$_instance->data['subtotal'],
+        'subtotal_tax' => &self::$_instance->data['subtotal_tax'],
+      ];
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."shopping_carts_items
