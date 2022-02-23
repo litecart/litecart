@@ -144,7 +144,7 @@
           $email = new ent_email();
           $email->add_recipient(settings::get('store_email'))
                 ->set_subject('[Not Found Report] '. settings::get('store_name'))
-                ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))
+                ->add_body("** This is a report of requests made to your website that did not have a destination. **\r\n\r\n". PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n".implode("\r\n", $lines))
                 ->send();
           file_put_contents($not_found_file, '');
         } else {
