@@ -6,7 +6,7 @@
     public $last_request;
     public $last_response;
 
-    public function call($method, $url='', $data=null, $headers=[], $asynchronous=false) {
+    public function call(string $method, string $url='', mixed $data=null, array $headers=[], bool $asynchronous=false) {
 
       $this->last_request = [];
       $this->last_response = [];
@@ -109,7 +109,7 @@
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
         $this->last_request['head'] . "\r\n" .
         $this->last_request['body'] . "\r\n\r\n" .
-        '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. (float)$this->last_response['bytes'] .' bytes transferred in '. (float)$this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
+        '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. $this->last_response['bytes'] .' bytes transferred in '. $this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
         $this->last_response['head'] . "\r\n" .
         $this->last_response['body']
       );
@@ -134,7 +134,7 @@
       return $response_body;
     }
 
-    public function http_decode_chunked_data($data) {
+    public function http_decode_chunked_data(string $data) {
       for ($result = ''; !empty($data); $data = trim($data)) {
         $position = strpos($data, "\r\n");
         $length = (int)hexdec(substr($data, 0, $position));

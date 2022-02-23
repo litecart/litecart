@@ -1,6 +1,5 @@
 .dropdown {
   position: relative;
-  perspective: 400px;
 
   [data-toggle="dropdown"] {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
@@ -8,30 +7,15 @@
     background-position: right 1em center;
     background-size: .8em;
     padding-inline-end: 2.5em !important;
-    z-index: 1;
-  }
-
-  &.open {
-    z-index: 1;
-    > .dropdown-menu {
-      //display: block;
-      visibility: visible;
-      transform: rotateX(0);
-      opacity: 1;
-    }
-    > a {
-      outline: 0;
-    }
+    //z-index: 1;
   }
 
   .dropdown-menu {
-    //display: none;
-    position: absolute;
-    visibility: hidden;
-    top: 100%;
+    display: none;
+    position: fixed;
+    //top: 100%;
     left: 0;
-    z-index: 1000;
-    float: left;
+    right: 0;
     min-width: 160px;
     padding: .5em;
     margin: 2px 0 0;
@@ -43,11 +27,6 @@
     border-radius: var(--border-radius);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     background-clip: padding-box;
-    transform-origin: 0px 0px;
-    transform: rotateX(-25deg);
-    transition: 250ms;
-    opacity: 0;
-    //z-index: -1;
     .divider {
       height: 1px;
       margin: 9px 0;
@@ -86,7 +65,6 @@
       text-decoration: none;
       background-color: transparent;
       background-image: none;
-      filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
       cursor: not-allowed;
     }
 
@@ -105,15 +83,54 @@
       left: 100%;
     }
   }
+
+  &.open {
+    //z-index: 1;
+    > .dropdown-menu {
+      display: block;
+      //z-index: -1;
+    }
+    > a {
+      outline: 0;
+    }
+  }
+}
+
+// 3D effects
+.dropdown {
+  perspective: 400px;
+  .dropdown-menu {
+    display: block;
+    transform-origin: 0px 0px;
+    transform: rotateX(-25deg);
+    transition: 250ms;
+    visibility: hidden;
+    opacity: 0;
+  }
+  &.open > .dropdown-menu {
+    visibility: visible;
+    transform: rotateX(0);
+    opacity: 1;
+  }
+}
+.navbar-nav .dropdown {
+  .dropdown-menu {
+    height: 0;
+  }
+  &.open > .dropdown-menu {
+    height: fit-content;
+  }
 }
 
 .dropdown-backdrop {
+  background-color: rgba(0, 0, 0, .25);
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   top: 0;
-  z-index: 990;
+  backdrop-filter: blur(1px);
+  //z-index: 990;
 }
 
 @media (min-width: @media-breakpoint-md) {
