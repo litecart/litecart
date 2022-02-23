@@ -77,7 +77,7 @@
       }
     }
 
-    public static function set($code=null) {
+    public static function set(string $code='') {
 
       if (empty($code)) $code = self::identify();
 
@@ -243,11 +243,11 @@
       return self::$_cache['translations'][$language_code][$code] = $default;
     }
 
-    public static function number_format($number, $decimals=0) {
-      return number_format((float)$number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
+    public static function number_format(float $number, int $decimals=0) {
+      return number_format($number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
     }
 
-    public static function strftime($format, $timestamp=null) {
+    public static function strftime(string $format, $timestamp=null) {
 
       if ($timestamp === null) {
         $timestamp = new \DateTime();

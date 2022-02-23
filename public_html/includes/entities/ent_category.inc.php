@@ -182,7 +182,7 @@
       );
 
     // Update filters
-      $filter_priority = 1;
+      $priority = 1;
       foreach ($this->data['filters'] as $key => $filter) {
         if (empty($filter['id'])) {
           database::query(
@@ -197,7 +197,7 @@
           "update ". DB_TABLE_PREFIX ."categories_filters
           set attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
             select_multiple = ". (!empty($filter['select_multiple']) ? 1 : 0) .",
-            priority = ". $filter_priority++ ."
+            priority = ". (int)$priority++ ."
           where category_id = ". (int)$this->data['id'] ."
           and id = ". (int)$filter['id'] ."
           limit 1;"

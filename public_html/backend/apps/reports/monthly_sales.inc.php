@@ -49,8 +49,8 @@
   while ($orders = database::fetch($orders_query)) {
     if (!isset($total)) $total = [];
     foreach (array_keys($orders) as $key) {
-      if (!isset($total[$key])) $total[$key] = (float)$orders[$key];
-      else $total[$key] += (float)$orders[$key];
+      if (!isset($total[$key])) $total[$key] = $orders[$key];
+      else $total[$key] += $orders[$key];
     }
     $rows[] = $orders;
   }

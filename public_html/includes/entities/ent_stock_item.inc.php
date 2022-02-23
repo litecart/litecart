@@ -157,17 +157,17 @@
       }
 
     // If new total quantity is set
-      if ((float)$this->data['quantity_adjustment'] == 0 && (float)$this->data['quantity'] != (float)$this->previous['quantity']) {
-        $this->data['quantity_adjustment'] = (float)$this->data['quantity'] - (float)$this->previous['quantity'];
+      if ($this->data['quantity_adjustment'] == 0 && $this->data['quantity'] != $this->previous['quantity']) {
+        $this->data['quantity_adjustment'] = $this->data['quantity'] - $this->previous['quantity'];
       }
 
     // If quantity adjustment is set
-      if (!empty($this->data['quantity_adjustment']) && (float)$this->data['quantity_adjustment'] != 0) {
+      if (!empty($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
 
         $stock_transaction = new ent_stock_transaction('system');
 
         if (($key = array_search($this->data['id'], array_column($stock_transaction->data['contents'], 'stock_item_id'))) !== false) {
-          $stock_transaction->data['contents'][$key]['quantity_adjustment'] += (float)$this->data['quantity_adjustment'];
+          $stock_transaction->data['contents'][$key]['quantity_adjustment'] += $this->data['quantity_adjustment'];
         } else {
           $stock_transaction->data['contents'][] = [
             'stock_item_id' => $this->data['id'],

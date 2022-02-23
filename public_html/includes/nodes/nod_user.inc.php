@@ -133,7 +133,7 @@
       session::$data['user']['widgets'] = [];
     }
 
-    public static function load($user_id) {
+    public static function load(int $user_id) {
 
       self::reset();
 

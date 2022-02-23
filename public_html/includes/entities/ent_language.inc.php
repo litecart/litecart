@@ -68,7 +68,7 @@
           code = '". database::input($this->data['code']) ."'
           ". (!empty($this->data['code2']) ? "or code2 = '". database::input($this->data['code2']) ."'" : "") ."
         )
-        ". (!empty($this->data['id']) ? "and id != ". $this->data['id'] : "") ."
+        ". (!empty($this->data['id']) ? "and id != ". (int)$this->data['id'] : "") ."
         limit 1;"
       );
 

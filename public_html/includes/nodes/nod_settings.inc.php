@@ -25,7 +25,7 @@
 
     ######################################################################
 
-    public static function get($key, $default=null) {
+    public static function get(string $key, $fallback=null) {
 
       if (preg_match('#^store_#', $key)) {
         $new_key = preg_replace('#^store_#', 'site_', $key);
@@ -42,8 +42,8 @@
       );
 
       if (!database::num_rows($settings_query)) {
-        if ($default === null) trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
-        return $default;
+        if ($fallback === null) trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
+        return $fallback;
       }
 
       while ($setting = database::fetch($settings_query)) {

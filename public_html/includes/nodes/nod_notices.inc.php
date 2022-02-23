@@ -33,7 +33,7 @@
 
     ######################################################################
 
-    public static function reset($type=null) {
+    public static function reset(string $type='') {
 
       if ($type) {
         self::$data[$type] = [];
@@ -47,21 +47,21 @@
       }
     }
 
-    public static function add($type, $msg, $key=false) {
+    public static function add(string $type, string $msg, string $key='') {
       if ($key) self::$data[$type][$key] = $msg;
       else self::$data[$type][] = $msg;
     }
 
-    public static function remove($type, $key) {
+    public static function remove(string $type, string $key) {
       unset(self::$data[$type][$key]);
     }
 
-    public static function get($type) {
+    public static function get(string $type) {
       if (!isset(self::$data[$type])) return false;
       return self::$data[$type];
     }
 
-    public static function dump($type) {
+    public static function dump(string $type) {
       $stack = self::$data[$type];
       self::$data[$type] = [];
       return $stack;

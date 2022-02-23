@@ -52,7 +52,7 @@
 
     ######################################################################
 
-    public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
+    public static function token(string $keyword, $dependencies=[], string $storage='memory', int $ttl=900) {
 
       if (!in_array($storage, ['file', 'memory', 'session'])) {
         trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
@@ -168,7 +168,7 @@
       ];
     }
 
-    public static function get($token, $max_age=900, $force_cache=false) {
+    public static function get(string $token, int $max_age=900, bool $force_cache=false) {
 
       if (empty($force_cache)) {
         if (empty(self::$enabled)) return;
@@ -215,7 +215,7 @@
       }
     }
 
-    public static function set($token, $data) {
+    public static function set(string $token, $data) {
 
       if (empty(self::$enabled)) return;
 
@@ -266,7 +266,7 @@
     }
 
     // Output recorder
-    public static function capture($token, $max_age=900, $force_cache=false) {
+    public static function capture(string $token, int $max_age=900, bool $force_cache=false) {
 
       if (empty(self::$enabled)) return true;
 
@@ -289,7 +289,7 @@
       return true;
     }
 
-    public static function end_capture($token=null) {
+    public static function end_capture(string $token='') {
 
       if (empty(self::$enabled)) return;
 
@@ -314,7 +314,7 @@
       return true;
     }
 
-    public static function clear_cache($keyword=null) {
+    public static function clear_cache(string $keyword='') {
 
     // Clear modifications
       if (empty($keyword)) {

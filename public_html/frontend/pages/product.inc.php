@@ -97,7 +97,7 @@
     'offers' => [
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
-      'price' => (float)currency::format_raw(tax::get_price($product->final_price, $product->tax_class_id)),
+      'price' => currency::format_raw(tax::get_price($product->final_price, $product->tax_class_id)),
       'priceValidUntil' => (!empty($product->campaign['end_date']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
@@ -136,7 +136,7 @@
     'sticker' => '',
     'extra_images' => [],
     'brand' => [],
-    'recommended_price' => tax::get_price((float)$product->recommended_price, $product->tax_class_id),
+    'recommended_price' => tax::get_price($product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->final_price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'final_price' => tax::get_price($product->final_price, $product->tax_class_id),
@@ -144,7 +144,7 @@
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => $product->tax,
     'tax_rates' => [],
-    'quantity' => round((float)$product->quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0),
+    'quantity' => round($product->quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0),
     'quantity_min' => ($product->quantity_min > 0) ? $product->quantity_min : 1,
     'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
     'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,

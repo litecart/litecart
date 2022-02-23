@@ -34,7 +34,7 @@
       self::$data = [];
     }
 
-    public static function add($title, $link=null) {
+    public static function add(string $title, string $link='') {
       self::$data[] = [
         'title' => $title,
         'link' => $link,

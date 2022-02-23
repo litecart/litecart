@@ -158,7 +158,7 @@
     $listing_product = new ent_view(FS_DIR_TEMPLATE . 'partials/listing_product.inc.php');
 
     $sticker = '';
-    if ((float)$product['campaign_price']) {
+    if ($product['campaign_price']) {
       $sticker = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
     } else if ($product['date_created'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
       $sticker = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
@@ -184,11 +184,11 @@
       'sticker' => $sticker,
       'brand' => [],
       'short_description' => $product['short_description'],
-      'quantity' => (float)$product['quantity'],
+      'quantity' => $product['quantity'],
       'quantity_unit_id' => $product['quantity_unit_id'],
       'recommended_price' => tax::get_price($product['recommended_price'], $product['tax_class_id']),
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
-      'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
+      'campaign_price' => $product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
       'final_price' => tax::get_price($product['final_price'], $product['tax_class_id']),
       'tax' => tax::get_tax($product['price'], $product['tax_class_id']),
       'tax_class_id' => $product['tax_class_id'],

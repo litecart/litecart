@@ -138,7 +138,7 @@
     return false;
   }
 
-  function file_format_size($size) {
+  function file_format_size(int $size) {
     switch (true) {
       case ($size == 0): return '-';
       case ($size < 1000): return language::number_format($size) . ' B';

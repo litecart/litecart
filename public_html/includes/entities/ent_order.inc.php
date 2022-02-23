@@ -129,12 +129,6 @@
 
       while ($item = database::fetch($items_query)) {
         $item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
-        $item['quantity'] = (float)$item['quantity']; // Turn "1.0000" to 1
-        $item['price'] = (float)$item['price']; // Turn "1.0000" to 1
-        $item['discount'] = (float)$item['discount']; // Turn "1.0000" to 1
-        $item['tax'] = (float)$item['tax']; // Turn "1.0000" to 1
-        $item['sum'] = (float)$item['sum']; // Turn "1.0000" to 1
-        $item['sum_tax'] = (float)$item['sum_tax']; // Turn "1.0000" to 1
         $item['sufficient_stock'] = null;
 
         if (isset($item['stock_quanity'])) {
@@ -155,8 +149,6 @@
       );
 
       while ($row = database::fetch($order_totals_query)) {
-        $row['amount'] = (float)$row['amount']; // Turns "1.0000" to 1
-        $row['tax'] = (float)$row['tax']; // Turns "1.0000" to 1
         $this->data['order_total'][] = $row;
       }
 

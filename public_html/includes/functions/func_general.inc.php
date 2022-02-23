@@ -5,7 +5,7 @@
     return functions::escape_js($string);
   }
 
-  function general_path_friendly($text, $language_code=null) {
+  function general_path_friendly($text, $language_code='') {
 
     if (empty($text)) return '';
 

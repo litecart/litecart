@@ -6,17 +6,17 @@
 
     ######################################################################
 
-    public static function get_price($value, $tax_class_id, $calculate_tax=null, $customer=null) {
+    public static function get_price(float $value, int $tax_class_id, bool $calculate_tax=null, $customer=null) {
       if ($calculate_tax === null) $calculate_tax = !empty(customer::$data['display_prices_including_tax']) ? true : false;
 
       if ($calculate_tax) {
         return $value + self::get_tax($value, $tax_class_id, $customer);
       } else {
-        return (float)$value;
+        return $value;
       }
     }
 
-    public static function get_tax($value, $tax_class_id, $customer=null) {
+    public static function get_tax(float $value, int $tax_class_id, $customer=null) {
 
       if (!$value || !$tax_class_id) return 0;
 
@@ -30,7 +30,7 @@
       return $tax;
     }
 
-    public static function get_rates($tax_class_id, $customer=null) {
+    public static function get_rates(int $tax_class_id, $customer=null) {
 
       if (empty($tax_class_id)) return [];
 

@@ -282,7 +282,7 @@
       session::$data['customer']['display_prices_including_tax'] = null;
     }
 
-    public static function load($customer_id) {
+    public static function load(int $customer_id) {
 
       self::reset();
 

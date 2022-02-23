@@ -62,8 +62,8 @@
     }
   }
 
-  $currencies = array_map(function($c){
-    return ['code' => $c['code'], 'decimals' => (int)$c['decimals'], 'value' => (float)$c['value']];
+  $currencies = array_map(function($currency){
+    return ['code' => $currency['code'], 'decimals' => (int)$currency['decimals'], 'value' => $currency['value']];
   }, currency::$currencies);
 ?>
 

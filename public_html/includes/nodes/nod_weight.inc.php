@@ -41,11 +41,11 @@
       ],
     ];
 
-    public static function convert($value, $from=null, $to=null) {
+    public static function convert(float $value, string $from='', string $to='') {
 
-      if ((float)$value == 0) return 0;
+      if ($value == 0) return 0;
 
-      if ($from == $to) return (float)$value;
+      if ($from == $to) return $value;
 
       if (!isset(self::$units[$from])) {
         $from = settings::get('site_weight_unit');
@@ -55,12 +55,12 @@
         $to = settings::get('site_weight_unit');
       }
 
-      if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return 0;
+      if (self::$units[$from]['value'] == 0 || self::$units[$to]['value'] == 0) return 0;
 
       return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }
 
-    public static function format($value, $class) {
+    public static function format(float $value, string $unit) {
 
       if (!isset(self::$units[$class])) {
         trigger_error('Invalid weight unit ('. $unit .')', E_USER_WARNING);
@@ -69,7 +69,7 @@
 
       $decimals = self::$units[$class]['decimals'];
 
-      $formatted_value = number_format((float)$value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$units[$class]['unit'];
+      $formatted_value = number_format($value, $decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$units[$class]['unit'];
       $formatted_value = preg_replace('#'. preg_quote(language::$selected['decimal_point'], '#') .'0+$#', '', $formatted_value);
 
       return $formatted_value;

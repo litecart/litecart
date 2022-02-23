@@ -34,8 +34,8 @@
 
       if (!empty($_POST['items'])) {
         foreach (array_keys($_POST['items']) as $key) {
-          $_POST['items'][$key]['price'] = (float)$_POST['items'][$key]['price'] * (float)$_POST['currency_value'];
-          $_POST['items'][$key]['tax'] = (float)$_POST['items'][$key]['tax'] * (float)$_POST['currency_value'];
+          $_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] * $_POST['currency_value'];
+          $_POST['items'][$key]['tax'] = $_POST['items'][$key]['tax'] * $_POST['currency_value'];
         }
       }
 
