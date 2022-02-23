@@ -319,6 +319,9 @@
       if (empty($body)) {
         trigger_error('Cannot send email with an empty body', E_USER_WARNING);
         return false;
+      } else {
+        // end multipart with expected boundary
+        $body .= '--'. $multipart_boundary_string . "--"
       }
 
     // Deliver via SMTP

@@ -48,3 +48,13 @@ ehthumbs.db
 Thumbs.db
 error_log
 .ftpquota
+
+######################
+# VisualStudio Files #
+######################
+.vs/
+
+######################
+# Vim Files          #
+######################
+*.sw[op]
