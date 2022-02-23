@@ -68,12 +68,29 @@ body main {
 #site-navigation .search form {
   padding: var(--gutter-size);
 }
-#site-navigation .shopping-cart.filled > a {
+#site-navigation .shopping-cart {
+  transition: all 200ms ease-out;
+}
+#site-navigation .shopping-cart .badge,
+#site-navigation .shopping-cart .checkout {
+  display: none;
+}
+#site-navigation .shopping-cart.filled {
   background-color: var(--navigation-cart-color);
 }
-#site-navigation .shopping-cart .badge {
+#site-navigation .shopping-cart.filled .badge {
+  position: absolute;
+  top: 2em;
+  right: 3em;
+  display: inline-block;
   animation: pulsating 2s linear;
   animation-iteration-count: infinite;
+}
+#site-navigation .shopping-cart.filled .checkout {
+  display: block;
+}
+#site-navigation .shopping-cart.filled .empty {
+  display: none;
 }
 @media (min-width: 768px) {
   #site-navigation .shopping-cart .dropdown-menu {

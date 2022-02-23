@@ -18,17 +18,6 @@
 
   //$.loadScript('...').done(function(script, textStatus) { ... });
 
-// Toggle Cart
-  $('[data-toggle="cart"]').click(function(e){
-    e.preventDefault();
-    console.log('yes');
-    if ($('#shopping-cart').is(':hidden')) {
-      $('body').addClass('cart-visible');
-    } else {
-      $('body').removeClass('cart-visible');
-    }
-  });
-
 // Alerts
   $('body').on('click', '.alert .close', function(e){
     e.preventDefault();
@@ -58,27 +47,6 @@
       }
     }).trigger('resize');
   }
-
-// Add to cart animation
-  $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
-    e.preventDefault();
-    var form = $(this);
-    $('#site-navigation .shopping-cart .dropdown-menu .checkout').before('<li class="new-item"></li>');
-    $('#site-navigation .shopping-cart.dropdown').addClass('open');
-    $(this).find('button[name="add_cart_product"]').animate_from_to('#site-navigation .shopping-cart .new-item', {
-      pixels_per_second: 2000,
-      initial_css: {
-        'border': '1px rgba(0,136,204,1) solid',
-        'background-color': 'rgba(0,136,204,0.5)',
-        'z-index': '999999',
-        'border-radius': 'var(--border-radius)',
-        'padding': '.5em'
-      },
-      callback: function() {
-        updateCart($(form).serialize() + '&add_cart_product=true');
-      }
-    });
-  });
 
 // Bootstrap Compatible (data-toggle="tab")
   $('body').on('click', '[data-toggle="tab"]', function(e) {
@@ -197,12 +165,65 @@
         return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
       }
     },
+		easeOutCubic: function (x) {
+			return 1 - Math.pow( 1 - x, 3 );
+		},
+  });
+
+// Add to cart animation
+  $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
+    e.preventDefault();
+
+    var $form = $(this)
+        $button = $(this).find('button[type="submit"]'),
+        $target = $('#site-navigation .shopping-cart'),
+        target_height = $target.innerHeight(),
+        target_width = $target.innerWidth(),
+        $object = $('<div id="animated-cart-item"></div>');
+
+    updateCart($form.serialize() + '&add_cart_product=true');
+
+    $object.css({
+      position: 'absolute',
+      top: $button.offset().top,
+      left: $button.offset().left,
+      height: $button.height(),
+      width: $button.width(),
+      border: '1px rgba(0, 136, 204, 1) solid',
+      backgroundColor: 'rgba(0, 136, 204, .5)',
+      borderRadius: 'var(--border-radius)',
+      padding: '.5em',
+      zIndex: '999999',
+    })
+    .appendTo('body')
+    .animate({
+      top: $target.offset().top,
+      left: $target.offset().left,
+      height: target_height,
+      width: target_width,
+      borderRadius: 0
+    }, {
+      duration: '1000ms',
+      easing: 'easeOutCubic'
+    })
+    .animate({
+      opacity: 0
+    }, {
+      duration: 100,
+      complete: function(){
+        $object.remove();
+        $target.addClass('open');
+      }
+    });
+  });
+
+  $('body').on('click', 'button[name="remove_cart_item"]', function(e) {
+    updateCart('remove_cart_item='+ $(this).val());
   });
 
 // Update cart / Keep alive
   if (typeof(window._env) !== 'undefined') {
     window.updateCart = function(data) {
-      if (data) $('*').css('cursor', 'wait');
       $.ajax({
         url: window._env.platform.url + 'ajax/cart.json',
         type: data ? 'post' : 'get',
@@ -214,30 +235,39 @@
           jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
         },
         error: function(jqXHR, textStatus, errorThrown) {
+          $('#animated-cart-item').remove();
           if (data) alert('Error while updating cart');
-          console.error('Error while updating cart');
-          console.debug(jqXHR.responseText);
         },
-        success: function(json) {
-          if (json['alert']) alert(json['alert']);
-          $('#cart .items').html('');
-          if (json['items']) {
-            $.each(json['items'], function(i, item){
-              $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
-            });
-            $('#cart .items').append('<li class="divider"></li>');
+        success: function(result) {
+
+          if (result.alert) {
+            $('#animated-cart-item').remove();
+            alert(result.alert);
           }
-          $('#cart .items').append('<li><a href="' + window._env.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + json['text_total'] + ': <span class="formatted-value">'+ json['formatted_value'] +'</a></li>');
-          $('#cart .quantity').html(json['quantity'] ? json['quantity'] : '');
-          $('#cart .formatted_value').html(json['formatted_value']);
-          if (json['quantity'] > 0) {
-            $('#cart img').attr('src', window._env.template.url + 'images/cart_filled.svg');
-          } else {
-            $('#cart img').attr('src', window._env.template.url + 'images/cart.svg');
-          }
-        },
-        complete: function() {
-          if (data) $('*').css('cursor', '');
+
+          $('#site-navigation .shopping-cart .badge').text(result.items.length);
+          $('#site-navigation .shopping-cart').toggleClass('filled', result.items.length ? true : false);
+          $('#site-navigation .shopping-cart ul .item').remove();
+
+          var html = '';
+          $.each(result.items, function(key, item){
+            html += '<div class="item">' +
+                    '  <div class="row">' +
+                    '    <div class="col-3">' +
+                    '      ' + $('<img class="image img-responsive" />').attr('src', item.thumbnail).attr('alt', item.name).prop('outerHTML') +
+                    '    </div>' +
+                    '    <div class="col-8">' +
+                    '      <div>' + $('<a class="name"></a>').attr('href', item.link).text(item.name).prop('outerHTML') + '</div>' +
+                    '      ' + $('<div class="price"></div>').text(item.formatted_price).prop('outerHTML') +
+                    '    </div>' +
+                    '    <div class="col-1 text-end">' +
+                    '      ' + $('<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit"><i class="fa fa-trash"></i></button>').val(item.key).prop('outerHTML') +
+                    '    </div>' +
+                    '  </div>' +
+                    '</div>';
+          });
+
+          $('#site-navigation .shopping-cart ul').prepend(html);
         }
       });
     }
@@ -410,88 +440,6 @@
 
   $('[data-toggle*="momentumScroll"]').momentumScroll();
 
-}(jQuery);
-
-/*
- * jQuery Animate From To plugin 1.0
- *
- * Copyright (c) 2011 Emil Stenstrom <http://friendlybit.com>
- *
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- */
-+function ($) {
-  $.fn.animate_from_to = function(targetElm, options){
-    return this.each(function(){
-      animate_from_to(this, targetElm, options);
-    });
-  };
-
-  $.extend({
-    animate_from_to: animate_from_to
-  });
-
-  function animate_from_to(sourceElm, targetElm, options) {
-    var source = $(sourceElm).eq(0),
-        //target = $(targetElm).is(':visible').eq(0);
-        target = $(targetElm).eq(0);
-
-    var defaults = {
-      pixels_per_second: 1000,
-      initial_css: {
-        "background": "#dddddd",
-        "opacity": 0.8,
-        "position": "absolute",
-        "top": source.offset().top,
-        "left": source.offset().left,
-        "height": source.height(),
-        "width": source.width(),
-        "z-index": 100000
-      },
-      square: '',
-      callback: function(){ return; }
-    }
-    if (options && options.initial_css) {
-      options.initial_css = $.extend({}, defaults.initial_css, options.initial_css);
-    }
-    options = $.extend({}, defaults, options);
-
-    var target_height = target.innerHeight(),
-      target_width = target.innerWidth();
-
-    if (options.square.toLowerCase() == 'height') {
-      target_width = target_height;
-    } else if (options.square.toLowerCase() == 'width') {
-      target_height = target_width;
-    }
-
-    var dy = source.offset().top + source.width()/2 - target.offset().top,
-      dx = source.offset().left + source.height()/2 - target.offset().left,
-      pixel_distance = Math.floor(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))),
-      duration = (pixel_distance/options.pixels_per_second)*1000,
-
-      shadow = $('<div id="animated-cart-item"></div>')
-        .css(options.initial_css)
-        .appendTo('body')
-        .animate({
-          top: target.offset().top,
-          left: target.offset().left,
-          height: target_height,
-          width: target_width
-        }, {
-          duration: duration
-        })
-        .animate({
-          opacity: 0
-        }, {
-          duration: 100,
-          complete: function(){
-            shadow.remove();
-            return options.callback();
-          }
-        });
-  }
 }(jQuery);
 
 /* ========================================================================

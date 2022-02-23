@@ -81,12 +81,26 @@ body {
     padding: var(--gutter-size);
   }
   .shopping-cart {
-    &.filled > a {
-      background-color: var(--navigation-cart-color);
+    transition: all 200ms ease-out;
+    .badge, .checkout {
+      display: none;
     }
-    .badge {
-      animation: pulsating 2s linear;
-      animation-iteration-count: infinite;
+    &.filled {
+      background-color: var(--navigation-cart-color);
+      .badge {
+        position: absolute;
+        top: 2em;
+        right: 3em;
+        display: inline-block;
+        animation: pulsating 2s linear;
+        animation-iteration-count: infinite;
+      }
+      .checkout {
+        display: block;
+      }
+      .empty {
+        display: none;
+      }
     }
     @media (min-width: @media-breakpoint-md) {
       .dropdown-menu {
