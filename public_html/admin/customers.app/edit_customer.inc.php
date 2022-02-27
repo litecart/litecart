@@ -189,13 +189,13 @@
 
           <div class="row">
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_city', 'City'); ?></label>
-              <?php echo functions::form_draw_text_field('city', true); ?>
+              <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+              <?php echo functions::form_draw_text_field('postcode', true); ?>
             </div>
 
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-              <?php echo functions::form_draw_text_field('postcode', true); ?>
+              <label><?php echo language::translate('title_city', 'City'); ?></label>
+              <?php echo functions::form_draw_text_field('city', true); ?>
             </div>
           </div>
 
