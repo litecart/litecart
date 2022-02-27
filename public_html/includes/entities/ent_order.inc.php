@@ -197,7 +197,7 @@
           'author' => 'system',
           'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('store_language_code')), [
             '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
-            '%new_status' => reference::order_status($this->data['order_status_id'])->name,
+            '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
           ]),
           'hidden' => 1,
         ];
@@ -282,7 +282,7 @@
       );
 
     // Restock previous items
-      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
+      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'], $order->data['language_code'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
           $product = new ent_product($previous_order_item['product_id']);
@@ -761,6 +761,7 @@
 
       $aliases = [
         '%order_id' => $this->data['id'],
+        '%new_status' => $order_status->name,
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
@@ -799,7 +800,7 @@
       $message = strtr($order_status->email_message, $aliases);
 
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
-      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), ['%new_status' => $order_status->name]);
+      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
 
       if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
         $message = '<div dir="rtl">' . PHP_EOL
