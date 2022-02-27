@@ -79,6 +79,11 @@
         where name like '%". database::input($_GET['query']) ."%'
         or sku like '%". database::input($_GET['query']) ."%'
       )",
+      "o.order_status_id in (
+        select distinct order_status_id from ". DB_TABLE_PREFIX ."order_statuses_info
+        where language_code = '". database::input(language::$selected['code']) ."'
+        and name like '%". database::input($_GET['query']) ."%'
+      )",
     ];
   }
 
