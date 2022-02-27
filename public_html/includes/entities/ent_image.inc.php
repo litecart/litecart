@@ -223,8 +223,8 @@
       }
 
     // Convert percentage dimensions to pixels
-      if (strpos($width, '%')) $width = $this->width() * str_replace('%', '', $width) / 100;
-      if (strpos($height, '%')) $height = $this->height() * str_replace('%', '', $height) / 100;
+      if (strpos($width, '%')) $width = round($this->width() * str_replace('%', '', $width) / 100);
+      if (strpos($height, '%')) $height = round($this->height() * str_replace('%', '', $height) / 100);
 
     // Calculate source proportion
       $source_ratio = $this->width() / $this->height();
