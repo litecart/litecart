@@ -101,7 +101,7 @@
       ],
     ];
 
-    public static function convert(float $value, string $from, string $to) {
+    public static function convert($value, $from='', $to='') {
 
       if ($value == 0) return 0;
 
@@ -122,7 +122,7 @@
       return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
     }
 
-    public static function format(float $value, string $unit) {
+    public static function format($value, $unit) {
 
       if (!isset(self::$units[$unit])) {
         trigger_error('Invalid volume unit ('. $unit .')', E_USER_WARNING);
@@ -131,7 +131,7 @@
 
       $decimals = self::$units[$unit]['decimals'];
 
-      $formatted_value = number_format($value, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) .' '. self::$units[$unit]['unit'];
+      $formatted_value = language::number_format((float)$value, (int)$decimals) .' '. self::$units[$unit]['unit'];
       $formatted_value = preg_replace('#'. preg_quote(language::$selected['decimal_point'], '#') .'0+$#', '', $formatted_value);
 
       return $formatted_value;

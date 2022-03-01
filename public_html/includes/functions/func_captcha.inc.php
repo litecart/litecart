@@ -51,7 +51,8 @@
     }
 
   // Create textbox and add text
-    $textbox = imagettfbbox($font_size, 0, $font, $code) or die('Error in imagettfbbox function');
+    if (($textbox = imagettfbbox($font_size, 0, $font, $code)) === false) return;
+
     $x = round(($width - $textbox[4]) / 2);
     $y = round(($height - $textbox[5]) / 2);
     imagettftext($image, $font_size, 0, $x, $y, $text_color, $font , $code) or die('Error in imagettftext function');

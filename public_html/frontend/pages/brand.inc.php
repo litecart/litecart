@@ -34,7 +34,7 @@
   $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/brand.inc.php');
 
   $brand_cache_token = cache::token('box_brand', ['get', 'language', 'currency', 'prices'], 'file');
-  if (!$_page->snippets = cache::get($brand_cache_token, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
+  if (!$_page->snippets = cache::get($brand_cache_token, ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
 
     $_page->snippets = [
       'id' => $brand->id,

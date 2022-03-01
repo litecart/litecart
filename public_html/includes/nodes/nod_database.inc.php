@@ -13,7 +13,7 @@
 
         self::$_links[$link] = mysqli_init();
 
-        mysqli_options(self::$_links[$link], MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+        self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1, $link);
 
         if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
           trigger_error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
@@ -32,9 +32,8 @@
         trigger_error('Invalid database link', E_USER_ERROR);
       }
 
-      if (!$result = self::$_links[$link]->set_charset($charset)) {
-        trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
-        return false;
+      if (!empty($charset)) {
+        self::set_charset($charset);
       }
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
@@ -64,8 +63,22 @@
       return self::$_links[$link];
     }
 
+    public static function set_charset($charset, $link='default') {
+
+      if (!$result = mysqli_set_charset(self::$_links[$link], $charset)) {
+        trigger_error('Could not set database connection charset: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
+      }
+
+      return true;
+    }
+
     public static function set_option($option, $value, $link='default') {
-      return mysqli_options(self::$_links[$link], $option, $value);
+
+      if (!$result = mysqli_options(self::$_links[$link], $option, $value)) {
+        trigger_error('Could not set database connection charset: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
+      }
+
+      return true;
     }
 
     public static function disconnect($link=null) {

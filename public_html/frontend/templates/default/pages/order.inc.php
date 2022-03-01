@@ -34,7 +34,7 @@ body {
   <div id="sidebar" class="hidden-print shadow">
 
     <ul id="actions" class="list-unstyled">
-      <li><a class="btn btn-default btn-block btn-lg" href="javascript:$('#order-copy').get(0).contentWindow.print();"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></a></li>
+      <li><button id="print" class="btn btn-default btn-block btn-lg" type="button"><?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?></button></li>
     </ul>
 
     <h1 style="margin-top: 0;"><?php echo language::translate('title_comments', 'Comments'); ?></h1>
@@ -51,6 +51,9 @@ body {
 </main>
 
 <script>
+  $('#print').click(function(){
+    $('#order-copy').get(0).contentWindow.print();
+  })
 // Scroll to last comment
   $("#comments").animate({scrollTop: $('#comments').prop('scrollHeight')}, 2000);
 </script>
