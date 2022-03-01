@@ -371,7 +371,7 @@
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_date', 'Date'); ?></label>
-              <div class="form-input" readonly><?php echo date(language::$selected['raw_datetime'], strtotime($order->data['date_created'])); ?></div>
+              <div class="form-input" readonly><?php echo language::strftime(language::$selected['format_datetime'], strtotime($order->data['date_created'])); ?></div>
             </div>
 
             <div class="form-group col-md-3">
