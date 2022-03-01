@@ -53,11 +53,6 @@
         if (!empty($result['error'])) throw new Exception($result['error']);
       }
 
-    // Collect scraps
-      if (empty(customer::$data['id'])) {
-        customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
-      }
-
     // Billing address
       $fields = [
         'email',
@@ -76,7 +71,9 @@
       ];
 
       foreach ($fields as $field) {
-        customer::$data[$field] = isset($_POST[$field]) ? $_POST[$field] : '';
+        if (isset($_POST[$field])) {
+          customer::$data[$field] = $_POST[$field];
+        }
       }
 
     // Shipping address
@@ -94,7 +91,7 @@
       ];
 
       foreach ($fields as $field) {
-        if (!empty(customer::$data['different_shipping_address'])) {
+        if (!empty($_POST['different_shipping_address'])) {
           customer::$data['shipping_address'][$field] = isset($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
         } else {
           customer::$data['shipping_address'][$field] = isset($_POST[$field]) ? $_POST[$field] : '';
