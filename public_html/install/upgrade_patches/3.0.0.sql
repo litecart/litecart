@@ -160,6 +160,7 @@ DROP COLUMN `uid`,
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `payment_due` `total` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 CHANGE COLUMN `tax_total` `total_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+ADD COLUMN `no` VARCHAR(16) NOT NULL DEFAULT '' AFTER `id`,
 ADD COLUMN `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
 ADD COLUMN `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal_tax`,
@@ -177,7 +178,8 @@ ADD COLUMN `payment_receipt_url` VARCHAR(256) NOT NULL DEFAULT '' AFTER `payment
 ADD COLUMN `payment_terms` VARCHAR(8) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `date_paid` TIMESTAMP NULL DEFAULT NULL AFTER `public_key`,
-ADD COLUMN `date_dispatched` TIMESTAMP NULL DEFAULT NULL AFTER `date_paid`;
+ADD COLUMN `date_dispatched` TIMESTAMP NULL DEFAULT NULL AFTER `date_paid`,
+ADD INDEX `no` (`no`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_items`
 CHANGE COLUMN `data` `userdata` VARCHAR(2) NOT NULL DEFAULT '',
@@ -274,6 +276,8 @@ UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_u
 -- --------------------------------------------------------
 DELETE FROM `lc_modules` WHERE `module_id` = 'ot_subtotal' LIMIT 1;
 -- --------------------------------------------------------
+UPDATE `lc_orders` SET `no` = id;
+-- --------------------------------------------------------
 UPDATE `lc_settings`
 SET `key` = REGEXP_REPLACE(`key`, '^store_', 'site_'),
   title = REPLACE(title, 'Store', 'Site'),
@@ -313,6 +317,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 19, NOW(), NOW()),
 ('defaults', 'local', 'Default Order Status', 'Default order status for new orders if nothing else is set.', 'default_order_status_id', '1', 'order_status()', 20, NOW(), NOW()),
 ('customer_details', 'local', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 24, NOW(), NOW()),
+('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 20, NOW(), NOW()),
 ('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 12, NOW(), NOW()),
 ('social_media', 'global', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 10, NOW(), NOW()),
 ('social_media', 'global', 'Instagram Link', 'The link to your Instagram page.', 'instagram_link', '', 'url()', 20, NOW(), NOW()),

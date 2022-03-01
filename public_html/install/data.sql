@@ -390,6 +390,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('images', 'local', 'WebP Enabled', 'Use WebP images if supported by the browser.', 'webp_enabled', '0', 'toggle("e/d")', 0, 44, NOW(), NOW()),
 ('checkout', 'local', 'Send Order Confirmation', 'Send order confirmations via email.', 'send_order_confirmation', '1', 'toggle("y/n")', 0, 11, NOW(), NOW()),
 ('checkout', 'local', 'Order Copy Recipients', 'Send an email of the order copy to the given recipients. Separated by coma or semicolon.', 'email_order_copy', '{STORE_EMAIL}', 'text()', 0, 12, NOW(), NOW()),
+('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 20, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '1', 'toggle()', 0, 10, NOW(), NOW()),
 ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '0', 'toggle()', 0, 11, NOW(), NOW()),
 ('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (images, stylesheets, javascripts).', 'static_domain', '', 'text()', 0, 12, NOW(), NOW()),

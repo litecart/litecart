@@ -54,7 +54,7 @@ table.items tbody tr:nth-child(11) {
 
         <div class="col-6 text-end">
           <h1><?php echo language::translate('title_order_copy', 'Order Copy'); ?></h1>
-          <div><?php echo language::translate('title_order', 'Order'); ?> #<?php echo $order['id']; ?></div>
+          <div><?php echo language::translate('title_order', 'Order'); ?> <?php echo $order['no']; ?></div>
           <div><?php echo !empty($order['date_created']) ? date(language::$selected['raw_date'], strtotime($order['date_created'])) : date(language::$selected['raw_date']); ?></div>
         </div>
       </div>

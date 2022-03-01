@@ -92,6 +92,7 @@
   if (!empty($_GET['query'])) {
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
+      "o.no like '%". database::input($_GET['query']) ."'%",
       "o.reference like '%". database::input($_GET['query']) ."%'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
       "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
@@ -294,7 +295,7 @@ table .fa-star:hover {
         <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
-          <th data-sort="id" class="text-end"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th data-sort="id" class="text-end"><?php echo language::translate('title_order_no', 'Order No'); ?></th>
           <th></th>
           <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
           <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
@@ -312,7 +313,7 @@ table .fa-star:hover {
         <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
           <td><?php echo functions::form_draw_checkbox('orders[]', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
           <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
-          <td class="text-end"><?php echo $order['id']; ?></td>
+          <td class="text-end"><?php echo $order['no']; ?></td>
           <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
           <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>

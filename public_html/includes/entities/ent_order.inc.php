@@ -224,9 +224,15 @@
         $this->data['id'] = database::insert_id();
       }
 
+    // Create custom order number
+      if (empty($this->data['no'])) {
+        $this->data['no'] = $this->_generate_order_number();
+      }
+
       database::query(
         "update ". DB_TABLE_PREFIX ."orders
-        set starred = ". (int)$this->data['starred'] .",
+        set no = '". database::input($this->data['no']) ."',
+          starred = ". (int)$this->data['starred'] .",
           unread = ". (int)$this->data['unread'] .",
           order_status_id = ". (int)$this->data['order_status_id'] .",
           customer_id = ". (int)$this->data['customer']['id'] .",
@@ -439,7 +445,7 @@
 
         if (!empty($notify_comments)) {
 
-          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['id'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
+          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['no'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
 
           $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
           foreach ($notify_comments as $comment) {
@@ -498,6 +504,38 @@
       }
     }
 
+    private function _generate_order_number() {
+
+      $order_no = strtr(settings::get('order_no_format'), [
+        '{yy}' => date('y'),
+        '{yyyy}' => date('Y'),
+        '{mm}' => date('m'),
+        '{q}' => ceil(date('m')/3),
+        '{id}' => $this->data['id'],
+      ]);
+
+     // Append length digit
+      if (strpos(settings::get('order_no_format'), '{l}') !== false) {
+        $length = strlen(preg_replace('#[^\d]#', '', $order_no)) + preg_match('#\{c\}#', settings::get('order_no_format')) ? 1 : 0;
+        $order_no = str_replace('{l}', $length, $order_no);
+      }
+
+    // Append checksum digit
+      if (strpos(settings::get('order_no_format'), '{c}') !== false) {
+
+        $digits = preg_replace('#[^\d]#', '', $order_no);
+
+        $sum = 0;
+        foreach (str_split(strrev($digits)) as $i => $digit) {
+          $sum += ($i % 2 == 0) ? array_sum(str_split($digit * 2)) : $digit;
+        }
+
+        $order_no = str_replace('{c}', strval($stack), $order_no);
+      }
+
+      $this->data['no'] = preg_replace('#\{.*?\}#', '', $order_no);
+    }
+
     public function add_item($item) {
 
       $item['id'] = null;
@@ -524,7 +562,8 @@
       $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : '';
 
       $aliases = [
-        '%order_id' => $this->data['id'],
+        '%order_id' => $this->data['no'], // Backwards compatibility
+        '%order_no' => $this->data['no'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => functions::format_address($this->data['customer']),
@@ -534,7 +573,7 @@
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
         '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
-        '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $language_code),
+        '%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no' => $this->data['public_key']], false, [], $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
         '%store_name' => settings::get('site_name'),
         '%store_url' => document::ilink('', [], false, [], $language_code),
@@ -561,10 +600,10 @@
 
       $aliases['%order_items'] = trim($aliases['%order_items']);
 
-      $subject = '['. language::translate('title_order', 'Order', $language_code) .' #'. $this->data['id'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation', $language_code);
+      $subject = '['. language::translate('title_order', 'Order', $language_code) .' '. $this->data['no'] .'] '. language::translate('title_order_confirmation', 'Order Confirmation', $language_code);
 
       $message = "Thank you for your purchase!\r\n\r\n"
-               . "Your order #%order_id has successfully been created with a total of %total for the following ordered items:\r\n\r\n"
+               . "Your order #%order_no has successfully been created with a total of %total for the following ordered items:\r\n\r\n"
                . "%order_items\r\n\r\n"
                . "A printable order copy is available here:\r\n"
                . "%order_copy_url\r\n\r\n"
@@ -599,7 +638,8 @@
       $order_status = reference::order_status($this->data['order_status_id'], $this->data['language_code']);
 
       $aliases = [
-        '%order_id' => $this->data['id'],
+        '%order_id' => $this->data['no'], // Backwards compatibility
+        '%order_no' => $this->data['no'],
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
@@ -611,7 +651,7 @@
         '%shipping_current_location' => !empty($this->data['shipping_current_location']) ? $this->data['shipping_current_location'] : '',
         '%order_items' => null,
         '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
-        '%order_copy_url' => document::ilink('order', ['order_id' => $this->data['id'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
+        '%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
         '%order_status' => $order_status->name,
         '%store_name' => settings::get('site_name'),
         '%store_url' => document::ilink('', [], false, [], $this->data['language_code']),
@@ -639,7 +679,7 @@
       $subject = strtr($order_status->email_subject, $aliases);
       $message = strtr($order_status->email_message, $aliases);
 
-      if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
+      if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['no'] .'] '. $order_status->name;
       if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), ['%new_status' => $order_status->name]);
 
       if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {

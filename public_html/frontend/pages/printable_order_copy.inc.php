@@ -1,35 +1,58 @@
 <?php
-  document::$layout = 'printable';
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
   try {
 
-    if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
-      throw new Exception('Missing order_id or public_key');
+    if ((empty($_GET['order_id']) && empty($_GET['order_no'])) || empty($_GET['public_key'])) {
+      throw new Exception('Missing order or key. Sign in to your account if you got the link wrong.', 400);
     }
 
-    $order = new ent_order($_GET['order_id']);
+    if (!empty($_GET['order_id'])) {
+      $order_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."orders
+        where id = ". (int)$_GET['order_id'] ."
+        limit 1;"
+      );
+
+      if (!$order = database::fetch($order_query)) {
+        throw new Exception('Invalid order_id', 404);
+      }
+
+    } else if (!empty($_GET['order_no'])) {
+      $order_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."orders
+        where no = '". database::input($_GET['order_no']) ."'
+        limit 1;"
+      );
+
+      if (!$order = database::fetch($order_query)) {
+        throw new Exception('Invalid order_no', 404);
+      }
+    }
+
+    $order = new ent_order($order['id']);
 
     if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
-      throw new Exception('Not found or invalid public_key');
+      throw new Exception('Invalid key', 401);
     }
 
+    document::$layout = 'printable';
+    document::$snippets['title'][] = language::translate('title_order', 'Order') .' '. $order->data['no'];
+
+    $session_language = language::$selected['code'];
+    language::set($order->data['language_code']);
+
+    $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/printable_order_copy.inc.php');
+    $_page->snippets['text_direction'] = !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr';
+    $_page->snippets['order'] = $order->data;
+    echo $_page;
+
+    language::set($session_language);
+
   } catch (Exception $e) {
-    http_response_code(404);
+
+    http_response_code($code);
     include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
     return;
   }
-
-  document::$snippets['title'][] = language::translate('title_order', 'Order') .' #'. (int)$order->data['id'];
-
-  $session_language = language::$selected['code'];
-  language::set($order->data['language_code']);
-
-  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/printable_order_copy.inc.php');
-  $_page->snippets['order'] = $order->data;
-  $_page->snippets['text_direction'] = !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr';
-  echo $_page;
-
-  language::set($session_language);
