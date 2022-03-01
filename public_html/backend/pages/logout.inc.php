@@ -1,7 +1,6 @@
 <?php
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
   user::reset();
 

@@ -2,7 +2,6 @@
   header('X-Robots-Tag: noindex');
 
   document::$snippets['title'][] = language::translate('regional_settings:head_title', 'Regional Settings');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
   breadcrumbs::add(language::translate('title_regional_settings', 'Regional Settings'));
 

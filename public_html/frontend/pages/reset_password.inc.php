@@ -1,7 +1,7 @@
 <?php
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+
   document::$snippets['title'][] = language::translate('title_reset_password', 'Reset Password');
 
   breadcrumbs::add(language::translate('title_reset_password', 'Reset Password'));

@@ -2,7 +2,6 @@
   document::$layout = 'blank';
 
   header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
 
   try {
 
