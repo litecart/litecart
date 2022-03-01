@@ -130,6 +130,20 @@
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
+// Dropdown select
+  $('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
+    var dropdown = $(this).closest('.dropdown');
+    var input = $(dropdown).find(':input:checked');
+    $(dropdown).find('li.active').removeClass('active');
+    if ($(dropdown).find('.form-select').data('value') == 'html') {
+      $(dropdown).find('.form-select').html($(input).parent().html());
+    } else {
+      $(dropdown).find('.form-select').text($(input).parent().text());
+    }
+    $(input).closest('li').addClass('active');
+    $(dropdown).trigger('click.bs.dropdown');
+  }).trigger('input');
+
 // Data-Table Toggle Checkboxes
   $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
     $(this).closest('.data-table').find('tbody :checkbox').each(function() {

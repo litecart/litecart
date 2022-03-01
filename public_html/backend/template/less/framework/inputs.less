@@ -54,7 +54,6 @@ input[type="number"] {
   input {
     display: inline-block;
     position: relative;
-    -webkit-appearance: none;
     margin-inline-end: .25em;
     background: var(--input-background-color);
     border: 1px solid var(--input-border-color);
@@ -62,6 +61,7 @@ input[type="number"] {
     vertical-align: text-bottom;
     height: 1.25em;
     width: 1.25em;
+    appearance: none;
 
     &:checked {
       background-color: #0066bb;
@@ -130,13 +130,19 @@ input[type="number"] {
   background-position: right 1em center;
   background-size: 16px 12px;
   cursor: default;
+  user-select: none;
+  appearance: none;
+
+  + .dropdown-menu {
+    min-width: 100%;
+    > li > label:hover {
+      background: #efefef;
+    }
+  }
 
   option {
     background: var(--input-background-color);
   }
-
-  user-select: none;
-  appearance: none;
 }
 
 .form-switch {
@@ -151,9 +157,10 @@ input[type="number"] {
   background-repeat: no-repeat;
   background-size: contain;
   border: 1px solid rgba(0, 0, 0, .25);
-  appearance: none;
-  -webkit-print-color-adjust: exact;
   transition: background-color .15s ease-in-out,background-position .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  appearance: none;
+  color-adjust: exact;
+
   &:active {
     filter: brightness(90%);
   }
