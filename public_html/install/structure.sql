@@ -322,7 +322,7 @@ CREATE TABLE `lc_newsletter_recipients` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_orders` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `no` VARCHAR(1) UNSIGNED NOT NULL DEFAULT '',
+  `no` VARCHAR(1) NOT NULL DEFAULT '',
   `starred` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `unread` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `order_status_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',

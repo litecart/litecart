@@ -74,6 +74,8 @@ DROP TABLE IF EXISTS `products_to_stock_items`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_to_categories`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_products_to_stock_items`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_prices`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_quantity_units`;
@@ -97,6 +99,8 @@ DROP TABLE IF EXISTS `lc_sold_out_statuses`;
 DROP TABLE IF EXISTS `lc_sold_out_statuses_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_stock_items`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_stock_items_references`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_stock_items_info`;
 -- --------------------------------------------------------

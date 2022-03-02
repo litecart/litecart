@@ -29,7 +29,7 @@ INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_creat
 ('Food', '', NOW(), NOW()),
 ('Cultural', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
-(1, @NO_VAT_ZONE, 'percent', 'NO VAT 25%', '', 25.0000, 1, 1, 1, 1, NOW(), NOW()),
-(1, @NO_VAT_ZONE, 'percent', 'NO VAT 15%', '', 15.0000, 1, 1, 1, 1, NOW(), NOW()),
-(1, @NO_VAT_ZONE, 'percent', 'NO VAT 10%', '', 10.0000, 1, 1, 1, 1, NOW(), NOW());
+INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
+(1, @NO_VAT_ZONE, 'NO VAT 25%', '', 25.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @NO_VAT_ZONE, 'NO VAT 15%', '', 15.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @NO_VAT_ZONE, 'NO VAT 10%', '', 10.0000, 1, 1, 1, 1, NOW(), NOW());
