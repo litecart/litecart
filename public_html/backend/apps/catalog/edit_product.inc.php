@@ -1135,13 +1135,14 @@
                + '    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a>'
                + '  </td>'
                + '  <td class="text-end">'
-               + '    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>'
+               + '    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>'
                + '  </td>'
                + '</tr>';
 
     var new_stock_item_i = 1;
     while ($('input[name="stock_options[new_'+new_stock_item_i+']"]').length) new_stock_item_i++;
-    output = output.replace(/new_stock_item_i/g, 'new_'+new_stock_item_i);
+    output = output.replace(/new_stock_item_id/g, stock_item.id)
+                   .replace(/new_stock_item_i/g, 'new_'+new_stock_item_i);
 
     var $output = $(output);
 

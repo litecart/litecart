@@ -324,14 +324,13 @@
         + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
         + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
         + if(p.code regexp '". database::input($code_regex) ."', 5, 0)
-        + if(p.sku regexp '". database::input($code_regex) ."', 5, 0)
-        + if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)
-        + if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)
         + if (p.id in (
           select product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
           where stock_item_id in (
             select id from ". DB_TABLE_PREFIX ."stock_items
             where sku regexp '". database::input($code_regex) ."'
+            or gtin regexp '". database::input($code_regex) ."'
+            or mpn regexp '". database::input($code_regex) ."'
           )
         ), 5, 0)
         + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
@@ -404,7 +403,7 @@
       $output = '';
 
       $products_query = database::query(
-        "select p.id, p.status, p.sku, pp.price, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
+        "select p.id, p.status, p.code, pp.price, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PREFIX ."products_to_categories p2c on (p2c.product_id = p.id)
         left join (
