@@ -148,6 +148,21 @@
     }
   }
 
+  function file_relative_path($target, $base = null) {
+
+    if ($base === null) $base = getcwd();
+
+    $base = explode('/', rtrim(str_replace('\\', '/', $base), '/'));
+    $target = explode('/', rtrim(str_replace('\\', '/', $target), '/'));
+
+    while (count($base) && count($target) && ($base[0] == $target[0])) {
+      array_shift($base);
+      array_shift($target);
+    }
+
+    return str_pad('', count($base) * 3, '../') . implode('/', $target);
+  }
+
 // Strip paths from logic e.g. ./ ../
   function file_strip_path($path) {
     $new_path = [];
