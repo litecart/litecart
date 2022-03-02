@@ -10,8 +10,25 @@
       'categories' => [],
     ];
 
+    list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
+
     while ($category = database::fetch($categories_query)) {
-      $box_categories->snippets['categories'][] = $category;
+      $box_categories->snippets['categories'][] = [
+        'id' => $category['id'],
+        'name' => $category['name'],
+        'link' => document::ilink('category', ['category_id' => $category['id']]),
+        'image' => [
+          'original' => 'images/' . $category['image'],
+          'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category['image'], $width, $height, settings::get('category_image_clipping')),
+          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category['image'], $width*2, $height*2, settings::get('category_image_clipping')),
+          'aspect_ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
+          'viewport' => [
+            'width' => $width,
+            'height' => $height,
+          ],
+        ],
+        'short_description' => $category['short_description'],
+      ];
     }
 
     echo $box_categories;

@@ -1,6 +1,6 @@
 <main id="box-checkout" class="container">
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
-    <div class="row layout" style="grid-gap: calc(var(--gutter-size)*8); margin: 0;">
+    <div class="row layout" style="margin: 0;">
 
       <div class="col-md-6">
         {{notices}}
