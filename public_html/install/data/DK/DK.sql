@@ -60,6 +60,6 @@ INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`,
 INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('Standard', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
-(1, @DK_VAT_ZONE, 'percent', 'DK VAT 25%', '', 25.0000, 1, 1, 1, 1, NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'DK VAT 25%', '', 25.0000, 0, 1, 1, 1, NOW(), NOW());
+INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
+(1, @DK_VAT_ZONE, 'DK VAT 25%', '', 25.0000, 1, 1, 1, 1, NOW(), NOW()),
+(1, @EU_VAT_ZONE, 'DK VAT 25%', '', 25.0000, 0, 1, 1, 1, NOW(), NOW());

@@ -1,5 +1,11 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
+INSERT INTO `lc_banners` (`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
+(1, 1, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: cornsilk;">Banner 1</div>', '', '', 'left', 2599, 56, NULL, NULL, NOW(), NOW()),
+(2, 1, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 2597, 44, NULL, NULL, NOW(), NOW()),
+(3, 1, 'Right', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: seashell;">Right</div>', '', '', 'right', 2597, 32, NULL, NULL, NOW(), NOW());
+
+-- --------------------------------------------------------
 INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1`, `iso_code_2`, `iso_code_3`, `tax_id_format`, `address_format`, `postcode_format`, `postcode_required`, `language_code`, `currency_code`, `phone_code`, `date_updated`, `date_created`) VALUES
 (1, 1, 'Afghanistan', '', '004', 'AF', 'AFG', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'fa', 'AFN', '93', NOW(), NOW()),
 (2, 1, 'Albania', '', '008', 'AL', 'ALB', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'sq', 'ALL', '355', NOW(), NOW()),
@@ -390,7 +396,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('images', 'local', 'WebP Enabled', 'Use WebP images if supported by the browser.', 'webp_enabled', '0', 'toggle("e/d")', 0, 44, NOW(), NOW()),
 ('checkout', 'local', 'Send Order Confirmation', 'Send order confirmations via email.', 'send_order_confirmation', '1', 'toggle("y/n")', 0, 11, NOW(), NOW()),
 ('checkout', 'local', 'Order Copy Recipients', 'Send an email of the order copy to the given recipients. Separated by coma or semicolon.', 'email_order_copy', '{STORE_EMAIL}', 'text()', 0, 12, NOW(), NOW()),
-('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 20, NOW(), NOW()),
+('checkout', 'local', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '1', 'toggle()', 0, 10, NOW(), NOW()),
 ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '0', 'toggle()', 0, 11, NOW(), NOW()),
 ('advanced', 'global', 'Static Content Domain Name', 'Use the given alias domain name for static content (images, stylesheets, javascripts).', 'static_domain', '', 'text()', 0, 12, NOW(), NOW()),

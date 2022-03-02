@@ -111,7 +111,7 @@
       }
 
       if (($result = mysqli_query(self::$_links[$link], $query)) === false) {
-        trigger_error(mysqli_errno() .' - '. preg_replace('#\r#', ' ', mysqli_error()) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       if (($duration = stats::get_watch('database_execution')) > 3) {
@@ -135,7 +135,7 @@
       }
 
       if (($result = mysqli_multi_query(self::$_links[$link], $query)) === false) {
-        trigger_error(mysqli_errno() .' - '. preg_replace('#\r#', ' ', mysqli_error()) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       $i = 1;

@@ -62,7 +62,7 @@ INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, 
 INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `stock_item_id`, `options`, `name`, `sku`, `quantity`, `price`, `tax`, `weight`, `weight_unit`) VALUES
 (1, 1, 1, '1-1', '1', 'Yellow Duck', 'RD001-S', '1.0000', '8', '0', '1.0000', 'kg');
 -- --------------------------------------------------------
-INSERT INTO `lc_orders_totals` (`id`, `order_id`, `module_id`, `title`, `value`, `tax`, `calculate`, `priority`) VALUES
+INSERT INTO `lc_orders_totals` (`id`, `order_id`, `module_id`, `title`, `amount`, `tax`, `calculate`, `priority`) VALUES
 (2, 1, 'ot_discount', 'Discount', -0.8, 0, 1, 2);
 -- --------------------------------------------------------
 INSERT INTO `lc_pages` (`id`, `status`, `dock`, `priority`, `date_updated`, `date_created`) VALUES

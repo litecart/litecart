@@ -6,7 +6,7 @@
     public $last_request;
     public $last_response;
 
-    public function call(string $method, string $url='', mixed $data=null, array $headers=[], bool $asynchronous=false) {
+    public function call($method, $url='', $data=null, $headers=[], $asynchronous=false) {
 
       $this->last_request = [];
       $this->last_response = [];
@@ -134,7 +134,7 @@
       return $response_body;
     }
 
-    public function http_decode_chunked_data(string $data) {
+    public function http_decode_chunked_data($data) {
       for ($result = ''; !empty($data); $data = trim($data)) {
         $position = strpos($data, "\r\n");
         $length = (int)hexdec(substr($data, 0, $position));

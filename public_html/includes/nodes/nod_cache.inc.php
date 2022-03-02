@@ -168,7 +168,7 @@
       ];
     }
 
-    public static function get(string $token, int $max_age=900, bool $force_cache=false) {
+    public static function get($token, $max_age=900, $force_cache=false) {
 
       if (empty($force_cache)) {
         if (empty(self::$enabled)) return;
@@ -215,7 +215,7 @@
       }
     }
 
-    public static function set(string $token, $data) {
+    public static function set($token, $data) {
 
       if (empty(self::$enabled)) return;
 
@@ -266,7 +266,7 @@
     }
 
     // Output recorder
-    public static function capture(string $token, int $max_age=900, bool $force_cache=false) {
+    public static function capture($token, $max_age=900, $force_cache=false) {
 
       if (empty(self::$enabled)) return true;
 
@@ -289,7 +289,7 @@
       return true;
     }
 
-    public static function end_capture(string $token='') {
+    public static function end_capture($token=[]) {
 
       if (empty(self::$enabled)) return;
 
@@ -314,7 +314,7 @@
       return true;
     }
 
-    public static function clear_cache(string $keyword='') {
+    public static function clear_cache($keyword='') {
 
     // Clear modifications
       if (empty($keyword)) {
