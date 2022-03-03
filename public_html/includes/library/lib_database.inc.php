@@ -65,7 +65,7 @@
     public static function set_charset($charset, $link='default') {
 
       if (!$result = mysqli_set_charset(self::$_links[$link], $charset)) {
-        trigger_error('Could not set charset for MySQL connection: '. mysqli_errno() .' - '. mysqli_error(), E_USER_WARNING);
+        trigger_error('Could not set charset for MySQL connection: '. mysqli_errno(self::$_links[$link]) .' - '. mysqli_error(self::$_links[$link]), E_USER_WARNING);
         return false;
       }
 
@@ -146,7 +146,7 @@
       $measure_start = microtime(true);
 
       if (($result = mysqli_query(self::$_links[$link], $query)) === false) {
-        trigger_error(mysqli_errno() .' - '. preg_replace('#\r#', ' ', mysqli_error()) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       if (($duration = microtime(true) - $measure_start) > 3) {
@@ -168,7 +168,7 @@
       $measure_start = microtime(true);
 
       if (($result = mysqli_multi_query(self::$_links[$link], $query)) === false) {
-        trigger_error(mysqli_errno() .' - '. preg_replace('#\r#', ' ', mysqli_error()) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       $i = 1;
