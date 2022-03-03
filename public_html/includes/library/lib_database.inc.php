@@ -15,7 +15,11 @@
 
         self::$_links[$link] = mysqli_init();
 
-        mysqli_options(self::$_links[$link], MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+        if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
+          mysqli_options(self::$_links[$link], MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+        } else {
+          trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE', E_USER_WARNING);
+        }
 
         if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
           trigger_error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
