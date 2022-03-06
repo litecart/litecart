@@ -81,8 +81,7 @@
 
       $shopping_cart_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."shopping_carts
-        where ". (preg_match('#^[a-f0-9]{13}$#', $shopping_cart_id) ? "uid = '". database::input($shopping_cart_id) ."'" : "id = '". database::input($shopping_cart_id) ."'") ."
-        order by id;"
+        where ". (preg_match('#^[a-f0-9]{13}$#', $shopping_cart_id) ? "uid = '". database::input($shopping_cart_id) ."'" : "id = '". database::input($shopping_cart_id) ."'") .";"
       );
 
       if ($shopping_cart = database::fetch($shopping_cart_query)) {

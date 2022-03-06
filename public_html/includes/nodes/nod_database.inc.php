@@ -3,7 +3,7 @@
   class database {
     private static $_links = [];
 
-    public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset=DB_CONNECTION_CHARSET) {
+    public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset='utf8mb4') {
 
       if (!isset(self::$_links[$link])) {
 
@@ -13,11 +13,15 @@
 
         self::$_links[$link] = mysqli_init();
 
-        self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1, $link);
+       if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
+         self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, true, $link);
+       }
 
         if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
           trigger_error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
         }
+
+        event::register('shutdown', [__CLASS__, 'disconnect']);
 
         if (($duration = stats::get_watch('database_execution')) > 1) {
           error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
@@ -33,7 +37,7 @@
       }
 
       if (!empty($charset)) {
-        self::set_charset($charset);
+        self::set_charset($charset, $link);
       }
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
@@ -58,8 +62,6 @@
       self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_mode)) ."';", $link);
       self::query("SET names '". database::input($charset) ."';", $link);
 
-      event::register('shutdown', [__CLASS__, 'disconnect']);
-
       return self::$_links[$link];
     }
 
@@ -75,7 +77,7 @@
     public static function set_option($option, $value, $link='default') {
 
       if (!$result = mysqli_options(self::$_links[$link], $option, $value)) {
-        trigger_error('Could not set database connection charset: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
+        trigger_error('Could not set option '. $option .' to '. $value, E_USER_ERROR);
       }
 
       return true;
@@ -153,6 +155,7 @@
     }
 
     public static function fetch($result, $column='') {
+
       if (class_exists('stats', false)) {
         stats::start_watch('database_execution');
       }

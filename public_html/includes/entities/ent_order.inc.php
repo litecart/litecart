@@ -89,6 +89,7 @@
       }
 
       foreach ($order as $field => $value) {
+
         switch (true) {
           case (preg_match('#^customer_#', $field)):
             $this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
@@ -106,16 +107,6 @@
             $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field)] = $value;
             break;
         }
-      }
-
-      $sold_out_statuses_query = database::query(
-        "select id from ". DB_TABLE_PREFIX ."sold_out_statuses
-        where orderable;"
-      );
-
-      $orderable_sold_out_statuses = [];
-      while ($sold_out_status = database::fetch($sold_out_statuses_query)) {
-        $orderable_sold_out_statuses[] = $sold_out_status['id'];
       }
 
       $items_query = database::query(
@@ -159,7 +150,7 @@
       );
 
       while ($row = database::fetch($comments_query)) {
-        $this->data['comments'][$row['id']] = $row;
+        $this->data['comments'][] = $row;
       }
 
       $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
@@ -182,7 +173,7 @@
           'author' => 'system',
           'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('site_language_code')), [
             '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
-            '%new_status' => reference::order_status($this->data['order_status_id'])->name,
+            '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('site_language_code'))->name,
           ]),
           'hidden' => 1,
         ];
@@ -368,7 +359,7 @@
         );
       };
 
-    // Delete order total items
+    // Delete order total rows
       database::query(
         "delete from ". DB_TABLE_PREFIX ."orders_totals
         where order_id = ". (int)$this->data['id'] ."
@@ -384,17 +375,17 @@
             (order_id)
             values (". (int)$this->data['id'] .");"
           );
-          $this->data['order_total'][$key]['id'] = $row['id'] = database::insert_id();
+          $row['id'] = $this->data['order_total'][$key]['id'] = database::insert_id();
         }
 
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_totals
           set title = '". database::input($row['title']) ."',
           module_id = '". database::input($row['module_id']) ."',
-          value = '". (float)$row['amount'] ."',
-          tax = '". (float)$row['tax'] ."',
+          value = ". (float)$row['amount'] .",
+          tax = ". (float)$row['tax'] .",
           tax_class_id = ". (int)$item['tax_class_id'] .",
-          calculate = '". (empty($row['calculate']) ? 0 : 1) ."',
+          calculate = ". (!empty($row['calculate']) ? 1 : 0) .",
           priority = ". ++$i ."
           where id = ". (int)$row['id'] ."
           and order_id = ". (int)$this->data['id'] ."
@@ -422,10 +413,10 @@
             database::query(
               "insert into ". DB_TABLE_PREFIX ."orders_comments
               (order_id, date_created)
-              values (". (int)$this->data['id'] .", '". ($comment['date_created'] = date('Y-m-d H:i:s')) ."');"
+              values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s')) ."');"
             );
 
-            $this->data['comments'][$key]['id'] = $comment['id'] = database::insert_id();
+            $comment['id'] = $this->data['comments'][$key]['id'] = database::insert_id();
 
             if ($this->data['comments'][$key]['author'] == 'staff' && !empty($this->data['comments'][$key]['notify']) && empty($this->data['comments'][$key]['hidden'])) {
               $notify_comments[] = $this->data['comments'][$key];
@@ -445,7 +436,7 @@
 
         if (!empty($notify_comments)) {
 
-          $subject = '['. language::translate('title_order', 'Order') .' #'. $this->data['no'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
+          $subject = '['. language::translate('title_order', 'Order') .' '. $this->data['no'] .'] ' . language::translate('title_new_comments_added', 'New Comments Added', $this->data['language_code']);
 
           $message = language::translate('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
           foreach ($notify_comments as $comment) {
@@ -479,6 +470,7 @@
     }
 
     public function refresh_total() {
+
       $this->data['subtotal'] = 0;
       $this->data['subtotal_tax'] = 0;
       $this->data['discount'] = 0;
@@ -573,7 +565,7 @@
         '%shipping_tracking_url' => !empty($this->data['shipping_tracking_url']) ? $this->data['shipping_tracking_url'] : '',
         '%order_items' => null,
         '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
-        '%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no' => $this->data['public_key']], false, [], $language_code),
+        '%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
         '%store_name' => settings::get('site_name'),
         '%store_url' => document::ilink('', [], false, [], $language_code),

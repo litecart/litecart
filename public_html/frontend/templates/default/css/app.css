@@ -52,8 +52,8 @@ body main {
   color: var(--navigation-text-color);
   position: sticky;
   top: -1px;
-  z-index: 1;
   backdrop-filter: saturate(200%) blur(5px);
+  z-index: 999;
 }
 #site-navigation a {
   color: inherit;

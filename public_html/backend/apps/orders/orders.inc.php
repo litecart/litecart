@@ -187,7 +187,7 @@
     $order['sufficient_stock'] = database::num_rows($items_query) ? true : null;
 
     while ($item = database::fetch($items_query)) {
-      if ($item['quantity'] < $item['stock_quanity']) {
+      if ($item['quantity'] < $item['stock_quantity']) {
         $order['sufficient_stock'] = false;
         break;
       }

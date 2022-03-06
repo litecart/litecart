@@ -885,9 +885,10 @@ ul.breadcrumb li a {
 }
 .dropdown {
   perspective: 400px;
+  position: relative;
+  z-index: 1;
 }
 .dropdown .dropdown-menu {
-  position: relative;
   display: block;
   transform-origin: 0px 0px;
   transform: rotateX(-25deg);
@@ -1684,7 +1685,7 @@ ul.list-inline li {
 }
 .navbar .navbar-header .navbar-brand img {
   display: block;
-  max-height: 52px;
+  max-height: 32px;
 }
 .navbar .navbar-toggle {
   position: relative;
