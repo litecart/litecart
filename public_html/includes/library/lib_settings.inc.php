@@ -6,11 +6,12 @@
 
     public static function init() {
 
-      $configuration_query = database::query(
+      $settings_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."settings
         where `type` = 'global';"
       );
-      while ($row = database::fetch($configuration_query)) {
+
+      while ($row = database::fetch($settings_query)) {
         self::$_cache[$row['key']] = $row['value'];
       }
 

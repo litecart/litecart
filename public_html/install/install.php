@@ -574,6 +574,14 @@
 
     echo '<p>Preparing CSS files...<br />' . PHP_EOL;
 
+    $files_to_delete = [
+      '../includes/templates/default.admin/less/',
+    ];
+
+    foreach ($files_to_delete as $file) {
+      file_delete($file);
+    }
+
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
       $files_to_delete = [

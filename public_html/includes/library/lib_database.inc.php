@@ -13,10 +13,12 @@
 
         $measure_start = microtime(true);
 
+        mysqli_report(MYSQLI_REPORT_OFF);
+
         self::$_links[$link] = mysqli_init();
 
         if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
-          mysqli_options(self::$_links[$link], MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+          self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1, $link);
         } else {
           trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE', E_USER_WARNING);
         }
@@ -38,7 +40,9 @@
         trigger_error('Invalid database link', E_USER_ERROR);
       }
 
-      self::set_charset($charset, $link);
+      if (!empty($charset)) {
+        self::set_charset($charset, $link);
+      }
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
@@ -117,6 +121,15 @@
 
       if (!empty($collation)) {
         self::query("set collation_connection = ". database::input($collation), $link);
+      }
+
+      return true;
+    }
+
+    public static function set_option($option, $value, $link='default') {
+
+      if (!$result = mysqli_options(self::$_links[$link], $option, $value)) {
+        trigger_error('Could not set MySQL option "'. $option .'" to "'. $value .'"', E_USER_ERROR);
       }
 
       return true;
