@@ -312,7 +312,7 @@
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
         $redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-        header('Location: ' . document::ilink('login', ['redirect_url' => $redirect_url]));
+        header('Location: ' . document::ilink('f:login', ['redirect_url' => $redirect_url]));
         exit;
       }
     }

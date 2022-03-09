@@ -77,7 +77,7 @@
       }
     }
 
-    public static function set(string $code='') {
+    public static function set($code='') {
 
       if (empty($code)) $code = self::identify();
 
@@ -247,7 +247,7 @@
       return number_format((float)$number, (int)$decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
     }
 
-    public static function strftime(string $format, $timestamp=null) {
+    public static function strftime($format, $timestamp=null) {
 
       if ($timestamp === null) {
         $timestamp = new \DateTime();

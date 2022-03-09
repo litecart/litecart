@@ -15,8 +15,6 @@
 
 <?php include vmod::check(FS_DIR_TEMPLATE . 'partials/box_cookie_notice.inc.php'); ?>
 
-<?php include vmod::check(FS_DIR_TEMPLATE . 'partials/site_header.inc.php'); ?>
-
 <?php include vmod::check(FS_DIR_APP . 'frontend/partials/site_navigation.inc.php'); ?>
 
 {{content}}

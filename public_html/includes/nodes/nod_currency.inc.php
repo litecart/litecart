@@ -159,7 +159,7 @@
         if ($amount == floor($amount)) $decimals = 0;
       }
 
-      return $prefix . number_format($amount, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
+      return $prefix . number_format((float)$amount, (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
     }
 
     public static function format_html($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {

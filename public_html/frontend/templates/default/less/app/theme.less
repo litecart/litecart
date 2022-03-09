@@ -59,7 +59,7 @@ body {
   margin-bottom: var(--gutter-size);
   color: ~"var(--navigation-text-color)";
   position: sticky;
-  top: -1px;
+  top: 0;
   backdrop-filter: saturate(200%) blur(5px);
   z-index: 999;
 
@@ -67,18 +67,18 @@ body {
     color: inherit;
   }
 
-  .navbar {
-    @media (min-width: @media-breakpoint-md) {
-      .navbar-nav a > .fa {
-        display: block;
-        font-size: 2em;
-        text-align: center;
-      }
+  .navbar-brand {
+    a {
+      padding: .5em 1em;
+    }
+    img {
+      display: block;
+      max-height: 42px;
     }
   }
 
   .search form {
-    padding: var(--gutter-size);
+    padding: .5em;
   }
   .shopping-cart {
     transition: all 200ms ease-out;

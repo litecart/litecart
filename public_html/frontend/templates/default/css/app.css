@@ -51,22 +51,22 @@ body main {
   margin-bottom: var(--gutter-size);
   color: var(--navigation-text-color);
   position: sticky;
-  top: -1px;
+  top: 0;
   backdrop-filter: saturate(200%) blur(5px);
   z-index: 999;
 }
 #site-navigation a {
   color: inherit;
 }
-@media (min-width: 768px) {
-  #site-navigation .navbar .navbar-nav a > .fa {
-    display: block;
-    font-size: 2em;
-    text-align: center;
-  }
+#site-navigation .navbar-brand a {
+  padding: 0.5em 1em;
+}
+#site-navigation .navbar-brand img {
+  display: block;
+  max-height: 42px;
 }
 #site-navigation .search form {
-  padding: var(--gutter-size);
+  padding: 0.5em;
 }
 #site-navigation .shopping-cart {
   transition: all 200ms ease-out;

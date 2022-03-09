@@ -1683,10 +1683,6 @@ ul.list-inline li {
 .navbar .navbar-header .navbar-brand a:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.navbar .navbar-header .navbar-brand img {
-  display: block;
-  max-height: 32px;
-}
 .navbar .navbar-toggle {
   position: relative;
   flex: 0 1 auto;

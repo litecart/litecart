@@ -168,6 +168,8 @@
 
       if (empty($path)) return '';
 
+      $path = str_replace('//', '/', $path);
+
       if ($path = parse_url($path, PHP_URL_PATH)) {
         $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
       }
