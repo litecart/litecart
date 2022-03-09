@@ -76,14 +76,16 @@
     echo '<p>Checking installation parameters...';
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(file_realpath($_SERVER['DOCUMENT_ROOT']), '#') .'#', '', FS_DIR_APP));
+      define('DOCUMENT_ROOT', rtrim('/', file_realpath($_SERVER['DOCUMENT_ROOT']), '/') . '/';
     } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
-      define('WS_DIR_APP', preg_replace('#^'. preg_quote(file_realpath($_REQUEST['document_root']), '#') .'#', '', FS_DIR_APP));
+      define('DOCUMENT_ROOT', rtrim('/', file_realpath($_REQUEST['document_root']), '/') . '/';
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
 
-    if (preg_match('#^'. preg_quote(file_realpath($_SERVER['DOCUMENT_ROOT']), '#') .'#', FS_DIR_APP . 'storage/')) {
+    define('WS_DIR_APP', '/' . preg_replace('#^'. preg_quote(file_realpath($_SERVER['DOCUMENT_ROOT']), '#') .'#', '', FS_DIR_APP));
+
+    if (preg_match('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', FS_DIR_APP . 'storage/')) {
       define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' The storage folder must be under the document root.</p>' . PHP_EOL  . PHP_EOL);
@@ -484,9 +486,9 @@
     $htaccess = file_get_contents('htaccess');
 
     $htaccess = strtr($htaccess, [
-      '{BASE_DIR}' => WS_DIR_APP,
+      '{WS_DIR_APP}' => WS_DIR_APP,
       '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'] .'/',
-      '{APP_DIR}' => FS_DIR_APP,
+      '{FS_DIR_APP}' => FS_DIR_APP,
     ]);
 
     if (file_put_contents('../.htaccess', $htaccess)) {

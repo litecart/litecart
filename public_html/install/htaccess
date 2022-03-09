@@ -1,8 +1,8 @@
 # Define some error documents
 ErrorDocument 401 "Access Forbidden"
-ErrorDocument 403 {BASE_DIR}error_document?code=403
-ErrorDocument 404 {BASE_DIR}error_document?code=404
-ErrorDocument 410 {BASE_DIR}error_document?code=410
+ErrorDocument 403 {WS_DIR_APP}error_document?code=403
+ErrorDocument 404 {WS_DIR_APP}error_document?code=404
+ErrorDocument 410 {WS_DIR_APP}error_document?code=410
 ErrorDocument 500 "Internal Server Error"
 
 # Deny showing indexes for directory content - Uncomment if supported by you web host
@@ -57,14 +57,14 @@ ErrorDocument 500 "Internal Server Error"
   # Favicons
   RewriteCond %{REQUEST_URI} /favicon\.ico$
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon.ico [L]
+  RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon.ico [L]
 
   RewriteCond %{REQUEST_URI} /(android-chrome|android-icon|apple-icon|apple-touch-icon|favicon)(\-\d{2,3}x\d{2,3})?(-precomposed)?\.png$
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^ {BASE_DIR}storage/images/favicons/favicon-256x256.png [L]
+  RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon-256x256.png [L]
 
   # Web path to catalog root
-  RewriteBase {BASE_DIR}
+  RewriteBase {WS_DIR_APP}
 
   # No rewrite logic for physical files
   RewriteCond %{REQUEST_FILENAME} -d [OR]
@@ -108,6 +108,6 @@ ErrorDocument 500 "Internal Server Error"
 #<IfModule mod_auth_basic.c>
 #  AuthType Basic
 #  AuthName "Restricted Area"
-#  AuthUserFile "{APP_DIR}.htpasswd"
+#  AuthUserFile "{FS_DIR_APP}.htpasswd"
 #  Require valid-user
 #</IfModule>
