@@ -7,6 +7,25 @@
 
   breadcrumbs::add(language::translate('title_shopping_carts', 'Shopping Carts'));
 
+  if (!empty($_POST['delete'])) {
+    try {
+
+      if (!empty($_POST['shopping_carts'])) {
+        foreach ($_POST['shopping_carts'] as $shopping_cart_id) {
+          $shopping_cart = new ent_shopping_cart($shopping_cart_id);
+          $shopping_cart->delete();
+        }
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Table Rows
   $shopping_carts = [];
 
@@ -121,6 +140,16 @@
       </tfoot>
     </table>
 
+    <div class="card-body">
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+
+        <ul class="list-inline">
+          <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+        </ul>
+      </fieldset>
+    </div>
+
   <?php echo functions::form_draw_form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
@@ -137,4 +166,8 @@
       $(this).closest('form').submit();
     }
   });
+
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
 </script>
