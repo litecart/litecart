@@ -16,12 +16,12 @@
     ######################################################################
 
     public static function before_capture() {
-      self::start_watch('page_capture');
+      self::start_watch('content_capture');
     }
 
     public static function after_capture() {
 
-      self::stop_watch('page_capture');
+      self::stop_watch('content_capture');
 
       if (microtime(true) - SCRIPT_TIMESTAMP_START > 5) {
         notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
@@ -37,15 +37,15 @@
     // Output stats
       $stats = '<!--' . PHP_EOL
              . '  Timings:' . PHP_EOL
+             . '  - Memory Peak: ' . number_format(memory_get_peak_usage(true) / 1e6, 2, '.', ' ') . ' MB / '. ini_get('memory_limit') . PHP_EOL
+             . '  - Included Files: ' . count(get_included_files()) . PHP_EOL
              . '  - Page Parse Time: ' . number_format($page_parse_time * 1000, 0, '.', ' ') . ' ms' . PHP_EOL
-             . '  - Page Capture Time: ' . number_format(self::get_watch('page_capture') * 1000, 0, '.', ' ') . ' ms' . PHP_EOL
+             . '  - Content Capture Time: ' . number_format(self::get_watch('content_capture') * 1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - Database Queries: ' . number_format(self::get_counter('database_queries'), 0, '.', ' ') . PHP_EOL
              . '  - Database Duration: ' . number_format(self::get_watch('database_execution') * 1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - Network Requests: ' . self::get_counter('http_requests') . PHP_EOL
              . '  - Network Duration: ' . number_format(self::get_watch('http_requests') * 1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '  - Output Optimization: ' . number_format(self::get_watch('output_optimization') * 1000, 0, '.', ' ') . ' ms' . PHP_EOL
-             . '  - Included Files: ' . count(get_included_files()) . PHP_EOL
-             . '  - Memory Peak: ' . number_format(memory_get_peak_usage(true) / 1e6, 2, '.', ' ') . ' MB / '. ini_get('memory_limit') . PHP_EOL
              . '  - vMod: ' . number_format(vmod::$time_elapsed * 1000, 0, '.', ' ') . ' ms' . PHP_EOL
              . '-->';
 

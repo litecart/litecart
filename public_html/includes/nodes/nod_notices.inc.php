@@ -33,7 +33,7 @@
 
     ######################################################################
 
-    public static function reset($type='') {
+    public static function reset($type=null) {
 
       if ($type) {
         self::$data[$type] = [];
@@ -47,7 +47,7 @@
       }
     }
 
-    public static function add($type, $msg, $key=nul) {
+    public static function add($type, $msg, $key=null) {
       if ($key) self::$data[$type][$key] = $msg;
       else self::$data[$type][] = $msg;
     }

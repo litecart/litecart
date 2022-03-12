@@ -1824,7 +1824,7 @@ ul.list-inline li {
   display: block;
   overflow-y: auto;
 }
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   .navbar .navbar-collapse {
     width: auto;
     border-top: 0;

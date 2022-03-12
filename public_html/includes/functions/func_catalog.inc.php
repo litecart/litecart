@@ -178,23 +178,17 @@
       ) pa on (p.id = pa.product_id)
 
       left join (
-        select product_id, (
-          case
-            when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-            when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-            else `". database::input(settings::get('site_currency_code')) ."`
-          end
+        select product_id, coalesce(
+          ". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
         ) as price
         from ". DB_TABLE_PREFIX ."products_prices
       ) pp on (pp.product_id = p.id)
 
       left join (
         select product_id, min(
-          case
-            when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-            when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-            else `". database::input(settings::get('site_currency_code')) ."`
-          end
+          coalesce(
+            ". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
+          )
         ) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
         where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
@@ -261,6 +255,12 @@
       $sql_where_prices = "and (". implode(" or ", $sql_where_prices) .")";
     }
 
+    $currencies = currency::$currencies;
+    uasort($currencies, function($a, $b){
+      if ($a['code'] == settings::get('site_currency_code')) return -3;
+      if ($a['code'] == currency::$selected['code']) return -2;
+    });
+
     $query = (
       "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
@@ -303,23 +303,17 @@
       ) pa on (p.id = pa.product_id)
 
       left join (
-        select product_id, (
-          case
-            when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-            when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-            else `". database::input(settings::get('site_currency_code')) ."`
-          end
+        select product_id, coalesce(
+          ". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
         ) as price
         from ". DB_TABLE_PREFIX ."products_prices
       ) pp on (pp.product_id = p.id)
 
       left join (
         select product_id, min(
-          case
-            when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-            when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-            else `". database::input(settings::get('site_currency_code')) ."`
-          end
+          coalesce(
+            ". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
+          )
         ) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
         where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')

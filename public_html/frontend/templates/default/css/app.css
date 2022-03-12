@@ -63,7 +63,7 @@ body main {
 }
 #site-navigation .navbar-brand img {
   display: block;
-  max-height: 42px;
+  max-height: 38px;
 }
 #site-navigation .search form {
   padding: 0.5em;
@@ -76,12 +76,10 @@ body main {
   display: none;
 }
 #site-navigation .shopping-cart.filled {
-  background-color: var(--navigation-cart-color);
+  background-color: var(--navigation-cart-background-color);
+  color: var(--navigation-cart-text-color);
 }
 #site-navigation .shopping-cart.filled .badge {
-  position: absolute;
-  top: 2em;
-  right: 3em;
   display: inline-block;
   animation: pulsating 2s linear;
   animation-iteration-count: infinite;
@@ -275,12 +273,13 @@ body main {
   text-decoration: none;
   transform: scale(1);
   transition: all 100ms linear;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 @media (min-width: 576px) {
   .listing .category:hover,
   .listing .brand:hover,
   .listing .product:hover {
-    box-shadow: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 0.5em 0 rgba(0, 0, 0, 0.15);
     transform: scale(1.01);
   }
 }
@@ -312,7 +311,6 @@ body main {
 .listing .product {
   position: relative;
   font-size: calc(var(--default-text-size) - 1px);
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 @media (min-width: 576px) {
   .listing .product:hover {
@@ -468,8 +466,7 @@ body main {
 }
 [data-toggle="momentumScroll"] .scroll-content {
   padding: var(--gutter-size);
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   user-select: none;
   touch-action: pan-x;
   cursor: grab;
@@ -502,16 +499,21 @@ body main {
 [data-toggle="momentumScroll"] .listing {
   display: flex;
   flex-wrap: nowrap;
-  gap: 0.5em;
+  gap: 0.75em;
 }
 @media (min-width: 576px) {
   [data-toggle="momentumScroll"] .listing {
-    gap: 0.75em;
+    gap: 1em;
   }
 }
 @media (min-width: 768px) {
   [data-toggle="momentumScroll"] .listing {
-    gap: 1em;
+    gap: 1.5em;
+  }
+}
+@media (min-width: 768px) {
+  [data-toggle="momentumScroll"] .listing {
+    gap: 2em;
   }
 }
 [data-toggle="momentumScroll"] .listing .product {

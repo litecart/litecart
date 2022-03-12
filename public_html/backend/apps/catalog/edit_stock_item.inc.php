@@ -246,11 +246,11 @@
 
           <div class="row">
             <div class="form-group col-md-10">
-              <?php if (!empty($stock_item->data['file'])) { ?>
-              <small class="float-end"><?php echo functions::form_draw_checkbox('delete_file', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></small>
-              <?php } ?>
               <label><?php echo language::translate('title_digital_item', 'Digital Item'); ?></label>
               <?php echo functions::form_draw_file_field('file'); ?>
+              <?php if (!empty($stock_item->data['file'])) { ?>
+              <div><?php echo functions::form_draw_checkbox('delete_file', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
+              <?php } ?>
             </div>
 
             <div class="form-group col-md-2">

@@ -32,7 +32,8 @@
   --default-title-border-color: #f0f0f0;
   --navigation-background-color: rgba(229, 229, 234, 0.8);
   --navigation-text-color: #333;
-  --navigation-cart-color: #b7d851;
+  --navigation-cart-background-color: #91c231;
+  --navigation-cart-text-color: #fff;
   --offcanvas-navigation-background-color: #333;
   --offcanvas-navigation-text-color: #fff;
   --offcanvas-navigation-cart-color: #b7d851;
@@ -52,8 +53,8 @@
   --button-default-background-color-active: #ccc;
   --button-default-border-color: #eee;
   --button-success-background-color: #91C231;
-  --button-success-background-color-hover: calc(var(--button-success-background-color) * 1.1);
-  --button-success-background-color-active: calc(var(--button-success-background-color) * .9);
+  --button-success-background-color-hover: #90c920;
+  --button-success-background-color-active: #81b123;
   --button-success-border-color: #91C231;
   --button-success-text-color: #fff;
   --button-danger-background-color: #d9534f;
@@ -115,11 +116,11 @@
 }
 @media (min-width: 768px) {
   :root {
-    --gutter-size: 2rem;
+    --gutter-size: 1.5rem;
   }
 }
 @media (min-width: 992px) {
   :root {
-    --gutter-size: 3rem;
+    --gutter-size: 2rem;
   }
 }

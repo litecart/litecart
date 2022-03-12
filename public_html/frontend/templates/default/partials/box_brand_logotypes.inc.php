@@ -1,4 +1,4 @@
-<section id="box-brand-logotypes" class="card hidden-xs hidden-sm text-center">
+<section id="box-brand-logotypes" class="card hidden-xs hidden-sm text-center" style="margin-bottom: 2em;">
   <div class="card-body">
     <?php foreach ($logotypes as $logotype) { ?>
     <a href="<?php echo functions::escape_html($logotype['link']); ?>">

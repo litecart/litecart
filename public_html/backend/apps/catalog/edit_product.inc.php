@@ -328,11 +328,9 @@
               <div class="row">
                 <div class="col-md-6">
 
-                  <div class="row">
-                    <div class="form-group col-md-6">
-                      <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                      <?php echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
-                    </div>
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                    <?php echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
                   </div>
 
                   <div class="form-group">
@@ -583,7 +581,7 @@
                   <a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"'); ?></a>
                 </td>
                 <td class="text-end">
-                  <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
+                  <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil fa-lg'); ?></a>
                 </td>
               </tr>
             <?php } ?>
@@ -613,23 +611,20 @@
 
 <script>
 // Initiate
-  $('#tab-general input[name="name[<?php echo settings::get('site_language_code'); ?>]"]').on('input', function(e){
-    $('#tab-info input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  $('input[name="name[<?php echo settings::get('site_language_code'); ?>]"]').on('input', function(e){
+    $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  }).first().trigger('input');
+
+  $('input[name^="name"]').on('input', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   });
 
-  $('#tab-info input[name^="name"]').on('input', function(e){
-    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-    $('#tab-general input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
-    $('input[name="head_title['+ language_code +']"]').attr('placeholder', $(this).val());
-    $('input[name="h1_title['+ language_code +']"]').attr('placeholder', $(this).val());
-  }).trigger('input');
-
-  $('#tab-general input[name^="short_description"]').on('input', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
-  }).trigger('input');
+  });
 
 // Default Category
 

@@ -192,11 +192,9 @@
             <?php foreach (array_keys(language::$languages) as $language_code) { ?>
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                  <?php echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
-                </div>
+              <div class="form-group">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
@@ -295,11 +293,15 @@
 
 // Head Title & H1 Title
 
+  $('input[name="name[<?php echo settings::get('site_language_code'); ?>]"]').on('input', function(e){
+    $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+  }).first().trigger('input');
+
   $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
-  }).trigger('input');
+  });
 
 // Meta Description
 

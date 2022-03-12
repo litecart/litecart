@@ -11,6 +11,8 @@
           stats::start_watch('database_execution');
         }
 
+        mysqli_report(MYSQLI_REPORT_OFF);
+
         self::$_links[$link] = mysqli_init();
 
         if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {

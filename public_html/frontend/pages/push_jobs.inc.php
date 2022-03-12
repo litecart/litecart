@@ -5,7 +5,8 @@
   header('X-Robots-Tag: noindex');
   header('Content-type: text/plain; charset='. mb_http_output());
 
-  if (strtotime(settings::get('jobs_last_push')) > strtotime('-5 minutes')) die('Already did my duty!');
+  $last_push = strtotime(settings::get('jobs_last_push'));
+  if ($last_push > strtotime('-5 minutes')) die('I just recently did my duty at '. date('H:i:s', ) .'!');
 
   session::close();
 
