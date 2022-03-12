@@ -2,22 +2,35 @@
 
   function file_copy($source, $target, &$results=[]) {
 
-    if (is_file($source) || is_link($source)) {
-      return $results[$target] = copy($source, $target);
-    }
+    $source = str_replace('\\', '/', $source);
+    $target = str_replace('\\', '/', $target);
 
-    if (is_dir($source)) {
-      if (!is_dir($target)) {
-        return $results[$target] = mkdir($target);
+    if (strpos($source, '*') !== false) {
+
+      foreach (file_search($source) as $file) {
+        $base_source = preg_replace('#^(.*/).*?$#', '$1', strtok($source, '*'));
+        file_copy($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
+      }
+    } else {
+
+      if (is_dir($source)) {
+        if (!is_dir($target)) {
+          $results[$target] = mkdir($target);
+          if (!$results[$target]) return false;
+        }
+
+        foreach (scandir($source) as $file) {
+          if ($file == '.' || $file == '..') continue;
+          file_copy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file, $results);
+        }
       }
 
-      foreach (scandir($source) as $file) {
-        if ($file == '.' || $file == '..') continue;
-        file_copy(rtrim($source, '/') .'/'. $file, rtrim($target, '/') .'/'. $file);
+      if (is_file($source) || is_link($source)) {
+        $results[$target] = copy($source, $target);
       }
     }
 
-    return true;
+    return in_array(false, $results) ? false : true;
   }
 
   function file_delete($source, &$results=[]) {
@@ -27,19 +40,22 @@
       foreach (file_search($source) as $file) {
         $results[] = file_delete($file, $results);
       }
-      return;
+      return in_array(false, $results) ? false : true;
     }
 
     if (!file_exists($source)) {
-      return $results[$source] = null;
+      $results[$source] = null;
+      return in_array(false, $results) ? false : true;
     }
 
     if (is_dir($source)) {
       file_delete(rtrim($source, '/') .'/*', $results);
-      return $results[$source] = rmdir($source);
+      $results[$source] = rmdir($source);
+    } else if (is_file($source) || is_link($source)) {
+      $results[$source] = unlink($source);
     }
 
-    return $results[$source] = unlink($source);
+    return in_array(false, $results) ? false : true;
   }
 
   function file_is_binary($file) {
@@ -49,6 +65,30 @@
     fclose($fh);
 
     return (substr_count($blk, "^ -~")/512 > 0.3) or (substr_count($blk, "\x00") > 0);
+  }
+
+  function file_move($source, $target, &$results=[]) {
+
+    $source = str_replace('\\', '/', $source);
+    $target = str_replace('\\', '/', $target);
+
+    if (strpos($source, '*') !== false) {
+
+      foreach (file_search($source) as $file) {
+        $base_source = preg_replace('#^(.*/).*?$#', '$1', strtok($source, '*'));
+        file_move($file, rtrim($target, '/') .'/'. preg_replace('#^'. preg_quote($base_source, '#') .'#', '', $file), $results);
+      }
+
+    } else {
+
+      if (file_exists($source) && !file_exists($target)) {
+        $results[$target] = rename($source, $target);
+      } else {
+        $results[$target] = false;
+      }
+    }
+
+    return in_array(false, $results) ? false : true;
   }
 
   function file_path($path) {
@@ -91,32 +131,30 @@
 // Search files (Supports dual globstar **)
   function file_search($pattern, $flags=0) {
 
-    if (preg_match('#\*\*#', $pattern)) {
+    if (strpos($pattern, '**') !== false) {
 
-      if (!preg_match('#^([^\*]+)\*\*(.*)$#', $pattern, $matches)) {
-        return false;
+      list($leading, $trailing) = preg_split('#\*\*#', $pattern);
+      $patterns = [$leading . $trailing];
+      $leading .= '/*';
+
+      while ($dirs = glob($leading, GLOB_ONLYDIR)) {
+        $leading .= '/*';
+        foreach ($dirs as $dir) {
+          $patterns[] = $dir . $trailing;
+        }
       }
 
       $files = [];
-
-      foreach (glob(rtrim($matches[1], '/').'/*', $flags & GLOB_MARK) as $file) {
-        $files = array_merge($files, file_search($file.'**'.$matches[2], $flags));
+      foreach ($patterns as $pat) {
+        $files = array_merge($files, file_search($pat, $flags));
       }
 
-      $files = array_merge($files, file_search($matches[1].$matches[2], $flags));
-      return array_unique($files);
+    } else {
+      $files = glob($pattern, $flags);
     }
 
-    $files = array_map(function($path){
-      return str_replace('\\', '/', $path);
-    }, glob($pattern, $flags | GLOB_MARK));
-
-  // Sort directories first
-    usort($files, function($a, $b){
-      if (substr($a, -1) == '/' && substr($b, -1) != '/') return -1;
-      if (substr($a, -1) != '/' && substr($b, -1) == '/') return 1;
-      return ($a < $b) ? -1 : 1;
-    });
+    $files = array_unique($files);
+    sort($files);
 
     return $files;
   }

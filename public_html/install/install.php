@@ -76,9 +76,9 @@
     echo '<p>Checking installation parameters...';
 
     if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-      define('DOCUMENT_ROOT', rtrim('/', file_realpath($_SERVER['DOCUMENT_ROOT']), '/') . '/';
+      define('DOCUMENT_ROOT', rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/') . '/');
     } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
-      define('DOCUMENT_ROOT', rtrim('/', file_realpath($_REQUEST['document_root']), '/') . '/';
+      define('DOCUMENT_ROOT', rtrim(file_realpath($_REQUEST['document_root']), '/') . '/');
     } else {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
     }
@@ -332,7 +332,7 @@
 
     ### Database > Check Engines ##################################
 
-    echo '<p>Checking MySQL storage engine... ';
+    echo '<p>Detecting MySQL storage engines... ';
 
     $engines_query = database::query(
       "show engines;"
@@ -553,11 +553,11 @@
         }
 
         if (file_exists('data/'. $dir .'/public_html/')) {
-          perform_action('copy', ["data/$dir/public_html/" => FS_DIR_APP]);
+          perform_action('copy', ["data/$dir/public_html/*" => FS_DIR_APP]);
         }
 
         if (file_exists('data/'. $dir .'/storage/')) {
-          perform_action('copy', ["data/$dir/storage/" => FS_DIR_STORAGE]);
+          perform_action('copy', ["data/$dir/storage/*" => FS_DIR_STORAGE]);
         }
       }
 
@@ -590,7 +590,7 @@
     if (!empty($_REQUEST['demo_data'])) {
       echo '<p>Copying demo files...' . PHP_EOL;
 
-      perform_action('copy', ['data/demo/storage/' => FS_DIR_STORAGE]);
+      perform_action('copy', ['data/demo/storage/*' => FS_DIR_STORAGE]);
 
       echo PHP_EOL;
     }

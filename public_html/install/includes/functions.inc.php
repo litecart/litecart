@@ -15,28 +15,14 @@
       case 'copy':
 
         foreach ($payload as $source => $target) {
+          echo 'Copying '. preg_replace('#^('. FS_DIR_APP .')#', '', $source) .' to '. preg_replace('#^('. FS_DIR_APP .')#', '', $target);
 
-          if (!$files = file_search($source)) {
-            if ($on_error == 'skip') continue;
-            die("<span class=\"error\">[Error] Could not copy $source</span>" . PHP_EOL . PHP_EOL);
-          }
-
-          foreach ($files as $file) {
-
-            echo 'Writing ' . preg_replace('#^('. FS_DIR_APP .')#', '', $target);
-
-            if (is_dir($file)) {
-              if (!is_dir($target)) mkdir($target);
-              perform_action($action, [[rtrim($file, '/') . '/*' => rtrim($target, '/') . '/' . basename($file) .'/']], $on_error);
-            }
-
-            if (file_copy($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
-              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else {
-              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
-            }
+          if (file_copy($source, $target, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
           }
         }
 
@@ -44,18 +30,15 @@
 
       case 'delete':
 
-        foreach ($payload as $source) {
-          foreach (file_search($source) as $file) {
+        foreach ($payload as $source => $target) {
+          echo 'Deleting '. preg_replace('#^('. FS_DIR_APP .')#', '', $source);
 
-            echo 'Delete ' . preg_replace('#^('. FS_DIR_APP .')#', '', $file);
-
-            if (file_delete($file)) {
-              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else {
-              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
-            }
+          if (file_delete($file, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
           }
         }
 
@@ -65,22 +48,14 @@
       case 'rename':
 
         foreach ($payload as $source => $target) {
+          echo 'Moving '. preg_replace('#^('. FS_DIR_APP .')#', '', $source) .' to '. preg_replace('#^('. FS_DIR_APP .')#', '', $target);
 
-          if (!$files = file_search($source)) {
-            if ($on_error == 'skip') continue;
-            die("<span class=\"error\">[Error] Could not move $source</span>" . PHP_EOL . PHP_EOL);
-          }
-
-          foreach ($files as $file) {
-            echo 'Move '. preg_replace('#^('. FS_DIR_APP .')#', '', $source) ." to ". preg_replace('#^('. FS_DIR_APP .')#', '', $target);
-
-            if (rename($source, is_dir($target) ? $target . pathinfo($source, PATHINFO_BASENAME) : $target)) {
-              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else {
-              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
-            }
+          if (file_move($source, $target, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
           }
         }
 
@@ -97,7 +72,7 @@
 
           foreach ($files as $file) {
 
-            echo 'Modify ' . preg_replace('#^('. FS_DIR_APP .')#', '', $file);
+            echo 'Modifying ' . preg_replace('#^('. FS_DIR_APP .')#', '', $file);
 
             $contents = file_get_contents($file);
             $contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);
