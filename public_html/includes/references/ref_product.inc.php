@@ -2,8 +2,8 @@
 
   class ref_product {
 
-    private $_currency_code;
     private $_language_codes;
+    private $_currency_codes;
     private $_customer_id;
     private $_data = [];
 
@@ -14,13 +14,18 @@
       if (empty($customer_id)) $customer_id = customer::$data['id'];
 
       $this->_data['id'] = (int)$product_id;
+      $this->_customer_id = $customer_id;
+
       $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
         settings::get('site_language_code'),
       ]);
-      $this->_currency_code = $currency_code;
-      $this->_customer_id = $customer_id;
+
+      $this->_currency_codes = array_unique([
+        $currency_code,
+        settings::get('site_currency_code'),
+      ]);
     }
 
     public function &__get($name) {
@@ -132,11 +137,9 @@
 
           $campaigns_query = database::query(
             "select *, min(
-              case
-                when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-                when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-                else `". database::input(settings::get('site_currency_code')) ."`
-              end
+              coalesce(
+                ". implode(", ", array_map(function($currency_code){ return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)"; }, $this->_currency_codes)) ."
+              )
             ) as price
             from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
@@ -254,12 +257,9 @@
           $this->_data['price'] = 0;
 
           $products_prices_query = database::query(
-            "select
-              case
-                when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-                when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-                else `". database::input(settings::get('site_currency_code')) ."`
-              end as price
+            "select coalesce(
+              ". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
+            ) price
             from ". DB_TABLE_PREFIX ."products_prices
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
