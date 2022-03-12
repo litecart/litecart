@@ -92,6 +92,17 @@
         session::$data['language'] = self::$languages[$code];
       }
 
+    // Sort by relevance / fallback order
+      uasort(self::$languages, function($a, $b){
+        $pos_a = array_search($a['code'], [self::$selected['code'], settings::get('site_language_code')]);
+        $pos_b = array_search($b['code'], [self::$selected['code'], settings::get('site_language_code')]);
+
+        if ($pos_a === false && $b === false) return 0;
+        else if ($pos_a === false) return 1;
+        else if ($b === false) return -1;
+        else return $pos_a - $pos_b;
+      });
+
       if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
         header('Set-Cookie: language_code='. $code .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; SameSite=Lax', false);
       }
