@@ -30,10 +30,10 @@
 
       case 'delete':
 
-        foreach ($payload as $source => $target) {
+        foreach ($payload as $source) {
           echo 'Deleting '. preg_replace('#^('. FS_DIR_APP .')#', '', $source);
 
-          if (file_delete($file, $results)) {
+          if (file_delete($source, $results)) {
             echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
           } else if ($on_error == 'skip') {
             echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
@@ -65,33 +65,39 @@
 
         foreach ($payload as $source => $operations) {
 
+          echo 'Modifying ' . preg_replace('#^('. FS_DIR_APP .')#', '', $source);
+
+          $results = [];
+
           if (!$files = file_search($source)) {
-            if ($on_error == 'skip') continue;
-            die("<span class=\"error\">[Error] Could not modify $source</span>");
+            $results[] = false;
           }
 
           foreach ($files as $file) {
-
-            echo 'Modifying ' . preg_replace('#^('. FS_DIR_APP .')#', '', $file);
 
             $contents = file_get_contents($file);
             $contents = preg_replace('#(\r\n?|\n)#u', PHP_EOL, $contents);
 
             foreach ($operations as $operation) {
+
               if (!empty($operations['regex'])) {
-                $contents = preg_replace($operation['search'], $operation['replace'], $contents);
+                $contents = preg_replace($operation['search'], $operation['replace'], $contents, -1, $count);
               } else {
-                $contents = str_replace($operation['search'], $operation['replace'], $contents);
+                $contents = str_replace($operation['search'], $operation['replace'], $contents, $count);
               }
+
+              $results[] = $count ? true : false;
             }
 
-            if (file_put_contents($file, $contents)) {
-              echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else if ($on_error == 'skip') {
-              echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
-            } else {
-              die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
-            }
+            $results[] = file_put_contents($file, $contents);
+          }
+
+          if (!in_array(false, $results)) {
+            echo ' <span class="ok">[OK]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else if ($on_error == 'skip') {
+            echo ' <span class="warning">[Skipped]</span><br /><br />' . PHP_EOL . PHP_EOL;
+          } else {
+            die(' <span class="error">[Error]</span><br /><br />' . PHP_EOL . PHP_EOL);
           }
         }
 

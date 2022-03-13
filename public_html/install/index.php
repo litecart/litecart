@@ -9,6 +9,8 @@
   mb_http_output('UTF-8');
 
   $document_root = str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/'));
+  $application_root = str_replace('\\', '/', rtrim(realpath(__DIR__.'/../'), '/'));
+  $storage_root = str_replace('\\', '/', rtrim(realpath(__DIR__.'/../storage'), '/'));
 
   $countries = [
     'AF' => 'Afghanistan',
@@ -396,12 +398,12 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group">
     <label>Installation Path</label>
-    <div class="form-input"><?php echo $document_root; ?></div>
+    <div class="form-input"><?php echo htmlspecialchars($application_root); ?></div>
   </div>
 
   <div class="form-group">
     <label>Storage Directory</label>
-    <input class="form-input" type="text" value="<?php echo htmlspecialchars($document_root); ?>">
+    <input class="form-input" type="text" value="<?php echo htmlspecialchars($storage_root); ?>">
   </div>
 
   <h3>Database</h3>
