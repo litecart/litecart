@@ -262,6 +262,8 @@
       if (!empty($files_updated)) {
         echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
+    } else {
+      echo ' <span class="warning">[Skipped]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### Database > Connection #####################################
@@ -469,13 +471,10 @@
 
     echo '<p>Copying default files...</p>' . PHP_EOL;
 
-    if (file_exists('data/default/public_html/')) {
-      perform_action('copy', ['data/default/public_html/*' => FS_DIR_APP]);
-    }
-
-    if (file_exists('data/default/storage/')) {
-      perform_action('copy', ['data/default/storage/*' => FS_DIR_STORAGE]);
-    }
+    perform_action('copy', [
+      'data/default/public_html/' => FS_DIR_APP,
+      'data/default/storage/' => FS_DIR_STORAGE
+    ]);
 
     echo PHP_EOL;
 
@@ -552,13 +551,10 @@
           }
         }
 
-        if (file_exists('data/'. $dir .'/public_html/')) {
-          perform_action('copy', ["data/$dir/public_html/*" => FS_DIR_APP]);
-        }
-
-        if (file_exists('data/'. $dir .'/storage/')) {
-          perform_action('copy', ["data/$dir/storage/*" => FS_DIR_STORAGE]);
-        }
+        perform_action('copy', [
+          "data/$dir/public_html/" => FS_DIR_APP,
+          "data/$dir/storage/" => FS_DIR_STORAGE,
+        ]);
       }
 
       echo PHP_EOL;
@@ -588,16 +584,16 @@
     ### Files > Demo Data #########################################
 
     if (!empty($_REQUEST['demo_data'])) {
-      echo '<p>Copying demo files...' . PHP_EOL;
+      echo '<p>Copying demo files...</p>' . PHP_EOL;
 
-      perform_action('copy', ['data/demo/storage/*' => FS_DIR_STORAGE]);
+      perform_action('copy', ['data/demo/storage/' => FS_DIR_STORAGE]);
 
       echo PHP_EOL;
     }
 
     ### Files > Development Type ##################################
 
-    echo '<p>Preparing CSS files...<br />' . PHP_EOL;
+    echo '<p>Preparing CSS files...</p>' . PHP_EOL;
 
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 

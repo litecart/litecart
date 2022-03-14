@@ -35,10 +35,10 @@
 
   function file_delete($source, &$results=[]) {
 
-  // Resolve glob stars (Dual or single glob stars)
+  // Resolve glob
     if (strpos($source, '*') !== false) {
       foreach (file_search($source) as $file) {
-        $results[] = file_delete($file, $results);
+        file_delete($file, $results);
       }
       return in_array(false, $results) ? false : true;
     }
@@ -46,11 +46,11 @@
     if (!file_exists($source)) {
       $results[$source] = null;
       return in_array(false, $results) ? false : true;
-    }
 
-    if (is_dir($source)) {
+    } else if (is_dir($source)) {
       file_delete(rtrim($source, '/') .'/*', $results);
       $results[$source] = rmdir($source);
+
     } else if (is_file($source) || is_link($source)) {
       $results[$source] = unlink($source);
     }
