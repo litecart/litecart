@@ -243,8 +243,6 @@
             throw new Exception('Not a valid image object');
           }
 
-          $this->_image->setImageBackgroundColor('rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
-
           switch(strtoupper($clipping)) {
             case 'FIT':
               //$result = $this->_image->scaleImage($width, $height, true);
@@ -264,7 +262,7 @@
                 $_newimage->newImage($width, $height, 'rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
                 $offset_x = round(($width - $this->width()) / 2);
                 $offset_y = round(($height - $this->height()) / 2);
-                $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
+                $result = $_newimage->compositeImage($this->_image, imagick::COMPOSITE_COPY, $offset_x, $offset_y);
                 $this->_image = $_newimage;
                 return $result;
               }
@@ -272,7 +270,6 @@
               return $this->_image->thumbnailImage($width, $height, true, true);
 
             case 'CROP':
-
               return $this->_image->cropThumbnailImage($width, $height);
 
             case 'CROP_ONLY_BIGGER':
@@ -671,7 +668,7 @@
               break;
           }
 
-          return $this->_image->compositeImage($_watermark, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
+          return $this->_image->compositeImage($_watermark, imagick::COMPOSITE_COPY, $offset_x, $offset_y);
 
         case 'gd':
 
