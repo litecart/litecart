@@ -87,7 +87,7 @@
         <label><?php echo language::translate('title_catalog_template', 'Catalog Template'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_templates_list('catalog', 'template_catalog', empty($_POST['template_catalog']) ? settings::get('store_template_catalog') : true); ?>
-            <a class="btn btn-default" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
+            <a class="btn btn-default" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'template_settings'], ['app']); ?>" title="<?php echo language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
           </div>
       </div>
 
