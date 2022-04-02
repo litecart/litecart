@@ -20,7 +20,7 @@
       if (empty($_POST['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must provide a lastname'));
       if (empty($_POST['subject'])) throw new Exception(language::translate('error_missing_subject', 'You must provide a subject'));
       if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide a valid email address'));
-      if (empty($_POST['message'])) throw new Exception(language::translate('error_missing_message', 'You must prvide a message'));
+      if (empty($_POST['message'])) throw new Exception(language::translate('error_missing_message', 'You must provide a message'));
 
     // Collect scraps
       if (empty(customer::$data['id'])) {
