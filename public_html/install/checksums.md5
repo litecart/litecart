@@ -824,7 +824,7 @@ e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
 a14a70917b41ba9127d14a2fe1473858	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 e39668fc11dc37b2ceed467209f021e6	install/index.php
-2d71902ee4001d4b6fcf2ad243c55b2d	install/install.php
+621ff5bc8a3ac7df69100ee2145871a9	install/install.php
 c02da8eb41654196e080f517416f568b	install/structure.sql
 a0b8ca016bf1781c048d8372cda924b7	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
