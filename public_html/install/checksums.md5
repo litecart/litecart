@@ -4,7 +4,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
 664e077ed384a0727fc22e67999f1323	admin/appearance.app/config.inc.php
 e935fd4c1c676c77664b7aead4014f79	admin/appearance.app/edit_styling.inc.php
 3ca4067cd322fae665a6ffd0fbc9669e	admin/appearance.app/logotype.inc.php
-96f2ced3f46ba981b7b7915b280ddc1e	admin/appearance.app/template.inc.php
+7454f905112e4c2643a172235e3f5798	admin/appearance.app/template.inc.php
 eaf50b53d6a1e44180cbfb0534c9bb36	admin/appearance.app/template_settings.inc.php
 050f9c8b6f0ea711718c1fd72a7ba719	admin/catalog.app/attribute_groups.inc.php
 7d829528c1412da24a7d3d3503c315ff	admin/catalog.app/attribute_values.json.inc.php
@@ -12,7 +12,7 @@ eaf50b53d6a1e44180cbfb0534c9bb36	admin/appearance.app/template_settings.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
 ca8ec15276fccb39cd6e094a052ff459	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
-4eed018a49144e1f485d1fd8a7bea2c8	admin/catalog.app/csv.inc.php
+763d218edba77dea451360de14cd8676	admin/catalog.app/csv.inc.php
 69bf2e637e8191df9b68a64c51b2648e	admin/catalog.app/delivery_statuses.inc.php
 11f1e8b199dc7b59ae27dc6c3d0358d1	admin/catalog.app/edit_attribute_group.inc.php
 a802682b602b978d4a5522c47f267ffa	admin/catalog.app/edit_category.inc.php
@@ -42,7 +42,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/currencies.app/index.html
 ddfbc0dcb05dd567c69657c922c4d397	admin/customers.app/customers.inc.php
 4de39944efc2340f301c005f712c7a70	admin/customers.app/customers.json.inc.php
 b670323c30c3cd484d87ecaf9140b6e9	admin/customers.app/customer_picker.inc.php
-0666f8b9c5b33a1495ff5736f2018824	admin/customers.app/edit_customer.inc.php
+dbb901d8233091759ba1d5e8ccd18270	admin/customers.app/edit_customer.inc.php
 069b78f8ee56491e9f4fd8aaa08c6d9d	admin/customers.app/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/customers.app/index.html
 acc7a9c4eac35ed49559d9f7b7c9a65f	admin/customers.app/newsletter_recipients.inc.php
@@ -486,7 +486,7 @@ ad936af924aad2eb03620ddd4bd1d6f4	includes/boxes/box_campaign_products.inc.php
 b0297e248d3191d0a1ae48ab1efc0f87	includes/boxes/box_cart.inc.php
 7ccc97e3a337c847bac3b2d832e859a3	includes/boxes/box_categories.inc.php
 e82f3bcc39c8805e6fcf1bc24c42322b	includes/boxes/box_category_tree.inc.php
-2b15666bb134b826e4ea28e9eae5ac8f	includes/boxes/box_contact_us.inc.php
+05c34150b55c5fa846daf405bc9e836e	includes/boxes/box_contact_us.inc.php
 4ec0d5d189dc4f8b5dee0664e6a7961d	includes/boxes/box_customer_service_links.inc.php
 7bb72b22f3e49c8103fa2105936bc477	includes/boxes/box_filter.inc.php
 eddd47dec65761f916fd10687c156f41	includes/boxes/box_information_links.inc.php
@@ -511,7 +511,7 @@ a49df2ed3b6e7ce6f49d59d9c37625a8	includes/entities/ent_currency.inc.php
 89541941304e266a24797153fff5eb91	includes/entities/ent_delivery_status.inc.php
 1366ac2832d8901d2c52e9ed03bff042	includes/entities/ent_email.inc.php
 37357c40ffce997a17b1cf50540b6e0d	includes/entities/ent_geo_zone.inc.php
-6c1371e35d5e693de0a537724f3369ae	includes/entities/ent_image.inc.php
+b217fda769d984db52402e013c973ff5	includes/entities/ent_image.inc.php
 133eec71fe43f6e7bbb83bc915fe6e4c	includes/entities/ent_language.inc.php
 d3edd86e4cac1e063e3e75c0cf32b866	includes/entities/ent_link.inc.php
 0493589c7092ed52565892ce84ef5df1	includes/entities/ent_manufacturer.inc.php
@@ -548,7 +548,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 a3560b069e543ea1c2a7bcd977cfff1e	includes/library/lib_breadcrumbs.inc.php
 044233cdaf0ae9320a260881b325978c	includes/library/lib_cache.inc.php
-98ad1b09a353395b1c54a651071bc1c8	includes/library/lib_cart.inc.php
+6741f6732320dc8bb8f06e71d09c6bc7	includes/library/lib_cart.inc.php
 1665983fe1c1474c21d0b103451d4d12	includes/library/lib_compression.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 f5005f40e7fc35c89035e2e413af0230	includes/library/lib_customer.inc.php
@@ -819,7 +819,7 @@ e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
 09073de5d55f6298919e63a51630c56a	install/data/XX/zones_eu.sql
 3b345001b72c5863d0138616b46df0cb	install/data/XX/zones_us.sql
 5cc3c8d49101959b08e0d80e592c02fb	install/data.sql
-8bb4c98427fcf3321c2e7fd6c829a756	install/htaccess
+1fb4ddbaf460fd326700b527891a9bd3	install/htaccess
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 a14a70917b41ba9127d14a2fe1473858	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
@@ -918,7 +918,7 @@ e90048160c08d1396aee4c184ab3e470	install/upgrade_patches/2.3.3.inc.php
 3cc225993c1c060f827788d44b98073d	install/upgrade_patches/2.3.3.sql
 fd11eee50b3585d2c64de0480dcffa9e	install/upgrade_patches/2.3.4.inc.php
 fd11eee50b3585d2c64de0480dcffa9e	install/upgrade_patches/2.3.5.inc.php
-5f695eb95cec0c861e88087f3e2c000b	install/upgrade_patches/2.4.0.inc.php
+df3b470a3918b5f15e6a7717ab112fc9	install/upgrade_patches/2.4.0.inc.php
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 c1f6b4f5415e8862da2f742ab0cc159a	pages/ajax/cart.json.inc.php
