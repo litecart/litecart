@@ -22,7 +22,7 @@
       header('X-Powered-By: '. PLATFORM_NAME);
 
     // Set template
-      if (preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+      if (!empty($_SERVER['REQUEST_URI']) && preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', $_SERVER['REQUEST_URI'])) {
         self::$template = settings::get('store_template_admin');
       } else {
         self::$template = settings::get('store_template_catalog');
@@ -108,7 +108,7 @@
 
     // Add meta description
       if (!empty(self::$snippets['description'])) {
-        self::$snippets['head_tags'][] = '<meta name="description" content="'. htmlspecialchars(self::$snippets['description']) .'" />';
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'" />';
         unset(self::$snippets['description']);
       }
 
@@ -136,105 +136,81 @@
 
       $microtime_start = microtime(true);
 
-      $mb_str_replace_first = function($search, $replace, $subject) {
-        return implode($replace, explode($search, $subject, 2));
-      };
-
-    // Extract and group in content stylesheets
-      if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
-        $content = $matches[1];
+    // Extract stylesheets and on page styling
+      $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
 
         $stylesheets = [];
-        if (preg_match_all('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
-          foreach ($matches as $match) {
-            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
-              $stylesheets[] = trim($match[1]);
-            }
-          }
-
-        if (!empty($stylesheets)) {
-            $stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
-
-            if (!$GLOBALS['output'] = preg_replace('#</head>#', addcslashes($stylesheets . '</head>', '\\$'), $GLOBALS['output'], 1)) {
-              trigger_error('Failed extracting stylesheets', E_USER_ERROR);
-            }
-          }
-        }
-      }
-
-    // Extract and group in content styling
-      if (preg_match('#<html(?:[^>]+)?>(.*)</html>#is', $GLOBALS['output'], $matches)) {
-        $content = $matches[1];
-
         $styles = [];
-        if (preg_match_all('#<style>(.*?)</style>\R?#is', $content, $matches, PREG_SET_ORDER)) {
-          foreach ($matches as $match) {
-            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
-              $styles[] = trim($match[1]);
-            }
-          }
 
-          if (!empty($styles)) {
-            $styles = '<style>' . PHP_EOL
-                   . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                   . implode(PHP_EOL . PHP_EOL, $styles) . PHP_EOL
-                   . '/*]]>*/-->' . PHP_EOL
-                   . '</style>' . PHP_EOL;
+        $matches[2] = preg_replace_callback('#(<link\s(?:[^>]*rel="stylesheet")[^>]*>)\R?#is', function($match) use (&$stylesheets, &$styles) {
+          $stylesheets[] = trim($match[1]);
+        }, $matches[2]);
 
-            if (!$GLOBALS['output'] = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $GLOBALS['output'], 1)) {
-              trigger_error('Failed extracting styles', E_USER_ERROR);
-            }
-          }
-        }
-      }
+        $matches[2] = preg_replace_callback('#<style>(.*?)</style>\R?#is', function($match) use (&$stylesheets, &$styles) {
+          $styles[] = trim($match[1]);
+        }, $matches[2]);
 
-    // Extract and group javascript resources
-      if (preg_match('#<body(?:[^>]+)?>(.*)</body>#is', $GLOBALS['output'], $matches)) {
-        $content = $matches[1];
+        return $matches[1] . $matches[2] . $matches[3];
+      }, $GLOBALS['output']);
 
-        $js_resources = [];
-        if (preg_match_all('#\R?(<script[^>]+></script>)\R?#is', $content, $matches, PREG_SET_ORDER)) {
+    // Extract javascript and on page javascripting
+      $GLOBALS['output'] = preg_replace_callback('#(<body[^>]*>)(.*)(</body>)#is', function($matches) use (&$javascripts, &$javascript) {
 
-          foreach ($matches as $match) {
-            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
-              $js_resources[] = trim($match[1]);
-            }
-          }
-
-          if (!empty($js_resources)) {
-            $js_resources = implode(PHP_EOL, $js_resources) . PHP_EOL;
-
-            if (!$GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($js_resources .'</body>', '\\$'), $GLOBALS['output'], 1)) {
-              trigger_error('Failed extracting javascript resources', E_USER_ERROR);
-            }
-          }
-        }
-      }
-
-    // Extract and group inline javascript
-      if (preg_match('#<body(?:[^>]+)?>(.*)</body>#is', $GLOBALS['output'], $matches)) {
-        $content = $matches[1];
-
+        $javascripts = [];
         $javascript = [];
-        if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', $content, $matches, PREG_SET_ORDER)) {
 
-          foreach ($matches as $match) {
-            if ($GLOBALS['output'] = $mb_str_replace_first($match[0], '', $GLOBALS['output'])) {
-              $javascript[] = trim($match[1], "\r\n");
-            }
-          }
+        $matches[2] = preg_replace_callback('#\R?(<script[^>]+></script>)\R?#is', function($match) use (&$javascripts, &$javascript) {
+           $javascripts[] = trim($match[1]);
+        }, $matches[2]);
 
-          if (!empty($javascript)) {
-            $javascript = '<script>' . PHP_EOL
-                        . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                        . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
-                        . '/*]]>*/-->' . PHP_EOL
-                        . '</script>' . PHP_EOL;
+        $matches[2] = preg_replace_callback('#<script(?:[^>]*\stype="(?:application|text)/javascript")?>(?!</script>)(.*?)</script>\R?#is', function($match) use (&$javascripts, &$javascript) {
+           $javascript[] = trim($match[1], "\r\n");
+        }, $matches[2]);
 
-            if (!$GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $GLOBALS['output'], 1)) {
-              trigger_error('Failed extracting javascripts', E_USER_ERROR);
-            }
-          }
+        return $matches[1] . $matches[2] . $matches[3];
+      }, $GLOBALS['output']);
+
+    // Reinsert extracted content
+      if (!empty($stylesheets)) {
+        $stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
+        $GLOBALS['output'] = preg_replace('#</head>#', addcslashes($stylesheets . '</head>', '\\$'), $GLOBALS['output'], 1);
+      }
+
+      if (!empty($styles)) {
+
+      // Minify Inline CSS
+        $search_replace = [
+          '#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
+          '#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
+          '#\s+#' => ' ', // Replace multiple whitespace
+          '#^\s+#' => ' ', // Replace leading whitespace
+          '#\s*([:;{}])\s*#' => '$1',
+          '#;}#' => '}',
+        ];
+
+        $styles = '<style>' . PHP_EOL
+               . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+               . preg_replace(array_keys($search_replace), array_values($search_replace), implode(PHP_EOL . PHP_EOL, $styles)) . PHP_EOL
+               . '/*]]>*/-->' . PHP_EOL
+               . '</style>' . PHP_EOL;
+
+        $GLOBALS['output'] = preg_replace('#</head>#', addcslashes($styles . '</head>', '\\$'), $GLOBALS['output'], 1);
+      }
+
+      if (!empty($javascripts)) {
+        $javascripts = implode(PHP_EOL, $javascripts) . PHP_EOL;
+        $GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascripts .'</body>', '\\$'), $GLOBALS['output'], 1);
+      }
+
+      if (!empty($javascript)) {
+        $javascript = '<script>' . PHP_EOL
+                    . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                    . implode(PHP_EOL . PHP_EOL, $javascript) . PHP_EOL
+                    . '/*]]>*/-->' . PHP_EOL
+                    . '</script>' . PHP_EOL;
+
+        if (!$GLOBALS['output'] = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $GLOBALS['output'], 1)) {
+          trigger_error('Failed extracting javascripts', E_USER_ERROR);
         }
       }
 
@@ -272,7 +248,7 @@
     }
 
     public static function href_ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-      return htmlspecialchars(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
+      return functions::escape_html(self::ilink($route, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
     public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
@@ -286,18 +262,18 @@
     }
 
     public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-      return htmlspecialchars(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
+      return functions::escape_html(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
     public static function rlink($resource) {
       if (!is_file($resource)) {
-        trigger_error('Could not draw link for missing resource ('. $resource.')', E_USER_WARNING);
+        trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
         return '';
       }
       return document::link(preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', str_replace('\\', '/', realpath($resource))), ['_' => filemtime($resource)]);
     }
 
     public static function href_rlink($resource) {
-      return htmlspecialchars(self::rlink($resource));
+      return functions::escape_html(self::rlink($resource));
     }
   }

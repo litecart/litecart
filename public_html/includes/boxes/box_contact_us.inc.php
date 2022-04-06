@@ -1,4 +1,13 @@
 <?php
+
+  if (!$_POST) {
+    $_POST = [
+      'firstname' => customer::$data['firstname'],
+      'lastname' => customer::$data['lastname'],
+      'email' => customer::$data['email'],
+    ];
+  }
+
   if (!empty($_POST['send'])) {
 
     try {
@@ -7,19 +16,25 @@
         if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
       }
 
-      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
-      if (empty($_POST['subject'])) throw new Exception(language::translate('error_must_enter_subject', 'You must enter a subject'));
-      if (empty($_POST['email'])) throw new Exception(language::translate('error_must_enter_email', 'You must enter a valid email address'));
-      if (empty($_POST['message'])) throw new Exception(language::translate('error_must_enter_message', 'You must enter a message'));
+      if (empty($_POST['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must provide a firstname'));
+      if (empty($_POST['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must provide a lastname'));
+      if (empty($_POST['subject'])) throw new Exception(language::translate('error_missing_subject', 'You must provide a subject'));
+      if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must provide a valid email address'));
+      if (empty($_POST['message'])) throw new Exception(language::translate('error_missing_message', 'You must provide a message'));
+
+    // Collect scraps
+      if (empty(customer::$data['id'])) {
+        customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
+      }
 
       $message = strtr(language::translate('email_customer_feedback', "** This is an email message from %sender_name <%sender_email> **\r\n\r\n%message"), [
-        '%sender_name' => $_POST['name'],
+        '%sender_name' => $_POST['firstname'] .' '. $_POST['lastname'],
         '%sender_email' => $_POST['email'],
         '%message' => $_POST['message'],
       ]);
 
       $email = new ent_email();
-      $email->set_sender($_POST['email'], $_POST['name'])
+      $email->set_sender($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
             ->add_recipient(settings::get('store_email'), settings::get('store_name'))
             ->set_subject($_POST['subject'])
             ->add_body($message);

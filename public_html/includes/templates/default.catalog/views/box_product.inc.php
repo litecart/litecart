@@ -1,4 +1,4 @@
-<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
+<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo functions::escape_html($sku); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
   <div class="row">
     <div class="col-md-6">
@@ -6,7 +6,7 @@
 
         <div class="col-xs-12">
           <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
             <?php echo $sticker; ?>
           </a>
         </div>
@@ -14,7 +14,7 @@
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-xs-4">
           <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
           </a>
         </div>
         <?php } ?>
@@ -33,9 +33,9 @@
 
       <?php if (!empty($manufacturer)) { ?>
       <div class="manufacturer">
-        <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>">
+        <a href="<?php echo functions::escape_html($manufacturer['link']); ?>">
           <?php if ($manufacturer['image']) { ?>
-          <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $manufacturer['name']; ?></h3>
           <?php } ?>
@@ -140,7 +140,7 @@
         </div>
 
         <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 0;">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">

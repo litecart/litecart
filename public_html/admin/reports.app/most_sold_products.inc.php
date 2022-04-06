@@ -78,7 +78,7 @@ form[name="filter_form"] li {
       <?php echo functions::form_draw_hidden_field('app'); ?>
       <?php echo functions::form_draw_hidden_field('doc'); ?>
       <ul class="list-inline">
-        <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
+        <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
         <li>
           <div class="input-group" style="max-width: 380px;">
             <?php echo functions::form_draw_date_field('date_from', true); ?>

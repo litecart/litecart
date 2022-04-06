@@ -297,7 +297,7 @@
         }
       }
 
-      if (!empty(self::$data['different_shipping_address'])) {
+      if (empty(self::$data['different_shipping_address'])) {
         foreach (array_keys(self::$data['shipping_address']) as $key) {
           self::$data['shipping_address'][$key] = self::$data[$key];
         }

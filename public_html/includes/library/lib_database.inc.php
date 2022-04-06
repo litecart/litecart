@@ -13,7 +13,19 @@
 
         $measure_start = microtime(true);
 
-        self::$_links[$link] = new mysqli($server, $username, $password, $database);
+        mysqli_report(MYSQLI_REPORT_OFF);
+
+        self::$_links[$link] = mysqli_init();
+
+        if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
+          self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1, $link);
+        } else {
+          trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE', E_USER_WARNING);
+        }
+
+        if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
+          trigger_error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
+        }
 
         if (($duration = microtime(true) - $measure_start) > 1) {
           error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
@@ -25,12 +37,12 @@
       }
 
       if (!is_object(self::$_links[$link])) {
-        trigger_error('Error: Invalid database link', E_USER_ERROR);
+        trigger_error('Invalid database link', E_USER_ERROR);
       }
 
-      if (self::$_links[$link]->connect_error) exit;
-
-      self::set_charset($charset, $link);
+      if (!empty($charset)) {
+        self::set_charset($charset, $link);
+      }
 
       $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
       $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
@@ -60,8 +72,8 @@
 
     public static function set_charset($charset, $link='default') {
 
-      if (!$result = self::$_links[$link]->set_charset($charset)) {
-        trigger_error('Unknown MySQL character set for charset '. $charset, E_USER_WARNING);
+      if (!$result = mysqli_set_charset(self::$_links[$link], $charset)) {
+        trigger_error('Could not set charset for MySQL connection: '. mysqli_errno(self::$_links[$link]) .' - '. mysqli_error(self::$_links[$link]), E_USER_WARNING);
         return false;
       }
 
@@ -114,6 +126,15 @@
       return true;
     }
 
+    public static function set_option($option, $value, $link='default') {
+
+      if (!$result = mysqli_options(self::$_links[$link], $option, $value)) {
+        trigger_error('Could not set MySQL option "'. $option .'" to "'. $value .'"', E_USER_ERROR);
+      }
+
+      return true;
+    }
+
     public static function disconnect($link=null) {
 
       if (!empty($link)) {
@@ -127,7 +148,7 @@
         if (!is_object($link)) {
           $errors = true;
         } else {
-          self::$_links[$link]->close();
+          mysqli_close(self::$_links[$link]);
           unset(self::$_links[$link]);
         }
       }
@@ -141,8 +162,8 @@
 
       $measure_start = microtime(true);
 
-      if (!$result = self::$_links[$link]->query($query)) {
-        self::_error($query, self::$_links[$link]);
+      if (($result = mysqli_query(self::$_links[$link], $query)) === false) {
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       if (($duration = microtime(true) - $measure_start) > 3) {
@@ -163,13 +184,13 @@
 
       $measure_start = microtime(true);
 
-      if ($result = self::$_links[$link]->multi_query($query) === false) {
-        self::_error($query, self::$_links[$link]);
+      if (($result = mysqli_multi_query(self::$_links[$link], $query)) === false) {
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
       }
 
       $i = 1;
-      while (self::$_links[$link]->more_results()) {
-        if (self::$_links[$link]->next_result() === false) {
+      while (mysqli_more_results(self::$_links[$link])) {
+        if (mysqli_next_result(self::$_links[$link]) === false) {
           die('Fatal: Query '. $i .' failed');
         }
         $i++;
@@ -187,7 +208,7 @@
 
       $measure_start = microtime(true);
 
-      $array = $result->fetch_assoc();
+      $array = mysqli_fetch_assoc($result);
 
       $duration = microtime(true) - $measure_start;
 
@@ -207,33 +228,51 @@
     }
 
     public static function seek($result, $offset) {
-      return $result->data_seek($offset);
+      return mysqli_data_seek($result, $offset);
     }
 
     public static function num_rows($result) {
-      return $result->num_rows;
+      return mysqli_num_rows($result);
     }
 
     public static function free($result) {
-      return $result->close();
+      return mysqli_free_result($result);
     }
 
     public static function insert_id($link='default') {
-      return self::$_links[$link]->insert_id;
+      return mysqli_insert_id(self::$_links[$link]);
     }
 
     public static function affected_rows($link='default') {
-      return self::$_links[$link]->affected_rows;
+      return mysqli_affected_rows(self::$_links[$link]);
     }
 
     public static function info($link='default') {
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      return self::$_links[$link]->info;
+      return mysqli_info(self::$_links[$link]);
+    }
+
+    public static function create_variable($column_type, $value='') {
+
+      switch (true) {
+        case (preg_match('#^(bit|int|tinyint|smallint|mediumint|bigint)#i', $column_type)):
+          return intval($value);
+
+      case (preg_match('#^(decimal|double|float)#i', $column_type)):
+        return floatval($value);
+
+        default:
+          return strval($value);
+      }
     }
 
     public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
+
+      if (empty($string) || in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
+        return $string;
+      }
 
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
@@ -258,13 +297,6 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      return self::$_links[$link]->escape_string($string);
-    }
-
-    private static function _error($query, $object) {
-
-      $query = preg_replace('#^\s+#m', '', $query) . PHP_EOL;
-
-      trigger_error($object->errno .' - '. preg_replace('#\r#', ' ', $object->error) . PHP_EOL . $query, E_USER_ERROR);
+      return mysqli_real_escape_string(self::$_links[$link], $string);
     }
   }

@@ -41,7 +41,7 @@
       }
 
       if (empty($headers['Content-Length'])) {
-        $headers['Content-Length'] = mb_strlen($data);
+        $headers['Content-Length'] = ($data != '') ? mb_strlen($data) : 0;
       }
 
       if (empty($headers['Connection'])) {

@@ -37,7 +37,7 @@
           case 'customer_country_code':
           case 'customer_zone_code':
           case 'customer_phone':
-            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = null;
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case 'shipping_company':
@@ -50,21 +50,21 @@
           case 'shipping_country_code':
           case 'shipping_zone_code':
           case 'shipping_phone':
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = null;
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case 'payment_option_id':
           case 'payment_option_name':
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = null;
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case 'shipping_option_id':
           case 'shipping_option_name':
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = null;
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           default:
-            $this->data[$field['Field']] = null;
+            $this->data[$field['Field']] = database::create_variable($field['Type']);
             break;
         }
       }
@@ -197,7 +197,7 @@
           'author' => 'system',
           'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('store_language_code')), [
             '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
-            '%new_status' => reference::order_status($this->data['order_status_id'])->name,
+            '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
           ]),
           'hidden' => 1,
         ];
@@ -282,7 +282,7 @@
       );
 
     // Restock previous items
-      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
+      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'], $order->data['language_code'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
           $product = new ent_product($previous_order_item['product_id']);
@@ -507,10 +507,10 @@
       while (isset($this->data['items']['new_'.$i])) $i++;
       $item_key = 'new_'.$i;
 
-      $this->data['items']['new_'.$i]['id'] = null;
+      $this->data['items']['new_'.$i]['id'] = '';
 
       foreach ($fields as $field) {
-        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
+        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : '';
       }
 
       $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
@@ -682,7 +682,7 @@
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
 
-      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : null;
+      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : '';
 
       $aliases = [
         '%order_id' => $this->data['id'],
@@ -761,6 +761,7 @@
 
       $aliases = [
         '%order_id' => $this->data['id'],
+        '%new_status' => $order_status->name,
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
@@ -799,7 +800,7 @@
       $message = strtr($order_status->email_message, $aliases);
 
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
-      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), ['%new_status' => $order_status->name]);
+      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
 
       if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
         $message = '<div dir="rtl">' . PHP_EOL

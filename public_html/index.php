@@ -1,6 +1,6 @@
 <?php
 /*!
- * LiteCart® 2.3.5
+ * LiteCart® 2.4.0
  *
  * Online Catalog and Shopping Cart Platform
  *

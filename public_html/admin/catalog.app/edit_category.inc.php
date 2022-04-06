@@ -326,9 +326,9 @@
     }
 
     var output = '<tr class="grabable">'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
                + '  <td>new_attribute_group_name</td>'
                + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
                + '  <td class="text-end">'

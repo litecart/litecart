@@ -18,7 +18,10 @@
 
     // Load cached links (url rewrites)
       self::$_links_cache_token = cache::token('links', ['site', 'language'], 'memory');
-      self::$_links_cache = cache::get(self::$_links_cache_token);
+
+      if (!self::$_links_cache = cache::get(self::$_links_cache_token)) {
+        self::$_links_cache = [];
+      }
 
       event::register('after_capture', [__CLASS__, 'after_capture']);
     }
@@ -141,7 +144,7 @@
           $email = new ent_email();
           $email->add_recipient(settings::get('store_email'))
                 ->set_subject('[Not Found Report] '. settings::get('store_name'))
-                ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))
+                ->add_body("** This is a report of requests made to your website that did not have a destination. **\r\n\r\n". PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n".implode("\r\n", $lines))
                 ->send();
           file_put_contents($not_found_file, '');
         } else {
@@ -156,12 +159,11 @@
 
     public static function strip_url_logic($path) {
 
-      if (empty($path)) return;
+      if (empty($path)) return '';
 
-      $path = parse_url($path, PHP_URL_PATH);
-
-      $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
-      //return preg_replace('#^'. WS_DIR_APP . '(index\.php/)?('. implode('|', array_keys(language::$languages)) .')?(/|$)#', '', parse_url($path, PHP_URL_PATH));
+      if ($path = parse_url($path, PHP_URL_PATH)) {
+        $path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')/)?(.*)$#', "$4", $path);
+      }
 
       return $path;
     }

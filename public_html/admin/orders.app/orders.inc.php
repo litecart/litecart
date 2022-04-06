@@ -79,7 +79,26 @@
         where name like '%". database::input($_GET['query']) ."%'
         or sku like '%". database::input($_GET['query']) ."%'
       )",
+      "o.order_status_id in (
+        select distinct order_status_id from ". DB_TABLE_PREFIX ."order_statuses_info
+        where language_code = '". database::input(language::$selected['code']) ."'
+        and name like '%". database::input($_GET['query']) ."%'
+      )",
     ];
+  }
+
+  switch($_GET['order_status_id']) {
+    case '':
+      $sql_where_order_status = "and (os.is_archived = 0 or unread = 1)";
+      break;
+    case 'archived':
+      $sql_where_order_status = "and (os.is_archived = 1)";
+      break;
+    case 'all':
+      break;
+    default:
+      $sql_where_order_status =  "and o.order_status_id = ". (int)$_GET['order_status_id'];
+      break;
   }
 
   switch($_GET['sort']) {
@@ -109,7 +128,7 @@
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code']) ."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
+    ". (!empty($sql_where_order_status) ? $sql_where_order_status : "") ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
@@ -142,6 +161,38 @@
 
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+
+// Order Statuses
+  $order_status_options = [
+    [
+      'label' => language::translate('title_collections', 'Collections'),
+      'options' => [
+        [language::translate('title_current', 'Current Orders'), ''],
+        [language::translate('title_archived_orders', 'Archived Orders'), 'archived'],
+        [language::translate('title_all_orders', 'All Orders'), 'all'],
+      ],
+    ],
+    [
+      'label' => language::translate('title_order_statuses', 'Order Statuses'),
+      'options' => [],
+    ],
+  ];
+
+  $order_statuses_query = database::query(
+    "select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
+    left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
+    left join (
+      select order_status_id, count(id) as num_orders
+      from ". DB_TABLE_PREFIX ."orders
+      group by order_status_id
+    ) o on (o.order_status_id = os.id)
+    order by os.priority, osi.name;"
+  );
+
+  while ($order_status = database::fetch($order_statuses_query)) {
+    $order_status_options[1]['options'][] = [$order_status['name'] . ' ('. language::number_format((int)$order_status['num_orders'], 0) .')', $order_status['id']];
+  }
 
 // Actions
   $order_actions = [];
@@ -193,7 +244,7 @@ table .fa-star:hover {
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <div><?php echo functions::form_draw_order_status_list('order_status_id', true, false); ?></div>
+      <div><?php echo functions::form_draw_select_optgroup_field('order_status_id', $order_status_options, true, false, 'style="width: auto;"'); ?></div>
       <div class="input-group" style="max-width: 450px;">
         <?php echo functions::form_draw_datetime_field('date_from', true); ?>
         <span class="input-group-text"> - </span>
@@ -258,10 +309,10 @@ table .fa-star:hover {
         <ul id="order-actions" class="list-inline">
           <?php foreach ($order_actions as $module) { ?>
           <li>
-            <fieldset title="<?php echo htmlspecialchars($module['description']); ?>">
+            <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
               <legend><?php echo $module['name']; ?></legend>
               <div class="btn-group">
-                <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'" title="'. htmlspecialchars($action['description']) .'"'); ?>
+                <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
               </div>
             </fieldset>
           </li>
@@ -278,8 +329,6 @@ table .fa-star:hover {
 </div>
 
 <script>
-  $('select[name="order_status_id"] option[value=""]').text('-- <?php echo language::translate('title_order_status', ''); ?> --');
-
   $('input[name="query"]').keypress(function(e) {
     if (e.which == 13) {
       e.preventDefault();

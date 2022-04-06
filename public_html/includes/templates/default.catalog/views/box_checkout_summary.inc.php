@@ -50,7 +50,7 @@
   <div class="confirm row">
     <div class="col-md-9">
       <?php if ($error) { ?>
-      <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+      <div class="alert alert-danger"><?php echo functions::escape_html($error); ?></div>
       <?php } ?>
 
       <?php if (!$error && $consent) { ?>

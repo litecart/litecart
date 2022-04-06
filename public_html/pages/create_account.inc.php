@@ -12,9 +12,7 @@
   }
 
   if (!$_POST) {
-    foreach (customer::$data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = customer::$data;
   }
 
   if (!empty(customer::$data['id'])) {
@@ -37,7 +35,7 @@
       if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
 
       if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
-      if (!functions::password_validate($_POST['password'], 8, 1, 1, 1, 0)) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough. It must consist of at least 8 lowercases, uppercases, and numbers'));
+      if (!functions::password_check_strength($_POST['password'])) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
       if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password'));
       if ($_POST['confirmed_password'] != $_POST['password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match'));
 

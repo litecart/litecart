@@ -150,10 +150,10 @@
     foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', '');
 ?>
     var output = '<tr>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
-               + '  <td><?php echo functions::general_escape_js($name_fields); ?></td>'
+               + '  <td><?php echo functions::escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
+               + '  <td><?php echo functions::escape_js($name_fields); ?></td>'
                + '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>'
-               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     output = output.replace(/new_value_index/g, 'new_' + new_value_index);
     $(this).closest('table').find('tbody').append(output);

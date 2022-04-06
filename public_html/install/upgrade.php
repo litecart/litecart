@@ -4,7 +4,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.3.5\n"
+      echo "\nLiteCart® 2.4.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -105,6 +105,19 @@
       } else {
         echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
+
+      ### PHP > Check PHP Extensisons ###############################
+
+      echo '<p>Checking for PHP extensions... ';
+
+      $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
+
+      if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
+        echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
+      } else {
+        echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      }
+
       ### App > Check Version #######################################
 
       echo '<p>Checking application database version... ';
@@ -205,6 +218,14 @@
       #############################################
 
       echo '<p>Preparing CSS files...</p>' . PHP_EOL . PHP_EOL;
+
+      $files_to_delete = [
+        '../includes/templates/default.admin/less/',
+      ];
+
+      foreach ($files_to_delete as $file) {
+        file_delete($file);
+      }
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
@@ -350,26 +371,40 @@ input[name="development_type"]:checked + div {
 <form name="upgrade_form" method="post">
   <h1>Upgrade</h1>
 
-  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
-  <div class="form-group">
-    <label>Version</label>
-    <ul class="list-inline" style="font-size: 2em;">
-      <li><?php echo PLATFORM_DATABASE_VERSION; ?></li>
-      <li>→</li>
-      <li><?php echo PLATFORM_VERSION; ?></li>
-    </ul>
-  </div>
-  <?php } else { ?>
-  <div class="form-group">
-    <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
-    <select class="form-control" name="from_version">
-      <option value="">-- Select Version --</option>
-      <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
-    </select>
-  </div>
-  <?php } ?>
+  <h2>Application</h2>
 
-  <h3>Development</h3>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label>MySQL Server</label>
+      <div class="form-control">
+        <?php echo DB_SERVER; ?>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label>MySQL Database</label>
+      <div class="form-control">
+        <?php echo DB_DATABASE; ?>
+      </div>
+    </div>
+
+  <?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
+    <div class="form-group col-md-4">
+      <label>Current Version</label>
+      <div class="form-control"><?php echo PLATFORM_DATABASE_VERSION; ?></div>
+    </div>
+    <?php } else { ?>
+    <div class="form-group col-md-4">
+      <label>Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</label>
+      <select class="form-control" name="from_version">
+        <option value="">-- Select Version --</option>
+        <?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected="selected"' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
+      </select>
+    </div>
+    <?php } ?>
+  </div>
+
+  <h2>Development</h2>
 
   <div class="form-group" style="display: flex;">
     <label>

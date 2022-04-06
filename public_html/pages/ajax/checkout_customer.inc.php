@@ -45,6 +45,7 @@
         if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) {
           if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
           if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+          if (!functions::password_check_strength($_POST['password'])) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
         }
 
         $mod_customer = new mod_customer();
@@ -70,7 +71,9 @@
       ];
 
       foreach ($fields as $field) {
-        customer::$data[$field] = isset($_POST[$field]) ? $_POST[$field] : '';
+        if (isset($_POST[$field])) {
+          customer::$data[$field] = $_POST[$field];
+        }
       }
 
     // Shipping address
@@ -88,7 +91,7 @@
       ];
 
       foreach ($fields as $field) {
-        if (!empty(customer::$data['different_shipping_address'])) {
+        if (!empty($_POST['different_shipping_address'])) {
           customer::$data['shipping_address'][$field] = isset($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
         } else {
           customer::$data['shipping_address'][$field] = isset($_POST[$field]) ? $_POST[$field] : '';

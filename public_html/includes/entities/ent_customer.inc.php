@@ -23,14 +23,14 @@
 
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
-          $this->data['shipping_address'][$matches[1]] = '';
+          $this->data['shipping_address'][$matches[1]] = database::create_variable($field['Type']);
         } else {
-          $this->data[$field['Field']] = null;
+          $this->data[$field['Field']] = database::create_variable($field['Type']);
         }
       }
 
       $this->data['status'] = 1;
-      $this->data['newsletter'] = null;
+      $this->data['newsletter'] = '';
 
       $this->previous = $this->data;
     }
@@ -63,7 +63,7 @@
 
       if (empty($this->data['different_shipping_address'])) {
         foreach (array_keys($this->data['shipping_address']) as $key) {
-          $this->data['shipping_address'][$key] = null;
+          $this->data['shipping_address'][$key] = '';
         }
         $this->data['shipping_address']['country_code'] = $this->data['country_code'];
         $this->data['shipping_address']['zone_code'] = $this->data['zone_code'];
@@ -76,9 +76,9 @@
       );
 
       if (database::num_rows($newsletter_recipient_query)) {
-        $this->data['newsletter'] = true;
+        $this->data['newsletter'] = 1;
       } else {
-        $this->data['newsletter'] = false;
+        $this->data['newsletter'] = 0;
       }
 
       $this->previous = $this->data;

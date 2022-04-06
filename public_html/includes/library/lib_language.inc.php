@@ -33,6 +33,8 @@
       self::$_cache_token = cache::token('translations', ['endpoint', 'language'], 'memory');
 
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
+        self::$_cache['translations'] = [];
+
         $translations_query = database::query(
           "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_PREFIX ."translations
           where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
@@ -265,57 +267,158 @@
     }
 
     public static function number_format($number, $decimals=2) {
-      return number_format($number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
+      return number_format((float)$number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
     }
 
     public static function strftime($format, $timestamp=null) {
 
-      if ($timestamp === null) $timestamp = time();
+      if ($timestamp === null) {
+        $timestamp = new \DateTime();
 
-      if (in_array(strtoupper(substr(PHP_OS, 0, 3)), ['WIN', 'MAC'])) {
-        $format = preg_replace('#(?<!%)((?:%%)*)%P#', '\1%p', $format);
+      } elseif (is_numeric($timestamp)) {
+        $timestamp = new \DateTime('@' . $timestamp);
+
+      } elseif (is_string($timestamp)) {
+        $timestamp = new \DateTime($timestamp);
       }
 
-      if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-        $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+      if (!($timestamp instanceof \DateTimeInterface)) {
+        throw new \InvalidArgumentException('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.');
+      }
 
-        $locale = setlocale(LC_TIME, 0);
+      $intl_formats = [
+        '%a' => 'EEE',	// An abbreviated textual representation of the day	Sun through Sat
+        '%A' => 'EEEE',	// A full textual representation of the day	Sunday through Saturday
+        '%b' => 'MMM',	// Abbreviated month name, based on the locale	Jan through Dec
+        '%B' => 'MMMM',	// Full month name, based on the locale	January through December
+        '%h' => 'MMM',	// Abbreviated month name, based on the locale (an alias of %b)	Jan through Dec
+        '%p' => 'aa',	// UPPER-CASE 'AM' or 'PM' based on the given time	Example: AM for 00:31, PM for 22:23
+        '%P' => 'aa',	// lower-case 'am' or 'pm' based on the given time	Example: am for 00:31, pm for 22:23
+      ];
 
-        switch(true) {
-          //case (preg_match('#\.(0)$#', $locale)):
-          //  return '???';
+      $intl_formatter = function (\DateTimeInterface $timestamp, string $format) use ($intl_formats) {
+        $tz = $timestamp->getTimezone();
+        $date_type = IntlDateFormatter::FULL;
+        $time_type = IntlDateFormatter::FULL;
+        $pattern = '';
 
-          case (preg_match('#\.(874|1256)$#', $locale, $matches)):
-            return iconv('UTF-8', "$locale", strftime($format, $timestamp));
-
-          case (preg_match('#\.1250$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-2');
-
-          case (preg_match('#\.(1251|1252|1254)$#', $locale, $matches)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'Windows-'.$matches[1]);
-
-          case (preg_match('#\.(1255|1256)$#', $locale, $matches)):
-            return iconv(self::$selected['charset'], "Windows-{$matches[1]}", strftime($format, $timestamp));
-
-          case (preg_match('#\.1257$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'ISO-8859-13');
-
-          case (preg_match('#\.(932|936|950)$#', $locale, $matches)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'CP'.$matches[1]);
-
-          case (preg_match('#\.(949)$#', $locale)):
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'EUC-KR');
-
-          //case (preg_match('#\.(x-iscii-ma)$i#', $locale)):
-          //  return '???';
-
-          default:
-            trigger_error("No predefined charset mapped for Windows locale $locale. Attempting automatic detection instead.", E_USER_NOTICE);
-            return mb_convert_encoding(strftime($format, $timestamp), self::$selected['charset'], 'auto');
+        // %c = Preferred date and time stamp based on locale
+        // Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
+        if ($format == '%c') {
+          $date_type = IntlDateFormatter::LONG;
+          $time_type = IntlDateFormatter::SHORT;
         }
-      }
+        // %x = Preferred date representation based on locale, without the time
+        // Example: 02/05/09 for February 5, 2009
+        elseif ($format == '%x') {
+          $date_type = IntlDateFormatter::SHORT;
+          $time_type = IntlDateFormatter::NONE;
+        }
+        // Localized time format
+        elseif ($format == '%X') {
+          $date_type = IntlDateFormatter::NONE;
+          $time_type = IntlDateFormatter::MEDIUM;
+        }
+        else {
+          $pattern = $intl_formats[$format];
+        }
 
-      return strftime($format, $timestamp);
+        return (new IntlDateFormatter(null, $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
+      };
+
+      $translation_table = [
+      // Day
+        '%a' => $intl_formatter,
+        '%A' => $intl_formatter,
+        '%d' => 'd',
+        '%e' => 'j',
+      // Day number in year, 001 to 366
+        '%j' => function ($timestamp) {
+          return sprintf('%03d', $timestamp->format('z')+1);
+        },
+        '%u' => 'N',
+        '%w' => 'w',
+
+      // Week
+        '%U' => function ($timestamp) {
+          // Number of weeks between date and first Sunday of year
+          $day = new \DateTime(sprintf('%d-01 Sunday', $timestamp->format('Y')));
+          return intval(($timestamp->format('z') - $day->format('z')) / 7);
+        },
+      // Number of weeks between date and first Monday of year
+        '%W' => function ($timestamp) {
+          $day = new \DateTime(sprintf('%d-01 Monday', $timestamp->format('Y')));
+          return intval(($timestamp->format('z') - $day->format('z')) / 7);
+        },
+        '%V' => 'W',
+
+      // Month
+        '%b' => $intl_formatter,
+        '%B' => $intl_formatter,
+        '%h' => $intl_formatter,
+        '%m' => 'm',
+
+      // Year
+        '%C' => function ($timestamp) {
+          // Century (-1): 19 for 20th century
+          return (int) $timestamp->format('Y') / 100;
+        },
+        '%g' => function ($timestamp) {
+          return substr($timestamp->format('o'), -2);
+        },
+        '%G' => 'o',
+        '%y' => 'y',
+        '%Y' => 'Y',
+
+      // Time
+        '%H' => 'H',
+        '%k' => 'G',
+        '%I' => 'h',
+        '%l' => 'g',
+        '%M' => 'i',
+        '%p' => $intl_formatter, // AM PM (this is reversed on purpose!)
+        '%P' => $intl_formatter, // am pm
+        '%r' => 'G:i:s A', // %I:%M:%S %p
+        '%R' => 'H:i', // %H:%M
+        '%S' => 's',
+        '%X' => $intl_formatter,// Preferred time representation based on locale, without the date
+
+      // Timezone
+        '%z' => 'O',
+        '%Z' => 'T',
+
+      // Time and Date Stamps
+        '%c' => $intl_formatter,
+        '%D' => 'm/d/Y',
+        '%F' => 'Y-m-d',
+        '%s' => 'U',
+        '%x' => $intl_formatter,
+      ];
+
+      $out = preg_replace_callback('/(?<!%)(%[a-zA-Z])/', function ($match) use ($translation_table, $timestamp) {
+        if ($match[1] == '%n') {
+          return "\n";
+        }
+        elseif ($match[1] == '%t') {
+          return "\t";
+        }
+
+        if (!isset($translation_table[$match[1]])) {
+          throw new \InvalidArgumentException(sprintf('Format "%s" is unknown in time format', $match[1]));
+        }
+
+        $replace = $translation_table[$match[1]];
+
+        if (is_string($replace)) {
+          return $timestamp->format($replace);
+        }
+        else {
+          return $replace($timestamp, $match[1]);
+        }
+      }, $format);
+
+      $out = str_replace('%%', '%', $out);
+      return $out;
     }
 
     public static function convert_characters($variable, $from_charset=null, $to_charset=null) {

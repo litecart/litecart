@@ -1,10 +1,13 @@
 <?php
 
   function general_escape_js($string) {
-    return addcslashes($string, "\\\"\'\r\n");
+    //trigger_error('general_escape_js() has been deprecated. Instead use functions::escape_js()', E_USER_DEPRECATED);
+    return functions::escape_js($string);
   }
 
   function general_path_friendly($text, $language_code=null) {
+
+    if (empty($text)) return '';
 
     if (empty($language_code)) $language_code = language::$selected['code'];
 

@@ -255,8 +255,10 @@
           <tr>
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
             <th></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th></th>
+            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+            <th style="min-width: 150px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
+            <th><?php echo language::translate('title_price', 'Price'); ?></th>
             <th></th>
             <th></th>
           </tr>
@@ -272,7 +274,7 @@
     $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
     $products_query = database::query(
-      "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name,
+      "select p.id, p.status, p.sku, pp.price, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name,
       (
         if(p.id = '". database::input($_GET['query']) ."', 10, 0)
         + (match(pi.name) against ('*". database::input($query_fulltext) ."*'))
@@ -297,6 +299,10 @@
       ) as relevance
       from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      left join (
+        select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
+        from ". DB_TABLE_PREFIX ."products_prices
+      ) pp on (pp.product_id = p.id)
       left join ". DB_TABLE_PREFIX ."manufacturers m on (p.manufacturer_id = m.id)
       left join ". DB_TABLE_PREFIX ."suppliers s on (p.supplier_id = s.id)
       having relevance > 0
@@ -329,8 +335,10 @@
           <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
             <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+            <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
             <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
-            <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : ''; ?></td>
+            <td><?php echo $product['sku']; ?></td>
+            <td class="text-end"><?php echo currency::format($product['price']); ?></td>
             <td><a href="<?php echo document::href_ilink('product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
             <td class="text-end"><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>
@@ -341,7 +349,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="5"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+            <td colspan="8"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
           </tr>
         </tfoot>
 <?php
@@ -357,9 +365,13 @@
       $output = '';
 
       $products_query = database::query(
-        "select p.id, p.status, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
+        "select p.id, p.status, p.sku, pp.price, p.sold_out_status_id, p.image, p.quantity, pi.name, p.date_valid_from, p.date_valid_to, p2c.category_id from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PREFIX ."products_to_categories p2c on (p2c.product_id = p.id)
+        left join (
+          select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
+          from ". DB_TABLE_PREFIX ."products_prices
+        ) pp on (pp.product_id = p.id)
         where ". (!empty($category_id) ? "p2c.category_id = ". (int)$category_id : "(p2c.category_id is null or p2c.category_id = 0)") ."
         group by p.id
         order by pi.name asc;"
@@ -394,7 +406,8 @@
 
         $output .= '<tr class="'. (!$product['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::form_draw_checkbox('products['. $product['id'] .']', $product['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL
+                 . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;
 
         if ($display_images) {
           $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-inline-start: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
@@ -402,7 +415,8 @@
           $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
 
-        $output .= '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. htmlspecialchars($warning) .'"') : '') .'</td>' . PHP_EOL
+        $output .= '  <td>'. $product['sku'] .'</td>' . PHP_EOL
+                 . '  <td class="text-end">'. currency::format($product['price']) .'</td>' . PHP_EOL
                  . '  <td><a href="'. document::href_ilink('product', ['product_id' => $product['id']]) .'" title="'. language::translate('title_view', 'View') .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-end"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
@@ -419,7 +433,9 @@
         $output .= '<tr>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66;"') .' <strong><a href="'. document::href_link('', ['category_id' => '0'], true) .'">['. language::translate('title_root', 'Root') .']</a></strong></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
                  . '  <td></td>' . PHP_EOL
@@ -440,7 +456,8 @@
 
         $output .= '<tr class="'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
-                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL;
+                 . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL
+                 . '  <td>&nbsp;</td>' . PHP_EOL;
 
         if ($category['id'] == $_GET['category_id']) {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
@@ -450,7 +467,8 @@
           $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
-        $output .= '  <td>&nbsp;</td>' . PHP_EOL
+        $output .= '  <td></td>' . PHP_EOL
+                 . '  <td></td>' . PHP_EOL
                  . '  <td><a href="'. document::href_ilink('category', ['category_id' => $category['id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a></td>' . PHP_EOL
                  . '  <td class="text-end"><a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_category', 'category_id' => $category['id']]) .'" title="'. language::translate('title_edit', 'Edit') .'">'. functions::draw_fonticon('fa-pencil').'</a></td>' . PHP_EOL
                  . '</tr>' . PHP_EOL;
@@ -471,7 +489,9 @@
             $output .= '<tr>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
+                     . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
                      . '  <td>&nbsp;</td>' . PHP_EOL
@@ -493,7 +513,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="6"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+            <td colspan="8"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
           </tr>
         </tfoot>
 <?php

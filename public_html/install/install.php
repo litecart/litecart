@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.3.5\n"
+      echo "\nLiteCart® 2.4.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -574,6 +574,14 @@
 
     echo '<p>Preparing CSS files...<br />' . PHP_EOL;
 
+    $files_to_delete = [
+      '../includes/templates/default.admin/less/',
+    ];
+
+    foreach ($files_to_delete as $file) {
+      file_delete($file);
+    }
+
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
       $files_to_delete = [
@@ -614,6 +622,43 @@
         file_put_contents($file, strtr($contents, $search_replace));
       }
     }
+
+    ### Scan translations #########################################
+
+    echo "<p>Scanning installation for translations...";
+
+    $translations = [];
+
+    $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_APP);
+    $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+
+    foreach ($iterator as $file) {
+      if (!preg_match('#\.php$#', $file)) continue;
+
+      $pattern = '#'. implode(['language::translate\((?:(?!\$)', '(?:(__CLASS__)?\.)?', '(?:[\'"])([^\'"]+)(?:[\'"])', '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?', '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?', ')\)']) .'#';
+
+      if (!preg_match_all($pattern, file_get_contents($file), $matches)) continue;;
+
+      for ($i=0; $i<count($matches[0]); $i++) {
+        if ($matches[1][$i]) {
+          $code = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[2][$i];
+        } else {
+          $code = $matches[2][$i];
+        }
+        $translations[$code] = strtr($matches[3][$i], ["\\r" => "\r", "\\n" => "\n"]);
+      }
+
+    }
+
+    foreach ($translations as $code => $translation) {
+      database::query(
+        "insert into ". DB_TABLE_PREFIX ."translations
+        (code, text_en, html, date_created)
+        values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
+      );
+    }
+
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
     ### Set cache breakpoint ######################################
 

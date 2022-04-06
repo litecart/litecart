@@ -26,7 +26,7 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (empty($_POST['categories'])) $_POST['categories'] = [];
+      if (empty($_POST['categories'])) $_POST['categories'] = [0];
       if (empty($_POST['images'])) $_POST['images'] = [];
       if (empty($_POST['attributes'])) $_POST['attributes'] = [];
       if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
@@ -114,6 +114,7 @@
 
       $product->delete();
 
+      if (empty($_POST['categories'])) $_POST['categories'] = [0];
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0]]));
       exit;
@@ -184,7 +185,7 @@
     <?php echo functions::form_draw_form_begin('product_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active" style="max-width: 960px;">
+        <div id="tab-general" class="tab-pane active" style="max-width: 1200px;">
 
           <div class="row">
             <div class="col-md-4">
@@ -345,7 +346,7 @@
 
         </div>
 
-        <div id="tab-information" class="tab-pane" style="max-width: 640px;">
+        <div id="tab-information" class="tab-pane">
 
           <ul class="nav nav-tabs">
             <?php foreach (language::$languages as $language) { ?>
@@ -354,36 +355,44 @@
           </ul>
 
           <div class="tab-content">
+
             <?php foreach (array_keys(language::$languages) as $language_code) { ?>
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
-              <div class="form-group">
-                <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true); ?>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_description', 'Description'); ?></label>
-                <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'style="height: 250px;"'); ?>
-              </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
-                <?php echo functions::form_draw_regional_textarea($language_code, 'technical_data['. $language_code .']', true, 'style="height: 250px;"'); ?>
-              </div>
-
               <div class="row">
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
+                    <?php echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true); ?>
+                  </div>
+
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_description', 'Description'); ?></label>
+                    <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'style="height: 250px;"'); ?>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+                      <?php echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+                      <?php echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo functions::draw_fonticon('fa-question-circle'); ?></a></label>
+                    <?php echo functions::form_draw_regional_textarea($language_code, 'technical_data['. $language_code .']', true, 'style="height: 480px;"'); ?>
+                  </div>
                 </div>
+
               </div>
-
             </div>
             <?php } ?>
 
@@ -533,7 +542,7 @@
 
           <ul id="options" class="list-unstyled">
             <?php foreach ($_POST['options'] as $group_id => $option) { ?>
-            <li data-group-id="<?php echo htmlspecialchars($group_id); ?>" data-group-name="<?php echo htmlspecialchars($option['name']); ?>">
+            <li data-group-id="<?php echo functions::escape_html($group_id); ?>" data-group-name="<?php echo functions::escape_html($option['name']); ?>">
 
               <div class="float-end">
                 <a class="move-group-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-2x', 'style="color: #3399cc;"'); ?></a>
@@ -579,7 +588,7 @@
 
                   <tbody>
                   <?php foreach ($option['values'] as $value_id => $value) { ?>
-                    <tr data-value-id="<?php echo htmlspecialchars($value['value_id']); ?>" data-value-name="<?php echo htmlspecialchars($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
+                    <tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
                       <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
                       <td style="text-align: center;"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
                       <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
@@ -950,12 +959,12 @@
     }
 
     var output = '<tr>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][id]', '')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][group_id]', 'new_group_id')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][group_name]', 'new_group_name')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][value_id]', 'new_value_id')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][value_name]', 'new_value_name')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][custom_value]', 'new_custom_value')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][id]', '')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][group_id]', 'new_group_id')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][group_name]', 'new_group_name')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][value_id]', 'new_value_id')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][value_name]', 'new_value_name')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('attributes[new_attribute_i][custom_value]', 'new_custom_value')); ?>'
                + '  <td>new_group_name</td>'
                + '  <td>new_value_name</td>'
                + '  <td>new_custom_value</td>'
@@ -1124,29 +1133,29 @@
   $('#table-campaigns').on('click', '.add', function(e) {
     e.preventDefault();
     var output = '<tr>'
-               + '  <td><?php echo functions::general_escape_js(language::translate('title_start_date', 'Start Date')); ?><br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_hidden_field('campaigns[new_campaign_i][id]', '') . functions::form_draw_datetime_field('campaigns[new_campaign_i][start_date]', '')); ?>'
+               + '  <td><?php echo functions::escape_js(language::translate('title_start_date', 'Start Date')); ?><br />'
+               + '    <?php echo functions::escape_js(functions::form_draw_hidden_field('campaigns[new_campaign_i][id]', '') . functions::form_draw_datetime_field('campaigns[new_campaign_i][start_date]', '')); ?>'
                + '  </td>'
-               + '  <td><?php echo functions::general_escape_js(language::translate('title_end_date', 'End Date')); ?><br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
+               + '  <td><?php echo functions::escape_js(language::translate('title_end_date', 'End Date')); ?><br />'
+               + '    <?php echo functions::escape_js(functions::form_draw_datetime_field('campaigns[new_campaign_i][end_date]', '')); ?>'
                + '  </td>'
                + '  <td>- %<br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 0, null)); ?>'
+               + '    <?php echo functions::escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 0, null)); ?>'
                + '  </td>'
-               + '  <td><?php echo functions::general_escape_js(settings::get('store_currency_code')); ?><br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', '')); ?>'
+               + '  <td><?php echo functions::escape_js(settings::get('store_currency_code')); ?><br />'
+               + '    <?php echo functions::escape_js(functions::form_draw_currency_field(settings::get('store_currency_code'), 'campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', '')); ?>'
                + '  </td>'
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
     if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
-               + '  <td><?php echo functions::general_escape_js($currency_code); ?><br />'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '')); ?>'
+               + '  <td><?php echo functions::escape_js($currency_code); ?><br />'
+               + '    <?php echo functions::escape_js(functions::form_draw_currency_field($currency_code, 'campaigns[new_campaign_i]['. $currency_code .']', '')); ?>'
                + '  </td>'
 <?php
   }
 ?>
-               + '  <td><br /><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '  <td><br /><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     while ($('input[name="campaigns[new_'+new_campaign_i+']"]').length) new_campaign_i++;
     output = output.replace(/new_campaign_i/g, 'new_' + new_campaign_i);
@@ -1301,18 +1310,18 @@
                  + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
                  + '  </div>'
                  + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_option[group_id]"] option:selected').text() +'</h2>'
-                 + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
+                 + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
                  + '  <div class="row">'
                  + '    <div class="form-group col-sm-4 col-md-2">'
-                 + '      <label><?php echo functions::general_escape_js(language::translate('title_function', 'Function')); ?></label>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>'
+                 + '      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>'
+                 + '      <?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][function]', ['select', 'radio', 'checkbox'], 'select')); ?>'
                  + '    </div>'
                  + '    <div class="form-group col-sm-4 col-md-2">'
-                 + '      <label><?php echo functions::general_escape_js(language::translate('title_sort_values', 'Sort Values')); ?></label>'
-                 + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][sort]', $option_sort_options, 'custom')); ?>'
+                 + '      <label><?php echo functions::escape_js(language::translate('title_sort_values', 'Sort Values')); ?></label>'
+                 + '      <?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][sort]', $option_sort_options, 'custom')); ?>'
                  + '    </div>'
                  + '    <div class="form-group col-sm-4 col-md-2">'
-                 + '      <label><?php echo functions::general_escape_js(language::translate('title_required', 'Required')); ?></label>'
+                 + '      <label><?php echo functions::escape_js(language::translate('title_required', 'Required')); ?></label>'
                  + '      <div class="checkbox">'
                  + '        <label><?php echo functions::form_draw_checkbox('options[new_group_id][required]', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>'
                  + '      </div>'
@@ -1322,7 +1331,7 @@
                  + '    <table id="table-options" class="table table-striped table-hover table-dragable data-table">'
                  + '      <thead>'
                  + '        <tr>'
-                 + '          <th><?php echo functions::general_escape_js(language::translate('title_option', 'Option')); ?></th>'
+                 + '          <th><?php echo functions::escape_js(language::translate('title_option', 'Option')); ?></th>'
                  + '          <th style="width: 150px;"><?php echo language::translate('title_price_operator', 'Price Operator'); ?></th>'
                  + '          <th colspan="<?php echo count(currency::$currencies); ?>"><?php echo language::translate('title_price_adjustment', 'Price Adjustment'); ?></th>'
                  + '          <th style="width: 85px;">&nbsp;</th>'
@@ -1342,9 +1351,9 @@
     }
 
     var output = '<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">'
-               + '  <td class="grabable"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
-               + '  <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
-               + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::general_escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
+               + '  <td class="grabable"><?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
+               + '  <td style="text-align: center;"><?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
+               + '  <?php foreach (array_keys(currency::$currencies) as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
                + '  <td class="text-end"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>'
                + '</tr>';
 
@@ -1380,11 +1389,11 @@
                + '    <a class="remove-group" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-2x', 'style="color: #cc3333;"'); ?></a>'
                + '  </div>'
                + '  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_option[group_id]"] option:selected').text() +'</h2>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][group_id]', 'new_group_id')); ?>'
                + '  <div class="row">'
                + '    <div class="form-group col-sm-4 col-md-2">'
                + '      <label><?php echo language::translate('title_function', 'Function'); ?></label>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_select_field('options[new_group_id][function]', ['text', 'textarea'], 'text')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][function]', ['text', 'textarea'], 'text')); ?>'
                + '    </div>'
                + '    <div class="form-group col-sm-4 col-md-2">'
                + '      <label><?php echo language::translate('title_required', 'Required'); ?></label>'
@@ -1560,33 +1569,33 @@
     if (new_option_combination == '') return;
 
     var output = '<tr>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('options_stock[new_option_stock_i][id]', '') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][combination]', 'new_option_combination') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][name]['. language::$selected['code'] .']', 'new_option_name')); ?>new_option_name</td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '')); ?></td>'
+               + '  <td><?php echo functions::escape_js(functions::form_draw_hidden_field('options_stock[new_option_stock_i][id]', '') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][combination]', 'new_option_combination') . functions::form_draw_hidden_field('options_stock[new_option_stock_i][name]['. language::$selected['code'] .']', 'new_option_name')); ?>new_option_name</td>'
+               + '  <td><?php echo functions::escape_js(functions::form_draw_text_field('options_stock[new_option_stock_i][sku]', '')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][weight]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_weight_classes_list('options_stock[new_option_stock_i][weight_class]', '')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td>'
                + '    <div class="input-group">'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 4, 0)); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_x]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_y]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][dim_z]', '0.00', 4, 0)); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_length_classes_list('options_stock[new_option_stock_i][dim_class]', '')); ?>'
                + '    </div>'
                + '  </td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity]', '0', 2, null, null, 'data-quantity="0"')); ?></td>'
+               + '  <td><?php echo functions::escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity]', '0', 2, null, null, 'data-quantity="0"')); ?></td>'
                + '  <td>'
                + '    <div class="input-group">'
                + '      <span class="input-group-text">&plusmn;</span>'
-               + '    <?php echo functions::general_escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity_adjustment]', '0')); ?>'
+               + '    <?php echo functions::escape_js(functions::form_draw_decimal_field('options_stock[new_option_stock_i][quantity_adjustment]', '0')); ?>'
                + '    </div>'
                + '  </td>'
                + '  <td class="text-end">'
-               + '    <a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a>'
-               + '    <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a>'
-               + '    <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a>'
+               + '    <a class="move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a>'
+               + '    <a class="move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a>'
+               + '    <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a>'
                + '  </td>'
                + '</tr>';
 

@@ -2,7 +2,7 @@
 	"name": "litecart",
 	"title": "LiteCart",
 	"description": "Lightweight e-commerce platform built with PHP, jQuery and HTML.",
-	"version": "2.3.5",
+	"version": "2.4.0",
 	"author": {
 		"name": "T. Almroth",
 		"url": "https://www.litecart.net/"
@@ -33,6 +33,7 @@
 	"scripts": {
 		"build": "grunt",
 		"watch": "grunt watch",
-		"phplint": "grunt phplint"
+		"phplint": "grunt phplint",
+		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php"
 	}
 }

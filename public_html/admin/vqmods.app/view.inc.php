@@ -74,7 +74,7 @@ pre {
 
           <?php echo !empty($operation->search->attributes()['offset']) ? ' (Offset: '. $operation->search->attributes()['offset'] .')' : ''; ?>
 
-            <pre><code><?php echo htmlspecialchars($operation->search); ?></code></pre>
+            <pre><code><?php echo functions::escape_html($operation->search); ?></code></pre>
           </div>
 
 
@@ -94,7 +94,7 @@ pre {
       break;
   }
 ?>
-            <pre><code><?php echo htmlspecialchars($operation->add); ?></code></pre>
+            <pre><code><?php echo functions::escape_html($operation->add); ?></code></pre>
           </div>
         </div>
         <?php } ?>

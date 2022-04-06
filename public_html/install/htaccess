@@ -20,32 +20,32 @@ ErrorDocument 500 "Internal Server Error"
   # Force HTTPS (Standard SSL)
   #RewriteCond %{HTTPS} off
   #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
   # Force HTTPS (CloudFlare Flexi SSL / Load Balancing Servers)
   #RewriteCond %{HTTPS} off
   #RewriteCond %{HTTP:X-Forwarded-Proto} =http
   #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
   # Redirect non-www to www
   #RewriteCond %{HTTP_HOST} !^www\.
   #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
   # Redirect www to non-www
   #RewriteCond %{HTTP_HOST} ^www\.(.*)$
   #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
   # Redirect from any alias domain to primary domain
   #RewriteCond %{HTTP_HOST} !^www\.mydomain\.com
   #RewriteCond %{REQUEST_METHOD} !=POST
-  #RewriteCond %{REQUEST_URI} !^\.well-known/
+  #RewriteCond %{REQUEST_URI} !^/\.well-known/
   #RewriteRule ^ https://www.mydomain.com%{REQUEST_URI} [R=301,L]
 
   # Web path to catalog root

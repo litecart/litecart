@@ -22,7 +22,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = null;
+        $this->data[$field['Field']] = database::create_variable($field['Type']);
       }
 
       $this->previous = $this->data;
@@ -30,7 +30,7 @@
 
     public function load($country_code) {
 
-      if (!preg_match('#^([0-9]+|[A-Z]{2,3})$#', $country_code)) throw new Exception('Invalid country code ('. $country_code .')');
+      if (!preg_match('#^([0-9]+|[A-Z]{2,3}|[a-z A-Z]{4,})$#', $country_code)) throw new Exception('Invalid country ('. $country_code .')');
 
       $this->reset();
 
@@ -39,13 +39,14 @@
         ". (preg_match('#^[0-9]+$#', $country_code) ? "where id = '". (int)$country_code ."'" : "") ."
         ". (preg_match('#^[A-Z]{2}$#', $country_code) ? "where iso_code_2 = '". database::input($country_code) ."'" : "") ."
         ". (preg_match('#^[A-Z]{3}$#', $country_code) ? "where iso_code_3 = '". database::input($country_code) ."'" : "") ."
+        ". (preg_match('#^[a-z A-Z]{4,}$#', $country_code) ? "where (name like '". database::input($country_code) ."' or domestic_name = '". database::input($country_code) ."')" : "") ."
         limit 1;"
       );
 
       if ($country = database::fetch($country_query)) {
         $this->data = array_replace($this->data, array_intersect_key($country, $this->data));
       } else {
-        throw new Exception('Could not find country ('. htmlspecialchars($country_code) .') in database.');
+        throw new Exception('Could not find country ('. functions::escape_html($country_code) .') in database.');
       }
 
       $zones_query = database::query(

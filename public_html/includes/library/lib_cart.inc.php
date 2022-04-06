@@ -332,7 +332,7 @@
           $sanitized_options[] = [
             'group_id' => $option['id'],
             'value_id' => !empty($value['id']) ? $value['id'] : 0,
-            'combination' => $option['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : '0:"'.$value['custom_value'].'"'),
+            'combination' => $option['group_id'] .'-'. (!empty($value['value_id']) ? $value['value_id'] : '0') . (!empty($value['custom_value']) ? ':"'. $value['custom_value'] .'"' : ''),
             'name' => $matched_group,
             'value' => !empty($matched_values) ? $matched_values : $matched_value,
           ];

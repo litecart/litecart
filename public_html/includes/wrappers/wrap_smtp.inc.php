@@ -6,7 +6,7 @@
     private $_port = null;
     private $_log_handle = '';
 
-    function __construct($host, $port, $username='', $password='') {
+    function __construct($host, $port=25, $username='', $password='') {
 
       if ($port == 465) {
         $this->_host = "ssl://$host:$port";
