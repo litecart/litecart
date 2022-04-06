@@ -652,7 +652,7 @@
 
     foreach ($translations as $code => $translation) {
       database::query(
-        "insert into ". DB_TABLE_PREFIX ."translations
+        "insert into ". $_REQUEST['db_table_prefix'] ."translations
         (code, text_en, html, date_created)
         values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
       );
