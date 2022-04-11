@@ -94,8 +94,8 @@
         bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
         subject = '". database::input($this->data['subject']) ."',
         multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES)) ."',
-        date_scheduled = '". database::input($this->data['date_scheduled']) ."',
-        date_sent = '". database::input($this->data['date_sent']) ."',
+        date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "null") .",
+        date_sent = ". (!empty($this->data['date_sent']) ? "'". database::input($this->data['date_sent']) ."'" : "null") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] .";"
       );
