@@ -178,8 +178,6 @@
       foreach ($supported_versions as $version) {
 
         if (version_compare(PLATFORM_DATABASE_VERSION, $version, '>=')) {
-          if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) unlink(__DIR__ . '/upgrade_patches/'. $version .'.sql');
-          if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) unlink(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
           continue;
         }
 
@@ -196,14 +194,11 @@
               database::query($query);
             }
           }
-
-          unlink(__DIR__ . '/upgrade_patches/'. $version .'.sql');
         }
 
         if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) {
           echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
           include(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
-          unlink(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
         }
 
         echo '<p>Set platform database version...';
