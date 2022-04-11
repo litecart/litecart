@@ -8,7 +8,7 @@ e935fd4c1c676c77664b7aead4014f79	admin/appearance.app/edit_styling.inc.php
 eaf50b53d6a1e44180cbfb0534c9bb36	admin/appearance.app/template_settings.inc.php
 050f9c8b6f0ea711718c1fd72a7ba719	admin/catalog.app/attribute_groups.inc.php
 7d829528c1412da24a7d3d3503c315ff	admin/catalog.app/attribute_values.json.inc.php
-176119350e2cbccbb71414da9c06f06e	admin/catalog.app/catalog.inc.php
+49aa1ce17ce4f665e56dc1036c60dc69	admin/catalog.app/catalog.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
 ca8ec15276fccb39cd6e094a052ff459	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
@@ -509,7 +509,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/boxes/index.html
 a49df2ed3b6e7ce6f49d59d9c37625a8	includes/entities/ent_currency.inc.php
 35d47e2f184515a3a8780134b36ac6e6	includes/entities/ent_customer.inc.php
 89541941304e266a24797153fff5eb91	includes/entities/ent_delivery_status.inc.php
-1366ac2832d8901d2c52e9ed03bff042	includes/entities/ent_email.inc.php
+e820a11a9a7628a0e5fb14dde4373349	includes/entities/ent_email.inc.php
 37357c40ffce997a17b1cf50540b6e0d	includes/entities/ent_geo_zone.inc.php
 b217fda769d984db52402e013c973ff5	includes/entities/ent_image.inc.php
 133eec71fe43f6e7bbb83bc915fe6e4c	includes/entities/ent_language.inc.php
@@ -551,7 +551,7 @@ a3560b069e543ea1c2a7bcd977cfff1e	includes/library/lib_breadcrumbs.inc.php
 6741f6732320dc8bb8f06e71d09c6bc7	includes/library/lib_cart.inc.php
 1665983fe1c1474c21d0b103451d4d12	includes/library/lib_compression.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
-f5005f40e7fc35c89035e2e413af0230	includes/library/lib_customer.inc.php
+b02895e8774e6384ff602413cf446258	includes/library/lib_customer.inc.php
 1090d372513f9eb00db034d5a27b6423	includes/library/lib_database.inc.php
 2f39523a8288e975200ea69475db3b0a	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
@@ -799,7 +799,7 @@ fd8afb6ffe392f9ed98cc0b1b37b9a5d	install/data/default/public_html/favicon.ico
 b54610190fb50bfb7c2d85b868cd7aed	install/data/default/public_html/images/no_image.png
 a5a35c9ec2b1bcf0fd2d4fe5fa47abcb	install/data/default/public_html/images/slides/1-rocket-cart.svg
 aa020306757062579e49df4368082bc6	install/data/default/public_html/robots.txt
-a388685f081b97138b58d1e81e3f008f	install/data/demo/data.sql
+26d11bdf972836681942c22829d4cdd3	install/data/demo/data.sql
 97074381a7fa9bfa40439fc5da0f4c6e	install/data/demo/public_html/images/manufacturers/1-acme-corp.png
 f8176cc134ac9e77b99bbd252e96aa47	install/data/demo/public_html/images/products/1-yellow-duck-1.jpg
 63669b05d08842a26337f153983ad801	install/data/demo/public_html/images/products/2-green-duck-1.jpg
