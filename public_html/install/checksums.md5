@@ -42,7 +42,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/currencies.app/index.html
 ddfbc0dcb05dd567c69657c922c4d397	admin/customers.app/customers.inc.php
 4de39944efc2340f301c005f712c7a70	admin/customers.app/customers.json.inc.php
 b670323c30c3cd484d87ecaf9140b6e9	admin/customers.app/customer_picker.inc.php
-369c1f2caa7ffb9338945b46adc5fbe3	admin/customers.app/edit_customer.inc.php
+7699d0e722e7db881a67b22a654c2fab	admin/customers.app/edit_customer.inc.php
 069b78f8ee56491e9f4fd8aaa08c6d9d	admin/customers.app/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/customers.app/index.html
 acc7a9c4eac35ed49559d9f7b7c9a65f	admin/customers.app/newsletter_recipients.inc.php
@@ -826,7 +826,7 @@ f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 e39668fc11dc37b2ceed467209f021e6	install/index.php
 de87df989bf00c42acd58705ebbed671	install/install.php
 c02da8eb41654196e080f517416f568b	install/structure.sql
-7d200ff6213401d7f6c4e27d570a4346	install/upgrade.php
+d1148d25d6c59424971de9004faed9dd	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
 d6fc90da968f9154fb0bca5d97717b0c	install/upgrade_patches/1.0.1.4.inc.php
 d98723df3fe55a1b8f995781327b6a38	install/upgrade_patches/1.0.1.5.inc.php
