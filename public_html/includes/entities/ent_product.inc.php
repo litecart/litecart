@@ -457,7 +457,7 @@
               group_id = ". (int)$option['group_id'] .",
               `function` = '". database::input($option['function']) ."',
               required = ". (!empty($option['required']) ? 1 : 0) .",
-              sort = '". database::input($option['sort']) ."',
+              sort = '". (!empty($option['sort']) ? database::input($option['sort']) : 'alphabetical') ."',
               priority = ". ++$i ."
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$option['id'] ."
