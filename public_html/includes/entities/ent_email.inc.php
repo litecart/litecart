@@ -143,7 +143,7 @@
       $this->data['multiparts'][] = [
         'headers' => [
           'Content-Type' => ($html ? 'text/html' : 'text/plain') .'; charset='. $charset,
-          'Content-Transfer-Encoding: 8bit',
+          'Content-Transfer-Encoding' => '8bit',
         ],
         'body' => trim($content),
       ];
@@ -307,13 +307,6 @@
         $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
       }
 
-      array_walk($headers,
-        function (&$v, $k) {
-          $v = $k.': '.$v;
-        }
-      );
-
-      $headers = implode("\r\n", $headers);
       $body = '';
 
     // Prepare several multiparts
@@ -328,7 +321,7 @@
 
     // Prepare one multipart only
       } else {
-        $headers .= implode("\r\n", $this->data['multiparts'][0]['headers']) . "\r\n";
+        $headers = array_merge($headers, $this->data['multiparts'][0]['headers']);
         $body .= $this->data['multiparts'][0]['body'];
       }
 
@@ -336,6 +329,15 @@
         trigger_error('Cannot send email with an empty body', E_USER_WARNING);
         return false;
       }
+
+    // Prepare headers
+      array_walk($headers,
+        function (&$v, $k) {
+          $v = $k.': '.$v;
+        }
+      );
+
+      $headers = implode("\r\n", $headers);
 
     // Deliver via SMTP
       if (settings::get('smtp_status')) {
