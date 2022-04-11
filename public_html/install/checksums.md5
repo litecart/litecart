@@ -42,7 +42,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/currencies.app/index.html
 ddfbc0dcb05dd567c69657c922c4d397	admin/customers.app/customers.inc.php
 4de39944efc2340f301c005f712c7a70	admin/customers.app/customers.json.inc.php
 b670323c30c3cd484d87ecaf9140b6e9	admin/customers.app/customer_picker.inc.php
-7699d0e722e7db881a67b22a654c2fab	admin/customers.app/edit_customer.inc.php
+b0708c9f0d071139d4599fe50e438890	admin/customers.app/edit_customer.inc.php
 069b78f8ee56491e9f4fd8aaa08c6d9d	admin/customers.app/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/customers.app/index.html
 acc7a9c4eac35ed49559d9f7b7c9a65f	admin/customers.app/newsletter_recipients.inc.php
