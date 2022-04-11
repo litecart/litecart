@@ -22,7 +22,7 @@
       <div class="<?php echo $image ? 'col-md-8' : 'col-md-12'; ?>">
         <h1 class="title"><?php echo $h1_title; ?></h1>
 
-        <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
+        <?php if ($_GET['page'] == 1 && $description) { ?>
         <p class="description"><?php echo $description; ?></p>
         <?php } ?>
       </div>
