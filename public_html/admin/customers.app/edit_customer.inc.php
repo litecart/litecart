@@ -161,9 +161,8 @@
           </div>
 
           <?php if (!empty($customer->data['id'])) { ?>
-          <div class="form-group col-md-6">
-            <label></label>
-            <?php echo functions::form_draw_button('sign_in', ['true', language::translate('text_sign_in_as_customer', 'Sign in as customer')], 'submit'); ?>
+          <div class="form-group">
+            <?php echo functions::form_draw_button('sign_in', ['true', language::translate('text_sign_in_as_customer', 'Sign in as customer')], 'submit', 'class="btn btn-default btn-block"'); ?>
           </div>
           <?php } ?>
 
