@@ -675,7 +675,7 @@
                 );
                 $supplier = new ent_supplier($row['id']);
               } else {
-                $suppliers = new ent_supplier();
+                $supplier = new ent_supplier();
               }
             }
 
