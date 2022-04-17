@@ -124,7 +124,7 @@
     return $listing_product->stitch('views/listing_product');
   }
 
-  function draw_lightbox($selector='', $params=[]) {
+  function draw_lightbox($selector='', $parameters=[]) {
 
     $selector = str_replace("'", '"', $selector);
 
