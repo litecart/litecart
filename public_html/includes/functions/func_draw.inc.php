@@ -158,17 +158,15 @@
           break;
 
         case 'string':
-          if (preg_match('#^function\s?\(#', $value)) {
+          if (preg_match('#^function\s*\(#', $value)) {
             $js .= '    '. $key .': '. $value .',' . PHP_EOL;
-          } else if (preg_match('#^undefined$#', $value)) {
-            $js .= '    '. $key .': undefined,' . PHP_EOL;
           } else {
-            $js .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+            $js .= '    '. $key .': "'. addslashes($value) .'",' . PHP_EOL;
           }
           break;
 
         case 'array':
-          $js .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          $js .= '    '. $key .': ["'. implode('", "', $value) .'"],' . PHP_EOL;
           break;
       }
     }
