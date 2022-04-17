@@ -1932,7 +1932,7 @@ html[dir="rtl"] .navbar-right {
   .text-md-center {
     text-align: center !important;
   }
-  .text-md-right {
+  .text-md-end {
     text-align: end !important;
   }
 }
