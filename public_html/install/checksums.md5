@@ -12,7 +12,7 @@ eaf50b53d6a1e44180cbfb0534c9bb36	admin/appearance.app/template_settings.inc.php
 b30f270000d36cfb8f76bf57063935b4	admin/catalog.app/categories.json.inc.php
 ca8ec15276fccb39cd6e094a052ff459	admin/catalog.app/category_picker.inc.php
 641e19cc75c37392ee1f44f773262184	admin/catalog.app/config.inc.php
-763d218edba77dea451360de14cd8676	admin/catalog.app/csv.inc.php
+bccb4716d098ebd2a9111f9ecb439247	admin/catalog.app/csv.inc.php
 69bf2e637e8191df9b68a64c51b2648e	admin/catalog.app/delivery_statuses.inc.php
 11f1e8b199dc7b59ae27dc6c3d0358d1	admin/catalog.app/edit_attribute_group.inc.php
 a802682b602b978d4a5522c47f267ffa	admin/catalog.app/edit_category.inc.php
@@ -71,7 +71,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 451c654ae359640d3822c0a31373257f	admin/modules.app/run_job.inc.php
 51cf1391e3ef3e33d823cefdd57adac2	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-255da7bc24d8859002c41dfbffa56d85	admin/orders.app/edit_order.inc.php
+a87d35e00d138310e327e1d0a906812f	admin/orders.app/edit_order.inc.php
 c4d8062dd0e5e2809f829f66bc05227e	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 bbf826ee1d32d2855ec5cd09f7d0b342	admin/orders.app/order_statuses.inc.php
@@ -509,7 +509,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/boxes/index.html
 a49df2ed3b6e7ce6f49d59d9c37625a8	includes/entities/ent_currency.inc.php
 35d47e2f184515a3a8780134b36ac6e6	includes/entities/ent_customer.inc.php
 89541941304e266a24797153fff5eb91	includes/entities/ent_delivery_status.inc.php
-e820a11a9a7628a0e5fb14dde4373349	includes/entities/ent_email.inc.php
+c5b4ae456a7d99325ebf7a7670bf2dad	includes/entities/ent_email.inc.php
 37357c40ffce997a17b1cf50540b6e0d	includes/entities/ent_geo_zone.inc.php
 b217fda769d984db52402e013c973ff5	includes/entities/ent_image.inc.php
 133eec71fe43f6e7bbb83bc915fe6e4c	includes/entities/ent_language.inc.php
@@ -534,7 +534,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 69fab51ea5885eb3066dce8c7e62841c	includes/functions/func_captcha.inc.php
 52b184fae7486c5fe1584c63ba92f4f5	includes/functions/func_catalog.inc.php
 0e53c6c4662f4fd8cca0a0cd7e70a31e	includes/functions/func_csv.inc.php
-4c0677535fbbca834149af9ef76213a2	includes/functions/func_draw.inc.php
+2f86c5c57b431a3406c509a6b036ad94	includes/functions/func_draw.inc.php
 2341090b7652ec1d4486dc35406ab975	includes/functions/func_escape.inc.php
 424204182a6fb45a57940ca015128bc0	includes/functions/func_form.inc.php
 9b5b0424eb5fc34a21e36c4bfe5cda44	includes/functions/func_format.inc.php
@@ -612,7 +612,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 bc9b31011a20ac5246b7a8f2cc2b013b	includes/templates/default.admin/css/app.min.css
 20d4ee6b8d4e838b791f5992bac8cbb4	includes/templates/default.admin/css/app.min.css.map
 2b19baca8ec6b9ef573129192a4fc82d	includes/templates/default.admin/css/framework.min.css
-6c617542fb86a97a10c0ffedf4336dc7	includes/templates/default.admin/css/framework.min.css.map
+3631c5a138bd316c0bf2a9bfd6a2107c	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -667,9 +667,9 @@ fa51fd6b4b4a74f79e6ba444b3bd394a	includes/templates/default.admin/pages/doc.inc.
 e9f9f38738425e4f2f9d19749821d644	includes/templates/default.catalog/css/checkout.css
 f5d3c581b1f89a8054ace060bd3e0dc7	includes/templates/default.catalog/css/checkout.min.css
 ee40e23e0b5f36b7a4dc3cfb305d179d	includes/templates/default.catalog/css/checkout.min.css.map
-03978250e4b970481d399773351afecf	includes/templates/default.catalog/css/framework.css
-5aa59df7f93423eda5d5db5ef0c532aa	includes/templates/default.catalog/css/framework.min.css
-71d75e9733dd0ad0ac678bfb27ff4dd2	includes/templates/default.catalog/css/framework.min.css.map
+2a44e216ad1ccfaea0996d07f62caf89	includes/templates/default.catalog/css/framework.css
+d01bfb3839b0cc0816072c4a13a64ba5	includes/templates/default.catalog/css/framework.min.css
+90d7919330484bacf2f1efa5c705462e	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
@@ -704,7 +704,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/app/ind
 43b1b14b863eb2c29adb590ea378d850	includes/templates/default.catalog/less/framework/buttons.less
 e4cb3112da0fe50aefa88536d671966e	includes/templates/default.catalog/less/framework/carousel.less
 26f0ca798af68f7f3bb1408e365ad353	includes/templates/default.catalog/less/framework/chat.less
-e7bf5b491e5f135b74e31ffab7e8fef5	includes/templates/default.catalog/less/framework/dropdown.less
+71a5ae6e825f3657254d8f420f6807e8	includes/templates/default.catalog/less/framework/dropdown.less
 9c1195430855ce2f5bbce7747990c88f	includes/templates/default.catalog/less/framework/effects.less
 ffd080d1743c970b8b37903996a40a46	includes/templates/default.catalog/less/framework/grid.less
 0de6c7f7ef41b6440eaa8250d6c0ed50	includes/templates/default.catalog/less/framework/images.less
@@ -719,7 +719,7 @@ a351db7db76f996b7e996cbbf1a3a6a3	includes/templates/default.catalog/less/framewo
 a55c9e4ca57f98a4f2300e6674491709	includes/templates/default.catalog/less/framework/notices.less
 449629ba91cb5c724d7edd0c123b328e	includes/templates/default.catalog/less/framework/pagination.less
 5ae0e910a6e3552ffc48da1d6f12db64	includes/templates/default.catalog/less/framework/tables.less
-77af710c235f94ec52fddb2f14d55f39	includes/templates/default.catalog/less/framework/typography.less
+5f8bf1699bdc0d41ceab02e898d3c556	includes/templates/default.catalog/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/index.html
 b8d27643da9bce960bb100085d9c408b	includes/templates/default.catalog/less/printable.less
 e75e927c8dd85eda7aa2c57e4d50103b	includes/templates/default.catalog/less/variables.less
@@ -823,10 +823,10 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 a14a70917b41ba9127d14a2fe1473858	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
-e39668fc11dc37b2ceed467209f021e6	install/index.php
-de87df989bf00c42acd58705ebbed671	install/install.php
+0985b674369f18fccd6a861b91e48bc6	install/index.php
+e4a70567db6d5d1a791571a9c606610a	install/install.php
 c02da8eb41654196e080f517416f568b	install/structure.sql
-d1148d25d6c59424971de9004faed9dd	install/upgrade.php
+70d4fb4680ca64dd43c0ba95625e996c	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
 d6fc90da968f9154fb0bca5d97717b0c	install/upgrade_patches/1.0.1.4.inc.php
 d98723df3fe55a1b8f995781327b6a38	install/upgrade_patches/1.0.1.5.inc.php
@@ -926,7 +926,7 @@ c1f6b4f5415e8862da2f742ab0cc159a	pages/ajax/cart.json.inc.php
 8b21b53a76e63bbde6caf92a4f5a7703	pages/ajax/checkout_customer.inc.php
 91bf1554c6547a32cf2f2e0201fa3723	pages/ajax/checkout_payment.inc.php
 20e095d0222f807ab84870ce65b3be98	pages/ajax/checkout_shipping.inc.php
-6d6654540dfc0ccf255895b2ea323391	pages/ajax/checkout_summary.inc.php
+137d4d178375ba92374cb5c5545dc828	pages/ajax/checkout_summary.inc.php
 94cc7360d2f374d2b39133a2ae02f12c	pages/ajax/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/ajax/index.html
 c426ca53bfa4b53be0e04fd0aa1a9fe2	pages/ajax/zones.json.inc.php
