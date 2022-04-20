@@ -313,7 +313,7 @@
       if (count($this->data['multiparts']) > 1) {
         foreach ($this->data['multiparts'] as $multipart) {
           $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . implode("\r\n", $multipart['headers']) . "\r\n"
+                 . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n"
                  . $multipart['body'] . "\r\n\r\n";
         }
 
