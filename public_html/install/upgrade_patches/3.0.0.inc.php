@@ -677,17 +677,6 @@
     $collations[] = $collation;
   }
 
-  $engines_query = database::query(
-    "show engines;"
-  );
-
-  while ($engine = database::fetch($engines_query)) {
-    if ($engine['Engine'] == 'Aria') {
-      $found_aria = true;
-      break;
-    }
-  }
-
   $tables_query = database::query(
     "SELECT TABLE_NAME, TABLE_COLLATION FROM information_schema.TABLES
     WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
@@ -712,12 +701,10 @@
       convert to character set utf8mb4 collate ". database::input($new_collation) .";"
     );
 
-    if (!empty($found_aria)) {
-      database::query(
-        "alter table `". $table['TABLE_NAME'] ."`
-        engine=Aria;"
-      );
-    }
+    database::query(
+      "alter table `". $table['TABLE_NAME'] ."`
+      engine=InnoDB;"
+    );
   }
 
   database::query(

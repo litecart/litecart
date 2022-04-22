@@ -1471,32 +1471,6 @@ END;
     }
   }
 
-  function form_draw_mysql_engines_list($name, $input=true, $parameters='') {
-
-    if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
-      trigger_error('Passing $multiple as 3rd parameter in form_draw_mysql_engines_list() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
-      if (isset($args[3])) $parameters = $args[2];
-    }
-
-    $collations_query = database::query(
-      "SHOW ENGINES;"
-    );
-
-    $options = [];
-    while ($row = database::fetch($collations_query)) {
-      if (!in_array(strtoupper($row['Support']), ['YES', 'DEFAULT'])) continue;
-      if (!in_array($row['Engine'], ['CSV', 'InnoDB', 'MyISAM', 'Aria'])) continue;
-      $options[] = [$row['Engine'], $row['Engine'] . ' -- '. $row['Comment']];
-    }
-
-    if (preg_match('#\[\]$#', $name)) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
-      array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
-      return form_draw_select_field($name, $options, $input, $parameters);
-    }
-  }
-
   function form_draw_order_status_list($name, $input=true, $parameters='') {
     trigger_error('The function form_draw_order_status_list() has been renamed to form_draw_order_statuses_list()', E_USER_DEPRECATED);
     return call_user_func_array('form_draw_order_statuses_list', func_get_args());

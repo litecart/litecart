@@ -18,7 +18,6 @@
       . "  --db_database        Set database name\n"
       . "  --db_table_prefix    Set database table prefix (Default: lc_).\n"
       . "  --db_collation       Set database collation (Default: utf8mb4_swedish_ci)\n"
-      . "  --db_engine          Set table storage engine (Default: Aria / MyISAM)\n"
       . "  --document_root      Set document root\n\n"
       . "  --timezone           Set timezone e.g. Europe/London\n\n"
       . "  --admin_folder       Set admin folder name (Default: admin)\n"
@@ -128,10 +127,6 @@
 
     if (empty($_REQUEST['db_collation'])) {
       $_REQUEST['db_collation'] = 'utf8mb4_swedish_ci';
-    }
-
-    if (empty($_REQUEST['db_engine'])) {
-      $_REQUEST['db_engine'] = 'Aria';
     }
 
     if (!isset($_REQUEST['db_table_prefix'])) {
@@ -332,30 +327,6 @@
       echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
-    ### Database > Check Engines ##################################
-
-    echo '<p>Detecting MySQL storage engines... ';
-
-    $engines_query = database::query(
-      "show engines;"
-    );
-
-    while ($engine = database::fetch($engines_query)) {
-      if ($engine['Engine'] != 'Aria') {
-        $found_engine = true;
-        break;
-      }
-    }
-
-    if (!empty($found_engine)) {
-      echo $_REQUEST['db_engine'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-    } else {
-      echo $_REQUEST['db_engine'] . ' <span class="warning">[Warning] Not found, defaulting to MyISAM</span></p>' . PHP_EOL . PHP_EOL;
-      $_REQUEST['db_engine'] = 'MyIsam';
-    }
-
-    define('DB_STORAGE_ENGINE', $_REQUEST['db_engine']);
-
     ### Storage ###################################################
 
     echo '<p>Set up storage folder... ';
@@ -426,7 +397,6 @@
       '`lc_' => '`'.$_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{DB_DATABASE_COLLATION}' => $_REQUEST['db_collation'],
-      '{DB_ENGINE}' => $_REQUEST['db_engine'],
     ];
 
     foreach ($map as $search => $replace) {
