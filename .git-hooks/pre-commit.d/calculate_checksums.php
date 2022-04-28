@@ -34,9 +34,8 @@
     $short_file = preg_replace('#^public_html/#', '', $file);
     if (isset($checksums[$short_file])) {
       echo 'Updating checksum for '. $file . PHP_EOL;
-      $blob = shell_exec('git cat-file blob :'. $short_file .' 2>&1');
-      $blob = preg_replace('#(\r\n?|\n)#', "\n", $blob);
-      $checksums[$short_file] = md5($blob);
+      $blob = shell_exec('git cat-file blob :'. $file .' 2>&1');
+      $checksums[$short_file] = md5(preg_replace('#(\r\n?|\n)#', "\n", $blob));
     }
   }
 
