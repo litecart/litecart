@@ -823,9 +823,9 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 a14a70917b41ba9127d14a2fe1473858	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 aa57a61cbf39db0b0d8d272b9b7a4500	install/index.php
-0fa6d5ac895f8f5a8f217aeb8f546be5	install/install.php
+452650350c701dbf1647034ab2628614	install/install.php
 c02da8eb41654196e080f517416f568b	install/structure.sql
-1cf9b36f1e2565f1f633ad95ac9c1e04	install/upgrade.php
+cb2cb17f4abeb9f5d6f59b5b3d5055ca	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
 d6fc90da968f9154fb0bca5d97717b0c	install/upgrade_patches/1.0.1.4.inc.php
 d98723df3fe55a1b8f995781327b6a38	install/upgrade_patches/1.0.1.5.inc.php

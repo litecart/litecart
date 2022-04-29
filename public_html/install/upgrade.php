@@ -158,8 +158,6 @@
 
       if ($update_file('install/checksums.md5')) {
 
-        $checksum_files = preg_split('#(\r\n?|\n)#', file_get_contents(FS_DIR_APP . 'install/checksums.md5'), -1, PREG_SPLIT_NO_EMPTY);
-
         $files_updated = 0;
         foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($checksum, $file) = explode("\t", $line);
