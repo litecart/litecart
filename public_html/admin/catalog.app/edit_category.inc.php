@@ -302,7 +302,7 @@
 
 // Head Title & H1 Title
 
-  $('input[name^="name"]').bind('input propertyChange', function(e){
+  $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
@@ -310,7 +310,7 @@
 
 // Meta Description
 
-  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');

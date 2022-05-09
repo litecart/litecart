@@ -145,7 +145,7 @@
 </div>
 
 <script>
-  $('input[name^="title"]').bind('input propertyChange', function(e){
+  $('input[name^="title"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');

@@ -805,13 +805,13 @@
 
 // Initiate
 
-  $('input[name^="name"]').bind('input propertyChange', function(e){
+  $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 
-  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
@@ -1018,12 +1018,12 @@
   }
 
 // Update prices
-  $('select[name="tax_class_id"]').change('change', function(){
+  $('select[name="tax_class_id"]').on('change', function(){
     $('input[name^="prices"]').trigger('change');
   });
 
 // Update gross price
-  $('input[name^="prices"]').bind('input change', function() {
+  $('input[name^="prices"]').on('input', function() {
     var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1],
         decimals = get_currency_decimals(currency_code),
         gross_field = $('input[name="gross_prices['+ currency_code +']"]');
@@ -1040,7 +1040,7 @@
   }).trigger('change');
 
 // Update net price
-  $('input[name^="gross_prices"]').bind('input change', function() {
+  $('input[name^="gross_prices"]').on('input', function() {
     var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1],
         decimals = get_currency_decimals(currency_code),
         net_field = $('input[name="prices['+ currency_code +']"]');

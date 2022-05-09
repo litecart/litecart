@@ -304,7 +304,7 @@
     $(this).find('input[name="tax"]').val(tax);
   });
 
-  $('form[name="form_add_product"] button[name="ok"]').unbind('click').click(function(e){
+  $('form[name="form_add_product"] button[name="ok"]').off('click').click(function(e){
     e.preventDefault();
 
     var error = false,

@@ -38,7 +38,7 @@
 
 <script>
   var xhr_product_picker = null;
-  $('#modal-product-picker input[name="query"]').bind('propertyChange input', function(){
+  $('#modal-product-picker input[name="query"]').on('input', function(){
     if ($(this).val() == '') {
       $('#modal-product-picker .results tbody').html('');
       xhr_product_picker = null;

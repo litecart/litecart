@@ -1134,7 +1134,7 @@
     $('input[name="customer[shipping_address][phone]"]').removeAttr('placeholder');
   }
 
-  $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').bind('input change', function(){
+  $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input change', function(){
     var params = {
       language_code: $('select[name="language_code"]').val(),
       currency_code: $('select[name="currency_code"]').val(),
