@@ -204,6 +204,11 @@
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
               <div class="form-group">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+              </div>
+
+              <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
                 <?php echo functions::form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, ''); ?>
               </div>
@@ -304,6 +309,8 @@
 
   $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="name['+language_code+']"]').not(this).val($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
