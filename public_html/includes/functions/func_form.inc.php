@@ -1316,7 +1316,7 @@
     return '<div class="input-group"'. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL
          . '  <div class="form-control">' . PHP_EOL
          . '    ' . form_draw_hidden_field($name, true, !empty($product) ? 'data-sku="'. $product['sku'] .'" data-price="'. $product['price'] .'"' : '') . PHP_EOL
-         . '    <span class="name" style="display: inline-block;">'. $product['name'] .'</span>' . PHP_EOL
+         . '    <span class="name" style="display: inline-block;">'. (!empty($product) ? $product['name'] : '('. language::translate('title_empty', 'Empty') .')') .'</span>' . PHP_EOL
          . '    [<span class="id" style="display: inline-block;">'. (int)$value .'</span>]' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '  <div style="align-self: center;">' . PHP_EOL
