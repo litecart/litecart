@@ -5,8 +5,8 @@ CREATE TABLE `lc_banners` (
   `languages` VARCHAR(64) NOT NULL DEFAULT '',
   `html` TEXT NOT NULL DEFAULT '',
   `image` VARCHAR(64) NOT NULL DEFAULT '',
-  `link` VARCHAR(256) NOT NULL DEFAULT '',
-  `keywords` VARCHAR(256) NOT NULL DEFAULT '',
+  `link` VARCHAR(255) NOT NULL DEFAULT '',
+  `keywords` VARCHAR(255) NOT NULL DEFAULT '',
   `total_views` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `total_clicks` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `date_valid_from` TIMESTAMP NULL DEFAULT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE `lc_banners` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_shopping_carts` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` VARCHAR(13) NOT NULL DEFAULT '',
+  `uid` CHAR(13) NOT NULL DEFAULT '',
   `customer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `customer_email` VARCHAR(128) NOT NULL DEFAULT '',
   `customer_company` VARCHAR(64) NOT NULL DEFAULT '',
@@ -28,8 +28,8 @@ CREATE TABLE `lc_shopping_carts` (
   `customer_address1` VARCHAR(64) NOT NULL DEFAULT '',
   `customer_address2` VARCHAR(64) NOT NULL DEFAULT '',
   `customer_city` VARCHAR(32) NOT NULL DEFAULT '',
-  `customer_postcode` VARCHAR(8) NOT NULL DEFAULT '',
-  `customer_country_code` VARCHAR(2) NOT NULL DEFAULT '',
+  `customer_postcode` VARCHAR(16) NOT NULL DEFAULT '',
+  `customer_country_code` CHAR(2) NOT NULL DEFAULT '',
   `customer_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
   `customer_phone` VARCHAR(24) NOT NULL DEFAULT '',
   `different_shipping_address` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -39,8 +39,8 @@ CREATE TABLE `lc_shopping_carts` (
   `shipping_address1` VARCHAR(64) NOT NULL DEFAULT '',
   `shipping_address2` VARCHAR(64) NOT NULL DEFAULT '',
   `shipping_city` VARCHAR(32) NOT NULL DEFAULT '',
-  `shipping_postcode` VARCHAR(8) NOT NULL DEFAULT '',
-  `shipping_country_code` VARCHAR(2) NOT NULL DEFAULT '',
+  `shipping_postcode` VARCHAR(16) NOT NULL DEFAULT '',
+  `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
   `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
   `shipping_phone` VARCHAR(24) NOT NULL DEFAULT '',
   `shipping_option_id` VARCHAR(32) NOT NULL DEFAULT '',
@@ -51,16 +51,16 @@ CREATE TABLE `lc_shopping_carts` (
   `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '',
   `payment_terms` VARCHAR(8) NOT NULL DEFAULT '',
   `incoterm` VARCHAR(3) NOT NULL DEFAULT '',
-  `weight_total` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0.0000',
+  `weight_total` FLOAT(11,4) UNSIGNED NOT NULL DEFAULT '0',
   `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-  `language_code` VARCHAR(2) NOT NULL DEFAULT '',
-  `currency_code` VARCHAR(3) NOT NULL DEFAULT '',
+  `language_code` CHAR(2) NOT NULL DEFAULT '',
+  `currency_code` CHAR(3) NOT NULL DEFAULT '',
   `lock_prices` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `display_prices_including_tax` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-  `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-  `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+  `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0',
+  `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0',
   `client_ip` VARCHAR(39) NOT NULL DEFAULT '',
-  `user_agent` VARCHAR(256) NOT NULL DEFAULT '',
+  `user_agent` VARCHAR(255) NOT NULL DEFAULT '',
   `date_updated` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   `date_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
@@ -71,7 +71,7 @@ CREATE TABLE `lc_products_to_stock_items` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `stock_item_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-  `price_adjust` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+  `price_adjust` FLOAT(11,4) NOT NULL DEFAULT '0',
   `price_operator` VARCHAR(1) NOT NULL DEFAULT '',
   `priority` TINYINT(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -107,7 +107,7 @@ CREATE TABLE `lc_stock_transactions_contents` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `transaction_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
-  `quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+  `quantity_adjustment` FLOAT(11,4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 );
 -- --------------------------------------------------------
@@ -130,10 +130,15 @@ ADD INDEX `brand_id` (`brand_id`);
 ALTER TABLE `lc_categories`
 DROP COLUMN `list_style`;
 -- --------------------------------------------------------
+ALTER TABLE `lc_countries`
+CHANGE COLUMN `postcode_format` `postcode_format` VARCHAR(255) NOT NULL DEFAULT '';
+-- --------------------------------------------------------
 ALTER TABLE `lc_customers`
+CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '' ,
+CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
-CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '';
+CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
 ALTER TABLE `lc_emails`
 DROP COLUMN `charset`;
@@ -154,31 +159,33 @@ DROP INDEX `manufacturer_id`,
 ADD INDEX `brand_id` (`brand_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_attributes`
-ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `custom_value`;
+ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `custom_value`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_images`
-CHANGE COLUMN `checksum` `checksum` VARCHAR(32) NOT NULL DEFAULT '';
+CHANGE COLUMN `checksum` `checksum` CHAR(32) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders`
 DROP COLUMN `uid`,
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `payment_due` `total` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-CHANGE COLUMN `tax_total` `total_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+CHANGE COLUMN `payment_due` `total` FLOAT(11,4) NOT NULL DEFAULT '0',
+CHANGE COLUMN `tax_total` `total_tax` FLOAT(11,4) NOT NULL DEFAULT '0',
+CHANGE COLUMN `customer_country_code` `customer_country_code` CHAR(2) NOT NULL DEFAULT '',
+CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 ADD COLUMN `no` VARCHAR(16) NOT NULL DEFAULT '' AFTER `id`,
-ADD COLUMN `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `display_prices_including_tax`,
-ADD COLUMN `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal`,
-ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `subtotal_tax`,
-ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount`,
+ADD COLUMN `subtotal` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `display_prices_including_tax`,
+ADD COLUMN `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal`,
+ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal_tax`,
+ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
 ADD COLUMN `shipping_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `shipping_option_name`,
-ADD COLUMN `shipping_option_fee` FLOAT(11,4) NOT NULL DEFAULT 0 AFTER `shipping_option_userdata`,
-ADD COLUMN `shipping_option_tax` FLOAT(11,4) NOT NULL DEFAULT 0 AFTER `shipping_option_fee`,
-ADD COLUMN `shipping_progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 AFTER `shipping_tracking_url`,
+ADD COLUMN `shipping_option_fee` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `shipping_option_userdata`,
+ADD COLUMN `shipping_option_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `shipping_option_fee`,
+ADD COLUMN `shipping_progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' AFTER `shipping_tracking_url`,
 ADD COLUMN `shipping_current_status` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_progress`,
 ADD COLUMN `shipping_current_location` VARCHAR(128) NOT NULL DEFAULT '' AFTER `shipping_current_status`,
 ADD COLUMN `payment_option_userdata` VARCHAR(512) NOT NULL DEFAULT '' AFTER `payment_option_name`,
-ADD COLUMN `payment_option_fee` FLOAT(11,4) NOT NULL DEFAULT 0 AFTER `payment_option_userdata`,
-ADD COLUMN `payment_option_tax` FLOAT(11,4) NOT NULL DEFAULT 0 AFTER `payment_option_fee`,
-ADD COLUMN `payment_receipt_url` VARCHAR(256) NOT NULL DEFAULT '' AFTER `payment_transaction_id`,
+ADD COLUMN `payment_option_fee` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `payment_option_userdata`,
+ADD COLUMN `payment_option_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `payment_option_fee`,
+ADD COLUMN `payment_receipt_url` VARCHAR(255) NOT NULL DEFAULT '' AFTER `payment_transaction_id`,
 ADD COLUMN `payment_terms` VARCHAR(8) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `incoterm` VARCHAR(3) NOT NULL DEFAULT '' AFTER `payment_receipt_url`,
 ADD COLUMN `date_paid` TIMESTAMP NULL DEFAULT NULL AFTER `public_key`,
@@ -195,18 +202,18 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `configuration` VARCHAR(1024) NOT NULL DEFAULT '',
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 ADD COLUMN `stock_item_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `product_id`,
-ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `tax`,
-ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount`,
-ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount_tax`,
-ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `sum`,
+ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`,
+ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
+ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
+ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
 ADD COLUMN `downloads` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `downloads`,
 ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_item_id` (`stock_item_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_orders_totals`
-ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `tax`
-CHANGE COLUMN `value` `amount` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `title`;
+ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`
+CHANGE COLUMN `value` `amount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `title`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_order_statuses`
 ADD COLUMN `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`,
@@ -229,15 +236,15 @@ ADD COLUMN `mpn` VARCHAR(32) NOT NULL DEFAULT '' AFTER `gtin`,
 ADD COLUMN `taric` VARCHAR(32) NOT NULL DEFAULT '' AFTER `mpn`,
 ADD COLUMN `image` VARCHAR(128) NOT NULL DEFAULT '' AFTER `taric`,
 CHANGE COLUMN `weight_class` `weight_unit` VARCHAR(2) NOT NULL DEFAULT '',
-CHANGE COLUMN `dim_x` `length` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-CHANGE COLUMN `dim_y` `width` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-CHANGE COLUMN `dim_z` `height` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+CHANGE COLUMN `dim_x` `length` FLOAT(11,4) NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_y` `width` FLOAT(11,4) NOT NULL DEFAULT '0',
+CHANGE COLUMN `dim_z` `height` FLOAT(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
-ADD COLUMN `purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `length_unit`,
-ADD COLUMN `purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '' AFTER `purchase_price`,
+ADD COLUMN `purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `length_unit`,
+ADD COLUMN `purchase_price_currency_code` CHAR(3) NOT NULL DEFAULT '' AFTER `purchase_price`,
 ADD COLUMN `quantity_unit_id` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `quantity`,
-ADD COLUMN `reorder_point` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `quantity_unit_id`,
-ADD COLUMN `backordered` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `reorder_point`,
+ADD COLUMN `reorder_point` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `quantity_unit_id`,
+ADD COLUMN `backordered` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `reorder_point`,
 ADD COLUMN `file` VARCHAR(128) NOT NULL DEFAULT '' AFTER `backordered`,
 ADD COLUMN `filename` VARCHAR(128) NOT NULL DEFAULT '' AFTER `file`,
 ADD COLUMN `mime_type` VARCHAR(32) NOT NULL DEFAULT '' AFTER `filename`,
@@ -252,7 +259,8 @@ ALTER TABLE `lc_settings`
 ADD COLUMN `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `function`,
 CHANGE COLUMN `setting_group_key` `group_key` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `key` `key` VARCHAR(64) NULL DEFAULT NULL DEFAULT '',
-CHANGE COLUMN `value` `value` VARCHAR(8192) NOT NULL DEFAULT '',
+CHANGE COLUMN `description` `description` VARCHAR(255) NOT NULL DEFAULT '',
+CHANGE COLUMN `value` `value` VARCHAR(255) NOT NULL DEFAULT '',
 ADD INDEX `type` (`type`),
 ADD INDEX `group_key` (`group_key`),
 DROP INDEX `setting_group_key`;
@@ -263,22 +271,25 @@ CHANGE COLUMN `data` `userdata` VARCHAR() NOT NULL DEFAULT '' AFTER `name`,
 ADD COLUMN `type` ENUM('product','stock_item','custom') NOT NULL DEFAULT 'product' AFTER `cart_id`,
 ADD COLUMN `code` VARCHAR(32) NOT NULL DEFAULT '' BEFORE `sku`,
 ADD COLUMN `configuration` VARCHAR(512) NOT NULL DEFAULT '0',
-ADD COLUMN `final_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `price`,
-ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `tax`,
-ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount`,
-ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `discount_tax`,
-ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000' AFTER `sum`,
-ADD COLUMN `priority` INT NOT NULL DEFAULT 0 AFTER `length_unit`,
+ADD COLUMN `final_price` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `price`,
+ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `tax`,
+ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
+ADD COLUMN `sum` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
+ADD COLUMN `sum_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
+ADD COLUMN `priority` INT NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD INDEX `cart_id` (`cart_id`);
 -- --------------------------------------------------------
 ALTER TABLE `lc_tax_rates`
-CHANGE COLUMN `rate` `rate` FLOAT(4,2) NOT NULL DEFAULT '0.0000' AFTER `description`,
+CHANGE COLUMN `rate` `rate` FLOAT(4,2) NOT NULL DEFAULT '0' AFTER `description`,
 DROP COLUMN `type`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_translations`
+CHANGE COLUMN `code` `code` VARCHAR(128) NOT NULL DEFAULT '';
 -- --------------------------------------------------------
 ALTER TABLE `lc_users`
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
-ADD COLUMN `last_user_agent` VARCHAR(256) NOT NULL DEFAULT '' AFTER `last_hostname`;
+ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`;
 -- --------------------------------------------------------
 UPDATE `lc_modules` SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit') WHERE `module_id` = 'sm_zone_weight' LIMIT 1;
 -- --------------------------------------------------------
@@ -429,3 +440,6 @@ SELECT transaction_id, stock_item_id, quantity_adjustment FROM (
   GROUP BY x.stock_item_id
   ORDER BY x.stock_item_id
 ) y;
+-- --------------------------------------------------------
+ALTER TABLE `lc_zones`
+CHANGE COLUMN `country_code` `country_code` CHAR(2) NOT NULL DEFAULT '';

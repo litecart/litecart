@@ -711,3 +711,54 @@
     "alter database `". DB_DATABASE ."`
     default character set utf8mb4 collate ". database::input($new_collation) .";"
   );
+
+// Change VARCHAR length 256 to 255 (InnoDB limitation)
+
+  $columns_query = database::query(
+    "select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
+    where TABLE_SCHEMA = '". DB_DATABASE ."'
+    and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+    and COLUMN_TYPE like 'varchar(256)'
+    order by TABLE_NAME;"
+  );
+
+  while ($column = database::fetch($columns_query)) {
+    database::query(
+      "alter table `". $column['TABLE_NAME'] ."`
+      change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` ". strtr($column['COLUMN_TYPE'], ['256' => '255']) ." ". (($column['IS_NULLABLE'] == 'YES') ? "NOT NULL" : "NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+    );
+  }
+
+// Change VARCHAR to CHAR
+
+  $columns_query = database::query(
+    "select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
+    where TABLE_SCHEMA = '". DB_DATABASE ."'
+    and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+    and (COLUMN_NAME like '%country_code%' or COLUMN_NAME like '%language_code%')
+    and COLUMN_TYPE = 'varchar(2)'
+    order by TABLE_NAME;"
+  );
+
+  while ($column = database::fetch($columns_query)) {
+    database::query(
+      "alter table `". $column['TABLE_NAME'] ."`
+      change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(2) ". (($column['IS_NULLABLE'] == 'YES') ? "NOT NULL" : "NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+    );
+  }
+
+  $columns_query = database::query(
+    "select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
+    where TABLE_SCHEMA = '". DB_DATABASE ."'
+    and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+    and COLUMN_NAME like '%currency_code%')
+    and COLUMN_TYPE = 'varchar(3)'
+    order by TABLE_NAME;"
+  );
+
+  while ($column = database::fetch($columns_query)) {
+    database::query(
+      "alter table `". $column['TABLE_NAME'] ."`
+      change column `". $column['COLUMN_NAME'] ."` `". $column['COLUMN_NAME'] ."` CHAR(3) ". (($column['IS_NULLABLE'] == 'YES') ? "NOT NULL" : "NULL") . (!empty($column['COLUMN_DEFAULT']) ? " DEFAULT " . $column['COLUMN_DEFAULT'] : "") .";"
+    );
+  }
