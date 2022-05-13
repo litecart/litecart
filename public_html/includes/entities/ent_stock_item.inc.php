@@ -84,7 +84,7 @@
 
       $this->data['references'] = [];
       while ($reference = database::fetch($references_query)) {
-        $this->data['references'][$reference['id']] = $reference;
+        $this->data['references'][] = $reference;
       }
 
       $this->previous = $this->data;

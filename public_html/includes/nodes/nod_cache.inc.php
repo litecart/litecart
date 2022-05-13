@@ -52,7 +52,7 @@
 
     ######################################################################
 
-    public static function token(string $keyword, $dependencies=[], string $storage='memory', int $ttl=900) {
+    public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
 
       if (!in_array($storage, ['file', 'memory', 'session'])) {
         trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
@@ -265,7 +265,7 @@
       }
     }
 
-    // Output recorder
+  // Output recorder
     public static function capture($token, $max_age=900, $force_cache=false) {
 
       if (empty(self::$enabled)) return true;

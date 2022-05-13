@@ -115,6 +115,8 @@ RENAME TABLE `lc_cart_items` TO `lc_shopping_carts_items`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers` TO `lc_brands`;
 -- --------------------------------------------------------
+UPDATE `lc_brands` SET image = REPLACE(image, 'manufacturers/', 'brands/');
+-- --------------------------------------------------------
 RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
 -- --------------------------------------------------------
 RENAME TABLE `lc_products_options` TO `lc_products_configurations`;

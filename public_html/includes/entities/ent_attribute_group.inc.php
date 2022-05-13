@@ -77,7 +77,6 @@
       );
 
       while ($value = database::fetch($values_query)) {
-        $this->data['values'][$value['id']] = $value;
 
         $values_info_query = database::query(
           "select * from ". DB_TABLE_PREFIX ."attribute_values_info
@@ -87,7 +86,7 @@
         while ($value_info = database::fetch($values_info_query)) {
           foreach (array_keys($value_info) as $key) {
             if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-            $this->data['values'][$value['id']][$key][$value_info['language_code']] = $value_info[$key];
+            $value[$key][$value_info['language_code']] = $value_info[$key];
           }
         }
 
@@ -97,7 +96,9 @@
           limit 1;"
         );
 
-        $this->data['values'][$value['id']]['in_use'] = database::num_rows($product_option_values_query) ? true : false;
+        $value['in_use'] = database::num_rows($product_option_values_query) ? true : false;
+
+        $this->data['values'][] = $value;
       }
 
       $this->previous = $this->data;

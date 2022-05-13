@@ -196,7 +196,6 @@
         limit 1;"
       );
 
-    // Insert/update items
       $i = 1;
       foreach ($this->data['items'] as $key => $item) {
 
@@ -277,7 +276,6 @@
         'discount_tax' => tax::get_tax($product->price - $product->final_price, $product->tax_class_id),
         'sum' => 0,
         'sum_tax' => 0,
-        'extras' => 0,
         'tax_class_id' => $product->tax_class_id,
         'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
         'quantity_unit_id' => $product->quantity_unit['id'],

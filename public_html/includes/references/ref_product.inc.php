@@ -326,11 +326,6 @@
           );
 
           while ($row = database::fetch($query)) {
-            settype($row['quantity'], 'float');
-            settype($row['weight'], 'float');
-            settype($row['length'], 'float');
-            settype($row['width'], 'float');
-            settype($row['height'], 'float');
             $this->_data['stock_options'][$row['id']] = $row;
           }
 

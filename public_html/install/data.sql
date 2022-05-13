@@ -276,16 +276,16 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-(1, 0, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'reserved', NOW(), NOW()),
-(2, 0, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'reserved', NOW(), NOW()),
-(3, 0, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'reserved', NOW(), NOW()),
-(4, 0, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserved', NOW(), NOW()),
-(5, 0, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserved', NOW(), NOW()),
-(6, 0, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserved', NOW(), NOW()),
+(1, 0, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
+(2, 0, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
+(3, 0, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'reserve', NOW(), NOW()),
+(4, 0, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserve', NOW(), NOW()),
+(5, 0, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
+(6, 0, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
 (7, 0, 'dispatched', 'fa-truck', '#99cc66', 1, 1, 1, 'withdraw', NOW(), NOW()),
 (8, 0, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'withdraw', NOW(), NOW()),
 (9, 0, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'withdraw', NOW(), NOW()),
-(10, 0, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', NOW(), NOW()),
+(10, 0, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserve', NOW(), NOW()),
 (11, 0, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'withdraw', NOW(), NOW()),
 (12, 1, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
 (13, 1, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());

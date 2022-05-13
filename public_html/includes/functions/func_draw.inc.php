@@ -103,7 +103,7 @@
 
     // Material Design Icons
       case (substr($class, 0, 4) == 'mdi-'):
-        document::$snippets['head_tags']['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css" />';
+        document::$snippets['head_tags']['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" />';
         return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
     }
 

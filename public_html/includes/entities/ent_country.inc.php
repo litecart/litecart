@@ -61,7 +61,7 @@
 
       $this->data['zones'] = [];
       while ($zone = database::fetch($zones_query)) {
-        $this->data['zones'][$zone['id']] = $zone;
+        $this->data['zones'][] = $zone;
       }
 
       $this->previous = $this->data;

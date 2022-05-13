@@ -68,10 +68,6 @@
         throw new Exception('Could not find product (ID: '. (int)$product_id .') in database.');
       }
 
-      foreach ($product as $key => $value) {
-        $this->data[$key] = $value;
-      }
-
       $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
     // Categories
@@ -108,7 +104,7 @@
       );
 
       while ($attribute = database::fetch($product_attributes_query)) {
-        $this->data['attributes'][$attribute['group_id'].'-'.$attribute['value_id']] = $attribute;
+        $this->data['attributes'][] = $attribute;
       }
 
     // Prices
@@ -131,7 +127,7 @@
       );
 
       while ($product_campaign = database::fetch($product_campaigns_query)) {
-        $this->data['campaigns'][$product_campaign['id']] = $product_campaign;
+        $this->data['campaigns'][] = $product_campaign;
       }
 
     // Stock Items
@@ -144,7 +140,7 @@
       );
 
       while ($stock_item = database::fetch($products_stock_items_query)) {
-        $this->data['stock_options'][$stock_item['id']] = $stock_item;
+        $this->data['stock_options'][] = $stock_item;
       }
 
     // Images
@@ -155,7 +151,7 @@
       );
 
       while ($image = database::fetch($products_images_query)) {
-        $this->data['images'][$image['id']] = $image;
+        $this->data['images'][] = $image;
       }
 
       $this->previous = $this->data;
@@ -511,14 +507,15 @@
 
       $image_id = database::insert_id();
 
-      $this->data['images'][$image_id] = [
+      $row = [
         'id' => $image_id,
         'filename' => $filename,
         'checksum' => $checksum,
         'priority' => $priority,
       ];
 
-      $this->previous['images'][$image_id] = $this->data['images'][$image_id];
+      $this->previous['images'][] = $row;
+      $this->data['images'][] = $row;
     }
 
     public function delete() {
