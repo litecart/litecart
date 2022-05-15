@@ -612,7 +612,7 @@
               <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
               <tr class="item">
                 <td>
-                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
+                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
                   <?php echo functions::form_draw_hidden_field('items['.$key.'][option_stock_combination]', true); ?>
