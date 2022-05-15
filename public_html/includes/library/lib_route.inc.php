@@ -60,6 +60,8 @@
 
     public static function identify() {
 
+      if (empty(self::$request)) return self::$route = [];
+
     // Find a target route for requested URL
       foreach (self::$_routes as $route) {
 
