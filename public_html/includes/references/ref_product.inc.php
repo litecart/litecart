@@ -203,6 +203,7 @@
             where product_id = ". (int)$this->_data['id'] ."
             order by priority asc, id asc;"
           );
+
           while ($row = database::fetch($query)) {
             $this->_data['images'][$row['id']] = $row['filename'];
           }
