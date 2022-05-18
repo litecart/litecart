@@ -462,22 +462,22 @@
       $this->data['weight_total'] = 0;
 
       foreach ($this->data['items'] as $item) {
-        $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
-        $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
-        $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
-        $this->data['tax_total'] += $item['tax'] * $item['quantity'];
-        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+        $this->data['subtotal']['amount'] += (float)$item['price'] * (float)$item['quantity'];
+        $this->data['subtotal']['tax'] += (float)$item['tax'] * (float)$item['quantity'];
+        $this->data['payment_due'] += ((float)$item['price'] + (float)$item['tax']) * (float)$item['quantity'];
+        $this->data['tax_total'] += (float)$item['tax'] * (float)$item['quantity'];
+        $this->data['weight_total'] += weight::convert((float)$item['weight'], $item['weight_class'], $this->data['weight_class']) * (float)$item['quantity'];
       }
 
       foreach ($this->data['order_total'] as &$row) {
         if ($row['module_id'] == 'ot_subtotal') {
-          $row['value'] = $this->data['subtotal']['amount'];
-          $row['tax'] = $this->data['subtotal']['tax'];
+          $row['value'] = (float)$this->data['subtotal']['amount'];
+          $row['tax'] = (float)$this->data['subtotal']['tax'];
         }
 
         if (empty($row['calculate'])) continue;
-        $this->data['payment_due'] += $row['value'] + $row['tax'];
-        $this->data['tax_total'] += $row['tax'];
+        $this->data['payment_due'] += (float)$row['value'] + (float)$row['tax'];
+        $this->data['tax_total'] += (float)$row['tax'];
       } unset($row);
     }
 
@@ -513,11 +513,11 @@
         $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : '';
       }
 
-      $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
-      $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
-      $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
-      $this->data['tax_total'] += $item['tax'] * $item['quantity'];
-      $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+      $this->data['subtotal']['amount'] += (float)$item['price'] * (float)$item['quantity'];
+      $this->data['subtotal']['tax'] += (float)$item['tax'] * (float)$item['quantity'];
+      $this->data['payment_due'] += ((float)$item['price'] + (float)$item['tax']) * (float)$item['quantity'];
+      $this->data['tax_total'] += (float)$item['tax'] * (float)$item['quantity'];
+      $this->data['weight_total'] += weight::convert((float)$item['weight'], $item['weight_class'], $this->data['weight_class']) * (float)$item['quantity'];
     }
 
     public function add_ot_row($row) {
@@ -526,8 +526,8 @@
         'id' => 0,
         'module_id' => $row['id'],
         'title' =>  $row['title'],
-        'value' => $row['value'],
-        'tax' => $row['tax'],
+        'value' => (float)$row['value'],
+        'tax' => (float)$row['tax'],
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       ];
 
