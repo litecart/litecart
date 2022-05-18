@@ -301,7 +301,7 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo functions::image_thumbnail(FS_DIR_ADMIN . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping')); ?>');
+      $('#image img').attr('src', '<?php echo document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_ADMIN . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
     }
   });
 
