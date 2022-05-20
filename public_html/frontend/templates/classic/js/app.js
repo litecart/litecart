@@ -5,7 +5,7 @@
   });
 
 // Form required asterix
-  $(':input[required="required"]').closest('.form-group').addClass('required');
+  $(':input[required]').closest('.form-group').addClass('required');
 
 // Sidebar parallax effect
   if (typeof(window._env) !== 'undefined' && window._env.template.settings.sidebar_parallax_effect == true) {

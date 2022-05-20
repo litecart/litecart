@@ -53,18 +53,18 @@
 
       <section class="hidden-xs hidden-sm col-md-4" style="align-self: center;">
         <div class="logotype">
-          <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" class="img-responsive" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
+          <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
         </div>
 
         <ul class="modules list-inline text-center">
           <?php foreach ($modules as $module) { ?>
-          <li class="thumbnail"><img src="<?php echo document::href_link($module['icon']); ?>" class="img-responsive" alt="" /></li>
+          <li><img class="thumbnail img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $module['icon']); ?>" class="" alt="" /></li>
           <?php } ?>
         </ul>
 
         <ul class="social-bookmarks list-inline text-center">
           <?php foreach ($social_bookmarks as $bookmark) { ?>
-          <li><a href="<?php echo functions::escape_html($bookmark['link']); ?>" class="thumbnail"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a></li>
+          <li><a class="thumbnail" href="<?php echo functions::escape_html($bookmark['link']); ?>"><?php echo functions::draw_fonticon($bookmark['icon'] .' fa-fw', 'title="'. functions::escape_html($bookmark['title']) .'"'); ?></a></li>
           <?php } ?>
         </ul>
       </section>

@@ -34,22 +34,21 @@ html {
   }
 }
 #region {
-  background: var(--site-background-color);
+  display: inline-flex;
+  margin: 0 auto;
+  gap: 1em;
   border-bottom: 1px solid #fff;
   border-collapse: collapse;
   border-radius: var(--border-radius);
   border-right: 1px solid #fff;
   box-shadow: inset 0 1px 2px var(--shadow-color);
   color: var(--default-text-color);
-  display: inline-block;
-  font-size: 0.95em;
   padding: 5px 10px;
 }
-#region .currency {
-  cursor: default;
-  padding: 0;
+#region .form-group {
+  margin-bottom: 0;
 }
-#region .currency span {
+#region .code {
   background: #e3ece0;
   border-bottom: 1px solid #fff;
   border-left: 1px solid #d1d1d1;
@@ -57,16 +56,8 @@ html {
   border-top: 1px solid #d1d1d1;
   padding: 1px 5px;
 }
-#region .country {
-  cursor: default;
-}
 #region .change {
   padding-inline-start: 0;
-}
-#region > div {
-  display: inline-block;
-  padding: 5px 5px;
-  vertical-align: middle;
 }
 #cart {
   display: inline-block;

@@ -273,7 +273,7 @@ body main {
   text-decoration: none;
   transform: scale(1);
   transition: all 100ms linear;
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
 }
 @media (min-width: 576px) {
   .listing .category:hover,
@@ -326,9 +326,7 @@ body main {
 }
 .listing .product .image-wrapper .sticker {
   position: absolute;
-  top: 20px;
-  left: -32px;
-  width: 125px;
+  top: 1em;
   padding: 0.25em 0.5em;
   color: #fff;
   font-size: 12px;
@@ -336,7 +334,6 @@ body main {
   text-align: center;
   text-transform: uppercase;
   line-height: 100%;
-  transform: rotate(-45deg);
 }
 .listing .product .image-wrapper .sticker.new {
   background: rgba(251, 184, 41, 0.9);
@@ -550,15 +547,11 @@ body main {
   color: #fff;
   font-size: 12px;
   font-weight: bold;
-  top: 17px;
-  left: -34px;
+  top: 1em;
   padding: 0.25rem 0.5rem;
   position: absolute;
-  text-align: center;
   text-transform: uppercase;
-  transform: rotate(-45deg);
   line-height: 100%;
-  width: 140px;
 }
 #box-product .main-image .sticker.new {
   background: rgba(251, 184, 41, 0.85);

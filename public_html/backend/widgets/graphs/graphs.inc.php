@@ -22,7 +22,6 @@
 
     $monthly_sales = [];
     while ($orders = database::fetch($orders_query)) {
-      settype($orders['total_sales'], 'float');
       $monthly_sales[$orders['year']][$orders['month']] = $orders;
     }
 

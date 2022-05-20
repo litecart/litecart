@@ -36,12 +36,12 @@
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-            <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?>
+            <?php echo functions::form_draw_text_field('firstname', true, 'required'); ?>
           </div>
 
           <div class="form-group col-6">
             <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-            <?php echo functions::form_draw_text_field('lastname', true, 'required="required"'); ?>
+            <?php echo functions::form_draw_text_field('lastname', true, 'required'); ?>
           </div>
         </div>
 
@@ -72,7 +72,7 @@
         <div class="row">
           <div class="form-group col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
             <label><?php echo language::translate('title_country', 'Country'); ?></label>
-            <?php echo functions::form_draw_countries_list('country_code', true, 'required="required"'); ?>
+            <?php echo functions::form_draw_countries_list('country_code', true, 'required'); ?>
           </div>
 
           <?php if (settings::get('customer_field_zone')) { ?>
@@ -86,7 +86,7 @@
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_email', 'Email'); ?></label>
-            <?php echo functions::form_draw_email_field('email', true, 'required="required"'); ?>
+            <?php echo functions::form_draw_email_field('email', true, 'required'); ?>
           </div>
 
           <div class="form-group col-6">
@@ -98,12 +98,12 @@
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-            <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?>
+            <?php echo functions::form_draw_password_field('password', '', 'required'); ?>
           </div>
 
           <div class="form-group col-6">
             <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-            <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?>
+            <?php echo functions::form_draw_password_field('confirmed_password', '', 'required'); ?>
           </div>
         </div>
 
@@ -113,7 +113,7 @@
 
         <?php if ($consent) { ?>
         <p class="consent">
-          <?php echo functions::form_draw_checkbox('terms_agreed', ['1', $consent], true, 'required="required"'); ?>
+          <?php echo functions::form_draw_checkbox('terms_agreed', ['1', $consent], true, 'required'); ?>
         </p>
         <?php } ?>
 
@@ -121,7 +121,7 @@
         <div class="row">
           <div class="form-group col-6">
             <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-            <?php echo functions::form_draw_captcha_field('captcha', 'create_account', 'required="required"'); ?>
+            <?php echo functions::form_draw_captcha_field('captcha', 'create_account', 'required'); ?>
           </div>
         </div>
         <?php } ?>

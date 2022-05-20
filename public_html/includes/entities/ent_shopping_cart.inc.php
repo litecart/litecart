@@ -291,10 +291,44 @@
         'error' => '',
       ];
 
+      if (($stock_option_key = array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id', 'id'))) !== false) {
+        $stock_option = &$product->stock_options[$stock_option_key];
+
+        $item['sku'] = fallback($stock_option['sku'], $item['sku']);
+        $item['weight'] = fallback($stock_option['weight'], $item['weight']);
+        $item['weight_unit'] = fallback($stock_option['weight_unit'], $item['weight_unit']);
+        $item['length'] = fallback($stock_option['length'], $item['length']);
+        $item['width'] = fallback($stock_option['width'], $item['width']);
+        $item['height'] = fallback($stock_option['height'], $item['height']);
+        $item['length_unit'] = fallback($stock_option['length_unit'], $item['length_unit']);
+      }
+
       $item['sum'] = $item['quantity'] * ($item['price'] - $item['discount']);
       $item['sum_tax'] = $item['quantity'] * ($item['tax'] - $item['discount_tax']);
 
-    // Validate
+      try {
+        $this->validate_item($item);
+      } catch (Exception $e) {
+        $item['error'] = $e->getMessage();
+        if ($halt_on_error) return $item['error'];
+      }
+
+    // Round currency amount (Gets rid of hidden decimals)
+      $item['price'] = currency::round($item['price'], currency::$selected['code']);
+      $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
+
+    // Add item to cart or increase quantity of an existing item
+      if (!empty($this->data['items'][$item_key])) {
+        $this->data['items'][$item_key]['quantity'] += $quantity;
+      } else {
+        $this->data['items'][$item_key] = $item;
+      }
+
+      $this->_refresh_total();
+    }
+
+    public function validate_item($item) {
+
       if (!$product->id) {
         throw new Exception(language::translate('error_item_not_a_valid_product', 'The item is not a valid product'));
       }
@@ -315,60 +349,41 @@
         throw new Exception(language::translate('error_invalid_item_quantity', 'Invalid item quantity'));
       }
 
-      $available_quantity_after_purchase = $product->quantity - $quantity - (isset($this->data['items'][$item_key]) ? $this->data['items'][$item_key]['quantity'] : 0);
-
-      if ($available_quantity_after_purchase < 0 && empty($product->sold_out_status['orderable'])) {
-        throw new Exception(strtr(language::translate('error_only_n_remaining_products_in_stock', 'There are only %quantity remaining products in stock.'), ['%quantity' => round($product->quantity, isset($product->quantity_unit['decimals']) ? (int)$product->quantity_unit['decimals'] : 0)]));
-      }
-
-    // Stock Option
-      if (!empty($stock_item_id) && array_search($stock_item_id, array_column($product->stock_options, 'stock_item_id', 'id')) === false) {
+      if (!empty($item['stock_item_id']) && array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id')) === false) {
         throw new Exception(language::translate('error_invalid_stock_option', 'Invalid stock option'));
       }
 
-      if (empty($stock_item_id) && $product->stock_options) {
+      if (empty($item['stock_item_id']) && $product->stock_options) {
         throw new Exception(language::translate('error_muset_select_stock_option', 'You must select a stock option'));
       }
 
-      if ($product->stock_options) {
+      if (!empty($item['stock_item_id'])) {
+        $reserved_items_query = database::query(
+          "select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items
+          where stock_item_id = ". (int)$item['stock_item_id'] ."
+          and order_id in (
+            select id from ". DB_TABLE_PREFIX ."order
+            where order_status_id in (
+              select id from ". DB_TABLE_PREFIX ."order_statuses
+              where stock_action = 'reserve'
+            )
+          )
+          group by stock_item_id;"
+        );
 
-        $stock_option_key = array_search($stock_item_id, array_column($product->stock_options, 'stock_item_id', 'id'));
-        $stock_option = &$product->stock_options[$stock_option_key];
+        $reserved_quantity = database::fetch($reserved_items_query, 'total_reserved');
 
-        if (!empty($product->sold_out_status) && empty($product->sold_out_status['orderable'])) {
-          //var_dump($stock_option->quantity, $quantity, (isset($this->data['items'][$item_key]) ? $this->data['items'][$item_key]['quantity'] : ''));exit;
-          if (($stock_option['quantity'] - $quantity - (isset($this->data['items'][$item_key]) ? $this->data['items'][$item_key]['quantity'] : 0)) < 0) {
-            throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') .' ('. $stock_item_id .')');
+        if (($stock_option_key = array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id', 'id'))) !== false) {
+          $stock_option = &$product->stock_options[$stock_option_key];
+
+          if (!empty($product->sold_out_status) && empty($product->sold_out_status['orderable'])) {
+            $available_quantity_after_purchase = $stock_option['quantity'] - $reserved_quantity - $quantity - (isset($this->data['items'][$item_key]) ? $this->data['items'][$item_key]['quantity'] : 0);
+            if ($available_quantity_after_purchase < 0) {
+              throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') .' ('. $stock_option['sku'] .')');
+            }
           }
         }
-
-        $item['sku'] = fallback($stock_option['sku'], $item['sku']);
-        $item['weight'] = fallback($stock_option['weight'], $item['weight']);
-        $item['weight_unit'] = fallback($stock_option['weight_unit'], $item['weight_unit']);
-        $item['length'] = fallback($stock_option['length'], $item['length']);
-        $item['width'] = fallback($stock_option['width'], $item['width']);
-        $item['height'] = fallback($stock_option['height'], $item['height']);
-        $item['length_unit'] = fallback($stock_option['length_unit'], $item['length_unit']);
       }
-
-    // Adjust price with extras
-      $item['price'] += $item['extras'];
-      $item['tax'] += tax::get_tax($item['extras'], $product->tax_class_id);
-
-    // Round currency amount (Gets rid of hidden decimals)
-      $item['price'] = currency::round($item['price'], currency::$selected['code']);
-      $item['tax'] = currency::round($item['tax'], currency::$selected['code']);
-
-    // Add item or append to existing
-      if (!empty($this->data['items'][$item_key])) {
-        $this->data['items'][$item_key]['quantity'] += $quantity;
-      } else {
-        $this->data['items'][$item_key] = $item;
-      }
-
-      $this->_refresh_total();
-
-      return true;
     }
 
     public function update_item($item_key, $quantity) {

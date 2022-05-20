@@ -9,7 +9,7 @@
 </style>
 
 <section id="box-newsletter-subscribe">
-  <div class="container">
+  <div class="container text-center">
 
     <?php echo functions::form_draw_form_begin('newsletter_subscribe_form', 'post'); ?>
 
@@ -18,7 +18,7 @@
       <p><?php echo language::translate('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.'); ?></p>
 
       <div class="form-group">
-        <div class="input-group" style="max-width: 480px; margin-top: 4px;">
+        <div class="input-group" style="max-width: 480px; margin-top: 4px; margin-left: auto; margin-right: auto;">
           <?php echo functions::form_draw_text_field('email', true, 'placeholder="your@email.com" required'); ?>
           <?php echo functions::form_draw_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
         </div>

@@ -56,10 +56,10 @@
 
   function form_draw_captcha_field($name, $id, $parameters='') {
 
-   return '<div class="input-group">' . PHP_EOL
-        . '  <span class="input-group-text" style="padding: 0;">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
-        . '  ' . form_draw_text_field('captcha', '', $parameters . ' autocomplete="off" style="font-size: 24px; padding: 0; text-align: center;"') . PHP_EOL
-        . '</div>';
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-text" style="padding: 0;">'. functions::captcha_generate(100, 40, 4, $id, 'numbers', 'align="absbottom"') .'</span>' . PHP_EOL
+         . '  ' . form_draw_text_field('captcha', '', $parameters . ' autocomplete="off" style="font-size: 24px; padding: 0; text-align: center;"') . PHP_EOL
+         . '</div>';
   }
 
   function form_draw_category_field($name, $input=true, $parameters='') {
@@ -246,7 +246,7 @@ END;
   function form_draw_date_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    if (!empty($input) && !in_array(substr($input, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
+    if (!empty($input) && !in_array(substr($input, 0, 10), ['0000-00-00', '1970-01-01'])) {
       $input = date('Y-m-d', strtotime($input));
     } else {
       $input = '';
@@ -258,7 +258,7 @@ END;
   function form_draw_datetime_field($name, $input=true, $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
 
-    if (!empty($input) && !in_array(substr($input, 0, 10), ['', '0000-00-00', '1970-01-01'])) {
+    if (!empty($input) && !in_array(substr($input, 0, 10), ['0000-00-00', '1970-01-01'])) {
       $input = date('Y-m-d\TH:i', strtotime($input));
     } else {
       $input = '';

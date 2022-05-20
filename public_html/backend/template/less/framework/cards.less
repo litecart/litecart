@@ -18,10 +18,6 @@
   }
 
   .card-header {
-    padding-bottom: 1em;
-  }
-
-  .card-header {
     color: var(--card-header-text-color);
     background-color: var(--card-header-background-color);
     border-bottom: 0px solid var(--card-border-color);
@@ -49,6 +45,8 @@
 
 .card-app {
   position: relative;
+  overflow: hidden;
+
   > .card-header {
     .icon-wrapper {
       font-size: 24px;
@@ -74,7 +72,7 @@
   }
 
   .data-table {
-    margin: 1em 0;
+    margin: 0;
   }
 
   .card-footer {

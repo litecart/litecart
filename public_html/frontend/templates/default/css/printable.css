@@ -42,7 +42,7 @@ hr {
 }
 @media screen {
   body {
-    background: #e6e9ed;
+    background: var(--site-background-color);
   }
   .page {
     margin: 5mm auto;

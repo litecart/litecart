@@ -103,11 +103,3 @@ ErrorDocument 500 "Internal Server Error"
 #<IfModule mod_headers.c>
 #  Header set X-Robots-Tag "noindex, nofollow"
 #</IfModule>
-
-# Protect your site HTTP Auth Basic protection, handy for development platforms
-#<IfModule mod_auth_basic.c>
-#  AuthType Basic
-#  AuthName "Restricted Area"
-#  AuthUserFile "{FS_DIR_APP}.htpasswd"
-#  Require valid-user
-#</IfModule>

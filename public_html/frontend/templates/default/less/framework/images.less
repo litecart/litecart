@@ -4,7 +4,7 @@
 .thumbnail a > img,
 .img-responsive {
   display: block;
-  max-width: 100%;
+  width: 100%;
   height: auto;
   margin: 0 auto;
 }
@@ -31,4 +31,12 @@
   background-color: var(--whitespace-color);
   transition: all .1s ease-in-out;
   overflow: hidden;
+}
+
+img.fit {
+  //object-fit: scale-down;
+  object-fit: contain;
+}
+img.crop {
+  object-fit: cover;
 }

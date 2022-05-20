@@ -390,7 +390,7 @@ ul.breadcrumb li a {
 }
 .btn.active,
 .btn:active {
-  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: inset 1px 1px 0px 1px rgba(0, 0, 0, 0.15) !important;
 }
 .btn.disabled,
 .btn[disabled] {
@@ -939,6 +939,22 @@ tr.semi-transparent td {
   min-width: 320px;
   max-width: 1440px;
   margin: 0 auto;
+  padding: 0 0.25em;
+}
+@media (min-width: 576px) {
+  .container {
+    padding: 0 0.5em;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    padding: 0 0.75em;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    padding: 0 1em;
+  }
 }
 .float-start {
   float: left;
@@ -1272,7 +1288,7 @@ input[type="number"] {
   background: var(--input-background-color);
   width: 1.25em;
   height: 1.25em;
-  border: 1px solid var(--input-border-color);
+  border: 2px solid var(--input-border-color);
   border-radius: var(--border-radius);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   vertical-align: text-bottom;
@@ -1295,7 +1311,7 @@ input[type="number"] {
   background: var(--input-background-color);
   height: 1.25em;
   width: 1.25em;
-  border: 1px solid var(--default-border-color);
+  border: 2px solid var(--input-border-color);
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   vertical-align: text-bottom;
@@ -1314,9 +1330,9 @@ input[type="number"] {
   width: 100%;
   padding: 0.5em 1em;
   background-color: var(--input-background-color);
-  border: 1px solid var(--default-border-color);
+  border: 2px solid var(--input-border-color);
   border-radius: var(--border-radius);
-  box-shadow: -1px -1px 0px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
   color: var(--input-text-color);
   vertical-align: middle;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
@@ -1337,9 +1353,9 @@ input[type="number"] {
   padding: 0.5em 1em;
   background-color: var(--input-background-color);
   color: var(--input-text-color);
-  border: 1px solid var(--default-border-color);
+  border: 2px solid var(--input-border-color);
   border-radius: var(--border-radius);
-  box-shadow: -1px -1px 0px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 1em center;
@@ -1406,9 +1422,9 @@ input[type="number"] {
   padding: 0.5em 1em;
   background-color: var(--input-background-color);
   color: var(--input-text-color);
-  border: 1px solid var(--default-border-color);
+  border: 2px solid var(--input-border-color);
   border-radius: var(--border-radius);
-  box-shadow: -1px -1px 0px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
   display: flex;
   padding: 0;
 }
@@ -1430,8 +1446,8 @@ input[type="number"] {
   flex: 0 1 auto;
   padding: 0.5em 1em;
   background-color: var(--input-addon-background-color);
-  border-left: 1px solid var(--input-border-color);
-  border-right: 1px solid var(--input-border-color);
+  border-left: 2px solid var(--input-border-color);
+  border-right: 2px solid var(--input-border-color);
   color: var(--input-text-color);
   align-self: center;
   font-weight: normal;
@@ -1466,7 +1482,7 @@ fieldset[disabled] > :not(legend),
 .thumbnail a > img,
 .img-responsive {
   display: block;
-  max-width: 100%;
+  width: 100%;
   height: auto;
   margin: 0 auto;
 }
@@ -1491,6 +1507,12 @@ fieldset[disabled] > :not(legend),
   background-color: var(--whitespace-color);
   transition: all 0.1s ease-in-out;
   overflow: hidden;
+}
+img.fit {
+  object-fit: contain;
+}
+img.crop {
+  object-fit: cover;
 }
 /* Lists - Bootstrap Compatible */
 ul.list-unstyled {
@@ -1548,6 +1570,10 @@ ul.list-inline li {
   padding: 0.5em 1em;
   color: inherit;
   text-decoration: none;
+}
+.nav li > a:hover,
+.nav li .nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 .nav li.disabled > a,
 .nav li.disabled > .nav-item {
@@ -2145,5 +2171,27 @@ ul.list-inline li {
   }
   .text-lg-end {
     text-align: right !important;
+  }
+}
+@media (min-width: 1200px) {
+  .text-lg-start {
+    text-align: start !important;
+  }
+  .text-lg-center {
+    text-align: center !important;
+  }
+  .text-lg-end {
+    text-align: end !important;
+  }
+}
+@media (min-width: 1600px) {
+  .text-lg-start {
+    text-align: start !important;
+  }
+  .text-lg-center {
+    text-align: center !important;
+  }
+  .text-lg-end {
+    text-align: end !important;
   }
 }

@@ -65,7 +65,7 @@
     transform: scale(1);
     transition: all 100ms linear;
 
-    box-shadow: 0 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, .05);
 
     @media (min-width: (@media-breakpoint-sm)) {
       &:hover {
@@ -125,9 +125,7 @@
 
       .sticker {
         position: absolute;
-        top: 20px;
-        left: -32px;
-        width: 125px;
+        top: 1em;
         padding: .25em .5em;
         color: #fff;
         font-size: 12px;
@@ -135,7 +133,6 @@
         text-align: center;
         text-transform: uppercase;
         line-height: 100%;
-        transform: rotate(-45deg);
         &.new {
           background: rgba(251, 184, 41, 0.9);
         }

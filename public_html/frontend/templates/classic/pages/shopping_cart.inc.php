@@ -47,7 +47,7 @@
 
         <div class="form-group">
           <label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
-          <?php echo functions::form_draw_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax']); ?>
+          <?php echo functions::form_draw_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax'] ? '1' : '0'); ?>
         </div>
 
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-default btn-block"'); ?>

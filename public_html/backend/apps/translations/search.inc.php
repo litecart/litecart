@@ -153,7 +153,7 @@ th:not(:last-child) {
               <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
             </td>
             <?php } ?>
-            <td class="text-end"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+            <td class="text-end"><a class="btn btn-danger btn-sm delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-trash'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>

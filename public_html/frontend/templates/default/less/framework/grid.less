@@ -5,6 +5,16 @@
   min-width: 320px;
   max-width: 1440px;
   margin: 0 auto;
+  padding: 0 .25em;
+  @media (min-width: @media-breakpoint-sm) {
+    padding: 0 .5em;
+  }
+  @media (min-width: @media-breakpoint-md) {
+    padding: 0 .75em;
+  }
+  @media (min-width: @media-breakpoint-lg) {
+    padding: 0 1em;
+  }
 }
 
 .float-start {

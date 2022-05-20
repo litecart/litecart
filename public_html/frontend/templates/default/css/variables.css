@@ -5,19 +5,19 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firasans/v15/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/firasans/v16/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Fira Sans';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/firasans/v15/va9B4kDNxMZdWfMOD5VnLK3uQQ.ttf) format('truetype');
+  src: url(https://fonts.gstatic.com/s/firasans/v16/va9B4kDNxMZdWfMOD5VnLK3uQQ.ttf) format('truetype');
 }
 /* Variables */
 :root {
   --border-radius: 8px;
-  --gutter-size: 0.75rem;
+  --gutter-size: 1rem;
   --link-text-color: #5292b1;
   --whitespace-color: #fff;
   --listing-border-color: #ccc;
@@ -32,7 +32,7 @@
   --default-title-border-color: #f0f0f0;
   --navigation-background-color: rgba(229, 229, 234, 0.8);
   --navigation-text-color: #333;
-  --navigation-cart-background-color: #91c231;
+  --navigation-cart-background-color: transparent;
   --navigation-cart-text-color: #fff;
   --offcanvas-navigation-background-color: #333;
   --offcanvas-navigation-text-color: #fff;
@@ -76,6 +76,7 @@
   --breadcrumbs-text-color: #000;
   --breadcrumbs-border-color: transparent;
   --input-background-color: #fff;
+  --input-border-color: #ebebee;
   --input-padding-x: 1em;
   --input-padding-y: 0.5em;
   --input-text-color: #000;
@@ -107,11 +108,11 @@
 }
 .box.box-default,
 .card {
-  --input-background-color: #f4f3f5;
+  --input-background-color: #f9f9f9;
 }
 @media (min-width: 576px) {
   :root {
-    --gutter-size: 1rem;
+    --gutter-size: 1.25rem;
   }
 }
 @media (min-width: 768px) {
