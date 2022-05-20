@@ -18,7 +18,7 @@
 		"url": "https://github.com/litecart/litecart/issues"
 	},
 	"devDependencies": {
-		"grunt": "^1.3.0",
+		"grunt": "^1.5.3",
 		"grunt-cli": "^1.3.2",
 		"grunt-contrib-less": "^2.0.0",
 		"grunt-contrib-uglify": "^4.0.1",
