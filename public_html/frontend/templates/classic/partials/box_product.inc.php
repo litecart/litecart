@@ -126,7 +126,7 @@
                   <input type="radio" name="stock_item_id" value="<?php echo $stock_option['stock_item_id']; ?>" data-price-adjust="<?php echo (float)$stock_option['price_adjust']; ?>" style="display: none;" required />
                   <div class="row">
                     <div class="col-2">
-                      <img src="<?php echo document::href_link(WS_DIR_STORAGE . $stock_option['image']['thumbnail']); ?>" class="thumbnail" alt="" />
+                      <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $stock_option['image']['thumbnail']); ?>" alt="" />
                     </div>
                     <div class="col-10">
                       <div class="name"><?php echo $stock_option['name']; ?></div>

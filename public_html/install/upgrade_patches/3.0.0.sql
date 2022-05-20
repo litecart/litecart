@@ -331,6 +331,14 @@ WHERE `key` IN (
   'default_language_code', 'default_currency_code', 'default_country_code', 'default_zone_code', 'template'
 );
 -- --------------------------------------------------------
+UPDATE lc_settings SET `function` = 'select("FIT","CROP")' WHERE `key` = 'category_image_clipping' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE lc_settings SET `value` = 'FIT' WHERE `key` = 'category_image_clipping' AND `value` IN ('FIT_USE_WHITESPACING', 'FIT_ONLY_BIGGER', 'FIT_ONLY_BIGGER_USE_WHITESPACING') LIMIT 1;
+-- --------------------------------------------------------
+UPDATE lc_settings SET `function` = 'select("FIT","CROP")' WHERE `key` = 'product_image_clipping' LIMIT 1;
+-- --------------------------------------------------------
+UPDATE lc_settings SET `value` = 'FIT' WHERE `key` = 'product_image_clipping' AND `value` IN ('FIT_USE_WHITESPACING', 'FIT_ONLY_BIGGER', 'FIT_ONLY_BIGGER_USE_WHITESPACING') LIMIT 1;
+-- --------------------------------------------------------
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('social_media', 'Social Media', 'Social media related settings.', 30);
 -- --------------------------------------------------------

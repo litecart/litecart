@@ -184,7 +184,7 @@ textarea[name="html"] {
     while ($(':input[name="keys[key_'+new_key_i+']"]').length) new_key_i++;
 
     var output = '<tr>' +
-                 '  <td><?php echo functions::form_draw_text_field('keys[key_new_key_i]', 'key_new_key_i', 'required="required" pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>' +
+                 '  <td><?php echo functions::form_draw_text_field('keys[key_new_key_i]', 'key_new_key_i', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>' +
                  <?php foreach (language::$languages as $language) { ?>
                  '  <td><?php echo functions::form_draw_text_field('values['. $language['code'] .'][key_new_key_i]', true); ?></td>' +
                  <?php } ?>

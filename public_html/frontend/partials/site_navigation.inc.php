@@ -78,7 +78,7 @@
   ];
 
   foreach (cart::$items as $key => $item) {
-    $item['thumbnail'] = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 64, 64, 'FIT_USE_WHITESPACING');
+    $item['thumbnail'] = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 64, 64);
     $site_navigation->snippets['shopping_cart']['items'][$key] = $item;
   }
 

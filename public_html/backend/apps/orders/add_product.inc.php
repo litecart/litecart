@@ -39,7 +39,7 @@
         <div class="thumbnail">
 <?php
   list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
-  echo '<img src="'. document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'))) .'" />';
+  echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height)) .'" />';
 ?>
         </div>
       </div>

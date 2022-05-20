@@ -28,7 +28,6 @@
         'destination' => fallback($options['destination'], FS_DIR_STORAGE . 'cache/'),
         'width' => fallback($options['width'], 0),
         'height' => fallback($options['height'], 0),
-        'clipping' => fallback($options['clipping'], 'FIT_ONLY_BIGGER'),
         'quality' => fallback($options['quality'], settings::get('image_quality')),
         'trim' => fallback($options['trim'], false),
         'interlaced' => !empty($options['interlaced']) ? true : false,
@@ -65,7 +64,7 @@
       }
 
       if ($options['width'] > 0 || $options['height'] > 0) {
-        if (!$image->resample($options['width'], $options['height'], strtoupper($options['clipping']))) return;
+        if (!$image->resample($options['width'], $options['height'])) return;
       }
 
       if (!empty($options['watermark'])) {
@@ -82,19 +81,31 @@
     }
   }
 
-  function image_resample($source, $destination, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $quality=null) {
+  function image_aspect_ratio($width, $height) {
+
+    $ratio = [$width, $height];
+
+    for ($x = $ratio[1]; $x > 1; $x--) {
+      if (($ratio[0] % $x) == 0 && ($ratio[1] % $x) == 0) {
+        $ratio = [$ratio[0] / $x, $ratio[1] / $x];
+      }
+    }
+
+    return implode('/', $ratio);
+  }
+
+  function image_resample($source, $destination, $width=0, $height=0, $quality=null) {
 
     return image_process($source, [
       'destination' => $destination,
       'width' => $width,
       'height' => $height,
-      'clipping' => $clipping,
       'trim' => false,
       'quality' => $quality,
     ]);
   }
 
-  function image_thumbnail($source, $width=0, $height=0, $clipping='FIT_ONLY_BIGGER', $trim=false) {
+  function image_thumbnail($source, $width=0, $height=0, $trim=false) {
 
     if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
 
@@ -110,46 +121,10 @@
       $extension = pathinfo($source, PATHINFO_EXTENSION);
     }
 
-    switch (strtoupper($clipping)) {
-
-      case 'CROP':
-        $clipping_filename_flag = '_c';
-        break;
-
-      case 'CROP_ONLY_BIGGER':
-        $clipping_filename_flag = '_cob';
-        break;
-
-      case 'STRETCH':
-        $clipping_filename_flag = '_s';
-        break;
-
-      case 'FIT':
-        $clipping_filename_flag = '_f';
-        break;
-
-      case 'FIT_USE_WHITESPACING':
-        $clipping_filename_flag = '_fwb';
-        break;
-
-      case 'FIT_ONLY_BIGGER':
-        $clipping_filename_flag = '_fob';
-        break;
-
-      case 'FIT_ONLY_BIGGER_USE_WHITESPACING':
-        $clipping_filename_flag = '_fobws';
-        break;
-
-      default:
-        trigger_error("Unknown image clipping method ($clipping)", E_USER_WARNING);
-        return;
-    }
-
     $filename = implode([
       sha1($path),
       $trim ? '_t' : null,
       '_'.(int)$width .'x'. (int)$height,
-      $clipping_filename_flag,
       settings::get('image_thumbnail_interlaced') ? '_i' : null,
       '.'.$extension,
     ]);
@@ -175,7 +150,6 @@
       'destination' => $cache_file,
       'width' => $width,
       'height' => $height,
-      'clipping' => $clipping,
       'trim' => fallback($trim, false),
       'quality' => settings::get('image_thumbnail_quality'),
       'interlaced' => settings::get('image_thumbnail_interlaced'),

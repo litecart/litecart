@@ -73,7 +73,7 @@
         <label><?php echo language::translate('title_template', 'Template'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_templates_list('template', empty($_POST['template']) ? settings::get('template') : true); ?>
-            <a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" alt="<?php language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
+            <a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" title="<?php echo language::translate('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('fa-wrench fa-lg'); ?></a>
           </div>
       </div>
 

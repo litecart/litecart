@@ -34,8 +34,14 @@
       'name' => $product['name'],
       'image' => [
         'original' => 'images/' . $product['image'],
-        'thumbnail_1x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
+        'viewport' => [
+          'width' => $width,
+          'height' => $height,
+          'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
+          'clipping' => strtolower(settings::get('product_image_clipping')),
+        ],
       ],
 
       'link' => document::ilink('product', ['product_id' => $product['id']]),

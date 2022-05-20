@@ -16,7 +16,7 @@
 
         <div class="header row" style="margin: 0;">
           <div class="col-sm-4 thumbnail" style="margin: 0;">
-            <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 160, 80, 'FIT_ONLY_BIGGER_USE_WHITESPACING')); ?>" />
+            <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 160, 80)); ?>" />
           </div>
 
           <div class="col-sm-8" style="padding-bottom: 0;">

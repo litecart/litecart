@@ -58,7 +58,7 @@
       $site_footer->snippets['modules'][$module['settings']['icon']] = [
         'id' => $module['id'],
         //'title' => $module['name'],
-        'icon' => functions::image_thumbnail(FS_DIR_APP . $module['settings']['icon'], 72, 32, 'FIT_USE_WHITESPACING'),
+        'icon' => functions::image_thumbnail(FS_DIR_APP . $module['settings']['icon'], 72, 32),
       ];
     }
 

@@ -25,8 +25,8 @@
         'name' => $brand['name'],
         'image' => [
           'original' => 'images/' . $brand['image'],
-          'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 320, 100, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
-          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 640, 200, 'FIT_ONLY_BIGGER_USE_WHITESPACING'),
+          'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 320, 100),
+          'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 640, 200),
         ],
         'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
       ];

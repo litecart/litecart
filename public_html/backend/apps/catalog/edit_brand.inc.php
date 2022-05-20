@@ -110,8 +110,8 @@
 
           <div id="image">
             <?php if (!empty($brand->data['image'])) { ?>
-            <div class="thumbnail" style="margin-bottom: 15px;">
-              <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->data['image'], 400, 100)); ?>" alt="" />
+            <div style="margin-bottom: 15px;">
+              <img class="thumbnail" src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->data['image'], 400, 100)); ?>" alt="" />
             </div>
             <?php } ?>
 

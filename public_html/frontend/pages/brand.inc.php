@@ -44,8 +44,8 @@
       'link' => $brand->link,
       'image' => [
         'original' => 'images/' . $brand->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 200, 0, 'FIT_ONLY_BIGGER'),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 200*2, 0, 'FIT_ONLY_BIGGER'),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 200, 75),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 400, 150),
       ],
       'products' => [],
       'sort_alternatives' => [

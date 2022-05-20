@@ -5,8 +5,8 @@
         <h1 style="margin-top: 0;"><?php echo $name; ?></h1>
 
         <?php if (!empty($image)) { ?>
-        <div class="thumbnail" style="margin-bottom: 2em;">
-          <img src="<?php echo document::href_link($image['thumbnail_1x']); ?>" />
+        <div style="margin-bottom: 2em;">
+          <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" />
         </div>
         <?php } ?>
 

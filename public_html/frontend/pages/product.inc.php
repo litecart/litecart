@@ -43,7 +43,7 @@
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />';
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_STORAGE . 'images/' . $product->image) .'"/>';
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . 'images/' . $product->image) .'"/>';
   }
 
   if (!empty($_GET['category_id'])) {
@@ -125,12 +125,13 @@
     'keywords' => $product->keywords,
     'image' => [
       'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_trim')),
       'viewport' => [
         'width' => $width,
         'height' => $height,
+        'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
+        'clipping' => strtolower(settings::get('product_image_clipping')),
       ],
     ],
     'sticker' => '',
@@ -161,9 +162,8 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = [
       'original' => 'images/' . $image,
-      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'aspect_ratio' => settings::get('product_image_ratio'),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width, $height, settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width*2, $height*2, settings::get('product_image_trim')),
       'viewport' => [
         'width' => $width,
         'height' => $height,
@@ -205,6 +205,7 @@
         'viewport' => [
           'width' => 200,
           'height' => 60,
+          'ratio' => '3/1',
         ],
       ];
     }
@@ -214,8 +215,8 @@
   foreach ($product->stock_options as $stock_option) {
     $stock_option['image'] = [
       'original' => $stock_option['image'],
-      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width, $height, settings::get('product_image_clipping'), settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width*2, $height*2, settings::get('product_image_clipping'), settings::get('product_image_trim')),
+      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width, $height, settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width*2, $height*2, settings::get('product_image_trim')),
     ];
     $_page->snippets['stock_options'][] = $stock_option;
   }

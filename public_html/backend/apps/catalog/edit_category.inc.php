@@ -161,8 +161,8 @@
 
             <div class="col-md-6">
               <div id="image">
-                <div class="thumbnail" style="margin-bottom: 15px;">
-                  <img src="<?php echo document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>" alt="" />
+                <div style="margin-bottom: 15px;">
+                  <img class="thumbnail fit" src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height)); ?>" alt="" style="aspect-ratio: <?php echo str_replace(':', '/', settings::get('category_image_ratio')); ?>;" />
                 </div>
 
                 <div class="form-group">
@@ -287,7 +287,7 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping')); ?>');
+      $('#image img').attr('src', '<?php echo document::rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->data['image'], $category_image_width, $category_image_height)); ?>');
     }
   });
 

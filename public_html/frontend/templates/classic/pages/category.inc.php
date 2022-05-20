@@ -13,9 +13,7 @@
       <div class="row">
         <?php if ($_GET['page'] == 1 && $image) { ?>
         <div class="hidden-xs hidden-sm col-md-4">
-          <div class="thumbnail">
-            <img src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail_1x']); ?>" />
-          </div>
+          <img class="thumbnail" src="<?php echo document::href_link(WS_DIR_STORAGE . $image['thumbnail']); ?>" />
         </div>
         <?php } ?>
 

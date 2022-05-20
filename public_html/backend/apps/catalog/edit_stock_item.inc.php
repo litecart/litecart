@@ -113,9 +113,9 @@
   list($image_width, $image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
   if (isset($stock_item->data['id']) && !empty($stock_item->data['image'])) {
-    $thummbnail = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_item->data['image'], $image_width, $image_height, settings::get('product_image_clipping'));
+    $thummbnail = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_item->data['image'], $image_width, $image_height);
   } else {
-    $thummbnail = functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $image_width, $image_height, settings::get('product_image_clipping'));
+    $thummbnail = functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $image_width, $image_height);
   }
 ?>
 <div class="card card-app">
@@ -145,13 +145,13 @@
                 <label><?php echo language::translate('title_image', 'Image'); ?></label>
 
                 <div class="thumbnail">
-  <?php
-    if (isset($stock_item->data['id']) && !empty($stock_item->data['image'])) {
-      echo '<img src="'. document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_item->data['image'], $image_width, $image_height, settings::get('product_image_clipping'))) .'" alt="" />';
-    } else {
-      echo '<img src="'. document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $image_width, $image_height, settings::get('product_image_clipping'))) .'" alt="" />';
-    }
-  ?>
+<?php
+  if (isset($stock_item->data['id']) && !empty($stock_item->data['image'])) {
+    echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_item->data['image'], $image_width, $image_height)) .'" alt="" />';
+  } else {
+    echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $image_width, $image_height)) .'" alt="" />';
+  }
+?>
                 </div>
 
                 <?php if (!empty($stock_item->data['image'])) { ?>

@@ -45,7 +45,7 @@
       'sku' => $item['sku'],
       'image' => [
         'original' => 'images/' . fallback($item['image'], 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING',
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . fallback($item['image'], 'no_image.png'), 320, 320, 'FIT_USE_WHITESPACING'),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . fallback($item['image'], 'no_image.png'), 320, 320),
       ],
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
