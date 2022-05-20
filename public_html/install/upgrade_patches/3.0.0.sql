@@ -414,6 +414,10 @@ SET `key` = 'jobs_last_push',
 WHERE `key` = 'jobs_last_run'
 LIMIT 1;
 -- --------------------------------------------------------
+UPDATE `lc_settings`
+SET `value` = 'https://'
+WHERE `value` IN ('?app=settings&doc=advanced&action=edit&key=control_panel_link', '?app=settings&doc=advanced&action=edit&key=database_admin_link', '?app=settings&doc=advanced&action=edit&key=webmail_link');
+-- --------------------------------------------------------
 UPDATE `lc_stock_items` si
 LEFT JOIN `lc_products` p on (p.id = si.product_id) SET
 si.gtin = if(si.gtin != '', si.gtin, p.gtin),

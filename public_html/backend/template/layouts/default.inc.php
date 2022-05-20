@@ -86,17 +86,17 @@
         </ul>
       </li>
 
-      <?php if ($webmail_link = settings::get('webmail_link', '')) { ?>
+      <?php if ($webmail_link = settings::get('webmail_link')) { ?>
       <li>
-        <a href="<?php echo $webmail_link; ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
+        <a href="<?php echo ($webmail_link != 'https://') ? functions::escape_html($webmail_link) : document::href_ilink('settings/advanced', ['key' => 'webmail_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_webmail', 'Webmail'); ?>">
           <?php echo functions::draw_fonticon('fa-envelope'); ?>
         </a>
       </li>
       <?php } ?>
 
-      <?php if ($control_panel_link = settings::get('control_panel_link', '')) { ?>
+      <?php if ($control_panel_link = settings::get('control_panel_link')) { ?>
       <li>
-        <a href="<?php echo $control_panel_link; ?>" target="_blank" title="<?php echo language::translate('title_control_card', 'Control Panel'); ?>">
+        <a href="<?php echo ($control_panel_link != 'https://') ? functions::escape_html($control_panel_link) : document::href_ilink('settings/advanced', ['key' => 'control_panel_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_control_card', 'Control Panel'); ?>">
           <?php echo functions::draw_fonticon('fa-cogs'); ?>
         </a>
       </li>
@@ -104,7 +104,7 @@
 
       <?php if ($database_admin_link = settings::get('database_admin_link')) { ?>
       <li>
-        <a href="<?php echo $database_admin_link; ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
+        <a href="<?php echo ($database_admin_link != 'https://') ? functions::escape_html($database_admin_link) : document::href_ilink('settings/advanced', ['key' => 'database_admin_link', 'action' => 'edit']); ?>" target="_blank" title="<?php echo language::translate('title_database_manager', 'Database Manager'); ?>">
           <?php echo functions::draw_fonticon('fa-database'); ?>
         </a>
       </li>
