@@ -1072,6 +1072,11 @@
 
 // Order
 
+  $('select[name="order_status_id"]').change(function(e){
+    var color = $(this).find('option:selected').data('color');
+    $(this).css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
+  }).trigger('change');
+
   $('select[name="currency_code"]').change(function(e){
     $('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
     $('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
