@@ -1,6 +1,6 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '2.4.0');
+  define('PLATFORM_VERSION', '2.4.1');
   define('SCRIPT_TIMESTAMP_START', microtime(true));
 
   if (!file_exists(__DIR__ . '/config.inc.php')) {

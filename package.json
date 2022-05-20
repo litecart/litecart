@@ -2,7 +2,7 @@
 	"name": "litecart",
 	"title": "LiteCart",
 	"description": "Lightweight e-commerce platform built with PHP, jQuery and HTML.",
-	"version": "2.4.0",
+	"version": "2.4.1",
 	"author": {
 		"name": "T. Almroth",
 		"url": "https://www.litecart.net/"
