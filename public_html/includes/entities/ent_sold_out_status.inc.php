@@ -47,13 +47,13 @@
 
       $this->reset();
 
-      $sold_out_status_query = database::query(
+      $sold_out_status = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."sold_out_statuses
         where id = ". (int)$sold_out_status_id ."
         limit 1;"
-      );
+      ));
 
-      if ($sold_out_status = database::fetch($sold_out_status_query)) {
+      if ($sold_out_status) {
         $this->data = array_replace($this->data, array_intersect_key($sold_out_status, $this->data));
       } else {
         throw new Exception('Could not find sold out status (ID: '. (int)$sold_out_status_id .') in database.');

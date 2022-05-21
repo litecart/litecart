@@ -11,16 +11,16 @@
       $keywords[] = $_GET['utm_campaign'];
     }
 
-    $banner_query = database::query(
+    $banner = database::fetch(database::query(
       "select * from ". DB_TABLE_PREFIX ."banners
       where status
       and image != '' or html != ''
       and (". implode(" or ", array_map(function($k){ return "find_in_set('". database::input($k) ."', keywords)"; }, $keywords)) .")
       order by rand()
       limit 1;"
-    );
+    ));
 
-    if (!$banner = database::fetch($banner_query)) return;
+    if (!$banner) return;
 
     database::query(
       "update ". DB_TABLE_PREFIX ."banners

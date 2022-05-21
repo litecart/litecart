@@ -34,13 +34,13 @@
 
       $this->reset();
 
-      $supplier_query = database::query(
+      $supplier = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."suppliers
         where id=". (int)$supplier_id ."
         limit 1;"
-      );
+      ));
 
-      if ($supplier = database::fetch($supplier_query)) {
+      if ($supplier) {
         $this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
       } else {
         throw new Exception('Could not find supplier (ID: '. (int)$supplier_id .') in database.');

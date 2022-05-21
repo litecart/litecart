@@ -34,13 +34,13 @@
 
       $this->reset();
 
-      $tax_class_query = database::query(
+      $tax_class = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."tax_classes
         where id = ". (int)$tax_class_id ."
         limit 1;"
-      );
+      ));
 
-      if ($tax_class = database::fetch($tax_class_query)) {
+      if ($tax_class) {
         $this->data = array_replace($this->data, array_intersect_key($tax_class, $this->data));
       } else {
         throw new Exception('Could not find tax class (ID: '. (int)$tax_class_id .') in database.');

@@ -2,13 +2,13 @@
 
   function format_address($address) {
 
-    $country_query = database::query(
+    $country = database::fetch(database::query(
       "select * from ". DB_TABLE_PREFIX ."countries
       where iso_code_2 = '". database::input($address['country_code']) ."'
       limit 1;"
-    );
+    ));
 
-    if (!$country = database::fetch($country_query)) {
+    if (!$country) {
       trigger_error('Invalid country code for address format', E_USER_WARNING);
       return;
     }

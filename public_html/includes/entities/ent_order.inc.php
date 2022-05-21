@@ -76,13 +76,13 @@
 
       $this->reset();
 
-      $order_query = database::query(
+      $order = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."orders
         where id = ". (int)$order_id ."
         limit 1;"
-      );
+      ));
 
-      if ($order = database::fetch($order_query)) {
+      if ($order) {
         $this->data = array_replace($this->data, array_intersect_key($order, $this->data));
       } else {
         throw new Exception('Could not find order in database (ID: '. (int)$order_id .')');
@@ -173,13 +173,14 @@
 
     // Link guests to customer profile
       if (empty($this->data['customer']['id']) && !empty($this->data['customer']['email'])) {
-        $customers_query = database::query(
+
+        $customer = database::fetch(database::query(
           "select id from ". DB_TABLE_PREFIX ."customers
           where email = '". database::input($this->data['customer']['email']) ."'
           limit 1;"
-        );
+        ));
 
-        if ($customer = database::fetch($customers_query)) {
+        if ($customer) {
           $this->data['customer']['id'] = $customer['id'];
         }
       }

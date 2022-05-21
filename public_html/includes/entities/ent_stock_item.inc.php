@@ -48,13 +48,13 @@
 
       $this->reset();
 
-      $stock_items_query = database::query(
+      $stock_item = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_items
         where id = ". (int)$stock_item_id ."
         limit 1;"
-      );
+      ));
 
-      if ($stock_item = database::fetch($stock_items_query)) {
+      if ($stock_item) {
         $this->data = array_replace($this->data, array_intersect_key($stock_item, $this->data));
       } else {
         trigger_error('Could not find stock item (ID: '. (int)$stock_item_id .') in database.', E_USER_ERROR);

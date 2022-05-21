@@ -41,14 +41,14 @@
 
       $this->reset();
 
-      $customer_query = database::query(
+      $customer = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
         ". (preg_match('#^[0-9]+$#', $customer_id) ? "where id = '". (int)$customer_id ."'" : "") ."
         ". (preg_match('#@#', $customer_id) ? "where lower(email) = '". database::input(strtolower($customer_id)) ."'" : "") ."
         limit 1;"
-      );
+      ));
 
-      if ($customer = database::fetch($customer_query)) {
+      if ($customer) {
         $this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
       } else {
         throw new Exception('Could not find customer (ID: '. (int)$customer_id .') in database.');

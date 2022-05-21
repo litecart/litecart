@@ -34,13 +34,13 @@
 
         default:
 
-          $query = database::query(
+          $customer = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          );
+          ));
 
-          if (!$row = database::fetch($query)) return;
+          if (!$customer) return;
 
           $remap_keys = [
             'shipping_company' => 'company',
@@ -55,13 +55,13 @@
             'shipping_phone' => 'phone',
           ];
 
-          foreach ($row as $key => $value) {
+          foreach ($customer as $key => $value) {
             if (!in_array($key, array_keys($remap_keys))) continue;
-            $this->_data[$key] = $row[$key];
+            $this->_data[$key] = $customer[$key];
           }
 
           foreach ($remap_keys as $skey => $tkey) {
-            $this->_data['shipping_address'][$tkey] = $row[$skey];
+            $this->_data['shipping_address'][$tkey] = $customer[$skey];
           }
 
           break;

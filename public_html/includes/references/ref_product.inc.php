@@ -146,11 +146,7 @@
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
             and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
             limit 1;"
-          );
-
-          if ($campaign = database::fetch($campaigns_query)) {
-            $this->_data['campaign'] = $campaign;
-          }
+          ));
 
           break;
 

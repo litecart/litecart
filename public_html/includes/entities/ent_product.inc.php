@@ -56,13 +56,13 @@
       $this->reset();
 
     // Product
-      $products_query = database::query(
+      $product = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."products
         where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "code = '". database::input($product_id) ."'") ."
         limit 1;"
-      );
+      ));
 
-      if ($product = database::fetch($products_query)) {
+      if ($product) {
         $this->data = array_replace($this->data, array_intersect_key($product, $this->data));
       } else {
         throw new Exception('Could not find product (ID: '. (int)$product_id .') in database.');

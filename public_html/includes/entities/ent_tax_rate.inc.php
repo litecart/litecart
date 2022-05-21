@@ -34,13 +34,13 @@
 
       $this->reset();
 
-      $tax_rate_query = database::query(
+      $tax_rate = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."tax_rates
         where id = ". (int)$tax_rate_id ."
         limit 1;"
-      );
+      ));
 
-      if ($tax_rate = database::fetch($tax_rate_query)) {
+      if ($tax_rate) {
         $this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
       } else {
         throw new Exception('Could not find tax rate (ID: '. (int)$tax_rate_id .') in database.');

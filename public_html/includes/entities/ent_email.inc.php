@@ -46,13 +46,13 @@
 
       $this->reset();
 
-      $email_query = database::query(
+      $email = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."emails
         where id = ". (int)$email_id ."
         limit 1;"
-      );
+      ));
 
-      if ($email = database::fetch($email_query)) {
+      if ($email) {
         $this->data = array_replace($this->data, array_intersect_key($email, $this->data));
       } else {
         throw new Exception('Could not find email (ID: '. (int)$email_id .') in database.');

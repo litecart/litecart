@@ -50,13 +50,13 @@
 
       $this->reset();
 
-      $categories_query = database::query(
+      $category = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."categories
         where id=". (int)$category_id ."
         limit 1;"
-      );
+      ));
 
-      if ($category = database::fetch($categories_query)) {
+      if ($category) {
         $this->data = array_replace($this->data, array_intersect_key($category, $this->data));
       } else {
         throw new Exception('Could not find category (ID: '. (int)$category_id .') in database.');

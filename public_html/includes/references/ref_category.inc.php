@@ -216,15 +216,17 @@
 
         default:
 
-          $query = database::query(
+          $row = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."categories
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          );
+          ));
 
-          if (!$row = database::fetch($query)) return;
+          if (!$row) return;
 
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+          foreach ($row as $key => $value) {
+            $this->_data[$key] = $value;
+          }
 
           $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 

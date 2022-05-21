@@ -46,13 +46,13 @@
 
       $this->reset();
 
-      $brands_query = database::query(
+      $brand = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."brands
         where id = ". (int)$brand_id ."
         limit 1;"
-      );
+      ));
 
-      if ($brand = database::fetch($brands_query)) {
+      if ($brand) {
         $this->data = array_replace($this->data, array_intersect_key($brand, $this->data));
       } else {
         throw new Exception('Could not find brand (ID: '. (int)$brand_id .') in database.');

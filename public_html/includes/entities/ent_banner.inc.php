@@ -19,6 +19,7 @@
       $categories_query = database::query(
         "show fields from ". DB_TABLE_PREFIX ."banners;"
       );
+
       while ($field = database::fetch($categories_query)) {
         $this->data[$field['Field']] = database::create_variable($field['Type']);
       }
@@ -28,13 +29,13 @@
 
       $this->reset();
 
-      $banner_query = database::query(
+      $banner = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."banners
         where id = ". (int)$banner_id ."
         limit 1;"
-      );
+      ));
 
-      if ($banner = database::fetch($banner_query)) {
+      if ($banner) {
         $this->data = array_replace($this->data, array_intersect_key($banner, $this->data));
       } else {
         trigger_error('Could not find banner (ID: '. (int)$banner_id .') in database.', E_USER_ERROR);

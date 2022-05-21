@@ -79,15 +79,13 @@
   if (!PLATFORM_VERSION) die('Could not identify target version.');
 
 // Get current platform database version
-  $platform_database_version_query = database::query(
+  $platform_database_version = database::fetch(database::query(
     "select `value` from ". DB_TABLE_PREFIX ."settings
     where `key` = 'platform_database_version'
     limit 1;"
-  );
+  ), 'value');
 
-  if ($platform_database_version = database::fetch($platform_database_version_query)) {
-    define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
-  }
+  define('PLATFORM_DATABASE_VERSION', $platform_database_version);
 
 // List supported upgrades
   $supported_versions = ['1.0' => '1.0'];
@@ -150,13 +148,11 @@
           }
         }
 
-        $platform_database_version_query = database::query(
+        $platform_database_version = database::fetch(database::query(
           "select `value` from ". DB_TABLE_SETTINGS ."
           where `key` = 'platform_database_version'
           limit 1;"
-        );
-
-        $platform_database_version = database::fetch($platform_database_version_query, 'value');
+        ), 'value');
 
         $backup_file = FS_DIR_STORAGE . 'backups/'. PLATFORM_NAME .'-'. strftime('%Y%m%d-%H%M%S') .'-database-'. $platform_database_version .'.sql';
 

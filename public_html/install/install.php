@@ -278,29 +278,30 @@
 
     echo '<p>Checking MySQL version... ';
 
-    $version_query = database::query("SELECT VERSION();");
-    $version = database::fetch($version_query);
+    $mysql_version = database::fetch(database::query(
+      "SELECT VERSION();"
+    ), 'VERSION()');
 
-    if (version_compare($version['VERSION()'], '5.5', '<')) {
-      throw new Exception($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
-    } else if (version_compare($version['VERSION()'], '5.7', '<')) {
+    if (version_compare($mysql_version, '5.5', '<')) {
+      throw new Exception($mysql_version . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
+    } else if (version_compare($mysql_version, '5.7', '<')) {
       echo PHP_VERSION .' <span class="ok">[OK]</span><br />'
          . '<span class="warning">MySQL 5.7+ recommended</span></span></p>';
     } else {
-      echo $version['VERSION()'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+      echo $mysql_version . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
     ### Database > Check Charset ##################################
 
     echo '<p>Checking MySQL database default character set... ';
 
-    $charset_query = database::query(
+    $charset = database::fetch(database::query(
       "select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from information_schema.SCHEMATA
       where schema_name = '". database::input($_REQUEST['db_database']) ."'
       limit 1;"
-    );
+    ));
 
-    if (!$charset = database::fetch($charset_query)) {
+    if (!$charset) {
       throw new Exception(' <span class="error">[Error] Failed to retrieve character set</span></p>');
     }
 
@@ -386,11 +387,12 @@
 
     $sql = file_get_contents('structure.sql');
 
-    $version_query = database::query("SELECT VERSION();");
-    $version = database::fetch($version_query);
+    $mysql_version = database::fetch(database::query(
+      "SELECT VERSION();"
+    ), 'VERSION()');
 
   // Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
-    if (version_compare($version['VERSION()'], '5.6.5', '<')) {
+    if (version_compare($mysql_version, '5.6.5', '<')) {
       str_replace('`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`date_updated` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
     }
 

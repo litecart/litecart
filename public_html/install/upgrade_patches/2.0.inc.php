@@ -135,13 +135,13 @@
 
     foreach (explode(';', $installed_modules['value']) as $module) {
 
-      $module_query = database::query(
+      $module = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module) ."'
         limit 1;"
-      );
+      ));
 
-      if (!$module = database::fetch($module_query)) continue;
+      if (!$module) continue;
 
       $type = preg_replace('#^(.*)_modules$#', '$1', $installed_modules['key']);
       $module['settings'] = unserialize($module['value']);

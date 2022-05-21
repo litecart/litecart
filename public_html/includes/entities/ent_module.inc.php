@@ -69,14 +69,14 @@
 
       $this->reset();
 
-      $modules_query = database::query(
+      $module = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."modules
         where type = '". database::input($type) ."'
         and module_id = '". database::input($module_id) ."'
         limit 1;"
-      );
+      ));
 
-      if ($module = database::fetch($modules_query)) {
+      if ($module) {
         $this->data = array_replace($this->data, array_intersect_key($module, $this->data));
       }
 

@@ -19,13 +19,13 @@
 
           list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
 
-          $customer_query = database::query(
+          $customer = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             where email = '". database::input($email) ."'
             limit 1;"
-          );
+          ));
 
-          if (!$customer = database::fetch($customer_query)) {
+          if (!$customer) {
             throw new Exception('Invalid email or the account has been removed');
           }
 
@@ -74,13 +74,13 @@
 
         try {
 
-          $customer_query = database::query(
+          $customer = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)self::$data['id'] ."
             limit 1;"
-          );
+          ));
 
-          if (!$customer = database::fetch($customer_query)) {
+          if (!$customer) {
             throw new Exception(language::translate('error_your_account_has_been_removed', 'Your account has been removed'));
           }
 
@@ -169,14 +169,13 @@
             'SU' => 'RU', // ccTLD .su is not a country
           ]);
 
-          $countries_query = database::query(
+          $country = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."countries
             where status
             and iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
             limit 1;"
-          );
+          ));
 
-          $country = database::fetch($countries_query);
           if (!empty($country['iso_code_2'])) self::$data['country_code'] = $country['iso_code_2'];
         }
       }
@@ -281,12 +280,11 @@
 
       self::reset();
 
-      $customer_query = database::query(
+      $customer = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$customer_id ."
         limit 1;"
-      );
-      $customer = database::fetch($customer_query);
+      ));
 
       foreach ($customer as $field => $value) {
         if (preg_match('#^shipping_(.*)$#', $field, $matches)) {

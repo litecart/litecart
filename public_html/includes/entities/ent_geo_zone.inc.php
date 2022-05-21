@@ -36,13 +36,13 @@
 
       $this->reset();
 
-      $geo_zone_query = database::query(
+      $geo_zone = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."geo_zones
         where id = ". (int)$geo_zone_id ."
         limit 1;"
-      );
+      ));
 
-      if ($geo_zone = database::fetch($geo_zone_query)) {
+      if ($geo_zone) {
         $this->data = array_replace($this->data, array_intersect_key($geo_zone, $this->data));
       } else {
         throw new Exception('Could not find geo zone (ID: '. (int)$geo_zone_id .') in database.');

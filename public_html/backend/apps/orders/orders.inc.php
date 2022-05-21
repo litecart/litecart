@@ -12,9 +12,17 @@
   }
 
   if (!empty($_GET['date_from'])) {
-    $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"));
-    $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
-    if (empty($date_first_order)) $date_first_order = date('Y-m-d');
+
+    $date_first_order = database::fetch(database::query(
+      "select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"
+    ), 'min(date_created)');
+
+    if (!empty($date_first_order)) {
+      $date_first_order = date('Y-m-d', strtotime($date_first_order));
+    } else {
+      $date_first_order = date('Y-m-d');
+    }
+
     if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
   }
 

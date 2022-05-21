@@ -35,12 +35,12 @@
   );
 
   while ($order = database::fetch($orders_query)) {
-    $customers_query = database::query(
+    $customer = database::fetch(database::query(
       "select id from ". DB_TABLE_PREFIX ."customers
       where lower(email) = lower('". database::input($order['customer_email']) ."');"
-    );
+    ));
 
-    if ($customer = database::fetch($customers_query)) {
+    if ($customer) {
       database::query(
         "update ". DB_TABLE_PREFIX ."orders
         set customer_id = '". database::input($customer['id']) ."'

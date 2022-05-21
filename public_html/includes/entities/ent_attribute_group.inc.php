@@ -49,13 +49,13 @@
 
       $this->reset();
 
-      $group_query = database::query(
+      $group = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."attribute_groups
         where id = ". (int)$group_id ."
         limit 1;"
-      );
+      ));
 
-      if ($group = database::fetch($group_query)) {
+      if ($group) {
         $this->data = array_replace($this->data, array_intersect_key($group, $this->data));
       } else {
         throw new Exception('Could not find attribute (ID: '. (int)$group_id .') in database.');

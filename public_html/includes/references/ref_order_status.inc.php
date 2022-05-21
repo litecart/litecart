@@ -64,15 +64,17 @@
 
         default:
 
-          $query = database::query(
+          $order_status = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."order_statuses
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          );
+          ));
 
-          if (!$row = database::fetch($query)) return;
+          if (!$order_status) return;
 
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+          foreach ($order_status as $key => $value) {
+            $this->_data[$key] = $value;
+          }
 
           break;
       }

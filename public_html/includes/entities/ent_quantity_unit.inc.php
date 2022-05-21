@@ -47,13 +47,13 @@
 
       $this->reset();
 
-      $quantity_unit_query = database::query(
+      $quantity_unit = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."quantity_units
         where id = ". (int)$quantity_unit_id ."
         limit 1;"
-      );
+      ));
 
-      if ($quantity_unit = database::fetch($quantity_unit_query)) {
+      if ($quantity_unit) {
         $this->data = array_replace($this->data, array_intersect_key($quantity_unit, $this->data));
       } else {
         throw new Exception('Could not find quantity unit (ID: '. (int)$quantity_unit_id .') in database.');

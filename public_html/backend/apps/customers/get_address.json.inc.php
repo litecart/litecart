@@ -1,12 +1,12 @@
 <?php
 
-  $customer_query = database::query(
+  $customer = database::fetch(database::query(
     "select * from ". DB_TABLE_PREFIX ."customers
     where id = '". database::input($_REQUEST['customer_id']) ."'
     limit 1;"
-  );
+  ));
 
-  if (!$customer = database::fetch($customer_query)) exit;
+  if (!$customer) exit;
 
   $json = [
     'email' => fallback($customer['email']),

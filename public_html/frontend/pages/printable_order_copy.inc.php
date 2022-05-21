@@ -9,24 +9,26 @@
     }
 
     if (!empty($_GET['order_id'])) {
-      $order_query = database::query(
+
+      $order = database::fetch(database::query(
         "select id from ". DB_TABLE_PREFIX ."orders
         where id = ". (int)$_GET['order_id'] ."
         limit 1;"
-      );
+      ));
 
-      if (!$order = database::fetch($order_query)) {
+      if (!$order) {
         throw new Exception('Invalid order_id', 404);
       }
 
     } else if (!empty($_GET['order_no'])) {
-      $order_query = database::query(
+
+      $order = database::fetch(database::query(
         "select id from ". DB_TABLE_PREFIX ."orders
         where no = '". database::input($_GET['order_no']) ."'
         limit 1;"
-      );
+      ));
 
-      if (!$order = database::fetch($order_query)) {
+      if (!$order) {
         throw new Exception('Invalid order_no', 404);
       }
     }

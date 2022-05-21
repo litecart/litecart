@@ -111,11 +111,13 @@
 
         default:
 
-          if (!$row = database::fetch(database::query(
+          $row = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."brands
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          ))) return;
+          ));
+
+          if (!$row) return;
 
           foreach ($row as $key => $value) {
             $this->_data[$key] = $value;

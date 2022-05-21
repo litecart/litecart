@@ -34,13 +34,13 @@
 
       $this->reset();
 
-      $campaign_query = database::query(
+      $campaign = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."products_campaigns
         ". (preg_match('#^[0-9]+$#', $campaign_id) ? "where id = '". (int)$campaign_id ."'" : "") ."
         limit 1;"
-      );
+      ));
 
-      if ($campaign = database::fetch($campaign_query)) {
+      if ($campaign) {
         $this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
       } else {
         throw new Exception('Could not find campaign ('. functions::escape_html($campaign_id) .') in database.');

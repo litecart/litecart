@@ -37,15 +37,15 @@
 
       $this->reset();
 
-      $user_query = database::query(
+      $user = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."users
         ". (preg_match('#^[0-9]+$#', $user_id) ? "where id = '". (int)$user_id ."'" : "") ."
         ". (!preg_match('#^[0-9]+$#', $user_id) ? "where lower(username) = '". database::input(strtolower($user_id)) ."'" : "") ."
         ". (preg_match('#@#', $user_id) ? "where lower(email) = '". database::input(strtolower($user_id)) ."'" : "") ."
         limit 1;"
-      );
+      ));
 
-      if ($user = database::fetch($user_query)) {
+      if ($user) {
         $this->data = array_replace($this->data, array_intersect_key($user, $this->data));
       } else {
         throw new Exception('Could not find user (ID: '. (int)$user_id .') in database.');

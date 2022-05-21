@@ -47,13 +47,13 @@
 
       $this->reset();
 
-      $delivery_status_query = database::query(
+      $delivery_status = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."delivery_statuses
         where id = ". (int)$delivery_status_id ."
         limit 1;"
-      );
+      ));
 
-      if ($delivery_status = database::fetch($delivery_status_query)) {
+      if ($delivery_status) {
         $this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));
       } else {
         throw new Exception('Could not find delivery status (ID: '. (int)$delivery_status_id .') in database.');

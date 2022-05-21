@@ -583,13 +583,14 @@
             }
 
             if (empty($row['brand_id']) && !empty($row['brand_name'])) {
-              $brands_query = database::query(
+
+              $brand = database::fetch(database::query(
                 "select * from ". DB_TABLE_PREFIX ."brands
                 where name = '". database::input($row['brand_name']) ."'
                 limit 1;"
-              );
+              ));
 
-              if ($brand = database::fetch($brands_query)) {
+              if ($brand) {
                 $row['brand_id'] = $brand['id'];
               } else {
                 $brand = new ent_brand();
@@ -600,12 +601,14 @@
             }
 
             if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
-              $suppliers_query = database::query(
+
+              $supplier = database::fetch(database::query(
                 "select * from ". DB_TABLE_PREFIX ."suppliers
                 where name = '". database::input($row['supplier_name']) ."'
                 limit 1;"
-              );
-              if ($supplier = database::fetch($suppliers_query)) {
+              ));
+
+              if ($supplier) {
                 $row['supplier_id'] = $supplier['id'];
               } else {
                 $supplier = new ent_supplier();
@@ -783,13 +786,14 @@
             }
 
             if (empty($row['brand_id']) && !empty($row['brand_name'])) {
-              $brands_query = database::query(
+
+              $brand = database::fetch(database::query(
                 "select * from ". DB_TABLE_PREFIX ."brands
                 where name = '". database::input($row['brand_name']) ."'
                 limit 1;"
-              );
+              ));
 
-              if ($brand = database::fetch($brands_query)) {
+              if ($brand) {
                 $row['brand_id'] = $brand['id'];
               } else {
                 $brand = new ent_brand();
@@ -800,12 +804,14 @@
             }
 
             if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
-              $suppliers_query = database::query(
+
+              $supplier = database::fetch(database::query(
                 "select * from ". DB_TABLE_PREFIX ."suppliers
                 where name = '". database::input($row['supplier_name']) ."'
                 limit 1;"
-              );
-              if ($supplier = database::fetch($suppliers_query)) {
+              ));
+
+              if ($supplier) {
                 $row['supplier_id'] = $supplier['id'];
               } else {
                 $supplier = new ent_supplier();

@@ -49,13 +49,13 @@
 
       $this->reset();
 
-      $order_status_query = database::query(
+      $order_status = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."order_statuses
         where id = ". (int)$order_status_id ."
         limit 1;"
-      );
+      ));
 
-      if ($order_status = database::fetch($order_status_query)) {
+      if ($order_status) {
         $this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
       } else {
         throw new Exception('Could not find order_status (ID: '. (int)$order_status_id .') in database.');

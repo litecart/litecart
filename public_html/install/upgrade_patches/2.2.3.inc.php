@@ -120,13 +120,11 @@
       DROP INDEX `product_option`;"
     );
 
-    $setting_query = database::query(
+    $store_language_code = database::fetch(database::query(
       "select * from ". DB_TABLE_PREFIX ."settings
       where `key` = 'store_language_code'
       limit 1;"
-    );
-
-    $store_language_code = database::fetch($setting_query, 'value');
+    ), 'value');
 
     $option_groups_query = database::query(
       "select og.*, ogi.name from ". DB_TABLE_PREFIX ."option_groups og

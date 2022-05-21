@@ -184,38 +184,34 @@
 
   // Get stock option
     if (!empty($order_item['option_stock_combination'])) {
-      $stock_options_query = database::query(
+      $stock_option = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."products_options_stock
         where combination = '". database::input($order_item['option_stock_combination']) ."'
         limit 1;"
-      );
-
-      $stock_option = database::fetch($stock_options_query);
+      ));
     }
 
     if (empty($stock_option)) {
-      $stock_options_query = database::query(
+      $stock_option = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."products_options_stock
         where sku = '". database::input($order_item['sku']) ."'
         limit 1;"
-      );
-
-      $stock_option = database::fetch($stock_options_query);
+      ));
     }
 
   // Product
-    $products_query = database::query(
+    $product = database::fetch(database::query(
       "select * from ". DB_TABLE_PREFIX ."products
       where id = ". (!empty($stock_option['product_id']) ? $stock_option['product_id'] : (int)$order_item['product_id']) ."
       limit 1;"
-    );
+    ));
 
-    if (!$product = database::fetch($products_query)) {
-      $products_query = database::query(
+    if (!$product) {
+      $products = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."products
         where sku = '". database::input($order_item['sku']) ."'
         limit 1;"
-      );
+      ));
     }
 
     if (empty($product)) continue;

@@ -148,12 +148,11 @@
 
     // Return language from country (TLD)
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-        $countries_query = database::query(
+        $country = database::fetch(database::query(
           "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
-        );
-        $country = database::fetch($countries_query);
+        ));
         if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
       }
 
@@ -202,14 +201,14 @@
       }
 
     // Get translation from database
-      $translation_query = database::query(
+      $translation = database::fetch(database::query(
         "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
         where code = '". database::input($code) ."'
         limit 1;"
-      );
+      ));
 
     // Create translation if it doesn't exist
-      if (!$translation = database::fetch($translation_query)) {
+      if (!$translation) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."translations
           (code, text_en, html, date_created, date_updated)
@@ -226,15 +225,15 @@
       if (!empty($translation['text_en'])) {
 
       // Find same english translation by different key
-        $secondary_translation_query = database::query(
+        $secondary_translation = database::fetch(database::query(
           "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
           where text_en = '". database::input($translation['text_en']) ."'
           and (text_en is not null and text_en != '')
           and (text_". self::$selected['code'] ." is not null and text_". self::$selected['code'] ." != '')
           limit 1;"
-        );
+        ));
 
-        if ($secondary_translation = database::fetch($secondary_translation_query)) {
+        if ($secondary_translation) {
           database::query(
             "update ". DB_TABLE_PREFIX ."translations
             set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',

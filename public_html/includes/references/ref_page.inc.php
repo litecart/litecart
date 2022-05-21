@@ -147,15 +147,17 @@
 
         default:
 
-          $query = database::query(
+          $page = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."pages
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          );
+          ));
 
-          if (!$row = database::fetch($query)) return;
+          if (!$page) return;
 
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+          foreach ($page as $key => $value) {
+            $this->_data[$key] = $value;
+          }
 
           $this->_data['dock'] = preg_split('#\s*,\s*#', $this->_data['dock'], -1, PREG_SPLIT_NO_EMPTY);
 

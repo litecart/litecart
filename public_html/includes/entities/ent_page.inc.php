@@ -49,13 +49,13 @@
 
       $this->reset();
 
-      $page_query = database::query(
+      $page = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."pages
         where id = ". (int)$page_id ."
         limit 1;"
-      );
+      ));
 
-      if ($page = database::fetch($page_query)) {
+      if ($page) {
         $this->data = array_replace($this->data, array_intersect_key($page, $this->data));
       } else {
         throw new Exception('Could not find page (ID: '. (int)$page_id .') in database.');

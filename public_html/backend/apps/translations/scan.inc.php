@@ -55,13 +55,13 @@
 
         $found++;
 
-        $translations_query = database::query(
+        $row = database::fetch(database::query(
           "select text_en from ". DB_TABLE_PREFIX ."translations
           where code = '". database::input($code) ."'
           limit 1;"
-        );
+        ));
 
-        if (!$row = database::fetch($translations_query)) {
+        if (!$row) {
 
           $new_translations++;
 

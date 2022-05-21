@@ -49,13 +49,13 @@
 
       $this->reset();
 
-      $slide_query = database::query(
+      $slide = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."slides
         where id = ". (int)$slide_id ."
         limit 1;"
-      );
+      ));
 
-      if ($slide = database::fetch($slide_query)) {
+      if ($slide) {
         $this->data = array_replace($this->data, array_intersect_key($slide, $this->data));
       } else {
         throw new Exception('Could not find slide (ID: '. (int)$slide_id .') in database.');

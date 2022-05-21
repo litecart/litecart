@@ -93,13 +93,14 @@
 
     // Get currency from country
       if (!empty(customer::$data['country_code'])) {
-        $countries_query = database::query(
+
+        $country = database::fetch(database::query(
           "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(customer::$data['country_code']) ."'
           limit 1;"
-        );
+        ));
 
-        if ($country = database::fetch($countries_query)) {
+        if ($country) {
           if (!empty($country['currency_code']) && in_array($country['currency_code'], $enabled_currencies)) {
             return $country['currency_code'];
           }
@@ -108,13 +109,14 @@
 
     // Get currency from country (via TLD)
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-        $countries_query = database::query(
+
+        $country = database::fetch(database::query(
           "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
-        );
+        ));
 
-        if ($country = database::fetch($countries_query) && in_array($country['currency_code'], $enabled_currencies)) {
+        if ($country && in_array($country['currency_code'], $enabled_currencies)) {
           return $country['currency_code'];
         }
       }

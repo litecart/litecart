@@ -79,12 +79,12 @@
 
       $this->reset();
 
-      $shopping_cart_query = database::query(
+      $shopping_cart = database::fetch(database::query(
         "select * from ". DB_TABLE_PREFIX ."shopping_carts
         where ". (preg_match('#^[a-f0-9]{13}$#', $shopping_cart_id) ? "uid = '". database::input($shopping_cart_id) ."'" : "id = '". database::input($shopping_cart_id) ."'") .";"
-      );
+      ));
 
-      if ($shopping_cart = database::fetch($shopping_cart_query)) {
+      if ($shopping_cart) {
         $this->data = array_replace($this->data, array_intersect_key($shopping_cart, $this->data));
       } else {
         throw new Exception('Could not find shopping cart in database (ID: '. $shopping_cart_id .')');
