@@ -263,6 +263,8 @@ INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_c
 (1, 1, 'en', '1-3 days', ''),
 (2, 2, 'en', '3-5 days', '');
 -- --------------------------------------------------------
+INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'none', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'none', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
@@ -272,9 +274,16 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW()),
 (4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","report_frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW()),
 (5, 'job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
+(6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW());
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
+INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
+(2, 'fa-clock-o', '#d7d96f', 1, 0, 2, NOW(), NOW()),
+(3, 'fa-cog', '#ffa851', 1, 0, 3, NOW(), NOW()),
+(4, 'fa-truck', '#99cc66', 1, 1, 4, NOW(), NOW()),
+(5, 'fa-times', '#ff6666', 0, 1, 5, NOW(), NOW());
 INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
 (1, 0, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
 (2, 0, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
@@ -291,6 +300,11 @@ INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_s
 (13, 1, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
+(1, 1, 'en', 'Awaiting payment', ''),
+(2, 2, 'en', 'Pending', ''),
+(3, 3, 'en', 'Processing', ''),
+(4, 4, 'en', 'Dispatched', ''),
+(5, 5, 'en', 'Cancelled', '');
 (1, 1, 'en', 'Created', ''),
 (2, 2, 'en', 'Awaiting payment', ''),
 (3, 3, 'en', 'On hold', ''),
@@ -312,6 +326,16 @@ INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`,
 (1, 1, 'en', 'pcs', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
+('store_info', 'Store Info', 'Store information', 10),
+('defaults', 'Defaults', 'Store default settings', 20),
+('email', 'Email', 'Email and SMTP', 30),
+('listings', 'Listings', 'Settings for the catalog listing', 40),
+('customer_details', 'Customer Details', 'Settings for the catalog listing', 45),
+('legal', 'Legal', 'Legal settings and information', 50),
+('images', 'Images', 'Settings for graphical elements', 60),
+('checkout', 'Checkout', 'Checkout settings', 70),
+('advanced', 'Advanced', 'Advanced settings', 80),
+('security', 'Security', 'Site security and protection against threats', 90);
 ('site_info', 'Site Info', 'Site information', 10),
 ('defaults', 'Defaults', 'Default settings', 20),
 ('social_media', 'Social Media', 'Settings related to social media.', 30),
@@ -368,7 +392,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('listings', 'local', 'Items Per Page', 'The number of items to be displayed per page.', 'items_per_page', '20', 'number()', 0, 10, NOW(), NOW()),
 ('listings', 'local', 'Data Table Rows', 'The number of data table rows to be displayed per page.', 'data_table_rows_per_page', '25', 'text()', 0, 11, NOW(), NOW()),
 ('listings', 'local', 'Display Stock Count', 'Show the available amount of products in stock.', 'display_stock_count', '1', 'toggle()', 0, 12, NOW(), NOW()),
-('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping fee on product page.', 'display_cheapest_shipping', '1', 'toggle()', 0, 13, NOW(), NOW()),
+('listings', 'local', 'Cheapest Shipping', 'Display the cheapest shipping cost on product page.', 'display_cheapest_shipping', '1', 'toggle()', 0, 13, NOW(), NOW()),
 ('listings', 'local', 'Max Age for New Products', 'Display the "New" sticker for products less than the given age. E.g. 1 month or 14 days', 'new_products_max_age', '1 month', 'text()', 0, 14, NOW(), NOW()),
 ('listings', 'local', 'Similar Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_similar_products_num_items', '8', 'number()', 0, 15, NOW(), NOW()),
 ('listings', 'local', 'Recently Viewed Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_recently_viewed_products_num_items', '6', 'number()', 0, 16, NOW(), NOW()),
@@ -395,7 +419,7 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('images', 'local', 'Whitespace Color', 'Set the color of any generated whitespace to the given RGB value. Default: 255,255,255', 'image_whitespace_color', '255,255,255', 'text()', 0, 43, NOW(), NOW()),
 ('images', 'local', 'WebP Enabled', 'Use WebP images if supported by the browser.', 'webp_enabled', '0', 'toggle("e/d")', 0, 44, NOW(), NOW()),
 ('checkout', 'local', 'Send Order Confirmation', 'Send order confirmations via email.', 'send_order_confirmation', '1', 'toggle("y/n")', 0, 11, NOW(), NOW()),
-('checkout', 'local', 'Order Copy Recipients', 'Send an email of the order copy to the given recipients. Separated by coma or semicolon.', 'email_order_copy', '{STORE_EMAIL}', 'text()', 0, 12, NOW(), NOW()),
+('checkout', 'local', 'BCC Order Copy Recipients', 'Send an email of the order copy to the given hidden BCC recipients. Separated by comma or semicolon.', 'email_order_copy', '{STORE_EMAIL}', 'text()', 0, 12, NOW(), NOW()),
 ('checkout', 'local', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '1', 'toggle()', 0, 10, NOW(), NOW()),
 ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '0', 'toggle()', 0, 11, NOW(), NOW()),

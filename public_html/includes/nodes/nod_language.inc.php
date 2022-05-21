@@ -264,7 +264,8 @@
         $timestamp = new \DateTime();
 
       } elseif (is_numeric($timestamp)) {
-        $timestamp = new \DateTime('@' . $timestamp);
+        $timestamp = new \DateTime('@' . $timestamp, new DateTimeZone('UTC'));
+        $timestamp->setTimezone(new DateTimeZone(date_default_timezone_get()));
 
       } elseif (is_string($timestamp)) {
         $timestamp = new \DateTime($timestamp);

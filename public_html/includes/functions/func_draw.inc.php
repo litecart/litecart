@@ -248,17 +248,15 @@
           break;
 
         case 'string':
-          if (preg_match('#^function\s?\(#', $value)) {
+          if (preg_match('#^function\s*\(#', $value)) {
             $js .= '    '. $key .': '. $value .',' . PHP_EOL;
-          } else if (preg_match('#^undefined$#', $value)) {
-            $js .= '    '. $key .': undefined,' . PHP_EOL;
           } else {
-            $js .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+            $js .= '    '. $key .': "'. addslashes($value) .'",' . PHP_EOL;
           }
           break;
 
         case 'array':
-          $js .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          $js .= '    '. $key .': ["'. implode('", "', $value) .'"],' . PHP_EOL;
           break;
       }
     }
@@ -277,16 +275,16 @@
 
     if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
 
-    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link(null, ['page' => $_GET['page']-1], true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
+    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
 
     $pagination = new ent_view(FS_DIR_TEMPLATE . 'partials/pagination.inc.php');
 
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']-1,
       'title' => language::translate('title_previous', 'Previous'),
-      'link' => document::link(null, ['page' => $_GET['page']-1], true),
+      'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
       'active' => false,
     ];
@@ -299,7 +297,7 @@
           $pagination->snippets['items'][] = [
             'page' => $rewind,
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
-            'link' => document::link(null, ['page' => $rewind], true),
+            'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $rewind]),
             'disabled' => false,
             'active' => false,
           ];
@@ -314,7 +312,7 @@
           $pagination->snippets['items'][] = [
             'page' => $forward,
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
-            'link' => document::link(null, ['page' => $forward], true),
+            'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $forward]),
             'disabled' => false,
             'active' => false,
           ];
@@ -325,7 +323,7 @@
       $pagination->snippets['items'][] = [
         'page' => $i,
         'title' => $i,
-        'link' => document::link(null, ['page' => $i], true),
+        'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $i]),
         'disabled' => false,
         'active' => ($i == $_GET['page']) ? true : false,
       ];
@@ -334,7 +332,7 @@
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']+1,
       'title' => language::translate('title_next', 'Next'),
-      'link' => document::link(null, ['page' => $_GET['page']+1], true),
+      'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,
       'active' => false,
     ];

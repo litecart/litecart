@@ -41,7 +41,7 @@
               database::query(
                 "update ". DB_TABLE_PREFIX ."customers
                 set login_attempts = 0,
-                date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
+                date_blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
                 where id = ". (int)$customer['id'] ."
                 limit 1;"
               );
@@ -301,7 +301,7 @@
         }
       }
 
-      if (!empty(self::$data['different_shipping_address'])) {
+      if (empty(self::$data['different_shipping_address'])) {
         foreach (array_keys(self::$data['shipping_address']) as $key) {
           self::$data['shipping_address'][$key] = self::$data[$key];
         }

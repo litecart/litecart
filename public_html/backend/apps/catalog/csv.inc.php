@@ -10,7 +10,6 @@
     try {
 
       ini_set('memory_limit', -1);
-      set_time_limit(900);
 
       ob_clean();
 
@@ -180,9 +179,9 @@
       echo 'Processing batch...' . PHP_EOL . PHP_EOL;
 
       while ($row = array_shift($batch['rows'])) {
-        $batch['counters']['line']++;
 
         if (round(microtime(true) - $time_start) > 5) {
+          array_unshift($batch['rows'], $row);
           echo PHP_EOL . 'Resuming '. number_format(count($batch['rows']), 0, '', ' ') .' remaining lines for processing...' . PHP_EOL . PHP_EOL;
           header('Refresh: 0; url='. document::link(null, ['resume' => 'true']));
           exit;
@@ -191,6 +190,8 @@
         if (connection_aborted()) {
           throw new Exception('Connection aborted');
         }
+
+        $batch['counters']['line']++;
 
         switch ($batch['type']) {
 
@@ -894,7 +895,7 @@
                 );
                 $supplier = new ent_supplier($row['id']);
               } else {
-                $suppliers = new ent_supplier();
+                $supplier = new ent_supplier();
               }
             }
 

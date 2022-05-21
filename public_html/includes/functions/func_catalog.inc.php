@@ -111,12 +111,11 @@
 
     $sql_where_categories = '';
     if (!empty($filter['categories'])) {
-      $sql_where_categories = (
+      $sql_where_categories =
         "and p.id in (
           select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
           where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
-        )"
-      );
+        )";
     }
 
     $sql_where_attributes = [];

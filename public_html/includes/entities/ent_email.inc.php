@@ -90,9 +90,9 @@
           ccs = '". database::input(json_encode($this->data['ccs'], JSON_UNESCAPED_SLASHES)) ."',
           bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
           subject = '". database::input($this->data['subject']) ."',
-          multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES)) ."',
-          date_scheduled = '". database::input($this->data['date_scheduled']) ."',
-          date_sent = '". database::input($this->data['date_sent']) ."',
+          multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES), true) ."',
+          date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "null") .",
+          date_sent = ". (!empty($this->data['date_sent']) ? "'". database::input($this->data['date_sent']) ."'" : "null") .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] .";"
       );
@@ -140,7 +140,7 @@
       $this->data['multiparts'][] = [
         'headers' => [
           'Content-Type' => ($html ? 'text/html' : 'text/plain') .'; charset='. mb_http_output(),
-          'Content-Transfer-Encoding: 8bit',
+          'Content-Transfer-Encoding' => '8bit',
         ],
         'body' => trim($content),
       ];
@@ -296,20 +296,13 @@
         $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
       }
 
-      array_walk($headers,
-        function (&$v, $k) {
-          $v = $k.': '.$v;
-        }
-      );
-
-      $headers = implode("\r\n", $headers);
       $body = '';
 
     // Prepare several multiparts
       if (count($this->data['multiparts']) > 1) {
         foreach ($this->data['multiparts'] as $multipart) {
           $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . implode("\r\n", $multipart['headers']) . "\r\n"
+                 . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n"
                  . $multipart['body'] . "\r\n\r\n";
         }
 
@@ -317,7 +310,7 @@
 
     // Prepare one multipart only
       } else {
-        $headers .= implode("\r\n", $this->data['multiparts'][0]['headers']) . "\r\n";
+        $headers = array_merge($headers, $this->data['multiparts'][0]['headers']);
         $body .= $this->data['multiparts'][0]['body'];
       }
 
@@ -325,6 +318,15 @@
         trigger_error('Cannot send email with an empty body', E_USER_WARNING);
         return false;
       }
+
+    // Prepare headers
+      array_walk($headers,
+        function (&$v, $k) {
+          $v = $k.': '.$v;
+        }
+      );
+
+      $headers = implode("\r\n", $headers);
 
     // Deliver via SMTP
       if (settings::get('smtp_status')) {

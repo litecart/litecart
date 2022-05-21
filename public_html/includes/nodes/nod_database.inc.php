@@ -16,7 +16,9 @@
         self::$_links[$link] = mysqli_init();
 
         if (defined('MYSQLI_OPT_INT_AND_FLOAT_NATIVE')) {
-          self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, true, $link);
+          self::set_option(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1, $link);
+        } else {
+          trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE', E_USER_WARNING);
         }
 
         if (!mysqli_real_connect(self::$_links[$link], $server, $username, $password, $database)) {
@@ -70,7 +72,7 @@
     public static function set_charset($charset, $link='default') {
 
       if (!$result = mysqli_set_charset(self::$_links[$link], $charset)) {
-        trigger_error('Could not set database connection charset: '. mysqli_connect_errno() .' - '. mysqli_connect_error(), E_USER_ERROR);
+        trigger_error('Could not set charset for MySQL connection: '. mysqli_errno(self::$_links[$link]) .' - '. mysqli_error(self::$_links[$link]), E_USER_WARNING);
       }
 
       return true;

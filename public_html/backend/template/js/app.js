@@ -181,7 +181,7 @@
       if (drag && index != tr.index()) {
         drag = false;
       }
-      $(document).unbind('mousemove', move).unbind('mouseup', up);
+      $(document).off('mousemove', move).off('mouseup', up);
       $(tr).removeClass('grabbed');
       $(tr).closest('tbody').css('unser-input', '');
     }

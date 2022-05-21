@@ -299,6 +299,8 @@
 
   $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="name['+language_code+']"]').not(this).val($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   });

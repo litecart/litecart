@@ -19,7 +19,7 @@
           </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group">
           <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
           <?php echo functions::form_draw_email_field('email', true, 'required'); ?>
         </div>

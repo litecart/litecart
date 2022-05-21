@@ -51,7 +51,7 @@
       'parent_id' => $category->parent_id,
       'name' => $category->name,
       'short_description' => $category->short_description,
-      'description' => (!empty($category->description) && (trim(strip_tags($category->description)) != '')) ? $category->description : '',
+      'description' => (!empty($category->description) && trim(strip_tags($category->description))) ? $category->description : '',
       'h1_title' => $category->h1_title ? $category->h1_title : $category->name,
       'head_title' => $category->head_title ? $category->head_title : $category->name,
       'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,

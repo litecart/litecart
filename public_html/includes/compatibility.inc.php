@@ -246,5 +246,5 @@
     $_SERVER['REQUEST_URI'] = '/';
   }
 
+  if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = 'off';
   if (empty($_SERVER['HTTP_HOST'])) $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
-  if (empty($_SERVER['HTTP_HTTPS'])) $_SERVER['HTTP_HTTPS'] = 'off';

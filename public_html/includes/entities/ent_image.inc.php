@@ -469,7 +469,7 @@
                 break;
             }
 
-            return $this->_image->compositeImage($_watermark, imagick::COMPOSITE_OVER, $offset_x, $offset_y);
+            return $this->_image->compositeImage($_watermark, imagick::COMPOSITE_COPY, $offset_x, $offset_y);
 
           } catch (\ImagickException $e) {
             throw new Exception("Error applying watermark ($watermark)");

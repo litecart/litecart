@@ -177,7 +177,7 @@
 
     echo '<p>Checking for PHP extensions... ';
 
-    $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
+    $extensions = ['apcu', 'dom', 'fileinfo', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqli', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
 
     if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
       echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
@@ -232,6 +232,9 @@
     $update_file = function($file) use ($client) {
       $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
       if ($client->last_response['status_code'] != 200) return false;
+      if (!is_dir(dirname(FS_DIR_APP . $file))) {
+        mkdir(dirname(FS_DIR_APP . $file), 0777, true);
+      }
       file_put_contents(FS_DIR_APP . $file, $response);
       return true;
     };
@@ -243,8 +246,6 @@
     };
 
     if ($update_file('install/checksums.md5')) {
-
-      $checksum_files = preg_split('#(\r\n?|\n)#', file_get_contents(FS_DIR_APP . 'install/checksums.md5'), -1, PREG_SPLIT_NO_EMPTY);
 
       $files_updated = 0;
       foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
@@ -565,6 +566,10 @@
 
     echo '<p>Preparing CSS files...</p>' . PHP_EOL;
 
+    perform_action('delete', [
+      FS_DIR_APP . 'backend/template/less/',
+    ]);
+
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
       perform_action('delete', [
@@ -592,6 +597,56 @@
         ],
       ]);
     }
+
+    ### Scan translations #########################################
+
+    echo "<p>Scanning installation for translations...";
+
+    $translations = [];
+
+    $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_APP);
+    $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+
+    foreach ($iterator as $file) {
+      if (!preg_match('#\.php$#', $file)) continue;
+
+      $pattern = '#'. implode(['language::translate\((?:(?!\$)', '(?:(__CLASS__)?\.)?', '(?:[\'"])([^\'"]+)(?:[\'"])', '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?', '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?', ')\)']) .'#';
+
+      if (!preg_match_all($pattern, file_get_contents($file), $matches)) continue;;
+
+      for ($i=0; $i<count($matches[0]); $i++) {
+        if ($matches[1][$i]) {
+          $code = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[2][$i];
+        } else {
+          $code = $matches[2][$i];
+        }
+        $translations[$code] = strtr($matches[3][$i], ["\\r" => "\r", "\\n" => "\n"]);
+      }
+
+    }
+
+    foreach ($translations as $code => $translation) {
+      database::query(
+        "insert into ". $_REQUEST['db_table_prefix'] ."translations
+        (code, text_en, html, date_created)
+        values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
+      );
+    }
+
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
+    ### Set cache breakpoint ######################################
+
+    echo '<p>Set cache breakpoint...';
+
+    database::query(
+      "update ". str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], '`lc_settings`') ."
+      set value = '". date('Y-m-d H:i:s') ."'
+      where `key` = 'cache_system_breakpoint'
+      limit 1;"
+    );
+
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
     ### Create files ######################################
 

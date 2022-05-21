@@ -10,6 +10,8 @@
         if (!nil($node)) return !1;
       }
     }
+    return (empty($var) || (float)$var == 0);
+  }
 
 // Returns value for variable or falls back to a substituting value on nil(). Similar to $var ?? $fallback
   function fallback(&$var, $fallback=null) {

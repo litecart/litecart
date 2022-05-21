@@ -84,11 +84,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-          <div><?php echo functions::form_draw_languages_list('languages[]', true); ?></div>
-        </div>
+      <div class="form-group">
+        <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
+        <div><?php echo functions::form_draw_languages_list('languages[]', true); ?></div>
       </div>
 
       <div class="row">
@@ -156,3 +154,11 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 </div>
+
+<script>
+  $('input[name^="caption"]').on('input', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+</script>

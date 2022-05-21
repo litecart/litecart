@@ -57,11 +57,6 @@
 
           foreach (array_keys($new_category->data['name']) as $language_code) {
             $new_category->data['name'][$language_code] .= ' (copy)';
-            if ($field == 'options' && empty($product->data['options'][$key]['values'])) {
-              foreach (array_keys($product->data['options'][$key]['values']) as $k) {
-                $product->data[$field]['options'][$key]['values'][$k]['id'] = null;
-              }
-            }
           }
 
           if (!empty($original_category->data['image'])) {

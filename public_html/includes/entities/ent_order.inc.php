@@ -282,7 +282,7 @@
       );
 
     // Restock previous items
-      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
+      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['stock_item_id'])) continue;
           $stock_item = new ent_stock_item($previous_order_item['stock_item_id']);
@@ -480,19 +480,19 @@
       $this->data['weight_total'] = 0;
 
       foreach ($this->data['items'] as $item) {
-        $this->data['subtotal'] += $item['price'] * $item['quantity'];
-        $this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
-        $this->data['discount'] += $item['discount'] * $item['quantity'];
-        $this->data['discount_tax'] += $item['discount_tax'] * $item['quantity'];
-        $this->data['sum'] += ($item['price'] - $item['discount']) * $item['quantity'];
-        $this->data['sum_tax'] += ($item['tax'] - $item['discount_tax']) * $item['quantity'];
-        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * abs($item['quantity']);
+        $this->data['subtotal'] += (float)$item['price'] * (float)$item['quantity'];
+        $this->data['subtotal_tax'] += (float)$item['tax'] * (float)$item['quantity'];
+        $this->data['discount'] += (float)$item['discount'] * (float)$item['quantity'];
+        $this->data['discount_tax'] += (float)$item['discount_tax'] * (float)$item['quantity'];
+        $this->data['sum'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
+        $this->data['sum_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
+        $this->data['weight_total'] += (float)weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * abs($item['quantity']);
       }
 
       foreach ($this->data['order_total'] as $row) {
         if (empty($row['calculate'])) continue;
-        $this->data['total'] += $row['amount'] + $row['tax'];
-        $this->data['total_tax'] += $row['tax'];
+        $this->data['total'] += (float)$row['amount'] + (float)$row['tax'];
+        $this->data['total_tax'] += (float)$row['tax'];
       }
     }
 
@@ -632,6 +632,7 @@
       $aliases = [
         '%order_id' => $this->data['no'], // Backwards compatibility
         '%order_no' => $this->data['no'],
+        '%new_status' => $order_status->name,
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
@@ -672,7 +673,7 @@
       $message = strtr($order_status->email_message, $aliases);
 
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['no'] .'] '. $order_status->name;
-      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), ['%new_status' => $order_status->name]);
+      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
 
       if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
         $message = '<div dir="rtl">' . PHP_EOL

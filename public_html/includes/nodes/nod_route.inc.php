@@ -149,7 +149,7 @@
           $email = new ent_email();
           $email->add_recipient(settings::get('site_email'))
                 ->set_subject('[Not Found Report] '. settings::get('site_name'))
-                ->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". implode("\r\n", $lines))
+                ->add_body("** This is a report of requests made to your website that did not have a destination. **\r\n\r\n". PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n".implode("\r\n", $lines))
                 ->send();
           file_put_contents($not_found_file, '');
         } else {
@@ -209,8 +209,10 @@
       }
 
     // Set new params (overwrites any existing inherited params)
-      foreach ($new_params as $key => $value) {
-        $link->set_query($key, $value);
+      if (!empty($new_params)) {
+        foreach ($new_params as $key => $value) {
+          $link->set_query($key, $value);
+        }
       }
 
     // Rewrite URL

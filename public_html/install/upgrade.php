@@ -130,7 +130,7 @@
 
       echo '<p>Checking for PHP extensions... ';
 
-      $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
+      $extensions = ['apcu', 'dom', 'fileinfo', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqli', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
 
       if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
         echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
@@ -259,6 +259,9 @@
         $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
         $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
         if ($client->last_response['status_code'] != 200) return false;
+        if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
+          mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
+        }
         file_put_contents(FS_DIR_APP . $local_file, $response);
         return true;
       };
@@ -271,8 +274,6 @@
       };
 
       if ($update_file('install/checksums.md5')) {
-
-        $checksum_files = preg_split('#(\r\n?|\n)#', file_get_contents(FS_DIR_APP . 'install/checksums.md5'), -1, PREG_SPLIT_NO_EMPTY);
 
         $files_updated = 0;
         foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
@@ -292,8 +293,6 @@
       foreach ($supported_versions as $version) {
 
         if (version_compare(PLATFORM_DATABASE_VERSION, $version, '>=')) {
-          if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) unlink(__DIR__ . '/upgrade_patches/'. $version .'.sql');
-          if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) unlink(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
           continue;
         }
 
@@ -310,14 +309,11 @@
               database::query($query);
             }
           }
-
-          unlink(__DIR__ . '/upgrade_patches/'. $version .'.sql');
         }
 
         if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) {
           echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
           include(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
-          unlink(__DIR__ . '/upgrade_patches/'. $version .'.inc.php');
         }
 
         echo '<p>Set platform database version...';
@@ -335,6 +331,10 @@
       #############################################
 
       echo '<p>Preparing CSS files...</p>' . PHP_EOL . PHP_EOL;
+
+      perform_action('delete', [
+        FS_DIR_APP . 'backend/template/less/',
+      ]);
 
       if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
