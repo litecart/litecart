@@ -8,19 +8,13 @@
 
     $box_campaign_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_campaign_products.inc.php');
 
-    $products_query = functions::catalog_products_query([
+    $box_campaign_products->snippets['products'] = database::fetch_all(functions::catalog_products_query([
       'campaign' => true,
       'sort' => 'random',
       'limit' => settings::get('box_campaign_products_num_items'),
-    ]);
+    ]));
 
-    if (database::num_rows($products_query)) {
-
-      $box_campaign_products->snippets['products'] = [];
-      while ($listing_product = database::fetch($products_query)) {
-        $box_campaign_products->snippets['products'][] = $listing_product;
-      }
-
+    if ($box_campaign_products->snippets['products']) {
       echo $box_campaign_products;
     }
 

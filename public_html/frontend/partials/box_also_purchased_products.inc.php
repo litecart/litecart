@@ -13,21 +13,15 @@
 
       $also_purchased_products = array_slice($also_purchased_products, 0, settings::get('box_also_purchased_products_num_items')*3, true);
 
-      $products_query = functions::catalog_products_query([
+      $box_also_purchased_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_also_purchased_products.inc.php');
+
+      $box_also_purchased_products->snippets['products'] = database::fetch_all(functions::catalog_products_query([
         'products' => array_keys($also_purchased_products),
         'sort' => 'random',
         'limit' => settings::get('box_also_purchased_products_num_items'),
-      ]);
+      ]));
 
-      if (database::num_rows($products_query)) {
-
-        $box_also_purchased_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_also_purchased_products.inc.php');
-
-        $box_also_purchased_products->snippets['products'] = [];
-        while ($listing_product = database::fetch($products_query)) {
-          $box_also_purchased_products->snippets['products'][] = $listing_product;
-        }
-
+      if ($box_also_purchased_products->snippets['products']) {
         echo $box_also_purchased_products;
       }
     }

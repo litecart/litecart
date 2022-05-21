@@ -6,13 +6,9 @@
   functions::draw_lightbox();
 
 // Get from catalog
-  $product_ids = array_reverse(array_column(session::$data['recently_viewed_products'], 'id'));
-  $recently_viewed_products_query = functions::catalog_products_query(['products' => $product_ids]);
-
-  $recently_viewed_products = [];
-  while ($product = database::fetch($recently_viewed_products_query)) {
-    $recently_viewed_products[$product['id']] = $product;
-  }
+  $recently_viewed_products = database::fetch_all(functions::catalog_products_query([
+    'products' => array_reverse(array_column(session::$data['recently_viewed_products'], 'id'))
+  ]));
 
 // Sort
   usort($recently_viewed_products, function ($a, $b) use ($product_ids) {

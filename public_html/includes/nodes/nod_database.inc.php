@@ -181,6 +181,34 @@
       return $row;
     }
 
+    public static function fetch_all($result, $column='', $index_column='') {
+
+      if (class_exists('stats', false)) {
+        stats::start_watch('database_execution');
+      }
+
+      if ($column || $index_column) {
+
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+          if ($index_column) {
+            $rows[$index_column] = $row[$column];
+          } else {
+            $rows[] = $row[$column];
+          }
+        }
+
+      } else {
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+      }
+
+      if (class_exists('stats', false)) {
+        stats::stop_watch('database_execution');
+      }
+
+      return $rows;
+    }
+
     public static function seek($result, $offset) {
       return mysqli_data_seek($result, $offset);
     }

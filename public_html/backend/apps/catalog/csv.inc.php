@@ -966,17 +966,13 @@
 
           if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-          $attributes_query = database::query(
-              "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_PREFIX ."attribute_values av
-              left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
-              left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
-              left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
-              order by agi.name, av.priority;"
-          );
-
-          while ($attribute = database::fetch($attributes_query)) {
-            $csv[] = $attribute;
-          }
+          $csv = database::fetch_all(database::query(
+            "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_PREFIX ."attribute_values av
+            left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
+            left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
+            left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
+            order by agi.name, av.priority;"
+          ));
 
           break;
 
@@ -992,7 +988,7 @@
           );
 
           while ($manufacturer = database::fetch($manufacturers_query)) {
-              $csv[] = [
+            $csv[] = [
               'id' => $manufacturer['id'],
               'status' => $manufacturer['status'],
               'code' => $manufacturer['code'],
@@ -1006,33 +1002,26 @@
               'image' => $manufacturer['image'],
               'new_image' => '',
               'priority' => $manufacturer['priority'],
-                'language_code' => $_POST['language_code'],
-              ];
-            }
+              'language_code' => $_POST['language_code'],
+            ];
+          }
 
           break;
 
         case 'campaigns':
 
-          $campaign_query = database::query(
+          $csv = database::fetch_all(database::query(
             "select * from ". DB_TABLE_PREFIX ."products_campaigns
             order by product_id;"
-          );
+          ));
 
-          if (!database::num_rows($campaign_query)) {
-
-            $fields_query = database::query(
+          if (!$csv) {
+            $fields = database::fetch_all(database::query(
               "show fields from ". DB_TABLE_PREFIX ."products_campaigns;"
-            );
+            ), 'Field');
 
-            $csv[] = database::fetch($fields_query);
-
-            break;
+            $csv = array_fill_keys($fields, '');
           }
-
-          while ($campaign = database::fetch($campaign_query)) {
-            $csv[] = $campaign;
-            }
 
           break;
 
@@ -1070,8 +1059,6 @@
           }
 
           break;
-
-
 
         case 'products':
 
@@ -1160,7 +1147,6 @@
             );
 
             while ($stock_item = database::fetch($stock_items_query)) {
-
               $csv[] = [
                 'id' => $stock_item['id'],
                 'status' => $stock_item['status'],

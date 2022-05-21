@@ -84,9 +84,7 @@
 
   // Subcategories
     $subcategories_query = functions::catalog_categories_query($category->id);
-    while ($subcategory = database::fetch($subcategories_query)) {
-      $_page->snippets['subcategories'][] = $subcategory;
-    }
+    $_page->snippets['subcategories'] = database::fetch_all($subcategories_query);
 
   // Products
     $products_query = functions::catalog_products_query([

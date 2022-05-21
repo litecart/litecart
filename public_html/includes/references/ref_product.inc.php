@@ -192,17 +192,11 @@
 
         case 'images':
 
-          $this->_data['images'] = [];
-
-          $query = database::query(
+          $this->_data['images'] = database::fetch_all(database::query(
             "select * from ". DB_TABLE_PREFIX ."products_images
             where product_id = ". (int)$this->_data['id'] ."
             order by priority asc, id asc;"
-          );
-
-          while ($row = database::fetch($query)) {
-            $this->_data['images'][$row['id']] = $row['filename'];
-          }
+          ), 'filename');
 
           break;
 
@@ -254,47 +248,35 @@
 
         case 'price':
 
-          $this->_data['price'] = 0;
-
-          $products_prices_query = database::query(
+          $this->_data['price'] = (float)database::fetch(database::query(
             "select coalesce(
               ". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
             ) price
             from ". DB_TABLE_PREFIX ."products_prices
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
-          );
-
-          if (!$product_price = database::fetch($products_prices_query)) return;
-
-          $this->_data['price'] = $product_price['price'];
+          ), 'price');
 
           break;
 
         case 'quantity':
 
-          $this->_data['quantity'] = null;
-
-          $stock_options_query = database::query(
+          $this->_data['quantity'] = (float)database::fetch(database::query(
             "select sum(si.quantity) as sum_quanity from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
             where p2si.product_id = ". (int)$this->_data['id'] .";"
-          );
-
-          if (!$stock_options = database::fetch($stock_options_query)) return;
-
-          $this->_data['quantity'] = $stock_options['sum_quantity'];
+          ), 'sum_quantity');
 
           break;
 
         case 'quantity_unit':
 
-          $quantity_unit_query = database::query(
+          $this->_data['quantity_unit'] = database::fetch(database::query(
             "select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
             where id = ". (int)$this->quantity_unit_id ."
             limit 1;"
-          );
+          ));
 
-          if (!$this->_data['quantity_unit'] = database::fetch($quantity_unit_query)) return;
+          if (!$this->_data['quantity_unit']) return;
 
           $query = database::query(
             "select * from ". DB_TABLE_PREFIX ."quantity_units_info
@@ -343,15 +325,13 @@
 
         case 'sold_out_status':
 
-          $this->_data['sold_out_status'] = [];
-
-          $query = database::query(
+          $this->_data['sold_out_status'] = database::fetch(database::query(
             "select id, orderable from ". DB_TABLE_PREFIX ."sold_out_statuses
             where id = ". (int)$this->sold_out_status_id ."
             limit 1;"
-          );
+          ));
 
-          if (!$this->_data['sold_out_status'] = database::fetch($query)) return;
+          if (!$this->_data['sold_out_status']) return;
 
           $query = database::query(
             "select * from ". DB_TABLE_PREFIX ."sold_out_statuses_info
@@ -377,15 +357,15 @@
 
         default:
 
-          $query = database::query(
+          $row = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."products
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          );
+          ));
 
-          if (!$row = database::fetch($query)) return;
-
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+          foreach ($row as $key => $value) {
+            $this->_data[$key] = $value;
+          }
 
           $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 

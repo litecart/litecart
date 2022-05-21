@@ -50,17 +50,11 @@
     exit;
   }
 
-  $available_stock_items = [];
-
-  $stock_items_query = database::query(
+  $available_stock_items = database::fetch_all(database::query(
     "select si.id, si.sku, si.quantity, si.backordered, sii.name from ". DB_TABLE_PREFIX ."stock_items si
     left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
     order by sku, name;"
-  );
-
-  while ($stock_item = database::fetch($stock_items_query)) {
-    $available_stock_items[] = $stock_item;
-  }
+  ));
 
   functions::draw_lightbox();
 ?>

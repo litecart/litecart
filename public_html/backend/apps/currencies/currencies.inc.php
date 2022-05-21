@@ -35,19 +35,13 @@
   }
 
 // Table Rows
-  $currencies = [];
-
-  $currencies_query = database::query(
+  $currencies = database::fetch_all(database::query(
     "select * from ". DB_TABLE_PREFIX ."currencies
     order by field(status, 1, -1, 0), priority, name;"
-  );
-
-  while ($currency = database::fetch($currencies_query)) {
-    $currencies[] = $currency;
-  }
+  ));
 
 // Number of Rows
-  $num_rows = database::num_rows($currencies_query);
+  $num_rows = count($currencies);
 
 // Pagination
   $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));

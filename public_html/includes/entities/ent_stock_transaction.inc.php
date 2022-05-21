@@ -66,17 +66,13 @@
         trigger_error('Could not find stock transacction (ID: '. (int)$transaction_id .') in database.', E_USER_ERROR);
       }
 
-      $contents_query = database::query(
+      $this->data['contents'] = database::fetch_all(database::query(
         "select stc.*, si.sku, si.quantity, si.backordered, sii.name
         from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
         left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = stc.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where stc.transaction_id = ". (int)$this->data['id'] .";"
-      );
-
-      while ($content = database::fetch($contents_query)) {
-        $this->data['contents'][] = $content;
-      }
+      ));
 
       $this->previous = $this->data;
     }

@@ -6,22 +6,16 @@
   $box_latest_products_cache_token = cache::token('box_latest_products', ['language', 'currency', 'prices']);
   if (cache::capture($box_latest_products_cache_token)) {
 
-    $products_query = functions::catalog_products_query([
-      'sort' => 'date',
-      'limit' => settings::get('box_latest_products_num_items'),
-    ]);
-
-    if (database::num_rows($products_query)) {
-
       $box_latest_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_latest_products.inc.php');
 
-      $box_latest_products->snippets['products'] = [];
-      while ($listing_product = database::fetch($products_query)) {
-        $box_latest_products->snippets['products'][] = $listing_product;
-      }
+      $box_latest_products->snippets['products'] = database::fetch_all(functions::catalog_products_query([
+        'sort' => 'date',
+        'limit' => settings::get('box_latest_products_num_items'),
+      ]));
 
-      echo $box_latest_products;
-    }
+      if ($box_latest_products->snippets['products']) {
+        echo $box_latest_products;
+      }
 
     cache::end_capture($box_latest_products_cache_token);
   }

@@ -3,60 +3,54 @@
   $widget_stats_cache_token = cache::token('widget_stats', ['site'], 'file', 300);
   if (cache::capture($widget_stats_cache_token)) {
 
-    $order_statuses = [];
-    $orders_status_query = database::query(
+    $order_statuses = database::fetch_all(database::query(
       "select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale;"
-    );
-    while ($order_status = database::fetch($orders_status_query)) {
-      $order_statuses[] = (int)$order_status['id'];
-    }
+    ), 'id');
 
     $stats = [];
 
   // Total Sales
-    $orders_query = database::query(
+
+    $orders = database::fetch(database::query(
       "select count(id) as num_orders, max(total) as max_order_amount, sum(total - total_tax) as total_sales from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."');"
-    );
-    $orders = database::fetch($orders_query);
+    ));
+
     $stats['total_sales'] = $orders['total_sales'];
     $stats['num_orders'] = $orders['num_orders'];
     $stats['max_order_amount'] = $orders['max_order_amount'];
 
   // Total Sales Year
-    $orders_query = database::query(
+    $stats['total_sales_year'] = database::fetch(database::query(
       "select sum(total - total_tax) as total_sales_year from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) ."';"
-    );
-    $orders = database::fetch($orders_query);
-    $stats['total_sales_year'] = $orders['total_sales_year'];
+    ), 'total_sales_year');
 
   // Total Sales Month
-    $orders_query = database::query(
+    $stats['total_sales_month'] = database::fetch(database::query(
       "select sum(total - total_tax) as total_sales_month from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) ."';"
-    );
-    $orders = database::fetch($orders_query);
-    $stats['total_sales_month'] = $orders['total_sales_month'];
+    ), 'total_sales_month');
 
   // Average order amount
-    $orders_query = database::query(
+    $orders = database::fetch(database::query(
       "select count(id) as num_orders, sum(total - total_tax) as total_sales from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."';"
-    );
-    $orders = database::fetch($orders_query);
+    ));
+
     $stats['average_order_amount'] = (!empty($orders['total_sales']) && !empty($orders['num_orders'])) ? ($orders['total_sales'] / $orders['num_orders']) : 0;
 
   // Average order count
     $orders_query = database::query(
-      "select count(id) as num_orders, date_format(date_created, '%Y-%m') as month from ". DB_TABLE_PREFIX ."orders
+      "select count(id) as num_orders from ". DB_TABLE_PREFIX ."orders
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       and date_created >= '". date('Y-m-d', strtotime('-6 months')) ."'
       group by date_format(date_created, '%Y-%m');"
     );
+
     $total_orders = 0;
     while ($orders = database::fetch($orders_query)) {
       $total_orders += $orders['num_orders'];
@@ -64,18 +58,14 @@
     $stats['average_order_count'] = !empty($total_orders) ? round($total_orders / database::num_rows($orders_query)) : 0;
 
   // Num customers
-    $customers_query = database::query(
+    $stats['num_customers'] = database::fetch(database::query(
       "select count(id) as num_customers from ". DB_TABLE_PREFIX ."customers;"
-    );
-    $customers = database::fetch($customers_query);
-    $stats['num_customers'] = $customers['num_customers'];
+    ), 'num_customers');
 
   // Num products
-    $products_query = database::query(
+    $stats['num_products'] = database::fetch(database::query(
       "select count(id) as num_products from ". DB_TABLE_PREFIX ."products;"
-    );
-    $products = database::fetch($products_query);
-    $stats['num_products'] = $products['num_products'];
+    ), 'num_products');
 ?>
 <div id="widget-stats" class="card card-widget">
   <div class="card-header">

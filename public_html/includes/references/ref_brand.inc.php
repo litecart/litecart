@@ -95,7 +95,7 @@
             break;
           }
 
-          $query = database::query(
+          $this->_data['num_products'] = (int)database::fetch(database::query(
             "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
             where status
             and brand_id = ". (int)$this->_data['id'] ."
@@ -105,23 +105,21 @@
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
-          );
-
-          $this->_data['num_products'] = (int)database::fetch($query, 'num_products');
+          ), 'num_products');
 
           break;
 
         default:
 
-          $query = database::query(
+          if (!$row = database::fetch(database::query(
             "select * from ". DB_TABLE_PREFIX ."brands
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          );
+          ))) return;
 
-          if (!$row = database::fetch($query)) return;
-
-          foreach ($row as $key => $value) $this->_data[$key] = $value;
+          foreach ($row as $key => $value) {
+            $this->_data[$key] = $value;
+          }
 
           $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 

@@ -52,17 +52,11 @@
       }
 
     // Zones
-
-      $zones_query = database::query(
+      $this->data['zones'] = database::fetch_all(database::query(
         "select * from ". DB_TABLE_PREFIX ."zones
         where country_code = '". database::input($this->data['iso_code_2']) ."'
         order by name;"
-      );
-
-      $this->data['zones'] = [];
-      while ($zone = database::fetch($zones_query)) {
-        $this->data['zones'][] = $zone;
-      }
+      ));
 
       $this->previous = $this->data;
     }

@@ -139,15 +139,10 @@
     public static function identify() {
 
     // Build list of supported countries
-      $countries_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."countries
+      $countries = database::fetch_all(database::query(
+        "select iso_code_2 from ". DB_TABLE_PREFIX ."countries
         where status;"
-      );
-
-      $countries = [];
-      while ($country = database::fetch($countries_query)) {
-        $countries[] = $country['iso_code_2'];
-      }
+      ), 'iso_code_2');
 
     // Unset non supported country
       if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';

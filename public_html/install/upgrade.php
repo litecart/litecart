@@ -196,13 +196,13 @@
           if (!empty($ignore_tables) && in_array($table, $ignore_tables)) continue;
 
         // Insert Data
-          $columns = [];
-          $columns_query = database::query("SHOW COLUMNS FROM `" . $table ."`");
-          while ($column = database::fetch($columns_query)) {
-            $columns[] = $column['Field'];
-          }
+          $columns = database::fetch_all(database::query(
+            "SHOW COLUMNS FROM `" . $table ."`"
+          ), 'Field');
 
-          $rows_query = database::query("SELECT `" . implode('`, `', $columns) . "` FROM `" . $table ."`");
+          $rows_query = database::query(
+            "SELECT `" . implode('`, `', $columns) . "` FROM `" . $table ."`"
+          );
 
           if (!database::num_rows($rows_query)) continue;
 

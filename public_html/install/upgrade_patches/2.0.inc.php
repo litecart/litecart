@@ -61,7 +61,7 @@
 
   perform_action('copy', [
     'data/default/public_html/images/no_image.png' => FS_DIR_APP . 'images/no_image.png',
-  ];
+  ]);
 
   perform_action('modify', [
     FS_DIR_APP . 'includes/config.inc.php' => [
@@ -177,16 +177,11 @@
   }
 
 // Collect all languages
-  $languages_query = database::query(
-    "select * from ". DB_TABLE_PREFIX ."languages
+  $all_languages = database::fetch_all(database::query(
+    "select code from ". DB_TABLE_PREFIX ."languages
     where status
     order by priority, name;"
-  );
-
-  $all_languages = [];
-  while ($row = database::fetch($languages_query)) {
-    $all_languages[] = $row['code'];
-  }
+  ), 'code');
 
 // Update slides
   $slides_query = database::query(

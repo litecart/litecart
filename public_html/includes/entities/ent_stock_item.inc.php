@@ -61,7 +61,6 @@
       }
 
     // Info
-
       $stock_items_info_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_items_info
          where stock_item_id = ". (int)$this->data['id'] .";"
@@ -75,17 +74,11 @@
       }
 
     // References
-
-      $references_query = database::query(
+      $this->data['references'] = database::fetch_all(database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_items_references
         where stock_item_id = ". (int)$this->data['id'] ."
         order by id;"
-      );
-
-      $this->data['references'] = [];
-      while ($reference = database::fetch($references_query)) {
-        $this->data['references'][] = $reference;
-      }
+      ));
 
       $this->previous = $this->data;
     }

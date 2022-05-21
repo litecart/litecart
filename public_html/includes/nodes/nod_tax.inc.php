@@ -106,7 +106,7 @@
         return self::$_cache['rates'][$tax_class_id][$checksum];
       }
 
-      $tax_rates_query = database::query(
+      $tax_rates = database::fetch_all(database::query(
         "select * from ". DB_TABLE_PREFIX ."tax_rates
         where tax_class_id = ". (int)$tax_class_id ."
         and (
@@ -133,12 +133,7 @@
         ". ((empty($customer['company']) && !empty($customer['tax_id'])) ? "and rule_individuals_with_tax_id" : "") ."
         ". ((empty($customer['company']) && empty($customer['tax_id'])) ? "and rule_individuals_without_tax_id" : "") ."
         ;"
-      );
-
-      $tax_rates = [];
-      while ($rate = database::fetch($tax_rates_query)) {
-        $tax_rates[$rate['id']] = $rate;
-      }
+      ));
 
       self::$_cache['rates'][$tax_class_id][$checksum] = $tax_rates;
 

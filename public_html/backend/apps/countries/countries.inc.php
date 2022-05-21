@@ -33,23 +33,17 @@
   }
 
 // Table Rows
-  $countries = [];
-
-  $countries_query = database::query(
+  $countries = database::fetch_all(database::query(
     "select c.*, z.num_zones from ". DB_TABLE_PREFIX ."countries c
     left join (
       select country_code, count(*) as num_zones from ". DB_TABLE_PREFIX ."zones
       group by country_code
     ) z on (z.country_code = c.iso_code_2)
     order by status desc, name asc;"
-  );
-
-  while ($country = database::fetch($countries_query)) {
-    $countries[] = $country;
-  }
+  ));
 
 // Number of Rows
-  $num_rows = database::num_rows($countries_query);
+  $num_rows = count($countries);
 ?>
 <div class="card card-app">
   <div class="card-header">

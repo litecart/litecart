@@ -75,29 +75,19 @@
       }
 
     // Filters
-      $category_filters_query = database::query(
+      $this->data['filters'] = database::fetch_all(database::query(
         "select cf.*, agi.name as attribute_group_name from ". DB_TABLE_PREFIX ."categories_filters cf
         left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and language_code = '". database::input(language::$selected['code']) ."')
         where category_id = ". (int)$this->data['id'] ."
         order by priority;"
-      );
-
-      $this->data['filters'] = [];
-      while ($group = database::fetch($category_filters_query)) {
-        $this->data['filters'][] = $group;
-      }
+      ));
 
     // Products
-      $products_to_categories_query = database::query(
+      $this->data['products'] = database::fetch_all(database::query(
         "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
         where category_id = ". (int)$this->data['id'] ."
         order by product_id;"
-      );
-
-      $this->data['products'] = [];
-      while ($product = database::fetch($products_to_categories_query)) {
-        $this->data['products'][] = $product['product_id'];
-      }
+      ));
 
       $this->previous = $this->data;
     }

@@ -133,25 +133,17 @@
         $this->data['items'][] = $item;
       }
 
-      $order_totals_query = database::query(
+      $this->data['order_total'] = database::fetch_all(database::query(
         "select * from ". DB_TABLE_PREFIX ."orders_totals
         where order_id = ". (int)$order_id ."
         order by priority;"
-      );
+      ));
 
-      while ($row = database::fetch($order_totals_query)) {
-        $this->data['order_total'][] = $row;
-      }
-
-      $comments_query = database::query(
+      $this->data['comments'] = database::fetch_all(database::query(
         "select * from ". DB_TABLE_PREFIX ."orders_comments
         where order_id = ". (int)$order_id ."
         order by id;"
-      );
-
-      while ($row = database::fetch($comments_query)) {
-        $this->data['comments'][] = $row;
-      }
+      ));
 
       $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
       $this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
