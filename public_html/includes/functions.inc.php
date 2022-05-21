@@ -5,12 +5,12 @@
 
 // Checks if variable is not set, null, (bool)false, (int)0, (float)0.00, (string)"", (string)"0", (string)"0.00", or (array)[].
   function nil(&$var) {
-    if (is_array($var)) { // Recursive
+    if (is_array($var)) {
       foreach ($var as $node) {
         if (!nil($node)) return !1;
       }
     }
-    return (empty($var) || (float)$var == 0);
+    return (empty($var) || (is_numeric($var) && (float)$var == 0));
   }
 
 // Returns value for variable or falls back to a substituting value on nil(). Similar to $var ?? $fallback
