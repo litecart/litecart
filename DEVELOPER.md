@@ -60,7 +60,7 @@ If you are new to Git we recommend SourceTree or GitHub Desktop as a great graph
 8. Once the pull request is accepted you can safely delete your feature branch.
 
 
-# Install Node.js v15
+# Install Node.js
 
 This project uses Node + Grunt to compile less to css among other things.
 To install Grunt do the following:
