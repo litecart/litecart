@@ -33,6 +33,9 @@
 	"scripts": {
 		"build": "grunt",
 		"watch": "grunt watch",
+		"uglify": "grunt less",
+		"uglify": "grunt uglify",
+		"uglify": "grunt replace",
 		"phplint": "grunt phplint",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php"
 	}

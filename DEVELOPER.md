@@ -60,7 +60,7 @@ If you are new to Git we recommend SourceTree or GitHub Desktop as a great graph
 8. Once the pull request is accepted you can safely delete your feature branch.
 
 
-# Install Node.js + Grunt For Windows
+# Install Node.js v15
 
 This project uses Node + Grunt to compile less to css among other things.
 To install Grunt do the following:
@@ -80,11 +80,11 @@ To install Grunt do the following:
 Done! Node.js should now have installed all necessary libraries, you can now use any of the following commands:
 
     npm run grunt         (Launches all grunt tasks)
-    npm run grunt less    (Compile and minify .min.css from .less)
-    npm run grunt uglify  (Uglify and minify .min.js from .js)
-    npm run grunt replace (Update version number in scripts from package.js)
-    npm run grunt phplint (Check scripts for syntax errors)
-    npm run grunt watch   (Watch for changes in .less and .js and update minified versions on the fly)
+    npm run less          (Compile and minify .min.css from .less)
+    npm run uglify        (Uglify and minify .min.js from .js)
+    npm run replace       (Update version number in scripts from package.js)
+    npm run phplint       (Check PHP scripts for syntax errors)
+    npm run watch         (Watch for changes in .less and .js and update minified versions on the fly)
     npm run hash          (Update checksums.md5 for all tracked files)
 
     npm update    (Update your node modules to newer versions)
