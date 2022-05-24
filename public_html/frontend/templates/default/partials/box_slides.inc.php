@@ -14,7 +14,7 @@
 
     if ($slide['link']) echo '<a href="'. functions::escape_html($slide['link']) .'">' . PHP_EOL;
 
-    echo '<img src="'. document::href_link(WS_DIR_STORAGE . $slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
+    echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . $slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
 
     if (!empty($slide['caption'])) {
       echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;

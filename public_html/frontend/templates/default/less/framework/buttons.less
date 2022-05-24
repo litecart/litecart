@@ -3,13 +3,15 @@
 .btn(@type) {
   background: ~"var(--button-@{type}-background-color)";
   color: ~"var(--button-@{type}-text-color)";
+  border: 1px solid ~"var(--button-@{type}-border-color)";
   text-decoration: none;
   &:hover:not(.active):not(.disabled):not([disabled]) {
     background: ~"var(--button-@{type}-background-color-hover)";
+    border-color: ~"var(--button-@{type}-border-color-hover)";
   }
   &.active {
     background: ~"var(--button-@{type}-background-color-active)";
-    border-color: ~"var(--button-@{type}-border-color)";
+    border-color: ~"var(--button-@{type}-border-color-active)";
   }
 }
 
@@ -35,9 +37,9 @@
   padding: .5em 2em;
   text-decoration:  none;
   font-weight: normal;
-  border: none;
   border-radius: var(--border-radius);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+  //box-shadow: 1px 1px 2px var(--shadow-color);
+  box-shadow: none;
   text-align: center;
   vertical-align: middle;
   white-space: nowrap;
@@ -55,7 +57,7 @@
   &.btn-sm { font-size: .8em; }
   &.btn-lg { font-size: 1.2em; }
 
-  &.active, &:active { box-shadow: inset 1px 1px 0px 1px rgba(0, 0, 0, .15) !important; }
+  &.active, &:active { box-shadow: inset 1px 1px var(--shadow-color) !important; }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
   [data-type="toggle"] { display: none; }
 }

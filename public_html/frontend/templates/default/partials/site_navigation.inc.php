@@ -106,7 +106,7 @@
               <div class="item">
                 <div class="row">
                   <div class="col-3">
-                    <img class="image img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
+                    <img class="image img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
                   </div>
                   <div class="col-8">
                     <div><a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><?php echo $item['name']; ?></a></div>

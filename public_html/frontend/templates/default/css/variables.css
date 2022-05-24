@@ -16,16 +16,17 @@
 }
 /* Variables */
 :root {
-  --border-radius: 8px;
+  --border-radius: 10px;
   --gutter-size: 1rem;
   --link-text-color: #5292b1;
   --whitespace-color: #fff;
+  --shadow-color: rgba(0, 0, 0, 0.15);
   --listing-border-color: #ccc;
   --site-background-color: #f4f4f7;
   --header-background-color: #fff;
   --sidebar-width: 320px;
   --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  --default-text-color: #000;
+  --default-text-color: #444;
   --default-text-size: 15px;
   --default-line-height: 1.5;
   --default-title-color: #333;
@@ -39,7 +40,7 @@
   --offcanvas-navigation-cart-color: #b7d851;
   --card-background-color: #fff;
   --card-text-color: #444;
-  --card-border-color: transparent;
+  --card-border-color: #efefef;
   --card-header-background-color: transparent;
   --card-header-text-color: var(--card-text-color);
   --card-body-background-color: transparent;
@@ -51,7 +52,10 @@
   --button-default-background-color: #e1e1e1;
   --button-default-background-color-hover: #e4e4e4;
   --button-default-background-color-active: #ccc;
-  --button-default-border-color: #eee;
+  --button-default-border-color: #cfcfcf;
+  --button-default-border-color-hover: #cfcfcf;
+  --button-default-border-color-active: transparent;
+  --button-default-text-color: #444;
   --button-success-background-color: #91C231;
   --button-success-background-color-hover: #90c920;
   --button-success-background-color-active: #81b123;
@@ -74,14 +78,18 @@
   --danger-notice-text-color: #c44;
   --breadcrumbs-background-color: #ebebee;
   --breadcrumbs-text-color: #000;
-  --breadcrumbs-border-color: transparent;
+  --breadcrumbs-border-color: #e7e7e7;
   --input-background-color: #fff;
   --input-border-color: #ebebee;
   --input-padding-x: 1em;
   --input-padding-y: 0.5em;
-  --input-text-color: #000;
+  --input-text-color: #444;
   --pills-background-color: #fff;
-  --pills-background-color-active: #cdcdd4;
+  --pills-background-color-hover: #e5e5ed;
+  --pills-background-color-active: #d1d1dd;
+  --pills-border-color: #efefef;
+  --pills-border-color-hover: #d3d3d3;
+  --pills-border-color-active: #bbbbbb;
   --pills-text-color: #333;
   --pills-text-color-active: var(--pills-text-color);
   --tabs-background-color: #e5e5ea;

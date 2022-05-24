@@ -265,36 +265,38 @@ body main {
 .listing .brand,
 .listing .product {
   position: relative;
-  overflow: hidden;
   flex: 1 1;
-  background: var(--whitespace-color);
-  border-radius: var(--border-radius);
   color: inherit;
   text-decoration: none;
-  transform: scale(1);
-  transition: all 100ms linear;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
-}
-@media (min-width: 576px) {
-  .listing .category:hover,
-  .listing .brand:hover,
-  .listing .product:hover {
-    box-shadow: 0 0 0.5em 0 rgba(0, 0, 0, 0.15);
-    transform: scale(1.01);
-  }
 }
 .listing .category {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  overflow: initial;
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+.listing .category img {
+  background: var(--whitespace-color);
+  box-shadow: 0 2px 5px var(--shadow-color);
+  border-radius: 50%;
+  transform: scale(1);
+  transition: all 100ms linear;
 }
 .listing .category .caption {
-  background: #f2f2f2;
   padding: 0.5em 1em;
   color: var(--default-text-color);
+  font-size: 1.25em;
   text-align: center;
 }
 .listing .category .caption * {
   color: inherit;
   margin: 0;
+}
+@media (min-width: 576px) {
+  .listing .category:hover img {
+    box-shadow: 0 3px 6px var(--shadow-color);
+    transform: scale(1.02);
+  }
 }
 .listing .brand img {
   width: 100%;
@@ -309,12 +311,18 @@ body main {
   text-align: center;
 }
 .listing .product {
-  position: relative;
+  background: var(--whitespace-color);
   font-size: calc(var(--default-text-size) - 1px);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transform: scale(1);
+  transition: all 100ms linear;
+  border: 1px solid var(--card-border-color);
 }
 @media (min-width: 576px) {
   .listing .product:hover {
     border-color: var(--listing-border-color);
+    box-shadow: 0 0 0.25em 0 var(--shadow-color);
     transform: scale(1.01);
   }
 }
@@ -484,7 +492,7 @@ body main {
   top: 40%;
   width: 3em;
   height: 3em;
-  border-radius: 50%;
+  border-radius: var(--border-radius);
   padding: 0;
 }
 [data-toggle="momentumScroll"] button[name="left"] {

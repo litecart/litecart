@@ -775,9 +775,6 @@ ul.breadcrumb li a {
   top: 0;
   left: 100%;
 }
-html[dir="rtl"] [data-toggle="dropdown"] {
-  background-position: left 1em center;
-}
 .dropdown-backdrop {
   position: fixed;
   left: 0;
@@ -1384,37 +1381,31 @@ fieldset[disabled] > :not(legend),
 [data-toggle="buttons"] input[type="radio"] {
   display: none;
 }
-/* Images - Bootstrap Compatible */
-.thumbnail > img,
-.thumbnail a > img,
-.img-responsive {
+/* Images */
+.thumbnail {
   display: block;
   max-width: 100%;
   height: auto;
-  margin: 0 auto;
-}
-.thumbnail {
-  display: block;
-  padding: calc(var(--gutter-size)/4);
   line-height: var(--default-line-height);
-  background-color: #fff;
+  background-color: var(--whitespace-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
-  transition: border 0.2s ease-in-out;
-}
-.thumbnail > img,
-.thumbnail a > img {
+  transition: border 200ms ease-in-out;
   margin-inline-end: auto;
   margin-inline-start: auto;
 }
-.img-thumbnail {
-  padding: calc(var(--gutter-size)/4);
+img.responsive {
+  display: block;
   max-width: 100%;
   height: auto;
-  background-color: #fff;
-  border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
-  transition: all 0.1s ease-in-out;
+  margin-inline-end: auto;
+  margin-inline-start: auto;
+}
+img.fit {
+  object-fit: contain;
+}
+img.crop {
+  object-fit: cover;
 }
 /* Lists - Bootstrap Compatible */
 ul.list-unstyled {

@@ -10,6 +10,8 @@
     'products' => array_reverse(array_column(session::$data['recently_viewed_products'], 'id'))
   ]));
 
+  $product_ids = array_column(session::$data['recently_viewed_products'], 'id');
+
 // Sort
   usort($recently_viewed_products, function ($a, $b) use ($product_ids) {
     $pos_a = array_search($a['id'], $product_ids);

@@ -76,6 +76,19 @@
 
           break;
 
+        case 'ancestor':
+        case 'main_category':
+
+          $this->_data['ancestor'] = $this;
+
+          while ($this->_data['ancestor']->parent_id) {
+            $this->_data['ancestor'] = $this->_data['ancestor']->parent;
+          }
+
+          $this->_data['main_category'] = &$this->_data['ancestor'];
+
+          break;
+
         case 'path':
 
           $this->_data['path'] = [$this->id => $this];
@@ -197,7 +210,7 @@
         case 'subcategories':
         case 'children':
 
-          $this->_data['subcategories'] = [];
+          $this->_data['children'] = [];
 
           $query = database::query(
             "select id from ". DB_TABLE_PREFIX ."categories
@@ -208,9 +221,11 @@
 
           while ($row = database::fetch($query)) {
             foreach ($row as $key => $value) {
-              $this->_data['subcategories'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
+              $this->_data['children'][$row['id']] = reference::category($row['id'], $this->_language_codes[0]);
             }
           }
+
+          $this->_data['subcategories'] = &$this->_data['children'];
 
           break;
 

@@ -30,7 +30,7 @@
     );
 
     if (empty($banner['html'])) {
-      $banner['html'] = '<img class="img-responsive" src="$image_url" alt="" />';
+      $banner['html'] = '<img class="responsive" src="$image_url" alt="" />';
 
       if (!empty($banner['link'])) {
         $banner['html'] = '<a href="$target_url" target="_blank">' . PHP_EOL
@@ -108,7 +108,7 @@
     }
 
     switch($class) {
-      case 'add':         return draw_fonticon('fa-plus', 'style="color: #6c6;"');
+      case 'add':         return draw_fonticon('fa-plus');
       case 'cancel':      return draw_fonticon('fa-times');
       case 'edit':        return draw_fonticon('fa-pencil');
       case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');

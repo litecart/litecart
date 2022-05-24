@@ -85,12 +85,15 @@
     border-radius: var(--border-radius);
     transition: all 125ms linear;
     color: var(--pills-text-color);
+    border: 1px solid var(--pills-border-color);
     &:hover {
-      background: darken(#f3f3f3, 5%);
+      background: var(--pills-background-color-hover);
+      border-color: var(--pills-border-color-hover);
     }
   }
   li.active > a {
     background: var(--pills-background-color-active);
+    border-color: var(--pills-border-color-active);
     color: var(--pills-text-color-active);
   }
   li + li > a {

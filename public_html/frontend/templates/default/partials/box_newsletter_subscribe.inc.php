@@ -18,7 +18,7 @@
 
     <div class="wrapper">
       <div class="hidden-xs" style="flex: 0 1 170px;">
-        <img class="img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/illustration/letter.svg'); ?>"  />
+        <img class="responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/illustration/letter.svg'); ?>"  />
       </div>
 
       <?php echo functions::form_draw_form_begin('newsletter_subscribe_form', 'post'); ?>

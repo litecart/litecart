@@ -21,7 +21,7 @@
 
       <?php if ($categories) { ?>
       <li class="categories dropdown">
-        <a href="#" data-toggle="dropdown"><?php echo language::translate('title_products', 'Products'); ?></a>
+        <a href="#" data-toggle="dropdown"><?php echo language::translate('title_categories', 'Categories'); ?></a>
         <ul class="dropdown-menu">
           <?php foreach ($categories as $item) { ?>
           <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
@@ -61,7 +61,7 @@
       <?php if (settings::get('accounts_enabled')) { ?>
       <li class="account dropdown">
         <a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu dropdown-menu-end">
           <?php if (!empty(customer::$data['id'])) { ?>
             <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
             <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
@@ -88,6 +88,7 @@
                 </div>
               <?php echo functions::form_draw_form_end(); ?>
             </li>
+
             <li class="text-center">
               <a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
             </li>

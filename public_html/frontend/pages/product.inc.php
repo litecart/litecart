@@ -167,6 +167,8 @@
       'viewport' => [
         'width' => $width,
         'height' => $height,
+        'ratio' => str_replace(':', '/', settings::get('product_image_ratio')),
+        'clipping' => strtolower(settings::get('product_image_clipping')),
       ],
     ];
   }

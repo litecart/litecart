@@ -8,7 +8,7 @@
       <?php echo functions::form_draw_radio_button('payment_option_id', $option['id'], !empty($selected['id']) ? $selected['id'] .':'. $selected['option_id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-3 thumbnail" style="margin: 0;">
-          <img src="<?php echo document::href_link(WS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_APP . $option['icon'], 140, 80)); ?>" />
+          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_APP . $option['icon'], 140, 80)); ?>" />
         </div>
 
         <div class="col-9 text-start" style="padding-bottom: 0;">

@@ -311,9 +311,8 @@ ul.breadcrumb li a {
   padding: 0.5em 2em;
   text-decoration: none;
   font-weight: normal;
-  border: none;
   border-radius: var(--border-radius);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 1px 1px 2px var(--shadow-color);
   text-align: center;
   vertical-align: middle;
   white-space: nowrap;
@@ -322,50 +321,58 @@ ul.breadcrumb li a {
 .btn.btn-default {
   background: var(--button-default-background-color);
   color: var(--button-default-text-color);
+  border: 1px solid var(--button-default-border-color);
   text-decoration: none;
 }
 .btn.btn-default:hover:not(.active):not(.disabled):not([disabled]) {
   background: var(--button-default-background-color-hover);
+  border-color: var(--button-default-border-color-hover);
 }
 .btn.btn-default.active {
   background: var(--button-default-background-color-active);
-  border-color: var(--button-default-border-color);
+  border-color: var(--button-default-border-color-active);
 }
 .btn.btn-primary {
   background: var(--button-primary-background-color);
   color: var(--button-primary-text-color);
+  border: 1px solid var(--button-primary-border-color);
   text-decoration: none;
 }
 .btn.btn-primary:hover:not(.active):not(.disabled):not([disabled]) {
   background: var(--button-primary-background-color-hover);
+  border-color: var(--button-primary-border-color-hover);
 }
 .btn.btn-primary.active {
   background: var(--button-primary-background-color-active);
-  border-color: var(--button-primary-border-color);
+  border-color: var(--button-primary-border-color-active);
 }
 .btn.btn-success {
   background: var(--button-success-background-color);
   color: var(--button-success-text-color);
+  border: 1px solid var(--button-success-border-color);
   text-decoration: none;
 }
 .btn.btn-success:hover:not(.active):not(.disabled):not([disabled]) {
   background: var(--button-success-background-color-hover);
+  border-color: var(--button-success-border-color-hover);
 }
 .btn.btn-success.active {
   background: var(--button-success-background-color-active);
-  border-color: var(--button-success-border-color);
+  border-color: var(--button-success-border-color-active);
 }
 .btn.btn-danger {
   background: var(--button-danger-background-color);
   color: var(--button-danger-text-color);
+  border: 1px solid var(--button-danger-border-color);
   text-decoration: none;
 }
 .btn.btn-danger:hover:not(.active):not(.disabled):not([disabled]) {
   background: var(--button-danger-background-color-hover);
+  border-color: var(--button-danger-border-color-hover);
 }
 .btn.btn-danger.active {
   background: var(--button-danger-background-color-active);
-  border-color: var(--button-danger-border-color);
+  border-color: var(--button-danger-border-color-active);
 }
 .btn.btn-outline {
   background: none;
@@ -390,7 +397,7 @@ ul.breadcrumb li a {
 }
 .btn.active,
 .btn:active {
-  box-shadow: inset 1px 1px 0px 1px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: inset 1px 1px var(--shadow-color) !important;
 }
 .btn.disabled,
 .btn[disabled] {
@@ -639,8 +646,8 @@ ul.breadcrumb li a {
 .card {
   margin-bottom: var(--gutter-size);
   background-color: var(--card-background-color);
+  border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius);
-  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.15);
   color: var(--card-text-color);
 }
 .card:last-child {
@@ -1330,7 +1337,7 @@ input[type="number"] {
   width: 100%;
   padding: 0.5em 1em;
   background-color: var(--input-background-color);
-  border: 2px solid var(--input-border-color);
+  border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   box-shadow: none;
   color: var(--input-text-color);
@@ -1353,7 +1360,7 @@ input[type="number"] {
   padding: 0.5em 1em;
   background-color: var(--input-background-color);
   color: var(--input-text-color);
-  border: 2px solid var(--input-border-color);
+  border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   box-shadow: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
@@ -1422,7 +1429,7 @@ input[type="number"] {
   padding: 0.5em 1em;
   background-color: var(--input-background-color);
   color: var(--input-text-color);
-  border: 2px solid var(--input-border-color);
+  border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   box-shadow: none;
   display: flex;
@@ -1477,41 +1484,31 @@ fieldset[disabled] > :not(legend),
 [data-toggle="buttons"] input[type="radio"] {
   display: none;
 }
-/* Images - Bootstrap Compatible */
-.thumbnail > img,
-.thumbnail a > img,
-.img-responsive {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0 auto;
-}
+/* Images */
 .thumbnail {
   display: block;
+  max-width: 100%;
+  height: auto;
   line-height: var(--default-line-height);
   background-color: var(--whitespace-color);
+  border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
-  transition: border 0.2s ease-in-out;
-  overflow: hidden;
-}
-.thumbnail > img,
-.thumbnail a > img {
+  transition: border 200ms ease-in-out;
   margin-inline-end: auto;
   margin-inline-start: auto;
 }
-.img-thumbnail {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--default-border-color);
-  border-radius: var(--border-radius);
-  background-color: var(--whitespace-color);
-  transition: all 0.1s ease-in-out;
-  overflow: hidden;
+img.responsive {
+  display: block;
+  width: 100%;
+  margin-inline-end: auto;
+  margin-inline-start: auto;
 }
 img.fit {
+  width: 100%;
   object-fit: contain;
 }
 img.crop {
+  width: 100%;
   object-fit: cover;
 }
 /* Lists - Bootstrap Compatible */
@@ -1541,10 +1538,6 @@ ul.list-inline li {
   display: inline-block;
   background: url('../images/loader.svg');
   background-size: cover;
-  animation-name: spin;
-  animation-duration: 2000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
 }
 /* Nav (Tabs, Pills) - Bootstrap Compatible */
 .nav {
@@ -1635,12 +1628,15 @@ ul.list-inline li {
   border-radius: var(--border-radius);
   transition: all 125ms linear;
   color: var(--pills-text-color);
+  border: 1px solid var(--pills-border-color);
 }
 .nav-pills li a:hover {
-  background: #e6e6e6;
+  background: var(--pills-background-color-hover);
+  border-color: var(--pills-border-color-hover);
 }
 .nav-pills li.active > a {
   background: var(--pills-background-color-active);
+  border-color: var(--pills-border-color-active);
   color: var(--pills-text-color-active);
 }
 .nav-pills li + li > a {

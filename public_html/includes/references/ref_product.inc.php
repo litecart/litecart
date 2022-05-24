@@ -133,9 +133,7 @@
 
         case 'campaign':
 
-          $this->_data['campaign'] = [];
-
-          $campaigns_query = database::query(
+          $this->_data['campaign'] = database::fetch(database::query(
             "select *, min(
               coalesce(
                 ". implode(", ", array_map(function($currency_code){ return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)"; }, $this->_currency_codes)) ."

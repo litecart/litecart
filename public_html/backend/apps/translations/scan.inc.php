@@ -96,7 +96,7 @@
 
     while ($group = database::fetch($settings_groups_query)) {
       $translation_keys[] = 'settings_group:title_'.$group['key'];
-      $translation_keys[] = 'settings_group:title_'.$group['key'];
+      $translation_keys[] = 'settings_group:description_'.$group['key'];
     }
 
     $settings_query = database::query(
@@ -116,8 +116,12 @@
     );
 
     while ($translation = database::fetch($translations_query)) {
-      if (strtotime($translation['date_accessed']) > strtotime('-12 months')) continue;
-      $orphan[] = $translation;
+      if (empty($translation['date_accessed']) || strtotime($translation['date_accessed']) < strtotime('-12 months')) {
+        if (mb_strlen($translation['text_'.language::$selected['code']]) > 100) {
+          $translation['text_'.language::$selected['code']] = mb_substr($row['text_'.language::$selected['code']], 0, 100) . '...';
+        }
+        $orphan[] = $translation;
+      }
     }
 
     $log = ob_get_clean();

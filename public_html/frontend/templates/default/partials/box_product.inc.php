@@ -18,8 +18,8 @@ form[name="buy_now_form"] .dropdown-menu .image {
       <div class="images row" style="margin-bottom: 0;">
 
         <div class="col-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive <?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          <a class="main-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="responsive <?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
             {{sticker}}
           </a>
         </div>
@@ -27,7 +27,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-4">
           <a class="extra-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive <?php echo $extra_image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+            <img class="responsive <?php echo $extra_image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
           </a>
         </div>
         <?php } ?>

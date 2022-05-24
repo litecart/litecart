@@ -129,7 +129,7 @@ textarea[name="html"] {
       <div class="form-group">
         <label><?php echo language::translate('title_html', 'HTML'); ?></label>
         <div class="form-control" style="padding: 0;">
-          <?php echo functions::form_draw_textarea('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="img-responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
+          <?php echo functions::form_draw_textarea('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
           <div style="padding: 0.5em; background: #efefef;">
             <?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
           </div>

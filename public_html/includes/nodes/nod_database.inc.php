@@ -108,7 +108,7 @@
       return $errors ? true : false;
     }
 
-    public static function query($query, $link='default') {
+    public static function query($sql, $link='default') {
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
@@ -116,12 +116,12 @@
         stats::start_watch('database_execution');
       }
 
-      if (($result = mysqli_query(self::$_links[$link], $query)) === false) {
-        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
+      if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
       }
 
       if (($duration = stats::get_watch('database_execution')) > 3) {
-        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $query) . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
+        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
       }
 
       if (class_exists('stats', false)) {
@@ -140,8 +140,8 @@
         stats::start_watch('database_execution');
       }
 
-      if (($result = mysqli_multi_query(self::$_links[$link], $query)) === false) {
-        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $query) . PHP_EOL, E_USER_ERROR);
+      if (($result = mysqli_multi_query(self::$_links[$link], $sql)) === false) {
+        trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
       }
 
       $i = 1;

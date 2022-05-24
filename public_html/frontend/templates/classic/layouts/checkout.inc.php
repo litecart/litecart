@@ -16,7 +16,7 @@
 
 <header id="header" class="container">
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-    <img src="<?php echo document::href_link(WS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
+    <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
   </a>
 
   <div class="middle hidden-xs hidden-sm"></div>
