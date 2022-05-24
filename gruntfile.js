@@ -132,7 +132,6 @@ module.exports = function(grunt) {
     sass: {
       trumbowyg_minified: {
         options: {
-          implementation: require('node-sass'),
           sourceMap: true,
           outputStyle: 'compressed',
           compass: false
@@ -212,7 +211,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-dart-sass');
   grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('default', ['replace', 'less', 'sass', 'uglify']);
