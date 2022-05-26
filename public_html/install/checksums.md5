@@ -515,7 +515,7 @@ b217fda769d984db52402e013c973ff5	includes/entities/ent_image.inc.php
 6f43030dcab5c68fa42eafb03e919dd0	includes/entities/ent_link.inc.php
 0493589c7092ed52565892ce84ef5df1	includes/entities/ent_manufacturer.inc.php
 2aa34380239170966f0e7a57d717e09a	includes/entities/ent_module.inc.php
-e0ca26e6d1bfdbaaad2f2685e7fcadff	includes/entities/ent_order.inc.php
+c108f33fd2746576b8c6b93af0f30592	includes/entities/ent_order.inc.php
 80efecf21c83da137feff5abb619a77d	includes/entities/ent_order_status.inc.php
 60fbc8ab51609a0fcbad27e80c2d63f1	includes/entities/ent_page.inc.php
 9e21aa9043d6b92930dc0f8f725033dd	includes/entities/ent_product.inc.php
