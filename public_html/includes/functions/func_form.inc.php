@@ -39,7 +39,7 @@
         }
       }
 
-      return $node;
+      if (!empty($node)) return $node;
     }
 
     return '';
