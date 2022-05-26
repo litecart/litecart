@@ -35,6 +35,7 @@
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"less": "grunt less",
 		"phplint": "grunt phplint",
+		"test": "grunt test",
 		"uglify": "grunt replace",
 		"watch": "grunt watch"
 	}
