@@ -89,7 +89,7 @@
 
   switch($_GET['order_status_id']) {
     case '':
-      $sql_where_order_status = "and (os.is_archived = 0 or unread = 1)";
+      $sql_where_order_status = "and (o.order_status_id = 0 or os.is_archived = 0 or unread = 1)";
       break;
     case 'archived':
       $sql_where_order_status = "and (os.is_archived = 1)";
