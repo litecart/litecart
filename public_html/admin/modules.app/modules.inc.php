@@ -53,6 +53,26 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
+  if (isset($_POST['enable']) || isset($_POST['disable'])) {
+
+    try {
+      if (empty($_POST['modules'])) throw new Exception(language::translate('error_must_select_modules', 'You must select modules'));
+
+      foreach ($_POST['modules'] as $module_id) {
+        $module = new ent_module($module_id);
+        $module->data['settings']['status'] = !empty($_POST['enable']) ? 1 : 0;
+        $module->save();
+      }
+
+      notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
   document::$snippets['title'][] = $title;
 
   breadcrumbs::add(language::translate('title_modules', 'Modules'));
@@ -175,6 +195,10 @@
         </tfoot>
       </table>
 
+      <div class="btn-group">
+        <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+        <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+      </div>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
