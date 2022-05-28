@@ -535,7 +535,7 @@ input[name="development_type"]:checked + div {
           .js + .min.js
         </div>
         <small class="description">
-          (Requires <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">Developer Kit</a>)
+          (Requires a <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">LESS compiler</a>)
         </small>
       </div>
     </label>
