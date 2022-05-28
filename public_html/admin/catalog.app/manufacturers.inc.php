@@ -74,18 +74,18 @@
         <thead>
           <tr>
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            <th></th>
+            <th></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_products', 'Products'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($manufacturers as $manufacturer) { ?>
           <tr class="<?php echo empty($manufacturer['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('manufacturers['. $manufacturer['id'] .']', $manufacturer['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('manufacturers[]', $manufacturer['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($manufacturer['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><?php echo $manufacturer['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
             <td><img src="<?php echo document::href_link($manufacturer['image'] ? WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $manufacturer['image'], 16, 16, 'FIT_USE_WHITESPACING') : 'images/no_image.png'); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_link('', ['doc' => 'edit_manufacturer', 'manufacturer_id' => $manufacturer['id']], ['app']); ?>"><?php echo $manufacturer['name']; ?></a></td>

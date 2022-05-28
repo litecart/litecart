@@ -45,7 +45,7 @@
           <th><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
           <th><?php echo language::translate('title_amount', 'Amount'); ?></th>
           <th><?php echo language::translate('title_date', 'Date'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 

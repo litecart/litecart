@@ -333,7 +333,7 @@
         }
 ?>
           <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
             <td><?php echo '<img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" />'; ?><a href="<?php echo document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
@@ -457,7 +457,7 @@
         $output .= '<tr class="'. (!$category['status'] ? ' semi-transparent' : null) .'">' . PHP_EOL
                  . '  <td>'. functions::form_draw_checkbox('categories['. $category['id'] .']', $category['id'], true) .'</td>' . PHP_EOL
                  . '  <td>'. functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($category['status']) ? '#88cc44' : '#ff6644') .';"') .'</td>' . PHP_EOL
-                 . '  <td>&nbsp;</td>' . PHP_EOL;
+                 . '  <td></td>' . PHP_EOL;
 
         if ($category['id'] == $_GET['category_id']) {
           $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
@@ -487,14 +487,14 @@
           } else {
 
             $output .= '<tr>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td></td>' . PHP_EOL
+                     . '  <td></td>' . PHP_EOL
+                     . '  <td></td>' . PHP_EOL
                      . '  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
-                     . '  <td>&nbsp;</td>' . PHP_EOL
+                     . '  <td></td>' . PHP_EOL
+                     . '  <td></td>' . PHP_EOL
+                     . '  <td></td>' . PHP_EOL
+                     . '  <td></td>' . PHP_EOL
                      . '</tr>' . PHP_EOL;
           }
         }

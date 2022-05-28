@@ -50,14 +50,14 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_name', 'Name'); ?></th>
             <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($quantity_units as $quantity_unit) { ?>
           <tr>
-            <td><?php echo functions::form_draw_checkbox('quantity_units['. $quantity_unit['id'] .']', $quantity_unit['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('quantity_units[]', $quantity_unit['id']); ?></td>
             <td><?php echo $quantity_unit['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']], true); ?>"><?php echo $quantity_unit['name']; ?></a></td>
             <td><?php echo $quantity_unit['description']; ?></td>

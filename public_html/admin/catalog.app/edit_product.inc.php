@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($product->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $product->data;
 
     $_POST['keywords'] = implode(',', $_POST['keywords']);
 
@@ -783,7 +781,7 @@
             <table class="table table-striped" style="width: 100%;">
               <thead>
                 <tr>
-                  <th>&nbsp;</th>
+                  <th></th>
                   <th style="width: 50%;"><?php echo language::translate('title_group', 'Group'); ?></th>
                   <th style="width: 50%;"><?php echo language::translate('title_value', 'Value'); ?></th>
                 </tr>

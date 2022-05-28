@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($supplier->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $supplier->data;
   }
 
   document::$snippets['title'][] = !empty($supplier->data['id']) ? language::translate('title_edit_supplier', 'Edit Supplier') : language::translate('title_add_new_supplier', 'Add New Supplier');

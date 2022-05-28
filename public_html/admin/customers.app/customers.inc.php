@@ -112,14 +112,14 @@
             <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th data-sort="company" class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
             <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($customers as $customer) { ?>
           <tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('customers[]', $customer['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($customer['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><?php echo $customer['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $customer['id']], true); ?>"><?php echo $customer['email']; ?></a></td>

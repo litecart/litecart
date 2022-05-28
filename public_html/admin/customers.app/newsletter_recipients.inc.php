@@ -133,7 +133,7 @@
         <tbody>
           <?php foreach ($recipients as $recipient) { ?>
           <tr>
-            <td><?php echo functions::form_draw_checkbox('recipients['.$recipient['id'].']', $recipient['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('recipients[]', $recipient['id']); ?></td>
             <td><?php echo $recipient['id']; ?></td>
             <td><?php echo $recipient['email']; ?></td>
             <td><?php echo $recipient['client_ip']; ?></td>

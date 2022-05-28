@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($page->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $page->data;
   }
 
   document::$snippets['title'][] = !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page');

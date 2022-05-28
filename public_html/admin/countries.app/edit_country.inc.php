@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($country->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $country->data;
   }
 
   document::$snippets['title'][] = !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country');
@@ -167,7 +165,7 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th style="padding-inline-end: 50px;"><?php echo language::translate('title_code', 'Code'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

@@ -54,14 +54,14 @@
             <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
             <th><?php echo language::translate('title_rate', 'Rate'); ?></th>
             <th><?php echo language::translate('title_type', 'Type'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($tax_rates as $tax_rate) { ?>
           <tr>
-            <td><?php echo functions::form_draw_checkbox('tax_rates['. $tax_rate['id'] .']', $tax_rate['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('tax_rates[]', $tax_rate['id']); ?></td>
             <td><?php echo $tax_rate['id']; ?></td>
             <td><?php echo $tax_rate['tax_class']; ?></td>
             <td><?php echo $tax_rate['geo_zone']; ?></td>

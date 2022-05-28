@@ -112,7 +112,7 @@
             <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
             <th><?php echo language::translate('title_information', 'Information'); ?></th>
             <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -152,7 +152,7 @@
 
 ?>
           <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><?php echo $page['id']; ?></td>
             <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
@@ -211,7 +211,7 @@
         }
 ?>
           <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('pages['. $page['id'] .']', $page['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><?php echo $page['id']; ?></td>
             <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>

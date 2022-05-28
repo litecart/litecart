@@ -8,17 +8,8 @@
     try {
       if (empty($_POST['countries'])) throw new Exception(language::translate('error_must_select_countries', 'You must select countries'));
 
-      foreach ($_POST['countries'] as $country_code) {
-
-        if (!empty($_POST['disable']) && $country_code == settings::get('default_country_code')) {
-          throw new Exception(language::translate('error_cannot_disable_default_country', 'You cannot disable the default country'));
-        }
-
-        if (!empty($_POST['disable']) && $country_code == settings::get('store_country_code')) {
-          throw new Exception(language::translate('error_cannot_disable_store_country', 'You cannot disable the store country'));
-        }
-
-        $country = new ent_country($country_code);
+      foreach ($_POST['countries'] as $country_id) {
+        $country = new ent_country($country_id);
         $country->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $country->save();
       }
@@ -70,14 +61,14 @@
             <th><?php echo language::translate('title_code', 'Code'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($countries as $country) { ?>
           <tr class="<?php echo empty($country['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('countries[]', $country['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($country['status']) ? '#88cc44' : '#ff6644') .'";'); ?></td>
             <td><?php echo $country['id']; ?></td>
             <td><?php echo $country['iso_code_2']; ?></td>

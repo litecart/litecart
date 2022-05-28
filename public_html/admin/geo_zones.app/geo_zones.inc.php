@@ -77,14 +77,14 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($geo_zones as $geo_zone) { ?>
           <tr>
-            <td><?php echo functions::form_draw_checkbox('geo_zones['. $geo_zone['id'] .']', $geo_zone['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
             <td><?php echo $geo_zone['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>"><?php echo $geo_zone['name']; ?></a></td>
             <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>

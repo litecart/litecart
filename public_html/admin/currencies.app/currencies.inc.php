@@ -10,17 +10,8 @@
     try {
       if (empty($_POST['currencies'])) throw new Exception(language::translate('error_must_select_currencies', 'You must select currencies'));
 
-      foreach (array_keys($_POST['currencies']) as $currency_code) {
-
-        if (!empty($_POST['disable']) && $currency_code == settings::get('default_currency_code')) {
-          throw new Exception(language::translate('error_cannot_disable_default_currency', 'You cannot disable the default currency'));
-        }
-
-        if (!empty($_POST['disable']) && $currency_code == settings::get('store_currency_code')) {
-          throw new Exception(language::translate('error_cannot_disable_store_currency', 'You cannot disable the store currency'));
-        }
-
-        $currency = new ent_currency($_POST['currencies'][$currency_code]);
+      foreach ($_POST['currencies'] as $currency_id) {
+        $currency = new ent_currency($currency_id);
         $currency->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $currency->save();
       }
@@ -86,14 +77,14 @@
             <th><?php echo language::translate('title_default_currency', 'Default Currency'); ?></th>
             <th><?php echo language::translate('title_store_currency', 'Store Currency'); ?></th>
             <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($currencies as $currency) { ?>
           <tr class="<?php echo empty($currency['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('currencies[]', $currency['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $currency['status_color'] .';"'); ?></td>
             <td><?php echo $currency['id']; ?></td>
             <td><?php echo $currency['code']; ?></td>
