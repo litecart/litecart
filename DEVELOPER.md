@@ -89,3 +89,15 @@ If you are new to Git we recommend SourceTree or GitHub Desktop as a great graph
 
 8. Once the pull request is accepted you can safely delete your feature branch.
 
+
+# Enable Git Hook Automations
+
+This project contains some useful git hook automations that can be enabled.
+Edit **~/.git/config** and set the following configuration:
+
+    [core]
+      hooksPath = .git-hooks/
+
+Alternatively, run the following command in Terminal window:
+
+    git config core.hooksPath .git-hooks/
