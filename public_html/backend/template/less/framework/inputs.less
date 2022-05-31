@@ -8,6 +8,9 @@
   border: 1px solid var(--input-border-color);
   //box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .10);
   border-radius: var(--border-radius);
+  &:focus {
+    border-color: var(--input-border-color-focus);
+  }
 }
 
 fieldset {
@@ -57,7 +60,7 @@ input[type="number"] {
     margin-inline-end: .25em;
     background: var(--input-background-color);
     border: 1px solid var(--input-border-color);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+    //box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
     vertical-align: text-bottom;
     height: 1.25em;
     width: 1.25em;
@@ -210,8 +213,8 @@ input[type="number"] {
     flex: 0 1 auto;
     padding: var(--input-padding-y) var(--input-padding-x);
     background-color: var(--input-addon-background-color);
-    border-left: 1px solid var(--input-border-color);
-    border-right: 1px solid var(--input-border-color);
+    border-inline-start: 1px solid var(--input-border-color);
+    border-inline-end: 1px solid var(--input-border-color);
     color: var(--input-text-color);
     align-self: stretch;
     font-weight: normal;
@@ -238,13 +241,13 @@ input[type="number"] {
   *:first-child:is(.form-select),
   *:first-child:is(.input-group-text),
   *:first-child:is(.input-group) {
-    border-left: none;
+    border-inline-start: none;
   }
   *:last-child:is(.form-input),
   *:last-child:is(.form-select),
   *:last-child:is(.input-group-text),
   *:last-child:is(.input-group) {
-    border-right: none;
+    border-inline-end: none;
   }
 
   .form-input + .form-input,
@@ -256,7 +259,7 @@ input[type="number"] {
   .input-group + .form-input,
   .input-group + .form-select,
   .input-group + .input-group {
-    border-left: 1x solid var(--input-border-color) !important;
+    border-inline-start: 1x solid var(--input-border-color) !important;
   }
 }
 

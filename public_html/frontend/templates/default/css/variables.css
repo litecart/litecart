@@ -16,7 +16,7 @@
 }
 /* Variables */
 :root {
-  --border-radius: 10px;
+  --border-radius: 0.5rem;
   --gutter-size: 1rem;
   --link-text-color: #5292b1;
   --whitespace-color: #fff;
@@ -33,7 +33,7 @@
   --default-title-border-color: #f0f0f0;
   --navigation-background-color: rgba(229, 229, 234, 0.8);
   --navigation-text-color: #333;
-  --navigation-cart-background-color: transparent;
+  --navigation-cart-background-color: #d1d1dd;
   --navigation-cart-text-color: #fff;
   --offcanvas-navigation-background-color: #333;
   --offcanvas-navigation-text-color: #fff;
@@ -85,8 +85,8 @@
   --input-padding-y: 0.5em;
   --input-text-color: #444;
   --pills-background-color: #fff;
-  --pills-background-color-hover: #e5e5ed;
-  --pills-background-color-active: #d1d1dd;
+  --pills-background-color-hover: #ebebee;
+  --pills-background-color-active: #c7c7cf;
   --pills-border-color: #efefef;
   --pills-border-color-hover: #d3d3d3;
   --pills-border-color-active: #bbbbbb;

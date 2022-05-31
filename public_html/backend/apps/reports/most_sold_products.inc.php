@@ -104,9 +104,9 @@ form[name="filter_form"] li {
       <?php foreach ($rows as $row) { ?>
       <tr>
         <td><?php echo $row['name']; ?></td>
-        <td class="text-center border-left"><?php echo (float)$row['total_quantity']; ?></td>
-        <td class="text-end border-left"><?php echo currency::format($row['total_sales'], false, settings::get('site_currency_code')); ?></td>
-        <td class="text-end border-left"><?php echo currency::format($row['total_tax'], false, settings::get('site_currency_code')); ?></td>
+        <td class="text-center border-start"><?php echo (float)$row['total_quantity']; ?></td>
+        <td class="text-end border-start"><?php echo currency::format($row['total_sales'], false, settings::get('site_currency_code')); ?></td>
+        <td class="text-end border-start"><?php echo currency::format($row['total_tax'], false, settings::get('site_currency_code')); ?></td>
       </tr>
       <?php } ?>
     </tbody>

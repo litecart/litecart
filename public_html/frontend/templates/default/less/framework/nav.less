@@ -16,6 +16,7 @@
       position: relative;
       display: block;
       padding: .5em 1em;
+      border-radius: var(--border-radius);
       color: inherit;
       text-decoration: none;
       &:hover {
@@ -103,8 +104,8 @@
 
 .nav-tabs {
   background: var(--tabs-background-color);
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
+  border-start-start-radius: var(--border-radius);
+  border-start-end-radius: var(--border-radius);
   padding: .5em 1em 0 1em;
   color: var(--tabs-text-color);
   box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
@@ -132,8 +133,8 @@
 .tab-content {
   padding: var(--gutter-size);
   background: var(--page-background-color);
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
+  border-end-start-radius: var(--border-radius);
+  border-end-end-radius: var(--border-radius);
   background: #fff;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   box-shadow: 0 10px 20px rgba(0, 0, 0, .15);

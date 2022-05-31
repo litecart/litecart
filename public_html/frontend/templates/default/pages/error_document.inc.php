@@ -1,12 +1,12 @@
 <style>
-.code {
-  font-size: 64px;
+#box-error-document .code {
+  font-size: 24px;
   font-weight: bold;
 }
-.title {
+#box-error-document .title {
   font-size: 48px;
 }
-.description {
+#box-error-document .description {
   font-size: 24px;
 }
 </style>
@@ -14,9 +14,10 @@
 <main id="main">
   {{notices}}
 
-  <article class="text-center">
-    <div class="code">HTTP {{code}}</div>
+  <article id="box-error-document" class="text-center">
     <div class="title">{{title}}</div>
+    <div class="code">HTTP {{code}}</div>
     <p class="description">{{description}}</p>
+    <div><a class="btn btn-default" href="<?php echo document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-home'); ?> <?php echo language::translate('title_home', 'Home'); ?></a></div>
   </article>
 </main>

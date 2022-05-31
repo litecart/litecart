@@ -118,9 +118,9 @@ module.exports = function(grunt) {
         options: {
           compress: true,
           sourceMap: false,
-          sourceMapBasepath: 'public_html/assets/featherlight/',
-          sourceMapRootpath: './',
-          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
+          //sourceMapBasepath: 'public_html/assets/featherlight/',
+          //sourceMapRootpath: './',
+          //sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
@@ -129,10 +129,20 @@ module.exports = function(grunt) {
       },
     },
 
-    sass: {
+    'dart-sass': {
+      chartist_minified: {
+        options: {
+          sourceMap: false,
+          outputStyle: 'compressed',
+          compass: false
+        },
+        files: {
+          'public_html/assets/chartist/chartist.min.css': 'public_html/assets/chartist/chartist.scss'
+        }
+      },
       trumbowyg_minified: {
         options: {
-          sourceMap: true,
+          sourceMap: false,
           outputStyle: 'compressed',
           compass: false
         },
@@ -203,7 +213,7 @@ module.exports = function(grunt) {
         files: [
           'public_html/assets/trumbowyg/ui/trumbowyg.scss',
         ],
-        tasks: ['sass']
+        tasks: ['dart-sass']
       },
     }
   });
@@ -214,8 +224,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-dart-sass');
   grunt.loadNpmTasks('grunt-text-replace');
 
-  grunt.registerTask('default', ['replace', 'less', 'sass', 'uglify']);
-  grunt.registerTask('compile', ['less', 'sass', 'uglify']);
+  grunt.registerTask('default', ['replace', 'less', 'dart-sass', 'uglify']);
+  grunt.registerTask('compile', ['less', 'dart-sass', 'uglify']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);

@@ -2,12 +2,13 @@
   <a class="link" href="<?php echo functions::escape_html($link) ?>" title="{{name|escape}}" data-id="{{product_id}}" data-sku="{{sku|escape}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
 
     <div class="image-wrapper">
-      <img class="image responsive <?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+      <img class="<?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
       {{sticker}}
     </div>
 
     <div class="info">
       <div class="name">{{name}}</div>
+      <div class="description">{{short_description}}</div>
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
         <del class="regular-price">{{regular_price|money}}</del> <strong class="campaign-price">{{campaign_price|money}}</strong>

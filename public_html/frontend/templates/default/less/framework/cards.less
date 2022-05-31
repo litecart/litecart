@@ -44,8 +44,8 @@
     padding-bottom: var(--gutter-size);
     background-color: var(--card-footer-background-color);
     border-top: 1px solid var(--card-border-color);
-    border-bottom-right-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius);
+    border-end-end-radius: var(--border-radius);
+    border-end-start-radius: var(--border-radius);
     box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, .25);
   }
 
@@ -68,13 +68,13 @@
   }
 
   > .list-group:first-child .list-group-item:first-child {
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
+    border-start-start-radius: 0.25rem;
+    border-start-end-radius: 0.25rem;
   }
 
   > .list-group:last-child .list-group-item:last-child {
-    border-bottom-right-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
+    border-end-end-radius: 0.25rem;
+    border-end-start-radius: 0.25rem;
   }
 }
 

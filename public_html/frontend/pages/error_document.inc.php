@@ -1,6 +1,6 @@
 <?php
 
-  document::$layout = 'default';
+  document::$layout = 'blank';
 
   if (!empty($_GET['code'])) http_response_code($_GET['code']);
 
@@ -10,7 +10,6 @@
   }
 
   $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/error_document.inc.php');
-  $_page->snippets['code'] = http_response_code();
 
   switch (http_response_code()) {
 
@@ -42,8 +41,10 @@
     default:
       http_response_code(500);
       $_page->snippets['title'] = 'Internal Server Error';
-      $_page->snippets['description'] = language::translate('error_500_internal_server_error', 'Oops! That was not meant to happen. We don\'t know how to handle your request.');
+      $_page->snippets['description'] = language::translate('error_500_internal_server_error', 'That was not meant to happen.');
       break;
   }
+
+  $_page->snippets['code'] = http_response_code();
 
   echo $_page;

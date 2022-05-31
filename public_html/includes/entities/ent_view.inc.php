@@ -65,48 +65,6 @@
 
         return $output;
       });
-
-    // Parser for Translations {{translate "title_key" "Text"}}
-      $this->register_parser('translate "([^\"]+)"(?:, "([^\"]+)")?', function($matches) {
-        return language::translate($matches[1], isset($matches[2]) ? $matches[2] : '');
-      });
-
-    // Parser for Settings {{setting "key"}}
-      $this->register_parser('setting "([^\"]+)"', function($matches) {
-        return settings::get($matches[1]);
-      });
-
-    // Parser for Fonticons {{fonticon "key"}}
-      $this->register_parser('fonticon "([^\"]+)"', function($matches) {
-        return functions::draw_fonticon($matches[1]);
-      });
-
-    // Parser for Includes {{include "path/to/file.tpl"}}
-      //$this->register_parser('#>(.*?)#', function($matches) {
-      $this->register_parser('include "(.*?)"', function($matches) {
-        if (file_exists($file = FS_DIR_TEMPLATE . $matches[1] .'.tpl')) {
-          return file_get_contents($file);
-        }
-      });
-
-    // Parser for Each {{each $array as $var}} {{/each}}
-      $this->register_parser('each (.*?) as (.*?)'. preg_quote($this->wrapper[1], '#') .'(.*?)'. preg_quote($this->wrapper[0], '#') .'/each', function($matches) {
-
-        if (!empty($this->snippets[$matches[1]]) || !is_array($this->snippets[$matches[1]])) return '';
-
-        $view = new ent_view();
-        $view->html = $matches[3];
-        $view->snippets = $this->snippets;
-        $view->snippets[$matches[2]] = $this->snippets[$matches[1]];
-
-        return $view->stitch();
-      });
-
-    // Register parser: Conditions {if $array} {/if}
-      $this->register_parser('if (.*?)'. preg_quote($this->wrapper[1], '#') .'(.*?)'. preg_quote($this->wrapper[0], '#') .'/if', function($matches) {
-        if (!empty($this->snippets[$matches[1]]) && (float)$this->snippets[$matches[1]] != 0) return '';
-        return $this->snippets[$matches[1]];
-      });
     }
 
     public function register_parser($pattern, $callable) {

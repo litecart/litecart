@@ -78,7 +78,7 @@
               $.each(group.results, function(i, result){
                 $('#search .results ul[data-group="'+ group.name +'"]').append(
                   '<li class="result">' +
-                  '  <a class="list-group-item" href="'+ result.link +'" style="border-left: 3px solid '+ group.theme.color +';">' +
+                  '  <a class="list-group-item" href="'+ result.link +'" style="border-inline-start: 3px solid '+ group.theme.color +';">' +
                   '    <small class="id float-end">#'+ result.id +'</small>' +
                   '    <div class="title">'+ result.title +'</div>' +
                   '    <div class="description"><small>'+ result.description +'</small></div>' +

@@ -202,8 +202,8 @@ input[type="number"] {
     flex: 0 1 auto;
     padding: .5em 1em;
     background-color: var(--input-addon-background-color);
-    border-left: 2px solid var(--input-border-color);
-    border-right: 2px solid var(--input-border-color);
+    border-inline-start: 2px solid var(--input-border-color);
+    border-inline-end: 2px solid var(--input-border-color);
     color: var(--input-text-color);
     align-self: center;
     font-weight: normal;
@@ -216,11 +216,11 @@ input[type="number"] {
     margin-inline-end: -12px;
   }
   > *:first-child:not(.btn) {
-    border-left: none;
+    border-inline-start: none;
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
   > *:last-child:not(.btn) {
-    border-right: none;
+    border-inline-end: none;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
 }

@@ -367,7 +367,7 @@ $modal-label-width: 150px;
             text-align: left;
             transition: all 150ms;
             width: $modal-label-width;
-            border-right: 1px solid #DEDEDE;
+            border-inline-end: 1px solid #DEDEDE;
             padding: 0 7px;
             background-color: lighten($light-color, 5%);
             position: absolute;

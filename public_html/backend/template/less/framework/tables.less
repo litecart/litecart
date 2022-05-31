@@ -29,15 +29,15 @@
       padding-inline-end: var(--gutter-size);
     }
 
-    &.border-left {
-      border-left: 1px solid var(--table-border-color);
+    &.border-start {
+      border-inline-start: 1px solid var(--table-border-color);
     }
-    &.border-right {
-      border-right: 1px solid var(--table-border-color);
+    &.border-end {
+      border-inline-end: 1px solid var(--table-border-color);
     }
 
     @media print {
-      &.border-top, &.border-left {
+      &.border-top, &.border-start {
         border-color: #000 !important;
       }
     }
@@ -160,4 +160,10 @@
 .table > colgroup + thead > tr:first-child > td,
 .table > thead:first-child > tr:first-child > td {
   border-top: 0;
+}
+
+.table {
+  .btn + .btn {
+    margin-inline-start: 1em;
+  }
 }

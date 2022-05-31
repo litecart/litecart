@@ -3,7 +3,7 @@
     <div class="row">
 
       <?php if (settings::get('accounts_enabled')) { ?>
-      <section class="account col-6 col-md-4 col-lg-3">
+      <section class="account col-6 col-sm-4 col-md-3 col-lg-2">
         <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
         <ul class="list-unstyled">
           <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
@@ -20,14 +20,14 @@
       </section>
       <?php } ?>
 
-      <section class="information col-6 col-md-4 col-lg-3">
+      <section class="information col-6 col-sm-4 col-md-3 col-lg-2">
         <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
         <ul class="list-unstyled">
           <?php foreach ($pages as $page) echo '<li><a href="'. functions::escape_html($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
         </ul>
       </section>
 
-      <section class="store-info col-6 col-md-4 col-lg-3">
+      <section class="store-info hidden-xs col-sm-4 col-md-3 col-lg-2">
         <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
 
         <p class="address">
@@ -45,7 +45,7 @@
         </p>
       </section>
 
-      <section class="col-6 col-sm-12 col-lg-3 text-center" style="align-self: center;">
+      <section class="col-12 col-sm-12 col-md-3 col-lg-6 text-center" style="align-self: center;">
         <div class="logotype">
           <img class="responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
         </div>

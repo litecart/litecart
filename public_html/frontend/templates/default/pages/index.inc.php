@@ -28,6 +28,7 @@
       </div>
     </div>
 
+
     <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_campaign_products.inc.php'); ?>
 
     <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_popular_products.inc.php'); ?>

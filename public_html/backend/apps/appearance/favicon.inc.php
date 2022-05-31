@@ -74,11 +74,19 @@
 
 ?>
 <style>
-.icons .thumbnail:not(:first-child) {
+.icons {
+  margin-bottom: 2em;
+}
+.icons .icon {
+  display: inline-block;
+  text-align: center;
+}
+.icons .icon:not(:first-child) {
   margin-left: .5em;
 }
 .icons .thumbnail {
-  padding: .5em;
+  width: auto;
+  margin: 0;
   margin-bottom: 1em;
   text-align: center;
 }
@@ -95,23 +103,23 @@
     <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true); ?>
 
       <div class="icons">
-        <div class="thumbnail" style="display: inline-block;">
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png'); ?>" width="256" height="256" alt="" />
+        <div class="icon">
+          <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png'); ?>" width="256" height="256" alt="" />
           favicon-256x256.png
         </div>
 
-        <div class="thumbnail" style="display: inline-block;">
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png'); ?>" width="192" height="192" alt="" />
+        <div class="icon">
+          <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png'); ?>" width="192" height="192" alt="" />
           favicon-192x192.png
         </div>
 
-        <div class="thumbnail" style="display: inline-block;">
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png'); ?>" width="128" height="128" alt="" />
+        <div class="icon">
+          <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png'); ?>" width="128" height="128" alt="" />
           favicon-128x128.png
         </div>
 
-        <div class="thumbnail" style="display: inline-block;">
-          <img src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents(FS_DIR_STORAGE . 'images/favicons/favicon.ico')); ?>" width="48" height="48" alt="" />
+        <div class="icon">
+          <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents(FS_DIR_STORAGE . 'images/favicons/favicon.ico')); ?>" width="48" height="48" alt="" />
           favicon.ico
         </div>
       </div>
