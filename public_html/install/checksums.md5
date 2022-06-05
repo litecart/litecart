@@ -611,7 +611,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 bc9b31011a20ac5246b7a8f2cc2b013b	includes/templates/default.admin/css/app.min.css
 20d4ee6b8d4e838b791f5992bac8cbb4	includes/templates/default.admin/css/app.min.css.map
 cd20c5fffdc9c1c1f095a2a7d70d8d4f	includes/templates/default.admin/css/framework.min.css
-cda53611a6ff0fef651a90b26fec33c3	includes/templates/default.admin/css/framework.min.css.map
+968cbe062f47d894dcafb6d497a348e1	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -666,9 +666,9 @@ fa51fd6b4b4a74f79e6ba444b3bd394a	includes/templates/default.admin/pages/doc.inc.
 e9f9f38738425e4f2f9d19749821d644	includes/templates/default.catalog/css/checkout.css
 f5d3c581b1f89a8054ace060bd3e0dc7	includes/templates/default.catalog/css/checkout.min.css
 ee40e23e0b5f36b7a4dc3cfb305d179d	includes/templates/default.catalog/css/checkout.min.css.map
-7acb6bd400c953f343b29e92cc8b8a1f	includes/templates/default.catalog/css/framework.css
-5a52d0fffd80b49c7e662f686c61bbc4	includes/templates/default.catalog/css/framework.min.css
-18a8cfcd6de21f89ea78cd1d85920d97	includes/templates/default.catalog/css/framework.min.css.map
+b7b8da691e0b5e4f749c76ceb48ee8b7	includes/templates/default.catalog/css/framework.css
+ede9b3c2c8cabce17cb5b34621e10b33	includes/templates/default.catalog/css/framework.min.css
+e5e9f8cb73e3280ad3a997254dfcbd85	includes/templates/default.catalog/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.html
 eb82721c7af418e1c8fc5ab241fc117e	includes/templates/default.catalog/css/printable.css
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.catalog/css/printable.min.css
@@ -703,7 +703,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/app/ind
 43b1b14b863eb2c29adb590ea378d850	includes/templates/default.catalog/less/framework/buttons.less
 e4cb3112da0fe50aefa88536d671966e	includes/templates/default.catalog/less/framework/carousel.less
 26f0ca798af68f7f3bb1408e365ad353	includes/templates/default.catalog/less/framework/chat.less
-f6154ea993e41675970259f8fc90c3cf	includes/templates/default.catalog/less/framework/dropdown.less
+5dc32a747680fd295ea3da0d76c22058	includes/templates/default.catalog/less/framework/dropdown.less
 9c1195430855ce2f5bbce7747990c88f	includes/templates/default.catalog/less/framework/effects.less
 ffd080d1743c970b8b37903996a40a46	includes/templates/default.catalog/less/framework/grid.less
 0de6c7f7ef41b6440eaa8250d6c0ed50	includes/templates/default.catalog/less/framework/images.less
@@ -741,7 +741,7 @@ bec10ecd5323157400ef7f0535e35108	includes/templates/default.catalog/pages/manufa
 a3c025eae9184f21f0917411c0fdabee	includes/templates/default.catalog/pages/order_history.inc.php
 86d6e38a3d8c3cce16e6d9ad77b70ef8	includes/templates/default.catalog/pages/order_success.inc.php
 69d36bc238863b3a94499dbbd390b46f	includes/templates/default.catalog/pages/printable_order_copy.inc.php
-b956dfa159efb64bd5198f6e5647f80b	includes/templates/default.catalog/pages/printable_packing_slip.inc.php
+16d42c2b9fe1d7280aa5c96efd740d6e	includes/templates/default.catalog/pages/printable_packing_slip.inc.php
 800f31f477f86dfbe60992e92c619913	includes/templates/default.catalog/pages/product.ajax.inc.php
 4e0d0316d8d47d80026b416327bf24be	includes/templates/default.catalog/pages/product.inc.php
 43bf05cbc7fc0fab6812ea02f31794f1	includes/templates/default.catalog/pages/regional_settings.inc.php
@@ -785,7 +785,7 @@ d488cfba20f275b0199d4745155c734f	includes/templates/default.catalog/views/listin
 6bb0023f611392555d06f110124c06c4	includes/templates/default.catalog/views/pagination.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
-ea0eb16067cc5b9aa6fd547dc0d2faae	includes/wrappers/wrap_http.inc.php
+100e1b2e12679c05011e57a441d4ed91	includes/wrappers/wrap_http.inc.php
 36132c552b580bbbf0aceb4940a33788	includes/wrappers/wrap_smtp.inc.php
 f1dff44194ac5ec4f1c34945391001d8	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
@@ -952,7 +952,7 @@ f92fffe3a4007dfd714771240d238d45	pages/manufacturer.inc.php
 49c6f392e9af47ca4b4ddb78b69987be	pages/order_process.inc.php
 a8fb7c25d6e858807b6ecc1cebb108a7	pages/order_success.inc.php
 fbdb8ba238778e576b8d78e4c9a8194f	pages/printable_order_copy.inc.php
-edc54749a9cd1626e9f01ac55965bd04	pages/printable_packing_slip.inc.php
+2daadd52e80308e417b8d5f50c60f05f	pages/printable_packing_slip.inc.php
 f8db730222feed8f17ec384883c7b308	pages/product.inc.php
 6b85f9c019dbb0e636262b092b99adb4	pages/push_jobs.inc.php
 8a996fd161c1d7d67f9838aed031e7b1	pages/regional_settings.inc.php
