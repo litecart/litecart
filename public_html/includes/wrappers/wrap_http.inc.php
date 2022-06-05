@@ -122,7 +122,7 @@
       if ($status_code == 301) {
         if (!$this->follow_redirects) {
           trigger_error('Destination is redirecting to another destination but follow_redirects is disabled', E_USER_WARNING);
-        } else if (preg_match('#^Location:\s?(.*)?$#im', $line, $matches)) {
+        } else if (preg_match('#^Location:\s?(.*)?$#im', $response_headers, $matches)) {
           $redirect_url = !empty($matches[1]) ? trim($matches[1]) : $url;
           return $this->call($method, $redirect_url, $data, $headers);
         } else {
