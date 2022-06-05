@@ -267,6 +267,7 @@
       $fields_query = database::query(
         "show fields from ". DB_TABLE_PREFIX ."customers;"
       );
+
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
           session::$data['customer']['shipping_address'][$matches[1]] = null;

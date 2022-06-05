@@ -50,14 +50,14 @@
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
             <th><?php echo language::translate('title_orderable', 'Orderable'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($sold_out_statuses as $sold_out_status) { ?>
           <tr>
-            <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $sold_out_status['id'] .']', $sold_out_status['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('delivery_statuses[]', $sold_out_status['id']); ?></td>
             <td><?php echo $sold_out_status['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
             <td class="text-center"><?php echo !empty($sold_out_status['hidden']) ? functions::draw_fonticon('fa-check') : ''; ?></td>

@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($page->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $page->data;
   }
 
   document::$snippets['title'][] = !empty($page->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_page', 'Create New Page');
@@ -145,8 +143,9 @@
 </div>
 
 <script>
-  $('input[name^="title"]').bind('input propertyChange', function(e){
+  $('input[name^="title"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 </script>

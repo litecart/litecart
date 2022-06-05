@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($manufacturer->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $manufacturer->data;
   }
 
   document::$snippets['title'][] = !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer');
@@ -203,7 +201,7 @@
 </div>
 
 <script>
-  $('input[name="name"]').bind('input propertyChange', function(e){
+  $('input[name="name"]').on('input', function(e){
     $('input[name^="head_title"]').attr('placeholder', $(this).val());
     $('input[name^="h1_title"]').attr('placeholder', $(this).val());
   }).trigger('input');
@@ -220,7 +218,7 @@
     }
   });
 
-  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');

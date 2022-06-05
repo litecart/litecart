@@ -102,7 +102,7 @@
         <tbody>
           <?php foreach ($users as $user) { ?>
           <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('users[]', $user['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td class="warning"><?php echo !empty($user['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($user['warning']) .'"') : ''; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>

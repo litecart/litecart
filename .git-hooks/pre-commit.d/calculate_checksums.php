@@ -49,9 +49,3 @@
   }
 
   file_put_contents($checksums_file, $output);
-
-// Stage checksums file for commit
-  if (in_array($checksums_file, $committed_files)) {
-    echo 'Stage checksums file for commit '. $checksums_file . PHP_EOL;
-    shell_exec('git add '. $checksums_file);
-  }

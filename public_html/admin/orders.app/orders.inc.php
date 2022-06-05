@@ -89,7 +89,7 @@
 
   switch($_GET['order_status_id']) {
     case '':
-      $sql_where_order_status = "and (os.is_archived = 0 or unread = 1)";
+      $sql_where_order_status = "and (o.order_status_id = 0 or os.is_archived = 0 or unread = 1)";
       break;
     case 'archived':
       $sql_where_order_status = "and (os.is_archived = 1)";
@@ -261,9 +261,9 @@ table .fa-star:hover {
         <thead>
           <tr>
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
             <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
             <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
             <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
             <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
@@ -271,14 +271,14 @@ table .fa-star:hover {
             <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
             <th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
             <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($orders as $order) { ?>
           <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
-            <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+            <td><?php echo functions::form_draw_checkbox('orders[]', $order['id'], true); ?></td>
             <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
             <td><?php echo $order['id']; ?></td>
             <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>

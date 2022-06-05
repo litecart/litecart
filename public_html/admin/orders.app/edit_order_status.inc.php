@@ -6,10 +6,8 @@
     $order_status = new ent_order_status();
   }
 
-  if (empty($_POST)) {
-    foreach ($order_status->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $order_status->data;
   }
 
   document::$snippets['title'][] = !empty($order_status->data['id']) ? language::translate('title_edit_order_status', 'Edit Order Status') : language::translate('title_create_new_order_status', 'Create New Order Status');

@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($currency->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $currency->data;
   }
 
   document::$snippets['title'][] = !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency');

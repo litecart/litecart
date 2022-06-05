@@ -78,6 +78,7 @@
 
   foreach ($order->data['items'] as $item) {
     $box_checkout_summary->snippets['items'][] = [
+      'product_id' => $item['product_id'],
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'name' => $item['name'],
       'sku' => $item['sku'],

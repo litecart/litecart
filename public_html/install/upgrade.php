@@ -4,7 +4,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.4.0\n"
+      echo "\nLiteCart® 2.4.1\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -92,7 +92,7 @@
 
     try {
 
-      echo '<h1>Upgrade</h1>' . PHP_EOL . PHP_EOL;
+      echo '<h1>Upgrade '. PLATFORM_VERSION .'</h1>' . PHP_EOL . PHP_EOL;
 
       ### PHP > Check Version #######################################
 
@@ -110,7 +110,7 @@
 
       echo '<p>Checking for PHP extensions... ';
 
-      $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqli', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
+      $extensions = ['apcu', 'dom', 'fileinfo', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqli', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
 
       if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
         echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
@@ -424,7 +424,7 @@ input[name="development_type"]:checked + div {
           .js + .min.js
         </div>
         <small class="description">
-          (Requires <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">Developer Kit</a>)
+          (Requires a <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">LESS compiler</a>)
         </small>
       </div>
     </label>

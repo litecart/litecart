@@ -10,17 +10,8 @@
     try {
       if (empty($_POST['languages'])) throw new Exception(language::translate('error_must_select_languages', 'You must select languages'));
 
-      foreach (array_keys($_POST['languages']) as $language_code) {
-
-        if (!empty($_POST['disable']) && $language_code == settings::get('default_language_code')) {
-          throw new Exception(language::translate('error_cannot_disable_default_language', 'You cannot disable the default language'));
-        }
-
-        if (!empty($_POST['disable']) && $language_code == settings::get('store_language_code')) {
-          throw new Exception(language::translate('error_cannot_disable_store_language', 'You cannot disable the store language'));
-        }
-
-        $language = new ent_language($_POST['languages'][$language_code]);
+      foreach ($_POST['languages'] as $language_id) {
+        $language = new ent_language($language_id);
         $language->data['status'] = !empty($_POST['enable']) ? 1 : 0;
         $language->save();
       }
@@ -88,14 +79,14 @@
             <th><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
             <th><?php echo language::translate('title_url_type', 'URL Type'); ?></th>
             <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
         <?php foreach ($languages as $language) { ?>
           <tr class="<?php echo empty($language['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('languages[]', $language['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $language['status_color'] .';"'); ?></td>
             <td><?php echo $language['id']; ?></td>
             <td><?php echo $language['code']; ?></td>

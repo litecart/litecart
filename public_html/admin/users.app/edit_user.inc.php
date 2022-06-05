@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($user->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $user->data;
   }
 
   document::$snippets['title'][] = !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User');

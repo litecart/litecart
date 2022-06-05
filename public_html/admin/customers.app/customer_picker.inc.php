@@ -39,7 +39,7 @@
   $('#modal-customer-picker input[name="query"]').focus();
 
   var xhr_customer_picker = null;
-  $('#modal-customer-picker input[name="query"]').bind('propertyChange input', function(){
+  $('#modal-customer-picker input[name="query"]').on('input', function(){
     if ($(this).val() == '') {
       $('#modal-customer-picker .results tbody').html('');
       xhr_customer_picker = null;

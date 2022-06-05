@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($category->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $category->data;
 
     if (empty($category->data['id']) && !empty($_GET['parent_id'])) {
       $_POST['parent_id'] = $_GET['parent_id'];
@@ -204,6 +202,11 @@
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
               <div class="form-group">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+              </div>
+
+              <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
                 <?php echo functions::form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, ''); ?>
               </div>
@@ -296,21 +299,23 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo functions::image_thumbnail(FS_DIR_ADMIN . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping')); ?>');
+      $('#image img').attr('src', '<?php echo document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
     }
   });
 
 // Head Title & H1 Title
 
-  $('input[name^="name"]').bind('input propertyChange', function(e){
+  $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="name['+language_code+']"]').not(this).val($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 
 // Meta Description
 
-  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');

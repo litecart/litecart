@@ -10,13 +10,14 @@
       if (empty($_POST['vqmods'])) throw new Exception(language::translate('error_must_select_vqmods', 'You must select vQmods'));
 
       foreach ($_POST['vqmods'] as $vqmod) {
+        $vqmod = pathinfo($vqmod, PATHINFO_FILENAME);
 
         if (!empty($_POST['enable'])) {
-          if (!is_file(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled')) continue;
-          rename(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml');
+          if (!is_file(FS_DIR_APP . "vqmod/xml/$vqmod.disabled")) continue;
+          rename(FS_DIR_APP . "vqmod/xml/.disabled", FS_DIR_APP . "vqmod/xml/.xml");
         } else {
-          if (!is_file(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml')) continue;
-          rename(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml', FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled');
+          if (!is_file(FS_DIR_APP . "vqmod/xml/$vqmod.xml")) continue;
+          rename(FS_DIR_APP . "vqmod/xml/$vqmod.xml", FS_DIR_APP . "vqmod/xml/$vqmod.disabled");
         }
       }
 
@@ -119,14 +120,14 @@
             <th></th>
             <th><?php echo language::translate('title_version', 'Version'); ?></th>
             <th><?php echo language::translate('title_author', 'Author'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($vqmods as $vqmod) { ?>
           <tr class="<?php echo $vqmod['enabled'] ? null : 'semi-transparent'; ?>">
-            <td><?php echo functions::form_draw_checkbox('vqmods['. $vqmod['filename'] .']', $vqmod['filename']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('vqmods[]', $vqmod['filename']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($vqmod['enabled'] ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><a href="<?php echo document::link(null,  ['doc' => 'view', 'vqmod' => $vqmod['filename']], true); ?>"><?php echo $vqmod['filename']; ?></a></td>
             <td><?php echo $vqmod['id']; ?></td>

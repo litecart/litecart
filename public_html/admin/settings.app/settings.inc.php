@@ -140,7 +140,7 @@
           <tr>
             <th><?php echo language::translate('title_key', 'Key'); ?></th>
             <th><?php echo language::translate('title_value', 'Value'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 

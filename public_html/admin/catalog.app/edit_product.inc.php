@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($product->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $product->data;
 
     $_POST['keywords'] = implode(',', $_POST['keywords']);
 
@@ -361,6 +359,11 @@
 
               <div class="row">
                 <div class="col-md-6">
+
+                  <div class="form-group">
+                    <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                    <?php echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
+                  </div>
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
@@ -778,7 +781,7 @@
             <table class="table table-striped" style="width: 100%;">
               <thead>
                 <tr>
-                  <th>&nbsp;</th>
+                  <th></th>
                   <th style="width: 50%;"><?php echo language::translate('title_group', 'Group'); ?></th>
                   <th style="width: 50%;"><?php echo language::translate('title_value', 'Value'); ?></th>
                 </tr>
@@ -805,13 +808,15 @@
 
 // Initiate
 
-  $('input[name^="name"]').bind('input propertyChange', function(e){
+  $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="name['+language_code+']"]').not(this).val($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 
-  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
@@ -1018,12 +1023,12 @@
   }
 
 // Update prices
-  $('select[name="tax_class_id"]').change('change', function(){
+  $('select[name="tax_class_id"]').on('change', function(){
     $('input[name^="prices"]').trigger('change');
   });
 
 // Update gross price
-  $('input[name^="prices"]').bind('input change', function() {
+  $('input[name^="prices"]').on('input', function() {
     var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1],
         decimals = get_currency_decimals(currency_code),
         gross_field = $('input[name="gross_prices['+ currency_code +']"]');
@@ -1040,7 +1045,7 @@
   }).trigger('change');
 
 // Update net price
-  $('input[name^="gross_prices"]').bind('input change', function() {
+  $('input[name^="gross_prices"]').on('input', function() {
     var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1],
         decimals = get_currency_decimals(currency_code),
         net_field = $('input[name="prices['+ currency_code +']"]');

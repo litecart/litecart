@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($slide->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $slide->data;
   }
 
   document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');
@@ -82,20 +80,16 @@
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <?php echo functions::form_draw_toggle('status', (file_get_contents('php://input') != '') ? true : '1', 'e/d'); ?>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-          <div><?php echo functions::form_draw_languages_list('languages[]', true, true); ?></div>
-        </div>
-      </div>
-
-      <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php echo functions::form_draw_text_field('name', true); ?>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
+        <div><?php echo functions::form_draw_languages_list('languages[]', true, true); ?></div>
       </div>
 
       <?php if (!empty($slide->data['image'])) echo '<p><img src="'. document::href_link('images/' . $slide->data['image']) .'" alt="" class="img-responsive" /></p>'; ?>
@@ -156,3 +150,11 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 </div>
+
+<script>
+  $('input[name^="caption"]').on('input', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+</script>

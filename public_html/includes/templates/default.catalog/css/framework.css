@@ -760,6 +760,17 @@ ul.breadcrumb li a {
   top: 0;
   left: 100%;
 }
+@media (max-width: 767px) {
+  .dropdown .dropdown-menu {
+    display: none;
+  }
+  .dropdown.open {
+    z-index: 999;
+  }
+  .dropdown.open > .dropdown-menu {
+    display: block;
+  }
+}
 html[dir="rtl"] [data-toggle="dropdown"] {
   background-position: left 1em center;
 }
