@@ -13,7 +13,6 @@
   &.open {
     z-index: 999;
     > .dropdown-menu {
-      //display: block;
       visibility: visible;
       transform: rotateX(0);
       opacity: 1;
@@ -28,7 +27,6 @@
     visibility: hidden;
     top: 100%;
     left: 0;
-    //display: none;
     float: left;
     min-width: 160px;
     margin: 0;
@@ -110,7 +108,18 @@
       top: 0;
       left: 100%;
     }
+  }
 
+  @media (max-width: @media-breakpoint-sm - 1px) {
+    .dropdown-menu {
+      display: none;
+    }
+    &.open {
+      z-index: 999;
+      > .dropdown-menu {
+        display: block;
+      }
+    }
   }
 }
 
