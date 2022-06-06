@@ -131,32 +131,30 @@
 // Search files (Supports dual globstar **)
   function file_search($pattern, $flags=0) {
 
-    if (strpos($pattern, '**') !== false) {
-
-      list($leading, $trailing) = preg_split('#\*\*#', $pattern);
-      $patterns = [$leading . $trailing];
-      $leading .= '/*';
-
-      while ($dirs = glob($leading, GLOB_ONLYDIR)) {
-        $leading .= '/*';
-        foreach ($dirs as $dir) {
-          $patterns[] = $dir . $trailing;
-        }
-      }
-
-      $files = [];
-      foreach ($patterns as $pat) {
-        $files = array_merge($files, file_search($pat, $flags));
-      }
-
-    } else {
-      $files = glob($pattern, $flags);
+    if (strpos($pattern, '**') === false) {
+      return glob($pattern, $flags);
     }
 
-    $files = array_unique($files);
-    sort($files);
+    list($leading, $trailing) = preg_split('#\*\*#', $pattern);
+    $patterns = [$leading . $trailing];
+    $leading .= '/*';
 
-    return $files;
+    while ($dirs = glob($leading, GLOB_ONLYDIR)) {
+      $leading .= '/*';
+      foreach ($dirs as $dir) {
+        $patterns[] = $dir . $trailing;
+      }
+    }
+
+    $results = [];
+    foreach ($patterns as $pat) {
+      $results = array_merge($results, file_search($pat, $flags));
+    }
+
+    $results = array_unique($results);
+    sort($results);
+
+    return $results;
   }
 
   function file_size($file) {
