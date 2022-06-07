@@ -166,6 +166,7 @@
     FS_DIR_APP . 'includes/boxes/box_slides.inc.php',
     FS_DIR_APP . 'includes/boxes/index.html',
     FS_DIR_APP . 'includes/functions/func_password.inc.php',
+    FS_DIR_APP . 'includes/functions/func_general.inc.php',
     FS_DIR_APP . 'includes/functions/func_reference.inc.php',
     FS_DIR_APP . 'includes/library/index.html',
     FS_DIR_APP . 'includes/library/lib_breadcrumbs.inc.php',
