@@ -233,7 +233,7 @@
 
 <script>
   <?php if (!empty(notices::$data['errors'])) { ?>
-  alert("<?php echo functions::general_escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
+  alert("<?php echo functions::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
   <?php } ?>
 
   $('input[name="customer[type]"]').change(function(){

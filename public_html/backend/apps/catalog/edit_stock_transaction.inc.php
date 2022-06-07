@@ -223,13 +223,13 @@
     new_item_index++;
     var output = '  <tr class="item">'
               + '    <td>'
-              + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][id]', '')); ?>'
-              + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][item_id]', '')); ?>'
-              + '       <?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][sku]', '')); ?>'
+              + '       <?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][id]', '')); ?>'
+              + '       <?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][item_id]', '')); ?>'
+              + '       <?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][sku]', '')); ?>'
               + '       ' + $(option).attr('value')
               + '    </td>'
-              + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
-              + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>'
+              + '    <td><?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
+              + '    <td><?php echo functions::escape_js(functions::form_draw_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>'
               + '    <td>'
               + '      <div class="input-group">'
               + '        <span class="input-group-text">&plusmn;</span>'
@@ -238,11 +238,11 @@
               + '    </td>'
               + '    <td class="text-center">'
               + '      <div class="input-group">'
-              + '        <?php echo functions::general_escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-              + '        <?php echo functions::general_escape_js(functions::form_draw_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>'
+              + '        <?php echo functions::escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
+              + '        <?php echo functions::escape_js(functions::form_draw_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>'
               + '      </div>'
               + '    </td>'
-              + '    <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
+              + '    <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
               + '  </tr>';
 
     output = output.replace(/new_item_index/g, 'new_' + new_item_index);

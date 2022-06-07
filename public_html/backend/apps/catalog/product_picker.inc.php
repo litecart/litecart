@@ -64,7 +64,7 @@
         if (!json) {
           $('#modal-product-picker tbody').html(
             '<tr>' +
-            '  <td colspan="6"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td>' +
+            '  <td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td>' +
             '</tr>'
           );
         }

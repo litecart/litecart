@@ -381,20 +381,20 @@
     e.preventDefault();
     var output = '<tr>'
                + '  <td>'
-               + '     <?php echo functions::general_escape_js(functions::form_draw_hidden_field('references[new_reference_i][id]', true)); ?>'
+               + '     <?php echo functions::escape_js(functions::form_draw_hidden_field('references[new_reference_i][id]', true)); ?>'
                + '     <div class="input-group">'
-               + '       <?php echo functions::general_escape_js(functions::form_draw_select_field('references[new_reference_i][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true)); ?>'
-               + '       <?php echo functions::general_escape_js(functions::form_draw_brands_list('references[new_reference_i][source]', true)); ?>'
-               + '       <?php echo functions::general_escape_js(functions::form_draw_suppliers_list('references[new_reference_i][source]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_draw_select_field('references[new_reference_i][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_draw_brands_list('references[new_reference_i][source]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_draw_suppliers_list('references[new_reference_i][source]', true)); ?>'
                + '     </div>'
                + '   </td>'
                + '   <td>'
                + '     <div class="input-group">'
-               + '       <?php echo functions::general_escape_js(functions::form_draw_select_field('references[new_reference_i][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true)); ?>'
-               + '       <?php echo functions::general_escape_js(functions::form_draw_text_field('references[new_reference_i][code]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_draw_select_field('references[new_reference_i][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_draw_text_field('references[new_reference_i][code]', true)); ?>'
                + '     </div>'
                + '   </td>'
-               + '   <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('remove')); ?></a></td>'
+               + '   <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + ' </tr>';
     while ($('input[name="references[new_'+new_reference_i+']"]').length) new_reference_i++;
     output = output.replace(/new_reference_i/g, 'new_' + new_reference_i);

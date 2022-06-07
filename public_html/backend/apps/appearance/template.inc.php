@@ -42,6 +42,8 @@
         }
       }
 
+      self::clear_cache();
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 
       if (!empty($redirect_to_settings)) {

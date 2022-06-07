@@ -221,10 +221,10 @@
     if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
     new_zone_i++;
     var output = '    <tr>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][code]', '')); ?></td>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][name]', '')); ?></td>'
-               + '      <td class="text-end"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('remove')); ?></a></td>'
+               + '      <td><?php echo functions::escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
+               + '      <td><?php echo functions::escape_js(functions::form_draw_text_field('zones[new_zone_i][code]', '')); ?></td>'
+               + '      <td><?php echo functions::escape_js(functions::form_draw_text_field('zones[new_zone_i][name]', '')); ?></td>'
+               + '      <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
                + '    </tr>';
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
     output = output.replace(/new_zone_code/g, $('input[name="zone[code]"]').val());

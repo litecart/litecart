@@ -48,8 +48,8 @@
   <div class="card-body">
     <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true); ?>
 
-      <div style="padding: 1em; display: inline-block;  margin-top: 1em;">
-        <img class="thumbnail fit" src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/logotype.png', 480, 240)); ?>" alt="" />
+      <div style="max-width: 480px;">
+        <img class="thumbnail fit" src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/logotype.png', 480, 240)); ?>" alt="" style="margin: 0 0 2em 0;" />
       </div>
 
       <div class="form-group" style="max-width: 480px;">

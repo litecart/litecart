@@ -327,7 +327,7 @@
                + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
                + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
                + '  <td>new_attribute_group_name</td>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true)); ?></td>'
+               + '  <td><?php echo functions::escape_js(functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true)); ?></td>'
                + '  <td class="text-end">'
                + '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
                + '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'

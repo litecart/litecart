@@ -149,5 +149,5 @@ table.items tbody tr:nth-child(11) {
 </main>
 
 <script>
-  document.title = "<?php echo functions::general_escape_js(language::translate('title_packing_slip', 'Packing Slip')); ?> #<?php echo $order['id']; ?>";
+  document.title = "<?php echo functions::escape_js(language::translate('title_packing_slip', 'Packing Slip')); ?> #<?php echo $order['id']; ?>";
 </script>

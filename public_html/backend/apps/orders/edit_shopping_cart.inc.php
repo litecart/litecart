@@ -814,17 +814,17 @@
 
     var output = '  <tr class="item">'
                + '    <td class="grabable">' + item.name
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
-               + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][description]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][description]', '')); ?>'
                + '    </td>'
-               + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
-               + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
-               + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>'
+               + '    <td><?php echo functions::escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
+               + '    <td><?php echo functions::escape_js(functions::form_draw_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
+               + '    <td><?php echo functions::escape_js(functions::form_draw_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>'
                + '    <td class="text-end">'
-               + '      <a class="edit" href="#" title="<?php echo functions::general_escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('edit')); ?></a>'
-               + '      <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>'
+               + '      <a class="edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>'
+               + '      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>'
                + '    </td>'
                + '  </tr>';
 

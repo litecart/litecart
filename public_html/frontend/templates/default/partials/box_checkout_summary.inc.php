@@ -102,7 +102,7 @@
   });
 
   $('form[name="checkout_form"]').submit(function(e) {
-    var new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::general_escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+    var new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
     $('#box-checkout-summary button[name="confirm"]').css('display', 'none').before(new_button);
   });
 </script>
