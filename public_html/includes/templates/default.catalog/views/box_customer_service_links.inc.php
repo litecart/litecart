@@ -18,6 +18,9 @@
   <h2 class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></h2>
 
   <ul class="nav nav-stacked nav-pills">
+    <li class="page-0<?php echo (empty($_GET['page_id']) ? ' active' : ''); ?>">
+      <a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_contact_us', 'Contact Us'); ?></a>
+    </li>
     <?php foreach ($pages as $page) $draw_page($page, $page_path, 0); ?>
   </ul>
 
