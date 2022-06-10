@@ -720,12 +720,12 @@ ul.breadcrumb li a {
   color: #333;
   white-space: nowrap;
 }
-.dropdown .dropdown-menu > li > aa:hover,
-.dropdown .dropdown-menu > li > spana:hover,
-.dropdown .dropdown-menu > li > labela:hover,
-.dropdown .dropdown-menu > li > aa:focus,
-.dropdown .dropdown-menu > li > spana:focus,
-.dropdown .dropdown-menu > li > labela:focus {
+.dropdown .dropdown-menu > li > a:hover,
+.dropdown .dropdown-menu > li > span:hover,
+.dropdown .dropdown-menu > li > label:hover,
+.dropdown .dropdown-menu > li > a:focus,
+.dropdown .dropdown-menu > li > span:focus,
+.dropdown .dropdown-menu > li > label:focus {
   text-decoration: none;
   color: #262626;
   background-color: #f5f5f5;
