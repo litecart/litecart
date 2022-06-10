@@ -30,11 +30,8 @@
         );
 
         ob_start();
-
         $timestamp = microtime(true);
-
         $this->modules[$module_id]->process($force, $this->modules[$module_id]->date_processed);
-
         $log = ob_get_clean();
 
         if (!empty($log)) {
@@ -47,14 +44,7 @@
                . '#'. str_pad(' Completed in '. round(microtime(true) - $timestamp, 3).' s ', 71, '#', STR_PAD_RIGHT) . PHP_EOL
                . str_repeat('#', 72) . PHP_EOL;
 
-          database::query(
-            "update ". DB_TABLE_PREFIX ."modules set
-            last_log = '". database::input($log) ."'
-            where module_id = '". database::input($module_id) ."'
-            limit 1;"
-          );
-
-          $output .= $log . PHP_EOL;
+          $output .= $log;
 
           database::query(
             "update ". DB_TABLE_PREFIX ."modules set
