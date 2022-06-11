@@ -83,10 +83,10 @@ module.exports = function(grunt) {
       featherlight_minified: {
         options: {
           compress: true,
-          sourceMap: true,
-          sourceMapBasepath: 'public_html/ext/featherlight/',
-          sourceMapRootpath: './',
-          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
+          //sourceMap: false,
+          //sourceMapBasepath: 'public_html/ext/featherlight/',
+          //sourceMapRootpath: './',
+          //sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
@@ -98,7 +98,7 @@ module.exports = function(grunt) {
     'dart-sass': {
       trumbowyg_minified: {
         options: {
-          sourceMap: true,
+          sourceMap: false,
           outputStyle: 'compressed',
           compass: false
         },
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
     uglify: {
       featherlight: {
         options: {
-          sourceMap: true,
+          sourceMap: false,
         },
         files: {
           'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
