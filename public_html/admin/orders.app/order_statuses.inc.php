@@ -9,9 +9,14 @@
   $order_statuses = [];
 
   $order_statuses_query = database::query(
-    "select os.*, osi.name, os.priority from ". DB_TABLE_PREFIX ."order_statuses os
+    "select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
-    order by os.priority, osi.name asc;"
+    left join (
+      select order_status_id, count(id) as num_orders
+      from ". DB_TABLE_PREFIX ."orders
+      group by order_status_id
+    ) o on (o.order_status_id = os.id)
+    order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
   );
 
   if ($_GET['page'] > 1) database::seek($order_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -31,6 +36,21 @@
 
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+  $states = [
+    'created' => language::translate('title_created', 'Created'),
+    'on_hold' => language::translate('title_on_hold', 'On Hold'),
+    'ready' => language::translate('title_ready', 'Ready'),
+    'delayed' => language::translate('title_delayed', 'Delayed'),
+    'processing' => language::translate('title_processing', 'Processing'),
+    'dispatched' => language::translate('title_dispatched', 'Dispatched'),
+    'in_transit' => language::translate('title_in_transit', 'In Transit'),
+    'delivered' => language::translate('title_delivered', 'Delivered'),
+    'returning' => language::translate('title_returning', 'Returning'),
+    'returned' => language::translate('title_returned', 'Returned'),
+    'cancelled' => language::translate('title_cancelled', 'Cancelled'),
+  ];
+
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
@@ -53,10 +73,14 @@
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_status_state', 'State'); ?></th>
+          <th><?php echo language::translate('title_stock_action', 'Stock Action'); ?></th>
           <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
+          <th><?php echo language::translate('title_trackable', 'Trackable'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
-          <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
+          <th><?php echo language::translate('title_orders', 'Orders'); ?></th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -68,10 +92,14 @@
           <td><?php echo $order_status['id']; ?></td>
           <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
           <td><a href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>"><?php echo $order_status['name']; ?></a></td>
+          <td><?php echo strtr($order_status['state'], $states); ?></td>
+          <td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => language::translate('title_none', 'None'), 'reserve' => language::translate('title_reserve', 'Reserve'), 'commit' => language::translate('title_commit', 'Commit')]); ?></td>
           <td class="text-center"><?php echo !empty($order_status['is_sale']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo empty($order_status['is_archived']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
+          <td class="text-center"><?php echo empty($order_status['is_trackable']) ? '' : functions::draw_fonticon('fa-check'); ?></td>
           <td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo $order_status['priority']; ?></td>
+          <td class="text-end"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'orders', 'order_status_id' => $order_status['id'], ['app']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
           <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
@@ -79,7 +107,7 @@
 
       <tfoot>
         <tr>
-        <td colspan="9"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
+        <td colspan="11"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

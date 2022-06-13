@@ -25,13 +25,15 @@
       if (empty($_POST['is_archived'])) $_POST['is_archived'] = 0;
 
       $fields = [
+        'state',
         'icon',
         'color',
         'keywords',
         'is_sale',
         'is_archived',
+        'is_trackable',
+        'stock_action',
         'notify',
-        'priority',
         'name',
         'description',
         'email_subject',
@@ -68,6 +70,21 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
+  $state_options = [
+    [language::translate('title_created', 'Created'), 'created'],
+    [language::translate('title_on_hold', 'On Hold'), 'on_hold'],
+    [language::translate('title_ready', 'Ready'), 'ready'],
+    [language::translate('title_delayed', 'Delayed'), 'delayed'],
+    [language::translate('title_processing', 'Processing'), 'processing'],
+    [language::translate('title_dispatched', 'Dispatched'), 'dispatched'],
+    [language::translate('title_in_transit', 'In Transit'), 'in_transit'],
+    [language::translate('title_delivered', 'Delivered'), 'delivered'],
+    [language::translate('title_returning', 'Returning'), 'returning'],
+    [language::translate('title_returned', 'Returned'), 'returned'],
+    [language::translate('title_cancelled', 'Cancelled'), 'cancelled'],
+  ];
+
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
@@ -109,16 +126,40 @@
           </div>
 
           <div class="row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-6">
               <label><?php echo language::translate('title_properties', 'Properties'); ?></label>
               <div class="checkbox">
                 <label><?php echo functions::form_draw_checkbox('is_sale', '1', empty($_POST['is_sale']) ? '0' : '1'); ?> <?php echo language::translate('text_is_sale', 'Is sale'); ?><br />
-                <?php echo language::translate('order_status:description_is_sale', 'Reserve/withdraw stock and include in sales reports'); ?></label>
+                <?php echo language::translate('text_include_in_sales_reports', 'Include in sales reports'); ?></label>
               </div>
 
               <div class="checkbox">
                 <label><?php echo functions::form_draw_checkbox('is_archived', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
-                <?php echo language::translate('order_status:description_is_archived', 'Exclude from the default list of orders'); ?></label>
+                <?php echo language::translate('text_exclude_from_list_of_orders', 'Exclude from the default list of orders'); ?></label>
+              </div>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_checkbox('is_trackable', '1', empty($_POST['is_archived']) ? '0' : '1'); ?> <?php echo language::translate('text_is_archived', 'Is archived'); ?><br />
+                <?php echo language::translate('text_will_send_tracking_event_to_shipping_module', 'Will send an event to the shipping module for tracking the shipment.'); ?></label>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><?php echo language::translate('title_stock_action', 'Stock Action'); ?></label>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'none', empty($_POST['stock_action']) ? 'none' : true); ?> <?php echo language::translate('title_none', 'None'); ?><br />
+                <?php echo language::translate('text_stock_remains_without_an_action', 'Stock remains without any action'); ?></label>
+              </div>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'reserve', true); ?> <?php echo language::translate('title_reserve', 'Reserve'); ?><br />
+                <?php echo language::translate('text_reserve_stock_for_orders_having_this_status', 'Reserve stock for orders having this status'); ?></label>
+              </div>
+
+              <div class="checkbox">
+                <label><?php echo functions::form_draw_radio_button('stock_action', 'commit', true); ?> <?php echo language::translate('title_commit', 'Commit'); ?><br />
+                <?php echo language::translate('text_commit_changes_to_the_stock', 'Commit changes to the stock'); ?></label>
               </div>
             </div>
           </div>

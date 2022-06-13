@@ -76,13 +76,13 @@
 
     public function save() {
 
-      if (!empty($this->data['id']) && $this->data['is_sale'] != $this->previous['is_sale']) {
+      if (!empty($this->data['id']) && $this->data['stock_action'] != $this->previous['stock_action']) {
         $orders_query = database::query(
           "select * from ". DB_TABLE_PREFIX ."orders
           where order_status_id = ". (int)$this->data['id'] .";"
         );
         if (database::num_rows($orders_query)) {
-          throw new Exception(language::translate('error_cannot_change_sale_property_while_used', 'You cannot change property "is sale" as the order status is already in use by orders'));
+          throw new Exception(language::translate('error_cannot_change_stock_action_while_assigned_to_orders', 'You cannot change stock action when there are orders currently assigned to this order status'));
         }
       }
 
@@ -103,13 +103,15 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."order_statuses
         set
+          state = '". database::input($this->data['state']) ."',
           icon = '". database::input($this->data['icon']) ."',
           color = '". database::input($this->data['color']) ."',
           keywords = '". database::input($this->data['keywords']) ."',
           is_sale = '". (empty($this->data['is_sale']) ? '0' : '1') ."',
           is_archived = '". (empty($this->data['is_archived']) ? '0' : '1') ."',
+          is_trackable = '". (empty($this->data['is_trackable']) ? '0' : '1') ."',
+          stock_action = '". database::input($this->data['stock_action']) ."',
           notify = '". (empty($this->data['notify']) ? '0' : '1') ."',
-          priority = ". (int)$this->data['priority'] .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
