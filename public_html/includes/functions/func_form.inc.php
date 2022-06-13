@@ -543,7 +543,7 @@ END;
         $option_input = $input;
       }
 
-      $html .= '  <option value="'. functions::escape_html($option[0]) .'"'. (!strcmp($option[0], $option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+      $html .= '  <option value="'. functions::escape_html($option[0]) .'"'. (!strcmp((string)$option[0], (string)$option_input) ? ' selected="selected"' : '') . ((isset($option[2])) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
     }
 
     $html .= '</select>';
