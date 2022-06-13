@@ -47,13 +47,13 @@
 
       <section class="col-12 col-sm-12 col-md-3 col-lg-6 text-center" style="align-self: center;">
         <div class="logotype">
-          <img class="responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
+          <img class="responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
         </div>
 
         <?php if ($modules) { ?>
         <ul class="buttons list-inline text-center">
           <?php foreach ($modules as $module) { ?>
-          <li><img class="thumbnail responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $module['icon']); ?>" alt="" /></li>
+          <li><img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt="" /></li>
           <?php } ?>
         </ul>
         <?php } ?>

@@ -50,7 +50,7 @@
       }
 
     // Get template settings
-      if (!$template_config = include vmod::check(FS_DIR_APP .'frontend/templates/'. settings::get('template') .'/config.inc.php')) {
+      if (!$template_config = include 'app://frontend/templates/'. settings::get('template') .'/config.inc.php') {
         $template_config = [];
       }
 
@@ -304,6 +304,10 @@
         if ($inherit_params === null) $inherit_params = true;
       }
 
+      if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $path)) {
+        $path = functions::file_webpath($path);
+      }
+
       return (string)route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
     }
 
@@ -313,13 +317,21 @@
 
     public static function rlink($resource) {
 
-      $path = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
+      if (preg_match('#^app://#', $resource)) {
+        $webpath = preg_replace('#^app://#', WS_DIR_APP, $resource);
 
-      if (!is_file($resource)) {
-        return document::link($path);
+      } else if (preg_match('#^storage://#', $resource)) {
+        $webpath = preg_replace('#^storage://#', WS_DIR_STORAGE, $resource);
+
+      } else {
+        $webpath = preg_replace('#^('. preg_quote(DOCUMENT_ROOT, '#') .')#', '', str_replace('\\', '/', $resource));
       }
 
-      return document::link($path, ['_' => filemtime($resource)]);
+      if (!is_file($resource)) {
+        return document::link($webpath);
+      }
+
+      return document::link($webpath, ['_' => filemtime($resource)]);
     }
 
     public static function href_rlink($resource) {

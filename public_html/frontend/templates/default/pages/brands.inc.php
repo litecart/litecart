@@ -9,15 +9,13 @@
       </div>
 
       <div class="card-body">
-        <div class="listing products">
+        <div class="listing brands">
 
           <?php foreach ($brands as $brand) { ?>
-          <article class="brand hover-light">
+          <article class="brand">
             <a class="link" href="<?php echo functions::escape_html($brand['link']); ?>">
-              <div class="image-wrapper">
-                <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" />
-              </div>
-              <h3 class="caption"><?php echo $brand['name']; ?></h3>
+              <!--<img class="responsive" src="<?php echo document::href_rlink($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" />-->
+              <div class="caption"><?php echo $brand['name']; ?></div>
             </a>
           </article>
           <?php } ?>

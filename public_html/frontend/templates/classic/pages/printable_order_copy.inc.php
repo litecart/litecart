@@ -48,7 +48,7 @@ table.items tbody tr:nth-child(11) {
   <header class="header">
     <div class="row">
       <div class="col-6">
-        <img class="logotype" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" />
+        <img class="logotype" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" />
       </div>
 
       <div class="col-6 text-end">

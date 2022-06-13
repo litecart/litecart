@@ -23,7 +23,9 @@
         throw new Exception('No image processing library available');
       }
 
-      if (!empty($file)) $this->_file = $file;
+      if (!empty($file)) {
+        $this->set($file);
+      }
 
       $this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
     }
@@ -160,6 +162,9 @@
         }
 
         return $this->load_from_string($response);
+
+      } else {
+        $file = functions::file_realpath($file);
       }
 
       if (!is_file($file)) {
@@ -167,6 +172,7 @@
       }
 
       $this->_file = $file;
+
       return true;
     }
 
@@ -185,7 +191,6 @@
       }
 
       switch ($this->_library) {
-
 
         case 'imagick':
 
@@ -538,6 +543,8 @@
     }
 
     public function write($destination, $quality=90, $interlaced=false) {
+
+      $destination = functions::file_realpath($destination);
 
       if (!$this->_image) $this->load();
 

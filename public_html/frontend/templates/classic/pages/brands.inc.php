@@ -11,7 +11,7 @@
         <?php foreach ($brands as $brand) { ?>
         <article class="brand hover-light">
           <a class="link" href="<?php echo functions::escape_html($brand['link']); ?>">
-            <img class="responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" />
+            <img class="responsive" src="<?php echo document::href_rlink($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" />
             <h3 class="caption"><?php echo $brand['name']; ?></h3>
           </a>
         </article>

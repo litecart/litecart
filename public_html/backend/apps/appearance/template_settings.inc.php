@@ -7,7 +7,7 @@
   breadcrumbs::add(language::translate('title_template_settings', 'Template Settings'));
 
 // Get template settings structure
-  $settings = include vmod::check(FS_DIR_APP . 'frontend/templates/' . settings::get('template') .'/config.inc.php');
+  $settings = include 'app://frontend/templates/' . settings::get('template') .'/config.inc.php';
 
   if (empty($settings)) $settings = [];
 

@@ -14,7 +14,7 @@
 
     if ($slide['link']) echo '<a href="'. functions::escape_html($slide['link']) .'">' . PHP_EOL;
 
-    echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . $slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
+    echo '<img src="'. document::href_rlink($slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
 
     if (!empty($slide['caption'])) {
       echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;
@@ -29,7 +29,7 @@
 
   <?php if (count($slides) > 1) { ?>
   <ol class="carousel-indicators">
-    <?php foreach ($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'.  $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
+    <?php foreach ($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'. $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
   </ol>
 
   <a class="left carousel-control" href="#box-slides" data-slide="prev">

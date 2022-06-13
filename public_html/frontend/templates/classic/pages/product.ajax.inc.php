@@ -1,1 +1,1 @@
-<?php include vmod::check(FS_DIR_TEMPLATE . 'partials/box_product.inc.php'); ?>
+<?php include FS_DIR_TEMPLATE . 'partials/box_product.inc.php'; ?>

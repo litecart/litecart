@@ -24,7 +24,7 @@
           'id' => $slide['id'],
           'name' => $slide['name'],
           'link' => $slide['link'],
-          'image' => 'images/' . $slide['image'],
+          'image' => 'storage://images/' . $slide['image'],
           'caption' => $slide['caption'],
         ];
       }

@@ -33,7 +33,7 @@
       throw new Exception('Could not find a download for the given order_item_id', 400);
     }
 
-    $file = FS_DIR_STORAGE . 'files/' . $item['file'];
+    $file = 'storage://files/' . $item['file'];
 
     if (!is_file($file)) {
       trigger_error('Missing download for stock item ' . $item['id'], E_USER_WARNING);
@@ -68,6 +68,6 @@
 
   } catch (Exception $e) {
     http_response_code(404);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }

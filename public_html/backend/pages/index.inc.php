@@ -6,14 +6,14 @@
   breadcrumbs::add(language::translate('title_dashboard', 'Dashboard'), document::ilink(''));
 
 // Apps
-  include vmod::check(FS_DIR_APP . 'backend/partials/box_apps_menu.inc.php');
+  include 'app://backend/partials/box_apps_menu.inc.php';
   document::$snippets['box_apps_menu'] = $box_apps_menu;
 
 // Display app content
   if (defined('__APP__')) {
 
   // Get app config
-    $app_config = require vmod::check(FS_DIR_APP .'backend/apps/'. __APP__ .'/config.inc.php');
+    $app_config = require 'apps://backend/apps/'. __APP__ .'/config.inc.php';
 
   // Set default document if missing
     if (!defined('__DOC__')) define('__DOC__', $app_config['default']);
@@ -25,7 +25,7 @@
     }
 
   // Make sure document exists
-    if (!file_exists(FS_DIR_APP .'backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
+    if (!file_exists('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
       notices::add('errors', __APP__ .'/'. functions::escape_html(__DOC__) . ' is not a valid app document');
       return;
     }
@@ -33,7 +33,7 @@
     breadcrumbs::add($app_config['name'], document::ilink(__APP__ .'/'. $app_config['default']));
 
   // Render the app document
-    $_content = new ent_view(FS_DIR_APP . 'backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);
+    $_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);
 
     $_content->snippets = [
       'app_icon' => '<span class="app-icon">' . PHP_EOL

@@ -13,8 +13,6 @@
 
       $type = preg_replace('#mod_(.*)$#', '$1', get_called_class());
 
-      $directory = FS_DIR_APP . 'includes/modules/' . $type . '/';
-
       if (!empty($filter) && !is_array($filter)) $filter = [$filter];
 
       $modules_query = database::query(
@@ -25,7 +23,7 @@
 
       while ($module = database::fetch($modules_query)) {
 
-        if (!is_file(vmod::check($directory . $module['module_id'] .'.inc.php'))) {
+        if (!is_file('app://includes/modules/'.$type.'/'.$module['module_id'].'.inc.php')) {
 
         // Remove deleted modules
           database::query(

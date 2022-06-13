@@ -51,14 +51,14 @@
 
     while ($module = database::fetch($modules_query)) {
       $module['settings'] = json_decode($module['settings'], true);
-
+      $icon = 'app://'.$module['settings']['icon'];
       if (empty($module['settings']['icon'])) continue;
-      if (!is_file(FS_DIR_APP . $module['settings']['icon'])) continue;
+      if (!is_file($icon)) continue;
 
       $site_footer->snippets['modules'][$module['settings']['icon']] = [
         'id' => $module['id'],
         //'title' => $module['name'],
-        'icon' => functions::image_thumbnail(FS_DIR_APP . $module['settings']['icon'], 72, 32),
+        'icon' => functions::image_thumbnail($icon, 72, 32),
       ];
     }
 

@@ -29,7 +29,7 @@
 
       switch(true) {
         case ($component == 'ref'):
-        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/references/ref_'.basename($resource).'.inc.php'))):
+        case (!$component && is_file('app://includes/references/ref_'.basename($resource).'.inc.php')):
 
           $class_name = 'ref_'.$resource;
 
@@ -42,7 +42,7 @@
           return self::$_cache[$resource][$checksum];
 
         case ($component == 'ent'):
-        case (!$component && is_file(vmod::check(FS_DIR_APP . 'includes/entities/ent_'.basename($resource).'.inc.php'))):
+        case (!$component && is_file(vmod::check('app://includes/entities/ent_'.basename($resource).'.inc.php'))):
 
           $class_name = 'ent_'.$resource;
           $object = new $class_name($arguments[0]);

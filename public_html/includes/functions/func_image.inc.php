@@ -22,10 +22,12 @@
 
     try {
 
-      if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
+      if (!is_file($source)) {
+        $source = 'storage://images/no_image.png';
+      }
 
       $options = [
-        'destination' => fallback($options['destination'], FS_DIR_STORAGE . 'cache/'),
+        'destination' => fallback($options['destination'], 'storage://cache/'),
         'width' => fallback($options['width'], 0),
         'height' => fallback($options['height'], 0),
         'quality' => fallback($options['quality'], settings::get('image_quality')),
@@ -42,7 +44,7 @@
 
       if (is_file($options['destination'])) {
         if (filemtime($options['destination']) >= filemtime($source)) {
-          return functions::image_path($options['destination']);
+          return $options['destination'];
         } else {
           unlink($options['destination']);
         }
@@ -53,7 +55,7 @@
         if (!empty($options['overwrite'])) {
           unlink($options['destination']);
         } else {
-          return functions::image_path($options['destination']);
+          return $options['destination'];
         }
       }
 
@@ -68,13 +70,13 @@
       }
 
       if (!empty($options['watermark'])) {
-        if ($options['watermark'] === true) $options['watermark'] = FS_DIR_STORAGE . 'images/logotype.png';
+        if ($options['watermark'] === true) $options['watermark'] = 'storage://images/logotype.png';
         if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
       }
 
       if (!$image->write($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
 
-      return functions::image_path($options['destination']);
+      return $options['destination'];
 
     } catch (Exception $e) {
       trigger_error('Could not process image: ' . $e->getMessage(), E_USER_WARNING);
@@ -107,9 +109,9 @@
 
   function image_thumbnail($source, $width=0, $height=0, $trim=false) {
 
-    if (!is_file($source)) $source = FS_DIR_STORAGE . 'images/no_image.png';
+    if (!is_file($source)) $source = 'storage://images/no_image.png';
 
-    $path = functions::image_path($source);
+    $path = functions::file_webpath($source);
 
     if (pathinfo($source, PATHINFO_EXTENSION) == 'svg') {
       return $path;
@@ -129,18 +131,18 @@
       '.'.$extension,
     ]);
 
-    $cache_file = FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2) . '/' . $filename;
+    $cache_directory = 'storage://cache/' . substr($filename, 0, 2) .'/';
+    $cache_file = $cache_directory . $filename;
 
     if (is_file($cache_file)) {
       if (filemtime($cache_file) >= filemtime($source)) {
-        return functions::image_path($cache_file);
+        return $cache_file;
       } else {
         functions::image_delete_cache($source);
       }
     }
-
-    if (!is_dir(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2))) {
-      if (!mkdir(FS_DIR_STORAGE . 'cache/' . substr($filename, 0, 2))) {
+    if (!is_dir($cache_directory)) {
+      if (!mkdir($cache_directory)) {
         trigger_error('Could not create cache subfolder', E_USER_WARNING);
         return false;
       }
@@ -156,17 +158,13 @@
     ]);
   }
 
-  function image_path($file) {
-    return preg_replace('#^('. preg_quote(FS_DIR_STORAGE, '#') .'|'. preg_quote(FS_DIR_APP, '#') .'|'. preg_quote(DOCUMENT_ROOT, '#') .')#', '', functions::file_realpath($file));
-  }
-
   function image_delete_cache($file) {
 
-    $path = functions::image_path($file);
+    $path = functions::file_webpath($file);
 
     $cache_name = sha1($path);
 
-    foreach (glob(FS_DIR_STORAGE . 'cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*') as $file) {
+    foreach (glob('storage://cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*') as $file) {
       unlink($file);
     }
   }

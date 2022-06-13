@@ -1,7 +1,7 @@
 <?php
 
   if (empty($_GET['product_id'])) {
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }
 
@@ -9,13 +9,13 @@
 
   if (empty($product->id)) {
     http_response_code(410);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }
 
   if (empty($product->status)) {
     http_response_code(404);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }
 
@@ -43,7 +43,7 @@
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'" />';
 
   if (!empty($product->image)) {
-    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . 'images/' . $product->image) .'"/>';
+    document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink('storage://images/' . $product->image) .'"/>';
   }
 
   if (!empty($_GET['category_id'])) {
@@ -73,7 +73,7 @@
   session::$data['recently_viewed_products'][$product->id] = [
     'id' => $product->id,
     'name' => $product->name,
-    'image' => $product->image,
+    'image' => 'storage://images/'.$product->image,
   ];
 
 // Page
@@ -91,7 +91,7 @@
     'gtin14' => $product->gtin,
     'mpn' => $product->mpn,
     'name' => $product->name,
-    'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
+    'image' => document::link(!empty($product->image) ? 'storage://images/' . $product->image : ''),
     'description' => (!empty($product->description) && (trim(strip_tags($product->description)) != '')) ? $product->description : '',
     'brand' => [],
     'offers' => [
@@ -125,8 +125,8 @@
     'keywords' => $product->keywords,
     'image' => [
       'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
-      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width, $height, settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, $width*2, $height*2, settings::get('product_image_trim')),
+      'thumbnail' => functions::image_thumbnail('storage://images/' . $product->image, $width, $height, settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product->image, $width*2, $height*2, settings::get('product_image_trim')),
       'viewport' => [
         'width' => $width,
         'height' => $height,
@@ -162,8 +162,8 @@
   foreach (array_slice(array_values($product->images), 1) as $image) {
     $_page->snippets['extra_images'][] = [
       'original' => 'images/' . $image,
-      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width, $height, settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image, $width*2, $height*2, settings::get('product_image_trim')),
+      'thumbnail' => functions::image_thumbnail('storage://images/' . $image, $width, $height, settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $image, $width*2, $height*2, settings::get('product_image_trim')),
       'viewport' => [
         'width' => $width,
         'height' => $height,
@@ -202,8 +202,8 @@
     if (!empty($product->brand->image)) {
       $_page->snippets['brand']['image'] = [
         'original' => 'images/' . $product->brand->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->brand->image, 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->brand->image, 400, 120),
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $product->brand->image, 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product->brand->image, 400, 120),
         'viewport' => [
           'width' => 200,
           'height' => 60,
@@ -217,8 +217,8 @@
   foreach ($product->stock_options as $stock_option) {
     $stock_option['image'] = [
       'original' => $stock_option['image'],
-      'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width, $height, settings::get('product_image_trim')),
-      'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width*2, $height*2, settings::get('product_image_trim')),
+      'thumbnail' => functions::image_thumbnail('storage://images/' . $stock_option['image'], $width, $height, settings::get('product_image_trim')),
+      'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $stock_option['image'], $width*2, $height*2, settings::get('product_image_trim')),
     ];
     $_page->snippets['stock_options'][] = $stock_option;
   }

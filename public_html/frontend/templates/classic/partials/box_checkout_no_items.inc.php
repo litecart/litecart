@@ -5,8 +5,8 @@
   </div>
 
   <div class="col-md-8">
-    <?php include vmod::check(FS_DIR_APP . 'includes/partials/box_recently_viewed_products.inc.php'); ?>
+    <?php include 'app://includes/partials/box_recently_viewed_products.inc.php'; ?>
   </div>
 </div>
 
-<?php include vmod::check(FS_DIR_APP . 'includes/partials/box_categories.inc.php'); ?>
+<?php include 'app://includes/partials/box_categories.inc.php'; ?>

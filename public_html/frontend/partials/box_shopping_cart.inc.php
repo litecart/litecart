@@ -10,7 +10,7 @@
   ];
 
   foreach (cart::$items as $key => $item) {
-    $item['thumbnail'] = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 64, 64);
+    $item['thumbnail'] = functions::image_thumbnail('storage://images/' . $item['image'], 64, 64);
     $box_shopping_cart->snippets['items'][$key] = $item;
   }
 

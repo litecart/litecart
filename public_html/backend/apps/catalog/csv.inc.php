@@ -82,7 +82,7 @@
                 truncate ". DB_TABLE_PREFIX ."products_to_categories;"
               );
 
-              foreach (functions::file_search(FS_DIR_STORAGE . 'images/categories/*') as $file) {
+              foreach (functions::file_search('storage://images/categories/*') as $file) {
                 if (preg_match('#index\.html$#', $file)) continue;
                 functions::file_delete($file);
               }
@@ -96,7 +96,7 @@
                 truncate ". DB_TABLE_PREFIX ."brands_info;"
               );
 
-              foreach (functions::file_search(FS_DIR_STORAGE . 'images/brands/*') as $file) {
+              foreach (functions::file_search('storage://images/brands/*') as $file) {
                 if (preg_match('#index\.html$#', $file)) continue;
                 functions::file_delete($file);
               }
@@ -119,7 +119,7 @@
                 update ". DB_TABLE_PREFIX ."orders_items set product_id = 0;"
               );
 
-              foreach (functions::file_search(FS_DIR_STORAGE . 'images/products/*') as $file) {
+              foreach (functions::file_search('storage://images/products/*') as $file) {
                 if (preg_match('#index\.html$#', $file)) continue;
                 functions::file_delete($file);
               }
@@ -136,7 +136,7 @@
                 update ". DB_TABLE_PREFIX ."orders_items set stock_item_id = 0;"
               );
 
-              foreach (functions::file_search(FS_DIR_STORAGE . 'images/stock_items/*') as $file) {
+              foreach (functions::file_search('storage://images/stock_items/*') as $file) {
                 if (preg_match('#index\.html$#', $file)) continue;
                 functions::file_delete($file);
               }

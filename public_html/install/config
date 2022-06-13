@@ -39,7 +39,7 @@
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'On');
-  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
+  ini_set('error_log', 'storage://logs/errors.log');
   ini_set('display_startup_errors', 'Off');
   ini_set('display_errors', 'Off');
   if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '{CLIENT_IP}'))) {

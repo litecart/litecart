@@ -7,7 +7,7 @@
   if (isset($_POST['save'])) {
 
     try {
-      if (!is_dir(FS_DIR_APP . 'frontend/templates/' . basename($_POST['template']))) {
+      if (!is_dir('app://frontend/templates/' . basename($_POST['template']))) {
         throw new Exception(language::translate('error_invalid_template', 'Not a valid template'));
       }
 
@@ -21,7 +21,7 @@
         );
 
       // Load template settings structure
-        $template_config = include vmod::check(FS_DIR_APP . 'frontend/templates/' . basename($_POST['template']) .'/config.inc.php');
+        $template_config = include 'app://frontend/templates/' . basename($_POST['template']) .'/config.inc.php';
 
       // Set template default settings
         $settings = [];

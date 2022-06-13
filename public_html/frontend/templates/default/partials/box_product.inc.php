@@ -18,16 +18,16 @@ form[name="buy_now_form"] .dropdown-menu .image {
       <div class="images row" style="margin-bottom: 0;">
 
         <div class="col-12">
-          <a class="main-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="<?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          <a class="main-image thumbnail" href="<?php echo document::href_rlink($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="<?php echo $image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($image['thumbnail']); ?> 1x, <?php echo document::href_rlink($image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
             {{sticker}}
           </a>
         </div>
 
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-4">
-          <a class="extra-image thumbnail" href="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="<?php echo $extra_image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          <a class="extra-image thumbnail" href="<?php echo document::href_rlink($extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
+            <img class="<?php echo $extra_image['viewport']['clipping']; ?>" src="<?php echo document::href_rlink($extra_image['thumbnail']); ?>" srcset="<?php echo document::href_rlink($extra_image['thumbnail']); ?> 1x, <?php echo document::href_rlink($extra_image['thumbnail_2x']); ?> 2x" alt="" title="{{name|escape}}" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
           </a>
         </div>
         <?php } ?>
@@ -48,7 +48,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
       <div class="brand">
         <a href="<?php echo functions::escape_html($brand['link']); ?>">
           <?php if ($brand['image']) { ?>
-          <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . $brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $brand['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" />
+          <img src="<?php echo document::href_rlink($brand['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink($brand['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink($brand['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($brand['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $brand['name']; ?></h3>
           <?php } ?>

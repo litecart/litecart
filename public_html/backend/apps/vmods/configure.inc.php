@@ -4,7 +4,7 @@
 	try {
 		if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
 
-		$file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']);
+		$file = 'storage://vmods/' . basename($_GET['vmod']);
 
 		if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
 
@@ -16,7 +16,7 @@
 			throw new Exception(language::translate('error_nothing_to_configure', 'Nothing to configure'));
 		}
 
-		if ($json = @json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/' . '.settings'), true)) {
+		if ($json = @json_decode(file_get_contents('storage://vmods/' . '.settings'), true)) {
 			$settings = $json;
 		} else {
 			$settings = [];
@@ -39,7 +39,7 @@
 
 			$settings[$id] = $_POST['settings'];
 
-			file_put_contents(FS_DIR_STORAGE . 'vmods/' . '.settings', json_encode($settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
+			file_put_contents('storage://vmods/' . '.settings', json_encode($settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::ilink(__APP__.'/vmods'));

@@ -17,15 +17,15 @@
 
       $filename = 'logotype.png';
 
-      if (is_file(FS_DIR_STORAGE . 'images/' . $filename)) unlink(FS_DIR_STORAGE . 'images/' . $filename);
-      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
+      if (is_file('storage://images/' . $filename)) unlink('storage://images/' . $filename);
+      functions::image_delete_cache('storage://images/' . $filename);
 
       if (settings::get('image_downsample_size')) {
         list($width, $height) = explode(',', settings::get('image_downsample_size'));
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_STORAGE . 'images/' . $filename)) {
+      if (!$image->write('storage://images/' . $filename)) {
         throw new Exception(language::translate('error_failed_uploading_image', 'The uploaded image failed saving to disk. Make sure permissions are set.'));
       }
 
@@ -49,7 +49,7 @@
     <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true); ?>
 
       <div style="max-width: 480px;">
-        <img class="thumbnail fit" src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/logotype.png', 480, 240)); ?>" alt="" style="margin: 0 0 2em 0;" />
+        <img class="thumbnail fit" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/logotype.png', 480, 240)); ?>" alt="" style="margin: 0 0 2em 0;" />
       </div>
 
       <div class="form-group" style="max-width: 480px;">

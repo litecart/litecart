@@ -138,9 +138,9 @@
       'name' => $category['name'],
       'link' => document::ilink('category', ['category_id' => $category['id']]),
       'image' => [
-        'original' => 'images/' . $category['image'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category['image'], $width, $height),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category['image'], $width*2, $height*2),
+        'original' => 'storage://images/' . $category['image'],
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $category['image'], $width, $height),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category['image'], $width*2, $height*2),
         'viewport' => [
           'width' => $width,
           'height' => $height,
@@ -173,9 +173,9 @@
       'name' => $product['name'],
       'link' => document::ilink('product', ['product_id' => $product['id']], $inherit_params),
       'image' => [
-        'original' => ltrim($product['image'] ? 'images/' . $product['image'] : '', '/'),
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
+        'original' => $product['image'] ? 'storage://images/' . $product['image'] : '',
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
         'viewport' => [
           'width' => $width,
           'height' => $height,
@@ -215,8 +215,8 @@
 
   function draw_lightbox($selector='', $parameters=[]) {
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP . 'assets/featherlight/featherlight.min.css') .'" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/featherlight/featherlight.min.js') .'"></script>';
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink('app://assets/featherlight/featherlight.min.css') .'" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink('app://assets/featherlight/featherlight.min.js') .'"></script>';
     document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL

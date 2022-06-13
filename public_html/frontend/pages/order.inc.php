@@ -77,6 +77,6 @@
   } catch (Exception $e) {
 
     http_response_code($code);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }

@@ -1,7 +1,7 @@
 <main id="main">
   <div id="sidebar">
-    <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_brand_links.inc.php'); ?>
-    <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_recently_viewed_products.inc.php'); ?>
+    <?php include 'app://frontend/partials/box_brand_links.inc.php'; ?>
+    <?php include 'app://frontend/partials/box_recently_viewed_products.inc.php'; ?>
   </div>
 
   <div id="content">
@@ -16,7 +16,7 @@
       <p class="description"><?php echo $description; ?></p>
       <?php } ?>
 
-      <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_filter.inc.php'); ?>
+      <?php include 'app://frontend/partials/box_filter.inc.php'; ?>
 
       <?php if ($products) { ?>
       <section class="listing products <?php echo functions::escape_html($_GET['list_style']); ?>">

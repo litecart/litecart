@@ -8,7 +8,7 @@
 
     ob_start();
 
-    $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_APP);
+    $dir_iterator = new RecursiveDirectoryIterator('app://');
     $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 
     $files = 0;

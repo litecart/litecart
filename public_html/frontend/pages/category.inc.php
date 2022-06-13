@@ -19,13 +19,13 @@
 
   if (empty($category->id)) {
     http_response_code(410);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }
 
   if (empty($category->status)) {
     http_response_code(404);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }
 
@@ -70,9 +70,9 @@
     if ($category->image) {
       list($width, $height) = functions::image_scale_by_width(480, settings::get('category_image_ratio'));
       $_page->snippets['image'] = [
-        'original' => $category->image ? 'images/' . $category->image : '',
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width, $height),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, $width*2, $height*2),
+        'original' => $category->image ? 'storage://images/' . $category->image : '',
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $category->image, $width, $height),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category->image, $width*2, $height*2),
         'viewport' => [
           'width' => $width,
           'height' => $height,

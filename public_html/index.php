@@ -15,8 +15,8 @@
 
   require_once('includes/app_header.inc.php');
 
-  route::load(FS_DIR_APP . 'frontend/routes/url_*.inc.php');
-  route::load(FS_DIR_APP . 'backend/routes/url_*.inc.php');
+  route::load('app://frontend/routes/url_*.inc.php');
+  route::load('app://backend/routes/url_*.inc.php');
 
 // Append last destination route
   route::add('#^([0-9a-zA-Z_/\.]+)$#', 'frontend', '$1');
@@ -25,9 +25,9 @@
 
 // Initialize endpoint
   if (!empty(route::$route['endpoint']) && route::$route['endpoint'] == 'backend') {
-    require vmod::check(FS_DIR_APP . 'backend/bootstrap.inc.php');
+    require 'app://backend/bootstrap.inc.php';
   } else {
-    require vmod::check(FS_DIR_APP . 'frontend/bootstrap.inc.php');
+    require 'app://frontend/bootstrap.inc.php';
   }
 
 // Run operations before processing the route
@@ -36,4 +36,4 @@
 // Process the route and capture the content
   route::process();
 
-  require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+  require_once 'app://includes/app_footer.inc.php';

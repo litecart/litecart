@@ -8,13 +8,13 @@
 
     if (empty($page->id)) {
       http_response_code(410);
-      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      include 'app://frontend/pages/error_document.inc.php';
       return;
     }
 
     if (empty($page->status)) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      include 'app://frontend/pages/error_document.inc.php';
       return;
     }
 
@@ -22,7 +22,7 @@
     if (!in_array('information', $page->dock) && !in_array('information', $mother_page->dock)
      && !in_array('menu', $page->dock) && !in_array('menu', $mother_page->dock)) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      include 'app://frontend/pages/error_document.inc.php';
       return;
     }
 
@@ -47,6 +47,6 @@
   } catch (Exception $e) {
     http_response_code($e->getCode());
     //notices::add('errors', $e->getMessage());
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }

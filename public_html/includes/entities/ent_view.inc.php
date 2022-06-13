@@ -11,17 +11,17 @@
 
       if ($view) {
 
-      // Set filename
+      // Set filename extension if missing
         $view = preg_replace('#\.inc\.php$#', '', $view) . '.inc.php';
 
       // Absolute path
-        if (preg_match('#^([a-zA-Z]:)?/#', $view)) {
+        if (preg_match('#^app://#', $view) || preg_match('#^([a-zA-Z]:)?/#', $view)) {
           $this->view = $view;
 
       // Relative path
         } else {
-          $this->view = vmod::check(FS_DIR_TEMPLATE . $view);
-          if (!is_file($this->view)) $this->view = vmod::check(FS_DIR_APP . 'frontend/templates/default/'. $view);
+          $this->view = FS_DIR_TEMPLATE . $view;
+          if (!is_file($this->view)) $this->view = 'app://frontend/templates/default/'. $view;
         }
       }
 
@@ -79,7 +79,7 @@
         $this->html = (function(){
           ob_start();
           extract(func_get_arg(1));
-          include vmod::check(func_get_arg(0));
+          include func_get_arg(0);
           return ob_get_clean();
         })($this->view, $this->snippets);
       }
@@ -120,8 +120,8 @@
 
       // Relative path
         } else {
-          $this->view = vmod::check(FS_DIR_TEMPLATE . $view);
-          if (!is_file($this->view)) $this->view = vmod::check(FS_DIR_APP . 'frontend/templates/default/'. $view);
+          $this->view = FS_DIR_TEMPLATE . $view;
+          if (!is_file($this->view)) $this->view = 'app://frontend/templates/default/'. $view;
         }
       }
 

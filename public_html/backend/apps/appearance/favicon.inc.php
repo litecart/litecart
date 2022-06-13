@@ -43,7 +43,7 @@
         $clone = clone $image;
         $clone->scaleImage($size, 0);
         $icon->addImage($clone);
-        $icon->writeImage(FS_DIR_STORAGE . 'images/favicon-'. $size .'x'. $size .'.png');
+        $icon->writeImage('storage://images/favicon-'. $size .'x'. $size .'.png');
       }
 
       $icon = new Imagick();
@@ -54,7 +54,7 @@
         $icon->addImage($clone);
       }
 
-      $icon->writeImages(FS_DIR_STORAGE . 'images/favicons/favicon.ico', true);
+      $icon->writeImages('storage://images/favicons/favicon.ico', true);
 
       $image->destroy();
       $icon->destroy();
@@ -104,22 +104,22 @@
 
       <div class="icons">
         <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-256x256.png'); ?>" width="256" height="256" alt="" />
+          <img class="thumbnail" src="<?php echo document::href_rlink('storage://images/favicons/favicon-256x256.png'); ?>" width="256" height="256" alt="" />
           favicon-256x256.png
         </div>
 
         <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-192x192.png'); ?>" width="192" height="192" alt="" />
+          <img class="thumbnail" src="<?php echo document::href_rlink('storage://images/favicons/favicon-192x192.png'); ?>" width="192" height="192" alt="" />
           favicon-192x192.png
         </div>
 
         <div class="icon">
-          <img class="thumbnail" src="<?php echo document::href_rlink(FS_DIR_STORAGE . 'images/favicons/favicon-128x128.png'); ?>" width="128" height="128" alt="" />
+          <img class="thumbnail" src="<?php echo document::href_rlink('storage://images/favicons/favicon-128x128.png'); ?>" width="128" height="128" alt="" />
           favicon-128x128.png
         </div>
 
         <div class="icon">
-          <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents(FS_DIR_STORAGE . 'images/favicons/favicon.ico')); ?>" width="48" height="48" alt="" />
+          <img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents('storage://images/favicons/favicon.ico')); ?>" width="48" height="48" alt="" />
           favicon.ico
         </div>
       </div>

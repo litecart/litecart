@@ -7,8 +7,8 @@
 
       $apps = [];
 
-      foreach (glob(FS_DIR_APP . 'backend/apps/*', GLOB_ONLYDIR) as $directory) {
-        if (!$app_config = require vmod::check($directory . '/config.inc.php')) continue;
+      foreach (functions::file_search('app://backend/apps/*', GLOB_ONLYDIR) as $directory) {
+        if (!$app_config = require $directory . '/config.inc.php') continue;
 
         $id = basename($directory);
         $apps[$id] = array_merge(['id' => $id, 'directory' => rtrim($directory, '/') . '/'], $app_config);
@@ -39,8 +39,8 @@
 
       $widgets = [];
 
-      foreach (glob(FS_DIR_APP . 'backend/widgets/*', GLOB_ONLYDIR) as $directory) {
-        if (!$widget_config = require vmod::check($directory . '/config.inc.php')) return;
+      foreach (functions::file_search('app://backend/widgets/*', GLOB_ONLYDIR) as $directory) {
+        if (!$widget_config = require directory . '/config.inc.php') return;
 
         $id = basename($directory);
         $widgets[$id] = array_merge(['id' => $id, 'directory' => rtrim($directory, '/') . '/'], $widget_config);

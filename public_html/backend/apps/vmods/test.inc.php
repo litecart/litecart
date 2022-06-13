@@ -7,12 +7,12 @@
   try {
 
     if (empty($_GET['vmod'])) throw new Exception('No vmod provided');
-    if (!is_file(FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod']))) throw new Exception('The vmod does not exist');
+    if (!is_file('storage://vmods/' . basename($_GET['vmod']))) throw new Exception('The vmod does not exist');
 
     $dom = new \DOMDocument('1.0', 'UTF-8');
     $dom->preserveWhiteSpace = false;
 
-    if (!$dom->loadXml(file_get_contents(FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod'])))) {
+    if (!$dom->loadXml(file_get_contents('storage://vmods/' . basename($_GET['vmod'])))) {
       throw new Exception(libxml_get_last_error());
     }
 

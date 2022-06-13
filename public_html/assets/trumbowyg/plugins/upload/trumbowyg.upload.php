@@ -7,7 +7,7 @@
 			throw new Exception('Not logged in');
 		}
 
-		$upload_directory = FS_DIR_STORAGE . 'images/uploads/';
+		$upload_directory = 'storage://images/uploads/';
 
 		if (!empty($_FILES['fileToUpload']) && is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
 			if (!is_dir($upload_directory)) mkdir($upload_directory, 0777);
@@ -32,7 +32,7 @@
 
 			echo json_encode([
 				'success' => true,
-				'file' => preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $upload_directory . $filename),
+				'file' => preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', '', $upload_directory . $filename),
 				'message' => 'uploadSuccess',
 			]);
 		}

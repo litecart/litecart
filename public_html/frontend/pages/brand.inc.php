@@ -14,13 +14,13 @@
 
   if (empty($brand->id)) {
     http_response_code(410);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }
 
   if (empty($brand->status)) {
     http_response_code(404);
-    include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+    include 'app://frontend/pages/error_document.inc.php';
     return;
   }
 
@@ -43,9 +43,9 @@
       'description' => $brand->description,
       'link' => $brand->link,
       'image' => [
-        'original' => 'images/' . $brand->image,
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 200, 75),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand->image, 400, 150),
+        'original' => 'storage://images/' . $brand->image,
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $brand->image, 200, 75),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $brand->image, 400, 150),
       ],
       'products' => [],
       'sort_alternatives' => [

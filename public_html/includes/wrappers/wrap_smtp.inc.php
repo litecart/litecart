@@ -17,7 +17,7 @@
       $this->_username = $username;
       $this->_password = $password;
 
-      $this->_log_handle = fopen(FS_DIR_STORAGE . 'logs/last_smtp.log', 'w');
+      $this->_log_handle = fopen('storage://logs/last_smtp.log', 'w');
     }
 
     function __destruct() {
@@ -134,7 +134,7 @@
       $this->_last_response = $response;
 
       if (substr($response, 0, 3) != $expected_response) {
-        copy(FS_DIR_APP . 'logs/last_smtp.log', FS_DIR_APP . 'logs/last_smtp_error.log');
+        copy('storage://logs/last_smtp.log', 'storage://logs/last_smtp_error.log');
         throw new Exception('Unexpected socket response; '. $response);
       }
 

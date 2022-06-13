@@ -32,8 +32,8 @@
       'name' => $product['name'],
       'image' => [
         'original' => 'images/' . $product['image'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $product['image'], $width, $height, settings::get('product_image_trim')),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product['image'], $width*2, $height*2, settings::get('product_image_trim')),
         'viewport' => [
           'width' => $width,
           'height' => $height,

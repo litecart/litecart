@@ -28,7 +28,7 @@
         event::register('shutdown', [__CLASS__, 'disconnect']);
 
         if (($duration = stats::get_watch('database_execution')) > 1) {
-          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
+          error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, 'app://logs/performance.log');
         }
 
         if (class_exists('stats', false)) {

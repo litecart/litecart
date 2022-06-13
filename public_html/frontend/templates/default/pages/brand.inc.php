@@ -2,8 +2,8 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
-        <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_brand_links.inc.php'); ?>
-        <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_recently_viewed_products.inc.php'); ?>
+        <?php include 'app://frontend/partials/box_brand_links.inc.php'; ?>
+        <?php include 'app://frontend/partials/box_recently_viewed_products.inc.php'; ?>
       </div>
     </div>
 
@@ -23,7 +23,7 @@
             <p class="description">{{description}}</p>
             <?php } ?>
 
-            <?php include vmod::check(FS_DIR_APP . 'frontend/partials/box_filter.inc.php'); ?>
+            <?php include 'app://frontend/partials/box_filter.inc.php'; ?>
 
             <?php if ($products) { ?>
             <section class="listing products">

@@ -4,7 +4,7 @@
 
     if (!(error_reporting() & $errno)) return;
 
-    $errfile = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '~/', str_replace('\\', '/', $errfile));
+    $errfile = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', str_replace('\\', '/', $errfile));
 
     switch($errno) {
       case E_STRICT:
@@ -48,7 +48,7 @@
       $indent = 1;
       foreach ($backtraces as $backtrace) {
         if (empty($backtrace['file'])) continue;
-        $backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '~/', str_replace('\\', '/', $backtrace['file']));
+        $backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', str_replace('\\', '/', $backtrace['file']));
         $backtrace_output .= str_repeat(' ', $indent) . "→ <strong>{$backtrace['file']}</strong> on line <strong>{$backtrace['line']}</strong> in <strong>{$backtrace['function']}()</strong><br />" . PHP_EOL;
         $indent++;
       }

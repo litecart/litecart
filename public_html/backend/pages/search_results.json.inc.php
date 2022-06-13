@@ -19,7 +19,7 @@
     foreach (array_column($apps, 'search_results', 'id') as $app => $file) {
 
       $results = (function($app, $file, $query) {
-        return include FS_DIR_APP . 'backend/apps/' . $app .'/' . $file;
+        return include 'app://backend/apps/' . $app .'/' . $file;
       })($app, $file, $_GET['query']);
 
       if (!$results) continue;

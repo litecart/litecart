@@ -253,10 +253,10 @@
 <?php
   if (isset($product->data['id']) && !empty($product->data['images'])) {
     $image = current($product->data['images']);
-    echo '<img class="main-image thumbnail" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $image['filename'], $product_image_width, $product_image_height)) .'" alt="" />';
+    echo '<img class="main-image thumbnail" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $image['filename'], $product_image_width, $product_image_height)) .'" alt="" />';
     reset($product->data['images']);
   } else {
-    echo '<img class="main-image thumbnail" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height)) .'" alt="" />';
+    echo '<img class="main-image thumbnail" src="'. document::href_rlink(functions::image_thumbnail('storage://images/no_image.png', $product_image_width, $product_image_height)) .'" alt="" />';
   }
 ?>
               </div>
@@ -270,7 +270,7 @@
                     <?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 
                     <div class="thumbnail float-start">
-                      <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height)); ?>" alt="" />
+                      <img src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height)); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -288,7 +288,7 @@
                 <div class="new-images">
                   <div class="image form-group">
                     <div class="thumbnail float-start">
-                      <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height)); ?>" alt="" />
+                      <img src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/no_image.png', $product_image_width, $product_image_height)); ?>" alt="" />
                     </div>
 
                     <div class="input-group">
@@ -673,7 +673,7 @@
     e.preventDefault();
     var output = '<div class="image form-group">'
                + '  <div class="thumbnail float-start">'
-               + '    <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height)); ?>" alt="" />'
+               + '    <img src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/no_image.png', $product_image_width, $product_image_height)); ?>" alt="" />'
                + '  </div>'
                + '  '
                + '  <div class="input-group">'
@@ -708,7 +708,7 @@
       return;
     }
 
-    $('#tab-general .main-image').attr('src', '<?php echo document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $product_image_width, $product_image_height)); ?>');
+    $('#tab-general .main-image').attr('src', '<?php echo document::href_rlink(functions::image_thumbnail('storage://images/no_image.png', $product_image_width, $product_image_height)); ?>');
   }
 
 // Technical Data

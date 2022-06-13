@@ -113,9 +113,9 @@
   list($image_width, $image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
   if (isset($stock_item->data['id']) && !empty($stock_item->data['image'])) {
-    $thummbnail = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_item->data['image'], $image_width, $image_height);
+    $thummbnail = functions::image_thumbnail('storage://images/' . $stock_item->data['image'], $image_width, $image_height);
   } else {
-    $thummbnail = functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $image_width, $image_height);
+    $thummbnail = functions::image_thumbnail('storage://images/no_image.png', $image_width, $image_height);
   }
 ?>
 <div class="card card-app">
@@ -147,9 +147,9 @@
                 <div class="thumbnail">
 <?php
   if (isset($stock_item->data['id']) && !empty($stock_item->data['image'])) {
-    echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_item->data['image'], $image_width, $image_height)) .'" alt="" />';
+    echo '<img src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $stock_item->data['image'], $image_width, $image_height)) .'" alt="" />';
   } else {
-    echo '<img src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/no_image.png', $image_width, $image_height)) .'" alt="" />';
+    echo '<img src="'. document::href_rlink(functions::image_thumbnail('storage://images/no_image.png', $image_width, $image_height)) .'" alt="" />';
   }
 ?>
                 </div>

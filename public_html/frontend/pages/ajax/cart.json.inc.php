@@ -15,7 +15,7 @@
       'stock_item_id' => $item['stock_item_id'],
       'userdata' => $item['userdata'],
       'link' => document::rilink('product', ['product_id' => $item['product_id']]),
-      'thumbnail' => document::rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $item['image'], 320, 320)),
+      'thumbnail' => document::rlink(functions::image_thumbnail('storage://images/' . $item['image'], 320, 320)),
       'name' => $item['name'],
       'code' => $item['code'],
       'sku' => $item['sku'],

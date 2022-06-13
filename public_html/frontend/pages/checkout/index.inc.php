@@ -22,10 +22,10 @@
       $shopping_cart = &session::$data['checkout']['shopping_cart'];
 
       ob_start();
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/customer.inc.php');
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/shipping.inc.php');
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/payment.inc.php');
-      include_once vmod::check(FS_DIR_APP . 'frontend/pages/checkout/summary.inc.php');
+      include_once 'app://frontend/pages/checkout/customer.inc.php';
+      include_once 'app://frontend/pages/checkout/shipping.inc.php';
+      include_once 'app://frontend/pages/checkout/payment.inc.php';
+      include_once 'app://frontend/pages/checkout/summary.inc.php';
       ob_end_clean();
 
       if (!empty(notices::$data['errors'])) {
@@ -127,7 +127,7 @@
 
     if (empty($shopping_cart->data['id']) || $_GET['public_key'] != $shopping_cart->data['public_key']) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      include 'app://frontend/pages/error_document.inc.php';
       return;
     }
 

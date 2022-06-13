@@ -17,20 +17,20 @@
 
     if (empty($page->id)) {
       http_response_code(410);
-      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      include 'app://frontend/pages/error_document.inc.php';
       return;
     }
 
     if (empty($page->status)) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      include 'app://frontend/pages/error_document.inc.php';
       return;
     }
 
     $mother_page = array_values($page->path)[0];
     if (!in_array('customer_service', $page->dock) && !in_array('customer_service', $mother_page->dock)) {
       http_response_code(404);
-      include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
+      include 'app://frontend/pages/error_document.inc.php';
       return;
     }
 
@@ -53,7 +53,7 @@
   } else {
 
     ob_start();
-    include vmod::check(FS_DIR_APP . 'frontend/partials/box_contact_us.inc.php');
+    include 'app://frontend/partials/box_contact_us.inc.php';
     $_page->snippets['content'] = ob_get_clean();
   }
 

@@ -32,7 +32,7 @@
 
     public static function load($path) {
 
-      foreach (glob($path) as $file) {
+      foreach (functions::file_search($path) as $file) {
         $name = preg_replace('#^.*/url_(.*)\.inc\.php$#', '$1', $file);
         $class = 'url_'.$name;
 
@@ -82,9 +82,9 @@
       if (!empty(self::$route['page'])) {
 
         if (!empty(self::$route['endpoint']) && self::$route['endpoint'] == 'backend') {
-          $page = FS_DIR_APP . 'backend/pages/' . self::$route['page'] .'.inc.php';
+          $page = 'app://backend/pages/' . self::$route['page'] .'.inc.php';
         } else {
-          $page = FS_DIR_APP . 'frontend/pages/' . self::$route['page'] .'.inc.php';
+          $page = 'app://frontend/pages/' . self::$route['page'] .'.inc.php';
         }
 
       } else {
@@ -92,7 +92,7 @@
       }
 
     // Forward to rewritten URL (if necessary)
-      if (!empty(self::$route['page']) && is_file(vmod::check($page))) {
+      if (!empty(self::$route['page']) && is_file($page)) {
         $rewritten_url = document::ilink(self::$route['page'], $_GET);
 
         if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
@@ -127,7 +127,7 @@
       }
 
       if (!empty(self::$route) && is_file($page)) {
-        include vmod::check($page);
+        include $page;
 
       } else {
         $request = new ent_link(document::link());
@@ -137,7 +137,7 @@
       // Don't return an error page for content with a defined extension (presumably static)
         if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
-        $not_found_file = FS_DIR_STORAGE . 'logs/not_found.log';
+        $not_found_file = 'storage://logs/not_found.log';
 
         $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
         $lines[] = $request->path;
@@ -156,8 +156,8 @@
           file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
         }
 
-        include vmod::check(FS_DIR_APP . 'frontend/pages/error_document.inc.php');
-        include vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+        include 'app://frontend/pages/error_document.inc.php';
+        include 'app://includes/app_footer.inc.php';
         exit;
 
         return;

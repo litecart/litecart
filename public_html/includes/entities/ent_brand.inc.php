@@ -144,23 +144,23 @@
         $this->save();
       }
 
-      if (!is_dir(FS_DIR_STORAGE . 'images/brands/')) mkdir(FS_DIR_STORAGE . 'images/brands/', 0777);
+      if (!is_dir('storage://images/brands/')) mkdir('storage://images/brands/', 0777);
 
       $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
       $filename = 'brands/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'], settings::get('site_language_code')) .'.'. $image->type();
 
-      if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
+      if (is_file('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
 
-      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $filename);
+      functions::image_delete_cache('storage://images/' . $filename);
 
       if (settings::get('image_downsample_size')) {
         list($width, $height) = preg_split('#\s*,\s*#', settings::get('image_downsample_size'), -1, PREG_SPLIT_NO_EMPTY);
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      $image->write(FS_DIR_STORAGE . 'images/' . $filename, 90);
+      $image->write('storage://images/' . $filename, 90);
 
       database::query(
         "update ". DB_TABLE_PREFIX ."brands
@@ -175,9 +175,9 @@
 
       if (empty($this->data['id'])) return;
 
-      if (is_file(FS_DIR_STORAGE . 'images/' . $this->data['image'])) unlink(FS_DIR_STORAGE . 'images/' . $this->data['image']);
+      if (is_file('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
 
-      functions::image_delete_cache(FS_DIR_STORAGE . 'images/' . $this->data['image']);
+      functions::image_delete_cache('storage://images/' . $this->data['image']);
 
       database::query(
         "update ". DB_TABLE_PREFIX ."brands
@@ -204,8 +204,8 @@
         exit;
       }
 
-      if (!empty($this->data['image']) && is_file(FS_DIR_STORAGE . 'images/brands/' . $this->data['image'])) {
-        unlink(FS_DIR_STORAGE . 'images/brands/' . $this->data['image']);
+      if (!empty($this->data['image']) && is_file('storage://images/brands/' . $this->data['image'])) {
+        unlink('storage://images/brands/' . $this->data['image']);
       }
 
       database::query(

@@ -105,7 +105,7 @@
         'bytes' => strlen($response_headers . "\r\n" . $response_body),
       ];
 
-      file_put_contents(FS_DIR_STORAGE . 'logs/http_request_last-'. $parts['host'] .'.log',
+      file_put_contents('storage://logs/http_request_last-'. $parts['host'] .'.log',
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
         $this->last_request['head'] . "\r\n" .
         $this->last_request['body'] . "\r\n\r\n" .

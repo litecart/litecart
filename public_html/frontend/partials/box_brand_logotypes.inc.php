@@ -23,8 +23,8 @@
           'link' => document::ilink('brand', ['brand_id' => $brand['id']]),
           'image' => [
             'original' => 'images/' . $brand['image'],
-            'thumbnail' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 0, 64),
-            'thumbnail_2x' => functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $brand['image'], 0, 128),
+            'thumbnail' => functions::image_thumbnail('storage://images/' . $brand['image'], 0, 64),
+            'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $brand['image'], 0, 128),
           ],
         ];
       }

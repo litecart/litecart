@@ -60,7 +60,7 @@
           }
 
           if (!empty($original_category->data['image'])) {
-            $new_category->save_image(FS_DIR_STORAGE . 'images/' . $original_category->data['image']);
+            $new_category->save_image('storage://images/' . $original_category->data['image']);
           }
 
           $new_category->save();
@@ -89,7 +89,7 @@
 
           if (!empty($original_product->data['images'])) {
             foreach ($original_product->data['images'] as $image) {
-              $new_product->add_image(FS_DIR_STORAGE . 'images/' . $image['filename']);
+              $new_product->add_image('storage://images/' . $image['filename']);
             }
           }
 
@@ -370,7 +370,7 @@
           <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : ''; ?></td>
-          <td><?php echo '<img class="img-thumbnail" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 24, 24)) .'" alt="" />'; ?><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
+          <td><?php echo '<img class="img-thumbnail" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $product['image'], 24, 24)) .'" alt="" />'; ?><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"> <?php echo $product['name']; ?></a></td>
           <td class="text-end"><?php echo currency::format($product['price']); ?></td>
           <td><a href="<?php echo document::href_ilink('f:product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
@@ -446,7 +446,7 @@
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;
 
         if ($display_images) {
-          $output .= '  <td><img class="thumbnail" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product['image'], 24, 24)) .'" style="margin-inline-start: '. ($depth*16) .'px;" /> <a href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img class="thumbnail" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $product['image'], 24, 24)) .'" style="margin-inline-start: '. ($depth*16) .'px;" /> <a href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
           $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }

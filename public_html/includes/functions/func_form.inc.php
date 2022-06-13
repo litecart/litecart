@@ -740,15 +740,15 @@ END;
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. document::href_rlink(FS_DIR_APP .'assets/trumbowyg/ui/trumbowyg.min.css') .'" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. document::href_rlink(FS_DIR_APP .'assets/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css') .'" rel="stylesheet" />'
-                                                  . '<link href="'. document::href_rlink(FS_DIR_APP .'assets/trumbowyg/plugins/table/ui/trumbowyg.table.min.css') .'" rel="stylesheet" />';
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. document::href_rlink('app://assets/trumbowyg/ui/trumbowyg.min.css') .'" rel="stylesheet" />' . PHP_EOL
+                                                  . '<link href="'. document::href_rlink('app://assets/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css') .'" rel="stylesheet" />'
+                                                  . '<link href="'. document::href_rlink('app://assets/trumbowyg/plugins/table/ui/trumbowyg.table.min.css') .'" rel="stylesheet" />';
 
-    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/trumbowyg.min.js') .'"></script>' . PHP_EOL
-                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/langs/'. language::$selected['code'] .'.min.js') .'"></script>' . PHP_EOL : '')
-                                                  . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/colors/trumbowyg.colors.min.js') .'"></script>' . PHP_EOL
-                                                  . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/upload/trumbowyg.upload.min.js') .'"></script>' . PHP_EOL
-                                                  . '<script src="'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/table/trumbowyg.table.min.js') .'"></script>';
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. document::href_rlink('app://assets/trumbowyg/trumbowyg.min.js') .'"></script>' . PHP_EOL
+                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. document::href_rlink('app://assets/trumbowyg/langs/'. language::$selected['code'] .'.min.js') .'"></script>' . PHP_EOL : '')
+                                                  . '<script src="'. document::href_rlink('app://assets/trumbowyg/plugins/colors/trumbowyg.colors.min.js') .'"></script>' . PHP_EOL
+                                                  . '<script src="'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.min.js') .'"></script>' . PHP_EOL
+                                                  . '<script src="'. document::href_rlink('app://assets/trumbowyg/plugins/table/trumbowyg.table.min.js') .'"></script>';
 
     document::$snippets['javascript'][] = '  $(\'textarea[name="'. $name .'"]\').trumbowyg({' . PHP_EOL
                                         . '    btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],' . PHP_EOL
@@ -761,7 +761,7 @@ END;
                                         . '    },' . PHP_EOL
                                         . '    plugins: {' . PHP_EOL
                                         . '      upload: {' . PHP_EOL
-                                        . '        serverPath: "'. document::href_rlink(FS_DIR_APP . 'assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",' . PHP_EOL
+                                        . '        serverPath: "'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",' . PHP_EOL
                                         . '      }' . PHP_EOL
                                         . '    },' . PHP_EOL
                                         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
@@ -1644,7 +1644,7 @@ END;
 
       if (!empty($stock_option['image'])) {
         list($width, $height) = functions::image_scale_by_width(48, settings::get('product_image_ratio'));
-        $aliases['%image'] = '<img class="image" src="'. document::href_rlink(FS_DIR_STORAGE . functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $stock_option['image'], $width, $height, 'FIT_USE_WHITESPACING')) .'" />';
+        $aliases['%image'] = '<img class="image" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $stock_option['image'], $width, $height, 'FIT_USE_WHITESPACING')) .'" />';
       }
 
       if ($stock_option['quantity'] > 0) {
@@ -1819,7 +1819,7 @@ END;
       if (isset($args[3])) $parameters = $args[2];
     }
 
-    $folders = glob(FS_DIR_APP . 'frontend/templates/*', GLOB_ONLYDIR);
+    $folders = functions::file_search('app://frontend/templates/*', GLOB_ONLYDIR);
 
     $options = [];
     foreach ($folders as $folder) {
