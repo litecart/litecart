@@ -149,7 +149,7 @@
       $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
-      $filename = 'manufacturers/' . $this->data['id'] .'-'. functions::general_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
+      $filename = 'manufacturers/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
 
       if (is_file(FS_DIR_APP . 'images/' . $this->data['image'])) unlink(FS_DIR_APP . 'images/' . $this->data['image']);
 

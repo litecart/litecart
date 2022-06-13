@@ -22,7 +22,7 @@
 
       $new_path = '';
       foreach ($category->path as $parent_id => $parent) {
-        $new_path .= functions::general_path_friendly($parent->name, $language_code) .'-c-'. $parent_id .'/';
+        $new_path .= functions::format_path_friendly($parent->name, $language_code) .'-c-'. $parent_id .'/';
       }
 
       $link->path = $new_path;
