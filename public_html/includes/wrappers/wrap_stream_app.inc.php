@@ -7,6 +7,7 @@
     public function dir_opendir($path, $options) {
 
       $path = $this->_resolve_path($path);
+      $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
 
       if (!preg_match('#^([a-z]:)?/$#', $path)) {
         $this->_directory = [
@@ -23,7 +24,7 @@
         }
       }
 
-      foreach (glob('storage://addons/*/'.$path.'*') as $file) {
+      foreach (glob(FS_DIR_STORAGE . 'addons/*/'.$relative_path.'/*') as $file) {
         $this->_directory[basename($file)] = $file;
       }
 
@@ -112,10 +113,13 @@
     public function stream_open(string $path, string $mode, int $options, ?string &$opened_path): bool {
 
       $path = $this->_resolve_path($path);
+      $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
 
-      foreach (glob('storage://addons/*/'.$path) as $file) {
+      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path) as $file) {
         $path = $file;
       }
+
+      $path = vmod::check($path);
 
       $this->_stream = fopen($path, $mode, $options, $opened_path);
       return (bool)$this->_stream;
@@ -155,6 +159,12 @@
 
     public function url_stat(string $path, int $flags): array|false {
       $path = $this->_resolve_path($path);
+      $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
+
+      foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path) as $file) {
+        $path = $file;
+      }
+
       return file_exists($path) ? stat($path) : false;
     }
 
