@@ -214,7 +214,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (212, 1, 'Tonga', '', '776', 'TO', 'TON', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'to', 'TOP', '676', NOW(), NOW()),
 (213, 1, 'Trinidad and Tobago', '', '780', 'TT', 'TTO', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'TTD', '186', NOW(), NOW()),
 (214, 1, 'Tunisia', '', '788', 'TN', 'TUN', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{4}', 0, 'ar', 'TND', '216', NOW(), NOW()),
-(215, 1, 'Turkey', '', '792', 'TR', 'TUR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'tr', 'TRY', '90', NOW(), NOW()),
+(215, 1, 'Türkiye', '', '792', 'TR', 'TUR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'tr', 'TRY', '90', NOW(), NOW()),
 (216, 1, 'Turkmenistan', '', '795', 'TM', 'TKM', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{6}', 0, 'tk', 'TMT', '993', NOW(), NOW()),
 (217, 1, 'Turks and Caicos Islands', '', '796', 'TC', 'TCA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', 'TKCA 1ZZ', 0, 'en', 'USD', '164', NOW(), NOW()),
 (218, 1, 'Tuvalu', '', '798', 'TV', 'TUV', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'AUD', '688', NOW(), NOW()),
