@@ -18,7 +18,7 @@
       }
 
       if (isset(self::$_cache[$resource]) && count(self::$_cache[$resource]) >= 100) {
-        array_shift(self::$_cache[$resource]);
+        array_shift(self::$_cache[$resource]); // Toss the oldest cached object
       }
 
       $component = null;
@@ -45,7 +45,7 @@
         case (!$component && is_file(vmod::check('app://includes/entities/ent_'.basename($resource).'.inc.php'))):
 
           $class_name = 'ent_'.$resource;
-          $object = new $class_name($arguments[0]);
+          $object = new $class_name(fallback($arguments[0]));
 
           self::$_cache[$resource][$checksum] = (object)$object->data;
 

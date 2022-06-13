@@ -146,7 +146,7 @@
 
 // Data-Table Toggle Checkboxes
   $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
-    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
+    $(this).closest('.data-table').find('tbody td > .form-check > :checkbox').each(function() {
       $(this).prop('checked', !$(this).prop('checked'));
     });
     return false;
@@ -203,9 +203,9 @@
 
 // Data-Table Shift Check Multiple Checkboxes
   var lastTickedCheckbox = null;
-  $('.data-table :checkbox').click(function(e){
+  $('.data-table td > .form-check > :checkbox').click(function(e){
 
-    var $chkboxes = $('.data-table :checkbox');
+    var $chkboxes = $('.data-table td > .form-check > :checkbox');
 
     if (!lastTickedCheckbox) {
       lastTickedCheckbox = this;

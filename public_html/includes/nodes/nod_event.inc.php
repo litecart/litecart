@@ -5,7 +5,7 @@
     private static $_callbacks = [];
     private static $_fired_events = [];
 
-    public static function register(string $event, callable $callback) {
+    public static function register($event, $callback) {
 
       $checksum = crc32(json_encode($callback));
 
@@ -22,7 +22,7 @@
       self::$_callbacks[$event][$checksum] = $callback;
     }
 
-    public static function fire(string $event) {
+    public static function fire($event) {
 
       if (in_array($event, self::$_fired_events)) {
         trigger_error("Event already fired ($event)", E_USER_WARNING);

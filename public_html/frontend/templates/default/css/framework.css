@@ -648,6 +648,7 @@ ul.breadcrumb li a {
   background-color: var(--card-background-color);
   border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   color: var(--card-text-color);
 }
 .card:last-child {
@@ -2027,12 +2028,12 @@ ul.list-inline li {
 .table > * > tr > th.border-top {
   border-top: 1px solid var(--default-border-color);
 }
-.table > * > tr > td.border-inline-start,
-.table > * > tr > th.border-inline-start {
+.table > * > tr > td.border-start,
+.table > * > tr > th.border-start {
   border-inline-start: 1px solid var(--default-border-color);
 }
-.table > * > tr > td.border-inline-end,
-.table > * > tr > th.border-inline-end {
+.table > * > tr > td.border-end,
+.table > * > tr > th.border-end {
   border-inline-end: 1px solid var(--default-border-color);
 }
 .table > * > tr > td.border-bottom,
@@ -2042,10 +2043,10 @@ ul.list-inline li {
 @media print {
   .table > * > tr > td.border-top,
   .table > * > tr > th.border-top,
-  .table > * > tr > td.border-inline-start,
-  .table > * > tr > th.border-inline-start,
-  .table > * > tr > td.border-inline-end,
-  .table > * > tr > th.border-inline-end,
+  .table > * > tr > td.border-start,
+  .table > * > tr > th.border-start,
+  .table > * > tr > td.border-end,
+  .table > * > tr > th.border-end,
   .table > * > tr > td.border-bottom,
   .table > * > tr > th.border-bottom {
     border-color: #000 !important;

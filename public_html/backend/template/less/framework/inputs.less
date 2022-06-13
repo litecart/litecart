@@ -69,7 +69,7 @@ input[type="number"] {
     &:checked {
       background-color: #0066bb;
     }
-    &:hover {
+    &:hover:not([disabled]) {
       box-shadow: 0 0 0 0.25rem #ccc;
     }
     &:disabled {
@@ -92,10 +92,8 @@ input[type="number"] {
   }
 }
 
-.form-check:hover  input[type="checkbox"],
-.table tr:hover .form-check input[type="checkbox"],
-.form-check:hover  input[type="radio"],
-.table tr:hover .form-check input[type="radio"] {
+.table tr:hover td:first-child > .form-check > input[type="checkbox"]:not([disabled]),
+.table tr:hover td:first-child > .form-check > input[type="radio"]:not([disabled]) {
   box-shadow: 0 0 0 .25rem #ccc;
 }
 
