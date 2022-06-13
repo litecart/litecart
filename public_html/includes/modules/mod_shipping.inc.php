@@ -6,7 +6,7 @@
     private $_options = [];
     public $selected = [];
 
-    public function __construct(&$shopping_cart, $selected=[]) {
+    public function __construct($shopping_cart=[], $selected=[]) {
 
       $this->_shopping_cart = $shopping_cart;
 

@@ -40,7 +40,7 @@
       $widgets = [];
 
       foreach (functions::file_search('app://backend/widgets/*', GLOB_ONLYDIR) as $directory) {
-        if (!$widget_config = require directory . '/config.inc.php') return;
+        if (!$widget_config = require $directory . '/config.inc.php') return;
 
         $id = basename($directory);
         $widgets[$id] = array_merge(['id' => $id, 'directory' => rtrim($directory, '/') . '/'], $widget_config);

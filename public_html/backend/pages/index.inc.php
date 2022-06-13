@@ -13,7 +13,7 @@
   if (defined('__APP__')) {
 
   // Get app config
-    $app_config = require 'apps://backend/apps/'. __APP__ .'/config.inc.php';
+    $app_config = require 'app://backend/apps/'. __APP__ .'/config.inc.php';
 
   // Set default document if missing
     if (!defined('__DOC__')) define('__DOC__', $app_config['default']);
