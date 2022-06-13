@@ -1053,7 +1053,7 @@
     }
 
     update_currency_prices();
-  }).trigger('change');
+  }).trigger('input');
 
 // Update net price
   $('input[name^="gross_prices"]').on('input', function() {
