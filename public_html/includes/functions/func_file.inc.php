@@ -91,7 +91,56 @@
     return in_array(false, $results) ? false : true;
   }
 
-  function file_path($path) {
+  function file_permissions($file) {
+    return '-'.strtr(substr(decoct(fileperms($file)), -3), [
+      '0'	=> '---', // No Permission
+      '1'	=> '--x', // Execute
+      '2' => '-w-', // Write
+      '3' => '-wx', // Execute + Write
+      '4' => 'r--', // Read
+      '5' => 'r-x', // Read + Execute
+      '6' => 'rw-', // Read + Write
+      '7' => 'rwx', // Read + Write + Execute
+    ]);
+  }
+
+  function file_realpath($path) {
+
+    if (preg_match('#^app://#', $path)) {
+      $path = preg_replace('#^app://#', FS_DIR_APP, $path);
+
+    } else if (preg_match('#^storage://#', $path)) {
+      $path = preg_replace('#^storage://#', FS_DIR_STORAGE, $path);
+    }
+
+    if (file_exists($path)) {
+      $path = str_replace('\\', '/', realpath($path));
+    } else {
+      $path = str_replace('\\', '/', $path);
+    }
+
+    if (is_dir($path)) $path = rtrim($path, '/') . '/';
+
+    return $path;
+  }
+
+  function file_relative_path($target, $base = FS_DIR_APP) {
+
+    if ($base === null) $base = getcwd();
+
+    $base = explode('/', rtrim(str_replace('\\', '/', file_realpath($base)), '/'));
+    $target = explode('/', rtrim(str_replace('\\', '/', file_realpath($target)), '/'));
+
+    while (count($base) && count($target) && ($base[0] == $target[0])) {
+      array_shift($base);
+      array_shift($target);
+    }
+
+    return str_pad('', count($base) * 3, '../') . implode('/', $target);
+  }
+
+
+  function file_resolve_path($path) {
 
     $path = str_replace('\\', '/', $path);
     $parts = array_filter(explode('/', $path), 'strlen');
@@ -109,24 +158,7 @@
     return implode('/', $absolutes);
   }
 
-  function file_permissions($file) {
-    return '-'.strtr(substr(decoct(fileperms($file)), -3), [
-      '0'	=> '---', // No Permission
-      '1'	=> '--x', // Execute
-      '2' => '-w-', // Write
-      '3' => '-wx', // Execute + Write
-      '4' => 'r--', // Read
-      '5' => 'r-x', // Read + Execute
-      '6' => 'rw-', // Read + Write
-      '7' => 'rwx', // Read + Write + Execute
-    ]);
-  }
 
-  function file_realpath($path) {
-    $path = str_replace('\\', '/', realpath($path));
-    if (is_dir($path)) $path = rtrim($path, '/') . '/';
-    return $path;
-  }
 
 // Search files (Supports dual globstar **)
   function file_search($pattern, $flags=0) {
@@ -184,23 +216,9 @@
     }
   }
 
-  function file_relative_path($target, $base = null) {
-
-    if ($base === null) $base = getcwd();
-
-    $base = explode('/', rtrim(str_replace('\\', '/', $base), '/'));
-    $target = explode('/', rtrim(str_replace('\\', '/', $target), '/'));
-
-    while (count($base) && count($target) && ($base[0] == $target[0])) {
-      array_shift($base);
-      array_shift($target);
-    }
-
-    return str_pad('', count($base) * 3, '../') . implode('/', $target);
-  }
-
 // Strip paths from logic e.g. ./ ../
   function file_strip_path($path) {
+
     $new_path = [];
 
     foreach (explode('/', $path) as $part) {
@@ -212,4 +230,19 @@
     }
 
     return join('/', $new_path);
+  }
+
+  function file_webpath($file) {
+
+    $file = file_realpath($file);
+
+    if (preg_match('#^app://#', $file)) {
+      return preg_replace('#^app://#', WS_DIR_APP, $file);
+
+    } else if (preg_match('#^storage://#', $file)) {
+      return preg_replace('#^storage://#', WS_DIR_STORAGE, $file);
+
+    } else {
+      return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
+    }
   }
