@@ -5,6 +5,34 @@
 
   breadcrumbs::add(language::translate('title_order_statuses', 'Order Statuses'));
 
+
+  if (!empty($_POST['change'])) {
+
+    try {
+
+      if (empty($_POST['from_order_status_id'])) throw new Exception(language::translate('error_missing_from_order_status', 'Please select a from order status'));
+      if (empty($_POST['to_order_status_id'])) throw new Exception(language::translate('error_missing_to_order_status', 'Please select a to order status'));
+
+      $orders_query = database::query(
+        "select id ". DB_TABLE_PREFIX ."orders
+        where order_status_id = ". (int)$_POST['from_order_status_id'] .";"
+      );
+
+      while ($order = database::fetch($orders_query)) {
+        $order->data['order_status_id'] = (int)$_POST['to_order_status_id'];
+        $order->save();
+      }
+
+      notices::add('success', strtr(language::translate('success_changed_order_status_for_n_orders', 'Changed order status for %num orders'), ['%num' => database::num_rows($orders_query)]));
+
+      header('Location: '. document::link());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 // Table Rows
   $order_statuses = [];
 
@@ -112,10 +140,44 @@
       </tfoot>
     </table>
 
+  <?php echo functions::form_draw_form_end(); ?>
+
+  <div class="card-body">
+    <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
+
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_change_status_for_orders', 'Change status for orders'); ?></legend>
+
+        <div class="row">
+          <div class="col-md-2">
+            <label><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
+            <?php echo functions::form_draw_order_status_list('from_order_status_id', true); ?>
+          </div>
+
+          <div class="col-md-2">
+            <label><?php echo language::translate('title_to_order_status', 'To Order Status'); ?></label>
+            <?php echo functions::form_draw_order_status_list('to_order_status_id', true); ?>
+          </div>
+
+          <div class="col-md-1">
+            <br />
+            <?php echo functions::form_draw_button('change', [1, language::translate('title_change', 'Change')], 'submit'); ?>
+          </div>
+        </div>
+      </fieldset>
+
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="panel-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
+
+<script>
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+</script>
