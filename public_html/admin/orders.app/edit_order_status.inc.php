@@ -28,7 +28,6 @@
         'state',
         'icon',
         'color',
-        'keywords',
         'is_sale',
         'is_archived',
         'is_trackable',
@@ -103,8 +102,8 @@
             </div>
 
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-              <?php echo functions::form_draw_text_field('keywords', true); ?>
+              <label><?php echo language::translate('title_order_state', 'State'); ?></label>
+              <?php echo functions::form_draw_select_field('state', $state_options, true); ?>
             </div>
           </div>
 

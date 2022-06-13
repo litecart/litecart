@@ -417,7 +417,6 @@ CREATE TABLE `lc_order_statuses` (
   `state` ENUM('','created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled','fraud') NOT NULL DEFAULT ''
   `icon` VARCHAR(24) NOT NULL DEFAULT '',
   `color` VARCHAR(7) NOT NULL DEFAULT '',
-  `keywords` VARCHAR(256) NOT NULL DEFAULT '',
   `is_sale` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `is_archived` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `is_trackable` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',

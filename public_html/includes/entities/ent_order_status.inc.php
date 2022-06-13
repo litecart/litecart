@@ -95,18 +95,12 @@
         $this->data['id'] = database::insert_id();
       }
 
-      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
-      $this->data['keywords'] = array_unique($this->data['keywords']);
-      $this->data['keywords'] = implode(',', $this->data['keywords']);
-
       database::query(
         "update ". DB_TABLE_PREFIX ."order_statuses
         set
           state = '". database::input($this->data['state']) ."',
           icon = '". database::input($this->data['icon']) ."',
           color = '". database::input($this->data['color']) ."',
-          keywords = '". database::input($this->data['keywords']) ."',
           is_sale = '". (empty($this->data['is_sale']) ? '0' : '1') ."',
           is_archived = '". (empty($this->data['is_archived']) ? '0' : '1') ."',
           is_trackable = '". (empty($this->data['is_trackable']) ? '0' : '1') ."',
