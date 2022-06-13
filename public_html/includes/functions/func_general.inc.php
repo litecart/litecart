@@ -1,7 +1,7 @@
 <?php
 
   function general_escape_js($string) {
-    //trigger_error('general_escape_js() has been deprecated. Instead use functions::escape_js()', E_USER_DEPRECATED);
+    trigger_error('general_escape_js() has been deprecated. Instead use functions::escape_js()', E_USER_DEPRECATED);
     return functions::escape_js($string);
   }
 
