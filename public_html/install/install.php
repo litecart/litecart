@@ -430,48 +430,6 @@
       }
     }
 
-    ### Admin > .htaccess Protection ##############################
-
-    echo '<p>Securing admin folder...';
-
-    $htaccess = '# Solve 401 rewrite and auth conflict on some machines' . PHP_EOL
-              .  'ErrorDocument 401 "Access Forbidden"' . PHP_EOL
-              . PHP_EOL
-              . '# Basic authentication' . PHP_EOL
-              . '<IfModule mod_auth.c>' . PHP_EOL
-              . '  AuthType Basic' . PHP_EOL
-              . '  AuthName "Restricted Area"' . PHP_EOL
-              . '  AuthUserFile "' . FS_DIR_APP . $_REQUEST['admin_folder'] . '/.htpasswd"' . PHP_EOL
-              . '  Require valid-user' . PHP_EOL
-              . '</IfModule>' . PHP_EOL
-              . '<IfModule mod_auth_basic.c>' . PHP_EOL
-              . '  AuthType Basic' . PHP_EOL
-              . '  AuthName "Restricted Area"' . PHP_EOL
-              . '  AuthUserFile "' . FS_DIR_APP . $_REQUEST['admin_folder'] . '/.htpasswd"' . PHP_EOL
-              . '  Require valid-user' . PHP_EOL
-              . '</IfModule>';
-
-    if (is_dir('../'.$_REQUEST['admin_folder']) && file_put_contents('../'. $_REQUEST['admin_folder'] .'/.htaccess', $htaccess) !== false) {
-      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-    } else {
-      echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
-    }
-
-    ### Admin > .htpasswd Users ###################################
-
-    echo '<p>Granting admin access for user '. $_REQUEST['username'] .'...';
-
-    if (is_dir('../'.$_REQUEST['admin_folder'])) {
-      $htpasswd = $_REQUEST['username'] .':{SHA}'. base64_encode(sha1($_REQUEST['password'], true)) . PHP_EOL;
-      if (file_put_contents('../'. $_REQUEST['admin_folder'] . '/.htpasswd', $htpasswd) !== false) {
-        echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-      } else {
-        echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
-      }
-    } else {
-      echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
-    }
-
     ### Admin > Database > Users ##################################
 
     require FS_DIR_APP . 'includes/functions/func_password.inc.php';

@@ -89,16 +89,16 @@ ErrorDocument 500 "Internal Server Error"
   </FilesMatch>
 </IfModule>
 
-# Protect catalog using admin .htpasswd, handy for development platforms
+# Protect website using HTTP Auth, handy for development platforms
 #<IfModule mod_auth.c>
 #  AuthType Basic
 #  AuthName "Restricted Area"
-#  AuthUserFile "{ADMIN_DIR_FULL}.htpasswd"
+#  AuthUserFile "{BASE_DIR}.htpasswd"
 #  Require valid-user
 #</IfModule>
 #<IfModule mod_auth_basic.c>
 #  AuthType Basic
 #  AuthName "Restricted Area"
-#  AuthUserFile "{ADMIN_DIR_FULL}.htpasswd"
+#  AuthUserFile "{BASE_DIR}.htpasswd"
 #  Require valid-user
 #</IfModule>
