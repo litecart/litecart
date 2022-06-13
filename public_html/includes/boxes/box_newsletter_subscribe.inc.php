@@ -74,4 +74,13 @@
   }
 
   $box_newsletter_subscribe = new ent_view();
+
+  $box_newsletter_subscribe->snippets = [
+    'privacy_policy_link' => null,
+  ];
+
+  if ($privacy_policy_id = settings::get('privacy_policy')) {
+      $box_newsletter_subscribe->snippets['privacy_policy_link'] = document::href_ilink('information', ['page_id' => $privacy_policy_id]);
+  }
+
   echo $box_newsletter_subscribe->stitch('views/box_newsletter_subscribe');
