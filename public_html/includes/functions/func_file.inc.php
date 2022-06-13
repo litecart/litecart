@@ -158,33 +158,118 @@
     return implode('/', $absolutes);
   }
 
+// PHP glob() does not support stream wrappers, so let's create our own glob.
+// And while we are at it, let's throw in support for double globstars **. :)
+  function file_search($glob, $flags=0) {
 
+  // Unixify paths
+    $glob = str_replace('\\', '/', $glob);
 
-// Search files (Supports dual globstar **)
-  function file_search($pattern, $flags=0) {
-
-    if (strpos($pattern, '**') === false) {
-      return glob($pattern, $flags);
+  // Set wrapper protocol
+    if (($pos = strpos($glob, '://')) !== false) {
+      list($protocol, $glob) = [substr($glob, 0, $pos+3), substr($glob, $pos+3)];
+    } else {
+      $protocol = '';
     }
 
-    list($leading, $trailing) = preg_split('#\*\*#', $pattern);
-    $patterns = [$leading . $trailing];
-    $leading .= '/*';
-
-    while ($dirs = glob($leading, GLOB_ONLYDIR)) {
-      $leading .= '/*';
-      foreach ($dirs as $dir) {
-        $patterns[] = $dir . $trailing;
+  // Set basedir and remains
+    $basedir = '';
+    $remains = $glob;
+    for ($i=0; $i<strlen($glob); $i++) {
+      if (in_array($glob[$i], ['*', '[', ']', '{', '}'])) break;
+      if ($glob[$i] == '/') {
+        list($basedir, $remains) = str_split($glob, $i+1);
       }
     }
 
-    $results = [];
-    foreach ($patterns as $pat) {
-      $results = array_merge($results, file_search($pat, $flags));
+  // Halt if basedir does not exist
+    if ($basedir && !is_dir($protocol.$basedir)) {
+      return [];
     }
 
-    $results = array_unique($results);
-    sort($results);
+  // If there are no pattern remains, return base directory if valid
+    if (!$remains) {
+      if (is_dir($basedir)) {
+        return [$basedir];
+      } else {
+        return [];
+      }
+    }
+
+  // Extract pattern for current directory
+    if (($pos = strpos($remains, '/')) !== false) {
+      list($pattern, $remains) = [substr($remains, 0, $pos+1), substr($remains, $pos+1)];
+    } else {
+      list($pattern, $remains) = [$remains, ''];
+    }
+
+  // fnmatch() doesn't support GLOB_BRACE. Let's create a regex pattern instead.
+    $regex = strtr($pattern, [
+      '[!' => '[^',
+      '\\' => '\\\\',
+      '.'  => '\\.',
+      '('  => '\\(',
+      ')'  => '\\)',
+      '|'  => '\\|',
+      '+'  => '\\+',
+      '^'  => '\\^',
+      '$'  => '\\$',
+      '*'  => '.*',
+      '**' => '.*',
+      '?'  => '.',
+    ]);
+
+    if ($flags & GLOB_BRACE) {
+
+      $regex = preg_replace_callback('#\{[^\}]+\}#', function($matches) {
+        return strtr($matches[0], ['{' => '(', '}' => ')', ',' => '|']);
+      }, $regex);
+
+    } else {
+      $regex = strtr($regex, ['{' => '\\{', '}' => '\\}']);
+    }
+
+    $regex = '#^'.$regex.'$#';
+
+    $results = [];
+    $files = [];
+
+  // Open directory
+    $dh = opendir($protocol . ($basedir ? $basedir : './'));
+
+  // Step through each file in directory
+    while ($file = readdir($dh)) {
+      if (in_array($file, ['.', '..'])) continue;
+
+      $path_file = $basedir . $file;
+      $filetype = filetype($protocol . $path_file);
+
+      if ($filetype == 'dir') {
+
+      // Resolve double globstars
+        if (strpos($pattern, '**') !== false) {
+          $results = array_merge($results, file_search($protocol . $path_file .'/'. $pattern . $remains, $flags));
+        }
+
+      // Add a matching folder
+        if (preg_match($regex, $file) || preg_match($regex, $file.'/')) {
+          $results[] = $path_file .'/';
+        }
+
+      } else if ($filetype == 'file') {
+
+      // Skip if not a directory during GLOB_ONLYDIR
+        if ($flags & GLOB_ONLYDIR) continue;
+
+      // Add a matching folder
+        if (preg_match($regex, $file)) {
+          $files[] = $path_file;
+        }
+      }
+    }
+
+  // Merge folders and files into one and same result
+    $results = array_merge($results, $files);
 
     return $results;
   }
