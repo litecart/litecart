@@ -6,7 +6,7 @@
 
       $titles = [];
       foreach (language::$languages as $language) {
-        $titles[] = preg_quote(functions::general_path_friendly(language::translate('title_customer_service', 'Customer Service', $language['code'])), '#');
+        $titles[] = preg_quote(functions::format_path_friendly(language::translate('title_customer_service', 'Customer Service', $language['code'])), '#');
       }
 
       return [
@@ -39,13 +39,13 @@
         if (empty($page->id)) return $link;
 
         if (!empty($page->title)) {
-          $link->path = functions::general_path_friendly($page->title, $language_code) .'-s-'. $page->id;
+          $link->path = functions::format_path_friendly($page->title, $language_code) .'-s-'. $page->id;
         } else {
           $link->path = 'untitled-s-'. $page->id;
         }
 
       } else {
-        $link->path = functions::general_path_friendly(language::translate('title_customer_service', 'Customer Service', $language_code));
+        $link->path = functions::format_path_friendly(language::translate('title_customer_service', 'Customer Service', $language_code));
       }
 
       if (isset($link->query['page_id'])) $link->unset_query('page_id');

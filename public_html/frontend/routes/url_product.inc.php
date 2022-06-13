@@ -35,7 +35,7 @@
 
         if (!empty($category->id)) {
           foreach ($category->path as $category_crumb) {
-            $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
+            $new_path .= functions::format_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
           }
         }
 
@@ -47,7 +47,7 @@
         $brand = reference::brand($link->query['brand_id'], $language_code);
 
         if (!empty($brand->id)) {
-          $new_path .= functions::general_path_friendly($brand->name, $language_code) .'-m-'. $brand->id .'/';
+          $new_path .= functions::format_path_friendly($brand->name, $language_code) .'-m-'. $brand->id .'/';
         }
 
         $link->path = $new_path;
@@ -58,11 +58,11 @@
         $category = reference::category($product->default_category_id, $language_code);
 
         foreach ($category->path as $category_crumb) {
-          $new_path .= functions::general_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
+          $new_path .= functions::format_path_friendly($category_crumb->name, $language_code) .'-c-'. $category_crumb->id .'/';
         }
       }
 
-      $new_path .= functions::general_path_friendly($product->name, $language_code) .'-p-'. $product->id;
+      $new_path .= functions::format_path_friendly($product->name, $language_code) .'-p-'. $product->id;
 
       $link->path = $new_path;
       $link->unset_query('product_id');
