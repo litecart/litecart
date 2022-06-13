@@ -206,7 +206,7 @@
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
 
-    var dummy_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::general_escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+    var dummy_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>';
     $('#box-checkout-summary button[name="confirm_order"]').css('display', 'none').before(dummy_button);
   });
 </script>

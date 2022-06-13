@@ -121,7 +121,7 @@
       }
 
       if (($duration = stats::get_watch('database_execution')) > 3) {
-        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, FS_DIR_STORAGE . 'logs/performance.log');
+        error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, 'storage://logs/performance.log');
       }
 
       if (class_exists('stats', false)) {

@@ -21,7 +21,9 @@
         foreach (array_keys($this->_components) as $component) {
           $this->$component = $link->$component;
         }
+
       } else {
+
         $components = is_array($link) ? $link : parse_url($link);
 
         foreach ($components as $component => $value) {
@@ -45,7 +47,9 @@
         return null;
       }
 
-      if (!empty($this->_components[$component])) return $this->_components[$component];
+      if (!empty($this->_components[$component])) {
+        return $this->_components[$component];
+      }
 
     // Set defaults
       if (in_array($component, ['scheme', 'host', 'port', 'path'])) {

@@ -119,7 +119,7 @@
 
     // Add meta description
       if (!empty(self::$snippets['description'])) {
-        self::$snippets['head_tags'][] = '<meta name="description" content="'. htmlspecialchars(self::$snippets['description']) .'" />';
+        self::$snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_html(self::$snippets['description']) .'" />';
         unset(self::$snippets['description']);
       }
 
