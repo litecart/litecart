@@ -48,7 +48,7 @@
     }
 
     if (filter_var(ini_get('display_errors'), FILTER_VALIDATE_BOOL)) {
-      if (filter_var(ini_get(ini_get('html_errors'), FILTER_VALIDATE_BOOL)) || PHP_SAPI == 'cli') {
+      if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOL) || PHP_SAPI == 'cli') {
         echo strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
       } else {
         echo $output . (isset($_GET['debug']) ? $backtrace_output : '');
