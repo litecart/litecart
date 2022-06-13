@@ -30,16 +30,16 @@
 
     public function load($country_code) {
 
-      if (!preg_match('#^([0-9]+|[A-Z]{2,3}|[a-z A-Z]{4,})$#', $country_code)) throw new Exception('Invalid country ('. $country_code .')');
+      if (!preg_match('#^([0-9]+|[A-Z]{2,3}|[a-z ]{4,})$#i', $country_code)) throw new Exception('Invalid country ('. $country_code .')');
 
       $this->reset();
 
       $country_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."countries
-        ". (preg_match('#^[0-9]+$#', $country_code) ? "where id = '". (int)$country_code ."'" : "") ."
-        ". (preg_match('#^[A-Z]{2}$#', $country_code) ? "where iso_code_2 = '". database::input($country_code) ."'" : "") ."
-        ". (preg_match('#^[A-Z]{3}$#', $country_code) ? "where iso_code_3 = '". database::input($country_code) ."'" : "") ."
-        ". (preg_match('#^[a-z A-Z]{4,}$#', $country_code) ? "where (name like '". database::input($country_code) ."' or domestic_name = '". database::input($country_code) ."')" : "") ."
+        ". (preg_match('#^[0-9]+$#', $country_code) ? "where id = ". (int)$country_code : "") ."
+        ". (preg_match('#^[A-Z]{2}$#i', $country_code) ? "where iso_code_2 = '". database::input(strtoupper($country_code)) ."'" : "") ."
+        ". (preg_match('#^[A-Z]{3}$#i', $country_code) ? "where iso_code_3 = '". database::input(strtoupper($country_code)) ."'" : "") ."
+        ". (preg_match('#^[a-z ]{4,}$#i', $country_code) ? "where (lower(name) = '". database::input(mb_strtolower($country_code)) ."' or lower(domestic_name) = '". database::input(mb_strtolower($country_code)) ."')" : "") ."
         limit 1;"
       );
 
@@ -51,7 +51,7 @@
 
       $zones_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."zones
-        where country_code = '". database::input($this->data['iso_code_2']) ."'
+        where country_code = '". database::input(strtoupper($this->data['iso_code_2'])) ."'
         order by name;"
       );
 
@@ -78,8 +78,8 @@
         where id != ". (int)$this->data['id'] ."
         and (
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."'
-          or iso_code_2 = '". database::input($this->data['iso_code_2']) ."'
-          or iso_code_2 = '". database::input($this->data['iso_code_3']) ."'
+          or iso_code_2 = '". database::input(strtoupper($this->data['iso_code_2'])) ."'
+          or iso_code_2 = '". database::input(strtoupper($this->data['iso_code_3'])) ."'
         )
         limit 1;"
       );
@@ -102,8 +102,8 @@
         set
           status = ". (int)$this->data['status'] .",
           iso_code_1 = '". database::input($this->data['iso_code_1']) ."',
-          iso_code_2 = '". database::input($this->data['iso_code_2']) ."',
-          iso_code_3 = '". database::input($this->data['iso_code_3']) ."',
+          iso_code_2 = '". database::input(strtoupper($this->data['iso_code_2'])) ."',
+          iso_code_3 = '". database::input(strtoupper($this->data['iso_code_3'])) ."',
           name = '". database::input($this->data['name']) ."',
           domestic_name = '". database::input($this->data['domestic_name']) ."',
           tax_id_format = '". database::input($this->data['tax_id_format']) ."',
@@ -139,7 +139,7 @@
             set code = '". database::input($zone['code']) ."',
             name = '". database::input($zone['name']) ."',
             date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
-            where country_code = '". database::input($this->data['iso_code_2']) ."'
+            where country_code = '". database::input(strtoupper($this->data['iso_code_2'])) ."'
             and id = ". (int)$zone['id'] ."
             limit 1;"
           );

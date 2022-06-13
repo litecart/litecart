@@ -152,7 +152,7 @@
         database::query(
           "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
           (email, client_ip, date_created)
-          values ('". database::input($this->data['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
+          values ('". database::input(strtolower($this->data['email'])) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
         );
       } else if (!empty($this->previous['id'])) {
         database::query(
