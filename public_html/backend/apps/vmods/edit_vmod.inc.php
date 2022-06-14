@@ -16,7 +16,7 @@
 
     try {
 
-      if (empty($_POST['title'])) throw new Exception(language::translate('error_must_enter_filename', 'You must enter a filename'));
+      if (empty($_POST['id'])) throw new Exception(language::translate('error_must_enter_id', 'You must enter an ID'));
       if (empty($_POST['title'])) throw new Exception(language::translate('error_must_enter_title', 'You must enter a title'));
       if (empty($_POST['files'])) throw new Exception(language::translate('error_must_define_files', 'You must define files'));
 
@@ -32,7 +32,7 @@
       }
 
       $fields = [
-        'filename',
+        'id',
         'status',
         'title',
         'description',
@@ -125,8 +125,8 @@ textarea {
           </div>
 
           <div class="form-group">
-            <label><?php echo language::translate('title_filename', 'Filename'); ?></label>
-            <?php echo functions::form_draw_text_field('filename', true, 'required placeholder="example.xml"'); ?>
+            <label><?php echo language::translate('title_id', 'ID'); ?></label>
+            <?php echo functions::form_draw_text_field('id', true, 'required placeholder="my_awesome_vmod" pattern="\w+"'); ?>
           </div>
 
           <div class="row">

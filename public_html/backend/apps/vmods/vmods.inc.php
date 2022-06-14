@@ -82,12 +82,14 @@
 // Table Rows
   $vmods = [];
 
-  foreach (glob('storage://vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
+//var_dump(functions::file_search('storage://addons/*/vmod.xml'));exit;
+  foreach (functions::file_search('storage://addons/*/vmod.xml') as $file) {
     $xml = simplexml_load_file($file);
     $vmods[] = [
-      'filename' => pathinfo($file, PATHINFO_BASENAME),
+      'id' => preg_replace('#^storage://addons/([^/]+)(\.disabled)?/.*$#', '$1', $file),
+      'status' => preg_match('#/addons/([^/]+)(\.disabled)/#', $file) ? false : true,
+      'location' => $file,
       'type' => ($xml->getName() == 'vmod') ? 'vMod' : 'VQmod',
-      'enabled' => preg_match('#\.xml$#', $file) ? true : false,
       'title' => $xml->title,
       'version' => $xml->version,
       'author' => $xml->author,
@@ -119,7 +121,7 @@
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
           <th><?php echo language::translate('title_version', 'Version'); ?></th>
-          <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
+          <th><?php echo language::translate('title_location', 'Location'); ?></th>
           <th><?php echo language::translate('title_author', 'Author'); ?></th>
           <th><?php echo language::translate('title_type', 'Type'); ?></th>
           <th></th>
@@ -131,20 +133,20 @@
 
       <tbody>
         <?php foreach ($vmods as $vmod) { ?>
-        <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
-          <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
-          <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['title']; ?></a></td>
+        <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
+          <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['id']); ?></td>
+          <td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['title']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
-          <td><?php echo $vmod['filename']; ?></td>
+          <td><?php echo $vmod['location']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
           <td class="text-center"><?php echo $vmod['type']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/test', ['vmod' => $vmod['filename']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/test', ['vmod' => $vmod['id']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
           <td><?php if ($vmod['configurable']) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
-          <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
+          <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
           <td>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
           </td>
         </tr>
         <?php } ?>

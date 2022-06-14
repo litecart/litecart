@@ -32,13 +32,13 @@
       $last_modified = null;
 
     // Get last modification date for folder
-      $folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/');
+      $folder_last_modified = filemtime(FS_DIR_STORAGE .'addons/');
       if ($folder_last_modified > $last_modified) {
         $last_modified = $folder_last_modified;
       }
 
     // Get last modification date modifications
-      foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
+      foreach (glob(FS_DIR_STORAGE .'addons/*/vmod.xml') as $file) {
         if (filemtime($file) > $last_modified) {
           $last_modified = filemtime($file);
         }
@@ -50,7 +50,7 @@
       //}
 
     // Load installed
-      $installed_file = FS_DIR_STORAGE . 'vmods/.installed';
+      $installed_file = FS_DIR_STORAGE . 'addons/.installed';
       if (is_file($installed_file)) {
         foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $vmod_id) {
           self::$_installed[] = $vmod_id;
@@ -58,7 +58,7 @@
       }
 
     // Get modifications from cache
-      $cache_file = FS_DIR_STORAGE . 'vmods/.cache/.modifications';
+      $cache_file = FS_DIR_STORAGE . 'addons/.cache/.modifications';
       if (is_file($cache_file) && filemtime($cache_file) > $last_modified) {
         if ($cache = file_get_contents($cache_file)) {
           if ($cache = json_decode($cache, true)) {
@@ -69,7 +69,7 @@
       }
 
     // Create a list of checked files
-      $checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
+      $checked_file = FS_DIR_STORAGE . 'addons/.cache/.checked';
       if (is_file($checked_file) && filemtime($checked_file) > $last_modified) {
         foreach (file($checked_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
           list($short_file, $modified_short_file, $checksum) = explode(';', $line);
@@ -84,7 +84,7 @@
 
     // Load modifications from disk
       if (empty(self::$_modifications)) {
-        foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml') as $file) {
+        foreach (glob(FS_DIR_STORAGE . 'addons/*/vmod.xml') as $file) {
           self::load($file);
         }
 
@@ -99,8 +99,8 @@
       }
 
     // Load settings
-      if (!is_file(FS_DIR_STORAGE . 'vmods/.settings')) file_put_contents(FS_DIR_STORAGE . 'vmods/.settings', '{}');
-      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_STORAGE . 'vmods/.settings'), true)) {
+      if (!is_file(FS_DIR_STORAGE . 'addons/.settings')) file_put_contents(FS_DIR_STORAGE . 'addons/.settings', '{}');
+      if (!self::$_settings = json_decode(file_get_contents(FS_DIR_STORAGE . 'addons/.settings'), true)) {
         self::$_settings = [];
       }
 
@@ -126,8 +126,8 @@
       }
 
       $short_file = preg_replace('#^('. preg_quote(FS_DIR_APP, '#') .')#', '', $file);
-      $modified_file = FS_DIR_STORAGE . 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $short_file);
-      $modified_short_file = 'vmods/.cache/' . preg_replace('#[/\\\\]+#', '-', $short_file);
+      $modified_file = FS_DIR_STORAGE . 'addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $short_file);
+      $modified_short_file = 'addons/.cache/' . preg_replace('#[/\\\\]+#', '-', $short_file);
 
     // Returned an already checked file
       if (!empty(self::$_checked[$short_file]) && is_file(self::$_checked[$short_file])) {
@@ -226,13 +226,13 @@
       }
 
     // Create cache folder for modified files if missing
-      if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
-        if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 0777)) {
+      if (!is_dir(FS_DIR_STORAGE . 'addons/.cache/')) {
+        if (!mkdir(FS_DIR_STORAGE . 'addons/.cache/', 0777)) {
           throw new \Exception('The modifications cache directory could not be created', E_USER_ERROR);
         }
       }
 
-      if (!is_writable(FS_DIR_STORAGE . 'vmods/.cache/')) {
+      if (!is_writable(FS_DIR_STORAGE . 'addons/.cache/')) {
         throw new \Exception('The modifications cache directory is not writable', E_USER_ERROR);
       }
 
@@ -247,7 +247,7 @@
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
-      file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $short_file .';'. $modified_short_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents(FS_DIR_STORAGE . 'addons/.cache/.checked', $short_file .';'. $modified_short_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
 
@@ -317,7 +317,7 @@
             })($vmod['install']);
           }
 
-          file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+          file_put_contents(FS_DIR_STORAGE . 'addons/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
           self::$_installed[] = $vmod['id'];
         }
 
