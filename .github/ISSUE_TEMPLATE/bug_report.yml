@@ -7,38 +7,50 @@ body:
       label: Description
       description: "Please provide a minimal example how to reproduce the problem and describe the expected outcome and what the actual outcome was."
       value: |
-        ### What I was trying to do
+        ### What where you trying to do?
 
-        ### What I expected to happen
 
-        ### What actually happened instead
+        ### What actually happened?
+
+
+        ### What did you expect to happen?
+
 
     validations:
       required: true
   - type: input
+    id: litecart_version
     attributes:
       label: LiteCart Version
-      description: "The LiteCart version that produced the problem."
+      description: "What is the version of LiteCart that produced this problem?"
       placeholder: "LiteCart x.x.x"
+    validations:
+      required: true
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP Version
+      description: "What is PHP version were you running when the problem occured?"
+      placeholder: "PHP x.x.x"
     validations:
       required: true
   - type: textarea
     id: error_log
     attributes:
       label: Error/Backtrace
-      description: If an error message was produced, post the full backtrace error here (found in logs/errors.log).
+      description: If an error message was produced, you can post the full backtrace error found in logs/errors.log.
       render: shell
   - type: dropdown
     id: reproducable_in_demo
     attributes:
-      label: Is this a problem that can be reproduced in the demo platform (https://demo.litecart.net/admin)?
+      label: Is this a problem that can be reproduced in the [demo platform](https://demo.litecart.net/admin)?
       multiple: false
       options:
         - "I don't know"
         - "Yes"
         - "No"
   - type: dropdown
-    id: browsers
+    id: browser
     attributes:
       label: If this problem could be related to a browser. Which one?
       multiple: false
