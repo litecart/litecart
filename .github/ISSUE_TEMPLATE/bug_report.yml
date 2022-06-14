@@ -7,11 +7,11 @@ body:
       label: Description
       description: "Please provide a minimal example how to reproduce the problem and describe the expected outcome and what the actual outcome was."
       value: |
-### What I was trying to do
+        ### What I was trying to do
 
-### What I expected to happen
+        ### What I expected to happen
 
-### What actually happened instead
+        ### What actually happened instead
 
     validations:
       required: true
