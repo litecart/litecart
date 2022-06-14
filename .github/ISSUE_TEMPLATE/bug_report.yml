@@ -1,0 +1,51 @@
+name: Bug Report
+description: Create a bug report
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      label: Description
+      description: "Please provide a minimal example how to reproduce the problem and describe the expected outcome and what the actual outcome was."
+      value: |
+### What I was trying to do
+
+### What I expected to happen
+
+### What actually happened
+
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: LiteCart Version
+      description: "The LiteCart version that produced the problem."
+      placeholder: "LiteCart x.x.x"
+    validations:
+      required: true
+  - type: textarea
+    id: error_log
+    attributes:
+      label: Error/Backtrace
+      description: If an error message was produced, post the full backtrace error here (found in logs/errors.log).
+      render: shell
+  - type: dropdown
+    id: reproducable_in_demo
+    attributes:
+      label: Is this a problem that can be reproduced in the demo platform (https://demo.litecart.net/admin)?
+      multiple: true
+      options:
+        - I don't know
+        - Yes
+        - No
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: If this problem is related to a browser. Which one?
+      multiple: true
+      options:
+        - Not relevant
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - Other

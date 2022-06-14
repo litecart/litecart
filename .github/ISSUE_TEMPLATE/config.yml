@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: LiteCart Wiki Documentation
+    url: https://wiki.litecart.net/
+    about: Read wiki articles here.
+contact_links:
+  - name: LiteCart Community Forum
+    url: https://www.litecart.net/forum/
+    about: Ask your questions here.
