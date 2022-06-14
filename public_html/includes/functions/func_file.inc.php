@@ -165,13 +165,6 @@
   // Unixify paths
     $glob = str_replace('\\', '/', $glob);
 
-  // Set wrapper protocol
-    if (($pos = strpos($glob, '://')) !== false) {
-      list($protocol, $glob) = [substr($glob, 0, $pos+3), substr($glob, $pos+3)];
-    } else {
-      $protocol = '';
-    }
-
   // Set basedir and remains
     $basedir = '';
     $remains = $glob;
@@ -183,7 +176,7 @@
     }
 
   // Halt if basedir does not exist
-    if ($basedir && !is_dir($protocol.$basedir)) {
+    if ($basedir && !is_dir($basedir)) {
       return [];
     }
 
@@ -235,25 +228,30 @@
     $files = [];
 
   // Open directory
-    $dh = opendir($protocol . ($basedir ? $basedir : './'));
+    $dh = opendir($basedir ? $basedir : './');
 
   // Step through each file in directory
     while ($file = readdir($dh)) {
       if (in_array($file, ['.', '..'])) continue;
 
-      $path_file = $basedir . $file;
-      $filetype = filetype($protocol . $path_file);
+    // Prepend path
+      $file = $basedir . $file;
+      $filetype = filetype($file);
 
       if ($filetype == 'dir') {
 
       // Resolve double globstars
         if (strpos($pattern, '**') !== false) {
-          $results = array_merge($results, file_search($protocol . $path_file .'/'. $pattern . $remains, $flags));
+          $results = array_merge($results, file_search($file .'/'. $pattern . $remains, $flags));
         }
 
       // Add a matching folder
-        if (preg_match($regex, $file) || preg_match($regex, $file.'/')) {
-          $results[] = $path_file .'/';
+        if (preg_match($regex, basename($file)) || preg_match($regex, basename($file).'/')) {
+          if ($remains) {
+            $results = array_merge($results, file_search($file .'/'. $remains, $flags));
+          } else {
+            $results[] = $file .'/';
+          }
         }
 
       } else if ($filetype == 'file') {
@@ -262,8 +260,9 @@
         if ($flags & GLOB_ONLYDIR) continue;
 
       // Add a matching folder
-        if (preg_match($regex, $file)) {
-          $files[] = $path_file;
+        if (preg_match($regex, basename($file))) {
+
+          $files[] = $file;
         }
       }
     }
