@@ -29,16 +29,16 @@ body:
     id: reproducable_in_demo
     attributes:
       label: Is this a problem that can be reproduced in the demo platform (https://demo.litecart.net/admin)?
-      multiple: true
+      multiple: false
       options:
-        - I don't know
-        - Yes
-        - No
+        - "I don't know"
+        - "Yes"
+        - "No"
   - type: dropdown
     id: browsers
     attributes:
-      label: If this problem is related to a browser. Which one?
-      multiple: true
+      label: If this problem could be related to a browser. Which one?
+      multiple: false
       options:
         - "Not relevant"
         - "Firefox"
