@@ -2,7 +2,7 @@ name: Feature Request
 description: Create a feature request
 labels: ["feature"]
 body:
-  - type: markdown
+  - type: textarea
     attributes:
       label: Description
       description: "Please describe the feature you are requesting and any motivation how others could find it useful in LiteCart. Illustrate it with images if convenient."

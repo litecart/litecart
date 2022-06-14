@@ -3,10 +3,7 @@ description: Create a bug report
 labels: ["bug"]
 body:
   - type: markdown
-    attributes:
-      label: Description
-      description: "Please provide a minimal example how to reproduce the problem and describe the expected outcome and what the actual outcome was."
-      value: |
+    value: |
 ### What I was trying to do
 
 ### What I expected to happen
@@ -43,9 +40,9 @@ body:
       label: If this problem is related to a browser. Which one?
       multiple: true
       options:
-        - Not relevant
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
-        - Other
+        - "Not relevant"
+        - "Firefox"
+        - "Chrome"
+        - "Safari"
+        - "Microsoft Edge"
+        - "Other"
