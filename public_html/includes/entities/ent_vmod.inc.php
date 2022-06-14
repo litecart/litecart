@@ -4,10 +4,10 @@
     public $data;
     public $previous;
 
-    public function __construct($filename=null) {
+    public function __construct($id=null) {
 
-      if (!empty($filename)) {
-        $this->load($filename);
+      if (!empty($id)) {
+        $this->load($id);
       } else {
         $this->reset();
       }
@@ -16,8 +16,8 @@
     public function reset() {
 
       $this->data = [
-        'filename' => null,
         'id' => null,
+        'folder' => null,
         'title' => null,
         'description' => null,
         'version' => null,
@@ -32,15 +32,24 @@
       $this->previous = $this->data;
     }
 
-    public function load($filename) {
-
-      if (!is_file(FS_DIR_STORAGE . 'vmods/'. $filename)) throw new Exception('Invalid vmod ('. $filename .')');
+    public function load($id) {
 
       $this->reset();
 
-      $xml = file_get_contents(FS_DIR_STORAGE . 'vmods/'. $filename);
-      $xml = preg_replace('#(\r\n?|\n)#', PHP_EOL, $xml);
+      $this->data['id'] = $id;
+      if (is_dir('storage://addons/'. $id .'/')) {
+        $this->data['folder'] = $id .'/';
+      } else if (is_dir('storage://addons/'. $id .'.disabled/')) {
+        $this->data['folder'] = $id .'.disabled/';
+      } else {
+        throw new Exception('Invalid vMod ('. $id .')');
+      }
 
+      if (!is_file('storage://addons/'. $this->data['folder'] .'vmod.xml')) {
+        throw new Exception('Could not find '. $this->data['folder'] .'vmod.xml');
+      }
+
+      $xml = file_get_contents('storage://addons/'. $this->data['folder'] .'vmod.xml');
       $dom = new \DOMDocument('1.0', 'UTF-8');
       $dom->preserveWhiteSpace = false;
 
@@ -48,10 +57,10 @@
         throw new Exception(libxml_get_errors());
       }
 
-      $this->data['filename'] = $filename;
-      $this->data['id'] = preg_replace('#\.(xml|disabled)$#', '', $filename);
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_STORAGE . 'vmods/' . $filename));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_STORAGE . 'vmods/' . $filename));
+      $this->data['id'] = $id;
+      $this->data['folder'] = $id;
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime('storage://addons/'. $id .'/vmod.xml'));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://addons/'. $id .'/vmod.xml'));
 
       switch ($dom->documentElement->tagName) {
 
@@ -64,7 +73,7 @@
           break;
 
         default:
-          throw new \Exception("File ($file) is not a valid vmod or vQmod");
+          throw new \Exception("File ($id/vmod.xml) is not a valid vmod or vQmod");
       }
 
       $this->previous = $this->data;
@@ -257,6 +266,18 @@
 
     public function save() {
 
+      if (empty($this->data['id'])) {
+        throw new Exception('vMod ID cannot be empty');
+      }
+
+      $this->data['folder'] = $this->data['id'] . (empty($this->data['status']) ? '.disabled' : '') . '/';
+
+      if (empty($this->previous['folder'])) {
+        mkdir('storage://addons/'. $this->data['folder']);
+      } else if ($this->data['folder'] != $this->previous['folder']) {
+        rename('storage://addons/'.$this->previous['folder'], 'storage://addons/'.$this->data['folder']);
+      }
+
       $dom = new DomDocument('1.0', 'UTF-8');
       $dom->preserveWhiteSpace = false;
       $dom->formatOutput = true;
@@ -358,9 +379,7 @@
 
       $dom->appendChild( $vmod_node );
 
-      if (!empty($previous->data['filename'])) unlink(FS_DIR_STORAGE . 'vmods/' . $previous->data['filename']);
-
-      $dom->save(FS_DIR_STORAGE . 'vmods/' . $this->data['filename']);
+      $dom->save('storage://addons/' . $this->data['folder'] .'vmod.xml');
 
       $this->previous = $this->data;
 
@@ -369,7 +388,9 @@
 
     public function delete() {
 
-      unlink(FS_DIR_STORAGE . 'vmods/' . $this->previous['filename']);
+      if (empty($this->previous['folder'])) return;
+
+      functions::file_delete('storage://addons/' . $this->previous['folder']);
 
       $this->reset();
 
