@@ -823,11 +823,11 @@
 
           if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-          $categories_query = database::query(
-            "select m.*, mi.name, mi.short_description, mi.description, mi.meta_description, mi.head_title, mi.h1_title
+          $manufacturers_query = database::query(
+            "select m.*, mi.short_description, mi.description, mi.meta_description, mi.head_title, mi.h1_title
             from ". DB_TABLE_PREFIX ."manufacturers m
-            left join ". DB_TABLE_PREFIX ."manufacturers_info mi on (mi.category_id = m.id and mi.language_code = '". database::input($_POST['language_code']) ."')
-            order by m.priority;"
+            left join ". DB_TABLE_PREFIX ."manufacturers_info mi on (mi.manufacturer_id = m.id and mi.language_code = '". database::input($_POST['language_code']) ."')
+            order by m.name;"
           );
 
           while ($manufacturer = database::fetch($manufacturers_query)) {
