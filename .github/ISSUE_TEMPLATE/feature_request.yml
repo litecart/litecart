@@ -5,6 +5,6 @@ body:
   - type: textarea
     attributes:
       label: Description
-      description: "Please describe the feature you are requesting and any motivation how others could find it useful in LiteCart. Illustrate it with images if convenient."
+      description: "Please describe the feature you are requesting and any motivation how others could find it useful in LiteCart. Illustrate with images if convenient."
     validations:
       required: true
