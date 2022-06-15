@@ -433,9 +433,9 @@
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_name]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][custom_value]', true); ?>
-                <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
+                <td><?php echo functions::escape_html($_POST['attributes'][$key]['group_name']); ?></td>
+                <td><?php echo functions::escape_html($_POST['attributes'][$key]['value_name']); ?></td>
+                <td><?php echo functions::escape_html($_POST['attributes'][$key]['custom_value']); ?></td>
                 <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
               </tr>
               <?php } ?>
@@ -747,7 +747,7 @@
                 <tr>
                   <td><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][id]', true); ?><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][combination]', true); ?>
                     <?php echo functions::form_draw_hidden_field('options_stock['.$key.'][name]['. language::$selected['name'] .']', true); ?>
-                    <?php echo $_POST['options_stock'][$key]['name'][language::$selected['code']]; ?></td>
+                    <?php echo functions::escape_html($_POST['options_stock'][$key]['name'][language::$selected['code']]); ?></td>
                   <td><?php echo functions::form_draw_text_field('options_stock['.$key.'][sku]', true); ?></td>
                   <td>
                     <div class="input-group">

@@ -255,7 +255,7 @@
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-                <td class="grabable"><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
+                <td class="grabable"><?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?></td>
                 <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-end">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
