@@ -42,7 +42,7 @@
           return self::$_cache[$resource][$checksum];
 
         case ($component == 'ent'):
-        case (!$component && is_file(vmod::check('app://includes/entities/ent_'.basename($resource).'.inc.php'))):
+        case (!$component && is_file('app://includes/entities/ent_'.basename($resource).'.inc.php')):
 
           $class_name = 'ent_'.$resource;
           $object = new $class_name(fallback($arguments[0]));

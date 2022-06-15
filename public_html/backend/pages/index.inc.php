@@ -83,7 +83,7 @@
       if (!empty(user::$data['widgets']) && empty(user::$data['widgets'][$widget['id']])) continue;
 
       ob_start();
-      include vmod::check($widget['directory'] . $widget['file']);
+      include $widget['directory'] . $widget['file'];
 
       $box_widgets->snippets['widgets'][] = [
         'id' => $widget['id'],
