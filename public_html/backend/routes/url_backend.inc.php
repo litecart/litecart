@@ -33,22 +33,4 @@
         ],
       ];
     }
-
-  // Backwards Compatibility <3.0.0
-    function rewrite(ent_link $link, $language_code) {
-
-      $link->path = '';
-
-      if (!empty($_GET['app'])) {
-        $link->path .= $_GET['app'].'/';
-        $link->unset_query('app');
-      }
-
-      if (!empty($_GET['doc'])) {
-        $link->path .= $_GET['doc'];
-        $link->unset_query('doc');
-      }
-
-      return $link;
-    }
   }
