@@ -96,6 +96,13 @@
         case 'head_title':
         case 'meta_description':
 
+          $this->_data['name'] = '';
+          $this->_data['short_description'] = '';
+          $this->_data['description'] = '';
+          $this->_data['technical_data'] = '';
+          $this->_data['head_title'] = '';
+          $this->_data['meta_description'] = '';
+
           $query = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_info
             where product_id = ". (int)$this->_data['id'] ."
@@ -163,7 +170,7 @@
 
         case 'default_category':
 
-          $this->_data['default_category'] = false;
+          $this->_data['default_category'] = 0;
 
           if (empty($this->default_category_id)) return;
 
