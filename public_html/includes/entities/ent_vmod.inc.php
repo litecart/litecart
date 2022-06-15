@@ -18,10 +18,10 @@
       $this->data = [
         'id' => null,
         'folder' => null,
-        'title' => null,
-        'description' => null,
-        'version' => null,
-        'author' => null,
+        'title' => '',
+        'description' => '',
+        'version' => '',
+        'author' => '',
         'settings' => [],
         'aliases' => [],
         'files' => [],
@@ -57,10 +57,8 @@
         throw new Exception(libxml_get_errors());
       }
 
-      $this->data['id'] = $id;
-      $this->data['folder'] = $id;
-      $this->data['date_created'] = date('Y-m-d H:i:s', filectime('storage://addons/'. $id .'/vmod.xml'));
-      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://addons/'. $id .'/vmod.xml'));
+      $this->data['date_created'] = date('Y-m-d H:i:s', filectime('storage://addons/'. $this->data['folder'] .'/vmod.xml'));
+      $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://addons/'. $this->data['folder'] .'/vmod.xml'));
 
       switch ($dom->documentElement->tagName) {
 
@@ -379,7 +377,7 @@
 
       $dom->appendChild( $vmod_node );
 
-      $dom->save('storage://addons/' . $this->data['folder'] .'vmod.xml');
+      $dom->save(functions::file_realpath('storage://addons/' . $this->data['folder'] .'vmod.xml'));
 
       $this->previous = $this->data;
 

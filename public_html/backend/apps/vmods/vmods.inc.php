@@ -7,12 +7,15 @@
 
       foreach ($_POST['vmods'] as $vmod) {
 
+        if ((!$vmod = basename($vmod)) || (!is_dir('storage://addons/'. $vmod .'/') && !is_dir('storage://addons/'. $vmod .'.disabled/'))) {
+          throw new Exception(language::translate('error_invalid_vmod_folder', 'Invalid vmod folder') .' ('. $vmod .')');
+        }
         if (!empty($_POST['enable'])) {
-          if (!is_file('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
-          rename('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', 'storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
+          if (!is_dir('storage://addons/'. $vmod .'.disabled/')) continue;
+          rename('storage://addons/'. $vmod .'.disabled/', 'storage://addons/'. $vmod .'/');
         } else {
-          if (!is_file('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
-          rename('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', 'storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
+          if (!is_dir('storage://addons/'. $vmod .'/')) continue;
+          rename('storage://addons/'. $vmod .'/', 'storage://addons/'. $vmod .'.disabled/');
         }
       }
 
@@ -28,10 +31,17 @@
   if (isset($_POST['delete'])) {
 
     try {
-      if (empty($_POST['vmods'])) throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+      if (empty($_POST['vmods'])) {
+        throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
+      }
 
       foreach ($_POST['vmods'] as $vmod) {
-        unlink('storage://vmods/' . pathinfo($vmod, PATHINFO_BASENAME));
+
+        if (!$vmod = basename($vmod) || !is_dir($vmod)) {
+          throw new Exception(language::translate('error_invalid_vmod_folder', 'Invalid vmod folder'));
+        }
+
+        functions::file_delete('storage://addons/' . basename($vmod) .'/');
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -50,25 +60,36 @@
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }
 
-      $dom = new DOMDocument('1.0', 'UTF-8');
-
-      $xml = file_get_contents($_FILES['vmod']['tmp_name']); // DOMDocument::load() does not support Windows paths so we use DOMDocument::loadXML()
-
-      if (!@$dom->loadXML($xml)) {
-        throw new Exception(language::translate('error_invalid_xml_file', 'Invalid XML file'));
+      if (!$id = preg_replace('#^(.*?)(-[0-9\.]+)?(\.vmod)?\.zip$#', '$1', $_FILES['vmod']['name'])) {
+        throw new Exception(language::translate('error_could_not_determine_archive_name', 'Could not determine archive name'));
       }
 
-      if (!$dom->getElementsByTagName('modification')) {
+      $folder = 'storage://addons/'.$id.'/';
+
+      $zip = new ZipArchive();
+      if ($zip->open($_FILES['vmod']['tmp_name'], ZipArchive::RDONLY) !== true) { // ZipArchive::CREATE throws an error with temp files in PHP 8.
+        throw new Exception('Failed opening ZIP archive');
+      }
+
+      if (!$vmod = $zip->getFromName('vmod.xml')) {
+        throw new Exception('Could not find vmod.xml');
+      }
+
+      $dom = new DOMDocument('1.0', 'UTF-8');
+
+      if (!@$dom->loadXML($vmod) || !$dom->getElementsByTagName('vmod')) {
         throw new Exception(language::translate('error_xml_file_is_not_valid_vmod', 'XML file is not a valid vMod file'));
       }
 
-      $filename = 'storage://vmods/' . pathinfo($_FILES['vmod']['name'], PATHINFO_FILENAME) .'.xml';
-
-      if (is_file($filename)) {
-        unlink($filename);
+      if (is_dir($folder)) {
+        functions::file_delete($folder.'*');
       }
 
-      move_uploaded_file($_FILES['vmod']['tmp_name'], $filename);
+      if (!$zip->extractTo(functions::file_realpath($folder))) {
+        throw new Exception('Failed extracting contents from ZIP archive');
+      }
+
+      $zip->close();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::ilink());
@@ -84,14 +105,15 @@
 
 //var_dump(functions::file_search('storage://addons/*/vmod.xml'));exit;
   foreach (functions::file_search('storage://addons/*/vmod.xml') as $file) {
+
     $xml = simplexml_load_file($file);
     $vmods[] = [
-      'id' => preg_replace('#^storage://addons/([^/]+)(\.disabled)?/.*$#', '$1', $file),
+      'id' => preg_replace('#^storage://addons/([^/]+?)(\.disabled)?/.*$#', '$1', $file),
       'status' => preg_match('#/addons/([^/]+)(\.disabled)/#', $file) ? false : true,
       'location' => $file,
       'type' => ($xml->getName() == 'vmod') ? 'vMod' : 'VQmod',
       'title' => $xml->title,
-      'version' => $xml->version,
+      'version' => !empty($xml->version) ? $xml->version : date('Y-m-d', filemtime($file)),
       'author' => $xml->author,
       'configurable' => !empty($xml->setting) ? true : false,
     ];
@@ -184,7 +206,7 @@
           <legend><?php echo language::translate('title_upload_new_vmod', 'Upload a New vMod'); ?>:</legend>
 
           <div class="input-group">
-            <?php echo functions::form_draw_file_field('vmod', 'accept="application/xml"'); ?>
+            <?php echo functions::form_draw_file_field('vmod', 'accept="application/zip"'); ?>
             <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
           </div>
         </fieldset>

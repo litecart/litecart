@@ -18,16 +18,17 @@
 
       if (empty($_POST['id'])) throw new Exception(language::translate('error_must_enter_id', 'You must enter an ID'));
       if (empty($_POST['title'])) throw new Exception(language::translate('error_must_enter_title', 'You must enter a title'));
-      if (empty($_POST['files'])) throw new Exception(language::translate('error_must_define_files', 'You must define files'));
 
-      foreach (array_keys($_POST['files']) as $f) {
-        foreach (array_keys($_POST['files'][$f]['operations']) as $o) {
-          if (empty($_POST['files'][$f]['operations'][$o]['find']['regex'])) $_POST['files'][$f]['operations'][$o]['find']['regex'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['find']['trim'])) $_POST['files'][$f]['operations'][$o]['find']['trim'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['insert']['regex'])) $_POST['files'][$f]['operations'][$o]['insert']['regex'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['insert']['trim'])) $_POST['files'][$f]['operations'][$o]['insert']['trim'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['regex'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['regex'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['trim'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['trim'] = 'true';
+      if (!empty($_POST['files'])) {
+        foreach (array_keys($_POST['files']) as $f) {
+          foreach (array_keys($_POST['files'][$f]['operations']) as $o) {
+            if (empty($_POST['files'][$f]['operations'][$o]['find']['regex'])) $_POST['files'][$f]['operations'][$o]['find']['regex'] = 'true';
+            if (empty($_POST['files'][$f]['operations'][$o]['find']['trim'])) $_POST['files'][$f]['operations'][$o]['find']['trim'] = 'true';
+            if (empty($_POST['files'][$f]['operations'][$o]['insert']['regex'])) $_POST['files'][$f]['operations'][$o]['insert']['regex'] = 'true';
+            if (empty($_POST['files'][$f]['operations'][$o]['insert']['trim'])) $_POST['files'][$f]['operations'][$o]['insert']['trim'] = 'true';
+            if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['regex'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['regex'] = 'true';
+            if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['trim'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['trim'] = 'true';
+          }
         }
       }
 
@@ -36,6 +37,7 @@
         'status',
         'title',
         'description',
+        'author',
         'version',
         'files',
       ];
@@ -132,13 +134,18 @@ textarea {
           <div class="row">
             <div class="form-group col-md-8">
               <label><?php echo language::translate('title_title', 'Title'); ?></label>
-              <?php echo functions::form_draw_text_field('title', true, ''); ?>
+              <?php echo functions::form_draw_text_field('title', true, 'required'); ?>
             </div>
 
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_version', 'Version'); ?></label>
               <?php echo functions::form_draw_text_field('version', true, 'placeholder="'. date('Y-m-d') .'"'); ?>
             </div>
+          </div>
+
+          <div class="form-group">
+            <label><?php echo language::translate('title_author', 'Author'); ?></label>
+            <?php echo functions::form_draw_text_field('author', true, ''); ?>
           </div>
 
           <div class="form-group">
@@ -173,7 +180,7 @@ textarea {
 
       <div class="tab-content">
 
-        <?php foreach (array_keys($_POST['files']) as $f) { ?>
+        <?php if (!empty($_POST['files'])) foreach (array_keys($_POST['files']) as $f) { ?>
         <div id="tab-<?php echo $f; ?>" data-tab-index="<?php echo $f; ?>" class="tab-pane fade in">
 
           <div class="row">

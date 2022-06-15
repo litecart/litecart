@@ -79,7 +79,7 @@
           }
         }
       } else {
-        file_put_contents($checked_file, '', LOCK_EX);
+        file_put_contents($checked_file, '', LOCK_SH);
       }
 
     // Load modifications from disk
@@ -95,7 +95,7 @@
         //), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         ], JSON_UNESCAPED_SLASHES);
 
-        file_put_contents($cache_file, $serialized, LOCK_EX);
+        file_put_contents($cache_file, $serialized, LOCK_SH);
       }
 
     // Load settings
@@ -243,11 +243,11 @@
       }
 
     // Write modified file
-      file_put_contents($modified_file, $buffer, LOCK_EX);
+      file_put_contents($modified_file, $buffer, LOCK_SH);
 
       self::$_checked[$short_file] = $modified_file;
       self::$_checksums[$short_file] = $checksum;
-      file_put_contents('storage://addons/.cache/.checked', $short_file .';'. $modified_short_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
+      file_put_contents('storage://addons/.cache/.checked', $short_file .';'. $modified_short_file .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_SH);
 
       self::$time_elapsed += microtime(true) - $timestamp;
 
@@ -317,7 +317,7 @@
             })($vmod['install']);
           }
 
-          file_put_contents('storage://addons/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+          file_put_contents('storage://addons/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_SH);
           self::$_installed[] = $vmod['id'];
         }
 
