@@ -25,6 +25,8 @@
       }
 
       foreach (glob(FS_DIR_STORAGE . 'addons/*/'.$relative_path.'/*') as $file) {
+        if (preg_match('#/vmod\.xml$#', $file)) continue;
+        if (preg_match('#/addons/[^/]+.disabled/#', $file)) continue;
         $this->_directory[basename($file)] = $file;
       }
 
@@ -51,7 +53,7 @@
     }
 
     public function mkdir(string $path, int $mode, int $options): bool {
-      return mkdir($this->_resolve_path($path), $mode, $options);
+      return mkdir($this->_resolve_path($path), $mode);
     }
 
     public function rename(string $path_from, string $path_to): bool {
@@ -59,7 +61,7 @@
     }
 
     public function rmdir(string $path, int $options): bool {
-      return rmdir($this->_resolve_path($path), $options);
+      return rmdir($this->_resolve_path($path));
     }
 
     public function stream_cast(int $cast_as): object {
@@ -165,7 +167,9 @@
         $path = $file;
       }
 
-      return file_exists($path) ? stat($path) : false;
+      if (!file_exists($path)) return false;
+
+      return stat($path);
     }
 
     ####################################################################

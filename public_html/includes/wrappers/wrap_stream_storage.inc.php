@@ -4,13 +4,17 @@
     private $_directory;
     private $_stream;
 
-    public function dir_opendir($path, $options) {
-      $this->_directory = opendir($this->_resolve_path($path), $options);
+    public function dir_opendir($path) {
+      $this->_directory = opendir($this->_resolve_path($path));
       return true;
     }
 
     public function dir_readdir() {
-      return readdir($this->_directory);
+      $string = readdir($this->_directory);
+      if (is_string($string) && $string[0] == '.') {
+        return $this->dir_readdir();
+      }
+      return $string;
     }
 
     public function dir_closedir() {
@@ -23,7 +27,7 @@
     }
 
     public function mkdir(string $path, int $mode, int $options): bool {
-      return mkdir($this->_resolve_path($path), $mode, $options);
+      return mkdir($this->_resolve_path($path), $mode);
     }
 
     public function rename(string $path_from, string $path_to): bool {
@@ -31,8 +35,7 @@
     }
 
     public function rmdir(string $path, int $options): bool {
-
-      return rmdir($this->_resolve_path($path), $options);
+      return rmdir($this->_resolve_path($path));
     }
 
     public function stream_cast(int $cast_as): object {
@@ -85,7 +88,9 @@
     }
 
     public function stream_open(string $path, string $mode, int $options, ?string &$opened_path): bool {
-      $this->_stream = fopen($this->_resolve_path($path), $mode, $options, $opened_path);
+      $path = $this->_resolve_path($path);
+      if (!is_file($path)) return false;
+      $this->_stream = fopen($path, $mode);
       return (bool)$this->_stream;
     }
 
