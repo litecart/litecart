@@ -14,7 +14,7 @@
 
         if (!empty($_POST['enable'])) {
           if (!is_file(FS_DIR_APP . "vqmod/xml/$vqmod.disabled")) continue;
-          rename(FS_DIR_APP . "vqmod/xml/.disabled", FS_DIR_APP . "vqmod/xml/.xml");
+          rename(FS_DIR_APP . "vqmod/xml/$vqmod.disabled", FS_DIR_APP . "vqmod/xml/$vqmod.xml");
         } else {
           if (!is_file(FS_DIR_APP . "vqmod/xml/$vqmod.xml")) continue;
           rename(FS_DIR_APP . "vqmod/xml/$vqmod.xml", FS_DIR_APP . "vqmod/xml/$vqmod.disabled");
