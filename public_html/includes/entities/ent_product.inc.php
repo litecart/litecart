@@ -40,7 +40,6 @@
 
       $this->data['categories'] = [];
       $this->data['attributes'] = [];
-      $this->data['keywords'] = [];
       $this->data['images'] = [];
       $this->data['prices'] = [];
       $this->data['campaigns'] = [];
@@ -72,8 +71,6 @@
       foreach ($product as $key => $value) {
         $this->data[$key] = $value;
       }
-
-      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
     // Categories
       $categories_query = database::query(
@@ -236,6 +233,7 @@
       $this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
       $this->data['categories'] = array_unique($this->data['categories']);
 
+      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_filter($this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);

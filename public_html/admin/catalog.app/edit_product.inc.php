@@ -9,8 +9,6 @@
   if (empty($_POST)) {
     $_POST = $product->data;
 
-    $_POST['keywords'] = implode(',', $_POST['keywords']);
-
     if (empty($product->data['id']) && isset($_GET['category_id'])) {
       $_POST['categories'][] = $_GET['category_id'];
     }
@@ -46,8 +44,6 @@
       if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) {
         throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
       }
-
-      $_POST['keywords'] = preg_split('#\s*,\s*#', $_POST['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
       $fields = [
         'status',
