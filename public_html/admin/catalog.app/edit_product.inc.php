@@ -101,7 +101,9 @@
 
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
-          $product->add_image($_FILES['new_images']['tmp_name'][$key]);
+          if (!empty($_FILES['new_images']['tmp_name'][$key])) {
+            $product->add_image($_FILES['new_images']['tmp_name'][$key]);
+          }
         }
       }
 

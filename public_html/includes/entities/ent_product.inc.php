@@ -722,7 +722,7 @@
     public function add_image($file, $filename='') {
 
       if (empty($file)) {
-          throw new Exception('Missing image');
+        throw new Exception('Missing image');
       };
 
       $checksum = md5_file($file);
