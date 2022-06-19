@@ -33,7 +33,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: monospace;
   font-size: 1em;
 }
 a {
@@ -198,8 +198,7 @@ h3 {
   }
 }
 html {
-  font: var(--default-text-size)/1.5 var(--default-text-font);
-  line-height: var(--default-line-height);
+  font: var(--default-text-size)/var(--default-line-height) var(--default-text-font);
   color: var(--default-text-color);
 }
 html,
@@ -255,7 +254,7 @@ ul.breadcrumb li {
 ul.breadcrumb li:not(:last-child)::after {
   content: "\00bb";
   padding: 0 calc(var(--gutter-size)/2);
-  color: #bbb;
+  color: var(--breadcrumbs-text-color);
 }
 ul.breadcrumb li a {
   color: inherit;
@@ -1334,7 +1333,7 @@ select.form-control.multiple option {
   display: block;
   padding: calc(var(--gutter-size)/4);
   line-height: var(--default-line-height);
-  background-color: #fff;
+  background-color: var(--whitespace-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   transition: border 0.2s ease-in-out;
@@ -1348,7 +1347,7 @@ select.form-control.multiple option {
   padding: calc(var(--gutter-size)/4);
   max-width: 100%;
   height: auto;
-  background-color: #fff;
+  background-color: var(--whitespace-color);
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   transition: all 0.1s ease-in-out;

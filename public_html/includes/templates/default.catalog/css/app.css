@@ -516,6 +516,7 @@ html {
 }
 #box-product .main-image {
   position: relative;
+  background: var(--whitespace-color);
   overflow: hidden;
 }
 #box-product .main-image .sticker {
