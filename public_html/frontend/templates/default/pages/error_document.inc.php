@@ -1,4 +1,13 @@
 <style>
+#box-error-document {
+  margin: 4em 0;
+  background-image: url('<?php echo document::rlink('storage://images/illustration/crash.svg'); ?>');
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: auto 400px;
+  height: 400px;
+}
+
 #box-error-document .code {
   font-size: 24px;
   font-weight: bold;
