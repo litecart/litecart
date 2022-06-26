@@ -97,6 +97,13 @@
          . '</label>';
   }
 
+  function form_draw_code_field($name, $input=true, $parameters='') {
+
+    if ($input === true) $input = form_reinsert_value($name);
+
+    return '<textarea'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-code"' : '') .' name="'. functions::escape_html($name) .'"'. (($parameters) ? ' '.$parameters : '') .'>'. functions::escape_html($input) .'</textarea>';
+  }
+
   function form_draw_color_field($name, $input=true, $parameters='') {
 
     if ($input === true) $input = form_reinsert_value($name);

@@ -212,7 +212,7 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
+                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
                   </div>
 
                   <div class="form-group">
@@ -251,7 +251,7 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
+                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
                   </div>
 
                   <div class="row" style="font-size: .8em;">
@@ -274,7 +274,7 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 375px;"'); ?>
+                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 240px;;"'); ?>
                   </div>
 
                   <div class="row" style="font-size: .8em;">
@@ -357,7 +357,7 @@ textarea {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][find][content]', true, 'style="height: 100px;"'); ?>
+          <?php echo functions::form_draw_code_field('files[tab_i][operations][new_operation_i][find][content]', true, 'style="height: 100px;"'); ?>
         </div>
 
         <div class="form-group ">
@@ -396,7 +396,7 @@ textarea {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][ignoreif][content]', true, 'style="height: 50px;"'); ?>
+          <?php echo functions::form_draw_code_field('files[tab_i][operations][new_operation_i][ignoreif][content]', true, 'style="height: 50px;"'); ?>
         </div>
 
         <div class="row" style="font-size: .8em;">
@@ -417,7 +417,7 @@ textarea {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][insert][content]', true, 'style="height: 375px;"'); ?>
+          <?php echo functions::form_draw_code_field('files[tab_i][operations][new_operation_i][insert][content]', true, 'style="height: 240px;;"'); ?>
         </div>
 
         <div class="row" style="font-size: .8em;">
