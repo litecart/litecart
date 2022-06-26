@@ -1491,22 +1491,21 @@ END;
     }
 
     $query = database::query(
-      "select os.id, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
+      "select os.id, os.icon, os.color, osi.name from ". DB_TABLE_PREFIX ."order_statuses os
       left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id and osi.language_code = '". database::input(language::$selected['code']) ."')
       order by field(os.state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), name;"
     );
 
     $options = [];
     while ($row = database::fetch($query)) {
-      $options[] = [$row['id'], $row['name']];
+      $options[] = [$row['id'], functions::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], 'data-icon="'. functions::escape_html($row['icon']) .'" data-color="'. functions::escape_html($row['color']) .'"'];
     }
 
-    if (preg_match('#\[\]$#', $name)) {
-      return form_draw_select_multiple_field($name, $options, $input, $parameters);
-    } else {
+    if (!preg_match('#\[\]$#', $name)) {
       array_unshift($options, ['', '-- '. language::translate('title_select', 'Select') . ' --']);
-      return form_draw_select_field($name, $options, $input, $parameters);
     }
+
+    return form_draw_dropdown_field($name, $options, $input, $parameters);
   }
 
   function form_draw_pages_list($name, $input=true, $parameters='') {
