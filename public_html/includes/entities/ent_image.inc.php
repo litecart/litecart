@@ -154,7 +154,7 @@
     // Handle remote images (Safe for allow_url_fopen = off)
       if (preg_match('#^https?://#', $file)) {
 
-        $client = new wrap_http();
+        $client = new http_client();
         $response = $client->call('GET', $file);
 
         if ($client->last_response['status_code'] != 200) {

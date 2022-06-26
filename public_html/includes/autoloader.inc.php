@@ -53,6 +53,10 @@
         require 'app://includes/wrappers/' . $class . '.inc.php';
         break;
 
+      case (substr($class, -7) == '_client'):
+        require 'app://includes/clients/' . $class . '.inc.php';
+        break;
+
       default:
 
         require 'app://includes/nodes/nod_' . $class . '.inc.php';

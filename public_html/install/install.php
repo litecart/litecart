@@ -226,8 +226,8 @@
 
     echo '<p>Checking for updates... ';
 
-    require_once FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php';
-    $client = new wrap_http();
+    require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
+    $client = new http_client();
 
     $update_file = function($file) use ($client) {
       $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);

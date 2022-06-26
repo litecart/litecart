@@ -12,7 +12,7 @@
         'version' => PLATFORM_VERSION,
       ];
 
-      $client = new wrap_http();
+      $client = new http_client();
       $client->timeout = 10;
       $response = $client->call('GET', $url, $client_info);
 

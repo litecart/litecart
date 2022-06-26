@@ -333,7 +333,7 @@
 
         try {
 
-          $smtp = new wrap_smtp(
+          $smtp = new smtp_client(
             settings::get('smtp_host'),
             settings::get('smtp_port'),
             settings::get('smtp_username'),

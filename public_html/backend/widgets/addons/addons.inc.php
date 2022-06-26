@@ -17,7 +17,7 @@
         'url' => document::ilink('f:'),
       ];
 
-      $client = new wrap_http();
+      $client = new http_client();
       $client->timeout = 10;
 
       $response = $client->call('POST', $url, $client_info);
