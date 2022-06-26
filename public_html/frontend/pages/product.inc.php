@@ -31,6 +31,8 @@
     $_GET['category_id'] = $product->default_category_id;
   }
 
+  $category = reference::category($_GET['category_id']);
+
   database::query(
     "update ". DB_TABLE_PREFIX ."products
     set views = views + 1
@@ -136,6 +138,8 @@
     ],
     'sticker' => '',
     'extra_images' => [],
+    'main_category' => [],
+    'category' => [],
     'brand' => [],
     'recommended_price' => tax::get_price($product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->final_price, $product->tax_class_id),
@@ -187,6 +191,59 @@
     $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />'. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
+  }
+
+// Main Category
+  if (!empty($category->id)) {
+    $_page->snippets['main_category'] = [
+      'id' => $category->main_category->id,
+      'name' => $category->main_category->name,
+      'image' => [],
+      'link' => document::ilink('category', ['category_id' => $category->main_category->id]),
+    ];
+
+    list($width, $height) = functions::image_scale_by_width(160, settings::get('category_image_ratio'));
+
+    if (!empty($category->main_category->image)) {
+      $_page->snippets['main_category']['image'] = [
+        'original' => 'images/' . $category->main_category->image,
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
+        'viewport' => [
+          'width' => $width,
+          'height' => $height,
+          'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
+          'clipping' => strtolower(settings::get('category_image_clipping')),
+        ],
+      ];
+    }
+  }
+
+// Category
+  if (!empty($category->id)) {
+    $schema_json['category'] = $category->name;
+    $_page->snippets['category'] = [
+      'id' => $category->id,
+      'name' => $category->name,
+      'image' => [],
+      'link' => document::ilink('category', ['category_id' => $category->id]),
+    ];
+
+    list($width, $height) = functions::image_scale_by_width(160, settings::get('category_image_ratio'));
+
+    if (!empty($category->image)) {
+      $_page->snippets['category']['image'] = [
+        'original' => 'images/' . $category->image,
+        'thumbnail' => functions::image_thumbnail('storage://images/' . $category->image, $width, $height),
+        'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category->image, $width, $height),
+        'viewport' => [
+          'width' => $width,
+          'height' => $height,
+          'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
+          'clipping' => strtolower(settings::get('category_image_clipping')),
+        ],
+      ];
+    }
   }
 
 // Brand
