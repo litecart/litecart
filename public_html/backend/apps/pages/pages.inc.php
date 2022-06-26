@@ -164,6 +164,7 @@
     }
 
     $num_rows = database::num_rows($pages_query);
+    $num_pages = $num_rows / settings::get('data_table_rows_per_page');
 
   } else {
 
@@ -230,6 +231,7 @@
 
     $num_rows = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages;"));
     $num_root_rows = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;"));
+    $num_pages = $num_root_rows / settings::get('data_table_rows_per_page');
     $iterator(0, 0);
   }
 ?>
@@ -269,9 +271,9 @@
   <?php echo functions::form_draw_form_end(); ?>
 
 
-  <?php if ($num_pages = fallback($num_root_rows, $num_rows) / settings::get('data_table_rows_per_page')) { ?>
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
-    <?php echo functions::draw_pagination($num_rows); ?>
+    <?php echo functions::draw_pagination($num_pages); ?>
   </div>
   <?php } ?>
 </div>

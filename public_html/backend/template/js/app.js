@@ -132,16 +132,24 @@
 
 // Dropdown select
   $('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-    var dropdown = $(this).closest('.dropdown');
-    var input = $(dropdown).find(':input:checked');
-    $(dropdown).find('li.active').removeClass('active');
-    if ($(dropdown).find('.form-select').data('value') == 'html') {
-      $(dropdown).find('.form-select').html($(input).parent().html());
+    var $dropdown = $(this).closest('.dropdown');
+    var $input = $dropdown.find(':input:checked');
+
+    if (!$dropdown.find(':input:checked').length) return;
+
+    $dropdown.find('li.active').removeClass('active');
+
+    if ($input.data('title')) {
+      $dropdown.find('.form-select').text( $input.data('title') );
+    } else if ($input.closest('.option').find('.title').length) {
+      $dropdown.find('.form-select').text( $input.closest('.option').find('.title').text() );
     } else {
-      $(dropdown).find('.form-select').text($(input).parent().text());
+      $dropdown.find('.form-select').text( $input.parent().text() );
     }
-    $(input).closest('li').addClass('active');
-    $(dropdown).trigger('click.bs.dropdown');
+
+    $input.closest('li').addClass('active');
+    $dropdown.trigger('click.bs.dropdown');
+
   }).trigger('input');
 
 // Data-Table Toggle Checkboxes

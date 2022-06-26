@@ -300,11 +300,6 @@ INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_s
 (13, 1, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
-(1, 1, 'en', 'Awaiting payment', ''),
-(2, 2, 'en', 'Pending', ''),
-(3, 3, 'en', 'Processing', ''),
-(4, 4, 'en', 'Dispatched', ''),
-(5, 5, 'en', 'Cancelled', '');
 (1, 1, 'en', 'Created', ''),
 (2, 2, 'en', 'Awaiting payment', ''),
 (3, 3, 'en', 'On hold', ''),

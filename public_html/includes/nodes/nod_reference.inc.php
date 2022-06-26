@@ -6,10 +6,6 @@
 
     public static function __callStatic($resource, $arguments) {
 
-      if (!isset($arguments[0])) {
-        trigger_error('Passed argument cannot be empty', E_USER_WARNING);
-        return;
-      }
 
       $checksum = crc32(http_build_query($arguments));
 
@@ -37,7 +33,9 @@
           $reflect = new ReflectionClass($class_name);
           self::$_cache[$resource][$checksum] = $reflect->newInstanceArgs($arguments);
 
-          call_user_func_array([self::$_cache[$resource][$checksum], '__construct'], $arguments);
+          if (method_exists(self::$_cache[$resource][$checksum], '__construct')) {
+            call_user_func_array([self::$_cache[$resource][$checksum], '__construct'], $arguments);
+          }
 
           return self::$_cache[$resource][$checksum];
 

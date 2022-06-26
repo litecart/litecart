@@ -111,18 +111,20 @@
       case 'add':         return draw_fonticon('fa-plus');
       case 'cancel':      return draw_fonticon('fa-times');
       case 'edit':        return draw_fonticon('fa-pencil');
+      case 'fail':        return draw_fonticon('fa-times', 'color: #c00;"');
       case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
       case 'folder-open': return draw_fonticon('fa-folder-open', 'style="color: #cc6;"');
       case 'remove':      return draw_fonticon('fa-times-circle', 'style="color: #c33;"');
       case 'delete':      return draw_fonticon('fa-trash-o');
       case 'move-up':     return draw_fonticon('fa-arrow-circle-up', 'style="color: #39c;"');
       case 'move-down':   return draw_fonticon('fa-arrow-circle-down', 'style="color: #39c;"');
-      case 'ok':          return draw_fonticon('fa-check');
-      case 'on':          return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-      case 'off':         return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-      case 'semi-off':    return draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ded90f;"');
+      case 'ok':          return draw_fonticon('fa-check', 'style="color: #8c4;"');
+      case 'on':          return draw_fonticon('fa-circle', 'style="color: #8c4;"');
+      case 'off':         return draw_fonticon('fa-circle', 'style="color: #f64;"');
+      case 'semi-off':    return draw_fonticon('fa-circle', 'style="color: #ded90f;"');
       case 'save':        return draw_fonticon('fa-floppy-o');
       case 'send':        return draw_fonticon('fa-paper-plane');
+      case 'warning':     return draw_fonticon('fa-exclamation-triangle', 'color: #c00;"');
       default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
     }
   }

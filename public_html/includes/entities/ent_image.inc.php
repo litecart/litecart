@@ -338,7 +338,7 @@
             $this->resample(round($this->width * 1.15), round($this->height * 1.15), 'FIT_ONLY_BIGGER_USE_WHITESPACING');  // Add 15% padding
 
           } catch (\ImagickException $e) {
-            throw new Exception("Error applying filter on image ($this->_file)");
+            throw new Exception("Error trimming image ($this->_file)");
           }
 
           break;
@@ -594,7 +594,7 @@
 
           if ($this->type == 'svg') {
             if ($type != 'svg') {
-              throw new Exception("GD2 does not support converting .svg to .$type");
+              throw new Exception("GD2 does not support converting .svg to .$type. Enable Imagick for PHP instead");
             } else {
               return copy($this->_file, $destination);
             }

@@ -116,9 +116,9 @@
               <?php echo functions::form_draw_hidden_field('contents['.$key.'][stock_item_id]', true); ?>
               <?php echo functions::form_draw_hidden_field('contents['. $key .'][sku]', true); ?>
               <?php echo functions::form_draw_hidden_field('contents['. $key .'][name]', true); ?>
-              <?php echo $_POST['contents'][$key]['sku']; ?>
+              <?php echo functions::escape_html($_POST['contents'][$key]['sku']); ?>
             </td>
-            <td><?php echo $_POST['contents'][$key]['name']; ?></td>
+            <td><?php echo functions::escape_html($_POST['contents'][$key]['name']); ?></td>
             <td><?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity]', true, 2, 'readonly'); ?></td>
             <td class="text-center">
               <div class="input-group">
