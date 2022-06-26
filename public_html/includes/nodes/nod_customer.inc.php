@@ -119,7 +119,7 @@
     public static function after_capture() {
 
     // Load regional settings screen
-      if (!preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'/#', route::$request)) {
+      if (route::$selected['endpoint'] == 'frontend') {
         if (settings::get('regional_settings_screen')) {
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             if (empty(customer::$data['id'])) {

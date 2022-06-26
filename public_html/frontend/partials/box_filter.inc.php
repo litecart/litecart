@@ -13,7 +13,7 @@
   ];
 
 // Brands
-  if (!empty(route::$route['page']) && route::$route['page'] == 'category' && empty($_GET['brand_id'])) {
+  if (!empty(route::$selected['route']) && route::$selected['route'] == 'f:category' && empty($_GET['brand_id'])) {
     $brands_query = database::query(
       "select distinct b.id, b.name from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
@@ -36,7 +36,7 @@
   }
 
 // Attributes
-  if (!empty(route::$route['page']) && route::$route['page'] == 'category') {
+  if (!empty(route::$selected['route']) && route::$selected['route'] == 'f:category') {
     $category_filters_query = database::query(
       "select cf.attribute_group_id as id, agi.name as name, cf.select_multiple from ". DB_TABLE_PREFIX ."categories_filters cf
       left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and agi.language_code = '". database::input(language::$selected['code']) ."')

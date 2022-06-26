@@ -39,12 +39,12 @@
       self::$snippets['foot_tags']['jquery'] = '<script src="'. document::href_rlink(FS_DIR_APP .'assets/jquery/jquery-3.6.0.min.js') .'"></script>';
 
     // Hreflang
-      if (!empty(route::$route['page'])) {
+      if (!empty(route::$selected['controller'])) {
         self::$snippets['head_tags']['hreflang'] = '';
         foreach (language::$languages as $language) {
           if ($language['url_type'] == 'none') continue;
           if ($language['code'] == language::$selected['code']) continue;
-          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink(route::$route['page'], [], true, ['page', 'sort'], $language['code']) .'" />' . PHP_EOL;
+          self::$snippets['head_tags']['hreflang'] .= '<link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink(route::$selected['controller'], [], true, ['page', 'sort'], $language['code']) .'" />' . PHP_EOL;
         }
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
@@ -276,7 +276,7 @@
           $route = $matches[2];
 
         } else {
-          $endpoint = !empty(route::$route['endpoint']) ? route::$route['endpoint'] : 'frontend';
+          $endpoint = !empty(route::$selected['endpoint']) ? route::$selected['endpoint'] : 'frontend';
         }
 
         if ($endpoint == 'backend') {

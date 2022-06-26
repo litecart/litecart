@@ -1,16 +1,16 @@
 <?php
 
   return [
-    '' => [
-      'pattern' => '#^(?:index\.php)?$#',
-      'controller' => 'index',
+    'checkout' => [
+      'pattern' => '#^checkout/(index)?$#',
+      'controller' => 'checkout/index',
       'params' => '',
       'endpoint' => 'frontend',
       'options' => [
         'redirect' => true,
       ],
       'rewrite' => function(ent_link $link, $language_code) {
-        $link->path = ''; // Remove index file for site root
+        $link->path = 'checkout/'; // Remove index file for site root
         return $link;
       }
     ],

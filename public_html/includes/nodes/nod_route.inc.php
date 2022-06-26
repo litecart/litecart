@@ -6,7 +6,7 @@
     private static $_links_cache = [];
     private static $_links_cache_token;
     private static $_routes = [];
-    public static $route = [];
+    public static $selected = [];
     public static $request = '';
 
     public static function init() {
@@ -33,69 +33,82 @@
     public static function load($path) {
 
       foreach (functions::file_search($path) as $file) {
-        $name = preg_replace('#^.*/url_(.*)\.inc\.php$#', '$1', $file);
-        $class = 'url_'.$name;
 
-        self::$_classes[$name] = new $class;
+        $routes = include $file;
 
-        if (!method_exists(self::$_classes[$name], 'routes')) continue;
-        if (!$routes = self::$_classes[$name]->routes())  continue;
-
-        foreach ($routes as $route) {
-          self::add($route['pattern'], $route['endpoint'], $route['page'], $route['params'], $route['options']);
+        foreach ($routes as $i => $route) {
+          self::add($i, $route);
         }
       }
     }
 
-    public static function add($pattern, $endpoint, $page, $params='', $options=[]) {
-      self::$_routes[] = [
-        'pattern' => $pattern,
-        'endpoint' => $endpoint,
-        'page' => $page,
-        'params' => $params,
-        'options' => $options,
+    public static function add($i, $route) {
+
+      if (empty($route['endpoint'])) {
+        if (strpos($i, ':') !== false) {
+          switch (true) {
+            case (preg_match('#^b(ackend)?:#', $i)):
+              $route['endpoint'] = 'backend';
+              break;
+            default:
+              $route['endpoint'] = 'frontend';
+              break;
+          }
+        } else {
+          $route['endpoint'] = 'frontend';
+        }
+      }
+
+      if (strpos($i, ':') === false) {
+        switch ($route['endpoint']) {
+          case 'frontend': $i = 'f:'.$i;  break;
+          case 'backend':  $i = 'b:'.$i;  break;
+      }
+    }
+
+      self::$_routes[$i] = [
+        'pattern' => fallback($route['pattern'], ''),
+        'endpoint' => fallback($route['endpoint'], 'frontend'),
+        'controller' => fallback($route['controller']),
+        'params' => fallback($route['params'], []),
+        'options' => fallback($route['options'], []),
+        'rewrite' => fallback($route['rewrite']),
       ];
     }
 
     public static function identify() {
 
     // Find a target route for requested URL
-      foreach (self::$_routes as $route) {
+      foreach (self::$_routes as $i => $route) {
 
         if (!preg_match($route['pattern'], self::$request)) continue;
 
-        $route['page'] = preg_replace($route['pattern'], $route['page'], self::$request);
+        if (is_string($route['controller'])) {
+          $route['controller'] = preg_replace($route['pattern'], $route['controller'], self::$request);
+        }
 
         if (!empty($route['params'])) {
           parse_str(preg_replace($route['pattern'], $route['params'], self::$request), $params);
           $_GET = array_filter(array_merge($_GET, $params));
         }
 
-        return self::$route = $route;
+        if (preg_match('#:\*$#', $i)) {
+          return self::$selected = array_merge(['route' => route::$request], $route);
+        } else {
+          return self::$selected = array_merge(['route' => $i], $route);
+        }
       }
     }
 
     public static function process() {
 
-      if (empty(self::$route)) self::identify();
-
-      if (!empty(self::$route['page'])) {
-
-        if (!empty(self::$route['endpoint']) && self::$route['endpoint'] == 'backend') {
-          $page = 'app://backend/pages/' . self::$route['page'] .'.inc.php';
-        } else {
-          $page = 'app://frontend/pages/' . self::$route['page'] .'.inc.php';
-        }
-
-      } else {
-        $page = false;
-      }
+      if (empty(self::$selected)) self::identify();
 
     // Forward to rewritten URL (if necessary)
-      if (!empty(self::$route['page']) && is_file($page)) {
-        $rewritten_url = document::ilink(self::$route['page'], $_GET);
+      if (!empty($selected)) {
+        $rewritten_url = document::ilink(self::$selected['route'], $_GET);
 
-        if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
+        if (self::$request != parse_url($rewritten_url, PHP_URL_PATH)) {
 
           $do_redirect = true;
 
@@ -103,7 +116,7 @@
           if (file_get_contents('php://input') != '') $do_redirect = false;
 
         // Don't forward if requested not to
-          if (isset(self::$route['options']['redirect']) && self::$route['options']['redirect'] != true) $do_redirect = false;
+          if (isset(self::$selected['options']['redirect']) && self::$selected['options']['redirect'] != true) $do_redirect = false;
 
         // Don't forward if there are notices in stack
           if (!empty(notices::$data)) {
@@ -126,42 +139,66 @@
         }
       }
 
-      if (!empty(self::$route) && is_file($page)) {
-        include $page;
-
-      } else {
-        $request = new ent_link(document::link());
-
-        http_response_code(404);
-
-      // Don't return an error page for content with a defined extension (presumably static)
-        if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
-
-        $not_found_file = 'storage://logs/not_found.log';
-
-        $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
-        $lines[] = $request->path;
-        $lines = array_unique($lines);
-
-        sort($lines);
-
-        if (count($lines) >= 100) {
-          $email = new ent_email();
-          $email->add_recipient(settings::get('site_email'))
-                ->set_subject('[Not Found Report] '. settings::get('site_name'))
-                ->add_body("** This is a report of requests made to your website that did not have a destination. **\r\n\r\n". PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n".implode("\r\n", $lines))
-                ->send();
-          file_put_contents($not_found_file, '');
-        } else {
-          file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
-        }
-
-        include 'app://frontend/pages/error_document.inc.php';
-        include 'app://includes/app_footer.inc.php';
-        exit;
-
+    // Execute a callable controller
+      if (is_callable(self::$selected['controller'])) {
+        call_user_func(self::$selected['controller']);
         return;
       }
+
+    // Execute a file controller
+      if (!empty(self::$selected['controller']) && is_string(self::$selected['controller'])) {
+
+        if (is_file(self::$selected['controller'])) {
+          $page = self::$selected['controller'];
+        } else {
+          if (!empty(self::$selected['endpoint']) && self::$selected['endpoint'] == 'backend') {
+            $page = 'app://backend/pages/' . self::$selected['controller'] .'.inc.php';
+          } else {
+            $page = 'app://frontend/pages/' . self::$selected['controller'] .'.inc.php';
+          }
+        }
+
+        if (is_file($page)) {
+          (function(){
+            include func_get_arg(0);
+          })($page);
+
+          return;
+        }
+      }
+
+    // Display error document
+      http_response_code(404);
+
+      $request = new ent_link(document::link());
+
+    // Don't return an error document for content with a defined extension (presumably static)
+      if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
+
+      $not_found_file = 'storage://logs/not_found.log';
+
+      $lines = is_file($not_found_file) ? file($not_found_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) : [];
+      $lines[] = $request->path;
+      $lines = array_unique($lines);
+
+      sort($lines);
+
+      if (count($lines) >= 100) {
+        $email = new ent_email();
+        $email->add_recipient(settings::get('site_email'))
+              ->set_subject('[Not Found Report] '. settings::get('site_name'))
+              ->add_body("** This is a report of requests made to your website that did not have a destination. **\r\n\r\n". PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n".implode("\r\n", $lines))
+              ->send();
+        file_put_contents($not_found_file, '');
+      } else {
+        file_put_contents($not_found_file, implode(PHP_EOL, $lines) . PHP_EOL);
+      }
+
+      include 'app://frontend/pages/error_document.inc.php';
+      include 'app://includes/app_footer.inc.php';
+      exit;
+
+      return;
     }
 
     public static function strip_url_logic($path) {
@@ -248,13 +285,11 @@
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);
 
-    // Set route name
-      $route_name = str_replace('/', '_', trim($link->path, '/'));
-
     // Rewrite link
-      if (!empty(self::$_classes[$route_name])) {
-        if (method_exists(self::$_classes[$route_name], 'rewrite')) {
-          if ($rewritten_link = self::$_classes[$route_name]->rewrite($link, $language_code)) {
+      foreach (self::$_routes as $i => $route) {
+        if (empty($route['pattern'])) continue;
+        if (preg_match('#^'. strtr(preg_quote($route['pattern'], '#'), ['\\*' => '.*', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']) .'$#i', $link->path)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
+          if (method_exists($route, 'rewrite') && $rewritten_link = call_user_func_array($route->rewrite, [$link, $language_code])) {
             $link = $rewritten_link;
           }
         }

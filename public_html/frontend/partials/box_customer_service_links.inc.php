@@ -20,7 +20,7 @@
       'title' => language::translate('title_contact_us', 'Contact Us'),
       'link' => document::ilink('customer_service'),
       'opened' => false,
-      'active' => (route::$route['page'] == 'customer_service' && empty($_GET['page_id'])) ? true : false,
+      'active' => (route::$selected['route'] == 'f:customer_service' && empty($_GET['page_id'])) ? true : false,
       'subpages' => [],
     ];
 

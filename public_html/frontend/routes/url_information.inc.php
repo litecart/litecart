@@ -1,33 +1,27 @@
 <?php
 
-  class url_information {
+  return [
+    'information' => [
+      'pattern' => '#^.*-i-([0-9]+)/?$#',
+      'controller' => 'information',
+      'params' => 'page_id=$1',
+      'endpoint' => 'frontend',
+      'options' => [
+        'redirect' => true,
+      ],
+      'rewrite' => function(ent_link $link, $language_code) {
 
-    function routes() {
-      return [
-        [
-          'pattern' => '#^.*-i-([0-9]+)/?$#',
-          'page' => 'information',
-          'params' => 'page_id=$1',
-          'endpoint' => 'frontend',
-          'options' => [
-            'redirect' => true,
-          ],
-        ],
-      ];
-    }
+        if (empty($link->query['page_id'])) return false;
 
-    function rewrite(ent_link $link, $language_code) {
+        $page = reference::page($link->query['page_id'], $language_code);
+        if (empty($page->id)) return $link;
 
-      if (empty($link->query['page_id'])) return false;
+        if (empty($page)) return false;
 
-      $page = reference::page($link->query['page_id'], $language_code);
-      if (empty($page->id)) return $link;
+        $link->path = functions::format_path_friendly($page->title, $language_code) .'-i-'. $page->id;
+        $link->unset_query('page_id');
 
-      if (empty($page)) return false;
-
-      $link->path = functions::format_path_friendly($page->title, $language_code) .'-i-'. $page->id;
-      $link->unset_query('page_id');
-
-      return $link;
-    }
-  }
+        return $link;
+      }
+    ],
+  ];

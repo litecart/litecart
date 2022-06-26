@@ -19,12 +19,16 @@
   route::load('app://backend/routes/url_*.inc.php');
 
 // Append last destination route
-  route::add('#^([0-9a-zA-Z_/\.]+)$#', 'frontend', '$1');
+  route::add('*', [
+    'pattern' => '#^(.*)$#',
+    'endpoint' => 'frontend',
+    'controller' => '$1',
+  ]);
 
   route::identify();
 
 // Initialize endpoint
-  if (!empty(route::$route['endpoint']) && route::$route['endpoint'] == 'backend') {
+  if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
     require 'app://backend/bootstrap.inc.php';
   } else {
     require 'app://frontend/bootstrap.inc.php';

@@ -17,7 +17,7 @@
       $shopping_cart->data['incoterm'] = $shopping_cart->shipping->selected['incoterm'];
     }
 
-    if (route::$route['page'] != 'checkout/process') {
+    if (route::$selected['route'] != 'f:checkout/process') {
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
     }

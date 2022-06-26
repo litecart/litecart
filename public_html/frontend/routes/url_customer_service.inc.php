@@ -1,55 +1,39 @@
 <?php
 
-  class url_customer_service {
+  $titles = [];
+  foreach (language::$languages as $language) {
+    $titles[] = preg_quote(functions::format_path_friendly(language::translate('title_customer_service', 'Customer Service', $language['code'])), '#');
+  }
 
-    function routes() {
+  return [
+    'customer_service' => [
+      'pattern' => '#^('. implode('|', array_filter($titles)) .'|.*-s-([0-9]+)/?)$#',
+      'controller' => 'customer_service',
+      'params' => 'page_id=$1',
+      'endpoint' => 'frontend',
+      'options' => [
+        'redirect' => true,
+      ],
+      'rewrite' => function(ent_link $link, $language_code) {
 
-      $titles = [];
-      foreach (language::$languages as $language) {
-        $titles[] = preg_quote(functions::format_path_friendly(language::translate('title_customer_service', 'Customer Service', $language['code'])), '#');
-      }
+        if (!empty($link->query['page_id'])) {
 
-      return [
-        [
-          'pattern' => '#^('. implode('|', array_filter($titles)) .')$#',
-          'page' => 'customer_service',
-          'params' => '',
-          'endpoint' => 'frontend',
-          'options' => [
-            'redirect' => true,
-          ],
-        ],
-        [
-          'pattern' => '#^.*-s-([0-9]+)/?$#',
-          'page' => 'customer_service',
-          'params' => 'page_id=$1',
-          'endpoint' => 'frontend',
-          'options' => [
-            'redirect' => true,
-          ],
-        ],
-      ];
-    }
+          $page = reference::page($link->query['page_id'], $language_code);
+          if (empty($page->id)) return $link;
 
-    function rewrite(ent_link $link, $language_code) {
+          if (!empty($page->title)) {
+            $link->path = functions::format_path_friendly($page->title, $language_code) .'-s-'. $page->id;
+          } else {
+            $link->path = 'untitled-s-'. $page->id;
+          }
 
-      if (!empty($link->query['page_id'])) {
-
-        $page = reference::page($link->query['page_id'], $language_code);
-        if (empty($page->id)) return $link;
-
-        if (!empty($page->title)) {
-          $link->path = functions::format_path_friendly($page->title, $language_code) .'-s-'. $page->id;
         } else {
-          $link->path = 'untitled-s-'. $page->id;
+          $link->path = functions::format_path_friendly(language::translate('title_customer_service', 'Customer Service', $language_code));
         }
 
-      } else {
-        $link->path = functions::format_path_friendly(language::translate('title_customer_service', 'Customer Service', $language_code));
+        if (isset($link->query['page_id'])) $link->unset_query('page_id');
+
+        return $link;
       }
-
-      if (isset($link->query['page_id'])) $link->unset_query('page_id');
-
-      return $link;
-    }
-  }
+    ],
+  ];

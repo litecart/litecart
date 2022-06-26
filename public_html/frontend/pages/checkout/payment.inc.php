@@ -13,7 +13,7 @@
   if (!empty($_POST['select_shipping'])) {
     $shopping_cart->payment->select($_POST['payment_option']['id'], $_POST);
 
-    if (route::$route['page'] != 'order_process') {
+    if (route::$selected['route'] != 'f:order_process') {
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
     }
