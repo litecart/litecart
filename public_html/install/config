@@ -7,9 +7,9 @@
   define('BACKEND_ALIAS', '{ADMIN_FOLDER}');
 
 // File System
-  define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));
+  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));
 
-  define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');
+  define('FS_DIR_APP',         rtrim(str_replace('\\', '/', realpath(__DIR__.'/..')), '/') . '/');
   define('FS_DIR_ADMIN',       FS_DIR_APP . 'backend/');
   define('FS_DIR_STORAGE',     FS_DIR_APP . '{STORAGE_FOLDER}/');
 
@@ -36,7 +36,7 @@
 ######################################################################
 
 // Errors
-  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);
+  error_reporting(E_ALL);
   ini_set('ignore_repeated_errors', 'On');
   ini_set('log_errors', 'On');
   ini_set('error_log', 'storage://logs/errors.log');

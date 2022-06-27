@@ -49,19 +49,21 @@
     return $buffer;
   });
 
+  define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));
+  define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
+  define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
+
+  define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
+
+  define('VMOD_DISABLED', 'true');
+
+  require FS_DIR_APP . 'includes/app_header.inc.php';
   require __DIR__ . '/includes/header.inc.php';
   require __DIR__ . '/includes/functions.inc.php';
 
   try {
 
-    define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__ .'/../')), '/') .'/');
     define('DB_CONNECTION_CHARSET', 'utf8mb4');
-
-    require FS_DIR_APP . 'includes/error_handler.inc.php';
-    require FS_DIR_APP . 'includes/functions/func_file.inc.php';
-    require FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
-    require FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
-    require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
 
     register_shutdown_function(function(){
       $buffer = ob_get_clean();
@@ -74,51 +76,12 @@
 
     echo '<p>Checking installation parameters...';
 
-    if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-      define('DOCUMENT_ROOT', rtrim(file_realpath($_SERVER['DOCUMENT_ROOT']), '/') . '/');
-    } else if (php_sapi_name() == 'cli' && !empty($_REQUEST['document_root'])) {
-      define('DOCUMENT_ROOT', rtrim(file_realpath($_REQUEST['document_root']), '/') . '/');
-    } else {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
-    }
-
-    define('WS_DIR_APP', '/' . preg_replace('#^'. preg_quote(file_realpath($_SERVER['DOCUMENT_ROOT']), '#') .'#', '', FS_DIR_APP));
-
-    if (preg_match('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', FS_DIR_APP . 'storage/')) {
-      define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
-    } else {
+    if (!preg_match('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', FS_DIR_STORAGE)) {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' The storage folder must be under the document root.</p>' . PHP_EOL  . PHP_EOL);
-    }
-
-    if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
-      define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
-    } else {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
-    }
-
-  // Set platform version
-    if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
-      define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
-    } else {
-      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
-    }
-
-    if (!empty($_REQUEST['admin_folder'])) {
-      $_REQUEST['admin_folder'] = rtrim(str_replace('\\', '/', $_REQUEST['admin_folder']), '/');
-    } else {
-      $_REQUEST['admin_folder'] = 'admin';
-    }
-
-    if (empty($_REQUEST['db_server'])) {
-      $_REQUEST['db_server'] = '127.0.0.1';
     }
 
     if (empty($_REQUEST['db_username'])) {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL user provided</p>' . PHP_EOL  . PHP_EOL);
-    }
-
-    if (empty($_REQUEST['db_password'])) {
-      $_REQUEST['db_password'] = '';
     }
 
     if (empty($_REQUEST['db_database'])) {
@@ -148,6 +111,12 @@
     } else if (empty($_REQUEST['timezone'])) {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No time zone provided</p>' . PHP_EOL  . PHP_EOL);
     }
+
+    define('BACKEND_ALIAS', !empty($_REQUEST['admin_folder']) ? basename($_REQUEST['admin_folder']) : 'admin');
+    define('DB_SERVER', !empty($_REQUEST['db_server']) ? $_REQUEST['db_server'] : '127.0.0.1');
+    define('DB_USERNAME', $_REQUEST['db_username']);
+    define('DB_PASSWORD', !empty($_REQUEST['db_password']) ? $_REQUEST['db_password'] : '');
+    define('DB_DATABASE', $_REQUEST['db_database']);
 
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
@@ -215,7 +184,7 @@
     if (php_sapi_name() != 'cli') {
       echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
-      if (rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']) . '/') . preg_replace('#index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
+      if (DOCUMENT_ROOT . preg_replace('#/index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
         echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning]</span> There is a problem with your web server configuration causing $_SERVER["DOCUMENT_ROOT"] and __DIR__ to return conflicting paths. Contact your web host and have them correcting this.</p>' . PHP_EOL  . PHP_EOL;
@@ -226,7 +195,6 @@
 
     echo '<p>Checking for updates... ';
 
-    require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
     $client = new http_client();
 
     $update_file = function($file) use ($client) {
@@ -264,11 +232,11 @@
 
     ### Database > Connection #####################################
 
-    echo '<p>Connecting to MySQL server on '. $_REQUEST['db_server'] .'... ';
+    echo '<p>Connecting to database server on '. DB_SERVER .'... ';
 
     if (!extension_loaded('mysqli')) {
       throw new Exception(' <span class="error">[Error]</span> MySQLi is not installed or configured for PHP</p>' . PHP_EOL  . PHP_EOL);
-    } else if (!database::connect('default', $_REQUEST['db_server'], $_REQUEST['db_username'], $_REQUEST['db_password'], $_REQUEST['db_database'], 'utf8')) {
+    } else if (!database::connect('default', DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE, 'utf8')) {
       throw new Exception(' <span class="error">[Error]</span> Unable to connect</p>' . PHP_EOL  . PHP_EOL);
     } else {
       echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -297,7 +265,7 @@
 
     $charset = database::fetch(database::query(
       "select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from information_schema.SCHEMATA
-      where schema_name = '". database::input($_REQUEST['db_database']) ."'
+      where schema_name = '". database::input(DB_DATABASE) ."'
       limit 1;"
     ));
 
@@ -307,10 +275,10 @@
 
     if (strtok($charset['DEFAULT_CHARACTER_SET_NAME'], '_') != strtok($_REQUEST['db_collation'], '_')) {
       if (!empty($_REQUEST['set_default_collation'])) {
-        database::query("ALTER DATABASE `". $_REQUEST['db_database'] ."` CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";");
+        database::query("ALTER DATABASE `". DB_DATABASE ."` CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";");
         echo 'Setting '. strtok($_REQUEST['db_collation'], '_') . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
-        echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \''. strtok($_REQUEST['db_collation'], '_') .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+        echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="warning">[Warning]</span> The database default charset is not \''. strtok($_REQUEST['db_collation'], '_') .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
       }
     } else {
       echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -320,10 +288,10 @@
 
     if ($charset['DEFAULT_COLLATION_NAME'] != $_REQUEST['db_collation']) {
       if (!empty($_REQUEST['set_default_collation'])) {
-        database::query("ALTER DATABASE `". $_REQUEST['db_database'] ."` CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";");
+        database::query("ALTER DATABASE `". DB_DATABASE ."` CHARACTER SET ". strtok($_REQUEST['db_collation'], '_') ." COLLATE ". $_REQUEST['db_collation'] .";");
         echo 'Setting '. $_REQUEST['db_collation'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
-        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. $_REQUEST['db_database'] .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
+        echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="warning">[Warning]</span> The database default collation is not \''. $_REQUEST['db_collation'] .'\' and you might experience future trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET '. strtok($_REQUEST['db_collation'], '_') .' COLLATE '. $_REQUEST['db_collation'] .';"</p>';
       }
     } else {
       echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -347,12 +315,12 @@
 
     $map = [
       '{STORAGE_FOLDER}' => 'storage',
-      '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
+      '{ADMIN_FOLDER}' => BACKEND_ALIAS,
       '{DB_TYPE}' => 'mysql',
-      '{DB_SERVER}' => $_REQUEST['db_server'],
-      '{DB_USERNAME}' => $_REQUEST['db_username'],
-      '{DB_PASSWORD}' => $_REQUEST['db_password'],
-      '{DB_DATABASE}' => $_REQUEST['db_database'],
+      '{DB_SERVER}' => DB_SERVER,
+      '{DB_USERNAME}' => DB_USERNAME,
+      '{DB_PASSWORD}' => DB_PASSWORD,
+      '{DB_DATABASE}' => DB_DATABASE,
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{DB_PERSISTENT_CONNECTIONS}' => 'false',
@@ -446,7 +414,7 @@
 
     perform_action('copy', [
       'data/default/public_html/' => FS_DIR_APP,
-      'data/default/storage/' => FS_DIR_STORAGE
+      'data/default/storage/' => FS_DIR_STORAGE,
     ]);
 
     echo PHP_EOL;
@@ -458,8 +426,7 @@
     $htaccess = file_get_contents('htaccess');
 
     $htaccess = strtr($htaccess, [
-      '{WS_DIR_APP}' => WS_DIR_APP,
-      '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'] .'/',
+      '{WS_DIR_APP}' => preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP),
       '{FS_DIR_APP}' => FS_DIR_APP,
     ]);
 
@@ -501,7 +468,7 @@
     if (!empty($_REQUEST['country_code'])) {
       echo '<p>Patching installation with regional data...' . PHP_EOL;
 
-      $directories = glob('data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
+      $directories = functions::file_search('data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
 
       if (!empty($directories)) {
         foreach ($directories as $dir) {
@@ -629,7 +596,7 @@
 
     foreach ($translations as $code => $translation) {
       database::query(
-        "insert into ". $_REQUEST['db_table_prefix'] ."translations
+        "insert ignore into ". $_REQUEST['db_table_prefix'] ."translations
         (code, text_en, html, date_created)
         values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
       );
@@ -676,7 +643,7 @@
     echo PHP_EOL
        . '<h2>Complete</h2>' . PHP_EOL
        . '<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL
-       . '<p>You may now log in to the <a href="../'. $_REQUEST['admin_folder'] .'/">backend</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
+       . '<p>You may now log in to the <a href="../'. BACKEND_ALIAS .'/">backend</a> and start configuring your store.</p>' . PHP_EOL . PHP_EOL
        . '<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>' . PHP_EOL . PHP_EOL;
 
     if (php_sapi_name() != 'cli') {

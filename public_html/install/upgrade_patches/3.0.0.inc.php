@@ -464,6 +464,18 @@
         'search'  => "  ini_set('error_log', FS_DIR_APP . 'logs/errors.log');",
         'replace' => "  ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');",
       ],
+      [
+        'search'  => "  error_reporting(version_compare(PHP_VERSION, '5.4.0', '<') ? E_ALL | E_STRICT : E_ALL);",
+        'replace' => "  error_reporting(E_ALL);",
+      ],
+      [
+        'search'  => "  define('DOCUMENT_ROOT',      str_replace('\\', '/', rtrim(realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));",
+        'replace' => "  define('DOCUMENT_ROOT',      rtrim(str_replace('\\', '/', realpath(!empty(\$_SERVER['DOCUMENT_ROOT']) ? \$_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));",
+      ],
+      [
+        'search'  => "  define('FS_DIR_APP',         str_replace('\\', '/', rtrim(realpath(__DIR__.'/..'), '/')) . '/');",
+        'replace' => "  define('FS_DIR_APP',         rtrim(str_replace('\\', '/', realpath(__DIR__.'/..')), '/') . '/');",
+      ],
     ],
   ]);
 

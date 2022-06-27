@@ -263,8 +263,6 @@ INSERT INTO `lc_delivery_statuses_info` (`id`, `delivery_status_id`, `language_c
 (1, 1, 'en', '1-3 days', ''),
 (2, 2, 'en', '3-5 days', '');
 -- --------------------------------------------------------
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'none', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `url_type`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'none', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
@@ -274,16 +272,9 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW()),
 (4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","report_frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW()),
 (5, 'job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
-(6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW());
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW()),
 (7, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
-(2, 'fa-clock-o', '#d7d96f', 1, 0, 2, NOW(), NOW()),
-(3, 'fa-cog', '#ffa851', 1, 0, 3, NOW(), NOW()),
-(4, 'fa-truck', '#99cc66', 1, 1, 4, NOW(), NOW()),
-(5, 'fa-times', '#ff6666', 0, 1, 5, NOW(), NOW());
 INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
 (1, 0, 'created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
 (2, 0, 'on_hold', 'fa-money', '#c0c0c0', 0, 0, 0, 'reserve', NOW(), NOW()),
@@ -321,16 +312,6 @@ INSERT INTO `lc_quantity_units_info` (`id`, `quantity_unit_id`, `language_code`,
 (1, 1, 'en', 'pcs', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
-('store_info', 'Store Info', 'Store information', 10),
-('defaults', 'Defaults', 'Store default settings', 20),
-('email', 'Email', 'Email and SMTP', 30),
-('listings', 'Listings', 'Settings for the catalog listing', 40),
-('customer_details', 'Customer Details', 'Settings for the catalog listing', 45),
-('legal', 'Legal', 'Legal settings and information', 50),
-('images', 'Images', 'Settings for graphical elements', 60),
-('checkout', 'Checkout', 'Checkout settings', 70),
-('advanced', 'Advanced', 'Advanced settings', 80),
-('security', 'Security', 'Site security and protection against threats', 90);
 ('site_info', 'Site Info', 'Site information', 10),
 ('defaults', 'Defaults', 'Default settings', 20),
 ('social_media', 'Social Media', 'Settings related to social media.', 30),
@@ -431,7 +412,8 @@ INSERT INTO `lc_settings` (`group_key`, `type`, `title`, `description`, `key`, `
 ('social_media', 'global', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, NOW(), NOW()),
 ('', 'global', 'Template', '', 'template', 'default', 'template()', 1, 0, NOW(), NOW()),
 ('', 'global', 'Template Settings', '', 'template_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, 0, NOW(), NOW()),
-('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW());
+('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, 0, NOW(), NOW()),
+('', 'local', 'Marketplace Access Token', 'The API access token for use with marketplace.', 'marketplace_access_token', '', 'password()', 0, 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
 (1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, NULL, NULL, NOW(), NOW());

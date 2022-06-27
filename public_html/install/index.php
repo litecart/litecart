@@ -1,16 +1,19 @@
 <?php
-  require('../includes/compatibility.inc.php');
-  require('../includes/functions/func_draw.inc.php');
-  require('includes/header.inc.php');
-  require('includes/functions.inc.php');
+  define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));
+  define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
+  define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
+
+  define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
+
+  define('VMOD_DISABLED', 'true');
+
+  require FS_DIR_APP . 'includes/app_header.inc.php';
+  require __DIR__ . '/includes/header.inc.php';
+  require __DIR__ . '/includes/functions.inc.php';
 
   ini_set('display_errors', 'On');
   mb_internal_encoding('UTF-8');
   mb_http_output('UTF-8');
-
-  $document_root = str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/'));
-  $application_root = str_replace('\\', '/', rtrim(realpath(__DIR__.'/../'), '/'));
-  $storage_root = str_replace('\\', '/', rtrim(realpath(__DIR__.'/../storage'), '/'));
 
   $countries = [
     'AF' => 'Afghanistan',
@@ -314,19 +317,16 @@ input[name="development_type"]:checked + div {
 
 <h1>Installer</h1>
 
-<div style="columns: 320px auto; margin-bottom: 2em;">
-  <h2>System Requirements</h2>
+<h2>System Requirements</h2>
 
+<div style="columns: 320px auto; margin-bottom: 2em;">
   <h3>PHP </h3>
 
   <ul>
-    <li>5.4+ <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+    <li>5.4 - 8.1 <?php echo version_compare(PHP_VERSION, '5.4', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
     <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
     <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
     <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-  </ul>
-
-  <ul>
     <li>Extensions
       <ul>
         <li>apc / apcu <?php echo (extension_loaded('apcu') || extension_loaded('apc')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
@@ -343,28 +343,29 @@ input[name="development_type"]:checked + div {
         <li>simplexml <?php echo extension_loaded('simplexml') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
         <li>zip <?php echo extension_loaded('zip') ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
       </ul>
+    </li>
+  </ul>
 
-  <h3>Apache 2 compatible HTTP daemon</h3>
+  <h3>HTTP Server</h3>
 
   <ul>
-    <li>Allow, Deny</li>
-    <li>Options -Indexes</li>
+    <li>Apache Version 2 / LiteSpeed</li>
     <li>Modules
       <ul>
         <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
-        <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+        <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
+        <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not Detected]</span>'; ?></li>
       </ul>
     </li>
   </ul>
 
-  <h3>MySQL</h3>
+  <h3>Database Server</h3>
 
   <ul>
-    <li>5.5+</li>
+    <li>MySQL Version 5.5 - 8.0 / MariaDB Version 10.8</li>
   </ul>
 
   <h2>Writables</h2>
@@ -398,12 +399,15 @@ input[name="development_type"]:checked + div {
 
   <div class="form-group">
     <label>Installation Path</label>
-    <div class="form-input"><?php echo htmlspecialchars($application_root); ?></div>
+    <div class="form-input"><?php echo htmlspecialchars(FS_DIR_APP); ?></div>
   </div>
 
   <div class="form-group">
     <label>Storage Directory</label>
-    <input class="form-input" type="text" value="<?php echo htmlspecialchars($storage_root); ?>">
+    <div class="input-group">
+      <span class="input-group-text"><?php echo preg_replace('#install/.*$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)); ?></span>
+      <div class="form-input">storage/</div>
+    </div>
   </div>
 
   <h3>Database</h3>
