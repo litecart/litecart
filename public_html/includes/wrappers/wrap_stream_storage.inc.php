@@ -89,7 +89,7 @@
 
     public function stream_open(string $path, string $mode, int $options, ?string &$opened_path): bool {
       $path = $this->_resolve_path($path);
-      if (!is_file($path)) return false;
+
       $this->_stream = fopen($path, $mode);
       return (bool)$this->_stream;
     }
@@ -123,12 +123,10 @@
     }
 
     public function unlink(string $path): bool {
-
       return unlink($this->_resolve_path($path));
     }
 
     public function url_stat(string $path, int $flags): array|false {
-
       $path = $this->_resolve_path($path);
       return file_exists($path) ? stat($path) : false;
     }
