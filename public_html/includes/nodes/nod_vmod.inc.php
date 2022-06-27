@@ -13,7 +13,11 @@
 
     public static function init() {
 
-      if (!self::$enabled) return;
+    // Check if enabled
+      if (defined('VMOD_DISABLED') && filter_var(VMOD_DISABLED, FILTER_VALIDATE_BOOL)) {
+        self::$enabled = false;
+        return;
+      }
 
       $timestamp = microtime(true);
 
