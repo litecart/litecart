@@ -1,7 +1,6 @@
 <main id="main" class="container">
   <div id="content">
     {{notices}}
-    {{breadcrumbs}}
 
     <div class="row layout">
 

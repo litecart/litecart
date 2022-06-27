@@ -1768,6 +1768,7 @@ ul.list-inline li {
 }
 .navbar .navbar-nav > li {
   flex: 0 0 auto;
+  align-self: center;
   padding: 0;
   list-style: none;
 }

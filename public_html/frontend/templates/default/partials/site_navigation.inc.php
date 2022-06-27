@@ -74,7 +74,9 @@
           <a href="<?php echo document::href_ilink('brands'); ?>"><?php echo language::translate('title_brands', 'Brands'); ?></a>
         </li>
         <?php } ?>
+      </ul>
 
+      <ul class="navbar-nav">
         <li class="search" style="min-width: 400px;">
           <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
             <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>

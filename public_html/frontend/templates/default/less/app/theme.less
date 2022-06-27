@@ -59,7 +59,7 @@ body {
   margin-bottom: var(--gutter-size);
   color: ~"var(--navigation-text-color)";
   position: sticky;
-  top: 0;
+  top: -1px;
   backdrop-filter: saturate(200%) blur(5px);
   z-index: 999;
 
@@ -82,6 +82,10 @@ body {
   }
   .shopping-cart {
     transition: all 200ms ease-out;
+    a {
+      padding: .5em 1em;
+      border-radius: 0;
+    }
     .badge, .checkout {
       display: none;
     }

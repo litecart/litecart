@@ -76,31 +76,25 @@
 
     .link {
       display: flex;
-      background: #fff;
+      background: var(--navigation-background-color);
       border-radius: var(--border-radius);
       border: 1px solid var(--default-border-color);
+      transition: all 100ms linear;
       &:hover {
         border: 1px solid var(--default-border-color);
       }
     }
 
     img {
-      flex: 1 0 auto;
-      background: var(--whitespace-color);
-      box-shadow: 0 2px 5px var(--shadow-color);
-      border-radius: 50%;
-      width: 64px;
-      height: 64px;
-
-      transform: scale(1);
-      transition: all 100ms linear;
+      display: none;
     }
 
     .caption {
+      flex: 1 0 auto;
       padding: .5em 1em;
       color: var(--default-text-color);
-      font-size: 1.2em;
       text-align: center;
+      align-self: center;
       * {
         color: inherit;
         margin: 0;
@@ -108,10 +102,31 @@
     }
 
     @media (min-width: (@media-breakpoint-sm)) {
+      img {
+        display: inline-block;
+        flex: 0 1 auto;
+        margin: .25em;
+        background: var(--whitespace-color);
+        border-radius: var(--border-radius);
+        width: 75px;
+        transform: scale(1);
+        transition: all 150ms linear;
+      }
+      .caption {
+        font-size: 1.1em;
+        text-align: inline-start;
+      }
+
       &:hover {
+        .link{
+          background: #dbdbdb;
+        }
         img {
           box-shadow: 0 3px 6px var(--shadow-color);
-          transform: scale(1.02);
+          transform: scale(1.15) rotate(-5deg);
+        }
+        .caption {
+          color: #000;
         }
       }
     }
@@ -132,9 +147,9 @@
     @media (min-width: (@media-breakpoint-sm)) {
       &:hover {
         border-color: var(--listing-border-color);
-        box-shadow: 0 0 .25em 0 var(--shadow-color);
-        transform: scale(1.01);
-        transform: scale(1.01);
+        box-shadow: 0 0 .5em 0 var(--shadow-color);
+        transform: scale(1.02);
+        transform: scale(1.02);
       }
     }
 
@@ -189,7 +204,8 @@
     }
 
     .description {
-      margin-top: 1rem;
+      margin: 1rem;
+      font-size: .85em;
     }
 
     .price-wrapper {
@@ -350,7 +366,7 @@
       flex: 0 0 calc(25% - 2em);
     }
     @media (min-width: (@media-breakpoint-lg)) {
-      flex: 0 0 calc(16.67% - 2em);
+      flex: 0 0 calc(20% - 2em);
     }
   }
 }
