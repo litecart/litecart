@@ -299,6 +299,8 @@ DELETE FROM `lc_modules` WHERE `module_id` = 'ot_subtotal' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_orders` SET `no` = id;
 -- --------------------------------------------------------
+UPDATE `lc_pages` SET `dock` = REPLACE('customer_service', 'information');
+-- --------------------------------------------------------
 UPDATE `lc_settings`
 SET `key` = REGEXP_REPLACE(`key`, '^store_', 'site_'),
   title = REPLACE(title, 'Store', 'Site'),

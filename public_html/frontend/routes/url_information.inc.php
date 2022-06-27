@@ -2,7 +2,7 @@
 
   return [
     'information' => [
-      'pattern' => '#^.*-i-([0-9]+)/?$#',
+      'pattern' => '#^.*-[is]-([0-9]+)/?$#',
       'controller' => 'information',
       'params' => 'page_id=$1',
       'endpoint' => 'frontend',

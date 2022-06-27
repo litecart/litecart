@@ -1,4 +1,12 @@
 <?php
+  document::$snippets['title'][] = language::translate('contact:head_title', 'Contact');
+  document::$snippets['description'] = language::translate('contact:meta_description', '');
+
+  if (!empty($_GET['page_id'])) {
+    breadcrumbs::add(language::translate('title_contact', 'Contact'), document::ilink('contact'));
+  } else {
+    breadcrumbs::add(language::translate('title_contact', 'Contact'));
+  }
 
   if (!$_POST) {
     $_POST = [
@@ -54,5 +62,6 @@
     }
   }
 
-  $box_contact_us = new ent_view(FS_DIR_TEMPLATE . 'partials/box_contact_us.inc.php');
-  echo $box_contact_us;
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/contact.inc.php');
+
+  echo $_page;

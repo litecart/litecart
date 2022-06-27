@@ -26,22 +26,6 @@
       ];
     }
 
-    $pages_query = database::query(
-      "select p.id, pi.title from ". DB_TABLE_PREFIX ."pages p
-      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
-      where status
-      and find_in_set('customer_service', dock)
-      order by p.priority, pi.title;"
-    );
-
-    while ($page = database::fetch($pages_query)) {
-      $site_footer->snippets['customer_service_pages'][$page['id']] = [
-        'id' => $page['id'],
-        'title' => $page['title'],
-        'link' => document::href_ilink('customer_service', ['page_id' => $page['id']]),
-      ];
-    }
-
     $modules_query = database::query(
       "select id, settings  from ". DB_TABLE_PREFIX ."modules
       where type in ('shipping', 'payment')

@@ -1,5 +1,5 @@
 <div id="sidebar">
-    <?php include 'app://frontend/partials/box_customer_service_links.inc.php'; ?>
+    <?php include 'app://frontend/partials/box_account_links.inc.php'; ?>
 </div>
 
 <div id="content">

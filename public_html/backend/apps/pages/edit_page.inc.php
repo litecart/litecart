@@ -91,7 +91,6 @@
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
           <div>
             <?php echo functions::form_draw_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
-            <?php echo functions::form_draw_checkbox('dock[]', ['customer_service', language::translate('text_dock_in_customer_service', 'Dock in customer service')], true); ?>
             <?php echo functions::form_draw_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
           </div>
         </div>

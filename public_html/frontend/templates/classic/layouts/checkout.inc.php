@@ -21,8 +21,8 @@
 
   <div class="middle hidden-xs hidden-sm"></div>
 
-  <div class="customer-service hidden-xs">
-    <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>
+  <div class="contact-info hidden-xs">
+    <div class="title"><?php echo language::translate('title_contact', 'Contact'); ?></div>
     <?php if (settings::get('site_phone')) { ?>
     <div class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('site_phone'); ?></div>
     <?php } else { ?>

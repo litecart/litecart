@@ -19,17 +19,17 @@
 #header {
   margin: 0 auto;
 }
-#header .customer-service {
+#header .contact-info {
   align-self: center;
   text-align: end;
   line-height: 150%;
 }
 @media (min-width: 768px) {
-  #header .customer-service {
+  #header .contact-info {
     font-size: 1.25em;
   }
 }
-#header .customer-service .title {
+#header .contact-info .title {
   font-weight: bold;
   margin: 0;
 }
