@@ -26,7 +26,7 @@
           type: 'get',
           async: true,
           cache: false,
-          url: 'search_results.json.php?query=' + query,
+          url: 'search_results.json.php?query=' + encodeURIComponent(query),
           dataType: 'json',
           beforeSend: function(jqXHR) {
             jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));

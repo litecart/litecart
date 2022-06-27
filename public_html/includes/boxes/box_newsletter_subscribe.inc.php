@@ -61,7 +61,7 @@
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-        where email like '". database::input($_POST['email']) ."';"
+        where email like '". addcslashes(database::input($_POST['email']), '%_') ."';"
       );
 
       notices::add('success', language::translate('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));

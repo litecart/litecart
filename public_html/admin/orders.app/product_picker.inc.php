@@ -48,7 +48,7 @@
       type: 'get',
       async: true,
       cache: false,
-      url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'products.json']); ?>&query=' + $(this).val(),
+      url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'products.json']); ?>&query=' + encodeURIComponent($(this).val()),
       dataType: 'json',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));

@@ -152,7 +152,7 @@
               select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
               where country_code = '". database::input($customer['shipping_address']['country_code']) ."'
               and (zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
-              and (city = '' or city like '". database::input($customer['shipping_address']['city']) ."')
+              and (city = '' or city like '". addcslashes(database::input($customer['shipping_address']['city']), '%_') ."')
             )
           )
         )
