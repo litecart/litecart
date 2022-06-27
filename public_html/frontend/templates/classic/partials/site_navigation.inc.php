@@ -54,8 +54,8 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-      <li class="customer-service">
-        <a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
+      <li class="contact">
+        <a href="<?php echo document::href_ilink('contact'); ?>"><?php echo language::translate('title_contact', 'Contact'); ?></a>
       </li>
 
       <?php if (settings::get('accounts_enabled')) { ?>

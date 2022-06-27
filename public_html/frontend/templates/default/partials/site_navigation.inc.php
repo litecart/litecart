@@ -1,3 +1,43 @@
+<style>
+#site-top-navigation {
+  background: #d1d1dd;
+}
+#site-top-navigation .container {
+  display: flex;
+  justify-content: space-between;
+}
+#site-top-navigation .nav {
+  margin: 0 auto;
+}
+#site-top-navigation .code {
+  font-size: .8em;
+  background: #bcbccb;
+  padding: .25em .5em;
+}
+</style>
+
+<div id="site-top-navigation">
+  <div class="container">
+    <ul class="nav">
+      <li class="dropdown">
+        <a class="nav-item" href="<?php echo document::href_ilink('regional_settings'); ?>">
+          <span class="code"><?php echo language::$selected['code']; ?></span> <?php echo language::$selected['name']; ?>
+        </a>
+      </li>
+      <li class="dropdown">
+        <a class="nav-item" href="<?php echo document::href_ilink('regional_settings'); ?>">
+          <span class="code"><?php echo currency::$selected['code']; ?></span> <?php echo currency::$selected['name']; ?>
+        </a>
+      </li>
+      <li class="dropdown">
+        <a class="nav-item" href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="dropdown">
+          <span class="code"><?php echo customer::$data['country_code']; ?></span> <?php echo reference::country(customer::$data['country_code'])->name; ?>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
 <div id="site-navigation" style="grid-area: navigation;">
   <div class="container navbar">
 
@@ -18,15 +58,9 @@
     <nav class="navbar-menu">
       <ul class="navbar-nav">
 
-        <li class="search">
-          <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
-            <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-          <?php echo functions::form_draw_form_end(); ?>
-        </li>
-
         <?php if ($categories) { ?>
         <li class="categories dropdown">
-          <a href="#" data-toggle="dropdown"><?php echo language::translate('title_products', 'Products'); ?></a>
+          <a href="#" data-toggle="dropdown"><?php echo language::translate('title_categories', 'Categories'); ?></a>
           <ul class="dropdown-menu">
             <?php foreach ($categories as $item) { ?>
             <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
@@ -37,14 +71,18 @@
 
         <?php if ($brands) { ?>
         <li class="brands dropdown">
-          <a href="#" data-toggle="dropdown"><?php echo language::translate('title_brands', 'Brands'); ?></a>
-          <ul class="dropdown-menu">
-            <?php foreach ($brands as $item) { ?>
-            <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-            <?php } ?>
-          </ul>
+          <a href="<?php echo document::href_ilink('brands'); ?>"><?php echo language::translate('title_brands', 'Brands'); ?></a>
         </li>
         <?php } ?>
+
+        <li class="search" style="min-width: 400px;">
+          <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
+            <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
+          <?php echo functions::form_draw_form_end(); ?>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
 
         <?php if ($pages) { ?>
         <li class="information dropdown">
@@ -56,24 +94,6 @@
           </ul>
         </li>
         <?php } ?>
-      </ul>
-
-      <ul class="navbar-nav navbar-end">
-
-        <li class="customer-service">
-          <a href="<?php echo document::href_ilink('customer_service'); ?>">
-            <?php echo functions::draw_fonticon('fa-envelope-o'); ?> <?php echo language::translate('title_contact', 'Contact'); ?>
-          </a>
-        </li>
-
-        <li class="regional-settings">
-          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
-            <?php echo functions::draw_fonticon('fa-globe'); ?>
-            <span class="language"><?php echo language::$selected['code']; ?></span>
-            / <span class="country"><?php echo customer::$data['country_code']; ?></span>
-            / <span class="currency"><?php echo currency::$selected['code']; ?></span>
-          </a>
-        </li>
 
         <?php if (settings::get('accounts_enabled')) { ?>
         <?php if (!empty(customer::$data['id'])) { ?>
@@ -94,9 +114,20 @@
         <?php } ?>
         <?php } ?>
 
+        <li class="contact">
+          <a href="<?php echo document::href_ilink('contact'); ?>">
+            <i class="fa fa-envelope-o"></i> <?php echo language::translate('title_contact', 'Contact'); ?>
+          </a>
+        </li>
+
+      </ul>
+
+      <ul class="navbar-nav">
         <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
           <a href="#" data-toggle="dropdown">
-            <?php echo functions::draw_fonticon('fa-shopping-basket'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>
+            <!--<?php echo functions::draw_fonticon('fa-shopping-basket'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>-->
+            <img class="img-responsive" src="<?php echo document::link(WS_DIR_TEMPLATE .'images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>" style="max-height: 48px;" />
+            <span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
             <span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
           </a>
 
@@ -106,7 +137,7 @@
               <div class="item">
                 <div class="row">
                   <div class="col-3">
-                    <img class="image img-responsive" src="<?php echo document::href_rlink(FS_DIR_STORAGE . $item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
+                    <img class="image img-responsive" src="<?php echo document::href_rlink($item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />
                   </div>
                   <div class="col-8">
                     <div><a class="name" href="<?php echo document::href_ilink('product', ['product_id' => $item['product_id']]); ?>"><?php echo $item['name']; ?></a></div>
