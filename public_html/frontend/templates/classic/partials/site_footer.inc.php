@@ -9,7 +9,6 @@
           <section class="account col-md-3">
             <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
             <ul class="list-unstyled">
-              <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
               <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
               <?php if (empty(customer::$data['id'])) { ?>
               <li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>

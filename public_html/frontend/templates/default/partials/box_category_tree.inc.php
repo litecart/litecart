@@ -17,7 +17,8 @@
 <section id="box-category-tree" class="hidden-xs">
 
   <ul class="nav nav-stacked nav-pills">
-    <li><a href="<?php echo document::href_ilink('categories'); ?>"><?php echo functions::draw_fonticon('fa-angle-left fa-fw'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
+    <li><a href="<?php echo functions::escape_html($backlink); ?>"><?php echo functions::draw_fonticon('fa-angle-left fa-fw'); ?> <?php echo language::translate('title_back', 'Back'); ?></a></li>
     <?php foreach ($categories as $category) $draw_branch($category); ?>
   </ul>
+
 </section>

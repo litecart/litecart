@@ -2,7 +2,7 @@
   <div class="row layout">
     <div class="col-md-3">
       <div id="sidebar">
-        <h1 style="margin-top: 0;"><?php echo $name; ?></h1>
+        <h1 style="margin-top: 0;"><?php echo $main_category['name']; ?></h1>
 
         <?php if (!empty($image)) { ?>
         <div style="margin-bottom: 2em;">

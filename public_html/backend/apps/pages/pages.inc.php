@@ -73,7 +73,6 @@
   $dock_options = [
     '' => '-- '. language::translate('title_all', 'All') .' --',
     'menu' => language::translate('title_site_menu', 'Site Menu'),
-    'customer_service' => language::translate('title_customer_service', 'Customer Service'),
     'information' => language::translate('title_information', 'Information'),
   ];
 ?>
@@ -108,7 +107,6 @@
           <th class="main"><?php echo language::translate('title_title', 'Title'); ?></th>
           <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
           <th><?php echo language::translate('title_information', 'Information'); ?></th>
-          <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
           <th></th>
         </tr>
       </thead>
@@ -155,7 +153,6 @@
           <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
 <?php
@@ -215,7 +212,6 @@
           <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
 <?php
@@ -239,7 +235,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="7"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

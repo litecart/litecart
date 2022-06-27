@@ -56,6 +56,7 @@
       'head_title' => $category->head_title ? $category->head_title : $category->name,
       'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
       'image' => [],
+      'main_category' => [],
       'subcategories' => [],
       'products' => [],
       'list_style' => $category->list_style,
@@ -80,6 +81,32 @@
           'clipping' => strtolower(settings::get('category_image_clipping')),
         ],
       ];
+    }
+
+    // Main Category
+    if (!empty($category->id)) {
+      $_page->snippets['main_category'] = [
+        'id' => $category->main_category->id,
+        'name' => $category->main_category->name,
+        'image' => [],
+        'link' => document::ilink('category', ['category_id' => $category->main_category->id]),
+      ];
+
+      list($width, $height) = functions::image_scale_by_width(160, settings::get('category_image_ratio'));
+
+      if (!empty($category->main_category->image)) {
+        $_page->snippets['main_category']['image'] = [
+          'original' => 'images/' . $category->main_category->image,
+          'thumbnail' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
+          'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $category->main_category->image, $width, $height),
+          'viewport' => [
+            'width' => $width,
+            'height' => $height,
+            'ratio' => str_replace(':', '/', settings::get('category_image_ratio')),
+            'clipping' => strtolower(settings::get('category_image_clipping')),
+          ],
+        ];
+      }
     }
 
   // Subcategories

@@ -17,6 +17,7 @@
       'main_category' => $main_category ? $main_category->id : 0,
       'categories' => [],
       'trail' => $trail,
+      'backlink' => $main_category ? document::ilink('category', ['category_id' => $main_category->id]) : document::ilink('categories'),
     ];
 
     $iterator = function($parent_id) use (&$iterator, &$trail) {
