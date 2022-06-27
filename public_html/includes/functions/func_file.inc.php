@@ -5,6 +5,10 @@
     $source = str_replace('\\', '/', $source);
     $target = str_replace('\\', '/', $target);
 
+    if (!isset($results) || !is_array($results)) {
+      $results = [];
+    }
+
     if (strpos($source, '*') !== false) {
 
       foreach (file_search($source) as $file) {
@@ -34,6 +38,10 @@
   }
 
   function file_delete($source, &$results=[]) {
+
+    if (!isset($results) || !is_array($results)) {
+      $results = [];
+    }
 
   // Resolve glob
     if (strpos($source, '*') !== false) {
@@ -171,7 +179,7 @@
     for ($i=0; $i<strlen($glob); $i++) {
       if (in_array($glob[$i], ['*', '[', ']', '{', '}'])) break;
       if ($glob[$i] == '/') {
-        list($basedir, $remains) = str_split($glob, $i+1);
+        @list($basedir, $remains) = str_split($glob, $i+1);
       }
     }
 
