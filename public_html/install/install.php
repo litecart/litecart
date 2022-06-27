@@ -638,6 +638,14 @@
       echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
     }
 
+    echo '<p>Create file container for requests without a destination...';
+
+    if (file_put_contents(FS_DIR_STORAGE . 'logs/not_found.log', '') !== false) {
+      echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+    } else {
+      echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
+    }
+
     ### #############################################################
 
     echo PHP_EOL
