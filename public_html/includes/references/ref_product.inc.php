@@ -293,9 +293,21 @@
           $this->_data['stock_options'] = [];
 
           $query = database::query(
-            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, si.image from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, oi.reserved, (si.quantity - oi.reserved) as available, si.image
+            from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
             left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
             left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
+            left join (
+              select stock_item_id, sum(quantity) as reserved from ". DB_TABLE_PREFIX ."orders_items
+              where order_id in (
+                select id from ". DB_TABLE_PREFIX ."orders
+                where order_status_id in (
+                  select id from ". DB_TABLE_PREFIX ."order_statuses
+                  where stock_action = 'reserve'
+                )
+              )
+              group by stock_item_id
+            ) oi on (oi.stock_item_id = p2si.stock_item_id)
             where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by p2si.priority asc;"
