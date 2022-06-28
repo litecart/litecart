@@ -126,7 +126,7 @@
     'stock_options' => [],
     'keywords' => $product->keywords,
     'image' => [
-      'original' => ltrim(!empty($product->images) ? 'images/' . $product->image : 'images/no_image.png', '/'),
+      'original' => ltrim(!empty($product->images) ? 'storage://images/' . $product->image : 'storage://images/no_image.png', '/'),
       'thumbnail' => functions::image_thumbnail('storage://images/' . $product->image, $width, $height, settings::get('product_image_trim')),
       'thumbnail_2x' => functions::image_thumbnail('storage://images/' . $product->image, $width*2, $height*2, settings::get('product_image_trim')),
       'viewport' => [
@@ -188,7 +188,7 @@
 // Stickers
   if (!empty($product->campaign['price']) && $product->campaign['price'] > 0) {
     $percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
-    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br />'. $percentage .'%</div>';
+    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .' '. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }

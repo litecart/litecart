@@ -6,29 +6,17 @@
 
   try {
 
-    if (empty($_GET['vmod'])) throw new Exception('No vmod provided');
-    if (!is_file('storage://addons/' . basename($_GET['vmod']) .'/vmod.xml')) throw new Exception('The vmod does not exist');
-
-    $dom = new \DOMDocument('1.0', 'UTF-8');
-    $dom->preserveWhiteSpace = false;
-
-    if (!$dom->loadXml(file_get_contents('storage://addons/' . basename($_GET['vmod']) .'/vmod.xml'))) {
-      throw new Exception(libxml_get_last_error());
+    if (empty($_GET['vmod'])) {
+      throw new Exception('No vmod provided');
     }
 
-    switch ($dom->documentElement->tagName) {
+    $file = 'storage://addons/' . basename($_GET['vmod']) .'/vmod.xml';
 
-      case 'vmod': // LiteCart Modification
-        $vmod = vmod::parse_vmod($dom, $_GET['vmod']);
-        break;
-
-      case 'modification': // vQmod
-        $vmod = vmod::parse_vqmod($dom);
-        break;
-
-      default:
-        throw new Exception("File ($file) is not a valid vmod or vQmod");
+    if (!is_file($file)) {
+      throw new Exception('The vmod does not exist');
     }
+
+    $vmod = vmod::parse($file);
 
   } catch (Exception $e) {
     notices::add('errors', $e->getMessage());

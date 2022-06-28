@@ -4,10 +4,11 @@
     public $data;
     public $previous;
 
-    public function __construct($id=null) {
+    public function __construct($folder_name=null) {
 
-      if (!empty($id)) {
-        $this->load($id);
+      if (!empty($folder_name)) {
+        $folder_name = rtrim($folder_name, '/');
+        $this->load($folder_name);
       } else {
         $this->reset();
       }
@@ -17,14 +18,17 @@
 
       $this->data = [
         'id' => null,
+        'status' => null,
         'folder' => null,
-        'title' => '',
-        'description' => '',
-        'version' => '',
-        'author' => '',
+        'location' => null,
+        'title' => null,
+        'description' => null,
+        'version' => null,
+        'author' => null,
         'settings' => [],
         'aliases' => [],
         'files' => [],
+        'installed' => false,
         'date_updated' => null,
         'date_created' => null,
       ];
@@ -32,24 +36,27 @@
       $this->previous = $this->data;
     }
 
-    public function load($id) {
+    public function load($folder_name) {
 
       $this->reset();
 
-      $this->data['id'] = $id;
-      if (is_dir('storage://addons/'. $id .'/')) {
-        $this->data['folder'] = $id .'/';
-      } else if (is_dir('storage://addons/'. $id .'.disabled/')) {
-        $this->data['folder'] = $id .'.disabled/';
+      $this->data['folder_name'] = $folder_name;
+      if (is_dir('storage://addons/'. $folder_name .'/')) {
+        $this->data['folder'] = $folder_name .'/';
+      } else if (is_dir('storage://addons/'. $folder_name .'.disabled/')) {
+        $this->data['folder'] = $folder_name .'.disabled/';
       } else {
-        throw new Exception('Invalid vMod ('. $id .')');
+        throw new Exception('Invalid vMod ('. $folder_name .')');
       }
 
-      if (!is_file('storage://addons/'. $this->data['folder'] .'vmod.xml')) {
-        throw new Exception('Could not find '. $this->data['folder'] .'vmod.xml');
+      $this->data['status'] = !preg_match('#\.disabled/$#', $this->data['folder']);
+      $this->data['location'] = 'storage://addons/'. $this->data['folder'];
+
+      if (!is_file($this->data['location'] .'vmod.xml')) {
+        throw new Exception('Could not find '. $this->data['location'] .'vmod.xml');
       }
 
-      $xml = file_get_contents('storage://addons/'. $this->data['folder'] .'vmod.xml');
+      $xml = file_get_contents($this->data['location'] .'vmod.xml');
       $dom = new \DOMDocument('1.0', 'UTF-8');
       $dom->preserveWhiteSpace = false;
 
@@ -57,32 +64,15 @@
         throw new Exception(libxml_get_errors());
       }
 
+      $this->data['id'] = fallback($dom->getElementsByTagName('title')->item(0)->textContent, functions::format_path_friendly($folder_name));
+      $this->data['title'] = fallback($dom->getElementsByTagName('title')->item(0)->textContent, '');
+      $this->data['version'] = fallback($dom->getElementsByTagName('version')->item(0)->textContent, date('Y-m-d', filemtime($this->data['location'] .'vmod.xml')));
+      $this->data['description'] = fallback($dom->getElementsByTagName('description')->item(0)->textContent, '');
+      $this->data['author'] = fallback($dom->getElementsByTagName('author')->item(0)->textContent, '');
       $this->data['date_created'] = date('Y-m-d H:i:s', filectime('storage://addons/'. $this->data['folder'] .'/vmod.xml'));
       $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime('storage://addons/'. $this->data['folder'] .'/vmod.xml'));
 
-      switch ($dom->documentElement->tagName) {
-
-        case 'vmod': // LiteCart Modification
-          $vmod = $this->_load_vmod($dom);
-          break;
-
-        case 'modification': // vQmod
-          $vmod = $this->_load_vqmod($dom);
-          break;
-
-        default:
-          throw new \Exception("File ($id/vmod.xml) is not a valid vmod or vQmod");
       }
-
-      $this->previous = $this->data;
-    }
-
-    private function _load_vmod($dom) {
-
-      $this->data['title'] = !empty($dom->getElementsByTagName('title')->item(0)) ? $dom->getElementsByTagName('title')->item(0)->textContent : '';
-      $this->data['description'] = !empty($dom->getElementsByTagName('description')->item(0)) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
-      $this->data['version'] = !empty($dom->getElementsByTagName('version')->item(0)) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
-      $this->data['author'] = !empty($dom->getElementsByTagName('author')->item(0)) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
         $this->data['aliases'][$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
@@ -157,109 +147,11 @@
 
         $f++;
       }
-    }
 
-    private function _load_vqmod($dom) {
+      $installed_addons = preg_split('#[\r\n]+#', file_get_contents('storage://addons/.installed'), -1, PREG_SPLIT_NO_EMPTY);
+      $this->data['installed'] = in_array($this->data['id'], $installed_addons) ? true : false;
 
-      $this->data['title'] = $dom->getElementsByTagName('id')->item(0)->textContent;
-      $this->data['version'] = $dom->getElementsByTagName('version')->item(0)->textContent;
-      $this->data['author'] = $dom->getElementsByTagName('author')->item(0)->textContent;
-
-      $f = 0;
-      foreach ($dom->getElementsByTagName('file') as $file_node) {
-
-        $this->data['files'][$f] = [
-          'path' => $file_node->getAttribute('path'),
-          'name' => $file_node->getAttribute('name'),
-          'operations' => [],
-        ];
-
-        $o = 0;
-        foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
-
-          $this->data['files'][$f]['operations'][$o] = [
-            'find' => [],
-            'insert' => [],
-            'ignoreif' => [],
-            'onerror' => '',
-          ];
-
-          switch ($file_node->getAttribute('name')) {
-            case 'error':
-              $onerror = 'warning';
-              break;
-
-            case 'skip':
-              $onerror = 'ignore';
-              break;
-
-            case 'abort':
-            default:
-              $onerror = 'cancel';
-              break;
-          }
-
-          if ($search_node = $operation_node->getElementsByTagName('search')->item(0)) {
-
-            if ($search_node->getAttribute('trim') != 'false') {
-              $search_node->textContent = preg_replace('#^\r?\n?#s', '', $search_node->textContent); // Trim beginning of CDATA
-              $search_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $search_node->textContent); // Trim end of CDATA
-            }
-
-            $this->data['files'][$f]['operations'][$o]['find'] = [
-              'content' => $search_node->textContent,
-              'regex' => $search_node->getAttribute('regex'),
-              'index' => $search_node->getAttribute('index'),
-              'trim' => $search_node->getAttribute('trim'),
-            ];
-
-            if ($search_node->getAttribute('position') == 'before') {
-              $this->data['files'][$f]['operations'][$o]['find'] = [
-                'offset-before' => $search_node->getAttribute('offset'),
-                'offset-after' => '',
-              ];
-            } else {
-              $this->data['files'][$f]['operations'][$o]['find'] = [
-                'offset-before' => '',
-                'offset-after' => $search_node->getAttribute('offset'),
-              ];
-            }
-          }
-
-          if ($add_node = $operation_node->getElementsByTagName('add')->item(0)) {
-
-            if ($add_node->getAttribute('trim') != 'false') {
-              $add_node->textContent = preg_replace('#^\r?\n?#s', '', $add_node->textContent); // Trim beginning of CDATA
-              $add_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $add_node->textContent); // Trim end of CDATA
-            }
-
-            $this->data['files'][$f]['operations'][$o]['insert'] = [
-              'position' => $add_node->getAttribute('position'),
-              'content' => $add_node->textContent,
-              'regex' => $add_node->getAttribute('regex'),
-              'trim' => $add_node->getAttribute('trim'),
-            ];
-          }
-
-          if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
-
-            if ($ignoreif_node->getAttribute('trim') != 'false') {
-              $ignoreif_node->textContent = preg_replace('#^\r?\n?#s', '', $ignoreif_node->textContent); // Trim beginning of CDATA
-              $ignoreif_node->textContent = preg_replace('#\r?\n[\t ]*$#s', '', $ignoreif_node->textContent); // Trim end of CDATA
-            }
-
-            $this->data['files'][$f]['operations'][$o]['ignoreif'] = [
-              'content' => $ignoreif_node->textContent,
-              'trim' => $ignoreif_node->getAttribute('trim'),
-              'regex' => $ignoreif_node->getAttribute('regex'),
-            ];
-          }
-
-          $o++;
-        }
-
-        $f++;
-      }
+      $this->previous = $this->data;
     }
 
     public function save() {
@@ -276,16 +168,35 @@
         rename('storage://addons/'.$this->previous['folder'], 'storage://addons/'.$this->data['folder']);
       }
 
+      $this->data['location'] = 'storage://addons/'.$this->data['folder'];
+
+      $xml = $this->_build_xml();
+      file_put_contents($this->data['location'] .'/vmod.xml', $xml);
+
+      $this->previous = $this->data;
+
+      cache::clear_cache('vmods');
+    }
+
+    private function _build_xml() {
+
       $dom = new DomDocument('1.0', 'UTF-8');
       $dom->preserveWhiteSpace = false;
       $dom->formatOutput = true;
 
       $vmod_node = $dom->createElement('vmod');
 
+      $vmod_node->appendChild( $dom->createElement('id', $this->data['id']) );
       $vmod_node->appendChild( $dom->createElement('title', $this->data['title']) );
-      $vmod_node->appendChild( $dom->createElement('description', $this->data['description']) );
       $vmod_node->appendChild( $dom->createElement('version', $this->data['version']) );
+      $vmod_node->appendChild( $dom->createElement('description', $this->data['description']) );
       $vmod_node->appendChild( $dom->createElement('author', $this->data['author']) );
+
+      $marketplace_node = $dom->createElement('marketplace');
+      $marketplace_node->appendChild( $dom->createElement('addon_id', fallback($this->data['marketplace']['addon_id'], '')) );
+      $marketplace_node->appendChild( $dom->createElement('date_expires', fallback($this->data['marketplace']['date_expires'], '')) );
+
+      $vmod_node->appendChild($marketplace_node);
 
       foreach ($this->data['files'] as $file) {
         $file_node = $dom->createElement('file');
@@ -312,7 +223,15 @@
         // Find
           $find_node = $dom->createElement('find');
 
-          foreach (['regex', 'trim', 'offset-before', 'offset-after', 'index'] as $attribute_name) {
+          foreach (['regex', 'trim'] as $attribute_name) {
+            if (!empty($operation['find'][$attribute_name])) {
+              $attribute = $dom->createAttribute($attribute_name);
+              $attribute->value = !empty($operation['find'][$attribute_name]) ? 'true' : 'false';
+              $find_node->appendChild($attribute);
+            }
+          }
+
+          foreach (['offset-before', 'offset-after', 'index'] as $attribute_name) {
             if (!empty($operation['find'][$attribute_name])) {
               $attribute = $dom->createAttribute($attribute_name);
               $attribute->value = $operation['find'][$attribute_name];
@@ -377,11 +296,81 @@
 
       $dom->appendChild( $vmod_node );
 
-      $dom->save(functions::file_realpath('storage://addons/' . $this->data['folder'] .'vmod.xml'));
+      return $dom->saveXML();
+    }
 
-      $this->previous = $this->data;
+    public function check() {
 
-      cache::clear_cache('vmods');
+      $errors = [];
+
+      $tmp_file = tempnam(sys_get_temp_dir(), '');
+
+      file_put_contents($tmp_file, $this->_build_xml());
+
+      $vmod = vmod::parse($tmp_file);
+
+      foreach (array_keys($vmod['files']) as $key) {
+        $patterns = explode(',', $vmod['files'][$key]['name']);
+
+        foreach ($patterns as $pattern) {
+          $path_and_file = $vmod['files'][$key]['path'].$pattern;
+
+        // Apply path aliases
+          if (!empty(vmod::$aliases)) {
+            $path_and_file = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $path_and_file);
+          }
+
+          if (!is_file(FS_DIR_APP . $path_and_file) && (empty($vmod['files'][$key]['onerror']) || strtolower($vmod['files'][$key]['onerror']) != 'skip')) {
+            $errors[] = 'File does not exist: ' . $path_and_file;
+            continue 2;
+          }
+
+          $buffer = file_get_contents(FS_DIR_APP . $path_and_file);
+
+          foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
+
+            if (!empty($operation['ignoreif']) && preg_match($operation['ignoreif'], $buffer)) {
+              continue;
+            }
+
+            $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
+
+            if (!$found) {
+              switch ($operation['onerror']) {
+                case 'ignore':
+                  continue 2;
+                case 'abort':
+                case 'warning':
+                default:
+                  $errors[] = "Search not found in operation $i ($path_and_file)";
+                  continue 2;
+              }
+            }
+
+            if (!empty($operation['find']['indexes'])) {
+              rsort($operation['find']['indexes']);
+
+              foreach ($operation['find']['indexes'] as $index) {
+                $index = $index - 1; // [0] is the 1st in computer language
+
+                if ($found > $index) {
+                  $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+                }
+              }
+
+            } else {
+              $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
+
+              if (!$count && $operation['onerror'] != 'skip') {
+                $errors = "Failed to perform insert for operation $i ($path_and_file)";
+                continue;
+              }
+            }
+          }
+        }
+      }
+
+      return $errors;
     }
 
     public function delete() {
