@@ -121,6 +121,13 @@
 
       while ($item = database::fetch($items_query)) {
         $item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
+
+        try {
+          $this->validate_item($item);
+        } catch (Exception $e) {
+          $item['error'] = $e->getMessage();
+        }
+
         $this->data['items'][$item['key']] = $item;
       }
 
@@ -306,12 +313,7 @@
       $item['sum'] = $item['quantity'] * ($item['price'] - $item['discount']);
       $item['sum_tax'] = $item['quantity'] * ($item['tax'] - $item['discount_tax']);
 
-      try {
-        $this->validate_item($item);
-      } catch (Exception $e) {
-        $item['error'] = $e->getMessage();
-        if ($halt_on_error) return $item['error'];
-      }
+      $this->validate_item($item);
 
     // Round currency amount (Gets rid of hidden decimals)
       $item['price'] = currency::round($item['price'], currency::$selected['code']);
@@ -329,6 +331,8 @@
 
     public function validate_item($item) {
 
+      $product = reference::product($item['product_id']);
+
       if (!$product->id) {
         throw new Exception(language::translate('error_item_not_a_valid_product', 'The item is not a valid product'));
       }
@@ -345,40 +349,26 @@
         throw new Exception(strtr(language::translate('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product->date_valid_to))]));
       }
 
-      if ($quantity <= 0) {
+      if ($item['quantity'] <= 0) {
         throw new Exception(language::translate('error_invalid_item_quantity', 'Invalid item quantity'));
-      }
-
-      if (!empty($item['stock_item_id']) && array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id')) === false) {
-        throw new Exception(language::translate('error_invalid_stock_option', 'Invalid stock option'));
       }
 
       if (empty($item['stock_item_id']) && $product->stock_options) {
         throw new Exception(language::translate('error_muset_select_stock_option', 'You must select a stock option'));
       }
 
+      if (!empty($item['stock_item_id']) && array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id')) === false) {
+        throw new Exception(language::translate('error_invalid_stock_option', 'Invalid stock option'));
+      }
+
       if (!empty($item['stock_item_id'])) {
-        $reserved_items_query = database::query(
-          "select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items
-          where stock_item_id = ". (int)$item['stock_item_id'] ."
-          and order_id in (
-            select id from ". DB_TABLE_PREFIX ."order
-            where order_status_id in (
-              select id from ". DB_TABLE_PREFIX ."order_statuses
-              where stock_action = 'reserve'
-            )
-          )
-          group by stock_item_id;"
-        );
-
-        $reserved_quantity = database::fetch($reserved_items_query, 'total_reserved');
-
         if (($stock_option_key = array_search($item['stock_item_id'], array_column($product->stock_options, 'stock_item_id', 'id'))) !== false) {
           $stock_option = &$product->stock_options[$stock_option_key];
 
           if (!empty($product->sold_out_status) && empty($product->sold_out_status['orderable'])) {
-            $available_quantity_after_purchase = $stock_option['quantity'] - $reserved_quantity - $quantity - (isset($this->data['items'][$item_key]) ? $this->data['items'][$item_key]['quantity'] : 0);
+            $available_quantity_after_purchase = $stock_option['available'] - $item['quantity'] + (isset($this->data['items'][$item['key']]) ? $this->data['items'][$item['key']]['quantity'] : 0);
             if ($available_quantity_after_purchase < 0) {
+              var_dump($stock_option);
               throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') .' ('. $stock_option['sku'] .')');
             }
           }

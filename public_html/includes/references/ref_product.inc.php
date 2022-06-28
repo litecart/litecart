@@ -293,7 +293,7 @@
           $this->_data['stock_options'] = [];
 
           $query = database::query(
-            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, oi.reserved, (si.quantity - oi.reserved) as available, si.image
+            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, oi.reserved, coalesce(si.quantity - oi.reserved, si.quantity) as available, si.image
             from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
             left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
             left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
