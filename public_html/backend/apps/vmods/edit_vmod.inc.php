@@ -114,9 +114,35 @@
 
     $files_datalist[] = $relative_path;
   }
+// Files tree
+
+  $draw_folder_contents = function($directory) use (&$draw_folder_contents) {
+    $output = '';
+
+    foreach (scandir($directory) as $file) {
+      if (in_array($file, ['.', '..'])) continue;
+      //if ($directory == 'storage://addons/'.$vmod->data['id'].'/' && $file == 'vmod.xml') continue;
+      if (is_dir($directory.$file)) {
+        $output .= '<li>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #7ccdff;"') .' '. $file .'/'. $draw_folder_contents($directory.$file.'/') .'</li>';
+
+      } else {
+        $output .= '<li>'. functions::draw_fonticon('fa-file-o') .' '. $file .'<li>';
+      }
+    }
+
+    if (!$output) return;
+
+    return '<ul class="list-unstyled">'. PHP_EOL . $output . PHP_EOL . '</ul>';
+  };
+
 ?>
 
 <style>
+.file-browser {
+  background: var(--default-background-color);
+  line-height: 2;
+}
+
 .operation {
   background: #f8f8f8;
   padding: 1em;
@@ -220,6 +246,18 @@ html.dark-mode .operation {
             </div>
           </div>
           <?php } ?>
+        </div>
+
+        <div class="col-md-8">
+            <div class="form-group col-md-6" style="height: 100%;">
+              <label><?php echo language::translate('title_file_storage', 'File Storage'); ?></label>
+              <div class="file-browser form-input" style="height: 100%;">
+                <ul class="list-unstyled">
+                  <li><strong><?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #7ccdff;"'); ?> [<?php echo language::translate('title_root', 'Root'); ?>]</strong>
+                    <?php echo $draw_folder_contents($vmod->data['location']); ?>
+                  </li>
+              </div>
+            </div>
         </div>
       </div>
 
