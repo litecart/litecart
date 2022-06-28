@@ -123,6 +123,9 @@
   border-radius: 4px;
   margin-bottom: 2em;
 }
+html.dark-mode .operation {
+  background: #232a3e;
+}
 
 .fa-times-circle {
   color: #c00;
@@ -145,7 +148,8 @@
   right: 2em;
   padding: .5em 1em;
   border-radius: 0 0 4px 4px;
-  background: #fffc;
+  background: #fff3;
+  color: #fffc
 }
 
 .sources .form-code {
