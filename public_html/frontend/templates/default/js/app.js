@@ -30,20 +30,15 @@
 // Sidebar parallax effect
   if (typeof(window._env) !== 'undefined' && window._env.template.settings.sidebar_parallax_effect == true) {
 
-    var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
-    var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
+    var $sidebar = $('#sidebar');
+    //var sidebar_max_offset = $sidebar.parent().height() - $sidebar.height() - 200; // Failsafe 30
 
     $(window).on('resize scroll', function(e){
-      if (sidebar_max_offset) {
-        var parallax_rate = 0.4;
-
-        if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
-          var offset = $(this).scrollTop() * parallax_rate;
-          if (offset > sidebar_max_offset) offset = sidebar_max_offset;
-          if (offset > 0) $(column).css('margin-top', offset + 'px');
-        } else {
-          $(column).css('margin-top', 0);
-        }
+      if ($(window).width() >= 768 && ($sidebar.parent().height() - $sidebar.height()) > 500) {
+        var offset = $(this).scrollTop() * .6;
+        if (offset > 0) $sidebar.css('margin-top', offset + 'px');
+      } else {
+        $sidebar.css('margin-top', 0);
       }
     }).trigger('resize');
   }
