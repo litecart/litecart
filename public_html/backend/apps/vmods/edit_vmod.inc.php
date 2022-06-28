@@ -87,6 +87,33 @@
     'bottom' => language::translate('title_bottom', 'Bottom'),
   ];
 
+// List of files
+  $files_datalist = [];
+
+  $skip_list = [
+    '#.*(?<!\.inc\.php)$#',
+    '#^assets/#',
+    '#^index.php$#',
+    '#^includes/app_header.inc.php$#',
+    '#^includes/nodes/nod_vmod.inc.php$#',
+    '#^includes/wrappers/wrap_app.inc.php$#',
+    '#^includes/wrappers/wrap_storage.inc.php$#',
+    '#^install/#',
+    '#^storage/#',
+  ];
+
+  $scripts = functions::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
+
+  foreach ($scripts as $script) {
+
+    $relative_path = functions::file_relative_path($script);
+
+    foreach ($skip_list as $pattern) {
+      if (preg_match($pattern, $relative_path)) continue 2;
+    }
+
+    $files_datalist[] = $relative_path;
+  }
 ?>
 
 <style>
@@ -103,16 +130,34 @@
 .fa-plus {
   color: #0c0;
 }
+.operations {
+  position: sticky;
+  top: 0;
+}
 
-textarea {
-  font-family: monospace;
+.script {
+  position: relative;
+}
+.script .script-filename {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  right: 2em;
+  padding: .5em 1em;
+  border-radius: 0 0 4px 4px;
+  background: #fffc;
+}
+
+.sources .form-code {
+  height: max-content;
+  max-height: 100vh;
 }
 </style>
 
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') .': '. $vmod->data['id'] : language::translate('title_create_new_vmod', 'Create New vMod'); ?>
+      <?php echo $app_icon; ?> <?php echo !empty($vmod->data['id']) ? language::translate('title_edit_vmod', 'Edit vMod') : language::translate('title_create_new_vmod', 'Create New vMod'); ?>
     </div>
   </div>
 
@@ -153,6 +198,11 @@ textarea {
             <?php echo functions::form_draw_text_field('description', true, ''); ?>
           </div>
 
+          <div class="form-group">
+            <label><?php echo language::translate('title_location', 'Location'); ?></label>
+            <div class="form-input" readyonly><?php echo $vmod->data['folder']; ?>/</div>
+          </div>
+
           <?php if (!empty($vmod->data['id'])) { ?>
           <div class="row">
             <div class="form-group col-md-6">
@@ -173,7 +223,9 @@ textarea {
 
       <ul class="nav nav-tabs">
         <?php foreach (array_keys($vmod->data['files']) as $f) { ?>
-          <li><a data-toggle="tab" href="#tab-<?php echo $f; ?>"><?php echo $_POST['files'][$f]['name']; ?> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a></li>
+          <li><a data-toggle="tab" href="#tab-<?php echo $f; ?>">
+            <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span>
+          </a></li>
         <?php } ?>
           <li><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a></li>
       </ul>
@@ -184,29 +236,27 @@ textarea {
         <div id="tab-<?php echo $f; ?>" data-tab-index="<?php echo $f; ?>" class="tab-pane fade in">
 
           <div class="row">
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_path', 'Path'); ?></label>
-              <?php echo functions::form_draw_text_field('files['.$f.'][path]', true, 'placeholder="path/to/dir/"'); ?>
-            </div>
+            <div class="col-md-6">
 
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_filename', 'Filename'); ?></label>
-              <?php echo functions::form_draw_text_field('files['.$f.'][name]', true, 'placeholder="file.ext,file2.ext"'); ?>
-            </div>
-          </div>
-
-          <div class="operations">
-            <?php foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
-            <div class="operation">
-
-              <div class="float-end">
-                <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
-                <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
-                <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
+              <div class="form-group">
+                <label><?php echo language::translate('title_file_pattern', 'File Pattern'); ?></label>
+                <?php echo functions::form_draw_text_field('files['.$f.'][name]', true, 'placeholder="path/file.ext" list="scripts"'); ?>
               </div>
 
-              <div class="row">
-                <div class="col-md-6">
+              <div class="sources"></div>
+            </div>
+
+            <div class="col-md-6">
+
+              <div class="operations">
+                <?php foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
+                <fieldset class="operation">
+
+                  <div class="float-end">
+                    <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                    <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                    <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
+                  </div>
 
                   <h3><?php echo language::translate('title_find', 'Find'); ?></h3>
 
@@ -266,10 +316,6 @@ textarea {
                     </div>
                   </div>
 
-                </div>
-
-                <div class="col-md-6">
-
                   <h3><?php echo language::translate('title_insert', 'Insert'); ?></h3>
 
                   <div class="form-group">
@@ -294,15 +340,19 @@ textarea {
                     </div>
                   </div>
 
-                </div>
+                </fieldset>
+                <?php } ?>
+
+              </div>
+
+              <div class="text-end">
+                <a class="btn btn-default add" href="#">
+                  <?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?>
+                </a>
               </div>
 
             </div>
-            <?php } ?>
-
           </div>
-
-          <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
 
         </div>
         <?php } ?>
@@ -322,22 +372,24 @@ textarea {
   <div id="tab-new_tab_i" class="tab-pane fade in" data-tab-index="new_tab_i">
 
     <div class="row">
-      <div class="form-group col-md-3">
-        <label><?php echo language::translate('title_path', 'Path'); ?></label>
-        <?php echo functions::form_draw_text_field('files[new_tab_i][path]', true, 'placeholder="path/to/dir/"'); ?>
+      <div class="col-md-6">
+
+        <div class="form-group">
+          <label><?php echo language::translate('title_file_pattern', 'File Pattern'); ?></label>
+          <?php echo functions::form_draw_text_field('files[new_tab_i][name]', true, 'placeholder="path/file.ext" list="scripts"'); ?>
+        </div>
+
+        <div class="sources"></div>
       </div>
 
-      <div class="form-group col-md-3">
-        <label><?php echo language::translate('title_filename', 'Filename'); ?></label>
-        <?php echo functions::form_draw_text_field('files[new_tab_i][name]', true, 'placeholder="file.ext,file2.ext"'); ?>
+      <div class="col-md-6">
+
+        <div class="operations"></div>
+
+        <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
+
       </div>
     </div>
-
-    <div class="operations">
-    </div>
-
-    <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
-
   </div>
 </div>
 
@@ -442,19 +494,47 @@ textarea {
   </div>
 </div>
 
+<datalist id="scripts">
+  <?php foreach ($files_datalist as $option) { ?>
+  <option><?php echo $option; ?></option>
+  <?php } ?>
+</datalist>
+
 <script>
-  $('.tab-content').on('input', 'input[name$="[path]"], input[name$="[name]"]', function() {
+
+  $('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function(){
+    var $tab = $(this).closest('.tab-pane');
+    var name = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val();
+    var url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, name);
+
+    $.get(url, function(result) {
+      $tab.find('.sources').html('');
+
+      $.each(result, function(file, source_code){
+        $tab.find('.sources').append(
+          $('<div class="script">').html(
+            $('<div class="form-code"></div>').text(source_code).prop('outerHTML') +
+            $('<div class="script-filename"></div>').text(file).prop('outerHTML')
+          )
+        );
+      });
+    });
+  })
+
+  $(':input[name^="files"][name$="[name]"]').trigger('input');
+
+  $('.tab-content').on('input', 'input[name^="files"][name$="[name]"]', function() {
     var tab = $(this).closest('.tab-pane');
     var tab_i = $(this).closest('.tab-pane').data('tab-index');
-    var tab_name = $(tab).find('input[name$="[path]"]').val() + $(tab).find('input[name$="[name]"]').val();
-    $('a[href="#tab-'+ tab_i +'"]').text(tab_name);
-  })
+    var tab_name = $(tab).find('input[name$="[name]"]').val();
+    $('a[href="#tab-'+ tab_i +'"] .file').text(tab_name);
+  });
 
   var new_tab_i = 1;
   $('.nav-tabs .add').click(function(e){
     e.preventDefault();
     while ($(':input[name^="files['+ new_tab_i +']"]').length) new_tab_i++;
-    $(this).closest('li').before('<li><a data-toggle="tab" href="#tab-'+ new_tab_i +'">new'+ new_tab_i  +' <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a></li>');
+    $(this).closest('li').before('<li><a data-toggle="tab" href="#tab-'+ new_tab_i +'"><span class="file">new'+ new_tab_i  +'</span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a></li>');
     var html = $('#new-tab-template').html().replace(/new_tab_i/g, new_tab_i);
     $('.tab-content').append(html);
     $(this).closest('li').prev().find('a').click();
