@@ -147,11 +147,11 @@
 
         default:
 
-          $page = database::fetch(database::query(
+          $page = database::query(
             "select * from ". DB_TABLE_PREFIX ."pages
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$page) return;
 

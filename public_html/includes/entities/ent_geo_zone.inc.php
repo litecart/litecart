@@ -36,11 +36,11 @@
 
       $this->reset();
 
-      $geo_zone = database::fetch(database::query(
+      $geo_zone = database::query(
         "select * from ". DB_TABLE_PREFIX ."geo_zones
         where id = ". (int)$geo_zone_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($geo_zone) {
         $this->data = array_replace($this->data, array_intersect_key($geo_zone, $this->data));

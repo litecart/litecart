@@ -34,11 +34,11 @@
 
       $this->reset();
 
-      $supplier = database::fetch(database::query(
+      $supplier = database::query(
         "select * from ". DB_TABLE_PREFIX ."suppliers
         where id=". (int)$supplier_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($supplier) {
         $this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
@@ -88,7 +88,7 @@
         limit 1;"
       );
 
-      if (database::num_rows($products_query) > 0) {
+      if (database::num_rows($products_query)) {
         notices::add('errors', language::translate('error_delete_supplier_not_empty_products', 'The supplier could not be deleted because there are products linked to it.'));
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;

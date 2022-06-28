@@ -30,7 +30,7 @@
   );
 
   $products = [];
-  if (database::num_rows($products_query) > 0) {
+  if (database::num_rows($products_query)) {
 
     if ($_REQUEST['page'] > 1) database::seek($products_query, (settings::get('data_table_rows_per_page') * ($_REQUEST['page']-1)));
 

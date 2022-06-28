@@ -21,18 +21,12 @@
 
     public static function load() {
 
-      self::$currencies = [];
-
     // Get currencies from database
-      $currencies_query = database::query(
+      self::$currencies = database::query(
         "select * from ". DB_TABLE_PREFIX ."currencies
         where status
         order by priority;"
-      );
-
-      while ($row = database::fetch($currencies_query)) {
-        self::$currencies[$row['code']] = $row;
-      }
+      )->fetch_all(null, 'code');
     }
 
     public static function set($code='') {
@@ -94,11 +88,11 @@
     // Get currency from country
       if (!empty(customer::$data['country_code'])) {
 
-        $country = database::fetch(database::query(
+        $country = database::query(
           "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(customer::$data['country_code']) ."'
           limit 1;"
-        ));
+        )->fetch();
 
         if ($country) {
           if (!empty($country['currency_code']) && in_array($country['currency_code'], $enabled_currencies)) {
@@ -110,11 +104,11 @@
     // Get currency from country (via TLD)
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
 
-        $country = database::fetch(database::query(
+        $country = database::query(
           "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
-        ));
+        )->fetch();
 
         if ($country && in_array($country['currency_code'], $enabled_currencies)) {
           return $country['currency_code'];

@@ -95,7 +95,7 @@
             break;
           }
 
-          $this->_data['num_products'] = (int)database::fetch(database::query(
+          $this->_data['num_products'] = (int)database::query(
             "select count(id) as num_products from ". DB_TABLE_PREFIX ."products
             where status
             and brand_id = ". (int)$this->_data['id'] ."
@@ -105,17 +105,17 @@
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
             and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
-          ), 'num_products');
+          )->fetch('num_products');
 
           break;
 
         default:
 
-          $row = database::fetch(database::query(
+          $row = database::query(
             "select * from ". DB_TABLE_PREFIX ."brands
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$row) return;
 

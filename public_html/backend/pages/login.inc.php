@@ -24,12 +24,12 @@
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_your_username_or_email', 'You must enter your username or email address'));
 
-      $user = database::fetch(database::query(
+      $user = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
         where (username != '' and lower(username) = lower('". database::input($_POST['username']) ."'))
         or (email != '' and lower(email) = lower('". database::input($_POST['username']) ."'))
         limit 1;"
-      ));
+      )->fetch();
 
       if (!$user) {
         throw new Exception(language::translate('error_user_not_found', 'The user could not be found in our database'));

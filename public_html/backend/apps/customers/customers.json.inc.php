@@ -20,7 +20,7 @@
   );
 
   $customers = [];
-  if (database::num_rows($customers_query) > 0) {
+  if (database::num_rows($customers_query)) {
 
     if ($_REQUEST['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_REQUEST['page']-1)));
 

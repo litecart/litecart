@@ -34,14 +34,14 @@
 
       $this->reset();
 
-      $language = database::fetch(database::query(
+      $language = database::query(
         "select * from ". DB_TABLE_PREFIX ."languages
         ". (preg_match('#^[0-9]+$#', $language_code) ? "where id = '". (int)$language_code ."'" : "") ."
         ". (preg_match('#^[a-z]{2}$#', $language_code) ? "where code = '". database::input($language_code) ."'" : "") ."
         ". (preg_match('#^[a-z]{3}$#', $language_code) ? "where code2 = '". database::input($language_code) ."'" : "") ."
         ". (preg_match('#^[a-z A-Z]{4,}$#', $language_code) ? "where name like '". database::input($language_code) ."'" : "") ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($language) {
         $this->data = array_intersect_key(array_merge($this->data, $language), $this->data);

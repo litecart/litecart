@@ -19,7 +19,7 @@
       'limit' => settings::get('box_similar_products_num_items'),
     ]);
 
-    if (database::num_rows($products_query) > 0) {
+    if (database::num_rows($products_query)) {
 
       $box_similar_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_similar_products.inc.php');
 

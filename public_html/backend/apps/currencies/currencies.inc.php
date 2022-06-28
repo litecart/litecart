@@ -35,10 +35,10 @@
   }
 
 // Table Rows
-  $currencies = database::fetch_all(database::query(
+  $currencies = database::query(
     "select * from ". DB_TABLE_PREFIX ."currencies
     order by field(status, 1, -1, 0), priority, name;"
-  ));
+  )->fetch_all();
 
 // Number of Rows
   $num_rows = count($currencies);

@@ -49,11 +49,11 @@
 
       $this->reset();
 
-      $group = database::fetch(database::query(
+      $group = database::query(
         "select * from ". DB_TABLE_PREFIX ."attribute_groups
         where id = ". (int)$group_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($group) {
         $this->data = array_replace($this->data, array_intersect_key($group, $this->data));

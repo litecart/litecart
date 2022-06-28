@@ -29,11 +29,11 @@
 
       $this->reset();
 
-      $banner = database::fetch(database::query(
+      $banner = database::query(
         "select * from ". DB_TABLE_PREFIX ."banners
         where id = ". (int)$banner_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($banner) {
         $this->data = array_replace($this->data, array_intersect_key($banner, $this->data));

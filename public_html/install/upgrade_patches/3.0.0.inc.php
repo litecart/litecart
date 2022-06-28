@@ -586,11 +586,11 @@
   ], 'abort');
 
 // Remove some indexes if they exist
-  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
+  if (database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")->num_rows) {
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."brands_info` DROP INDEX `manufacturer`;");
   }
 
-  if (database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"))) {
+  if (database::query("SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info' AND INDEX_NAME = 'brand_info' AND INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';")->num_rows) {
     database::query("ALTER TABLE `". DB_TABLE_PREFIX ."manufacturers_info` DROP INDEX `brand_info`;");
   }
 
@@ -651,7 +651,7 @@
   }
 
 // Download Product Configurations Add-On
-  if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products_configurations;"))) {
+  if (database::query("select id from ". DB_TABLE_PREFIX ."products_configurations;")->num_rows) {
 
     // ...
 

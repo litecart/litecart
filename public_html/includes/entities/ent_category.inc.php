@@ -50,11 +50,11 @@
 
       $this->reset();
 
-      $category = database::fetch(database::query(
+      $category = database::query(
         "select * from ". DB_TABLE_PREFIX ."categories
         where id=". (int)$category_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($category) {
         $this->data = array_replace($this->data, array_intersect_key($category, $this->data));
@@ -75,19 +75,19 @@
       }
 
     // Filters
-      $this->data['filters'] = database::fetch_all(database::query(
+      $this->data['filters'] = database::query(
         "select cf.*, agi.name as attribute_group_name from ". DB_TABLE_PREFIX ."categories_filters cf
         left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = cf.attribute_group_id and language_code = '". database::input(language::$selected['code']) ."')
         where category_id = ". (int)$this->data['id'] ."
         order by priority;"
-      ));
+      )->fetch_all();
 
     // Products
-      $this->data['products'] = database::fetch_all(database::query(
+      $this->data['products'] = database::query(
         "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
         where category_id = ". (int)$this->data['id'] ."
         order by product_id;"
-      ));
+      )->fetch_all();
 
       $this->previous = $this->data;
     }

@@ -58,13 +58,13 @@
           case 'customers':
 
           // Find customer
-            if (!empty($row['id']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $customer = database::query("select id from ". DB_TABLE_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
               $customer = new ent_customer($customer['id']);
 
-            } else if (!empty($row['code']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } else if (!empty($row['code']) && $customer = database::query("select id from ". DB_TABLE_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
               $customer = new ent_customer($customer['id']);
 
-            } else if (!empty($row['email']) && $customer = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;"))) {
+            } else if (!empty($row['email']) && $customer = database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;")->fetch()) {
               $customer = new ent_customer($customer['id']);
             }
 
@@ -149,10 +149,10 @@
           case 'newsletter_recipients':
 
           // Find newsletter recipient
-            if (!empty($row['id']) && $recipient = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $recipient = database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
               $recipient = new ent_newsletter_recipient($recipient['id']);
 
-            } else if (!empty($row['email']) && $recipient = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where email = '". database::input($row['email']) ."' limit 1;"))) {
+            } else if (!empty($row['email']) && $recipient = database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where email = '". database::input($row['email']) ."' limit 1;")->fetch()) {
               $recipient = new ent_newsletter_recipient($recipient['id']);
             }
 
@@ -220,68 +220,36 @@
 
       if (empty($_POST['type'])) throw new Exception(language::translate('error_must_select_type', 'You must select type'));
 
-      $csv = [];
-
       switch ($_POST['type']) {
 
         case 'customers':
 
-          $customers_query = database::query(
+          $csv = database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             order by date_created asc;"
-          );
+          )->export($result)->fetch_all();
 
-
-          while ($customer = database::fetch($customers_query)) {
-            $csv[] = [
-              'id' => $customer['id'],
-              'code' => $customer['code'],
-              'email' => $customer['email'],
-              'tax_id' => $customer['tax_id'],
-              'company' => $customer['company'],
-              'firstname' => $customer['firstname'],
-              'lastname' => $customer['lastname'],
-              'address1' => $customer['address1'],
-              'address2' => $customer['address2'],
-              'postcode' => $customer['postcode'],
-              'city' => $customer['city'],
-              'country_code' => $customer['country_code'],
-              'zone_code' => $customer['zone_code'],
-              'phone' => $customer['phone'],
-              'newsletter' => $customer['newsletter'],
-              'notes' => $customer['notes'],
-              'different_shipping_address' => $customer['different_shipping_address'],
-              'shipping_company' => $customer['shipping_address']['company'],
-              'shipping_firstname' => $customer['shipping_address']['firstname'],
-              'shipping_lastname' => $customer['shipping_address']['lastname'],
-              'shipping_address1' => $customer['shipping_address']['address1'],
-              'shipping_address2' => $customer['shipping_address']['address2'],
-              'shipping_postcode' => $customer['shipping_address']['postcode'],
-              'shipping_city' => $customer['shipping_address']['city'],
-              'shipping_country_code' => $customer['shipping_address']['country_code'],
-              'shipping_zone_code' => $customer['shipping_address']['zone_code'],
-              'shipping_phone' => $customer['shipping_address']['phone'],
-            ];
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
           }
 
           break;
 
         case 'newsletter_recipients':
 
-          $newsletter_recipients_query = database::query(
+          $csv = database::query(
             "select * from ". DB_TABLE_PREFIX ."newsletter_recipients
             order by date_created asc;"
-          );
+          )->export($result)->fetch_all();
 
-          while ($recipient = database::fetch($newsletter_recipients_query)) {
-            $csv[] = [
-              'id' => $recipient['id'],
-              'email' => $recipient['email'],
-              'client_ip' => $recipient['client_ip'],
-              'date_created' => $recipient['date_created'],
-            ];
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
           }
 
+          break;
+
+        default:
+          throw new Exception(language::translate('error_invalid_type', 'Invalid type'));
           break;
       }
 
@@ -396,7 +364,7 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">

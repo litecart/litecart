@@ -246,9 +246,9 @@
 
     echo '<p>Checking MySQL version... ';
 
-    $mysql_version = database::fetch(database::query(
+    $mysql_version = database::query(
       "SELECT VERSION();"
-    ), 'VERSION()');
+    )->fetch('VERSION()');
 
     if (version_compare($mysql_version, '5.5', '<')) {
       throw new Exception($mysql_version . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
@@ -263,11 +263,11 @@
 
     echo '<p>Checking MySQL database default character set... ';
 
-    $charset = database::fetch(database::query(
+    $charset = database::query(
       "select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from information_schema.SCHEMATA
       where schema_name = '". database::input(DB_DATABASE) ."'
       limit 1;"
-    ));
+    )->fetch();
 
     if (!$charset) {
       throw new Exception(' <span class="error">[Error] Failed to retrieve character set</span></p>');
@@ -355,9 +355,9 @@
 
     $sql = file_get_contents('structure.sql');
 
-    $mysql_version = database::fetch(database::query(
+    $mysql_version = database::query(
       "SELECT VERSION();"
-    ), 'VERSION()');
+    )->fetch('VERSION()');
 
   // Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
     if (version_compare($mysql_version, '5.6.5', '<')) {

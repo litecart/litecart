@@ -34,11 +34,11 @@
 
       $this->reset();
 
-      $tax_rate = database::fetch(database::query(
+      $tax_rate = database::query(
         "select * from ". DB_TABLE_PREFIX ."tax_rates
         where id = ". (int)$tax_rate_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($tax_rate) {
         $this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));

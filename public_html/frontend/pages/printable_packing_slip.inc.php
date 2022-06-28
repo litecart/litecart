@@ -10,11 +10,11 @@
 
     if (!empty($_GET['order_id'])) {
 
-      $order = database::fetch(database::query(
+      $order = database::query(
         "select id from ". DB_TABLE_PREFIX ."orders
         where id = ". (int)$_GET['order_id'] ."
         limit 1;"
-      ));
+      )->fetch();
 
       if (!$order) {
         throw new Exception('Invalid order_id', 404);
@@ -22,11 +22,11 @@
 
     } else if (!empty($_GET['order_no'])) {
 
-      $order = database::fetch(database::query(
+      $order = database::query(
         "select id from ". DB_TABLE_PREFIX ."orders
         where no = '". database::input($_GET['order_no']) ."'
         limit 1;"
-      ));
+      )->fetch();
 
       if (!$order) {
         throw new Exception('Invalid order_no', 404);

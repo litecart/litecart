@@ -508,8 +508,8 @@
 
         if (in_array($category['id'], $category_trail)) {
 
-          if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")) > 0
-           || database::fetch(database::query("select category_id from ". DB_TABLE_PREFIX ."products_to_categories where category_id = ".(int)$category['id']." limit 1;")) > 0) {
+          if (database::query("select id from ". DB_TABLE_PREFIX ."categories where parent_id = ". (int)$category['id'] ." limit 1;")->num_rows
+           || database::query("select category_id from ". DB_TABLE_PREFIX ."products_to_categories where category_id = ".(int)$category['id']." limit 1;")->num_rows) {
             $output .= $category_iterator($category['id'], $depth+1);
 
             // Output products

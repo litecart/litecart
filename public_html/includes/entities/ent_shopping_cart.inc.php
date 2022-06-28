@@ -79,10 +79,11 @@
 
       $this->reset();
 
-      $shopping_cart = database::fetch(database::query(
+      $shopping_cart = database::query(
         "select * from ". DB_TABLE_PREFIX ."shopping_carts
-        where ". (preg_match('#^[a-f0-9]{13}$#', $shopping_cart_id) ? "uid = '". database::input($shopping_cart_id) ."'" : "id = '". database::input($shopping_cart_id) ."'") .";"
-      ));
+        where ". (preg_match('#^[a-f0-9]{13}$#', $shopping_cart_id) ? "uid = '". database::input($shopping_cart_id) ."'" : "id = '". database::input($shopping_cart_id) ."'") ."
+        limit 1;"
+      )->fetch();
 
       if ($shopping_cart) {
         $this->data = array_replace($this->data, array_intersect_key($shopping_cart, $this->data));

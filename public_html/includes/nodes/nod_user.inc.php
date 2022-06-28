@@ -20,14 +20,14 @@
 
           list($username, $key) = explode(':', $_COOKIE['remember_me']);
 
-          $user = database::fetch(database::query(
+          $user = database::query(
             "select * from ". DB_TABLE_PREFIX ."users
             where lower(username) = lower('". database::input($username) ."')
             and status
             and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
             and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$user) {
             throw new Exception('Invalid email or the account has been removed');
@@ -78,11 +78,11 @@
 
       if (!empty(self::$data['id'])) {
 
-        $user = database::fetch(database::query(
+        $user = database::query(
           "select * from ". DB_TABLE_PREFIX ."users
           where id = ". (int)self::$data['id'] ."
           limit 1;"
-        ));
+        )->fetch();
 
         if (!$user) {
           die('The account has been removed');
@@ -137,11 +137,11 @@
 
       self::reset();
 
-      $user = database::fetch(database::query(
+      $user = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
         where id = ". (int)$user_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if (!$user) {
         throw new Exception('No user found');

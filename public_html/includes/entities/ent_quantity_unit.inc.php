@@ -47,11 +47,11 @@
 
       $this->reset();
 
-      $quantity_unit = database::fetch(database::query(
+      $quantity_unit = database::query(
         "select * from ". DB_TABLE_PREFIX ."quantity_units
         where id = ". (int)$quantity_unit_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($quantity_unit) {
         $this->data = array_replace($this->data, array_intersect_key($quantity_unit, $this->data));
@@ -131,7 +131,7 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where quantity_unit_id = ". (int)$this->data['id'] ." limit 1;"))) {
+      if (database::query("select id from ". DB_TABLE_PREFIX ."products where quantity_unit_id = ". (int)$this->data['id'] ." limit 1;")->num_rows) {
         throw new Exception('Cannot delete the quantity unit because there are products using it');
       }
 

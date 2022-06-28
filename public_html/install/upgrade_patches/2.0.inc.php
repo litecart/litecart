@@ -135,11 +135,11 @@
 
     foreach (explode(';', $installed_modules['value']) as $module) {
 
-      $module = database::fetch(database::query(
+      $module = database::query(
         "select * from ". DB_TABLE_PREFIX ."settings
         where `key` = '". database::input($module) ."'
         limit 1;"
-      ));
+      )->fetch();
 
       if (!$module) continue;
 
@@ -177,11 +177,11 @@
   }
 
 // Collect all languages
-  $all_languages = database::fetch_all(database::query(
+  $all_languages = database::query(
     "select code from ". DB_TABLE_PREFIX ."languages
     where status
     order by priority, name;"
-  ), 'code');
+  )->fetch_all('code');
 
 // Update slides
   $slides_query = database::query(

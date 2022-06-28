@@ -34,11 +34,11 @@
 
         default:
 
-          $customer = database::fetch(database::query(
+          $customer = database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$customer) return;
 

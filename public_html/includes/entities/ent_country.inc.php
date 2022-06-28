@@ -36,14 +36,14 @@
 
       $this->reset();
 
-      $country = database::fetch(database::query(
+      $country = database::query(
         "select * from ". DB_TABLE_PREFIX ."countries
         ". (preg_match('#^[0-9]+$#', $country_code) ? "where id = '". (int)$country_code ."'" : "") ."
         ". (preg_match('#^[A-Z]{2}$#', $country_code) ? "where iso_code_2 = '". database::input($country_code) ."'" : "") ."
         ". (preg_match('#^[A-Z]{3}$#', $country_code) ? "where iso_code_3 = '". database::input($country_code) ."'" : "") ."
         ". (preg_match('#^[a-z A-Z]{4,}$#', $country_code) ? "where (name like '". database::input($country_code) ."' or domestic_name = '". database::input($country_code) ."')" : "") ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($country) {
         $this->data = array_replace($this->data, array_intersect_key($country, $this->data));
@@ -52,11 +52,11 @@
       }
 
     // Zones
-      $this->data['zones'] = database::fetch_all(database::query(
+      $this->data['zones'] = database::query(
         "select * from ". DB_TABLE_PREFIX ."zones
         where country_code = '". database::input($this->data['iso_code_2']) ."'
         order by name;"
-      ));
+      )->fetch_all();
 
       $this->previous = $this->data;
     }

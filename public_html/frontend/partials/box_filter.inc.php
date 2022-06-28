@@ -46,7 +46,7 @@
 
     while ($group = database::fetch($category_filters_query)) {
 
-      $group['values'] = database::fetch_all(database::query(
+      $group['values'] = database::query(
         "select distinct cf.value_id as id, if(cf.custom_value != '', cf.custom_value, avi.name) as value from ". DB_TABLE_PREFIX ."products_attributes cf
         left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = cf.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
         where product_id in (
@@ -55,7 +55,7 @@
         )
         and cf.group_id = ". (int)$group['id'] ."
         order by `value`;"
-      ));
+      )->fetch_all();
 
       if (empty($group['values'])) continue;
 

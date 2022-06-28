@@ -87,11 +87,11 @@
   }
 
 // Set language url type
-  $seo_links_language_prefix = database::fetch(database::query(
+  $seo_links_language_prefix = database::query(
     "select `value` from ". DB_TABLE_PREFIX ."settings
     where `key` = 'seo_links_language_prefix'
     limit 1;"
-  ), 'value');
+  )->fetch('value');
 
   if ($seo_links_language_prefix) {
     database::query(

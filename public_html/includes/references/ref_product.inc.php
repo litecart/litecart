@@ -133,7 +133,7 @@
 
         case 'campaign':
 
-          $this->_data['campaign'] = database::fetch(database::query(
+          $this->_data['campaign'] = database::query(
             "select *, min(
               coalesce(
                 ". implode(", ", array_map(function($currency_code){ return "if(`". database::input($currency_code) ."` != 0, `". database::input($currency_code) ."` * ". currency::$currencies[$currency_code]['value'] .", null)"; }, $this->_currency_codes)) ."
@@ -144,7 +144,7 @@
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
             and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
             limit 1;"
-          ));
+          )->fetch();
 
           break;
 
@@ -186,11 +186,11 @@
 
         case 'images':
 
-          $this->_data['images'] = database::fetch_all(database::query(
+          $this->_data['images'] = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_images
             where product_id = ". (int)$this->_data['id'] ."
             order by priority asc, id asc;"
-          ), 'filename');
+          )->fetch_all('filename');
 
           break;
 
@@ -242,33 +242,33 @@
 
         case 'price':
 
-          $this->_data['price'] = (float)database::fetch(database::query(
+          $this->_data['price'] = (float)database::query(
             "select coalesce(
               ". implode(", ", array_map(function($currency){ return "if(`". database::input($currency['code']) ."` != 0, `". database::input($currency['code']) ."` * ". $currency['value'] .", null)"; }, currency::$currencies)) ."
             ) price
             from ". DB_TABLE_PREFIX ."products_prices
             where product_id = ". (int)$this->_data['id'] ."
             limit 1;"
-          ), 'price');
+          )->fetch('price');
 
           break;
 
         case 'quantity':
 
-          $this->_data['quantity'] = (float)database::fetch(database::query(
+          $this->_data['quantity'] = (float)database::query(
             "select sum(si.quantity) as sum_quanity from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
             where p2si.product_id = ". (int)$this->_data['id'] .";"
-          ), 'sum_quantity');
+          )->fetch('sum_quantity');
 
           break;
 
         case 'quantity_unit':
 
-          $this->_data['quantity_unit'] = database::fetch(database::query(
+          $this->_data['quantity_unit'] = database::query(
             "select id, decimals, separate from ". DB_TABLE_PREFIX ."quantity_units
             where id = ". (int)$this->quantity_unit_id ."
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$this->_data['quantity_unit']) return;
 
@@ -331,11 +331,11 @@
 
         case 'sold_out_status':
 
-          $this->_data['sold_out_status'] = database::fetch(database::query(
+          $this->_data['sold_out_status'] = database::query(
             "select id, orderable from ". DB_TABLE_PREFIX ."sold_out_statuses
             where id = ". (int)$this->sold_out_status_id ."
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$this->_data['sold_out_status']) return;
 
@@ -363,11 +363,11 @@
 
         default:
 
-          $row = database::fetch(database::query(
+          $row = database::query(
             "select * from ". DB_TABLE_PREFIX ."products
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          ));
+          )->fetch();
 
           foreach ($row as $key => $value) {
             $this->_data[$key] = $value;

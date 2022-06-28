@@ -42,7 +42,7 @@
         $line++;
 
       // Find page
-        if (!empty($row['id']) && $page = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."pages where id = ". (int)$row['id'] ." limit 1;"))) {
+        if (!empty($row['id']) && $page = database::query("select id from ". DB_TABLE_PREFIX ."pages where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
           $page = new ent_page($page['id']);
         }
 
@@ -114,26 +114,18 @@
   if (isset($_POST['export'])) {
 
     try {
+
       if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-      $csv = [];
+      $csv = database::query(
+        "select p.*, pi.title, pi.content, pi.head_title, pi.meta_description, '". database::input($_POST['language_code']) ."' as language_code
+        from ". DB_TABLE_PREFIX ."pages p
+        left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
+        order by pid;"
+      )->export($result)->fetch_all();
 
-      $pages_query = database::query("select id from ". DB_TABLE_PREFIX ."pages order by id;");
-      while ($page = database::fetch($pages_query)) {
-        $page = new ref_page($page['id'], $_POST['language_code']);
-
-        $csv[] = [
-          'id' => $page->id,
-          'parent_id' => $page->parent_id,
-          'status' => $page->status,
-          'dock' => implode(',', $page->dock),
-          'title' => $page->title,
-          'content' => $page->content,
-          'head_title' => $page->head_title,
-          'meta_description' => $page->meta_description,
-          'priority' => $page->priority,
-          'language_code' => $_POST['language_code'],
-        ];
+      if (!$csv) {
+        $csv = [array_fill_keys($result->fields(), '')];
       }
 
       ob_clean();
@@ -234,7 +226,7 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">

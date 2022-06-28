@@ -198,13 +198,13 @@
           case 'attributes':
 
           // Find attribute group
-            if (!empty($row['group_id']) && ($attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$row['group_id'] ." limit 1;")))) {
+            if (!empty($row['group_id']) && ($attribute_group = database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$row['group_id'] ." limit 1;")->fetch())) {
               $attribute_group = new ent_attribute_group($attribute_group['id']);
 
-            } elseif (!empty($row['code']) && $attribute_group = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } elseif (!empty($row['code']) && $attribute_group = database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
               $attribute_group = new ent_attribute_group($attribute_group['id']);
 
-            } elseif (!empty($row['group_name']) && $attribute_group = database::fetch(database::query("select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info where name = '". database::input($row['group_name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;"))) {
+            } elseif (!empty($row['group_name']) && $attribute_group = database::query("select group_id as id from ". DB_TABLE_PREFIX ."attribute_groups_info where name = '". database::input($row['group_name']) ."' and language_code = '". database::input($row['language_code']) ."' limit 1;")->fetch()) {
               $attribute_group = new ent_attribute_group($attribute_group['id']);
             }
 
@@ -346,10 +346,10 @@
           case 'categories':
 
           // Find category
-            if (!empty($row['id']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $category = database::query("select id from ". DB_TABLE_PREFIX ."categories where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
               $category = new ent_category($category['id']);
 
-            } elseif (!empty($row['code']) && $category = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } elseif (!empty($row['code']) && $category = database::query("select id from ". DB_TABLE_PREFIX ."categories where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
               $category = new ent_category($category['id']);
 
             }
@@ -444,13 +444,13 @@
           case 'brands':
 
           // Find brand
-            if (!empty($row['id']) && $brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $brand = database::query("select id from ". DB_TABLE_PREFIX ."brands where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
               $brand = new ent_brand($brand['id']);
 
-            } else if (!empty($row['code']) && $brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } else if (!empty($row['code']) && $brand = database::query("select id from ". DB_TABLE_PREFIX ."brands where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
               $brand = new ent_brand($brand['id']);
 
-            } else if (!empty($row['name']) && !empty($row['language_code']) && $brand = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;"))) {
+            } else if (!empty($row['name']) && !empty($row['language_code']) && $brand = database::query("select id from ". DB_TABLE_PREFIX ."brands where name = '". database::input($row['name']) ."' limit 1;")->fetch()) {
               $brand = new ent_brand($brand['id']);
             }
 
@@ -534,19 +534,19 @@
           case 'products':
 
           // Find product
-            if (!empty($row['id']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['code']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } elseif (!empty($row['code']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+            } elseif (!empty($row['sku']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where sku = '". database::input($row['sku']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+            } elseif (!empty($row['mpn']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where mpn = '". database::input($row['mpn']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+            } elseif (!empty($row['gtin']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."products where gtin = '". database::input($row['gtin']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
 
             }
@@ -584,11 +584,11 @@
 
             if (empty($row['brand_id']) && !empty($row['brand_name'])) {
 
-              $brand = database::fetch(database::query(
+              $brand = database::query(
                 "select * from ". DB_TABLE_PREFIX ."brands
                 where name = '". database::input($row['brand_name']) ."'
                 limit 1;"
-              ));
+              )->fetch();
 
               if ($brand) {
                 $row['brand_id'] = $brand['id'];
@@ -602,11 +602,11 @@
 
             if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
 
-              $supplier = database::fetch(database::query(
+              $supplier = database::query(
                 "select * from ". DB_TABLE_PREFIX ."suppliers
                 where name = '". database::input($row['supplier_name']) ."'
                 limit 1;"
-              ));
+              )->fetch();
 
               if ($supplier) {
                 $row['supplier_id'] = $supplier['id'];
@@ -743,16 +743,16 @@
           case 'stock_items':
 
           // Find stock_item
-            if (!empty($row['id']) && $stock_item = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $stock_item = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
               $stock_item = new ent_stock_item($stock_item['id']);
 
-            } elseif (!empty($row['sku']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($row['sku']) ."' limit 1;"))) {
+            } elseif (!empty($row['sku']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($row['sku']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['mpn']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where mpn = '". database::input($row['mpn']) ."' limit 1;"))) {
+            } elseif (!empty($row['mpn']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where mpn = '". database::input($row['mpn']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
 
-            } elseif (!empty($row['gtin']) && $product = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where gtin = '". database::input($row['gtin']) ."' limit 1;"))) {
+            } elseif (!empty($row['gtin']) && $product = database::query("select id from ". DB_TABLE_PREFIX ."stock_items where gtin = '". database::input($row['gtin']) ."' limit 1;")->fetch()) {
               $product = new ent_product($product['id']);
             }
 
@@ -787,11 +787,11 @@
 
             if (empty($row['brand_id']) && !empty($row['brand_name'])) {
 
-              $brand = database::fetch(database::query(
+              $brand = database::query(
                 "select * from ". DB_TABLE_PREFIX ."brands
                 where name = '". database::input($row['brand_name']) ."'
                 limit 1;"
-              ));
+              )->fetch();
 
               if ($brand) {
                 $row['brand_id'] = $brand['id'];
@@ -805,11 +805,11 @@
 
             if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
 
-              $supplier = database::fetch(database::query(
+              $supplier = database::query(
                 "select * from ". DB_TABLE_PREFIX ."suppliers
                 where name = '". database::input($row['supplier_name']) ."'
                 limit 1;"
-              ));
+              )->fetch();
 
               if ($supplier) {
                 $row['supplier_id'] = $supplier['id'];
@@ -869,10 +869,10 @@
           case 'suppliers':
 
           // Find supplier
-            if (!empty($row['id']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;"))) {
+            if (!empty($row['id']) && $supplier = database::query("select id from ". DB_TABLE_PREFIX ."suppliers where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
               $supplier = new ent_supplier($supplier['id']);
 
-            } else if (!empty($row['code']) && $supplier = database::fetch(database::query("select id from ". DB_TABLE_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;"))) {
+            } else if (!empty($row['code']) && $supplier = database::query("select id from ". DB_TABLE_PREFIX ."suppliers where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
               $supplier = new ent_supplier($supplier['id']);
             }
 
@@ -972,13 +972,18 @@
 
           if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-          $csv = database::fetch_all(database::query(
-            "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority from ". DB_TABLE_PREFIX ."attribute_values av
+          $csv = database::query(
+            "select ag.id as group_id, ag.code as group_code, agi.name as group_name, av.id as value_id, avi.name as value_name, avi.language_code, av.priority, '". database::input($_POST['language_code']) ."' as language_code
+            from ". DB_TABLE_PREFIX ."attribute_values av
             left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
             left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = av.group_id and agi.language_code = '". database::input($_POST['language_code']) ."')
             left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = av.id and avi.language_code = '". database::input($_POST['language_code']) ."')
             order by agi.name, av.priority;"
-          ));
+          )->export($result)->fetch_all();
+
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
+          }
 
           break;
 
@@ -986,47 +991,28 @@
 
           if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-          $categories_query = database::query(
-            "select m.*, mi.name, mi.short_description, mi.description, mi.meta_description, mi.head_title, mi.h1_title
+          $csv = database::query(
+            "select m.*, '' as new_image, mi.name, mi.short_description, mi.description, mi.meta_description, mi.head_title, mi.h1_title, '". database::input($_POST['language_code']) ."' as language_code
             from ". DB_TABLE_PREFIX ."manufacturers m
             left join ". DB_TABLE_PREFIX ."manufacturers_info mi on (mi.category_id = m.id and mi.language_code = '". database::input($_POST['language_code']) ."')
             order by m.priority;"
-          );
+          )->export($result)->fetch_all();
 
-          while ($manufacturer = database::fetch($manufacturers_query)) {
-            $csv[] = [
-              'id' => $manufacturer['id'],
-              'status' => $manufacturer['status'],
-              'code' => $manufacturer['code'],
-              'name' => $manufacturer['name'],
-              'keywords' => $manufacturer['keywords'],
-              'short_description' => $manufacturer['short_description'],
-              'description' => $manufacturer['description'],
-              'meta_description' => $manufacturer['meta_description'],
-              'head_title' => $manufacturer['head_title'],
-              'h1_title' => $manufacturer['h1_title'],
-              'image' => $manufacturer['image'],
-              'new_image' => '',
-              'priority' => $manufacturer['priority'],
-              'language_code' => $_POST['language_code'],
-            ];
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
           }
 
           break;
 
         case 'campaigns':
 
-          $csv = database::fetch_all(database::query(
+          $csv = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_campaigns
             order by product_id;"
-          ));
+          )->export($result)->fetch_all();
 
           if (!$csv) {
-            $fields = database::fetch_all(database::query(
-              "show fields from ". DB_TABLE_PREFIX ."products_campaigns;"
-            ), 'Field');
-
-            $csv = array_fill_keys($fields, '');
+            $csv = [array_fill_keys($result->fields(), '')];
           }
 
           break;
@@ -1035,33 +1021,16 @@
 
           if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
 
-          $categories_query = database::query(
-            "select c.*, c2.code as parent_code, ci.name, ci.short_description, ci.description, ci.meta_description, ci.head_title, ci.h1_title
+          $csv = database::query(
+            "select c.*, c2.code as parent_code, ci.name, '' as new_image, ci.short_description, ci.description, ci.meta_description, ci.head_title, ci.h1_title, '". database::input($_POST['language_code']) ."' as language_code
             from ". DB_TABLE_PREFIX ."categories c
             left join ". DB_TABLE_PREFIX ."categories c2 on (c2.id = c.parent_id)
             left join ". DB_TABLE_PREFIX ."categories_info ci on (ci.category_id = c.id and ci.language_code = '". database::input($_POST['language_code']) ."')
             order by c.priority;"
-          );
+          )->export($result)->fetch_all();
 
-          while ($category = database::fetch($categories_query)) {
-            $csv[] = [
-              'id' => $category['id'],
-              'status' => $category['status'],
-              'parent_id' => $category['parent_id'],
-              'parent_code' => $category['parent_code'],
-              'code' => $category['code'],
-              'name' => $category['name'],
-              'keywords' => $category['keywords'],
-              'short_description' => $category['short_description'],
-              'description' => $category['description'],
-              'meta_description' => $category['meta_description'],
-              'head_title' => $category['head_title'],
-              'h1_title' => $category['h1_title'],
-              'image' => $category['image'],
-              'new_image' => '',
-              'priority' => $category['priority'],
-              'language_code' => $_POST['language_code'],
-            ];
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
           }
 
           break;
@@ -1071,8 +1040,8 @@
           if (empty($_POST['language_code'])) throw new Exception(language::translate('error_must_select_a_language', 'You must select a language'));
           if (empty($_POST['currency_code'])) throw new Exception(language::translate('error_must_select_a_currency', 'You must select a currency'));
 
-          $products_query = database::query(
-            "select p.*, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, p2c.categories, pp.price, pim.images, pa.attributes
+          $csv = database::query(
+            "select p.*, '". database::input($_POST['currency_code']) ."' as currency_code, pi.name, pi.description, pi.short_description, pi.technical_data, pi.meta_description, pi.head_title, '". database::input($_POST['language_code']) ."' as language_code, p2c.categories, pp.price, pim.images, '' as new_image, pa.attributes
             from ". DB_TABLE_PREFIX ."products p
             left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_POST['language_code']) ."')
             left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
@@ -1098,103 +1067,37 @@
               from ". DB_TABLE_PREFIX ."products_prices
             ) pp on (pp.product_id = p.id)
             order by pi.name, pi.id;"
-          );
+          )->export($result)->fetch_all();
 
-          while ($product = database::fetch($products_query)) {
-            $csv[] = [
-              'id' => $product['id'],
-              'status' => $product['status'],
-              'categories' => $product['categories'],
-              'manufacturer_id' => $product['manufacturer_id'],
-              'supplier_id' => $product['supplier_id'],
-              'code' => $product['code'],
-              'sku' => $product['sku'],
-              'mpn' => $product['mpn'],
-              'gtin' => $product['gtin'],
-              'taric' => $product['taric'],
-              'name' => $product['name'],
-              'short_description' => $product['short_description'],
-              'description' => $product['description'],
-              'keywords' => $product['keywords'],
-              'technical_data' => $product['technical_data'],
-              'head_title' => $product['head_title'],
-              'meta_description' => $product['meta_description'],
-              'images' => $product['images'],
-              'new_images' => '',
-              'attributes' => $product['attributes'],
-              'purchase_price' => $product['purchase_price'],
-              'purchase_price_currency_code' => $product['purchase_price_currency_code'],
-              'recommended_price' => $product['recommended_price'],
-              'price' => $product['price'],
-              'tax_class_id' => $product['tax_class_id'],
-              'quantity' => $product['quantity'],
-              'quantity_unit_id' => $product['quantity_unit_id'],
-              'weight' => $product['weight'],
-              'weight_class' => $product['weight_class'],
-              'dim_x' => $product['dim_x'],
-              'dim_y' => $product['dim_y'],
-              'dim_z' => $product['dim_z'],
-              'dim_class' => $product['dim_class'],
-              'delivery_status_id' => $product['delivery_status_id'],
-              'sold_out_status_id' => $product['sold_out_status_id'],
-              'language_code' => $_POST['language_code'],
-              'currency_code' => $_POST['currency_code'],
-              'date_valid_from' => $product['date_valid_from'],
-              'date_valid_to' => $product['date_valid_to'],
-            ];
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
           }
 
-          case 'stock_items':
+        case 'stock_items':
 
-            $stock_items_query = database::query(
-              "select si.*, sii.name from ". DB_TABLE_PREFIX ."stock_items si
-              left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.product_id = s.id and si.language_code = '". database::input($_POST['language_code']) ."')
-              order by s.id;"
-            );
+          $csv = database::query(
+            "select si.*, sii.name, '". database::input($_POST['language_code']) ."' as language_code
+            from ". DB_TABLE_PREFIX ."stock_items si
+            left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.product_id = s.id and si.language_code = '". database::input($_POST['language_code']) ."')
+            order by s.id;"
+          )->export($result)->fetch_all();
 
-            while ($stock_item = database::fetch($stock_items_query)) {
-              $csv[] = [
-                'id' => $stock_item['id'],
-                'status' => $stock_item['status'],
-                'code' => $stock_item['code'],
-                'sku' => $stock_item['sku'],
-                'mpn' => $stock_item['mpn'],
-                'gtin' => $stock_item['gtin'],
-                'name' => $stock_item['name'],
-                'purchase_price' => $stock_item['purchase_price'],
-                'purchase_price_currency_code' => $stock_item['purchase_price_currency_code'],
-                'weight' => $stock_item['weight'],
-                'weight_unit' => $stock_item['weight_unit'],
-                'length' => $stock_item['length'],
-                'width' => $stock_item['width'],
-                'height' => $stock_item['height'],
-                'length_unit' => $stock_item['length_unit'],
-                'language_code' => $_POST['language_code'],
-              ];
-            }
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
+          }
 
-            break;
+          break;
 
-          case 'suppliers':
+        case 'suppliers':
 
-          $suppliers_query = database::query(
+          $csv = database::query(
             "select * from ". DB_TABLE_PREFIX ."suppliers
-              order by id;"
-          );
+            order by id;"
+          )->export($result)->fetch_all();
 
-            while ($supplier = database::fetch($suppliers_query)) {
-              $csv[] = [
-                'id' => $supplier['id'],
-                'status' => $supplier['status'],
-                'code' => $supplier['code'],
-                'name' => $supplier['name'],
-                'keywords' => $supplier['keywords'],
-                'description' => $supplier['description'],
-                'email' => $supplier['email'],
-                'phone' => $supplier['phone'],
-                'link' => $supplier['link'],
-              ];
-            }
+          if (!$csv) {
+            $csv = [array_fill_keys($result->fields(), '')];
+          }
 
           break;
 
@@ -1335,7 +1238,7 @@
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', [[', ('. language::translate('text_default', 'default') .')', ','], [';'], ['TAB', "\t"], ['|']], true); ?>
+                <?php echo functions::form_draw_select_field('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">

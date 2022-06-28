@@ -46,11 +46,11 @@
 
       $this->reset();
 
-      $email = database::fetch(database::query(
+      $email = database::query(
         "select * from ". DB_TABLE_PREFIX ."emails
         where id = ". (int)$email_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($email) {
         $this->data = array_replace($this->data, array_intersect_key($email, $this->data));

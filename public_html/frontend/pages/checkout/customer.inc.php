@@ -34,7 +34,7 @@
 
           if (!functions::validate_email($_POST['customer']['email'])) throw new Exception(language::translate('error_invalid_email', 'The email address is invalid'));
 
-          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['customer']['email']) ."' limit 1;"))) {
+          if (!database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['customer']['email']) ."' limit 1;")->num_rows) {
             if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password'));
             if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
           }
@@ -115,7 +115,7 @@
       if (settings::get('accounts_enabled') && empty($shopping_cart->data['customer']['id']) && !empty($shopping_cart->data['customer']['email'])) {
         if (settings::get('register_guests') || !empty($_POST['create_account'])) {
 
-          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['customer']['email']) ."' limit 1;"))) {
+          if (!database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['customer']['email']) ."' limit 1;")->num_rows) {
 
             $customer = new ent_customer();
             $customer->data = array_replace($customer->data, array_intersect_key($shopping_cart->data['customer'], $customer->data));
@@ -170,13 +170,13 @@
 
   $account_exists = false;
   if (settings::get('accounts_enabled')) {
-    if (empty($shopping_cart->data['customer']['id']) && !empty($shopping_cart->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($shopping_cart->data['customer']['email']) ."' limit 1;"))) {
+    if (empty($shopping_cart->data['customer']['id']) && !empty($shopping_cart->data['customer']['email']) && database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($shopping_cart->data['customer']['email']) ."' limit 1;")->num_rows) {
       $account_exists = true;
     }
   }
 
   $subscribed_to_newsletter = false;
-  if (!empty($shopping_cart->data['customer']['email']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($shopping_cart->data['customer']['email']) ."');"))) {
+  if (!empty($shopping_cart->data['customer']['email']) && database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where lower(email) = lower('". database::input($shopping_cart->data['customer']['email']) ."');")->num_rows) {
     $subscribed_to_newsletter = true;
   }
 

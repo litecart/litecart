@@ -59,10 +59,10 @@
   breadcrumbs::add($title);
 
 // Installed Modules
-  $installed_modules = database::fetch_all(database::query(
+  $installed_modules = database::query(
     "select module_id from ". DB_TABLE_PREFIX ."modules
     where type = '". database::input($type) ."';"
-  ), 'module_id');
+  )->fetch_all('module_id');
 
 // Table Rows
   $modules = [];

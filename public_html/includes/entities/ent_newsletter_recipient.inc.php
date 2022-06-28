@@ -34,12 +34,12 @@
 
       $this->reset();
 
-      $recipient = database::fetch(database::query(
+      $recipient = database::query(
         "select * from ". DB_TABLE_PREFIX ."newsletter_recipients
         ". (preg_match('#^[0-9]+$#', $recipient_id) ? "where id = '". (int)$recipient_id ."'" : "") ."
         ". (preg_match('#@#', $recipient_id) ? "where lower(email) = '". database::input(strtolower($recipient_id)) ."'" : "") ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($recipient) {
         $this->data = array_replace($this->data, array_intersect_key($recipient, $this->data));

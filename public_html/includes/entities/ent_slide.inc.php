@@ -49,11 +49,11 @@
 
       $this->reset();
 
-      $slide = database::fetch(database::query(
+      $slide = database::query(
         "select * from ". DB_TABLE_PREFIX ."slides
         where id = ". (int)$slide_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($slide) {
         $this->data = array_replace($this->data, array_intersect_key($slide, $this->data));

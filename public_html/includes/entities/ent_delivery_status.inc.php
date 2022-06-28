@@ -47,11 +47,11 @@
 
       $this->reset();
 
-      $delivery_status = database::fetch(database::query(
+      $delivery_status = database::query(
         "select * from ". DB_TABLE_PREFIX ."delivery_statuses
         where id = ". (int)$delivery_status_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($delivery_status) {
         $this->data = array_replace($this->data, array_intersect_key($delivery_status, $this->data));
@@ -128,7 +128,7 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where delivery_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
+      if (database::query("select id from ". DB_TABLE_PREFIX ."products where delivery_status_id = ". (int)$this->data['id'] ." limit 1;")->num_rows) {
         throw new Exception('Cannot delete the delivery status because there are products using it');
       }
 

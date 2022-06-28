@@ -34,11 +34,11 @@
 
       $this->reset();
 
-      $campaign = database::fetch(database::query(
+      $campaign = database::query(
         "select * from ". DB_TABLE_PREFIX ."products_campaigns
         ". (preg_match('#^[0-9]+$#', $campaign_id) ? "where id = '". (int)$campaign_id ."'" : "") ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($campaign) {
         $this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));

@@ -47,7 +47,7 @@
             "select id from ". DB_TABLE_PREFIX ."pages
             where parent_id = ". (int)$page['id'] .";"
           );
-          if (database::num_rows($sub_pages_query) > 0) {
+          if (database::num_rows($sub_pages_query)) {
             $output[$page['id']]['subpages'] = $iterator($page['id'], $level+1);
           }
         }

@@ -129,7 +129,7 @@
       order by p.priority, pi.title;"
     );
 
-    if (database::num_rows($pages_query) > 0) {
+    if (database::num_rows($pages_query)) {
 
       if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 
@@ -137,13 +137,11 @@
       while ($page = database::fetch($pages_query)) {
         $page['dock'] = explode(',', $page['dock']);
 
-        $num_subpages = database::num_rows(
-          database::query(
-            "select * from ". DB_TABLE_PREFIX ."pages p
-            left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
-            where parent_id = ". (int)$page['id'] .";"
-          )
-        );
+        $num_subpages = database::query(
+          "select * from ". DB_TABLE_PREFIX ."pages p
+          left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+          where parent_id = ". (int)$page['id'] .";"
+        )->num_rows;
 
 ?>
         <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
@@ -191,7 +189,7 @@
           order by p.priority, pi.title;"
         );
 
-        if (database::num_rows($subpages_query) > 0) {
+        if (database::num_rows($subpages_query)) {
           if (!in_array($page['id'], $_GET['expanded'])) {
             $expanded = array_merge($_GET['expanded'], [$page['id']]);
             $icon = '<a href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
@@ -225,8 +223,8 @@
       }
     };
 
-    $num_rows = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages;"));
-    $num_root_rows = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;"));
+    $num_rows = database::query("select id from ". DB_TABLE_PREFIX ."pages;")->num_rows;
+    $num_root_rows = database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;")->num_rows;
     $num_pages = $num_root_rows / settings::get('data_table_rows_per_page');
     $iterator(0, 0);
   }

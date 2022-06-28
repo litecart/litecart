@@ -59,12 +59,12 @@
     "UPDATE `". DB_TABLE_PREFIX ."products_options` SET sort = 'custom' WHERE sort = 'product';"
   );
 
-  if (!database::num_rows(database::query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '". DB_DATABASE ."' AND TABLE_NAME = '". DB_TABLE_PREFIX ."attribute_groups' AND COLUMN_NAME = 'sort';"))) {
+  if (!database::query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '". DB_DATABASE ."' AND TABLE_NAME = '". DB_TABLE_PREFIX ."attribute_groups' AND COLUMN_NAME = 'sort';")->num_rows) {
     database::query("ALTER TABLE ". DB_TABLE_PREFIX ."attribute_groups ADD COLUMN `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical' AFTER `code`;");
   }
 
 // Copy option groups into attribute groups
-  if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups limit 1;"))) {
+  if (!database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups limit 1;")->num_rows) {
 
     database::query(
       "insert ignore  into ". DB_TABLE_PREFIX ."attribute_groups
@@ -120,11 +120,11 @@
       DROP INDEX `product_option`;"
     );
 
-    $store_language_code = database::fetch(database::query(
+    $store_language_code = database::query(
       "select * from ". DB_TABLE_PREFIX ."settings
       where `key` = 'store_language_code'
       limit 1;"
-    ), 'value');
+    )->fetch('value');
 
     $option_groups_query = database::query(
       "select og.*, ogi.name from ". DB_TABLE_PREFIX ."option_groups og
@@ -149,7 +149,7 @@
         $attribute_group_id = $attribute_group['id'];
 
     // Is the attribute group id vacant?
-      } else if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$option_group['id'] ." limit 1;"))) {
+      } else if (!database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$option_group['id'] ." limit 1;")->num_rows) {
 
         database::query(
           "insert ignore into ". DB_TABLE_PREFIX ."attribute_groups
@@ -178,9 +178,9 @@
 
       // Make certain the attribute group id does not collide with a previous option group id
         $new_attribute_group_id = $attribute_group_id;
-        while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."option_groups where id = ". (int)$new_attribute_group_id ." limit 1;"))) {
+        while (database::query("select id from ". DB_TABLE_PREFIX ."option_groups where id = ". (int)$new_attribute_group_id ." limit 1;")->num_rows) {
           $new_attribute_group_id++;
-          while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$new_attribute_group_id ." limit 1;"))) {
+          while (database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$new_attribute_group_id ." limit 1;")->num_rows) {
             $new_attribute_group_id++;
           }
         }
@@ -234,7 +234,7 @@
           $attribute_value_id = $attribute_value['id'];
 
       // Is the attribute value id vacant?
-        } else if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$option_value['id'] ." limit 1;"))) {
+        } else if (!database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$option_value['id'] ." limit 1;")->num_rows) {
 
           database::query(
             "insert ignore into ". DB_TABLE_PREFIX ."attribute_values
@@ -262,9 +262,9 @@
 
         // Make certain the attribute value id does not collide with a previous option value id
           $new_attribute_value_id = $attribute_value_id;
-          while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."option_values where id = ". (int)$new_attribute_value_id ." limit 1;"))) {
+          while (database::query("select id from ". DB_TABLE_PREFIX ."option_values where id = ". (int)$new_attribute_value_id ." limit 1;")->num_rows) {
             $new_attribute_value_id++;
-            while (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$new_attribute_value_id ." limit 1;"))) {
+            while (database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$new_attribute_value_id ." limit 1;")->num_rows) {
               $new_attribute_value_id++;
             }
           }

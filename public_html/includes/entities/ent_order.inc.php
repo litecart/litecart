@@ -76,11 +76,11 @@
 
       $this->reset();
 
-      $order = database::fetch(database::query(
+      $order = database::query(
         "select * from ". DB_TABLE_PREFIX ."orders
         where id = ". (int)$order_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($order) {
         $this->data = array_replace($this->data, array_intersect_key($order, $this->data));
@@ -133,17 +133,17 @@
         $this->data['items'][] = $item;
       }
 
-      $this->data['order_total'] = database::fetch_all(database::query(
+      $this->data['order_total'] = database::query(
         "select * from ". DB_TABLE_PREFIX ."orders_totals
         where order_id = ". (int)$order_id ."
         order by priority;"
-      ));
+      )->fetch_all();
 
-      $this->data['comments'] = database::fetch_all(database::query(
+      $this->data['comments'] = database::query(
         "select * from ". DB_TABLE_PREFIX ."orders_comments
         where order_id = ". (int)$order_id ."
         order by id;"
-      ));
+      )->fetch_all();
 
       $this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
       $this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
@@ -174,11 +174,11 @@
     // Link guests to customer profile
       if (empty($this->data['customer']['id']) && !empty($this->data['customer']['email'])) {
 
-        $customer = database::fetch(database::query(
+        $customer = database::query(
           "select id from ". DB_TABLE_PREFIX ."customers
           where email = '". database::input($this->data['customer']['email']) ."'
           limit 1;"
-        ));
+        )->fetch();
 
         if ($customer) {
           $this->data['customer']['id'] = $customer['id'];

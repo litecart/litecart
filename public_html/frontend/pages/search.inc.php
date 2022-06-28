@@ -34,9 +34,29 @@
   $code_regex = functions::format_regex_code($_GET['query']);
   $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
-  $query =
-    "select p.*, pi.name, pi.short_description, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price,
-    (
+  switch($_GET['sort']) {
+    case 'name':
+      $sql_sort = "order by name asc";
+      break;
+    case 'price':
+      $sql_sort = "order by final_price asc";
+      break;
+    case 'date':
+      $sql_sort = "order by date_created desc";
+      break;
+    case 'rand':
+      $sql_sort = "order by rand()";
+      break;
+    case 'popularity':
+      $sql_sort = "order by (p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+      break;
+    default:
+      $sql_sort = "order by relevance desc";
+      break;
+  }
+
+  $products_query = database::query(
+    "select p.*, pi.name, pi.short_description, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price)) as final_price, (
       if(p.id = '". database::input($_GET['query']) ."', 10, 0)
       + (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
       + (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
@@ -102,30 +122,8 @@
 
     having relevance > 0
 
-    order by %sql_sort;";
-
-  switch($_GET['sort']) {
-    case 'name':
-      $query = str_replace("%sql_sort", "name asc", $query);
-      break;
-    case 'price':
-      $query = str_replace("%sql_sort", "final_price asc", $query);
-      break;
-    case 'date':
-      $query = str_replace("%sql_sort", "date_created desc", $query);
-      break;
-    case 'rand':
-      $query = str_replace("%sql_sort", "rand()", $query);
-      break;
-    case 'popularity':
-      $query = str_replace("%sql_sort", "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc", $query);
-      break;
-    default:
-      $query = str_replace("%sql_sort", "relevance desc", $query);
-      break;
-  }
-
-  $products_query = database::query($query);
+    order by $sql_sort;"
+  );
 
   if (database::num_rows($products_query) == 1) {
     $product = database::fetch($products_query);
@@ -133,7 +131,7 @@
     exit;
   }
 
-  if (database::num_rows($products_query) > 0) {
+  if (database::num_rows($products_query)) {
 
     if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page') * ($_GET['page'] - 1)));
 

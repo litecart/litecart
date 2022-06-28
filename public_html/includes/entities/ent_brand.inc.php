@@ -46,11 +46,11 @@
 
       $this->reset();
 
-      $brand = database::fetch(database::query(
+      $brand = database::query(
         "select * from ". DB_TABLE_PREFIX ."brands
         where id = ". (int)$brand_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($brand) {
         $this->data = array_replace($this->data, array_intersect_key($brand, $this->data));
@@ -198,7 +198,7 @@
         limit 1;"
       );
 
-      if (database::num_rows($products_query) > 0) {
+      if (database::num_rows($products_query)) {
         notices::add('errors', language::translate('error_delete_brand_not_empty_products', 'The brand could not be deleted because there are products linked to it.'));
         header('Location: '. $_SERVER['REQUEST_URI']);
         exit;

@@ -116,7 +116,7 @@
   }
 
   if (!empty($customer->data['id'])) {
-    $orders = database::fetch(database::query(
+    $orders = database::query(
       "select count(o.id) as total_count, sum(oi.total_sales) as total_sales
       from ". DB_TABLE_PREFIX ."orders o
       left join (
@@ -128,7 +128,7 @@
         where is_sale
       )
       and (o.customer_id = ". (int)$customer->data['id'] ." or o.customer_email = '". database::input($customer->data['email']) ."');"
-    ));
+    )->fetch();
   }
 ?>
 <div class="card card-app">

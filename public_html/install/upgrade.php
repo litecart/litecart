@@ -79,11 +79,11 @@
   if (!PLATFORM_VERSION) die('Could not identify target version.');
 
 // Get current platform database version
-  $platform_database_version = database::fetch(database::query(
+  $platform_database_version = database::query(
     "select `value` from ". DB_TABLE_PREFIX ."settings
     where `key` = 'platform_database_version'
     limit 1;"
-  ), 'value');
+  )->fetch('value');
 
   define('PLATFORM_DATABASE_VERSION', $platform_database_version);
 
@@ -148,11 +148,11 @@
           }
         }
 
-        $platform_database_version = database::fetch(database::query(
+        $platform_database_version = database::query(
           "select `value` from ". DB_TABLE_SETTINGS ."
           where `key` = 'platform_database_version'
           limit 1;"
-        ), 'value');
+        )->fetch('value');
 
         $backup_file = FS_DIR_STORAGE . 'backups/'. PLATFORM_NAME .'-'. strftime('%Y%m%d-%H%M%S') .'-database-'. $platform_database_version .'.sql';
 
@@ -192,9 +192,9 @@
           if (!empty($ignore_tables) && in_array($table, $ignore_tables)) continue;
 
         // Insert Data
-          $columns = database::fetch_all(database::query(
+          $columns = database::query(
             "SHOW COLUMNS FROM `" . $table ."`"
-          ), 'Field');
+          )->fetch_all('Field');
 
           $rows_query = database::query(
             "SELECT `" . implode('`, `', $columns) . "` FROM `" . $table ."`"

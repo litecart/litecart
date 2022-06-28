@@ -11,14 +11,14 @@
       $keywords[] = $_GET['utm_campaign'];
     }
 
-    $banner = database::fetch(database::query(
+    $banner = database::query(
       "select * from ". DB_TABLE_PREFIX ."banners
       where status
       and image != '' or html != ''
       and (". implode(" or ", array_map(function($k){ return "find_in_set('". database::input($k) ."', keywords)"; }, $keywords)) .")
       order by rand()
       limit 1;"
-    ));
+    )->fetch();
 
     if (!$banner) return;
 

@@ -56,11 +56,11 @@
       $this->reset();
 
     // Product
-      $product = database::fetch(database::query(
+      $product = database::query(
         "select * from ". DB_TABLE_PREFIX ."products
         where ". (preg_match('#^[0-9]+$#', $product_id) ? "id = ". (int)$product_id : "code = '". database::input($product_id) ."'") ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($product) {
         $this->data = array_replace($this->data, array_intersect_key($product, $this->data));
@@ -71,10 +71,10 @@
       $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
     // Categories
-      $this->data['categories'] = database::fetch_all(database::query(
+      $this->data['categories'] = database::query(
         "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
          where product_id = ". (int)$product_id .";"
-      ));
+      )->fetch_all();
 
     // Info
       $products_info_query = database::query(
@@ -90,14 +90,14 @@
       }
 
     // Attributes
-      $this->data['attributes'] = database::fetch_all(database::query(
+      $this->data['attributes'] = database::query(
         "select pa.*, agi.name as group_name, avi.name as value_name
         from ". DB_TABLE_PREFIX ."products_attributes pa
         left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = pa.group_id and agi.language_code = '". database::input(language::$selected['code']) ."')
         left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pa.value_id and avi.language_code = '". database::input(language::$selected['code']) ."')
         where product_id = ". (int)$product_id ."
         order by priority, group_name, value_name, custom_value;"
-      ));
+      )->fetch_all();
 
     // Prices
       $products_prices_query = database::query(
@@ -112,27 +112,27 @@
       }
 
     // Campaigns
-      $this->data['campaigns'] = database::fetch_all(database::query(
+      $this->data['campaigns'] = database::query(
         "select * from ". DB_TABLE_PREFIX ."products_campaigns
         where product_id = ". (int)$this->data['id'] ."
         order by start_date;"
-      ));
+      )->fetch_all();
 
     // Stock Items
-      $this->data['stock_options'] = database::fetch_all(database::query(
+      $this->data['stock_options'] = database::query(
         "select p2si.*, sii.name, si.sku, si.gtin, si.quantity, si.quantity_unit_id, si.backordered, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
         left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
         left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
         where p2si.product_id = ". (int)$this->data['id'] ."
         order by p2si.priority;"
-      ));
+      )->fetch_all();
 
     // Images
-      $this->data['images'] = database::fetch_all(database::query(
+      $this->data['images'] = database::query(
         "select * from ". DB_TABLE_PREFIX ."products_images
         where product_id = ". (int)$this->data['id'] ."
         order by priority asc, id asc;"
-      ));
+      )->fetch_all();
 
       $this->previous = $this->data;
     }

@@ -48,11 +48,11 @@
 
       $this->reset();
 
-      $stock_item = database::fetch(database::query(
+      $stock_item = database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_items
         where id = ". (int)$stock_item_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($stock_item) {
         $this->data = array_replace($this->data, array_intersect_key($stock_item, $this->data));
@@ -74,11 +74,11 @@
       }
 
     // References
-      $this->data['references'] = database::fetch_all(database::query(
+      $this->data['references'] = database::query(
         "select * from ". DB_TABLE_PREFIX ."stock_items_references
         where stock_item_id = ". (int)$this->data['id'] ."
         order by id;"
-      ));
+      )->fetch_all();
 
       $this->previous = $this->data;
     }
@@ -90,7 +90,7 @@
         $i = 1;
         while (true) {
           $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('site_language_code')] ? strtoupper(substr($this->data['name'][settings::get('site_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
-          if (!database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;"))) break;
+          if (!database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;")->num_rows) break;
         }
       }
 

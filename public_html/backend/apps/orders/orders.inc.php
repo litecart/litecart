@@ -13,9 +13,9 @@
 
   if (!empty($_GET['date_from'])) {
 
-    $date_first_order = database::fetch(database::query(
+    $date_first_order = database::query(
       "select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"
-    ), 'min(date_created)');
+    )->fetch('min(date_created)');
 
     if (!empty($date_first_order)) {
       $date_first_order = date('Y-m-d', strtotime($date_first_order));

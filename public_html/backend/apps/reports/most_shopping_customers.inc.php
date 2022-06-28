@@ -10,7 +10,7 @@
 
   if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
 
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"));
+  $date_first_order = database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;")->fetch();
   $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
   if (empty($date_first_order)) $date_first_order = date('Y-m-d');
   if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;

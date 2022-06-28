@@ -31,7 +31,7 @@
       }
 
       if (empty($_POST['email'])) throw new Exception(language::translate('error_missing_email', 'You must enter an email address.'));
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;"))) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
+      if (database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($_POST['email']) ."' limit 1;")->num_rows) throw new Exception(language::translate('error_email_already_registered', 'The email address already exists in our customer database. Please login or select a different email address.'));
 
       if (empty($_POST['password'])) throw new Exception(language::translate('error_missing_password', 'You must enter a password.'));
       if (!functions::password_check_strength($_POST['password'])) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));

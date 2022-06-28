@@ -1,10 +1,10 @@
 <?php
 
-  $customer = database::fetch(database::query(
+  $customer = database::query(
     "select * from ". DB_TABLE_PREFIX ."customers
     where id = '". database::input($_REQUEST['customer_id']) ."'
     limit 1;"
-  ));
+  )->fetch();
 
   if (!$customer) exit;
 

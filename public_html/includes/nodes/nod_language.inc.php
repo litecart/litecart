@@ -63,18 +63,11 @@
     ######################################################################
 
     public static function load() {
-
-      self::$languages = [];
-
-      $languages_query = database::query(
+      self::$languages = database::query(
         "select * from ". DB_TABLE_PREFIX ."languages
         where status
         order by priority, name;"
-      );
-
-      while ($row = database::fetch($languages_query)) {
-        self::$languages[$row['code']] = $row;
-      }
+      )->fetch_all(null, 'code');
     }
 
     public static function set($code='') {
@@ -148,11 +141,11 @@
 
     // Return language from country (TLD)
       if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
-        $country = database::fetch(database::query(
+        $country = database::query(
           "select * from ". DB_TABLE_PREFIX ."countries
           where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
           limit 1;"
-        ));
+        )->fetch();
         if (!empty($country['language_code']) && in_array($country['language_code'], $enabled_languages)) return $country['language_code'];
       }
 
@@ -201,11 +194,11 @@
       }
 
     // Get translation from database
-      $translation = database::fetch(database::query(
+      $translation = database::query(
         "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
         where code = '". database::input($code) ."'
         limit 1;"
-      ));
+      )->fetch();
 
     // Create translation if it doesn't exist
       if (!$translation) {
@@ -225,13 +218,13 @@
       if (!empty($translation['text_en'])) {
 
       // Find same english translation by different key
-        $secondary_translation = database::fetch(database::query(
+        $secondary_translation = database::query(
           "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
           where text_en = '". database::input($translation['text_en']) ."'
           and (text_en is not null and text_en != '')
           and (text_". self::$selected['code'] ." is not null and text_". self::$selected['code'] ." != '')
           limit 1;"
-        ));
+        )->fetch();
 
         if ($secondary_translation) {
           database::query(

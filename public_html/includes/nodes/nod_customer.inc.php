@@ -19,11 +19,11 @@
 
           list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
 
-          $customer = database::fetch(database::query(
+          $customer = database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             where email = '". database::input($email) ."'
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$customer) {
             throw new Exception('Invalid email or the account has been removed');
@@ -74,11 +74,11 @@
 
         try {
 
-          $customer = database::fetch(database::query(
+          $customer = database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)self::$data['id'] ."
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$customer) {
             throw new Exception(language::translate('error_your_account_has_been_removed', 'Your account has been removed'));
@@ -139,10 +139,10 @@
     public static function identify() {
 
     // Build list of supported countries
-      $countries = database::fetch_all(database::query(
+      $countries = database::query(
         "select iso_code_2 from ". DB_TABLE_PREFIX ."countries
         where status;"
-      ), 'iso_code_2');
+      )->fetch_all('iso_code_2');
 
     // Unset non supported country
       if (!in_array(self::$data['country_code'], $countries)) self::$data['country_code'] = '';
@@ -169,12 +169,12 @@
             'SU' => 'RU', // ccTLD .su is not a country
           ]);
 
-          $country = database::fetch(database::query(
+          $country = database::query(
             "select * from ". DB_TABLE_PREFIX ."countries
             where status
             and iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
             limit 1;"
-          ));
+          )->fetch();
 
           if (!empty($country['iso_code_2'])) self::$data['country_code'] = $country['iso_code_2'];
         }
@@ -280,11 +280,11 @@
 
       self::reset();
 
-      $customer = database::fetch(database::query(
+      $customer = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
         where id = ". (int)$customer_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       foreach ($customer as $field => $value) {
         if (preg_match('#^shipping_(.*)$#', $field, $matches)) {

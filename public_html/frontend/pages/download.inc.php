@@ -19,7 +19,7 @@
       throw new Exception('Missing order_item_id');
     }
 
-    $item = database::fetch(database::query(
+    $item = database::query(
       "select oi.id, oi.stck_item_id, si.file, si.filename, si.mime_type from ". DB_TABLE_PREFIX ."orders_items oi
       left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
       where oi.order_id = ". (int)$order['id'] ."
@@ -27,7 +27,7 @@
       and oi.stock_item_id
       and si.file
       limit 1;"
-    ));
+    )->fetch();
 
     if (!$item) {
       throw new Exception('Could not find a download for the given order_item_id', 400);

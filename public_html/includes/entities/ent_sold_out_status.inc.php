@@ -47,11 +47,11 @@
 
       $this->reset();
 
-      $sold_out_status = database::fetch(database::query(
+      $sold_out_status = database::query(
         "select * from ". DB_TABLE_PREFIX ."sold_out_statuses
         where id = ". (int)$sold_out_status_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($sold_out_status) {
         $this->data = array_replace($this->data, array_intersect_key($sold_out_status, $this->data));
@@ -130,7 +130,7 @@
 
     public function delete() {
 
-      if (database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where sold_out_status_id = ". (int)$this->data['id'] ." limit 1;"))) {
+      if (database::query("select id from ". DB_TABLE_PREFIX ."products where sold_out_status_id = ". (int)$this->data['id'] ." limit 1;")->num_rows) {
         throw new Exception('Cannot delete the sold out status because there are products using it');
       }
 

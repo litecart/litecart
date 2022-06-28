@@ -60,11 +60,11 @@
 
         default:
 
-          $row = database::fetch(database::query(
+          $row = database::query(
             "select * from ". DB_TABLE_PREFIX ."countries
             where iso_code_2 = '". database::input($this->_country_code) ."'
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$row) {
             $country = new ent_country();

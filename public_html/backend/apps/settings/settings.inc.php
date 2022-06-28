@@ -11,11 +11,11 @@
 
       foreach (array_keys($_POST['settings']) as $key) {
 
-        $setting = database::fetch(database::query(
+        $setting = database::query(
           "select * from ". DB_TABLE_PREFIX ."settings
           where `key` = '". database::input($key) ."'
           limit 1;"
-        ));
+        )->fetch();
 
         if (!$setting) {
           throw new Exception(language::translate('error_setting_key_does_not_exist', 'The settings key does not exist'));
@@ -49,11 +49,11 @@
     }
   }
 
-  $settings_group = database::fetch(database::query(
+  $settings_group = database::query(
     "select * from ". DB_TABLE_PREFIX ."settings_groups
-    ". (!empty(__DOC__) ? "where `key` = '". database::input(__DOC__) ."'" : "") ."
+    where `key` = '". database::input(__DOC__) ."'
     order by priority, `key`;"
-  ));
+  )->fetch();
 
   if (!$settings_group) {
     die('Invalid settings group ('. __DOC__ .')');

@@ -129,9 +129,12 @@
         stats::stop_watch('database_execution');
       }
 
+      if ($result instanceof mysqli_result) {
+        return new typ_mysql_result($sql, $result);
+      }
+
       return $result;
     }
-
     public static function multi_query($query, $link='default') {
 
       if (!isset(self::$_links[$link])) self::connect($link);
@@ -159,66 +162,23 @@
     }
 
     public static function fetch($result, $column='') {
-
-      if (class_exists('stats', false)) {
-        stats::start_watch('database_execution');
-      }
-
-      $row = mysqli_fetch_assoc($result);
-
-      if (class_exists('stats', false)) {
-        stats::stop_watch('database_execution');
-      }
-
-      if ($column) {
-        if (isset($row[$column])) {
-          return $row[$column];
-        } else {
-          return false;
-        }
-      }
-
-      return $row;
+      return $result->fetch($column);
     }
 
     public static function fetch_all($result, $column=null, $index_column=null) {
-
-      if (class_exists('stats', false)) {
-        stats::start_watch('database_execution');
-      }
-
-      if ($column || $index_column) {
-
-        $rows = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-          if ($index_column) {
-            $rows[$row[$index_column]] = $column ? $row[$column] : $row;
-          } else {
-            $rows[] = $column ? $row[$column] : $row;
-          }
-        }
-
-      } else {
-        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
-      }
-
-      if (class_exists('stats', false)) {
-        stats::stop_watch('database_execution');
-      }
-
-      return $rows;
+      return $result->fetch_all($column=null, $index_column=null);
     }
 
     public static function seek($result, $offset) {
-      return mysqli_data_seek($result, $offset);
+      return $result->seek($offset);
     }
 
     public static function num_rows($result) {
-      return mysqli_num_rows($result);
+      return $result->num_rows;
     }
 
     public static function free($result) {
-      return mysqli_free_result($result);
+      return $result->free();
     }
 
     public static function insert_id($link='default') {

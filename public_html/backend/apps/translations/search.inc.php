@@ -54,11 +54,11 @@
   }
 
 // Languages
-  $languages = database::fetch_all(database::query(
+  $languages = database::query(
     "select * from ". DB_TABLE_PREFIX ."languages
     where code in ('". implode("', '", database::input($_GET['languages'])) ."')
     order by priority;"
-  ), null, 'code');
+  )->fetch_all(null, 'code');
 
 // Table Rows
   $translations = [];

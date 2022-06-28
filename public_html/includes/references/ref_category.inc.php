@@ -231,11 +231,11 @@
 
         default:
 
-          $row = database::fetch(database::query(
+          $row = database::query(
             "select * from ". DB_TABLE_PREFIX ."categories
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          ));
+          )->fetch();
 
           if (!$row) return;
 

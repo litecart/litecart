@@ -31,11 +31,11 @@
         throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both email address and password.'));
       }
 
-      $customer = database::fetch(database::query(
+      $customer = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
         where lower(email) = lower('". database::input($_POST['email']) ."')
         limit 1;"
-      ));
+      )->fetch();
 
       if (!$customer) {
         throw new Exception(language::translate('error_email_not_found_in_database', 'The email does not exist in our database'));

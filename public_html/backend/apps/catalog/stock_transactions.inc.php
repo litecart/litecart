@@ -27,7 +27,7 @@
     order by date_created desc;"
   );
 
-  if (database::num_rows($stock_transactions_query) > 0) {
+  if (database::num_rows($stock_transactions_query)) {
 
     if ($_GET['page'] > 1) database::seek($stock_transactions_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
 

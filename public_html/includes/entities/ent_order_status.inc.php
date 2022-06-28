@@ -49,11 +49,11 @@
 
       $this->reset();
 
-      $order_status = database::fetch(database::query(
+      $order_status = database::query(
         "select * from ". DB_TABLE_PREFIX ."order_statuses
         where id = ". (int)$order_status_id ."
         limit 1;"
-      ));
+      )->fetch();
 
       if ($order_status) {
         $this->data = array_replace($this->data, array_intersect_key($order_status, $this->data));
