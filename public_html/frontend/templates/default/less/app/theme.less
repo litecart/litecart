@@ -11,12 +11,6 @@ body {
   }
 }
 
-#page {
-  //min-height: 100vh;
-  background: var(--page-background-color);
-  box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
-}
-
 #header {
   background: var(--header-background-color);
 }
@@ -56,7 +50,6 @@ body {
 
 #site-navigation {
   background-color: var(--navigation-background-color);
-  margin-bottom: var(--gutter-size);
   color: ~"var(--navigation-text-color)";
   position: sticky;
   top: -1px;
@@ -82,9 +75,14 @@ body {
   }
   .shopping-cart {
     transition: all 200ms ease-out;
-    a {
+    > a {
       padding: .5em 1em;
       border-radius: 0;
+    }
+    .badge {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
     }
     .badge, .checkout {
       display: none;
@@ -93,9 +91,6 @@ body {
       background-color: var(--navigation-cart-background-color);
       color: var(--navigation-cart-text-color);
       .badge {
-        //position: absolute;
-        //top: 2em;
-        //right: 3em;
         display: inline-block;
         animation: pulsating 2s linear;
         animation-iteration-count: infinite;
@@ -120,12 +115,11 @@ body {
 }
 
 #footer {
-  padding: 1.5rem .5rem;
   background: var(--footer-background-color);
   color: var(--footer-text-color);
 
   @media (min-width: (@media-breakpoint-sm)) {
-    padding: 3rem 1rem;
+    padding: 1.5rem .5rem;
   }
 
   * {

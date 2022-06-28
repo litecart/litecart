@@ -1,5 +1,5 @@
 <header id="header" class="hidden-print">
-  <div class="container">
+  <div class="wrapper">
     <div class="row">
       <div class="col-sm-6">
         <div class="logotype text-center text-md-start">

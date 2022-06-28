@@ -58,7 +58,7 @@
     "select * from ". DB_TABLE_PREFIX ."languages
     where code in ('". implode("', '", database::input($_GET['languages'])) ."')
     order by priority;"
-  ), '', 'code');
+  ), null, 'code');
 
 // Table Rows
   $translations = [];

@@ -259,21 +259,22 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form] input[name="stock_item_id"]').on('change', function(e) {
 
+    var $selected_option = $(this).closest('.dropdown').find(':input:checked');
     var regular_price = <?php echo currency::format_raw($regular_price); ?>;
     var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
     var tax = <?php echo currency::format_raw($total_tax); ?>;
 
-    $(this).closest('.form-group').find('[data-toggle="dropdown"]').text( $(this).data('name') );
+    $(this).closest('.form-group').find('[data-toggle="dropdown"]').text( $selected_option.data('name') );
 
-    if ($(this).data('price-adjustment')) regular_price += $(this).data('price-adjustment') || 0;
-    if ($(this).data('price-adjustment')) sales_price += $(this).data('price-adjustment') || 0;
-    if ($(this).data('tax-adjustment')) tax += $(this).data('tax-adjustment') || 0;
+    if ($selected_option.data('price-adjustment')) regular_price += $selected_option.data('price-adjustment') || 0;
+    if ($selected_option.data('price-adjustment')) sales_price += $selected_option.data('price-adjustment') || 0;
+    if ($selected_option.data('tax-adjustment')) tax += $selected_option.data('tax-adjustment') || 0;
 
     $(this).find('.regular-price').text(regular_price.toMoney());
     $(this).find('.campaign-price').text(sales_price.toMoney());
     $(this).find('.price').text(sales_price.toMoney());
     $(this).find('.total-tax').text(tax.toMoney());
-  });
+  }).trigger('change');
 
   $('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().click(function(e){
     e.preventDefault();

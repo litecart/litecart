@@ -181,7 +181,7 @@
       return $row;
     }
 
-    public static function fetch_all($result, $column='', $index_column='') {
+    public static function fetch_all($result, $column=null, $index_column=null) {
 
       if (class_exists('stats', false)) {
         stats::start_watch('database_execution');
@@ -192,9 +192,9 @@
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
           if ($index_column) {
-            $rows[$index_column] = $row[$column];
+            $rows[$row[$index_column]] = $column ? $row[$column] : $row;
           } else {
-            $rows[] = $row[$column];
+            $rows[] = $column ? $row[$column] : $row;
           }
         }
 

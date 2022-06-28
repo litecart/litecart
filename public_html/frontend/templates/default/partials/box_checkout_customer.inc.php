@@ -27,7 +27,7 @@
         <div class="row">
           <?php if (settings::get('customer_field_company')) { ?>
           <div class="form-group col-6">
-            <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
+            <label><?php echo language::translate('title_company', 'Company'); ?></label>
             <?php echo functions::form_draw_text_field('customer[company]', true); ?>
           </div>
           <?php } ?>
@@ -121,7 +121,7 @@
         <?php if (settings::get('customer_field_company')) { ?>
         <div class="row">
           <div class="form-group col-6">
-          <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
+          <label><?php echo language::translate('title_company', 'Company'); ?></label>
             <?php echo functions::form_draw_text_field('customer[shipping_address][company]', true); ?>
           </div>
         </div>

@@ -45,7 +45,7 @@
       ];
     }
 
-  // Information pages
+  // Pages
 
     $pages_query = database::query(
       "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
@@ -57,6 +57,26 @@
 
     while ($page = database::fetch($pages_query)) {
       $site_navigation->snippets['pages'][$page['id']] = [
+        'type' => 'page',
+        'id' => $page['id'],
+        'title' => $page['title'],
+        'link' => document::ilink('information', ['page_id' => $page['id']]),
+        'priority' => $page['priority'],
+      ];
+    }
+
+  // Information pages
+
+    $pages_query = database::query(
+      "select p.id, p.priority, pi.title from ". DB_TABLE_PREFIX ."pages p
+      left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
+      where status
+      and find_in_set('information', dock)
+      order by p.priority, pi.title;"
+    );
+
+    while ($page = database::fetch($pages_query)) {
+      $site_navigation->snippets['information'][$page['id']] = [
         'type' => 'page',
         'id' => $page['id'],
         'title' => $page['title'],

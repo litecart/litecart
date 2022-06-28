@@ -17,7 +17,7 @@
 </style>
 
 <div id="site-top-navigation">
-  <div class="container">
+  <div class="wrapper">
     <ul class="nav">
       <li class="dropdown">
         <a class="nav-item" href="<?php echo document::href_ilink('regional_settings'); ?>">
@@ -38,8 +38,8 @@
   </div>
 </div>
 
-<div id="site-navigation" style="grid-area: navigation;">
-  <div class="container navbar">
+<div id="site-navigation">
+  <div class="navbar wrapper">
 
     <div class="navbar-header">
       <div class="navbar-brand">

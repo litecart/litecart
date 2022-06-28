@@ -182,9 +182,9 @@
 
   functions::draw_lightbox();
 
-  $box_checkout_customer = new ent_view(FS_DIR_TEMPLATE . 'partials/box_checkout_customer.inc.php');
-  $box_checkout_customer->snippets = [
+  $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/checkout/customer.inc.php');
+  $_page->snippets = [
     'account_exists' => $account_exists,
     'subscribed_to_newsletter' => $subscribed_to_newsletter,
   ];
-  echo $box_checkout_customer;
+  echo $_page;

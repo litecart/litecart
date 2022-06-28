@@ -8,7 +8,7 @@
 
     <div class="info">
       <div class="name">{{name}}</div>
-      <div class="description">{{short_description}}</div>
+
       <div class="price-wrapper">
         <?php if ($campaign_price) { ?>
         <del class="regular-price">{{regular_price|money}}</del> <strong class="campaign-price">{{campaign_price|money}}</strong>

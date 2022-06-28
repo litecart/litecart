@@ -10,7 +10,7 @@
   }
 ?>
 
-<main id="main" class="container">
+<main id="main" class="container-auto">
   <div id="content">
     {{notices}}
 

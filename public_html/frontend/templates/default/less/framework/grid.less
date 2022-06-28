@@ -1,32 +1,42 @@
 /* Grid - Bootstrap Compatible */
 
+.wrapper {
+  width: 100%;
+  min-width: 320px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.wrapper-auto {
+  margin: 0 auto;
+}
+
 .container {
   width: 100%;
   min-width: 320px;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 .25em;
+  padding: var(--gutter-size) .25em;
   @media (min-width: @media-breakpoint-sm) {
-    padding: 0 .5em;
+    padding: var(--gutter-size) .5em;
   }
   @media (min-width: @media-breakpoint-md) {
-    padding: 0 .75em;
+    padding: var(--gutter-size) .75em;
   }
   @media (min-width: @media-breakpoint-lg) {
-    padding: 0 1em;
+    padding: var(--gutter-size) 1em;
   }
 }
-
 .container-fluid {
   width: 100%;
   margin: 0 auto;
-  padding: 0 .25em;
+  padding: var(--gutter-size) .25em;
 }
-
 .container-auto {
   margin: 0 auto;
-  padding: 0 .25em;
+  padding: var(--gutter-size) .25em;
 }
+
+
 
 .float-start {
   float: left;

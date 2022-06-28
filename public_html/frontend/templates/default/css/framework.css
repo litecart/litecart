@@ -241,14 +241,14 @@ hr {
 .badge {
   display: inline-block;
   width: 2em;
-  background: #c00;
-  color: #fff;
+  padding-top: 2px;
   font-weight: 700;
   font-size: 0.65em;
   line-height: 2;
   text-align: center;
-  border-radius: 50%;
-  vertical-align: middle;
+  border-radius: 4px;
+  background: #c00;
+  color: #fff;
 }
 .banner {
   border-radius: var(--border-radius);
@@ -942,36 +942,45 @@ tr.semi-transparent td {
   box-shadow: 0px 1px 0.25rem rgba(0, 0, 0, 0.15);
 }
 /* Grid - Bootstrap Compatible */
+.wrapper {
+  width: 100%;
+  min-width: 320px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.wrapper-auto {
+  margin: 0 auto;
+}
 .container {
   width: 100%;
   min-width: 320px;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 0.25em;
+  padding: var(--gutter-size) 0.25em;
 }
 @media (min-width: 576px) {
   .container {
-    padding: 0 0.5em;
+    padding: var(--gutter-size) 0.5em;
   }
 }
 @media (min-width: 768px) {
   .container {
-    padding: 0 0.75em;
+    padding: var(--gutter-size) 0.75em;
   }
 }
 @media (min-width: 992px) {
   .container {
-    padding: 0 1em;
+    padding: var(--gutter-size) 1em;
   }
 }
 .container-fluid {
   width: 100%;
   margin: 0 auto;
-  padding: 0 0.25em;
+  padding: var(--gutter-size) 0.25em;
 }
 .container-auto {
   margin: 0 auto;
-  padding: 0 0.25em;
+  padding: var(--gutter-size) 0.25em;
 }
 .float-start {
   float: left;
