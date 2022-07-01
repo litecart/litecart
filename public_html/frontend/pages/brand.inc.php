@@ -57,24 +57,15 @@
       'pagination' => null,
     ];
 
-    $products_query = functions::catalog_products_query([
+
+    $_page->snippets['products'] = functions::catalog_products_query([
       'brands' => [$brand->id],
       'product_name' => fallback($_GET['product_name']),
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
-    ]);
+    ])->fetch_page($_GET['page'], 20, $num_rows, $num_pages);
 
-    if (database::num_rows($products_query)) {
-      if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page', 20) * ($_GET['page'] - 1)));
-
-      $page_items = 0;
-      while ($listing_item = database::fetch($products_query)) {
-        $_page->snippets['products'][] = $listing_item;
-        if (++$page_items == settings::get('items_per_page', 20)) break;
-      }
-    }
-
-    $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page', 20)));
+    $_page->snippets['pagination'] = functions::draw_pagination($num_pages);
 
     cache::set($brand_cache_token, $_page->snippets);
   }

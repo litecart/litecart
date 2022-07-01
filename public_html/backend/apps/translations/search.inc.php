@@ -53,17 +53,8 @@
     exit;
   }
 
-// Languages
-  $languages = database::query(
-    "select * from ". DB_TABLE_PREFIX ."languages
-    where code in ('". implode("', '", database::input($_GET['languages'])) ."')
-    order by priority;"
-  )->fetch_all(null, 'code');
-
-// Table Rows
-  $translations = [];
-
-  $translations_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $translations = database::query(
     "select * from ". DB_TABLE_PREFIX ."translations
     where id
     ". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : null) ."
@@ -72,26 +63,18 @@
     ". (!empty($_GET['untranslated']) ? "and (". implode(" or ", array_map(function($s){ return "(text_$s is null or text_$s = '')"; }, database::input($_GET['languages']))) .")" : null) ."
     ". (empty($_GET['modules']) ? " and code not regexp '^(cm|job|om|ot|pm|sm)_'" : null) ."
     order by date_updated desc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($translations_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+// Languages
+  $languages = database::query(
+    "select id, code, name
+    from ". DB_TABLE_PREFIX ."languages
+    where code in ('". implode("', '", database::input($_GET['languages'])) ."')
+    order by priority;"
+  )->fetch_all(null, 'code');
 
-  $page_items = 0;
-  while ($translation = database::fetch($translations_query)) {
-    $translations[] = $translation;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($translations_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
-
-  $language_options = [];
-  foreach ($_GET['languages'] as $language_code) {
-    $language_options[$language_code] = language::$languages[$language_code]['name'];
-  }
+// Language Options
+  $language_options = array_column($languages, 'name', 'code');
 
   functions::draw_lightbox();
 ?>
@@ -136,7 +119,7 @@ th:not(:last-child) {
         </thead>
 
         <tbody>
-          <?php foreach ($translations as $translation) { ?>
+          <?php $tab_index = 0; foreach ($translations as $translation) { ?>
           <tr>
             <td>
               <code class="code"><?php echo $translation['code']; ?></code><br />
@@ -145,7 +128,7 @@ th:not(:last-child) {
             <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
             <td>
               <?php echo functions::form_draw_hidden_field('translations['. $translation['code'] .'][id]', $translation['id']); ?>
-              <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
+              <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad(++$tab_index, 2, '0', STR_PAD_LEFT) .'"'); ?>
             </td>
             <?php } ?>
             <td class="text-end"><a class="btn btn-danger btn-sm delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-trash'); ?></a></td>

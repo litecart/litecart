@@ -5,27 +5,12 @@
 
   breadcrumbs::add(language::translate('title_tax_classes', 'Tax Classes'));
 
-// Table Rows
-  $tax_classes = [];
-
-  $tax_classses_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $tax_classes = database::query(
     "select * from ". DB_TABLE_PREFIX ."tax_classes
     order by name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($tax_classses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($tax_class = database::fetch($tax_classses_query)) {
-    $tax_classes[] = $tax_class;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($tax_classses_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

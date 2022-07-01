@@ -52,27 +52,23 @@
   $settings_group = database::query(
     "select * from ". DB_TABLE_PREFIX ."settings_groups
     where `key` = '". database::input(__DOC__) ."'
-    order by priority, `key`;"
+    order by priority, `key`
+    limit 1;"
   )->fetch();
 
   if (!$settings_group) {
-    die('Invalid settings group ('. __DOC__ .')');
+    notices::add('errors', 'Invalid settings group ('. __DOC__ .')');
+    return;
   }
 
-// Table Rows
-  $settings = [];
-
-  $settings_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $settings = database::query(
     "select * from ". DB_TABLE_PREFIX ."settings
     where `group_key` = '". database::input($settings_group['key']) ."'
     order by priority, `key` asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($settings_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($setting = database::fetch($settings_query)) {
-
+  foreach ($settings as $i => $setting) {
     if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 
       switch (true) {
@@ -117,15 +113,9 @@
       }
     }
 
-    $settings[] = $setting;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
+    $settings[$i] = $setting;
   }
 
-// Number of Rows
-  $num_rows = database::num_rows($settings_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

@@ -123,26 +123,14 @@
     having relevance > 0
 
     order by $sql_sort;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if (database::num_rows($products_query) == 1) {
-    $product = database::fetch($products_query);
+  if (count($products) == 1) {
+    $product = current($products);
     header('Location: '. document::ilink('product', ['product_id' => $product['id']]), true, 302);
     exit;
   }
 
-  if (database::num_rows($products_query)) {
-
-    if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page') * ($_GET['page'] - 1)));
-
-    $page_items = 0;
-    while ($listing_item = database::fetch($products_query)) {
-      $_page->snippets['products'][] = $listing_item;
-
-      if (++$page_items == settings::get('items_per_page')) break;
-    }
-  }
-
-  $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
+  $_page->snippets['pagination'] = functions::draw_pagination($num_pages);
 
   echo $_page;

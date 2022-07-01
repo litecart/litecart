@@ -6,28 +6,13 @@
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_quantity_units', 'Quantity Units'));
 
-// Table Rows
-  $quantity_units = [];
-
-  $quantity_units_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $quantity_units = database::query(
     "select qu.id, qui.name, qui.description from ". DB_TABLE_PREFIX ."quantity_units qu
     left join ". DB_TABLE_PREFIX ."quantity_units_info qui on (qu.id = qui.quantity_unit_id and qui.language_code = '". database::input(language::$selected['code']) ."')
     order by qu.priority, qui.name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($quantity_units_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($unit = database::fetch($quantity_units_query)) {
-    $quantity_units[] = $unit;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($quantity_units_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

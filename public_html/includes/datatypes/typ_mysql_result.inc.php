@@ -80,22 +80,26 @@
       return $rows;
     }
 
-    public function fetch_portion($offset, $portion, &$num_rows=null, &$num_sets=null) {
+    public function fetch_page($page, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
 
       if (class_exists('stats', false)) {
         stats::start_watch('database_execution');
       }
 
-      mysqli_data_seek($this->_result, $offset);
+      if ($page < 1) $page = 1;
+      if (!$items_per_page) $items_per_page = settings::get('data_table_rows_per_page');
+
+      mysqli_data_seek($this->_result, ((int)$page -1) * $items_per_page);
+
       $num_rows = mysqli_num_rows($this->_result);
-      $num_pages = ceil($num_rows / $portion);
+      $num_pages = ceil($num_rows / $items_per_page);
 
       $rows = [];
 
       $i = 0;
       while ($row = mysqli_fetch_assoc($this->_result)) {
         $rows[] = $row;
-        if (++$i == $portion) break;
+        if (++$i == $items_per_page) break;
       }
 
       if (class_exists('stats', false)) {

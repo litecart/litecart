@@ -26,9 +26,6 @@
     }
   }
 
-// Table Rows
-  $shopping_carts = [];
-
   if (!empty($_GET['query'])) {
     $sql_where_query = [
       "sc.id = '". database::input($_GET['query']) ."'",
@@ -57,7 +54,8 @@
       break;
   }
 
-  $shopping_carts_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $shopping_carts = database::query(
     "select sc.*, sci.num_items from ". DB_TABLE_PREFIX ."shopping_carts sc
     left join (
       select cart_id, count(id) as num_items
@@ -67,21 +65,7 @@
     where sc.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
     order by $sql_sort;"
-  );
-
-  if ($_GET['page'] > 1) database::seek($shopping_carts_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($shopping_cart = database::fetch($shopping_carts_query)) {
-    $shopping_carts[] = $shopping_cart;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($shopping_carts_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card card-app">

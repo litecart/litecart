@@ -34,27 +34,12 @@
     }
   }
 
-// Table Rows
-  $geo_zones = [];
-
-  $geo_zones_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $geo_zones = database::query(
     "select * from ". DB_TABLE_PREFIX ."geo_zones
     order by name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($geo_zones_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($geo_zone = database::fetch($geo_zones_query)) {
-    $geo_zones[] = $geo_zone;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($geo_zones_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

@@ -94,9 +94,6 @@
     }
   }
 
-// Table Rows
-  $orders = [];
-
   if (!empty($_GET['query'])) {
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
@@ -155,7 +152,8 @@
       break;
   }
 
-  $orders_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $orders = database::query(
     "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_PREFIX ."orders o
     left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code'])."')
@@ -165,13 +163,9 @@
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($orders_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($order = database::fetch($orders_query)) {
-
+  foreach ($orders as $i => $order) {
     if (empty($order['order_status_id'])) {
       $order['order_status_icon'] = 'fa-minus';
       $order['order_status_color'] = '#ccc';
@@ -201,16 +195,8 @@
       }
     }
 
-    $orders[] = $order;
-
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
+    $orders[$i] = $order;
   }
-
-// Number of Rows
-  $num_rows = database::num_rows($orders_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 
 // Order Statuses
   $order_status_options = [

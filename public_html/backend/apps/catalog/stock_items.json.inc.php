@@ -15,30 +15,19 @@
     ];
   }
 
-  $stock_items_query = database::query(
+  $stock_items = database::query(
     "select si.*, sii.name, b.name as brand_name from ". DB_TABLE_PREFIX ."stock_items si
     left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = si.id and sii.language_code = '". database::input($_GET['language_code']) ."')
 		left join ". DB_TABLE_PREFIX ."brands b on (b.id = si.id)
     ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by si.sku, b.name, sii.name
     limit 15;"
-  );
+  )->fetch_page($_REQUEST['page'], 15, $num_rows, $num_pages);
 
-  $stock_items = [];
-  if (database::num_rows($stock_items_query)) {
-
-    if ($_REQUEST['page'] > 1) database::seek($stock_items_query, (settings::get('data_table_rows_per_page') * ($_REQUEST['page']-1)));
-
-    $page_items = 0;
-    while ($stock_item = database::fetch($stock_items_query)) {
-      foreach ($stock_item as $key => $value) {
-        if (is_numeric($value)) $stock_item[$key] = floatval($value);
-      }
-      $stock_item['date_updated'] = language::strftime(language::$selected['format_date'], strtotime($stock_item['date_updated']));
-      $stock_item['date_created'] = language::strftime(language::$selected['format_date'], strtotime($stock_item['date_created']));
-      $stock_items[] = $stock_item;
-      if (++$page_items == settings::get('data_table_rows_per_page')) break;
-    }
+  foreach ($stock_items as $i => $stock_item) {
+    $stock_item['date_updated'] = language::strftime(language::$selected['format_date'], strtotime($stock_item['date_updated']));
+    $stock_item['date_created'] = language::strftime(language::$selected['format_date'], strtotime($stock_item['date_created']));
+    $stock_items[$i] = $stock_item;
   }
 
   header('Content-Type: application/json');

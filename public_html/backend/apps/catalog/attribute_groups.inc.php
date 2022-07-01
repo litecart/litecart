@@ -6,28 +6,13 @@
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_attribute_groups', 'Attribute Groups'), document::ilink(__APP__.'/attribute_groups'));
 
-// Table Rows
-  $attribute_groups = [];
-
-  $attribute_groups_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $attribute_groups = database::query(
     "select ag.id, ag.code, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
     left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input(language::$selected['code']) ."')
     order by agi.name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($attribute_groups_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($attribute_group = database::fetch($attribute_groups_query)) {
-    $attribute_groups[] = $attribute_group;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($attribute_groups_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

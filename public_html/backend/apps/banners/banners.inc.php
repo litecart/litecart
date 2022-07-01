@@ -26,30 +26,15 @@
     }
   }
 
-// Table Rows
-  $banners = [];
-
-  $banners_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $banners = database::query(
     "select * from ". DB_TABLE_PREFIX ."banners
     where id
     ". (!empty($_GET['keyword']) ? "and find_in_set('". database::input($_GET['keywords']) ."', keywords)" : '') ."
     ". (!empty($_GET['query']) ? "and name like '%". database::input($_GET['query']) ."%'" : '') ."
     order by status desc, name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($banners_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($banner = database::fetch($banners_query)) {
-    $banners[] = $banner;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($banners_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -105,7 +90,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="11"><?php echo language::translate('title_banners', 'Banners'); ?>: <?php echo database::num_rows($banners_query); ?></td>
+          <td colspan="11"><?php echo language::translate('title_banners', 'Banners'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

@@ -25,27 +25,11 @@
     }
   }
 
-// Table Rows
-  $slides = [];
-
-  $slides_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $slides = database::query(
     "select * from ". DB_TABLE_PREFIX ."slides
     order by priority, name;"
-  );
-
-  if ($_GET['page'] > 1) database::seek($slides_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($slide = database::fetch($slides_query)) {
-    $slides[] = $slide;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($slides_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 ?>
 
 <div class="card card-app">

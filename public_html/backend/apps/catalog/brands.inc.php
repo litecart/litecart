@@ -25,35 +25,18 @@
     }
   }
 
-// Table Rows
-  $brands = [];
-
-  $brands_query = database::query(
-    "select * from ". DB_TABLE_PREFIX ."brands
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $brands = database::query(
+    "select b.*, p.num_products
+    from ". DB_TABLE_PREFIX ."brands b
+    left join (
+      select brand_id, count(id) as num_products
+      from ". DB_TABLE_PREFIX ."products
+      group by brand_id
+    ) p on (p.brand_id = b.id)
     order by name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($brands_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($brand = database::fetch($brands_query)) {
-
-    $products_query = database::query(
-      "select id from ". DB_TABLE_PREFIX ."products
-      where brand_id = ". (int)$brand['id'] .";"
-    );
-
-    $brand['num_products'] = database::num_rows($products_query);
-
-    $brands[] = $brand;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($brands_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

@@ -6,27 +6,13 @@
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_delivery_statuses', 'Delivery Statuses'));
 
-// Table Rows
-  $delivery_statuses = [];
-
-  $delivery_statuses_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $delivery_statuses = database::query(
     "select ds.id, dsi.name from ". DB_TABLE_PREFIX ."delivery_statuses ds
     left join ". DB_TABLE_PREFIX ."delivery_statuses_info dsi on (ds.id = dsi.delivery_status_id and dsi.language_code = '". database::input(language::$selected['code']) ."')
     order by dsi.name asc;"
-  );
-  if ($_GET['page'] > 1) database::seek($delivery_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  $page_items = 0;
-  while ($delivery_status = database::fetch($delivery_statuses_query)) {
-    $delivery_statuses[] = $delivery_status;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($delivery_statuses_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

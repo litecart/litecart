@@ -5,29 +5,14 @@
 
   breadcrumbs::add(language::translate('title_tax_rates', 'Tax Rates'));
 
-// Table Rows
-  $tax_rates = [];
-
-  $tax_rates_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $tax_rates = database::query(
     "select tr.*, gz.name as geo_zone, tc.name as tax_class from ". DB_TABLE_PREFIX ."tax_rates tr
     left join ". DB_TABLE_PREFIX ."geo_zones gz on (gz.id = tr.geo_zone_id)
     left join ". DB_TABLE_PREFIX ."tax_classes tc on (tc.id = tr.tax_class_id)
     order by tc.name, gz.name, tr.name;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($tax_rates_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($tax_rate = database::fetch($tax_rates_query)) {
-    $tax_rates[] = $tax_rate;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($tax_rates_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

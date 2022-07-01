@@ -98,12 +98,10 @@
     }
   }
 
-// Table Rows
-  $products = [];
-
   if (!empty($_GET['query'])) {
 
-    $products_query = database::query(
+  // Table Rows, Total Number of Rows, Total Number of Pages
+    $products = database::query(
       "select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name,
       (
         if(p.id = '". database::input($_GET['query']) ."', 10, 0)
@@ -136,7 +134,7 @@
       left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
       having relevance > 0
       order by relevance desc;"
-    );
+    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
     if (!empty($_GET['category_id'])) {
       unset($_GET['category_id']);
@@ -144,7 +142,8 @@
 
   } else if (!empty($_GET['category_id'])) {
 
-    $products_query = database::query(
+  // Table Rows, Total Number of Rows, Total Number of Pages
+    $products = database::query(
       "select p.id, p.status, p.code, pi.name, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
       where p.id in (
@@ -152,23 +151,22 @@
         where category_id = ". (int)$_GET['category_id'] ."
       )
       order by status desc, pi.name asc;"
-    );
+    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
   } else {
 
-    $products_query = database::query(
+  // Table Rows, Total Number of Rows, Total Number of Pages
+    $products = database::query(
       "select p.id, p.status, p.code, pi.name, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
       left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
       order by status desc, pi.name asc;"
-    );
+    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
   }
 
-  if ($_GET['page'] > 1) database::seek($products_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($product = database::fetch($products_query)) {
+  foreach ($products as $i => $product) {
 
     try {
+
       if (!empty($product['date_valid_from']) && strtotime($product['date_valid_from']) > time()) {
         throw new Exception(strtr(language::translate('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until %date'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_from']))]));
       }
@@ -182,18 +180,9 @@
       }
 
     } catch (Exception $e) {
-      $product['warning'] = $e->getMessage();
+      $products[$i]['warning'] = $e->getMessage();
     }
-
-    $products[] = $product;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
   }
-
-// Number of Rows
-  $num_rows = database::num_rows($products_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 
   functions::draw_lightbox();
 ?>

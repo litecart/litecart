@@ -40,9 +40,6 @@
     exit;
   }
 
-// Table Rows
-  $customers = [];
-
   if (!empty($_GET['query'])) {
     $sql_find = [
       "c.id = '". database::input($_GET['query']) ."'",
@@ -71,26 +68,14 @@
       break;
   }
 
-  $customers_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $customers = database::query(
     "select c.* from ". DB_TABLE_PREFIX ."customers c
     where c.id
     ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by $sql_sort;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($customers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($customer = database::fetch($customers_query)) {
-    $customers[] = $customer;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($customers_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

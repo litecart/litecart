@@ -1,13 +1,10 @@
 <?php
 	if (!isset($_GET['page'])) $_GET['page'] = 1;
 
-// Table Rows
-  $transactions = [];
-
-  $stock_transactions_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $transactions = database::query(
     "select id, name, date_created from ". DB_TABLE_PREFIX ."stock_transactions t
     where id
-
     ". (!empty($_GET['query']) ? "t.name like '%". database::input($_GET['query']) ."%' or t.notes like '%". database::input($_GET['query']) ."%'" : "") ."
     ". (!empty($_GET['query']) ? "and id in (
       select transaction_id from ". DB_TABLE_PREFIX ."stock_transactions_contents
@@ -25,24 +22,8 @@
     ". (!empty($_GET['date_from']) ? "and t.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and t.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
     order by date_created desc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if (database::num_rows($stock_transactions_query)) {
-
-    if ($_GET['page'] > 1) database::seek($stock_transactions_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-    $page_items = 0;
-    while ($transaction = database::fetch($stock_transactions_query)) {
-      $transactions[] = $transaction;
-      if (++$page_items == settings::get('data_table_rows_per_page')) break;
-    }
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($stock_transactions_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -94,7 +75,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="5"><?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo database::num_rows($stock_transactions_query); ?></td>
+          <td colspan="5"><?php echo language::translate('title_stock_transactions', 'Stock Transactions'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

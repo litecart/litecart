@@ -6,27 +6,13 @@
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));
   breadcrumbs::add(language::translate('title_suppliers', 'Suppliers'));
 
-// Table Rows
-  $suppliers = [];
-
-  $suppliers_query = database::query(
-    "select id, name from ". DB_TABLE_PREFIX ."suppliers
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $suppliers = database::query(
+    "select id, name
+    from ". DB_TABLE_PREFIX ."suppliers
     order by name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($suppliers_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($supplier = database::fetch($suppliers_query)) {
-    $suppliers[] = $supplier;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($suppliers_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

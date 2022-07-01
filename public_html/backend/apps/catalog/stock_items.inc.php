@@ -5,9 +5,6 @@
 
   breadcrumbs::add(language::translate('title_stock_items', 'Stock Items'));
 
-// Table Rows
-  $stock_items = [];
-
 	if (!empty($_GET['query'])) {
 		$sql_where_query = [
 			"si.id = '". database::input($_GET['query']) ."'",
@@ -18,7 +15,8 @@
 		];
 	}
 
-	$stock_items_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+	$stock_items = database::query(
 		"select si.*, sii.name, oi.reserved, stt.total_deposited, oit.total_withdrawn from ". DB_TABLE_PREFIX ."stock_items si
 
     left join ". DB_TABLE_PREFIX ."stock_items_info sii on (si.id = sii.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
@@ -58,26 +56,14 @@
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 		order by si.sku, sii.name;"
-	);
+	)->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($stock_items_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($stock_item = database::fetch($stock_items_query)) {
-
+  foreach ($stock_items as $i => $stock_item) {
     if ($stock_item['quantity'] != $stock_item['total_deposited'] - $stock_item['total_withdrawn']) {
-      $stock_item['warning'] = language::translate('text_stock_inconsistency_detected', 'Stock inconsistency detected');
+      $stock_items[$i]['warning'] = language::translate('text_stock_inconsistency_detected', 'Stock inconsistency detected');
     }
-
-    $stock_items[] = $stock_item;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
 	}
 
-// Number of Rows
-  $num_rows = database::num_rows($stock_items_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 <style>
 .fa-exclamation-triangle {
@@ -142,7 +128,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="11"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo database::num_rows($stock_items_query); ?></td>
+          <td colspan="11"><?php echo language::translate('title_stock_items', 'Stock Items'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

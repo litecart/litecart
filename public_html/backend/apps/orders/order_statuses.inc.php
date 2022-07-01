@@ -31,10 +31,8 @@
     }
   }
 
-// Table Rows
-  $order_statuses = [];
-
-  $order_statuses_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $order_statuses = database::query(
     "select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
     left join (
@@ -43,25 +41,12 @@
       group by order_status_id
     ) o on (o.order_status_id = os.id)
     order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($order_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($order_status = database::fetch($order_statuses_query)) {
+  foreach ($order_statuses as $i => $order_status) {
     if (empty($order_status['icon'])) $order_status['icon'] = 'fa-circle-thin';
     if (empty($order_status['color'])) $order_status['color'] = '#cccccc';
-
-    $order_statuses[] = $order_status;
-
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
   }
-
-// Number of Rows
-  $num_rows = database::num_rows($order_statuses_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 
   $states = [
     'created' => language::translate('title_created', 'Created'),

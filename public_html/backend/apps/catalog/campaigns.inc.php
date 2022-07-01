@@ -25,10 +25,8 @@
     }
   }
 
-// Table Rows
-  $campaigns = [];
-
-  $campaigns_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $campaigns = database::query(
     "select pc.*, pi.name as product_name,
       pc.`". database::input(settings::get('site_currency_code')) ."` as campaign_price,
       pp.`". database::input(settings::get('site_currency_code')) ."` as product_price
@@ -36,21 +34,8 @@
     left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = pc.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
     left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = pc.product_id)
     order by pc.start_date, pc.end_date;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($campaigns_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($campaign = database::fetch($campaigns_query)) {
-    $campaigns[] = $campaign;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($campaigns_query);
-
-// Pagination
-  $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 ?>
 <div class="card card-app">
   <div class="card-header">

@@ -119,29 +119,23 @@
       "pi.content like '%". database::input($_GET['query']) ."%'",
     ];
 
-    $pages_query = database::query(
-      "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
+    $pages = database::query(
+      "select p.*, pi.title, p2.num_subpages
+      from ". DB_TABLE_PREFIX ."pages p
       left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+      left join (
+        select parent_id as id, count(id) as num_subpages
+        from ". DB_TABLE_PREFIX ."pages
+      ) p2 on (p2.id = p.id)
       where p.id
       ". (empty($_GET['query']) ? "and parent_id = 0" : "") ."
       ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
       ". (!empty($_GET['dock']) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
       order by p.priority, pi.title;"
-    );
+    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-    if (database::num_rows($pages_query)) {
-
-      if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-      $page_items = 0;
-      while ($page = database::fetch($pages_query)) {
-        $page['dock'] = explode(',', $page['dock']);
-
-        $num_subpages = database::query(
-          "select * from ". DB_TABLE_PREFIX ."pages p
-          left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
-          where parent_id = ". (int)$page['id'] .";"
-        )->num_rows;
+    foreach ($pages as $page) {
+      $page['dock'] = explode(',', $page['dock']);
 
 ?>
         <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : ''; ?>">
@@ -154,21 +148,21 @@
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
 <?php
-        if (++$page_items == settings::get('data_table_rows_per_page')) break;
-      }
     }
-
-    $num_rows = database::num_rows($pages_query);
-    $num_pages = $num_rows / settings::get('data_table_rows_per_page');
 
   } else {
 
     $iterator = function($parent_id, $depth=0) use (&$iterator) {
 
       $pages_query = database::query(
-        "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
+        "select p.*, pi.title, p2.num_subpages
+        from ". DB_TABLE_PREFIX ."pages p
         left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
-        where parent_id = ". (int)$parent_id ."
+        left join (
+          select parent_id as id, count(id) as num_subpages
+          from ". DB_TABLE_PREFIX ."pages
+        ) p2 on (p2.id = p.id)
+        where p.parent_id = ". (int)$parent_id ."
         ". ((!empty($_GET['dock']) && empty($depth)) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."
         order by p.priority, pi.title;"
       );
@@ -182,14 +176,7 @@
       while ($page = database::fetch($pages_query)) {
         $page['dock'] = explode(',', $page['dock']);
 
-        $subpages_query = database::query(
-          "select p.*, pi.title from ". DB_TABLE_PREFIX ."pages p
-          left join ". DB_TABLE_PREFIX ."pages_info pi on (p.id = pi.page_id and pi.language_code = '". database::input(language::$selected['code']) ."')
-          where parent_id = ". (int)$page['id'] ."
-          order by p.priority, pi.title;"
-        );
-
-        if (database::num_rows($subpages_query)) {
+        if ($page['num_subpages']) {
           if (!in_array($page['id'], $_GET['expanded'])) {
             $expanded = array_merge($_GET['expanded'], [$page['id']]);
             $icon = '<a href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';

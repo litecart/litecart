@@ -110,32 +110,21 @@
     }
 
   // Subcategories
-    $subcategories_query = functions::catalog_categories_query($category->id);
-    $_page->snippets['subcategories'] = database::fetch_all($subcategories_query);
+    $_page->snippets['subcategories'] = functions::catalog_categories_query($category->id)->fetch_all();
 
   // Products
-    $products_query = functions::catalog_products_query([
+  $_page->snippets['products'][] = functions::catalog_products_query([
       'categories' => [$category->id] + array_keys($category->descendants),
       'brands' => fallback($_GET['brands']),
       'attributes' => fallback($_GET['attributes']),
       'product_name' => fallback($_GET['product_name']),
       'sort' => $_GET['sort'],
       'campaigns_first' => true,
-    ]);
-
-    if (database::num_rows($products_query)) {
-      if ($_GET['page'] > 1) database::seek($products_query, settings::get('items_per_page') * ($_GET['page'] - 1));
-
-      $page_items = 0;
-      while ($listing_product = database::fetch($products_query)) {
-        $_page->snippets['products'][] = $listing_product;
-        if (++$page_items == settings::get('items_per_page')) break;
-      }
-    }
+    ])->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
     $_page->snippets['num_products_page'] = count($_page->snippets['products']);
-    $_page->snippets['num_products_total'] = (int)database::num_rows($products_query);
-    $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
+    $_page->snippets['num_products_total'] = $num_rows;
+    $_page->snippets['pagination'] = functions::draw_pagination($num_pages);
 
     cache::set($box_category_cache_token, $_page->snippets);
   }

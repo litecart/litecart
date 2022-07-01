@@ -26,27 +26,12 @@
     }
   }
 
-// Table Rows
-  $users = [];
-
-  $users_query = database::query(
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $users = database::query(
     "select * from ". DB_TABLE_PREFIX ."users
     order by username;"
-  );
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
-  if ($_GET['page'] > 1) database::seek($users_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-
-  $page_items = 0;
-  while ($user = database::fetch($users_query)) {
-    $users[] = $user;
-    if (++$page_items == settings::get('data_table_rows_per_page')) break;
-  }
-
-// Number of Rows
-  $num_rows = database::num_rows($users_query);
-
-// Pagination
-  $num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
 ?>
 
 <div class="card card-app">
