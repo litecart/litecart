@@ -5,22 +5,13 @@
     exit;
   }
 
-  $zones_query = database::query(
-    "select * from ". DB_TABLE_PREFIX ."zones
+  $zones = database::query(
+    "select code, name from ". DB_TABLE_PREFIX ."zones
     where country_code = '". database::input($_GET['country_code']) ."'
     order by name asc;"
-  );
-
-  $json = [];
-
-  while ($zone = database::fetch($zones_query)) {
-    $json[] = [
-      'code' => $zone['code'],
-      'name' => $zone['name'],
-    ];
-  }
+  )->fetch_all();
 
   ob_clean();
   header('Content-type: application/json; charset='. mb_http_output());
-  echo json_encode($json, JSON_UNESCAPED_SLASHES);
+  echo json_encode($zones, JSON_UNESCAPED_SLASHES);
   exit;

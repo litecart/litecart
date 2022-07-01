@@ -5,6 +5,8 @@
   if (empty($_GET['currency_code'])) $_GET['currency_code'] = currency::$selected['code'];
   if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
 
+  $products = [];
+
   if (!empty($_REQUEST['query'])) {
     $sql_find = [
       "p.id = '". database::input($_REQUEST['query']) ."'",
@@ -29,7 +31,6 @@
     limit 15;"
   );
 
-  $products = [];
   if (database::num_rows($products_query)) {
 
     if ($_REQUEST['page'] > 1) database::seek($products_query, (settings::get('data_table_rows_per_page') * ($_REQUEST['page']-1)));

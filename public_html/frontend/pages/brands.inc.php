@@ -9,17 +9,17 @@
 
     $_page = new ent_view(FS_DIR_TEMPLATE . 'pages/brands.inc.php');
 
-    $brands_query = database::query(
+    $brands = database::query(
       "select b.id, b.name, b.image, bi.short_description, bi.link
       from ". DB_TABLE_PREFIX ."brands b
       left join ". DB_TABLE_PREFIX ."brands_info bi on (bi.brand_id = b.id and bi.language_code = '". language::$selected['code'] ."')
       where status
       order by name;"
-    );
+    )->fetch_all();
 
     $_page->snippets['brands'] = [];
 
-    while ($brand = database::fetch($brands_query)) {
+    foreach ($brands as $brand) {
       $_page->snippets['brands'][] = [
         'id' => $brand['id'],
         'name' => $brand['name'],

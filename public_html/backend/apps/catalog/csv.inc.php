@@ -287,12 +287,11 @@
 
           // Find campaign
             if (!empty($row['id'])) {
-              $campaign_query = database::query(
+              $campaign = database::query(
                 "select id from ". DB_TABLE_PREFIX ."products_campaigns
                 where id = ". (int)$row['id'] ."
                 limit 1;"
-              );
-              $campaign = database::fetch($campaign_query);
+              )->fetch();
             }
 
             if (!empty($campaign['id'])) {
@@ -386,12 +385,11 @@
             }
 
             if (empty($row['parent_id']) && !empty($row['parent_code'])) {
-              $parent_query = database::query(
+              $row['parent_id'] = database::query(
                 "select id from ". DB_TABLE_PREFIX ."categories
                 where code = '". database::input($row['parent_code']) ."'
                 limit 1;"
-              );
-              $row['parent_id'] = database::fetch($parent_query, 'id');
+              )->fetch('id');
             }
 
           // Set new category data

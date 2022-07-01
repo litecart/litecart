@@ -6,9 +6,9 @@
   functions::draw_lightbox();
 
 // Get from catalog
-  $recently_viewed_products = database::fetch_all(functions::catalog_products_query([
+  $recently_viewed_products = functions::catalog_products_query([
     'products' => array_reverse(array_column(session::$data['recently_viewed_products'], 'id'))
-  ]));
+  ])->fetch_all();
 
   $product_ids = array_column(session::$data['recently_viewed_products'], 'id');
 

@@ -15,11 +15,11 @@
 
       $box_also_purchased_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_also_purchased_products.inc.php');
 
-      $box_also_purchased_products->snippets['products'] = database::fetch_all(functions::catalog_products_query([
+      $box_also_purchased_products->snippets['products'] = functions::catalog_products_query([
         'products' => array_keys($also_purchased_products),
         'sort' => 'random',
         'limit' => settings::get('box_also_purchased_products_num_items'),
-      ]));
+      ])->fetch_all();
 
       if ($box_also_purchased_products->snippets['products']) {
         echo $box_also_purchased_products;

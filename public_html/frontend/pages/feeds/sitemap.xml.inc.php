@@ -79,7 +79,6 @@
                 . '    </image:image>' . PHP_EOL;
       }
 
-
     $output .= '  <url>' . PHP_EOL
              . '    <loc>'. document::ilink('product', ['product_id' => $product['id']]) .'</loc>' . PHP_EOL
              . $hreflangs

@@ -7,7 +7,7 @@
   $code_regex = functions::format_regex_code($query);
   $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
-  $products_query = database::query(
+  $products = database::query(
     "select p.id, p.default_category_id, pi.name,
     (
         if(p.id = '". database::input($query) ."', 10, 0)
@@ -37,21 +37,21 @@
     having relevance > 0
     order by relevance desc, id asc
     limit 5;"
-  );
+  )->fetch_all();
 
-  if (database::num_rows($products_query)) {
+  if ($products) {
 
     $result = [
       'name' => language::translate('title_products', 'Products'),
       'results' => [],
     ];
 
-    while ($product = database::fetch($products_query)) {
+    foreach ($products as $product) {
       $result['results'][] = [
-          'id' => $product['id'],
-          'title' => $product['name'],
-          'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
-          'link' => document::ilink($app.'/edit_product', ['product_id' => $product['id']]),
+        'id' => $product['id'],
+        'title' => $product['name'],
+        'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
+        'link' => document::ilink($app.'/edit_product', ['product_id' => $product['id']]),
       ];
     }
 
@@ -68,7 +68,7 @@
   $code_regex = functions::format_regex_code($query);
   $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
 
-  $stock_items_query = database::query(
+  $stock_items = database::query(
     "select s.id, s.sku, si.name,
     (
         if(s.id = '". database::input($query) ."', 10, 0)
@@ -93,26 +93,25 @@
     having relevance > 0
     order by relevance desc, id asc
     limit 5;"
-  );
+  )->fetch_all();
 
-  if (database::num_rows($stock_items_query)) {
+  if ($stock_items) {
 
     $result = [
       'name' => language::translate('title_stok_items', 'Stock Items'),
       'results' => [],
     ];
 
-    while ($stock_item = database::fetch($stock_items_query)) {
+    foreach ($stock_items as $stock_item) {
       $result['results'][] = [
-          'id' => $stock_item['id'],
-          'title' => $stock_item['name'],
-          'description' => $stock_item['sku'],
-          'link' => document::ilink($app.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]),
+        'id' => $stock_item['id'],
+        'title' => $stock_item['name'],
+        'description' => $stock_item['sku'],
+        'link' => document::ilink($app.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]),
       ];
     }
 
     $results[] = $result;
   }
-
 
   return $results;

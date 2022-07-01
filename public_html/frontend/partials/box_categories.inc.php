@@ -4,9 +4,7 @@
 
     $box_categories = new ent_view(FS_DIR_TEMPLATE . 'partials/box_categories.inc.php');
 
-    $box_categories->snippets['categories'] = database::fetch_all(
-      functions::catalog_categories_query()
-    );
+    $box_categories->snippets['categories'] = functions::catalog_categories_query()->fetch_all();
 
     echo $box_categories;
 

@@ -16,9 +16,9 @@
         "select * from ". DB_TABLE_PREFIX ."customers
         where email = '". database::input($_REQUEST['email']) ."'
         limit 1;"
-      );
+      )->fetch();
 
-      if (!$customer = database::fetch($customer_query)) {
+      if (!$customer) {
         throw new Exception(language::translate('error_email_not_in_database', 'The email address does not exist in our database.'));
       }
 

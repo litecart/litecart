@@ -8,10 +8,10 @@
 
       $box_latest_products = new ent_view(FS_DIR_TEMPLATE . 'partials/box_latest_products.inc.php');
 
-      $box_latest_products->snippets['products'] = database::fetch_all(functions::catalog_products_query([
+      $box_latest_products->snippets['products'] = functions::catalog_products_query([
         'sort' => 'date',
         'limit' => settings::get('box_latest_products_num_items'),
-      ]));
+      ])->fetch_all();
 
       if ($box_latest_products->snippets['products']) {
         echo $box_latest_products;
