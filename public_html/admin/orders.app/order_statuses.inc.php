@@ -44,7 +44,7 @@
       from ". DB_TABLE_PREFIX ."orders
       group by order_status_id
     ) o on (o.order_status_id = os.id)
-    order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
+    order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), osi.name asc;"
   );
 
   if ($_GET['page'] > 1) database::seek($order_statuses_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -71,6 +71,7 @@
     'ready' => language::translate('title_ready', 'Ready'),
     'delayed' => language::translate('title_delayed', 'Delayed'),
     'processing' => language::translate('title_processing', 'Processing'),
+    'completed' => language::translate('title_completed', 'Completed'),
     'dispatched' => language::translate('title_dispatched', 'Dispatched'),
     'in_transit' => language::translate('title_in_transit', 'In Transit'),
     'delivered' => language::translate('title_delivered', 'Delivered'),

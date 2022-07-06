@@ -275,13 +275,14 @@ INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_
 (4, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserve', NOW(), NOW()),
 (5, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
 (6, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserved', NOW(), NOW()),
-(7, 'dispatched', 'fa-truck', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
-(8, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),
-(9, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
-(10, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', NOW(), NOW()),
-(11, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
-(12, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
-(13, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
+(7, 'completed', 'fa-check', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
+(8, 'dispatched', 'fa-truck', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
+(9, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),
+(10, 'delivered', 'fa-home', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
+(11, 'returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', NOW(), NOW()),
+(12, 'returned', 'fa-building', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW()),
+(13, 'cancelled', 'fa-times', '#ff6666', 0, 1, 0, 'none', NOW(), NOW()),
+(14, 'cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Created', ''),
@@ -290,13 +291,14 @@ INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, 
 (4, 4, 'en', 'Ready', ''),
 (5, 5, 'en', 'Delayed', ''),
 (6, 6, 'en', 'Processing', ''),
-(7, 7, 'en', 'Dispatched', ''),
-(8, 8, 'en', 'In Transit', ''),
-(9, 9, 'en', 'Delivered', ''),
-(10, 10, 'en', 'Returning', ''),
-(11, 11, 'en', 'Returned', ''),
-(12, 12, 'en', 'Cancelled', ''),
-(13, 13, 'en', 'Fraud', '');
+(7, 7, 'en', 'Completed', ''),
+(8, 8, 'en', 'Dispatched', ''),
+(9, 9, 'en', 'In Transit', ''),
+(10, 10, 'en', 'Delivered', ''),
+(11, 11, 'en', 'Returning', ''),
+(12, 12, 'en', 'Returned', ''),
+(13, 13, 'en', 'Cancelled', ''),
+(14, 14, 'en', 'Fraud', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_quantity_units` (`id`, `decimals`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 0, 0, NOW(), NOW());
