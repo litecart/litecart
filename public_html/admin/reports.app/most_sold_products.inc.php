@@ -34,7 +34,12 @@
     )
     and o.date_created >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
     and o.date_created <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
-    ". (!empty($_GET['query']) ? "and (oi.name like '%". database::input($_GET['query']) ."%' or oi.sku like '%". database::input($_GET['query']) ."%')" : "") ."
+    ". (!empty($_GET['query']) ? "and (
+      oi.product_id = '". database::input($_GET['query']) ."'
+      oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+      or oi.sku like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+      or oi.gtin like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+    )" : "") ."
     group by oi.product_id, oi.sku
     order by total_quantity desc;"
   );
