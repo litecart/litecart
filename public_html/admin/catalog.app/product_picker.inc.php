@@ -82,10 +82,13 @@
 	}).focus();
 
   $('#modal-product-picker tbody').on('click', 'td', function() {
-    var $input_group = $.featherlight.current().$currentTarget.closest('.input-group'),
-      $field = $input_group.find(':input');
 
     var product = $(this).closest('tr').data();
+
+    if ($.featherlight.current().$currentTarget.trigger('pick', product) === false) return;
+
+    var $input_group = $.featherlight.current().$currentTarget.closest('.input-group'),
+      $field = $input_group.find(':input');
 
     $field.val(product.id || 0)
       .data('sku', product.sku || '')
@@ -95,6 +98,7 @@
 
     $input_group.find('.id').text(product.id || 0);
     $input_group.find('.name').text(product.name || '(<?php echo functions::escape_js(language::translate('title_no_product', 'No Product')); ?>)');
+
     $.featherlight.close();
   });
 </script>
