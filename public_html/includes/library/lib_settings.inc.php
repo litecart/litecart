@@ -7,12 +7,31 @@
     public static function init() {
 
       $settings_query = database::query(
-        "select * from ". DB_TABLE_PREFIX ."settings
+        "select `key`, `value`, `function`
+        from ". DB_TABLE_PREFIX ."settings
         where `type` = 'global';"
       );
 
-      while ($row = database::fetch($settings_query)) {
-        self::$_cache[$row['key']] = $row['value'];
+      while ($setting = database::fetch($settings_query)) {
+
+        if (substr($setting['function'], 0, 9) == 'regional_') {
+
+          if ($setting['value']) {
+            $values = json_decode($setting['value'], true);
+          } else {
+            $values = [];
+          }
+
+          if (isset($values[language::$selected['code']])) {
+            self::$_cache[$setting['key']] = $values[language::$selected['code']];
+
+          } else if (isset($value['en'])) {
+            self::$_cache[$setting['key']] = $values['en'];
+
+          } else {
+            self::$_cache[$setting['key']] = '';
+          }
+        }
       }
 
     // Check version
@@ -43,30 +62,27 @@
 
       while ($setting = database::fetch($settings_query)) {
 
-        if (substr($setting['key'], 0, 8) == 'regional') {
+        if (substr($setting['function'], 0, 9) == 'regional_') {
 
           if ($setting['value']) {
-            $value = json_decode($setting['value'], true);
+            $values = json_decode($setting['value'], true);
           } else {
-            $value = [];
+            $values = [];
           }
 
-          if (isset($value[language::$selected['code']])) {
-            self::$_cache[$key] = $value[language::$selected['code']];
+          if (isset($values[language::$selected['code']])) {
+            return self::$_cache[$key] = $values[language::$selected['code']];
 
           } else if (isset($value['en'])) {
-            self::$_cache[$key] = $value['en'];
+            return self::$_cache[$key] = $values['en'];
 
           } else {
-            self::$_cache[$key] = '';
+            return self::$_cache[$key] = '';
           }
-
-        } else {
-          self::$_cache[$key] = $setting['value'];
         }
-      }
 
-      return self::$_cache[$key];
+        return self::$_cache[$key] = $setting['value'];
+      }
     }
 
     public static function set($key, $value) {

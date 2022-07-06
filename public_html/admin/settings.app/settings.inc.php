@@ -32,7 +32,7 @@
           throw new Exception(language::translate('error_cannot_set_empty_value_for_setting', 'You cannot set an empty value for this setting'));
         }
 
-        if (substr($setting['function'], 0, 8) == 'regional') {
+        if (substr($setting['function'], 0, 9) == 'regional_') {
           $value = json_encode($_POST['settings'][$key]);
         } else {
           $value = $_POST['settings'][$key];
@@ -84,9 +84,9 @@
     if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 
       switch (true) {
-        case (substr($setting['function'], 0, 14) == 'regional_input'):
+        case (substr($setting['function'], 0, 9) == 'regional_'):
           if (!isset($_POST['settings'][$setting['key']])) {
-            $_POST['settings'][$setting['key']] = !empty($setting['value']) ? json_decode($setting['value'], true) : null;
+            $_POST['settings'][$setting['key']] = !empty($setting['value']) ? json_decode($setting['value'], true) : '';
           }
           break;
 
@@ -102,9 +102,9 @@
           $setting['value'] = '****************';
           break;
 
-        case (substr($setting['function'], 0, 14) == 'regional_input'):
-          $setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : null;
-          $setting['value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : null;
+        case (substr($setting['function'], 0, 9) == 'regional_'):
+          $setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : '';
+          $setting['value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : '';
           break;
 
         case (substr($setting['function'], 0, 6) == 'toggle'):
