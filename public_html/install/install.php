@@ -27,7 +27,7 @@
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
       'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::',
     ];
-    $_REQUEST = getopt(null, $options);
+    $_REQUEST = getopt('', $options);
     $_REQUEST['install'] = true;
   } else {
     require __DIR__ . '/includes/header.inc.php';
