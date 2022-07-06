@@ -13,6 +13,14 @@
 </head>
 <body>
 
+<?php if ($important_notice) { ?>
+<div id="important-notice">
+  <div class="twelve-eighty">
+    <?php echo $important_notice; ?>
+  </div>
+</div>
+<?php } ?>
+
 <header id="header" class="fourteen-forty">
   <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
     <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />

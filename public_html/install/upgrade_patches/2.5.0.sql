@@ -89,3 +89,6 @@ LEFT JOIN (
 ) o on (o.email = nr.email)
 SET nr.firstname = COALESCE(c.firstname, o.firstname, ''),
 nr.lastname = COALESCE(c.lastname, o.lastname, '');
+-- --------------------------------------------------------
+INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
+VALUES ('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 'regional_text()', 2, NOW(), NOW());
