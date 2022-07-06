@@ -139,6 +139,12 @@
          <?php } ?>
         </div>
 
+        <?php if ($campaign_price_end_date) { ?>
+        <div class="offer-expires" style="margin-bottom: 1em;">
+          <?php echo strtr(language::translate('text_offer_expires_on_date', 'The offer expires on %datetime.'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($campaign_price_end_date))]); ?>
+        </div>
+        <?php } ?>
+
         <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
         <div class="form-group" style="margin-bottom: 0;">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
