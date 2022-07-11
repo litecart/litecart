@@ -470,6 +470,7 @@
           break;
 
         case 'quantity_available':
+        case 'quantity_reserved':
 
           $this->_data['quantity_available'] = null;
 
@@ -483,9 +484,8 @@
             );"
           );
 
-          $reserved_quantity = database::fetch($reserved_items_query, 'total_reserved');
-
-          $this->_data['quantity_available'] = $this->quantity - $reserved_quantity;
+          $this->_data['quantity_reserved'] = database::fetch($reserved_items_query, 'total_reserved');
+          $this->_data['quantity_available'] = $this->quantity - $this->_data['quantity_reserved'];
 
           break;
 
