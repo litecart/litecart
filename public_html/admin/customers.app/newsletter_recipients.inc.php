@@ -71,9 +71,8 @@
   $recipients = [];
 
   $recipients_query = database::query(
-    "select * from ". DB_TABLE_PREFIX ."newsletter_recipients
-    where id
-    ". (!empty($_GET['query']) ? "and email like '%". database::input($_GET['query']) ."%'" : "") ."
+    "select *, concat(firstname, ' ', lastname) as name from ". DB_TABLE_PREFIX ."newsletter_recipients
+    ". (!empty($_GET['query']) ? "where email like '%". database::input($_GET['query']) ."%'" : "") ."
     order by date_created desc;"
   );
 
@@ -125,6 +124,7 @@
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
+            <th><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
             <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
           </tr>
@@ -136,6 +136,7 @@
             <td><?php echo functions::form_draw_checkbox('recipients[]', $recipient['id']); ?></td>
             <td><?php echo $recipient['id']; ?></td>
             <td><?php echo $recipient['email']; ?></td>
+            <td><?php echo $recipient['name']; ?></td>
             <td><?php echo $recipient['client_ip']; ?></td>
             <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
           </tr>

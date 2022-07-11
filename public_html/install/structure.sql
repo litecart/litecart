@@ -314,6 +314,8 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_newsletter_recipients` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `lastname` VARCHAR(64) NOT NULL DEFAULT '',
+  `firstname` VARCHAR(64) NOT NULL DEFAULT '',
   `email` VARCHAR(128) NOT NULL DEFAULT '',
   `client_ip` VARCHAR(64) NOT NULL DEFAULT '',
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
