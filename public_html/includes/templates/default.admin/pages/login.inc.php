@@ -35,15 +35,9 @@ body {
 #box-login {
   max-width: 360px;
   margin: auto;
-
   padding: 0px;
-
   background: #fff;
-
-  text-align: center;
-
   border-radius: 0px 25px 0px 25px;
-
   box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
 }
 
@@ -65,7 +59,7 @@ body {
 #box-login .footer {
   border-top: 1px solid rgba(255,255,255,0.8);
   background: #f6f6f6;
-  padding: 10px;
+  padding: 2em;
   text-align: end;
   border-radius: 0px 0px 0px 25px;
 }
@@ -79,7 +73,7 @@ body {
 
   <div id="box-login" class="">
 
-    <div class="header">
+    <div class="header text-center">
       <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></a>
     </div>
 
@@ -98,14 +92,22 @@ body {
           <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
         </div>
 
-        <div class="form-group checkbox">
+        <div class="form-group checkbox text-center">
           <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
         </div>
       </div>
 
       <div class="footer">
-        <?php echo functions::form_draw_hidden_field('login', 'true'); ?>
-        <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?>
+        <div class="row" style="margin-bottom: 0;">
+          <div class="col-md-6 text-start">
+            <a class="btn btn-default" href="<?php echo document::href_ilink(''); ?>">
+              <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
+            </a>
+          </div>
+          <div class="col-md-6 text-end">
+            <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default"'); ?>
+          </div>
+        </div>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
