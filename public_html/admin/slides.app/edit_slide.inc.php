@@ -18,7 +18,12 @@
   if (isset($_POST['save'])) {
 
     try {
+
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (!empty($_FILES['image']['error'])) {
+        throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+      }
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
       if (empty($_POST['languages'])) $_POST['languages'] = [];
@@ -38,7 +43,9 @@
         if (isset($_POST[$field])) $slide->data[$field] = $_POST[$field];
       }
 
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) $slide->save_image($_FILES['image']['tmp_name']);
+      if (!empty($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+        $slide->save_image($_FILES['image']['tmp_name']);
+      }
 
       $slide->save();
 

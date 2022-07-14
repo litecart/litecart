@@ -716,7 +716,7 @@ ul.breadcrumb li a {
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #333;
+  color: inherit;
   white-space: nowrap;
 }
 .dropdown .dropdown-menu > li > a:hover,

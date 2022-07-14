@@ -237,6 +237,7 @@
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_filter($this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
+      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);
@@ -250,7 +251,7 @@
         delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'] .",
-        keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
+        keywords = '". database::input($this->data['keywords']) ."',
         quantity_min = ". (float)$this->data['quantity_min'] .",
         quantity_max = ". (float)$this->data['quantity_max'] .",
         quantity_step = ". (float)$this->data['quantity_step'] .",

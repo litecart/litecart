@@ -4,7 +4,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.4.2\n"
+      echo "\nLiteCart® 2.4.3\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -18,7 +18,7 @@
       'from_version::', 'development_type::'
     ];
 
-    $_REQUEST = getopt(null, $options);
+    $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
   } else {
