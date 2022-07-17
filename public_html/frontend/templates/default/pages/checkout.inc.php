@@ -1,24 +1,25 @@
 <main id="box-checkout" class="container">
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
-    <div class="row layout" style="margin: 0;">
+    <div class="row" style="grid-gap: 6em;">
 
       <div class="col-md-6">
         {{notices}}
 
         <div class="text-center" style="margin-bottom: 2em;">
-          <a class="btn btn-default btn-lg" href="<?php echo document::ilink(''); ?>" >
+          <a class="btn btn-default" href="<?php echo document::ilink(''); ?>" >
             <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
           </a>
         </div>
 
         <div class="customer wrapper"></div>
+      </div>
+
+      <div class="col-md-6">
 
         <div class="shipping wrapper"></div>
 
         <div class="payment wrapper"></div>
-      </div>
 
-      <div class="col-md-6">
         <div class="summary wrapper"></div>
       </div>
     </div>

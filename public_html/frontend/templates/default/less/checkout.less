@@ -2,7 +2,7 @@
 
 body {
   @media(min-width: @media-breakpoint-md) {
-    background: linear-gradient(90deg, rgba(255,255,255,0) calc(50% - 20px), #ccc 50%, #fff 50%);
+    background: linear-gradient(90deg, rgba(255,255,255,0) calc(50% - 20px), #eee 50%, #fff 50%);
     //background: linear-gradient(90deg, #fff 0%, #ccc 50%, rgba(255,255,255,0) calc(50% - 20px));
   }
 }
@@ -86,62 +86,69 @@ body {
 }
 
 #box-checkout-shipping, #box-checkout-payment {
+
   .option {
     display: block;
     position: relative;
-    border-radius: var(--border-radius);
-    background-color: #fff;
-    margin: 1em 0;
     padding: .25em;
-    border: 2px solid #ccc;
+    border: 1px solid var(--default-border-color);
+    border-bottom: none;
     user-select: none;
-    &.btn {
-      padding: 12px;
-    }
-    &.active {
-      background-color: var(--default-background-color);
-    }
-    &:not(.active) {
-      .content {
-        max-height: 0;
-        overflow-y: hidden;
-      }
-      &:not(.disabled) {
-        opacity: 0.75;
-        transition: all 0.25s ease;
-        cursor: pointer;
-      }
-    }
-    .thumbnail {
-      padding: 0 !important;
-    }
-    .name {
-      margin: 1em 0;
-      font-weight: bold;
-    }
+    overflow: hidden;
+
     .error {
       color: #c00;
     }
     .content {
-      max-height: 200px;
+      max-height: 0;
       overflow-x: hidden;
-      overflow-y: auto;
+      overflow-y: hidden;
       text-align: left;
       transition: all 0.25s ease;
     }
-    [class*="col-"] {
-      align-self: center;
+  }
+
+  .option-wrapper:first-child .option {
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+  }
+  .option-wrapper:last-child .option {
+    border-bottom: 1px solid var(--default-border-color);
+    border-radius: 0 0 var(--border-radius) var(--border-radius)
+  }
+
+  input[name$="_option[id]"] {
+    &:checked + .option {
+      border-color: orange;
+      .name {
+        font-weight: bold;
+      }
+      .content {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+     &::after {
+        position: absolute;
+        top: 15px;
+        right: -25px;
+        transform: rotate(45deg);
+        background: orange;
+        width: 100px;
+        font-size: .8em;
+        text-align: center;
+        color: #000;
+      }
+    }
+    &:not(:disabled):not(:checked) + .option {
+      cursor: pointer;
+    }
+    &:disabled + .option {
+      opacity: .75;
     }
   }
+
   @media(min-width: @media-breakpoint-sm) {
     .option {
       padding: .5em;
-      .price {
-        position: absolute;
-        display: inline-block;
-        top: .5rem;
-        right: .5rem;
-      }
     }
   }
 }
