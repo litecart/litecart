@@ -242,6 +242,11 @@
               </div>
 
               <div class="form-group">
+                <label><?php echo language::translate('title_price', 'Price'); ?></label>
+                <?php echo functions::form_draw_currency_field('prices['.settings::get('site_currency_code').']', settings::get('site_currency_code'), true); ?>
+              </div>
+
+              <div class="form-group">
                 <label><?php echo language::translate('title_brand', 'Brand'); ?></label>
                 <?php echo functions::form_draw_brands_list('brand_id', true); ?>
               </div>
@@ -822,6 +827,9 @@
   });
 
 // Prices
+  $('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').on('input', function() {
+    $('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').not(this).val($(this).val());
+  });
 
   function get_tax_rate() {
     switch ($('select[name=tax_class_id]').val()) {
