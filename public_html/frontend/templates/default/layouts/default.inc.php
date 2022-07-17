@@ -13,6 +13,7 @@
 </head>
 <body>
 
+<?php include 'app://frontend/partials/site_top_navigation.inc.php'; ?>
 
 <?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
 

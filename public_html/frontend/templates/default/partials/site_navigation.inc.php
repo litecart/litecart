@@ -1,43 +1,3 @@
-<style>
-#site-top-navigation {
-  background: #d1d1dd;
-}
-#site-top-navigation .container {
-  display: flex;
-  justify-content: space-between;
-}
-#site-top-navigation .nav {
-  margin: 0 auto;
-}
-#site-top-navigation .code {
-  font-size: .8em;
-  background: #bcbccb;
-  padding: .25em .5em;
-}
-</style>
-
-<div id="site-top-navigation">
-  <div class="wrapper">
-    <ul class="nav">
-      <li class="dropdown">
-        <a class="nav-item" href="<?php echo document::href_ilink('regional_settings'); ?>">
-          <span class="code"><?php echo language::$selected['code']; ?></span> <?php echo language::$selected['name']; ?>
-        </a>
-      </li>
-      <li class="dropdown">
-        <a class="nav-item" href="<?php echo document::href_ilink('regional_settings'); ?>">
-          <span class="code"><?php echo currency::$selected['code']; ?></span> <?php echo currency::$selected['name']; ?>
-        </a>
-      </li>
-      <li class="dropdown">
-        <a class="nav-item" href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="dropdown">
-          <span class="code"><?php echo customer::$data['country_code']; ?></span> <?php echo reference::country(customer::$data['country_code'])->name; ?>
-        </a>
-      </li>
-    </ul>
-  </div>
-</div>
-
 <div id="site-navigation">
   <div class="navbar wrapper">
 
@@ -125,6 +85,16 @@
       </ul>
 
       <ul class="navbar-nav">
+<!--
+        <li class="regional-settings">
+          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
+            <?php echo functions::draw_fonticon('fa-globe'); ?>
+            <span class="language"><?php echo language::$selected['code']; ?></span>
+            / <span class="country"><?php echo customer::$data['country_code']; ?></span>
+            / <span class="currency"><?php echo currency::$selected['code']; ?></span>
+          </a>
+        </li>
+-->
         <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
           <a class="navbar-item" href="#" data-toggle="dropdown">
             <!--<?php echo functions::draw_fonticon('fa-shopping-basket'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>-->
