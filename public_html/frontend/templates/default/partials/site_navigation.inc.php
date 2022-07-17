@@ -60,10 +60,10 @@
 
         <?php if ($categories) { ?>
         <li class="categories dropdown">
-          <a href="#" data-toggle="dropdown"><?php echo language::translate('title_categories', 'Categories'); ?></a>
+          <a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_categories', 'Categories'); ?></a>
           <ul class="dropdown-menu">
             <?php foreach ($categories as $item) { ?>
-            <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+            <li><a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
             <?php } ?>
           </ul>
         </li>
@@ -71,13 +71,13 @@
 
         <?php if ($brands) { ?>
         <li class="brands dropdown">
-          <a href="<?php echo document::href_ilink('brands'); ?>"><?php echo language::translate('title_brands', 'Brands'); ?></a>
+          <a class="navbar-item" href="<?php echo document::href_ilink('brands'); ?>"><?php echo language::translate('title_brands', 'Brands'); ?></a>
         </li>
         <?php } ?>
       </ul>
 
-      <ul class="navbar-nav">
-        <li class="search" style="min-width: 400px;">
+      <ul class="navbar-nav search">
+        <li class="search">
           <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
             <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
           <?php echo functions::form_draw_form_end(); ?>
@@ -86,38 +86,38 @@
 
       <ul class="navbar-nav">
 
-        <?php if ($pages) { ?>
-        <li class="information dropdown">
-          <a href="#" data-toggle="dropdown"><?php echo language::translate('title_information', 'Information'); ?></a>
-          <ul class="dropdown-menu">
-            <?php foreach ($pages as $item) { ?>
-            <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-            <?php } ?>
-          </ul>
-        </li>
-        <?php } ?>
-
         <?php if (settings::get('accounts_enabled')) { ?>
         <?php if (!empty(customer::$data['id'])) { ?>
         <li class="account dropdown">
           <a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user-o'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-            <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
-            <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
+            <li><a class="navbar-item" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+            <li><a class="navbar-item" href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+            <li><a class="navbar-item" href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
           </ul>
         </li>
         <?php } else { ?>
         <li class="account">
-          <a href="<?php echo document::href_ilink('login'); ?>">
+          <a class="navbar-item" href="<?php echo document::href_ilink('login'); ?>">
             <?php echo functions::draw_fonticon('fa-user-o'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
           </a>
         </li>
         <?php } ?>
         <?php } ?>
 
+        <?php if ($pages) { ?>
+        <li class="information dropdown">
+          <a class="navbar-item" href="#" data-toggle="dropdown"><?php echo language::translate('title_information', 'Information'); ?></a>
+          <ul class="dropdown-menu">
+            <?php foreach ($pages as $item) { ?>
+            <li><a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+            <?php } ?>
+          </ul>
+        </li>
+        <?php } ?>
+
         <li class="contact">
-          <a href="<?php echo document::href_ilink('contact'); ?>">
+          <a class="navbar-item" href="<?php echo document::href_ilink('contact'); ?>">
             <i class="fa fa-envelope-o"></i> <?php echo language::translate('title_contact', 'Contact'); ?>
           </a>
         </li>
@@ -126,9 +126,9 @@
 
       <ul class="navbar-nav">
         <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
-          <a href="#" data-toggle="dropdown">
+          <a class="navbar-item" href="#" data-toggle="dropdown">
             <!--<?php echo functions::draw_fonticon('fa-shopping-basket'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>-->
-            <img class="img-responsive" src="<?php echo document::link(WS_DIR_TEMPLATE .'images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>" style="max-height: 48px;" />
+            <img class="img-responsive hidden-xs" src="<?php echo document::link(WS_DIR_TEMPLATE .'images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>" style="max-height: 48px;" />
             <span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
             <span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
           </a>
@@ -136,7 +136,7 @@
           <ul class="dropdown-menu dropdown-menu-end">
             <?php foreach ($shopping_cart['items'] as $item) { ?>
             <li>
-              <div class="item">
+              <div class="dropdown-item item">
                 <div class="row">
                   <div class="col-3">
                     <img class="image img-responsive" src="<?php echo document::href_rlink($item['thumbnail']); ?>" alt="<?php echo $item['name']; ?>" />

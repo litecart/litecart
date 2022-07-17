@@ -5,12 +5,18 @@
   flex-direction: column;
   position: relative;
   border-radius: var(--border-radius);
+  color: ~"var(--navigation-text-color)";
+
+  @media (min-width: (@media-breakpoint-md)) {
+    backdrop-filter: saturate(200%) blur(5px);
+  }
 
   .navbar-header {
     display: flex;
     align-items: center;
     font-weight: bold;
     text-transform: uppercase;
+    backdrop-filter: saturate(200%) blur(5px);
     > * {
       flex: 1 1 auto;
     }
@@ -18,11 +24,15 @@
     .navbar-brand {
       a {
         display: block;
-        padding: 1em;
+        padding: .5em 1em;
         text-decoration: none;
         &:hover {
           background-color: rgba(0, 0, 0, .05);
         }
+      }
+      img {
+        display: block;
+        max-height: 38px;
       }
     }
   }
@@ -73,11 +83,14 @@
       width: 295px;
       height: 100vh;
       margin-left: -295px;
+      padding: .25em;
       opacity: 0;
       height: auto;
-      background: var(--offcanvas-navigation-background-color);
-      color: var(--offcanvas-navigation-text-color);
+      background: var(--navigation-background-color);
+      color: var(--navigation-text-color);
       transition: margin 200ms ease-out;
+      backdrop-filter: saturate(200%) blur(5px);
+      box-shadow: 0 0 15px #0003;
     }
   }
 
@@ -87,26 +100,32 @@
     margin: 0;
     padding: 0;
     align-content: center;
+
     > li {
       flex: 0 0 auto;
       align-self: center;
       padding: 0;
       list-style: none;
+      width: 100%;
+      &.open > .navbar-item {
+        background-color: rgba(0, 0, 0, .15) !important;
+      }
+      &:not(.open) > .navbar-item:hover {
+        background-color: rgba(0, 0, 0, .05);
+      }
+      @media (min-width: @media-breakpoint-md) {
+        width: auto;
+      }
     }
-    > li > a {
+
+    .navbar-item {
       position: relative;
       display: block;
-      padding: 1em;
+      padding: .5em 1.5em;
       border-radius: var(--border-radius);
       color: inherit;
       text-decoration: none;
       transition: all 125ms linear;
-    }
-    li.open > a {
-      background-color: rgba(0, 0, 0, .15) !important;
-    }
-    li:not(.open) > a:hover {
-      background-color: rgba(0, 0, 0, .05);
     }
   }
 
@@ -124,7 +143,7 @@
     border-top: none;
     //border-start-start-radius: 0;
     //border-start-end-radius: 0;
-    li > a {
+    li > .nav-item {
       padding: .5em 1em;
     }
   }
@@ -157,7 +176,6 @@
           background-color: rgba(255, 255, 255, .15);
           border: 0;
           box-shadow: none;
-          color: var(--offcanvas-navigation-text-color);
         }
       }
     }
