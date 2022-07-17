@@ -4,6 +4,11 @@
   define('FS_DIR_TEMPLATE', 'app://frontend/templates/'. settings::get('template') .'/');
   define('WS_DIR_TEMPLATE', WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/');
 
+// Development Mode
+  if (settings::get('development_mode')) {
+    user::require_login();
+  }
+
 // Maintenance Mode
   if (settings::get('maintenance_mode')) {
     if (!empty(user::$data['id'])) {
