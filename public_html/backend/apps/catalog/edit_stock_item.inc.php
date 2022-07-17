@@ -197,6 +197,13 @@
           </div>
 
           <div class="row">
+            <div class="form-group col-md-2">
+              <label><?php echo language::translate('title_reserved_quantity', 'Reserved Quantity'); ?></label>
+              <div class="form-input text-end" readonly>
+                <?php echo !empty($stock_item->data['id']) ? (float)$stock_item->data['quantity_reserved'] : 'n/a'; ?>
+              </div>
+            </div>
+
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></label>
               <div class="input-group">
@@ -205,7 +212,7 @@
               </div>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></label>
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
@@ -213,7 +220,7 @@
               </div>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label><?php echo language::translate('title_backordered', 'Backordered'); ?></label>
               <div class="input-group">
                 <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>

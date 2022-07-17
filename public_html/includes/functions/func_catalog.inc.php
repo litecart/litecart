@@ -140,14 +140,12 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes
+      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, count(ptsi.stock_item_id) as quantity, pa.attributes
 
       from (
-        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
+        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created
 
         from ". DB_TABLE_PREFIX ."products p
-
-        left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
         where p.status
         ". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
@@ -155,9 +153,8 @@
         ". fallback($sql_where_attributes) ."
         ". (!empty($filter['brands']) ? "and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
         ". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
-        and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from is null or p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
-        and (p.date_valid_to is null or year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
+        and (p.date_valid_to is null or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
 
@@ -191,11 +188,31 @@
         ) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
         where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-        and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+        and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
         group by product_id
       ) pc on (pc.product_id = p.id)
 
+      left join (
+        select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
+        from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
+        group by ptsi.product_id
+      ) ptsi on (ptsi.product_id = p.id)
+
+      left join (
+        select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+        left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+        where o.order_status_id in (
+          select id from ". DB_TABLE_PREFIX ."order_statuses
+          where stock_action = 'reserve'
+        )
+        group by oi.stock_item_id
+      ) oi on (oi.stock_item_id = ptsi.stock_item_id)
+
+      left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+
       where (p.id
+        and (ptsi.num_stock_items = 0 or ptsi.quantity > 0 or ss.hidden != 1)
         ". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : null) ."
         ". (!empty($filter['product_name']) ? "and pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
         ". (!empty($filter['campaign']) ? "and campaign_price > 0" : null) ."
@@ -261,7 +278,7 @@
     });
 
     $query = (
-      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes, (0
+      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, count(ptsi.stock_item_id) as quantity, pa.attributes, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."
@@ -269,7 +286,7 @@
       ) as occurrences
 
       from (
-        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.quantity_unit_id, p.views, p.purchases, p.date_created
+        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created
         from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (p.id = ptc.product_id)
         left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
@@ -281,9 +298,8 @@
           ". fallback($sql_where_attributes) ."
           ". (!empty($filter['keywords']) ? "or (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
         )
-        and (p.quantity > 0 or ss.hidden != 1)
         and (p.date_valid_from is null or p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
-        and (p.date_valid_to is null or year(p.date_valid_to) < '1971' or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
+        and (p.date_valid_to is null or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
         ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
         ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
         group by ptc.product_id
@@ -316,11 +332,31 @@
         ) as campaign_price
         from ". DB_TABLE_PREFIX ."products_campaigns
         where (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-        and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+        and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
         group by product_id
       ) pc on (pc.product_id = p.id)
 
+      left join (
+        select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
+        from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
+        left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
+        group by ptsi.product_id
+      ) ptsi on (ptsi.product_id = p.id)
+
+      left join (
+        select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+        left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+        where o.order_status_id in (
+          select id from ". DB_TABLE_PREFIX ."order_statuses
+          where stock_action = 'reserve'
+        )
+        group by oi.stock_item_id
+      ) oi on (oi.stock_item_id = ptsi.stock_item_id)
+
+      left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+
       where (p.id
+        and (ptsi.num_stock_items = 0 or ptsi.quantity > 0 or ss.hidden != 1)
         ". (!empty($filter['sql_where']) ? "or (". $filter['sql_where'] .")" : null) ."
         ". (!empty($filter['product_name']) ? "or pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
         ". (!empty($filter['campaign']) ? "or campaign_price > 0" : null) ."

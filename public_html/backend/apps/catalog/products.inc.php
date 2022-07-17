@@ -100,17 +100,18 @@
 
   if (!empty($_GET['query'])) {
 
-  // Table Rows, Total Number of Rows, Total Number of Pages
-    $products = database::query(
-      "select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.quantity, p.date_valid_from, p.date_valid_to, pi.name, b.name,
-      (
+    $code_regex = functions::format_regex_code($_GET['query']);
+    $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+
+    $sql_select_relevance = (
+      "(
         if(p.id = '". database::input($_GET['query']) ."', 10, 0)
-        + (match(pi.name) against ('*". database::input($_GET['query']) ."*'))
-        + (match(pi.short_description) against ('*". database::input($_GET['query']) ."*') / 2)
-        + (match(pi.description) against ('*". database::input($_GET['query']) ."*') / 3)
-        + (match(pi.name) against ('". database::input($_GET['query']) ."' in boolean mode))
-        + (match(pi.short_description) against ('". database::input($_GET['query']) ."' in boolean mode) / 2)
-        + (match(pi.description) against ('". database::input($_GET['query']) ."' in boolean mode) / 3)
+        + (match(pi.name) against ('*". database::input($query_fulltext) ."*'))
+        + (match(pi.short_description) against ('*". database::input($query_fulltext) ."*') / 2)
+        + (match(pi.description) against ('*". database::input($query_fulltext) ."*') / 3)
+        + (match(pi.name) against ('". database::input($query_fulltext) ."' in boolean mode))
+        + (match(pi.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) / 2)
+        + (match(pi.description) against ('". database::input($query_fulltext) ."' in boolean mode) / 3)
         + if(pi.name like '%". database::input($_GET['query']) ."%', 3, 0)
         + if(pi.short_description like '%". database::input($_GET['query']) ."%', 2, 0)
         + if(pi.description like '%". database::input($_GET['query']) ."%', 1, 0)
@@ -127,41 +128,51 @@
         ), 5, 0)
         + if(b.name like '%". database::input($_GET['query']) ."%', 3, 0)
         + if(s.name like '%". database::input($_GET['query']) ."%', 2, 0)
-      ) as relevance
-      from ". DB_TABLE_PREFIX ."products p
-      left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
-      left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
-      left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
-      having relevance > 0
-      order by relevance desc;"
-    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
-
-    if (!empty($_GET['category_id'])) {
-      unset($_GET['category_id']);
-    }
-
-  } else if (!empty($_GET['category_id'])) {
-
-  // Table Rows, Total Number of Rows, Total Number of Pages
-    $products = database::query(
-      "select p.id, p.status, p.code, pi.name, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
-      left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
-      where p.id in (
-        select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
-        where category_id = ". (int)$_GET['category_id'] ."
-      )
-      order by status desc, pi.name asc;"
-    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
-
-  } else {
-
-  // Table Rows, Total Number of Rows, Total Number of Pages
-    $products = database::query(
-      "select p.id, p.status, p.code, pi.name, p.image, p.quantity, p.date_valid_from, p.date_valid_to, p.date_created from ". DB_TABLE_PREFIX ."products p
-      left join ". DB_TABLE_PREFIX ."products_info pi on (p.id = pi.product_id and language_code = '". database::input(language::$selected['code']) ."')
-      order by status desc, pi.name asc;"
-    )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
+      ) as relevance"
+    );
   }
+
+// Table Rows, Total Number of Rows, Total Number of Pages
+  $products = database::query(
+    "select p.id, p.status, p.code, pi.name, p.image, pp.price, ptsi.num_stock_items, ptsi.quantity, ptsi.quantity - oi.total_reserved as quantity_available, p.sold_out_status_id, p.date_valid_from, p.date_valid_to, p.date_created". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
+
+    from ". DB_TABLE_PREFIX ."products p
+    left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+    left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+    left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
+
+    left join (
+      select product_id, `". database::input(settings::get('site_currency_code')) ."` as price
+      from ". DB_TABLE_PREFIX ."products_prices
+    ) pp on (pp.product_id = p.id)
+
+    left join (
+      select ptsi.product_id, ptsi.stock_item_id, count(ptsi.stock_item_id) as num_stock_items, sum(si.quantity) as quantity
+      from ". DB_TABLE_PREFIX ."products_to_stock_items ptsi
+      left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = ptsi.stock_item_id)
+      group by ptsi.product_id
+    ) ptsi on (ptsi.product_id = p.id)
+
+    left join (
+      select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+      left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+      where o.order_status_id in (
+        select id from ". DB_TABLE_PREFIX ."order_statuses
+        where stock_action = 'reserve'
+      )
+      group by oi.stock_item_id
+    ) oi on (oi.stock_item_id = ptsi.stock_item_id)
+
+    where p.id
+    ". (!empty($_GET['category_id']) ? "and p.id in (
+      select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
+      where category_id = ". (int)$_GET['category_id'] ."
+    )" : "") ."
+
+    group by p.id
+    ". (!empty($sql_select_relevance) ? "having relevance > 0" : "") ."
+    ". (!empty($sql_select_relevance) ? "order by relevance desc" : "order by p.status desc, pi.name asc") .";"
+  )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($products as $i => $product) {
 
@@ -175,7 +186,7 @@
         throw new Exception(strtr(language::translate('text_product_expired_at_x', 'The product expired at %date and can no longer be purchased'), ['%date' => language::strftime(language::$selected['format_date'], strtotime($product['date_valid_to']))]));
       }
 
-      if ($product['quantity'] <= 0) {
+      if ($product['num_stock_items'] && $product['quantity'] <= 0) {
         throw new Exception(language::translate('text_product_is_out_of_stock', 'The product is out of stock'));
       }
 
