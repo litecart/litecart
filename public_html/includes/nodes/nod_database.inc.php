@@ -7,9 +7,7 @@
 
       if (!isset(self::$_links[$link])) {
 
-        if (class_exists('stats', false)) {
-          stats::start_watch('database_execution');
-        }
+        stats::start_watch('database_duration');
 
         mysqli_report(MYSQLI_REPORT_OFF);
 
@@ -27,13 +25,11 @@
 
         event::register('shutdown', [__CLASS__, 'disconnect']);
 
-        if (($duration = stats::get_watch('database_execution')) > 1) {
+        if (($duration = stats::get_watch('database_duration')) > 1) {
           error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, 'app://logs/performance.log');
         }
 
-        if (class_exists('stats', false)) {
-          stats::stop_watch('database_execution');
-        }
+        stats::stop_watch('database_duration');
       }
 
       if (!is_object(self::$_links[$link])) {
@@ -44,8 +40,7 @@
         self::set_charset($charset, $link);
       }
 
-      $sql_mode_query = self::query("select @@SESSION.sql_mode;", $link);
-      $sql_mode = self::fetch($sql_mode_query, '@@SESSION.sql_mode');
+      $sql_mode = self::query("select @@SESSION.sql_mode as sql_mode;", $link)->fetch('sql_mode');
       $sql_mode = preg_split('#\s*,\s*#', $sql_mode, -1, PREG_SPLIT_NO_EMPTY);
 
       $undesired_modes = [
@@ -112,25 +107,21 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      if (class_exists('stats', false)) {
-        stats::start_watch('database_execution');
-      }
+      stats::start_watch('database_duration');
 
       if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
         trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
       }
 
-      if (($duration = stats::get_watch('database_execution')) > 3) {
+      if (($duration = stats::get_watch('database_duration')) > 3) {
         error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, 'storage://logs/performance.log');
       }
 
-      if (class_exists('stats', false)) {
-        stats::increase_count('database_queries');
-        stats::stop_watch('database_execution');
-      }
+      stats::increase_count('database_queries');
+      stats::stop_watch('database_duration');
 
       if ($result instanceof mysqli_result) {
-        return new typ_mysql_result($sql, $result);
+        return new database_result($sql, $result);
       }
 
       return $result;
@@ -139,9 +130,7 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      if (class_exists('stats', false)) {
-        stats::start_watch('database_execution');
-      }
+      stats::start_watch('database_duration');
 
       if (($result = mysqli_multi_query(self::$_links[$link], $sql)) === false) {
         trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
@@ -155,10 +144,8 @@
         $i++;
       }
 
-      if (class_exists('stats', false)) {
-        stats::increase_count('database_queries', $i);
-        stats::stop_watch('database_execution');
-      }
+      stats::increase_count('database_queries', $i);
+      stats::stop_watch('database_duration');
     }
 
     public static function fetch($result, $column='') {
@@ -190,20 +177,17 @@
     }
 
     public static function info($link='default') {
-
       if (!isset(self::$_links[$link])) self::connect($link);
-
       return mysqli_info(self::$_links[$link]);
     }
 
     public static function create_variable($column_type, $value='') {
-
       switch (true) {
         case (preg_match('#^(bit|int|tinyint|smallint|mediumint|bigint)#i', $column_type)):
           return intval($value);
 
-      case (preg_match('#^(decimal|double|float)#i', $column_type)):
-        return floatval($value);
+        case (preg_match('#^(decimal|double|float)#i', $column_type)):
+          return floatval($value);
 
         default:
           return strval($value);
@@ -242,3 +226,125 @@
       return mysqli_real_escape_string(self::$_links[$link], $string);
     }
   }
+
+  class database_result {
+    private $_query;
+    private $_result;
+
+    public function __construct(string $query, mysqli_result $result) {
+      $this->_query = $query;
+      $this->_result = $result;
+    }
+
+    public function __call($method, $arguments) {
+      return call_user_func_array([$this->_result, $name], $arguments);
+    }
+
+    public function __get($name) {
+      return $this->_result->$name;
+    }
+
+    public function __set($name, $value) {
+      // Do nothing
+    }
+
+    public function export(&$object) {
+      return $object = $this;
+    }
+
+    public function fields() {
+      $fields = array_column($this->_result->fetch_fields(), 'name');
+      return $fields;
+    }
+
+    public function fetch($column='') {
+
+      stats::start_watch('database_duration');
+
+      $row = mysqli_fetch_assoc($this->_result);
+
+      if ($column) {
+        if (isset($row[$column])) {
+          $row = $row[$column];
+        } else {
+          $row = false;
+        }
+      }
+
+      stats::stop_watch('database_duration');
+
+      return $row;
+    }
+
+    public function fetch_all($column=null, $index_column=null) {
+
+      stats::start_watch('database_duration');
+
+      if ($column || $index_column) {
+
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($this->_result)) {
+          if ($index_column) {
+            $rows[$row[$index_column]] = $column ? $row[$column] : $row;
+          } else {
+            $rows[] = $column ? $row[$column] : $row;
+          }
+        }
+
+      } else {
+        $rows = mysqli_fetch_all($this->_result, MYSQLI_ASSOC);
+      }
+
+      stats::stop_watch('database_duration');
+
+      return $rows;
+    }
+
+    public function fetch_page($page, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
+
+      stats::start_watch('database_duration');
+
+      if ($page < 1) $page = 1;
+      if (!$items_per_page) $items_per_page = settings::get('data_table_rows_per_page');
+
+      mysqli_data_seek($this->_result, ((int)$page -1) * $items_per_page);
+
+      $num_rows = mysqli_num_rows($this->_result);
+      $num_pages = ceil($num_rows / $items_per_page);
+
+      $rows = [];
+
+      $i = 0;
+      while ($row = mysqli_fetch_assoc($this->_result)) {
+        $rows[] = $row;
+        if (++$i == $items_per_page) break;
+      }
+
+      stats::stop_watch('database_duration');
+
+      return $rows;
+    }
+
+    public function each(callable $function) {
+      while ($row = $this->fetch()) {
+        call_user_func($function, $row);
+      }
+    }
+
+    public function seek($offset) {
+      return mysqli_data_seek($this->_result, $offset);
+    }
+
+    public function num_rows() {
+      return mysqli_num_rows($this->_result);
+    }
+
+    public function free() {
+      return mysqli_free_result($this->_result);
+    }
+
+    public function __destruct() {
+      $this->_result->free();
+    }
+  }
+
