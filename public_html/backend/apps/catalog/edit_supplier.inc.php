@@ -97,7 +97,7 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+          <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
           <?php echo functions::form_draw_text_field('phone', true); ?>
         </div>
       </div>

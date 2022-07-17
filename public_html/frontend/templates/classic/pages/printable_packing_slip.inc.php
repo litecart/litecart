@@ -82,7 +82,7 @@ table.items tbody tr:nth-child(11) {
           <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
           <div class="value"><?php echo !empty($order['customer']['email']) ? functions::escape_html($order['customer']['email']) : '-'; ?></div>
 
-          <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+          <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
           <div class="value"><?php echo !empty($order['customer']['shipping_address']['phone']) ? functions::escape_html($order['customer']['shipping_address']['phone']) : '-'; ?></div>
         </div>
       </div>
@@ -139,7 +139,7 @@ table.items tbody tr:nth-child(11) {
 
       <div class="col-3">
         <?php if (settings::get('site_phone')) { ?>
-        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+        <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
         <div class="value"><?php echo settings::get('site_phone'); ?></div>
         <?php } ?>
 

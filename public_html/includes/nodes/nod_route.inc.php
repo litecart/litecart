@@ -106,9 +106,9 @@
 
     // Forward to rewritten URL (if necessary)
       if (!empty($selected)) {
-        $rewritten_url = document::ilink(self::$selected['route'], $_GET);
+        $rewritten_url = document::ilink(self::$selected['controller'], $_GET);
 
-        if (self::$request != parse_url($rewritten_url, PHP_URL_PATH)) {
+        if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) != parse_url($rewritten_url, PHP_URL_PATH)) {
 
           $do_redirect = true;
 
@@ -285,14 +285,17 @@
     // Strip logic from string
       $link->path = self::strip_url_logic($link->path);
 
+      $path = preg_match('#^(f|b):#', $link->path) ? $link->path : 'f:'.$link->path;
+
     // Rewrite link
-      foreach (self::$_routes as $i => $route) {
-        if (empty($route['pattern'])) continue;
-        if (preg_match('#^'. strtr(preg_quote($route['pattern'], '#'), ['\\*' => '.*', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']) .'$#i', $link->path)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
-          if (method_exists($route, 'rewrite') && $rewritten_link = call_user_func_array($route->rewrite, [$link, $language_code])) {
-            $link = $rewritten_link;
+      foreach (self::$_routes as $ilink => $route) {
+        if (preg_match('#^'. strtr(preg_quote($ilink, '#'), ['\\*' => '.*', '\\?' => '.', '\\{' => '(', '\\}' => ')', ',' => '|']) .'$#i', $path)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
+          if (isset($route['rewrite']) && is_callable($route['rewrite'])) {
+            if ($rewritten_link = call_user_func_array($route['rewrite'], [$link, $language_code])) {
+              $link = $rewritten_link;
+            }
           }
-        }
+       }
       }
 
     // Detect URL rewrite support

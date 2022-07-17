@@ -267,13 +267,13 @@
 
       if ($route !== null) {
 
-        if (preg_match('#^b(ackend)?:(.*)$#', $route, $matches)) {
+        if (preg_match('#^b:(.*)$#', $route, $matches)) {
           $endpoint = 'backend';
-          $route = $matches[2];
+          $route = $matches[1];
 
-        } else if (preg_match('#^f(rontend)?:(.*)$#', $route, $matches)) {
+        } else if (preg_match('#^f:(.*)$#', $route, $matches)) {
           $endpoint = 'frontend';
-          $route = $matches[2];
+          $route = $matches[1];
 
         } else {
           $endpoint = !empty(route::$selected['endpoint']) ? route::$selected['endpoint'] : 'frontend';

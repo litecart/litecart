@@ -34,11 +34,6 @@ body {
   max-width: 250px;
   max-height: 100px;
 }
-#box-login .card-footer a {
-  display: inline-block;
-  padding: .75em 0;
-  color: inherit;
-}
 </style>
 
 <div class="loader-wrapper">
@@ -76,8 +71,8 @@ body {
 
       <div class="card-footer">
         <div class="row">
-          <div class="col-md-6">
-            <a class="btn" href="<?php echo document::href_ilink('f:'); ?>">
+          <div class="col-md-6 text-start">
+            <a class="btn btn-hover-outline btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
               <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
             </a>
           </div>

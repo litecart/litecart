@@ -25,7 +25,7 @@
             where lower(username) = lower('". database::input($username) ."')
             and status
             and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
-            and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
+            and (date_valid_to is null or date_valid_to > '". date('Y-m-d H:i:s') ."')
             limit 1;"
           )->fetch();
 
@@ -133,7 +133,7 @@
       session::$data['user']['widgets'] = [];
     }
 
-    public static function load(int $user_id) {
+    public static function load($user_id) {
 
       self::reset();
 

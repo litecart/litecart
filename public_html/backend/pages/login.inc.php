@@ -23,6 +23,7 @@
       }
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_must_enter_your_username_or_email', 'You must enter your username or email address'));
+      if (empty($_POST['password'])) throw new Exception(language::translate('error_must_enter_your_password', 'You must enter your password'));
 
       $user = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
@@ -41,7 +42,7 @@
         throw new Exception(sprintf(language::translate('error_account_is_blocked', 'The account is blocked until %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))));
       }
 
-      if (!empty($user['date_valid_to']) && date('Y', strtotime($user['date_valid_to'])) > '1970' && date('Y-m-d H:i:s') > $user['date_valid_to']) {
+      if (!empty($user['date_valid_to']) && date('Y-m-d H:i:s') > $user['date_valid_to']) {
         throw new Exception(sprintf(language::translate('error_account_expired', 'The account expired %s'), language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))));
       }
 

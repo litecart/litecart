@@ -74,7 +74,7 @@
       $this->data['categories'] = database::query(
         "select category_id from ". DB_TABLE_PREFIX ."products_to_categories
          where product_id = ". (int)$product_id .";"
-      )->fetch_all();
+      )->fetch_all('category_id');
 
     // Info
       $products_info_query = database::query(
@@ -255,7 +255,7 @@
             set group_id = ". (int)$attribute['group_id'] .",
               value_id = ". (int)$attribute['value_id'] .",
               custom_value = '". database::input($attribute['custom_value']) ."',
-              priority = ". (int)$attribute['priority'] .",
+              priority = ". (int)++$i ."
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$attribute['id'] ."
             limit 1;"

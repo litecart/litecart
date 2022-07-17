@@ -4,6 +4,7 @@
     $slide = new ent_slide($_GET['slide_id']);
   } else {
     $slide = new ent_slide();
+    $slide->data['status'] = 1;
   }
 
   if (!$_POST) {
@@ -80,7 +81,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
-          <?php echo functions::form_draw_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+          <?php echo functions::form_draw_toggle('status', 'e/d', true); ?>
         </div>
       </div>
 

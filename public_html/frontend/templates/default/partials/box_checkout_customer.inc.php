@@ -1,4 +1,4 @@
-<section id="box-checkout-customer" class="card">
+<section id="box-checkout-customer" class="">
 
   <div class="card-body">
 
@@ -27,7 +27,7 @@
         <div class="row">
           <?php if (settings::get('customer_field_company')) { ?>
           <div class="form-group col-6">
-            <label><?php echo language::translate('title_company', 'Company'); ?></label>
+            <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
             <?php echo functions::form_draw_text_field('customer[company]', true); ?>
           </div>
           <?php } ?>
@@ -99,7 +99,7 @@
         </div>
 
         <div class="form-group col-6">
-          <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+          <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
           <?php echo functions::form_draw_phone_field('customer[phone]', true, 'required'); ?>
         </div>
       </div>
@@ -121,7 +121,7 @@
         <?php if (settings::get('customer_field_company')) { ?>
         <div class="row">
           <div class="form-group col-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?></label>
+          <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
             <?php echo functions::form_draw_text_field('customer[shipping_address][company]', true); ?>
           </div>
         </div>
@@ -179,7 +179,7 @@
 
         <div class="row">
           <div class="form-group col-6">
-            <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+            <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
             <?php echo functions::form_draw_phone_field('customer[shipping_address][phone]', true); ?>
           </div>
         </div>

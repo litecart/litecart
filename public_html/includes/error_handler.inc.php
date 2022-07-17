@@ -45,12 +45,10 @@
     $backtraces = array_slice(debug_backtrace(), 2);
 
     if (!empty($backtraces)) {
-      $indent = 1;
       foreach ($backtraces as $backtrace) {
         if (empty($backtrace['file'])) continue;
         $backtrace['file'] = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', 'app://', str_replace('\\', '/', $backtrace['file']));
-        $backtrace_output .= str_repeat(' ', $indent) . "→ <strong>{$backtrace['file']}</strong> on line <strong>{$backtrace['line']}</strong> in <strong>{$backtrace['function']}()</strong><br />" . PHP_EOL;
-        $indent++;
+        $backtrace_output .= " → <strong>{$backtrace['file']}</strong> on line <strong>{$backtrace['line']}</strong> in <strong>{$backtrace['function']}()</strong><br />" . PHP_EOL;
       }
     }
 

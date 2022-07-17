@@ -11,14 +11,16 @@
 
           <?php echo functions::form_draw_form_begin('contact_form', 'post'); ?>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_name', 'Name'); ?></label>
-              <?php echo functions::form_draw_text_field('name', true, 'required'); ?>
-            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php echo functions::form_draw_text_field('name', true, 'required'); ?>
+              </div>
 
-            <div class="form-group">
-              <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-              <?php echo functions::form_draw_email_field('email', true, 'required'); ?>
+              <div class="form-group col-md-6">
+                <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
+                <?php echo functions::form_draw_email_field('email', true, 'required'); ?>
+              </div>
             </div>
 
             <div class="form-group">

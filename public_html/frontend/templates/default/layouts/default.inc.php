@@ -13,7 +13,6 @@
 </head>
 <body>
 
-<?php include FS_DIR_TEMPLATE . 'partials/box_cookie_notice.inc.php'; ?>
 
 <?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
 
@@ -24,6 +23,8 @@
 <a id="scroll-up" class="hidden-print" href="#">
   <?php echo functions::draw_fonticon('fa-chevron-circle-up fa-3x', 'style="color: #000;"'); ?>
 </a>
+
+<?php include FS_DIR_TEMPLATE . 'partials/box_cookie_notice.inc.php'; ?>
 
 {{foot_tags}}
 <script src="<?php echo document::href_rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>

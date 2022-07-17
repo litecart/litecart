@@ -44,10 +44,6 @@
         require 'app://includes/modules/shipping/' . $class . '.inc.php';
         break;
 
-      case (substr($class, 0, 4) == 'typ_'):
-        require 'app://includes/datatypes/' . $class . '.inc.php';
-        break;
-
       case (substr($class, 0, 4) == 'url_'):
         if (is_file($file = 'app://backend/routes/' . $class . '.inc.php')) require $file;
         if (is_file($file = 'app://frontend/routes/' . $class . '.inc.php')) require $file;

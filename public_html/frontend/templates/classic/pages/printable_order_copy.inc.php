@@ -195,7 +195,7 @@ table.items tbody tr:nth-child(11) {
 
       <div class="col-3">
         <?php if (settings::get('site_phone')) { ?>
-        <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+        <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
         <div class="value"><?php echo settings::get('site_phone'); ?></div>
         <?php } ?>
 

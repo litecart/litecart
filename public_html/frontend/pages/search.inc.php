@@ -36,22 +36,22 @@
 
   switch($_GET['sort']) {
     case 'name':
-      $sql_sort = "order by name asc";
+      $sql_order_by = "name asc";
       break;
     case 'price':
-      $sql_sort = "order by final_price asc";
+      $sql_order_by = "final_price asc";
       break;
     case 'date':
-      $sql_sort = "order by date_created desc";
+      $sql_order_by = "date_created desc";
       break;
     case 'rand':
-      $sql_sort = "order by rand()";
+      $sql_order_by = "rand()";
       break;
     case 'popularity':
-      $sql_sort = "order by (p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+      $sql_order_by = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
       break;
     default:
-      $sql_sort = "order by relevance desc";
+      $sql_order_by = "relevance desc";
       break;
   }
 
@@ -122,7 +122,7 @@
 
     having relevance > 0
 
-    order by $sql_sort;"
+    order by $sql_order_by;"
   )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
   if (count($products) == 1) {

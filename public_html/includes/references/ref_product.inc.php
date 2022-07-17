@@ -142,7 +142,7 @@
             from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-            and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
+            and (end_date is null or end_date >= '". date('Y-m-d H:i:s') ."')
             limit 1;"
           )->fetch();
 

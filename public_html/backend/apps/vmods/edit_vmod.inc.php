@@ -139,6 +139,8 @@
 
 <style>
 .file-browser {
+  height: 415px;
+  overflow-y: auto;
   background: var(--default-background-color);
   line-height: 2;
 }
@@ -249,9 +251,9 @@ html.dark-mode .operation {
         </div>
 
         <div class="col-md-8">
-            <div class="form-group col-md-6" style="height: 100%;">
+            <div class="form-group col-md-6">
               <label><?php echo language::translate('title_file_storage', 'File Storage'); ?></label>
-              <div class="file-browser form-input" style="height: 100%;">
+              <div class="file-browser form-input">
                 <ul class="list-unstyled">
                   <li><strong><?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #7ccdff;"'); ?> [<?php echo language::translate('title_root', 'Root'); ?>]</strong>
                     <?php echo $draw_folder_contents($vmod->data['location']); ?>

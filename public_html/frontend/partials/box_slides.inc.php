@@ -9,7 +9,7 @@
       where s.status
       and (s.languages = '' or find_in_set('". database::input(language::$selected['code']) ."', s.languages))
       and (s.date_valid_from is null or s.date_valid_from <= '". date('Y-m-d H:i:s') ."')
-      and (s.date_valid_to is null or year(s.date_valid_to) < '1971' or s.date_valid_to >= '". date('Y-m-d H:i:s') ."')
+      and (s.date_valid_to is null or s.date_valid_to >= '". date('Y-m-d H:i:s') ."')
       order by s.priority, s.name;"
     );
 

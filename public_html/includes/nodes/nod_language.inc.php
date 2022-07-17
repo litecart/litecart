@@ -173,7 +173,7 @@
       return (!empty($enabled_languages)) ? $enabled_languages[0] : $all_languages[0];
     }
 
-    public static function translate($code, $default=null, $language_code=null) {
+    public static function translate($code, $default='', $language_code='') {
 
       $code = strtolower($code);
 

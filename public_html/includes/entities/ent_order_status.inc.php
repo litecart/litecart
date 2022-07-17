@@ -160,7 +160,7 @@
         "delete os, osi
         from ". DB_TABLE_PREFIX ."order_statuses os
         left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = os.id)
-        where o.id = ". (int)$this->data['id'] .";"
+        where os.id = ". (int)$this->data['id'] .";"
       );
 
       $this->reset();

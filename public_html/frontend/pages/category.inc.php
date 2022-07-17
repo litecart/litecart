@@ -113,7 +113,7 @@
     $_page->snippets['subcategories'] = functions::catalog_categories_query($category->id)->fetch_all();
 
   // Products
-  $_page->snippets['products'][] = functions::catalog_products_query([
+    $_page->snippets['products'] = functions::catalog_products_query([
       'categories' => [$category->id] + array_keys($category->descendants),
       'brands' => fallback($_GET['brands']),
       'attributes' => fallback($_GET['attributes']),

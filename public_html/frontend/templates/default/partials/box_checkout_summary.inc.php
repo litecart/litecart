@@ -66,7 +66,7 @@
 
   <div class="comments form-group">
     <label><?php echo language::translate('title_comments', 'Comments'); ?></label>
-    <?php echo functions::form_draw_textarea('comments', true, 'maxlength="512" rows="4"'); ?>
+    <?php echo functions::form_draw_textarea('comments', true, 'maxlength="250" rows="2"'); ?>
     <small class="remaining"></small>
   </div>
 

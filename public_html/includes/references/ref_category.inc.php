@@ -117,7 +117,7 @@
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-            and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+            and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
 
           while ($row = database::fetch($query)) {
@@ -163,7 +163,7 @@
               where (hidden is null or hidden = 0)
             ))
             and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
-            and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
+            and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."');"
           );
 
           $this->_data['num_products'] = (int)database::fetch($query, 'num_products');

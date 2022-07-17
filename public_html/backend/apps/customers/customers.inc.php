@@ -105,7 +105,7 @@
           <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
           <th data-sort="email"><?php echo language::translate('title_email', 'Email'); ?></th>
           <th data-sort="name"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th data-sort="company" class="main"><?php echo language::translate('title_company', 'Company'); ?></th>
+          <th data-sort="company" class="main"><?php echo language::translate('title_company_name', 'Company Name'); ?></th>
           <th data-sort="date_created" class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
           <th></th>
         </tr>

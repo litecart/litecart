@@ -32,6 +32,14 @@
 
       if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
 
+      if (!empty($_FILES['new_images']['tmp_name'])) {
+        foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
+          if (!empty($_FILES['new_images']['tmp_name'][$key]) && !empty($_FILES['new_images']['error'][$key])) {
+            throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+          }
+        }
+      }
+
       if (empty($_POST['categories'])) $_POST['categories'] = [];
       if (empty($_POST['images'])) $_POST['images'] = [];
       if (empty($_POST['attributes'])) $_POST['attributes'] = [];
@@ -81,7 +89,9 @@
 
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
-          $product->add_image($_FILES['new_images']['tmp_name'][$key]);
+          if (is_uploaded_file($_FILES['new_images']['tmp_name'][$key])) {
+            $product->add_image($_FILES['new_images']['tmp_name'][$key]);
+          }
         }
       }
 
