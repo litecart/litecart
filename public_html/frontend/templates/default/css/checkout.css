@@ -1,7 +1,7 @@
 /* Media Breakpoints */
 @media (min-width: 768px) {
   body {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) calc(50% - 20px), #ccc 50%, #fff 50%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) calc(50% - 20px), #eee 50%, #fff 50%);
   }
 }
 #content {
@@ -80,40 +80,11 @@
 #box-checkout-payment .option {
   display: block;
   position: relative;
-  border-radius: var(--border-radius);
-  background-color: #fff;
-  margin: 1em 0;
   padding: 0.25em;
-  border: 2px solid #ccc;
+  border: 1px solid var(--default-border-color);
+  border-bottom: none;
   user-select: none;
-}
-#box-checkout-shipping .option.btn,
-#box-checkout-payment .option.btn {
-  padding: 12px;
-}
-#box-checkout-shipping .option.active,
-#box-checkout-payment .option.active {
-  background-color: var(--default-background-color);
-}
-#box-checkout-shipping .option:not(.active) .content,
-#box-checkout-payment .option:not(.active) .content {
-  max-height: 0;
-  overflow-y: hidden;
-}
-#box-checkout-shipping .option:not(.active):not(.disabled),
-#box-checkout-payment .option:not(.active):not(.disabled) {
-  opacity: 0.75;
-  transition: all 0.25s ease;
-  cursor: pointer;
-}
-#box-checkout-shipping .option .thumbnail,
-#box-checkout-payment .option .thumbnail {
-  padding: 0 !important;
-}
-#box-checkout-shipping .option .name,
-#box-checkout-payment .option .name {
-  margin: 1em 0;
-  font-weight: bold;
+  overflow: hidden;
 }
 #box-checkout-shipping .option .error,
 #box-checkout-payment .option .error {
@@ -121,27 +92,58 @@
 }
 #box-checkout-shipping .option .content,
 #box-checkout-payment .option .content {
-  max-height: 200px;
+  max-height: 0;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   text-align: left;
   transition: all 0.25s ease;
 }
-#box-checkout-shipping .option [class*="col-"],
-#box-checkout-payment .option [class*="col-"] {
-  align-self: center;
+#box-checkout-shipping .option-wrapper:first-child .option,
+#box-checkout-payment .option-wrapper:first-child .option {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+#box-checkout-shipping .option-wrapper:last-child .option,
+#box-checkout-payment .option-wrapper:last-child .option {
+  border-bottom: 1px solid var(--default-border-color);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+#box-checkout-shipping input[name$="_option[id]"]:checked + .option,
+#box-checkout-payment input[name$="_option[id]"]:checked + .option {
+  border-color: orange;
+}
+#box-checkout-shipping input[name$="_option[id]"]:checked + .option .name,
+#box-checkout-payment input[name$="_option[id]"]:checked + .option .name {
+  font-weight: bold;
+}
+#box-checkout-shipping input[name$="_option[id]"]:checked + .option .content,
+#box-checkout-payment input[name$="_option[id]"]:checked + .option .content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+#box-checkout-shipping input[name$="_option[id]"]:checked + .option::after,
+#box-checkout-payment input[name$="_option[id]"]:checked + .option::after {
+  position: absolute;
+  top: 15px;
+  right: -25px;
+  transform: rotate(45deg);
+  background: orange;
+  width: 100px;
+  font-size: 0.8em;
+  text-align: center;
+  color: #000;
+}
+#box-checkout-shipping input[name$="_option[id]"]:not(:disabled):not(:checked) + .option,
+#box-checkout-payment input[name$="_option[id]"]:not(:disabled):not(:checked) + .option {
+  cursor: pointer;
+}
+#box-checkout-shipping input[name$="_option[id]"]:disabled + .option,
+#box-checkout-payment input[name$="_option[id]"]:disabled + .option {
+  opacity: 0.75;
 }
 @media (min-width: 576px) {
   #box-checkout-shipping .option,
   #box-checkout-payment .option {
     padding: 0.5em;
-  }
-  #box-checkout-shipping .option .price,
-  #box-checkout-payment .option .price {
-    position: absolute;
-    display: inline-block;
-    top: 0.5rem;
-    right: 0.5rem;
   }
 }
 .summary.wrapper {

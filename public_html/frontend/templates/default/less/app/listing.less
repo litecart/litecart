@@ -2,6 +2,18 @@
   display: grid;
   grid-gap: .5em;
 
+  @media (min-width: (@media-breakpoint-sm)) {
+    grid-gap: .75em;
+  }
+
+  @media (min-width: (@media-breakpoint-sm)) {
+    grid-gap: 1em;
+  }
+
+  @media (min-width: (@media-breakpoint-sm)) {
+    grid-gap: 2em;
+  }
+
   &.brands {
     margin-bottom: var(--gutter-size);
     grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -114,7 +126,7 @@
       }
       .caption {
         font-size: 1.1em;
-        text-align: inline-start;
+        text-align: start;
       }
 
       &:hover {
@@ -163,10 +175,8 @@
       .sticker {
         position: absolute;
         top: 1em;
-        padding: .25em .5em;
+        padding: .5em 1em;
         color: #fff;
-        font-size: 12px;
-        font-weight: bold;
         text-align: center;
         text-transform: uppercase;
         line-height: 100%;

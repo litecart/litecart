@@ -5,7 +5,6 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   main {
     flex-grow: 1;
   }
@@ -30,46 +29,23 @@ body {
 
 #site-navigation {
   background-color: var(--navigation-background-color);
-  color: ~"var(--navigation-text-color)";
   position: sticky;
   top: -1px;
-  backdrop-filter: saturate(200%) blur(5px);
   z-index: 999;
 
-  a {
-    color: inherit;
-  }
-
-  .navbar-brand {
-    a {
-      padding: .5em 1em;
+  .search {
+    order: -1;
+    form {
+      padding: .5em;
     }
-    img {
-      display: block;
-      max-height: 38px;
-    }
-  }
-
-  .search form {
-    padding: .5em;
   }
   .shopping-cart {
     transition: all 200ms ease-out;
-    > a {
-      padding: .5em 1em;
-      border-radius: 0;
-    }
-    .badge {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-    }
     .badge, .checkout {
       display: none;
     }
     &.filled {
       background-color: var(--navigation-cart-background-color);
-      color: var(--navigation-cart-text-color);
       .badge {
         display: inline-block;
         animation: pulsating 2s linear;
@@ -83,9 +59,20 @@ body {
       }
     }
     @media (min-width: @media-breakpoint-md) {
+      .badge {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+      }
       .dropdown-menu {
         width: 320px;
       }
+    }
+  }
+  @media (min-width: @media-breakpoint-md) {
+    .search {
+      order: initial;
+      min-width: 400px;
     }
   }
 }
@@ -129,7 +116,7 @@ body {
     }
   }
 
-  .logotype img, .modules img {
+  .logotype img {
     filter: grayscale(.85);
     margin-bottom: var(--gutter-size);
   }

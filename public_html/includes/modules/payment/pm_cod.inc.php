@@ -12,15 +12,15 @@
       $this->name = language::translate(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery');
     }
 
-    public function options($shopping_cart) {
+    public function options($items, $subtotal, $tax, $currency_code, $customer) {
 
       if (empty($this->settings['status'])) return;
 
-      $country_code = fallback($shopping_cart->data['customer']['shipping_address']['country_code'], $shopping_cart->data['customer']['country_code']);
-      $zone_code = fallback($shopping_cart->data['customer']['shipping_address']['zone_code'], $shopping_cart->data['customer']['zone_code']);
+      $country_code = fallback($customer['shipping_address']['country_code'], $customer['country_code']);
+      $zone_code = fallback($customer['shipping_address']['zone_code'], $customer['zone_code']);
 
       if (!empty($this->settings['geo_zones'])) {
-        if (!reference::country($country_code)->in_geo_zone($this->settings['geo_zones'], $shopping_cart->data['customer'])) return;
+        if (!reference::country($country_code)->in_geo_zone($this->settings['geo_zones'], $customer)) return;
       }
 
       return [

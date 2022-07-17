@@ -69,15 +69,18 @@
         $subtotal['tax'] += $item['tax'] * $item['quantity'];
       }
 
-      if (!empty($this->_options)) {
-        return $this->_options;
+      $checksum = crc32(json_encode($this->_shopping_cart->data['items']));
+
+      if (!empty($this->_cache[$checksum]['options'])) {
+        return $this->_cache[$checksum]['options'];
       }
 
       $this->_options = [];
 
       foreach ($this->modules as $module) {
 
-        if (!$options = $module->options($this->_shopping_cart)) continue;
+        $data = &$this->_shopping_cart->data;
+        if (!$options = $module->options($data['items'], $data['subtotal'], $data['subtotal_tax'], $data['currency_code'], $data['customer'])) continue;
 
         if (!empty($options['options'])) {
           $options = $options['options']; // Backwards compatibility LiteCart <3.0.0
@@ -88,7 +91,7 @@
           if (empty($option['title']) && isset($option['name'])) $option['title'] = $option['name']; // Backwards compatibility LiteCart <3.0.0
           if (empty($option['fee']) && isset($option['cost'])) $option['fee'] = $option['cost']; // Backwards compatibility LiteCart <3.0.0
 
-          $this->_options[] = [
+          $this->_cache[$checksum]['options'][] = [
             'id' => $module->id.':'.$option['id'],
             'module_id' => $module->id,
             'option_id' => $option['id'],
@@ -105,7 +108,7 @@
         }
       }
 
-      return $this->_options;
+      return $this->_cache[$checksum]['options'];
     }
 
     public function cheapest() {
