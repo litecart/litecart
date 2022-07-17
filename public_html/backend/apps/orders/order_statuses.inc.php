@@ -40,7 +40,7 @@
       from ". DB_TABLE_PREFIX ."orders
       group by order_status_id
     ) o on (o.order_status_id = os.id)
-    order by field(state,'created','on_hold','ready','delayed','processing','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
+    order by field(state,'created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled',''), osi.name asc;"
   )->fetch_page($_GET['page'], null, $num_rows, $num_pages);
 
   foreach ($order_statuses as $i => $order_status) {

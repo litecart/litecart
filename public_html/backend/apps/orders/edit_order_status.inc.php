@@ -76,6 +76,7 @@
     'ready' => language::translate('title_ready', 'Ready'),
     'delayed' => language::translate('title_delayed', 'Delayed'),
     'processing' => language::translate('title_processing', 'Processing'),
+    'completed' => language::translate('title_completed', 'Completed'),
     'dispatched' => language::translate('title_dispatched', 'Dispatched'),
     'in_transit' => language::translate('title_in_transit', 'In Transit'),
     'delivered' => language::translate('title_delivered', 'Delivered'),
