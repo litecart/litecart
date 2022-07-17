@@ -38,6 +38,7 @@
         }
       }
 
+      $this->data['quantity_reserved'] = 0;
       $this->data['quantity_adjustment'] = 0;
       $this->data['references'] = [];
 
@@ -72,6 +73,17 @@
           $this->data[$key][$stock_item_info['language_code']] = $value;
         }
       }
+
+    // Reserved Quantity
+      $this->data['quantity_reserved'] = database::query(
+        "select sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+        left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+        where o.order_status_id in (
+          select id from ". DB_TABLE_PREFIX ."order_statuses
+          where stock_action = 'reserve'
+        )
+        and oi.stock_item_id = ". (int)$this->data['id'] .";"
+      )->fetch('total_reserved');
 
     // References
       $this->data['references'] = database::query(
