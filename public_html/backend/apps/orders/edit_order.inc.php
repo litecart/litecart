@@ -95,34 +95,38 @@
 
       $split_order = new ent_order();
 
+      $split_order->previous['order_status_id'] = $order->data['order_status_id'];
+
       $fields = [
+        'order_status_id',
         'reference',
         'language_code',
         'currency_code',
         'currency_value',
         'display_prices_including_tax',
         'customer',
-        'order_status_id',
+        'shipping_option',
+        'payment_option',
         'payment_transaction_id',
       ];
 
       foreach ($fields as $field) {
-        $return_order->data[$field] = $order->data[$field];
+        $split_order->data[$field] = $order->data[$field];
       }
 
-      $return_order->shipping->selected = $order->shipping->selected;
-      $return_order->payment->selected = $order->payment->selected;
+      foreach ($_POST['selected_items'] as $key) {
+        $split_order->add_item($order->data['items'][$key]);
+        unset($order->data['items'][$key]);
+      }
+
+      $split_order->shipping->selected = $order->shipping->selected;
+      $split_order->payment->selected = $order->payment->selected;
 
       $split_order->data['comments'] = [[
         'author' => 'system',
         'hidden' => true,
-        'text' => 'Splitted items from order '. $order->data['id'],
+        'text' => 'Split items from order '. $order->data['id'],
       ]];
-
-      foreach ($_POST['selected_items'] as $item_id) {
-        $split_order->add_item($order->data['items'][$item_id]);
-        unset($order->data['items'][$item_id]);
-      }
 
       $split_order->save();
       $order->save();
