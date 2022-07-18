@@ -333,30 +333,30 @@
 </style>
 
 <?php echo functions::form_draw_form_begin('form_order', 'post'); ?>
-<div class="card card-app">
-  <div class="card-header">
-    <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['no'] : language::translate('title_create_new_order', 'Create New Order'); ?>
+  <div class="card card-app">
+    <div class="card-header">
+      <div class="card-title">
+        <?php echo $app_icon; ?> <?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['no'] : language::translate('title_create_new_order', 'Create New Order'); ?>
+      </div>
     </div>
-  </div>
 
-  <div class="card-action">
-    <ul class="list-inline">
-      <li>
-        <?php echo functions::form_draw_checkbox('email_order_copy', ['1', language::translate('text_send_order_copy_email', 'Send order copy email')], true); ?>
-      </li>
-      <li>
-        <?php echo functions::form_draw_checkbox('unread', ['1', language::translate('title_mark_as_unread', 'Mark as unread')], false); ?>
-      </li>
-      <li>
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-      </li>
-    </ul>
-  </div>
+    <div class="card-action">
+      <ul class="list-inline">
+        <li>
+          <?php echo functions::form_draw_checkbox('send_order_copy', ['1', language::translate('text_send_order_copy_email', 'Send order copy email')], true); ?>
+        </li>
+        <li>
+          <?php echo functions::form_draw_checkbox('unread', ['1', language::translate('title_mark_as_unread', 'Mark as unread')], false); ?>
+        </li>
+        <li>
+          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+          <?php echo (!empty($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+          <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        </li>
+      </ul>
+    </div>
 
-  <div class="card-body">
+    <div class="card-body">
 
       <div class="row">
         <div class="col-lg-9">
@@ -380,7 +380,7 @@
             </div>
 
             <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_order_copy', 'Order Copy'); ?></label>
+              <label><?php echo language::translate('title_tax_display', 'Tax Display'); ?></label>
               <div class="btn-group btn-block" data-toggle="buttons">
                 <label class="btn btn-default<?php echo !empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="1"<?php echo !empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
                 <label class="btn btn-default<?php echo empty($_POST['display_prices_including_tax']) ? ' active' : ''; ?>"><input type="radio" name="display_prices_including_tax" value="0"<?php echo empty($_POST['display_prices_including_tax']) ? ' checked' : ''; ?> /><?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
@@ -427,7 +427,7 @@
 
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label><?php echo language::translate('title_company', 'Company'); ?></label>
+                    <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
                     <?php echo functions::form_draw_text_field('customer[company]', true); ?>
                   </div>
 
@@ -487,7 +487,7 @@
 
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+                    <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
                     <?php echo functions::form_draw_phone_field('customer[phone]', true); ?>
                   </div>
 
@@ -507,7 +507,7 @@
 
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label><?php echo language::translate('title_company', 'Company'); ?></label>
+                    <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
                     <?php echo functions::form_draw_text_field('customer[shipping_address][company]', true); ?>
                   </div>
                 </div>
@@ -562,7 +562,7 @@
 
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
+                    <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
                     <?php echo functions::form_draw_phone_field('customer[shipping_address][phone]', true); ?>
                   </div>
                 </div>
@@ -749,7 +749,7 @@
             <?php echo functions::form_draw_hidden_field('items['.$key.'][length_unit]', true); ?>
             <?php echo functions::form_draw_hidden_field('items['.$key.'][tax_class_id]', true); ?>
           </td>
-          <td class="grabable sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
+          <td class="grabable sku"><?php echo functions::escape_html($_POST['items'][$key]['sku']); ?></td>
           <td><?php echo functions::form_draw_decimal_field('items['.$key.'][quantity]', true, 2); ?></td>
           <td class="text-center"><?php if (isset($_POST['items'][$key]['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. functions::draw_fonticon('fa-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. functions::draw_fonticon('fa-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
           <td><?php echo functions::form_draw_currency_field('items['.$key.'][price]', $_POST['currency_code'], true); ?></td>
@@ -810,22 +810,21 @@
           <td></td>
         </tr>
 
-          <?php foreach (array_keys($_POST['order_total']) as $key) { ?>
-          <tr>
-            <td class="text-end"><a href="#" class="btn btn-default add" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?></a></td>
-            <td class="text-end"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true); ?></td>
-            <td><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'class="form-input text-end"'); ?></td>
-            <td>
-              <div class="input-group">
-              <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
-              <?php echo functions::form_draw_currency_field('order_total['. $key .'][value]', $_POST['currency_code'], true); ?>
-              </div>
-            </td>
-            <td><?php echo functions::form_draw_currency_field('order_total['. $key .'][tax]', $_POST['currency_code'], true); ?></td>
-            <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+        <?php foreach (array_keys($_POST['order_total']) as $key) { ?>
+        <tr>
+          <td class="text-end"><a href="#" class="btn btn-default add" title="<?php echo language::translate('text_insert_before', 'Insert before'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?></a></td>
+          <td class="text-end"><?php echo functions::form_draw_hidden_field('order_total['. $key .'][id]', true) . functions::form_draw_text_field('order_total['. $key .'][module_id]', true); ?></td>
+          <td><?php echo functions::form_draw_text_field('order_total['. $key .'][title]', true, 'class="form-input text-end"'); ?></td>
+          <td>
+            <div class="input-group">
+            <span class="input-group-text"><?php echo functions::form_draw_checkbox('order_total['. $key .'][calculate]', ['1', functions::draw_fonticon('fa-calculator')], true, 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"'); ?></span>
+            <?php echo functions::form_draw_currency_field('order_total['. $key .'][value]', $_POST['currency_code'], true); ?>
+            </div>
+          </td>
+          <td><?php echo functions::form_draw_currency_field('order_total['. $key .'][tax]', $_POST['currency_code'], true); ?></td>
+          <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+        </tr>
+        <?php } ?>
 
         <tr>
           <td colspan="3" class="text-end"><?php echo language::translate('title_payment_fee', 'Payment Fee'); ?></td>
@@ -871,7 +870,6 @@
     </table>
   </div>
 
-</div>
 <?php echo functions::form_draw_form_end(); ?>
 
 <div id="modal-customer-picker" class="modal fade" style="max-width: 640px; display: none;">
@@ -1282,7 +1280,7 @@
                + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
                + '    <div class="actions">'
                + '      <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_draw_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>'
-               + '      <label class=" private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>'
+               + '      <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_draw_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>'
                + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>'
                + '    </div>'
                + '  </div>';
@@ -1312,7 +1310,7 @@
     }
   });
 
-// Tax
+// Tax Rates
 
   var tax_rates = [];
 

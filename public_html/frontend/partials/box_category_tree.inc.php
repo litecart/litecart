@@ -14,7 +14,7 @@
     'main_category' => $main_category ? $main_category->id : 0,
     'categories' => [],
     'trail' => $trail,
-    'backlink' => document::ilink('category', ['category_id' => $main_category->id]),
+    'backlink' => document::ilink('category', ['category_id' => $main_category ? $main_category->id : 0]),
   ];
 
   if (!nil($_GET['category_id'], $main_category, route::$selected['controller'])) {
