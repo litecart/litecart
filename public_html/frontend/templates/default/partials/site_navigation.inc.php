@@ -8,6 +8,16 @@
         </a>
       </div>
 
+      <div class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl">
+        <ul class="navbar-nav">
+          <li><a class="nav-item regional-settings" href="<?php echo document::href_ilink('regional_settings'); ?>">
+            <span class="code"><?php echo language::$selected['code']; ?></span>
+            <span class="code"><?php echo currency::$selected['code']; ?></span>
+            <span class="code"><?php echo customer::$data['country_code']; ?></span>
+          </a></li>
+        </ul>
+      </div>
+
       <button type="button" class="navbar-toggle">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -49,7 +59,7 @@
         <?php if (settings::get('accounts_enabled')) { ?>
         <?php if (!empty(customer::$data['id'])) { ?>
         <li class="account dropdown">
-          <a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user-o'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
+          <a href="#" data-toggle="dropdown"><?php echo functions::draw_fonticon('fa-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <span class="hidden-sm"><?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?></span></a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="navbar-item" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
             <li><a class="navbar-item" href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
@@ -59,7 +69,7 @@
         <?php } else { ?>
         <li class="account">
           <a class="navbar-item" href="<?php echo document::href_ilink('login'); ?>">
-            <?php echo functions::draw_fonticon('fa-user-o'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
+            <?php echo functions::draw_fonticon('fa-user-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_sign_in', 'Sign In'); ?>
           </a>
         </li>
         <?php } ?>
@@ -78,27 +88,18 @@
 
         <li class="contact">
           <a class="navbar-item" href="<?php echo document::href_ilink('contact'); ?>">
-            <i class="fa fa-envelope-o"></i> <?php echo language::translate('title_contact', 'Contact'); ?>
+          <?php echo functions::draw_fonticon('fa-envelope-o hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo language::translate('title_contact', 'Contact'); ?>
           </a>
         </li>
 
       </ul>
 
       <ul class="navbar-nav">
-<!--
-        <li class="regional-settings">
-          <a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox" data-seamless="true">
-            <?php echo functions::draw_fonticon('fa-globe'); ?>
-            <span class="language"><?php echo language::$selected['code']; ?></span>
-            / <span class="country"><?php echo customer::$data['country_code']; ?></span>
-            / <span class="currency"><?php echo currency::$selected['code']; ?></span>
-          </a>
-        </li>
--->
+
         <li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown">
           <a class="navbar-item" href="#" data-toggle="dropdown">
             <!--<?php echo functions::draw_fonticon('fa-shopping-basket'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>-->
-            <img class="img-responsive hidden-xs" src="<?php echo document::link(WS_DIR_TEMPLATE .'images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>" style="max-height: 48px;" />
+            <img class="img-responsive hidden-xs" src="<?php echo document::link(WS_DIR_TEMPLATE .'images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>" />
             <span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo language::translate('title_shopping_cart', 'Shopping Cart'); ?></span>
             <span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
           </a>

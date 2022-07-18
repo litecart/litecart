@@ -14,7 +14,6 @@
   .navbar-header {
     display: flex;
     align-items: center;
-    font-weight: bold;
     text-transform: uppercase;
     backdrop-filter: saturate(200%) blur(5px);
     > * {
@@ -23,8 +22,9 @@
 
     .navbar-brand {
       a {
-        display: block;
+        display: inline-flex;
         padding: .5em 1em;
+        font-weight: bold;
         text-decoration: none;
         &:hover {
           background-color: rgba(0, 0, 0, .05);
@@ -32,7 +32,8 @@
       }
       img {
         display: block;
-        max-height: 38px;
+        max-width: 200px;
+        max-height: 45px;
       }
     }
   }

@@ -241,9 +241,8 @@ hr {
 .badge {
   display: inline-block;
   width: 2em;
-  padding-top: 2px;
   font-weight: 700;
-  font-size: 0.65em;
+  font-size: 0.6em;
   line-height: 2;
   text-align: center;
   border-radius: 4px;
@@ -1258,17 +1257,17 @@ tr.semi-transparent td {
 }
 @media (min-width: 576px) and (max-width: 767px) {
   .hidden-sm {
-    display: none;
+    display: none !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .hidden-md {
-    display: none;
+    display: none !important;
   }
 }
 @media (min-width: 992px) {
   .hidden-lg {
-    display: none;
+    display: none !important;
   }
 }
 @media print {
@@ -1689,7 +1688,6 @@ ul.list-inline li {
 .navbar .navbar-header {
   display: flex;
   align-items: center;
-  font-weight: bold;
   text-transform: uppercase;
   backdrop-filter: saturate(200%) blur(5px);
 }
@@ -1697,8 +1695,9 @@ ul.list-inline li {
   flex: 1 1 auto;
 }
 .navbar .navbar-header .navbar-brand a {
-  display: block;
+  display: inline-flex;
   padding: 0.5em 1em;
+  font-weight: bold;
   text-decoration: none;
 }
 .navbar .navbar-header .navbar-brand a:hover {
@@ -1706,7 +1705,8 @@ ul.list-inline li {
 }
 .navbar .navbar-header .navbar-brand img {
   display: block;
-  max-height: 38px;
+  max-width: 200px;
+  max-height: 45px;
 }
 .navbar .navbar-toggle {
   position: relative;

@@ -31,6 +31,15 @@ body main {
   top: -1px;
   z-index: 999;
 }
+#site-navigation .regional-settings {
+  text-decoration: none;
+  color: var(--navigation-text-color);
+}
+#site-navigation .regional-settings .code {
+  font-size: 0.8em;
+  background: #bcbccb;
+  padding: 0.25em 0.5em;
+}
 #site-navigation .search {
   order: -1;
 }
@@ -39,6 +48,9 @@ body main {
 }
 #site-navigation .shopping-cart {
   transition: all 200ms ease-out;
+}
+#site-navigation .shopping-cart img {
+  max-height: 36px;
 }
 #site-navigation .shopping-cart .badge,
 #site-navigation .shopping-cart .checkout {
@@ -70,8 +82,8 @@ body main {
 }
 @media (min-width: 768px) {
   #site-navigation .search {
+    flex-grow: 1;
     order: initial;
-    min-width: 400px;
   }
 }
 #content {

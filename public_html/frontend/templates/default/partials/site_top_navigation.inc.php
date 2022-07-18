@@ -1,4 +1,4 @@
-<div id="site-top-navigation">
+<div id="site-top-navigation" class="hidden-xs">
   <div class="wrapper">
     <ul class="nav">
       <li class="dropdown">
