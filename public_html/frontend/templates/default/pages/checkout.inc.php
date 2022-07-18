@@ -1,28 +1,53 @@
-<main id="box-checkout" class="container">
+<main id="box-checkout">
   <?php echo functions::form_draw_form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
-    <div class="row" style="grid-gap: 6em;">
 
-      <div class="col-md-6">
-        {{notices}}
+    {{notices}}
 
-        <div class="text-center" style="margin-bottom: 2em;">
-          <a class="btn btn-default" href="<?php echo document::ilink(''); ?>" >
-            <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
-          </a>
-        </div>
+    <div class="row">
 
-        <div class="customer wrapper"></div>
+      <div class="left-wrapper col-md-6">
+        <div class="left">
+
+          <div class="navigate-back text-center">
+            <a class="btn btn-default" href="<?php echo document::ilink(''); ?>" >
+              <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back_to_store', 'Back To Store'); ?>
+            </a>
+          </div>
+
+          <?php if (!empty($express_checkout)) { ?>
+          <fieldset id="express-checkout">
+            <legend><?php echo language::translate('title_express_checkkout', 'Express Checkout'); ?></legend>
+
+            <div class="options">
+              <?php foreach ($express_checkout as $express_option) { ?>
+              <a class="option btn btn-default btn-lg" href=""><?php echo $express_option['title']; ?></a>
+              <?php } ?>
+            </div>
+          </fieldset>
+
+          <div class="strikethrough-divider">
+            <span><?php echo language::translate('text_or', 'Or'); ?></span>
+          </div>
+          <?php } ?>
+
+          <div class="customer wrapper"></div>
+
+       </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="right-wrapper col-md-6">
+        <div class="right">
 
-        <div class="shipping wrapper"></div>
+          <div class="shipping wrapper"></div>
 
-        <div class="payment wrapper"></div>
+          <div class="payment wrapper"></div>
 
-        <div class="summary wrapper"></div>
+          <div class="summary wrapper"></div>
+
+        </div>
       </div>
     </div>
+
   <?php echo functions::form_draw_form_end(); ?>
 </main>
 
@@ -96,10 +121,10 @@
           task.data = $('#box-checkout-customer :input').serialize();
           break;
         case 'shipping':
-          task.data = $('#box-checkout-shipping .option.active :input').serialize();
+          task.data = $('#box-checkout-shipping :input').serialize();
           break;
         case 'payment':
-          task.data = $('#box-checkout-payment .option.active :input').serialize();
+          task.data = $('#box-checkout-payment :input').serialize();
           break;
         case 'summary':
           task.data = $('#box-checkout-summary :input').serialize();

@@ -68,8 +68,8 @@
 
       <li>
         <div class="btn-group btn-group-inline" data-toggle="buttons">
-          <label class="btn btn-default btn-sm<?php echo empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>"><input type="radio" name="dark_mode" value="0" <?php echo empty($_COOKIE['dark_mode']) ? ' checked ' : ''; ?>/> <?php echo language::translate('title_light', 'Light'); ?></label>
-          <label class="btn btn-default btn-sm<?php echo !empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>"><input type="radio" name="dark_mode" value="1" <?php echo !empty($_COOKIE['dark_mode']) ? ' checked ' : ''; ?>/> <?php echo language::translate('title_dark', 'Dark'); ?></label>
+          <label class="btn btn-default btn-sm<?php echo empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>" title="<?php echo language::translate('title_light', 'Light'); ?>"><input type="radio" name="dark_mode" value="0"<?php echo empty($_COOKIE['dark_mode']) ? ' checked' : ''; ?> /> <?php echo functions::draw_fonticon('fa-sun-o'); ?></label>
+          <label class="btn btn-default btn-sm<?php echo !empty($_COOKIE['dark_mode']) ? ' active' : ''; ?>" title="<?php echo language::translate('title_dark', 'Dark'); ?>"><input type="radio" name="dark_mode" value="1"<?php echo !empty($_COOKIE['dark_mode']) ? ' checked' : ''; ?> /> <?php echo functions::draw_fonticon('fa-moon-o'); ?></label>
         </div>
       </li>
 

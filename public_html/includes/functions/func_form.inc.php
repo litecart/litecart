@@ -1643,9 +1643,9 @@ END;
       ];
 
       if ($product->quantity_unit) {
-        $qty = language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
+        $quantity_available_formatted = language::number_format($stock_option['quantity_available'], $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
       } else {
-        $qty = language::number_format($product->quantity);
+        $quantity_available_formatted = language::number_format($stock_option['quantity_available']);
       }
 
       if (!empty($stock_option['image'])) {
@@ -1653,10 +1653,10 @@ END;
         $aliases['%image'] = '<img class="image" src="'. document::href_rlink(functions::image_thumbnail('storage://images/' . $stock_option['image'], $width, $height, 'FIT_USE_WHITESPACING')) .'" />';
       }
 
-      if ($stock_option['quantity'] > 0) {
+      if ($stock_option['quantity_available'] > 0) {
         $aliases['%icon'] = functions::draw_fonticon('on');
-        $aliases['%notice'] = language::translate('title_in_stock', 'In Stock') . (settings::get('display_stock_count') ?  ' (' . $qty . ')' : '');
-      } else if (!empty($product->sold_out_status)) {
+        $aliases['%notice'] = language::translate('title_available', 'Available') . (settings::get('display_stock_count') ?  ' (' . $quantity_available_formatted . ')' : '');
+      } else if (!empty($product->sold_out_status) && !empty($product->sold_out_status['orderable'])) {
         $aliases['%icon'] = functions::draw_fonticon('semi-off');
         $aliases['%notice'] = $product->sold_out_status['name'];
       } else {

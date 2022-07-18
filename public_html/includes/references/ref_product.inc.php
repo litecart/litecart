@@ -255,11 +255,17 @@
 
         case 'quantity':
 
-          $this->_data['quantity'] = (float)database::query(
-            "select sum(si.quantity) as sum_quanity from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
+          $this->_data['quantity'] = null;
+
+          $stock_items = database::query(
+            "select count(p2si.id) as num_stock_items, sum(si.quantity) as sum_quantity from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
             left join ". DB_TABLE_PREFIX ."stock_items si on (p2si.stock_item_id = si.id)
             where p2si.product_id = ". (int)$this->_data['id'] .";"
-          )->fetch('sum_quantity');
+          )->fetch();
+
+          if ($stock_items['num_stock_items'] > 0) {
+            $this->_data['quantity'] = $stock_items['sum_quantity'];
+          }
 
           break;
 
@@ -314,10 +320,8 @@
 
         case 'stock_options':
 
-          $this->_data['stock_options'] = [];
-
-          $query = database::query(
-            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, oi.reserved, coalesce(si.quantity - oi.reserved, si.quantity) as available, si.image
+          $this->_data['stock_options'] = database::query(
+            "select p2si.*, sii.name, si.sku, si.gtin, si.mpn, si.weight, si.weight_unit, si.length, si.width, si.height, si.length_unit, si.quantity, oi.reserved, coalesce(si.quantity - oi.reserved, si.quantity) as quantity_available, si.image
             from ". DB_TABLE_PREFIX ."products_to_stock_items p2si
             left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = p2si.stock_item_id)
             left join ". DB_TABLE_PREFIX ."stock_items_info sii on (sii.stock_item_id = p2si.stock_item_id and sii.language_code = '". database::input(language::$selected['code']) ."')
@@ -335,11 +339,7 @@
             where product_id = ". (int)$this->_data['id'] ."
             ". (!empty($option_id) ? "and id = ". (int)$option_id ."" : '') ."
             order by p2si.priority asc;"
-          );
-
-          while ($row = database::fetch($query)) {
-            $this->_data['stock_options'][$row['id']] = $row;
-          }
+          )->fetch_all('', 'id');
 
           break;
 

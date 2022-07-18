@@ -527,7 +527,7 @@
       $item['sum'] = ($item['price'] - $item['price']) * $item['quantity'];
       $item['sum_tax'] = ($item['tax'] - $item['discount_tax']) * $item['quantity'];;
 
-      $this->data['items'][] = $item;
+      $this->data['items'][] = array_diff_assoc($item, ['id']);
 
       $this->data['subtotal'] += $item['price'] * $item['quantity'];
       $this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];

@@ -35,13 +35,14 @@
 
     while ($module = database::fetch($modules_query)) {
       $module['settings'] = json_decode($module['settings'], true);
-      $icon = 'app://'.$module['settings']['icon'];
+
       if (empty($module['settings']['icon'])) continue;
+      $icon = 'app://'.$module['settings']['icon'];
+
       if (!is_file($icon)) continue;
 
-      $site_footer->snippets['modules'][$module['settings']['icon']] = [
+      $site_footer->snippets['modules'][$module['id']] = [
         'id' => $module['id'],
-        //'title' => $module['name'],
         'icon' => functions::image_thumbnail($icon, 72, 32),
       ];
     }

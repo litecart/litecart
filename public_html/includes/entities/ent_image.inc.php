@@ -168,7 +168,7 @@
       }
 
       if (!is_file($file)) {
-        throw new Exception('Could not set image source to a non-existing source');
+        throw new Exception('Could not set image source to a non-existing source ('. $file .')');
       }
 
       $this->_file = $file;

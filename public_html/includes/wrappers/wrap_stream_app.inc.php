@@ -160,6 +160,7 @@
     }
 
     public function url_stat(string $path, int $flags): array|false {
+
       $path = $this->_resolve_path($path);
       $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
 

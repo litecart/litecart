@@ -5,6 +5,10 @@
     public $timeout = 20;
     public $last_request;
     public $last_response;
+    public static $stats = [
+      'duration' => 0,
+      'requests' => 0,
+    ];
 
     public function call($method, $url='', $data=null, $headers=[], $asynchronous=false) {
 
@@ -55,8 +59,7 @@
         $request_headers .= "$key: $value\r\n";
       }
 
-      $microtime_start = microtime(true);
-      stats::start_watch('http_requests');
+      $timestamp = microtime(true);
 
       $this->last_request = [
         'timestamp' => time(),
@@ -75,7 +78,7 @@
       $response = '';
       while (!feof($socket)) {
 
-        if ((microtime(true) - $microtime_start) > $this->timeout) {
+        if ((microtime(true) - $timestamp) > $this->timeout) {
           trigger_error('Timeout during retrieval', E_USER_WARNING);
           return false;
         }
@@ -101,7 +104,7 @@
         'status_code' => $status_code,
         'head' => $response_headers,
         'body' => $response_body,
-        'duration' => round(microtime(true) - $microtime_start, 3),
+        'duration' => round(microtime(true) - $timestamp, 3),
         'bytes' => strlen($response_headers . "\r\n" . $response_body),
       ];
 
@@ -114,10 +117,8 @@
         $this->last_response['body']
       );
 
-      if (class_exists('stats', false)) {
-        stats::increase_count('http_requests');
-        stats::stop_watch('http_requests');
-      }
+      self::$stats['requests']++;
+      self::$stats['duration'] += microtime(true) - $timestamp;
 
     // Redirect
       if ($status_code == 301) {

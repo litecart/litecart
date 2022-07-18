@@ -367,7 +367,7 @@
           $stock_option = &$product->stock_options[$stock_option_key];
 
           if (!empty($product->sold_out_status) && empty($product->sold_out_status['orderable'])) {
-            $available_quantity_after_purchase = $stock_option['available'] - $item['quantity'] + (isset($this->data['items'][$item['key']]) ? $this->data['items'][$item['key']]['quantity'] : 0);
+            $available_quantity_after_purchase = $stock_option['quantity_available'] - $item['quantity'] + (isset($this->data['items'][$item['key']]) ? $this->data['items'][$item['key']]['quantity'] : 0);
             if ($available_quantity_after_purchase < 0) {
               throw new Exception(language::translate('error_not_enough_products_in_stock_for_option', 'Not enough products in stock for the selected option') .' ('. $stock_option['sku'] .')');
             }

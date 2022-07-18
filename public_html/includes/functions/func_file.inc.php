@@ -117,6 +117,10 @@
     if (preg_match('#^app://#', $path)) {
       $path = preg_replace('#^app://#', FS_DIR_APP, $path);
 
+      foreach (glob(FS_DIR_STORAGE .'addons/*/'.file_relative_path($path)) as $file) {
+        $path = $file;
+      }
+
     } else if (preg_match('#^storage://#', $path)) {
       $path = preg_replace('#^storage://#', FS_DIR_STORAGE, $path);
     }
