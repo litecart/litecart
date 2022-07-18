@@ -1288,19 +1288,15 @@ textarea {
 input[type="number"] {
   text-align: end;
 }
-.form-group {
-  margin-bottom: 1em;
-}
 .form-group.required label::after {
   content: ' *';
   color: #f00;
 }
 .form-group:not([class*=col-]) {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 .form-group > label:not(.form-check) {
   display: block;
-  padding-bottom: 0.5em;
 }
 .form-check {
   display: block;

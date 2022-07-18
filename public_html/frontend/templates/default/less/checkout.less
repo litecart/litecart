@@ -1,17 +1,7 @@
 @import "framework/media.less";
 
 body {
-  @media(min-width: @media-breakpoint-md) {
-    background: linear-gradient(90deg, rgba(255,255,255,0) calc(50% - 20px), #eee 50%, #fff 50%);
-    //background: linear-gradient(90deg, #fff 0%, #ccc 50%, rgba(255,255,255,0) calc(50% - 20px));
-  }
-}
-
-#content {
-  padding: .5rem 1rem;
-  @media(min-width: @media-breakpoint-sm) {
-    padding: 1rem;
-  }
+  background: #eee;
 }
 
 .loader-wrapper {
@@ -25,28 +15,74 @@ body {
   z-index: 999999;
 }
 
-#header {
-  margin: 0 auto;
-  padding: 1rem;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 250px auto;
-  .contact-info {
-    align-self: center;
-    text-align: right;
-    line-height: 150%;
-    @media(min-width: @media-breakpoint-sm) {
-      font-size: 1.25em;
+#box-checkout {
+  padding: 0;
+  > form {
+    > .row {
+      height: 100vh;
+      grid-gap: 0;
+      margin-bottom: 0;
     }
-    .title {
-      font-weight: bold;
-      margin: 0;
+  }
+  .left-wrapper {
+    padding: 2em;
+    .left {
+      max-width: 640px;
+      margin-left: auto;
+    }
+  }
+  .right-wrapper {
+    background: #fff;
+    box-shadow: 0 0 2em rgba(0, 0, 0, 0.15);
+    padding: 2em;
+    .right {
+      max-width: 640px;
+      margin-right: auto;
     }
   }
 }
 
-#box-checkout {
-  padding: 2em 0;
+.navigate-back {
+  margin-bottom: 2em
+}
+
+.strikethrough-divider {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 2em 0;
+}
+.strikethrough-divider > span {
+  position: relative;
+  display: inline-block;
+}
+.strikethrough-divider > span:before,
+.strikethrough-divider > span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9999px;
+  height: 1px;
+  background: var(--default-border-color);
+}
+.strikethrough-divider > span:before {
+  right: 100%;
+  margin-right: 1em;
+}
+.strikethrough-divider > span:after {
+  left: 100%;
+  margin-left: 1em;
+}
+
+#express-checkout legend {
+  text-align: center;
+}
+#express-checkout .options {
+  text-align: center;
+}
+#express-checkout .option {
+  margin: 1em ;
 }
 
 #box-checkout-cart {
@@ -92,7 +128,7 @@ body {
     position: relative;
     padding: .25em;
     border: 1px solid var(--default-border-color);
-    border-bottom: none;
+    border-radius: var(--border-radius);
     user-select: none;
     overflow: hidden;
 
@@ -108,12 +144,15 @@ body {
     }
   }
 
-  .option-wrapper:first-child .option {
+  .option-wrapper:not(:last-child) .option {
+    border-bottom: none;
+  }
+  .option-wrapper:first-child:not(:last-child) .option {
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
   .option-wrapper:last-child .option {
     border-bottom: 1px solid var(--default-border-color);
-    border-radius: 0 0 var(--border-radius) var(--border-radius)
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
   }
 
   input[name$="_option[id]"] {
