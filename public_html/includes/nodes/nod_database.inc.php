@@ -2,12 +2,16 @@
 
   class database {
     private static $_links = [];
+    public static $stats = [
+      'duration' => 0,
+      'queries' => 0,
+    ];
 
     public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset='utf8mb4') {
 
       if (!isset(self::$_links[$link])) {
 
-        stats::start_watch('database_duration');
+        $timestamp = microtime(true);
 
         mysqli_report(MYSQLI_REPORT_OFF);
 
@@ -25,11 +29,11 @@
 
         event::register('shutdown', [__CLASS__, 'disconnect']);
 
-        if (($duration = stats::get_watch('database_duration')) > 1) {
+        if (($duration = microtime(true) - $timestamp) > 1) {
           error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL connection established in '. number_format($duration, 3, '.', ' ') .' s.' . PHP_EOL, 3, 'app://logs/performance.log');
         }
 
-        stats::stop_watch('database_duration');
+        self::$stats['duration'] += microtime(true) - $timestamp;
       }
 
       if (!is_object(self::$_links[$link])) {
@@ -107,18 +111,18 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      stats::start_watch('database_duration');
+      $timestamp = microtime(true);
 
       if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
         trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
       }
 
-      if (($duration = stats::get_watch('database_duration')) > 3) {
+      if (($duration = microtime(true) - $timestamp) > 3) {
         error_log('['. date('Y-m-d H:i:s e').'] Warning: A MySQL query executed in '. number_format($duration, 3, '.', ' ') .' s. Query: '. str_replace("\r\n", "\r\n  ", $sql) . PHP_EOL, 3, 'storage://logs/performance.log');
       }
 
-      stats::increase_count('database_queries');
-      stats::stop_watch('database_duration');
+      self::$stats['queries']++;
+      self::$stats['duration'] += microtime(true) - $timestamp;
 
       if ($result instanceof mysqli_result) {
         return new database_result($sql, $result);
@@ -130,7 +134,7 @@
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      stats::start_watch('database_duration');
+      $timestamp = microtime(true);
 
       if (($result = mysqli_multi_query(self::$_links[$link], $sql)) === false) {
         trigger_error(mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql) . PHP_EOL, E_USER_ERROR);
@@ -144,8 +148,8 @@
         $i++;
       }
 
-      stats::increase_count('database_queries', $i);
-      stats::stop_watch('database_duration');
+      self::$stats['queries']++;
+      self::$stats['duration'] += microtime(true) - $timestamp;
     }
 
     public static function fetch($result, $column='') {
@@ -259,7 +263,7 @@
 
     public function fetch($column='') {
 
-      stats::start_watch('database_duration');
+      $timestamp = microtime(true);
 
       $row = mysqli_fetch_assoc($this->_result);
 
@@ -271,14 +275,14 @@
         }
       }
 
-      stats::stop_watch('database_duration');
+      database::$stats['duration'] += microtime(true) - $timestamp;
 
       return $row;
     }
 
     public function fetch_all($column=null, $index_column=null) {
 
-      stats::start_watch('database_duration');
+      $timestamp = microtime(true);
 
       if ($column || $index_column) {
 
@@ -295,14 +299,14 @@
         $rows = mysqli_fetch_all($this->_result, MYSQLI_ASSOC);
       }
 
-      stats::stop_watch('database_duration');
+      database::$stats['duration'] += microtime(true) - $timestamp;
 
       return $rows;
     }
 
     public function fetch_page($page, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
 
-      stats::start_watch('database_duration');
+      $timestamp = microtime(true);
 
       if ($page < 1) $page = 1;
       if (!$items_per_page) $items_per_page = settings::get('data_table_rows_per_page');
@@ -320,7 +324,7 @@
         if (++$i == $items_per_page) break;
       }
 
-      stats::stop_watch('database_duration');
+      database::$stats['duration'] += microtime(true) - $timestamp;
 
       return $rows;
     }

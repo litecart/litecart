@@ -145,8 +145,6 @@
 
     public static function before_output() {
 
-      stats::start_watch('output_optimization');
-
     // Extract stylesheets and on page styling
       $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$styles, &$javascripts, &$javascript) {
 
@@ -246,8 +244,6 @@
           header('Link: <'.$link.'>; rel=preload; as='.$type, false);
         }
       }
-
-      stats::stop_watch('output_optimization');
 
     // Remove HTML comments
       $GLOBALS['output'] = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function() {
