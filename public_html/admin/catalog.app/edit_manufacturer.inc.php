@@ -25,7 +25,7 @@
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       }
 
-      if (!empty($_FILES['image']['error'])) {
+      if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']) && !empty($_FILES['image']['error'])) {
         throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
       }
 
@@ -51,7 +51,7 @@
 
       if (!empty($_POST['delete_image'])) $manufacturer->delete_image();
 
-      if (!empty($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+      if (!empty($_FILES['image']['tmp_name'])) {
         $manufacturer->save_image($_FILES['image']['tmp_name']);
       }
 

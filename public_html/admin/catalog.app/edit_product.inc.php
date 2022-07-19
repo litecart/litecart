@@ -47,7 +47,7 @@
 
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
-          if (!empty($_FILES['new_images']['tmp_name'][$key]) && !empty($_FILES['new_images']['error'][$key])) {
+          if (is_uploaded_file($_FILES['new_images']['tmp_name'][$key]) && !empty($_FILES['new_images']['error'][$key])) {
             throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
           }
         }
@@ -105,7 +105,7 @@
 
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
-          if (is_uploaded_file($_FILES['new_images']['tmp_name'][$key])) {
+          if (!empty($_FILES['new_images']['tmp_name'][$key])) {
             $product->add_image($_FILES['new_images']['tmp_name'][$key]);
           }
         }

@@ -12,6 +12,10 @@
         throw new Exception(language::translate('error_missing_image', 'You must select an image'));
       }
 
+      if (!is_uploaded_file($_FILES['image']) || !empty($_FILES['image']['error'])) {
+        throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+      }
+
       $image = new ent_image($_FILES['image']['tmp_name']);
       if (!$image->width()) throw new Exception(language::translate('error_invalid_image', 'The image is invalid'));
 
