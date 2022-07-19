@@ -110,7 +110,7 @@ bb6cb99b87236ecb23f5a95b20fe6fb7	admin/tax.app/tax_rates.inc.php
 951ef54fbc764093d2720d4fef8bf520	admin/translations.app/config.inc.php
 b199c0e23b9fb527e2d7b4f7970479c5	admin/translations.app/csv.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/translations.app/index.html
-5514805be469ccd81fd5678fab6be5b7	admin/translations.app/scan.inc.php
+000abfd371e1868a34d1666d3db73b67	admin/translations.app/scan.inc.php
 836def3526de4b6a5811ee81a24df857	admin/translations.app/search.inc.php
 d028baf97da2143daa16d6b09fe49d78	admin/users.app/config.inc.php
 a55b8b36aaacba6a83da32a7c48fd973	admin/users.app/edit_user.inc.php
@@ -130,10 +130,10 @@ d41d8cd98f00b204e9800998ecf8427e	data/index.html
 930b04e1da4bf8cca10f4fa8b8805cbe	ext/chartist/LICENSE
 bc4ccda72c36a389b3bc14912926ddda	ext/chartist/chartist.min.css
 fd02689d42510683cb31f32f92a04e1b	ext/chartist/chartist.min.js
-190451d65dc69cff1a827e03aa78eed4	ext/featherlight/featherlight.js
+74515bb746f92e42d07478e64efc2250	ext/featherlight/featherlight.js
 f3cb38e8e9fb3ac51e08be6851ce601f	ext/featherlight/featherlight.less
 d1df3482ca7f2f2929cb0d0a8bc12245	ext/featherlight/featherlight.min.css
-5c481f05e312107cb1333e0b57177eab	ext/featherlight/featherlight.min.js
+b9766c8f6156d5dd8f55503d3c2d0b9a	ext/featherlight/featherlight.min.js
 5acc3def839fbdea90e044cda738ae2a	ext/fontawesome/LICENESE.txt
 aacf274db0520d79711283626beaae60	ext/fontawesome/font-awesome.min.css
 21f9333571f57deb5230dbce4d6a67d7	ext/fontawesome/fontawesome-webfont.woff2
@@ -548,7 +548,7 @@ a9c1304c9ab023b277f3017668a2c468	includes/library/lib_cache.inc.php
 51871fe2cce5dffce4d83ac7bd187617	includes/library/lib_compression.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 56d546ede233b2e949c32868d6f6ded0	includes/library/lib_customer.inc.php
-f84df3dc2fe11f93fe6ce07981c558f2	includes/library/lib_database.inc.php
+26e977dc06bca2434af098fb1dac4b9c	includes/library/lib_database.inc.php
 2f39523a8288e975200ea69475db3b0a	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 7ae3cb52726d6f121708f429946096bd	includes/library/lib_form.inc.php
@@ -608,7 +608,7 @@ d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 bc9b31011a20ac5246b7a8f2cc2b013b	includes/templates/default.admin/css/app.min.css
 20d4ee6b8d4e838b791f5992bac8cbb4	includes/templates/default.admin/css/app.min.css.map
 cd20c5fffdc9c1c1f095a2a7d70d8d4f	includes/templates/default.admin/css/framework.min.css
-b4d5c3af206ea27b478c06ad452f0c50	includes/templates/default.admin/css/framework.min.css.map
+968cbe062f47d894dcafb6d497a348e1	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 7e5a28ae84dfa1d324296358fe2b4214	includes/templates/default.admin/css/printable.min.css
 6ef6eab42ad79b4a85f0381b85e1aa71	includes/templates/default.admin/css/printable.min.css.map
@@ -618,8 +618,8 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/images/index.h
 7ecd842a599d003613cb91bfec8a9b34	includes/templates/default.admin/images/logotype.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/index.html
 e2ce59222253bf9a0b64218c970c6a9f	includes/templates/default.admin/js/app.js
-b3a103d395c53dec1528921baf0f9aa8	includes/templates/default.admin/js/app.min.js
-a96aadfbb3eb3c7c07d6c73081a2df71	includes/templates/default.admin/js/app.min.js.map
+93d93e2687a5fbf998b6caec9779134c	includes/templates/default.admin/js/app.min.js
+9d9953db1a01e0a7b1466935b8e2fe6e	includes/templates/default.admin/js/app.min.js.map
 2f781c885d05b3f7002560d93358a28e	includes/templates/default.admin/layouts/ajax.inc.php
 a71b829aae5dee2a9dca5665ab60f16e	includes/templates/default.admin/layouts/default.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/layouts/index.html
@@ -765,9 +765,9 @@ b65a785fdd4588255aad93f9a01e1c94	includes/templates/default.catalog/views/box_in
 54185ad56222f072379b9f89a952dc20	includes/templates/default.catalog/views/box_latest_products.inc.php
 aa1c4e4050070764eef69eb69916017b	includes/templates/default.catalog/views/box_manufacturer_links.inc.php
 82619ca97d96cbda06fc5d81e9284eae	includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php
-e7b17126712030356c37103f1aacbc8a	includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php
+af3cca1e93d18d1f86fb07a5209405d0	includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php
 5beab507e4858940defd268e775e5ac7	includes/templates/default.catalog/views/box_popular_products.inc.php
-4aa99b7cb299dbb05cecf9ec1da87b78	includes/templates/default.catalog/views/box_product.inc.php
+fcae0d24d9eb85d10310de6b610c91cb	includes/templates/default.catalog/views/box_product.inc.php
 3f23b0f2a5daf1827fc9162188df91fe	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 c2eda4079a017eb4a442f623cbad92be	includes/templates/default.catalog/views/box_region.inc.php
 9fe421af787539ad7333176ebaf881bb	includes/templates/default.catalog/views/box_similar_products.inc.php
@@ -820,7 +820,7 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 a14a70917b41ba9127d14a2fe1473858	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 315222bb4001f1d6f94b92d05cf6ba6e	install/index.php
-e201c74576211236612b16285047b5b0	install/install.php
+662b46e104477805d27722756795c6aa	install/install.php
 c02da8eb41654196e080f517416f568b	install/structure.sql
 e2bf096d77d5a145e80c7eba4600e65c	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
@@ -953,7 +953,7 @@ f92fffe3a4007dfd714771240d238d45	pages/manufacturer.inc.php
 a8fb7c25d6e858807b6ecc1cebb108a7	pages/order_success.inc.php
 fbdb8ba238778e576b8d78e4c9a8194f	pages/printable_order_copy.inc.php
 2daadd52e80308e417b8d5f50c60f05f	pages/printable_packing_slip.inc.php
-7fedabde93f654b8fce58d0e0b039426	pages/product.inc.php
+6590eaa11f0e8069a87af65eb63e413a	pages/product.inc.php
 d2cab8a8138dc31836a7d4e5800f80fb	pages/push_jobs.inc.php
 8a996fd161c1d7d67f9838aed031e7b1	pages/regional_settings.inc.php
 a926a4c2e39d60c7848cfed67d266ec0	pages/reset_password.inc.php
