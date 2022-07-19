@@ -198,38 +198,38 @@
       }
     }
 
-    public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
+    public static function input($input, $allowable_tags=false, $trim=true, $link='default') {
 
-      if (empty($string)) return '';
-
-      if (in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
-        return $string;
+      if (is_array($input)) {
+        foreach (array_keys($input) as $key) {
+          $input[$key] = self::input($input[$key], $allowable_tags, $trim, $link);
+        }
+        return $input;
       }
 
-      if (is_array($string)) {
-        foreach (array_keys($string) as $key) {
-          $string[$key] = self::input($string[$key], $allowable_tags, $trim, $link);
-        }
-        return $string;
+      if (empty($input)) return '';
+
+      if (in_array(gettype($input), ['null', 'boolean', 'double', 'integer', 'float'])) {
+        return $input;
       }
 
       if ($allowable_tags !== true) {
         if ($allowable_tags != '') {
-          $string = strip_tags($string, $allowable_tags);
+          $input = strip_tags($input, $allowable_tags);
         } else {
-          $string = strip_tags($string);
+          $input = strip_tags($input);
         }
       }
 
       if ($trim === true) {
-        $string = trim($string);
+        $input = trim($input);
       } else if ($trim != '') {
-        $string = trim($string, $trim);
+        $input = trim($input, $trim);
       }
 
       if (!isset(self::$_links[$link])) self::connect($link);
 
-      return mysqli_real_escape_string(self::$_links[$link], $string);
+      return mysqli_real_escape_string(self::$_links[$link], $input);
     }
   }
 

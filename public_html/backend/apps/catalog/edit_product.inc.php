@@ -13,8 +13,6 @@
   if (!$_POST) {
     $_POST = $product->data;
 
-    $_POST['keywords'] = implode(',', $_POST['keywords']);
-
     if (empty($product->data['id']) && isset($_GET['category_id'])) {
       $_POST['categories'][] = $_GET['category_id'];
     }
@@ -47,8 +45,6 @@
       if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
       if (empty($_POST['stock_options'])) $_POST['stock_options'] = [];
       if (empty($_POST['autofill_technical_data'])) $_POST['autofill_technical_data'] = '';
-
-      $_POST['keywords'] = preg_split('#\s*,\s*#', $_POST['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
       $fields = [
         'code',

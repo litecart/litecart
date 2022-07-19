@@ -87,23 +87,29 @@
 
   li a, li .nav-item {
     margin: 1px 0;
-    background: #f3f3f3;
+    background: var(--pills-background-color);
     padding-top: ~"calc(var(--gutter-size)/2)";
     padding-bottom: ~"calc(var(--gutter-size)/2)";
     border-radius: var(--border-radius);
     transition: all 125ms linear;
-    &:hover:not(.nav-item) {
-      background: darken(#f3f3f3, 5%);
+    &:hover {
+      filter: brightness(95%);
     }
   }
 
   li.active > a, li.active > .nav-item {
     background: var(--navigation-background-color-active);
-    color: #fff;
+    color: var(--pills-text-color);
   }
 
   li + li > a, li + li > .nav-item {
     margin-inline-start: 2px;
+  }
+}
+
+html.dark-mode {
+  .nav-pills li a:hover, li .nav-item:hover {
+    filter: brightness(110%);
   }
 }
 

@@ -10,6 +10,9 @@ body {
   background: url({{template_path}}images/background.svg);
   background-size: cover;
 }
+html.dark-mode body {
+  background: #1a2133;
+}
 
 .loader-wrapper {
   display: none;

@@ -46,14 +46,11 @@
 
     public function save() {
 
-      if (!empty($this->data['id'])) {
-        $banners_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."banners
-          where id = '". (int)$this->data['id'] ."'
-          limit 1;"
-        );
-        $banner = database::fetch($banners_query);
-      }
+      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+      $this->data['keywords'] = array_map('trim', $this->data['keywords']);
+      $this->data['keywords'] = array_filter($this->data['keywords']);
+      $this->data['keywords'] = array_unique($this->data['keywords']);
+      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       if (empty($this->data['id'])) {
         database::query(
@@ -69,13 +66,13 @@
         set
           status = '". (int)$this->data['status'] ."',
           name = '". database::input($this->data['name']) ."',
-          languages = '". database::input(implode(',', database::input($this->data['languages']))) ."',
+          languages = '". implode(',', database::input($this->data['languages'])) ."',
           link = '". database::input($this->data['link']) ."',
           ". (!empty($this->data['image']) ? "image = '" . database::input($this->data['image']) . "'," : '') ."
           html = '". database::input($this->data['html'], true) ."',
-          keywords = '". database::input(implode(',', preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY))) ."',
-          date_valid_from = '". database::input($this->data['date_valid_from']) ."',
-          date_valid_to = '". database::input($this->data['date_valid_to']) ."',
+          keywords = '". database::input($this->data['keywords']) ."',
+          date_valid_from = ". (!empty($this->data['date_valid_from']) ? "'". database::input($this->data['date_valid_from']) ."'" : "null") .",
+          date_valid_to = ". (!empty($this->data['date_valid_to']) ? "'". database::input($this->data['date_valid_to']) ."'" : "null") .",
           date_updated = '". date('Y-m-d H:i:s') ."'
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
