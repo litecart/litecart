@@ -407,17 +407,23 @@
 
         default:
 
-          $row = database::query(
+          $result = database::query(
             "select * from ". DB_TABLE_PREFIX ."products
             where id = ". (int)$this->_data['id'] ."
             limit 1;"
-          )->fetch();
+          );
 
-          foreach ($row as $key => $value) {
-            $this->_data[$key] = $value;
+          if ($result->num_rows) {
+            $this->_data = $result->fetch();
+          } else {
+            $this->_data = array_fill_keys($result->fields(), null);
           }
 
-          $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+          if (!empty($this->_data['keywords'])){
+            $this->_data['keywords'] = preg_split('#\s*,\s*#', $this->_data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+          } else {
+            $this->_data['keywords'] = [];
+          }
 
           break;
       }
