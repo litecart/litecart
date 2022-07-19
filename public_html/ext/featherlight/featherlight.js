@@ -133,7 +133,7 @@
 						'<div class="'+self.namespace+'-inner">'+self.loading+'</div>',
 					'</div>',
 				'</div>'
-			].join());
+			].join(''));
 
 			/* close when click on backdrop/anywhere/null or closebox */
 			self.$instance.on('click.'+self.namespace, function(event) {
