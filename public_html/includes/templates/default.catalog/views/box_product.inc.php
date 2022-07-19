@@ -197,21 +197,17 @@
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
-      list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
+      list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
          . '  </tr>' . PHP_EOL;
-    } else if (trim($line) != '') {
-      echo '  <thead>' . PHP_EOL
-         . '    <tr>' . PHP_EOL
-         . '      <th colspan="2">'. $line .'</th>' . PHP_EOL
-         . '    </tr>' . PHP_EOL
-         . '  </thead>' . PHP_EOL
-         . '  <tbody>' . PHP_EOL;
+    } else if (trim($line)) {
+      echo '  <tr>' . PHP_EOL
+         . '    <th colspan="2" class="text-start">'. $line .'</th>' . PHP_EOL
+         . '  </tr>' . PHP_EOL;
     } else {
-      echo ' </tbody>' . PHP_EOL
-         . '</table>' . PHP_EOL
+      echo '</table>' . PHP_EOL
          . '<table class="table table-striped table-hover">' . PHP_EOL;
     }
   }
