@@ -200,8 +200,8 @@
       }
 
     // Set store country
-      if (empty(self::$data['country_code']) && in_array(settings::get('site_country_code'), $countries)) {
-        self::$data['country_code'] = settings::get('site_country_code');
+      if (empty(self::$data['country_code']) && in_array(settings::get('store_country_code'), $countries)) {
+        self::$data['country_code'] = settings::get('store_country_code');
       }
 
     // Set first country in list
@@ -222,8 +222,8 @@
       }
 
     // Set store zone
-      if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('site_country_code')) {
-        self::$data['zone_code'] = settings::get('site_zone_code');
+      if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('store_country_code')) {
+        self::$data['zone_code'] = settings::get('store_zone_code');
       }
 
     // Unset zone if not in country

@@ -357,7 +357,7 @@
                   <?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
                 </td>
                 <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?><br />
-                  <?php echo currency::format(fallback($orders['total_sales'], 0), false, settings::get('site_currency_code')); ?>
+                  <?php echo currency::format(fallback($orders['total_sales'], 0), false, settings::get('store_currency_code')); ?>
                 </td>
               </tr>
             </tbody>

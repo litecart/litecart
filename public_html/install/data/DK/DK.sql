@@ -10,7 +10,7 @@ ALTER TABLE `lc_products_prices` ADD `DKK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_campaigns` ADD `DKK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `value` = 'DKK' WHERE `key` in ('site_currency_code', 'default_currency_code');
+UPDATE `lc_settings` SET `value` = 'DKK' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
 UPDATE `lc_currencies` SET `value` = 6.3511 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------

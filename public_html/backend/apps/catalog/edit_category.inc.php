@@ -297,7 +297,7 @@
 
 // Head Title & H1 Title
 
-  $('input[name="name[<?php echo settings::get('site_language_code'); ?>]"]').on('input', function(e){
+  $('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input', function(e){
     $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
   }).first().trigger('input');
 

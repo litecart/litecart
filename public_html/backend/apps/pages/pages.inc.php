@@ -72,7 +72,7 @@
 
   $dock_options = [
     '' => '-- '. language::translate('title_all', 'All') .' --',
-    'menu' => language::translate('title_site_menu', 'Site Menu'),
+    'menu' => language::translate('title_store_menu', 'Store Menu'),
     'information' => language::translate('title_information', 'Information'),
   ];
 ?>
@@ -105,7 +105,7 @@
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th class="main"><?php echo language::translate('title_title', 'Title'); ?></th>
-          <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
+          <th><?php echo language::translate('title_store_menu', 'Store Menu'); ?></th>
           <th><?php echo language::translate('title_information', 'Information'); ?></th>
           <th></th>
         </tr>

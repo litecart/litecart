@@ -206,7 +206,7 @@ END;
       list($name, $currency_code) = [$currency_code, $name];
     }
 
-    if ($currency_code == '') $currency_code = settings::get('site_currency_code');
+    if ($currency_code == '') $currency_code = settings::get('store_currency_code');
     if ($input === true) $input = form_reinsert_value($name);
 
   // Format and show an additional two decimals precision if needed
@@ -216,7 +216,7 @@ END;
       $input = rtrim($input, '.');
     }
 
-    if (empty($currency_code)) $currency_code = settings::get('site_currency_code');
+    if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
     return '<div class="input-group">' . PHP_EOL
          . '  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="number" step="any" name="'. functions::escape_html($name) .'" value="'. (($input != 0) ? $input : '') .'"'. (($parameters) ? ' '. $parameters : '') .' />' . PHP_EOL
@@ -418,7 +418,7 @@ END;
         from ". DB_TABLE_PRODUCTS ." p
         left join ". DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         left join (
-          select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('site_currency_code')) ."`) as price
+          select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
           from ". DB_TABLE_PREFIX ."products_prices
         ) pp on (pp.product_id = p.id)
         where p.id = ". (int)$value ."
@@ -467,7 +467,7 @@ END;
       list($name, $language_code) = [$language_code, $name];
     }
 
-    if (empty($language_code)) $language_code = settings::get('site_language_code');
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     if ($input === true) $input = form_reinsert_value($name);
 
@@ -479,7 +479,7 @@ END;
 
   function form_draw_regional_text_field($name, $language_code='', $input=true, $parameters='') {
 
-    if (empty($language_code)) $language_code = settings::get('site_language_code');
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-text" style="font-family: monospace;" title="'. functions::escape_html(language::$languages[$language_code]['name']) .'">'. functions::escape_html($language_code) .'</span>' . PHP_EOL
@@ -494,7 +494,7 @@ END;
       list($name, $language_code) = [$language_code, $name];
     }
 
-    if (empty($language_code)) $language_code = settings::get('site_language_code');
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-text" style="font-family: monospace;" title="'. functions::escape_html(language::$languages[$language_code]['name']) .'">'. functions::escape_html($language_code) .'</span>' . PHP_EOL
@@ -509,7 +509,7 @@ END;
       list($name, $language_code) = [$language_code, $name];
     }
 
-    if (empty($language_code)) $language_code = settings::get('site_language_code');
+    if (empty($language_code)) $language_code = settings::get('store_language_code');
 
     return '<div class="input-group">' . PHP_EOL
          . '  <span class="input-group-text" style="font-family: monospace;" title="'. functions::escape_html(language::$languages[$language_code]['name']) .'">'. functions::escape_html($language_code) .'</span>' . PHP_EOL
@@ -995,7 +995,7 @@ END;
       case 'zone':
       case 'zones':
         $option = !empty($options) ? $options[0] : '';
-        //if (empty($option)) $option = settings::get('site_country_code');
+        //if (empty($option)) $option = settings::get('store_country_code');
         return form_draw_zones_list($name, $option, $input, $parameters);
 
       default:
@@ -1187,9 +1187,9 @@ END;
       case 'default_country_code':
         $input = settings::get('default_country_code');
         break;
-      case 'site_country_code':
-      case 'site_country_code':
-        $input = settings::get('site_country_code');
+      case 'store_country_code':
+      case 'store_country_code':
+        $input = settings::get('store_country_code');
         break;
     }
 
@@ -1436,7 +1436,7 @@ END;
 
     if ($input === true) {
       $input = form_reinsert_value($name);
-      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('site_length_unit');
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_length_unit');
     }
 
     $options = [];
@@ -1905,7 +1905,7 @@ END;
 
     if ($input === true) {
       $input = form_reinsert_value($name);
-      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('site_weight_unit');
+      if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('store_weight_unit');
     }
 
     $options = [];
@@ -1952,9 +1952,9 @@ END;
       if (isset($args[4])) $parameters = $args[3];
     }
 
-    if ($country_code == '') $country_code = settings::get('site_country_code');
+    if ($country_code == '') $country_code = settings::get('store_country_code');
     if ($country_code == 'default_country_code') $country_code = settings::get('default_country_code');
-    if ($country_code == 'site_country_code') $country_code = settings::get('site_country_code');
+    if ($country_code == 'store_country_code') $country_code = settings::get('store_country_code');
 
     $zones_query = database::query(
       "select * from ". DB_TABLE_PREFIX ."zones

@@ -48,7 +48,7 @@
 
       $this->data = array_merge($this->data, [
         'order_status_id' => settings::get('default_order_status_id'),
-        'weight_unit' => settings::get('site_weight_unit'),
+        'weight_unit' => settings::get('store_weight_unit'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],
@@ -163,9 +163,9 @@
       if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('site_language_code')), [
+          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('store_language_code')), [
             '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
-            '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('site_language_code'))->name,
+            '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
           ]),
           'hidden' => 1,
         ];
@@ -560,7 +560,7 @@
         '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $language_code),
         '%order_status' => !empty($order_status) ? $order_status->name : null,
-        '%store_name' => settings::get('site_name'),
+        '%store_name' => settings::get('store_name'),
         '%store_url' => document::ilink('', [], false, [], $language_code),
       ];
 
@@ -639,7 +639,7 @@
         '%total' => currency::format($this->data['total'], true, $this->data['currency_code'], $this->data['currency_value']),
         '%order_copy_url' => document::ilink('order', ['order_no' => $this->data['no'], 'public_key' => $this->data['public_key']], false, [], $this->data['language_code']),
         '%order_status' => $order_status->name,
-        '%store_name' => settings::get('site_name'),
+        '%store_name' => settings::get('store_name'),
         '%store_url' => document::ilink('', [], false, [], $this->data['language_code']),
       ];
 

@@ -301,35 +301,20 @@ UPDATE `lc_orders` SET `no` = id;
 -- --------------------------------------------------------
 UPDATE `lc_pages` SET `dock` = REPLACE('customer_service', 'information');
 -- --------------------------------------------------------
-UPDATE `lc_settings`
-SET `key` = REGEXP_REPLACE(`key`, '^store_', 'site_'),
-  title = REPLACE(title, 'Store', 'Site'),
-  description = REPLACE(description, 'store', 'site')
-WHERE `key` REGEXP '^store_';
--- --------------------------------------------------------
-UPDATE `lc_settings_groups`
-SET `key` = 'site_info',
-  name = 'Site Info',
-  description = 'Site information'
-WHERE `key` = 'store_info'
-LIMIT 1;
--- --------------------------------------------------------
-UPDATE `lc_settings` SET `group_key` = 'site_info' WHERE `group_key` = 'store_info';
--- --------------------------------------------------------
 UPDATE `lc_settings` SET `value` = '0' WHERE `key` = 'cache_clear_thumbnails' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'template', title = 'Template', `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'site_template_catalog' LIMIT 1;
+UPDATE `lc_settings` SET `key` = 'template', title = 'Template', `value` = REGEXP_REPLACE(`value`, '\.catalog$', '') WHERE `key` = 'store_template_catalog' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'site_template_catalog_settings';
+UPDATE `lc_settings` SET `key` = 'template_settings', title = 'Template Settings' WHERE `key` = 'store_template_catalog_settings';
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'site_weight_unit',  `title` = 'Site Weight Unit', `description` = 'The prefered weight unit.' WHERE `key` = 'site_length_class' LIMIT 1;
+UPDATE `lc_settings` SET `key` = 'store_weight_unit',  `title` = 'Store Weight Unit', `description` = 'The prefered weight unit.' WHERE `key` = 'store_length_class' LIMIT 1;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `key` = 'site_length_unit', `title` = 'Site Length Unit', `description` = 'The prefered length unit.' WHERE `key` = 'site_weight_class' LIMIT 1;
+UPDATE `lc_settings` SET `key` = 'store_length_unit', `title` = 'Store Length Unit', `description` = 'The prefered length unit.' WHERE `key` = 'store_weight_class' LIMIT 1;
 -- --------------------------------------------------------
 UPDATE `lc_settings`
 SET `required` = 1
 WHERE `key` IN (
-  'site_email', 'site_name', 'site_language_code','site_currency_code', 'site_weight_unit', 'site_length_unit', 'site_timezone',
+  'store_email', 'store_name', 'store_language_code','store_currency_code', 'store_weight_unit', 'store_length_unit', 'store_timezone',
   'default_language_code', 'default_currency_code', 'default_country_code', 'default_zone_code', 'template'
 );
 -- --------------------------------------------------------
@@ -408,7 +393,7 @@ INSERT INTO `lc_products_to_stock_items`
 (product_id, stock_item_id)
 SELECT product_id, id FROM `lc_stock_items`;
 -- --------------------------------------------------------
-DELETE FROM `lc_settings` WHERE `key` IN ('site_template_admin', 'site_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
+DELETE FROM `lc_settings` WHERE `key` IN ('store_template_admin', 'store_template_admin_settings', 'gzip_enabled', 'round_amounts', 'cache_system_breakpoint', 'jobs_interval', 'jobs_last_push');
 -- --------------------------------------------------------
 UPDATE `lc_settings`
 SET `key` = 'jobs_last_push',

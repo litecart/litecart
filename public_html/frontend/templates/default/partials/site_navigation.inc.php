@@ -4,7 +4,7 @@
     <div class="navbar-header">
       <div class="navbar-brand">
         <a href="<?php echo document::href_ilink(''); ?>">
-          <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
+          <img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
         </a>
       </div>
 

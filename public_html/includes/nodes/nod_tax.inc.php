@@ -46,13 +46,13 @@
             $customer = [
               'tax_id' => false,
               'company' => false,
-              'country_code' => settings::get('site_country_code'),
-              'zone_code' => settings::get('site_zone_code'),
+              'country_code' => settings::get('store_country_code'),
+              'zone_code' => settings::get('store_zone_code'),
               'city' => '',
               'shipping_address' => [
                 'company' => false,
-                'country_code' => settings::get('site_country_code'),
-                'zone_code' => settings::get('site_zone_code'),
+                'country_code' => settings::get('store_country_code'),
+                'zone_code' => settings::get('store_zone_code'),
                 'city' => '',
               ],
             ];

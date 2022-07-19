@@ -101,7 +101,7 @@
       if (empty($this->data['sku'])) {
         $i = 1;
         while (true) {
-          $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('site_language_code')] ? strtoupper(substr($this->data['name'][settings::get('site_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
+          $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('store_language_code')] ? strtoupper(substr($this->data['name'][settings::get('store_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
           if (!database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;")->num_rows) break;
         }
       }
@@ -235,7 +235,7 @@
       $image = new ent_image($file);
 
     // 456-12345_Fancy-title.jpg
-      $filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('site_language_code')) .'.'. $image->type();
+      $filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type();
 
       if (is_file('storage://images/' . $this->data['image'])) unlink('storage://images/' . $this->data['image']);
 

@@ -10,10 +10,10 @@
       $client_info = [
         'platform' => PLATFORM_NAME,
         'version' => PLATFORM_VERSION,
-        'name' => settings::get('site_name'),
-        'email' => settings::get('site_email'),
-        'language_code' => settings::get('site_language_code'),
-        'country_code' => settings::get('site_country_code'),
+        'name' => settings::get('store_name'),
+        'email' => settings::get('store_email'),
+        'language_code' => settings::get('store_language_code'),
+        'country_code' => settings::get('store_country_code'),
         'url' => document::ilink('f:'),
       ];
 

@@ -14,7 +14,7 @@
           throw new Exception(language::translate('error_cannot_disable_default_country', 'You cannot disable the default country'));
         }
 
-        if (!empty($_POST['disable']) && $country_code == settings::get('site_country_code')) {
+        if (!empty($_POST['disable']) && $country_code == settings::get('store_country_code')) {
           throw new Exception(language::translate('error_cannot_disable_store_country', 'You cannot disable the store country'));
         }
 

@@ -66,11 +66,11 @@
       if ($from == $to) return (float)$value;
 
       if (!isset(self::$units[$from])) {
-        $from = settings::get('site_length_unit');
+        $from = settings::get('store_length_unit');
       }
 
       if (!isset(self::$units[$to])) {
-        $to = settings::get('site_length_unit');
+        $to = settings::get('store_length_unit');
       }
 
       if ((float)self::$units[$from]['value'] == 0 || (float)self::$units[$to]['value'] == 0) return 0;

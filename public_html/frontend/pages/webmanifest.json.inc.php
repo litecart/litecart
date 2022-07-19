@@ -1,7 +1,7 @@
 <?php
 
   $manifest = [
-    'name' => settings::get('site_name'),
+    'name' => settings::get('store_name'),
     'start_url' => document::ilink(''),
     'display' => 'standalone',
     'background_color' => '#E9E9EE',

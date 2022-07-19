@@ -32,7 +32,7 @@
       self::$snippets['charset'] = mb_http_output();
       self::$snippets['home_path'] = WS_DIR_APP;
       self::$snippets['template_path'] = WS_DIR_TEMPLATE;
-      self::$snippets['title'] = [settings::get('site_name')];
+      self::$snippets['title'] = [settings::get('store_name')];
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_STORAGE . 'images/favicons/favicon.ico">';
       self::$snippets['head_tags']['webmanifest'] = '<link rel="manifest" href="'. document::href_ilink('webmanifest.json') .'" />';
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP .'assets/fontawesome/font-awesome.min.css') .'" />';

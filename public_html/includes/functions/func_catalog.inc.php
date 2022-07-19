@@ -273,7 +273,7 @@
 
     $currencies = currency::$currencies;
     uasort($currencies, function($a, $b){
-      if ($a['code'] == settings::get('site_currency_code')) return -3;
+      if ($a['code'] == settings::get('store_currency_code')) return -3;
       if ($a['code'] == currency::$selected['code']) return -2;
     });
 

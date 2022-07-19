@@ -48,11 +48,11 @@
       if ($from == $to) return $value;
 
       if (!isset(self::$units[$from])) {
-        $from = settings::get('site_weight_unit');
+        $from = settings::get('store_weight_unit');
       }
 
       if (!isset(self::$units[$to])) {
-        $to = settings::get('site_weight_unit');
+        $to = settings::get('store_weight_unit');
       }
 
       if (self::$units[$from]['value'] == 0 || self::$units[$to]['value'] == 0) return 0;

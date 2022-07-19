@@ -48,7 +48,7 @@ table.items tbody tr:nth-child(11) {
   <header class="header">
     <div class="row">
       <div class="col-6">
-        <img class="logotype" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" />
+        <img class="logotype" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </div>
 
       <div class="col-6 text-end">
@@ -145,24 +145,24 @@ table.items tbody tr:nth-child(11) {
     <div class="row">
       <div class="col-3">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
-        <div class="value"><?php echo nl2br(settings::get('site_postal_address')); ?></div>
+        <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
       </div>
 
       <div class="col-3">
-        <?php if (settings::get('site_phone')) { ?>
+        <?php if (settings::get('store_phone')) { ?>
         <div class="label"><?php echo language::translate('title_phone_number', 'Phone Number'); ?></div>
-        <div class="value"><?php echo settings::get('site_phone'); ?></div>
+        <div class="value"><?php echo settings::get('store_phone'); ?></div>
         <?php } ?>
 
-        <?php if (settings::get('site_tax_id')) { ?>
+        <?php if (settings::get('store_tax_id')) { ?>
         <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
-        <div class="value"><?php echo settings::get('site_tax_id'); ?></div>
+        <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
         <?php } ?>
       </div>
 
       <div class="col-3">
         <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-        <div class="value"><?php echo settings::get('site_email'); ?></div>
+        <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
         <div class="value"><?php echo document::ilink(''); ?></div>

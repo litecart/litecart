@@ -20,18 +20,12 @@
       }
 
     // Set time zone
-      date_default_timezone_set(self::get('site_timezone'));
+      date_default_timezone_set(self::get('store_timezone'));
     }
 
     ######################################################################
 
     public static function get(string $key, $fallback=null) {
-
-      if (preg_match('#^store_#', $key)) {
-        $new_key = preg_replace('#^store_#', 'site_', $key);
-        trigger_error('Setting key '. $key .' is deprecated. Instead, use '. $new_key, E_USER_DEPRECATED);
-        $key = $new_key;
-      }
 
       if (isset(self::$_cache[$key])) return self::$_cache[$key];
 

@@ -58,7 +58,7 @@
         throw new Exception(language::translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
       }
 
-      if (empty($this->data['status']) && $this->data['code'] == settings::get('site_language_code')) {
+      if (empty($this->data['status']) && $this->data['code'] == settings::get('store_language_code')) {
         throw new Exception(language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
       }
 
@@ -176,7 +176,7 @@
         throw new Exception(language::translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
       }
 
-      if ($this->data['code'] == settings::get('site_language_code')) {
+      if ($this->data['code'] == settings::get('store_language_code')) {
         throw new Exception(language::translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
       }
 

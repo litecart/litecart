@@ -10,7 +10,7 @@ ALTER TABLE `lc_products_prices` ADD `SEK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_campaigns` ADD `SEK` DECIMAL(11,4) NOT NULL;
 -- --------------------------------------------------------
-UPDATE `lc_settings` SET `value` = 'SEK' WHERE `key` in ('site_currency_code', 'default_currency_code');
+UPDATE `lc_settings` SET `value` = 'SEK' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- --------------------------------------------------------
 UPDATE `lc_currencies` SET `value` = 9.76 WHERE `code` = 'USD' LIMIT 1;
 -- --------------------------------------------------------

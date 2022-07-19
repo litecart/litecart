@@ -72,7 +72,7 @@
           if (!empty($user['email'])) {
 
             $aliases = [
-              '%store_name' => settings::get('site_name'),
+              '%store_name' => settings::get('store_name'),
               '%store_link' => document::ilink(''),
               '%username' => $user['username'],
               '%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),

@@ -606,7 +606,7 @@ a27a4978bc144f338e6699d231ac98dd	frontend/templates/default/partials/site_footer
 d41d8cd98f00b204e9800998ecf8427e	frontend/templates/index.html
 754ed137fb04389c57c817ac6e2fc58d	includes/abstracts/abs_modules.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
-a7631151a013781deb4e2b0e399bda77	includes/app_footer.inc.php
+4e724f1daeff339288032ca0512d06c7	includes/app_footer.inc.php
 c80f759439b9dcde62327e93c6c5ebb4	includes/app_header.inc.php
 52b3e75cf87a64e7c653e75923fd035a	includes/autoloader.inc.php
 ff20528ed506d112aede286143389501	includes/clients/http_client.inc.php

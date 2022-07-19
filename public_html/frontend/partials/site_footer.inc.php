@@ -1,5 +1,5 @@
 <?php
-  $site_footer_cache_token = cache::token('site_footer', ['language', 'login', 'region']);
+  $site_footer_cache_token = cache::token('store_footer', ['language', 'login', 'region']);
   if (cache::capture($site_footer_cache_token)) {
 
     $site_footer = new ent_view(FS_DIR_TEMPLATE . 'partials/site_footer.inc.php');

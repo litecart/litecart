@@ -102,7 +102,7 @@
       customer::load($customer->data['id']);
 
       $aliases = [
-        '%store_name' => settings::get('site_name'),
+        '%store_name' => settings::get('store_name'),
         '%store_link' => document::ilink(''),
         '%customer_id' => $customer->data['id'],
         '%customer_firstname' => $customer->data['firstname'],

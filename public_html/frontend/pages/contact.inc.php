@@ -43,7 +43,7 @@
 
       $email = new ent_email();
       $email->set_sender($_POST['email'], $_POST['firstname'] .' '. $_POST['lastname'])
-            ->add_recipient(settings::get('site_email'), settings::get('site_name'))
+            ->add_recipient(settings::get('store_email'), settings::get('store_name'))
             ->set_subject($_POST['subject'])
             ->add_body($message);
 

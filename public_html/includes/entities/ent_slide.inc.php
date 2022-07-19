@@ -154,7 +154,7 @@
 
     // SVG
       if (preg_match('#^<svg#m', file_get_contents($file))) {
-        $filename = 'slides/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('site_language_code')) .'.svg';
+        $filename = 'slides/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.svg';
 
         if (file_exists('storage://images/' . $filename)) unlink('storage://images/' . $filename);
         copy($file, 'storage://images/' . $filename);
@@ -163,7 +163,7 @@
       } else {
         $image = new ent_image($file);
 
-        $filename = 'slides/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('site_language_code')) .'.'. $image->type;
+        $filename = 'slides/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name'], settings::get('store_language_code')) .'.'. $image->type;
 
         if (file_exists('storage://images/' . $filename)) unlink('storage://images/' . $filename);
         $image->write('storage://images/' . $filename);

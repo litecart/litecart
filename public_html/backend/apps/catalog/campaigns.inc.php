@@ -28,8 +28,8 @@
 // Table Rows, Total Number of Rows, Total Number of Pages
   $campaigns = database::query(
     "select pc.*, pi.name as product_name,
-      pc.`". database::input(settings::get('site_currency_code')) ."` as campaign_price,
-      pp.`". database::input(settings::get('site_currency_code')) ."` as product_price
+      pc.`". database::input(settings::get('store_currency_code')) ."` as campaign_price,
+      pp.`". database::input(settings::get('store_currency_code')) ."` as product_price
     from ". DB_TABLE_PREFIX ."products_campaigns pc
     left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = pc.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
     left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = pc.product_id)
@@ -69,7 +69,7 @@
           <td class="text-end"><?php echo (!empty($campaign['start_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['start_date'])) : ''; ?></td>
           <td class="text-end"><?php echo (!empty($campaign['end_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['end_date'])) : ''; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['product_name']; ?></a></td>
-          <td class="text-end"><?php echo currency::format($campaign['campaign_price'], false, settings::get('site_currency_code')); ?></td>
+          <td class="text-end"><?php echo currency::format($campaign['campaign_price'], false, settings::get('store_currency_code')); ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>

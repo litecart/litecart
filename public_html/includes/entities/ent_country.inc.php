@@ -63,7 +63,7 @@
 
     public function save() {
 
-      if (empty($this->data['status']) && $this->data['iso_code_2'] == settings::get('site_country_code')) {
+      if (empty($this->data['status']) && $this->data['iso_code_2'] == settings::get('store_country_code')) {
         throw new Exception(language::translate('error_cannot_disable_store_country', 'You must change the store country before disabling it.'));
       }
 
@@ -152,7 +152,7 @@
 
     public function delete() {
 
-      if ($this->data['code'] == settings::get('site_country_code')) {
+      if ($this->data['code'] == settings::get('store_country_code')) {
         throw new Exception(language::translate('error_cannot_delete_store_country', 'You must change the store country before it can be deleted.'));
       }
 

@@ -55,11 +55,11 @@
         </div>
 
         <div class="card-body">
-          <p class="address"><?php echo nl2br(settings::get('site_postal_address')); ?></p>
+          <p class="address"><?php echo nl2br(settings::get('store_postal_address')); ?></p>
 
-          <?php if (settings::get('site_phone')) { ?><p class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('site_phone'); ?>"><?php echo settings::get('site_phone'); ?></a></p><?php } ?>
+          <?php if (settings::get('store_phone')) { ?><p class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></p><?php } ?>
 
-          <p class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('site_email'); ?>"><?php echo settings::get('site_email'); ?></a></p>
+          <p class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
         </div>
 
       </article>

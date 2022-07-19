@@ -30,23 +30,23 @@
         <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
 
         <p class="address">
-          <?php echo nl2br(settings::get('site_postal_address')); ?>
+          <?php echo nl2br(settings::get('store_postal_address')); ?>
         </p>
 
-        <?php if (settings::get('site_phone')) { ?>
+        <?php if (settings::get('store_phone')) { ?>
         <p class="phone">
-          <?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('site_phone'); ?>"><?php echo settings::get('site_phone'); ?></a>
+          <?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
         <p>
         <?php } ?>
 
         <p class="email">
-          <?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('site_email'); ?>"><?php echo settings::get('site_email'); ?></a>
+          <?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
         </p>
       </section>
 
       <section class="col-12 col-sm-12 col-md-3 col-lg-6 text-center" style="align-self: center;">
         <div class="logotype">
-          <img class="responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('site_name'); ?>" title="<?php echo settings::get('site_name'); ?>" />
+          <img class="responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
         </div>
 
         <?php if ($modules) { ?>
@@ -73,6 +73,6 @@
 <section id="copyright">
   <div class="container notice">
     <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
-    Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('site_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
+    Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
   </div>
 </section>

@@ -54,7 +54,7 @@
 
     public function save() {
 
-      if (empty($this->data['status']) && $this->data['code'] == settings::get('site_currency_code')) {
+      if (empty($this->data['status']) && $this->data['code'] == settings::get('store_currency_code')) {
         throw new Exception(language::translate('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
       }
 
@@ -64,7 +64,7 @@
 
       if (!empty($this->previous['code'])) {
         if ($this->data['code'] != $this->previous['code']) {
-          if ($this->previous['code'] == settings::get('site_currency_code')) {
+          if ($this->previous['code'] == settings::get('store_currency_code')) {
             throw new Exception('Cannot rename the store currency.');
           }
         }
@@ -112,7 +112,7 @@
       if (!empty($this->previous['code'])) {
         if ($this->data['code'] != $this->previous['code']) {
 
-          if ($this->previous['code'] == settings::get('site_currency_code')) {
+          if ($this->previous['code'] == settings::get('store_currency_code')) {
             throw new Exception('Cannot rename the store currency.');
           }
 
@@ -161,7 +161,7 @@
 
     public function delete() {
 
-      if ($this->data['code'] == settings::get('site_currency_code')) {
+      if ($this->data['code'] == settings::get('store_currency_code')) {
         throw new Exception(language::translate('error_cannot_delete_store_currency', 'You must change the store currency before it can be deleted.'));
       }
 

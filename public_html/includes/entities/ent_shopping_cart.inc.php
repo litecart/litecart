@@ -48,7 +48,7 @@
 
       $this->data = array_merge($this->data, [
         'uid' => uniqid(),
-        'weight_unit' => settings::get('site_weight_unit'),
+        'weight_unit' => settings::get('store_weight_unit'),
         'currency_code' => currency::$selected['code'],
         'currency_value' => currency::$selected['value'],
         'language_code' => language::$selected['code'],

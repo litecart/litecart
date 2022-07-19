@@ -23,7 +23,7 @@
     "select p.id, p.code, p.sku, p.quantity, p.date_created, pi.name, pp.price from ". DB_TABLE_PREFIX ."products p
     left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input($_GET['language_code']) ."')
     left join (
-      select product_id, if(`". database::input($_GET['currency_code']) ."`, `". database::input($_GET['currency_code']) ."` * ". (float)$_GET['currency_value'] .", `". database::input(settings::get('site_currency_code')) ."`) as price
+      select product_id, if(`". database::input($_GET['currency_code']) ."`, `". database::input($_GET['currency_code']) ."` * ". (float)$_GET['currency_value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
       from ". DB_TABLE_PREFIX ."products_prices
     ) pp on (pp.product_id = p.id)
     ". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."

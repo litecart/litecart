@@ -107,11 +107,11 @@ form[name="filter_form"] li {
       <?php foreach ($rows as $row) { ?>
       <tr>
         <td><?php echo ucfirst(language::strftime('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
-        <td class="border-start text-end"><?php echo currency::format($row['total_subtotal'], false, settings::get('site_currency_code')); ?></td>
-        <td class="border-start text-end"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('site_currency_code')); ?></td>
-        <td class="border-start text-end"><?php echo currency::format($row['total_payment_fees'], false, settings::get('site_currency_code')); ?></td>
-        <td class="border-start text-end"><strong><?php echo currency::format($row['total_sales'], false, settings::get('site_currency_code')); ?></strong></td>
-        <td class="text-end"><?php echo currency::format($row['total_tax'], false, settings::get('site_currency_code')); ?></td>
+        <td class="border-start text-end"><?php echo currency::format($row['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
+        <td class="border-start text-end"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
+        <td class="border-start text-end"><?php echo currency::format($row['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
+        <td class="border-start text-end"><strong><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
+        <td class="text-end"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
       </tr>
       <?php } ?>
     </tbody>
@@ -120,11 +120,11 @@ form[name="filter_form"] li {
     <tfoot>
       <tr>
         <td class="text-end"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
-        <td class="border-start text-end"><?php echo currency::format($total['total_subtotal'], false, settings::get('site_currency_code')); ?></td>
-        <td class="border-start text-end"><?php echo currency::format($total['total_shipping_fees'], false, settings::get('site_currency_code')); ?></td>
-        <td class="border-start text-end"><?php echo currency::format($total['total_payment_fees'], false, settings::get('site_currency_code')); ?></td>
-        <td class="border-start text-end"><strong><?php echo currency::format($total['total_sales'], false, settings::get('site_currency_code')); ?></strong></td>
-        <td class="text-end"><?php echo currency::format($total['total_tax'], false, settings::get('site_currency_code')); ?></td>
+        <td class="border-start text-end"><?php echo currency::format($total['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
+        <td class="border-start text-end"><?php echo currency::format($total['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
+        <td class="border-start text-end"><?php echo currency::format($total['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>
+        <td class="border-start text-end"><strong><?php echo currency::format($total['total_sales'], false, settings::get('store_currency_code')); ?></strong></td>
+        <td class="text-end"><?php echo currency::format($total['total_tax'], false, settings::get('store_currency_code')); ?></td>
       </tr>
     </tfoot>
     <?php } ?>

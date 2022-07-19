@@ -142,7 +142,7 @@
     left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
 
     left join (
-      select product_id, `". database::input(settings::get('site_currency_code')) ."` as price
+      select product_id, `". database::input(settings::get('store_currency_code')) ."` as price
       from ". DB_TABLE_PREFIX ."products_prices
     ) pp on (pp.product_id = p.id)
 

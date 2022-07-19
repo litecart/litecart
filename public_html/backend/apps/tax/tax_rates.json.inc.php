@@ -14,23 +14,23 @@
       $_REQUEST['customer'] = [
         'tax_id' => isset($_REQUEST['customer']['tax_id']) ? $_REQUEST['customer']['tax_id'] : '',
         'company' => isset($_REQUEST['customer']['company']) ? $_REQUEST['customer']['company'] : '',
-        'country_code' => isset($_REQUEST['customer']['country_code']) ? $_REQUEST['customer']['country_code'] : settings::get('site_country_code'),
-        'zone_code' => isset($_REQUEST['customer']['zone_code']) ? $_REQUEST['customer']['zone_code'] : settings::get('site_zone_code'),
+        'country_code' => isset($_REQUEST['customer']['country_code']) ? $_REQUEST['customer']['country_code'] : settings::get('store_country_code'),
+        'zone_code' => isset($_REQUEST['customer']['zone_code']) ? $_REQUEST['customer']['zone_code'] : settings::get('store_zone_code'),
         'city' => isset($_REQUEST['customer']['city']) ? $_REQUEST['customer']['city'] : '',
         'shipping_address' => [
           'company' => isset($_REQUEST['customer']['shipping_address']['company']) ? $_REQUEST['customer']['shipping_address']['company'] : '',
-          'country_code' => isset($_REQUEST['customer']['shipping_address']['country_code']) ? $_REQUEST['customer']['shipping_address']['country_code'] : settings::get('site_country_code'),
-          'zone_code' => isset($_REQUEST['customer']['shipping_address']['zone_code']) ? $_REQUEST['customer']['shipping_address']['zone_code'] : settings::get('site_zone_code'),
+          'country_code' => isset($_REQUEST['customer']['shipping_address']['country_code']) ? $_REQUEST['customer']['shipping_address']['country_code'] : settings::get('store_country_code'),
+          'zone_code' => isset($_REQUEST['customer']['shipping_address']['zone_code']) ? $_REQUEST['customer']['shipping_address']['zone_code'] : settings::get('store_zone_code'),
           'city' => isset($_REQUEST['customer']['shipping_address']['city']) ? $_REQUEST['customer']['shipping_address']['city'] : '',
         ],
       ];
 
-      if (empty($_REQUEST['customer']['country_code'])) $_REQUEST['customer']['country_code'] = settings::get('site_country_code');
-      if (empty($_REQUEST['customer']['zone_code'])) $_REQUEST['customer']['zone_code'] = settings::get('site_zone_code');
+      if (empty($_REQUEST['customer']['country_code'])) $_REQUEST['customer']['country_code'] = settings::get('store_country_code');
+      if (empty($_REQUEST['customer']['zone_code'])) $_REQUEST['customer']['zone_code'] = settings::get('store_zone_code');
       if (!isset($_REQUEST['customer']['city'])) $_REQUEST['customer']['city'] = '';
 
-      if (empty($_REQUEST['customer']['shipping_address']['country_code'])) $_REQUEST['customer']['shipping_address']['country_code'] = settings::get('site_country_code');
-      if (empty($_REQUEST['customer']['shipping_address']['zone_code'])) $_REQUEST['customer']['shipping_address']['zone_code'] = settings::get('site_zone_code');
+      if (empty($_REQUEST['customer']['shipping_address']['country_code'])) $_REQUEST['customer']['shipping_address']['country_code'] = settings::get('store_country_code');
+      if (empty($_REQUEST['customer']['shipping_address']['zone_code'])) $_REQUEST['customer']['shipping_address']['zone_code'] = settings::get('store_zone_code');
       if (!isset($_REQUEST['customer']['shipping_address']['city'])) $_REQUEST['customer']['shipping_address']['city'] = '';
 
       $tax_rates_query = database::query(

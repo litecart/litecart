@@ -16,7 +16,7 @@
           throw new Exception(language::translate('error_cannot_disable_default_language', 'You cannot disable the default language'));
         }
 
-        if (!empty($_POST['disable']) && $language_code == settings::get('site_language_code')) {
+        if (!empty($_POST['disable']) && $language_code == settings::get('store_language_code')) {
           throw new Exception(language::translate('error_cannot_disable_store_language', 'You cannot disable the store language'));
         }
 
@@ -82,7 +82,7 @@
           <td><?php echo $language['code2']; ?></td>
           <td><?php echo $language['url_type']; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td class="text-center"><?php echo ($language['code'] == settings::get('site_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo $language['priority']; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>

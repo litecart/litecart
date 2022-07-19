@@ -96,11 +96,11 @@
 
       <div class="row">
         <div class="col-md-4">
-          <label><strong><?php echo settings::get('site_currency_code'); ?></strong></label>
-          <?php echo functions::form_draw_currency_field(settings::get('site_currency_code'), settings::get('site_currency_code'), true); ?>
+          <label><strong><?php echo settings::get('store_currency_code'); ?></strong></label>
+          <?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), settings::get('store_currency_code'), true); ?>
         </div>
         <?php foreach (array_keys(currency::$currencies) as $currency_code) { ?>
-        <?php if ($currency_code == settings::get('site_currency_code')) continue; ?>
+        <?php if ($currency_code == settings::get('store_currency_code')) continue; ?>
         <div class="col-md-4">
           <label><?php echo $currency_code; ?></label>
           <?php echo functions::form_draw_currency_field($currency_code, $currency_code, true); ?>
@@ -121,10 +121,10 @@
 <script>
   var currencies = <?php echo json_encode($currencies); ?>;
 
-  $('input[name="<?php echo settings::get('site_currency_code'); ?>"]').on('input', function(){
+  $('input[name="<?php echo settings::get('store_currency_code'); ?>"]').on('input', function(){
     var campaign_price = $(this).val();
     $.each(currencies, function(i,currency){
-      if (currency.code == '<?php echo settings::get('site_currency_code'); ?>') return;
+      if (currency.code == '<?php echo settings::get('store_currency_code'); ?>') return;
       var currency_campaign_price = parseFloat(Number(campaign_price / currency.value).toFixed(currency.decimals)) || '';
       $('input[name="'+ currency.code +'"]').attr('placeholder', currency_campaign_price);
     });

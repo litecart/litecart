@@ -66,7 +66,7 @@
 
         $aliases = [
           '%email' => $customer['email'],
-          '%store_name' => settings::get('site_name'),
+          '%store_name' => settings::get('store_name'),
           '%token' => $reset_token['token'],
           '%link' => document::ilink('reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
         ];

@@ -13,7 +13,7 @@
       $this->_language_codes = array_unique([
         $language_code,
         settings::get('default_language_code'),
-        settings::get('site_language_code'),
+        settings::get('store_language_code'),
       ]);
     }
 

@@ -244,7 +244,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_price', 'Price'); ?></label>
-                <?php echo functions::form_draw_currency_field('prices['.settings::get('site_currency_code').']', settings::get('site_currency_code'), true); ?>
+                <?php echo functions::form_draw_currency_field('prices['.settings::get('store_currency_code').']', settings::get('store_currency_code'), true); ?>
               </div>
 
               <div class="form-group">
@@ -396,7 +396,7 @@
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_recommended_price', 'Recommended Price'); ?> / MSRP</label>
-                <?php echo functions::form_draw_currency_field('recommended_price', settings::get('site_currency_code'), true); ?>
+                <?php echo functions::form_draw_currency_field('recommended_price', settings::get('store_currency_code'), true); ?>
               </div>
             </div>
 
@@ -569,10 +569,10 @@
                 <td><?php echo functions::form_draw_select_field('stock_options['.$key.'][price_operator]', ['+', '*', '%', '='], '+'); ?></td>
                 <td>
                   <div class="dropdown">
-                    <?php echo functions::form_draw_currency_field('stock_options['.$key.'][price]['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), true, 'style="width: 125px;"'); ?>
+                    <?php echo functions::form_draw_currency_field('stock_options['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
                     <ul class="dropdown-menu">
                       <?php foreach (currency::$currencies as $currency) { ?>
-                      <?php if ($currency['code'] == settings::get('site_currency_code')) continue; ?>
+                      <?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
                       <li><?php echo functions::form_draw_currency_field('stock_options['.$key.'][price]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?></li>
                       <?php } ?>
                     </ul>
@@ -625,7 +625,7 @@
 
 <script>
 // Initiate
-  $('input[name="name[<?php echo settings::get('site_language_code'); ?>]"]').on('input', function(e){
+  $('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input', function(e){
     $('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
   }).first().trigger('input');
 
@@ -828,8 +828,8 @@
   });
 
 // Prices
-  $('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').on('input', function() {
-    $('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').not(this).val($(this).val());
+  $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').on('input', function() {
+    $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').not(this).val($(this).val());
   });
 
   function get_tax_rate() {
@@ -900,16 +900,16 @@
 
 // Update price placeholders
   function update_currency_prices() {
-    var store_currency_code = '<?php echo settings::get('site_currency_code'); ?>',
+    var store_currency_code = '<?php echo settings::get('store_currency_code'); ?>',
         currencies = ['<?php echo implode("','", array_keys(currency::$currencies)); ?>'],
-        net_price = $('input[name^="prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val(),
-        gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val();
+        net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val(),
+        gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val();
 
-    if (!net_price) net_price = $('input[name^="prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').attr('placeholder');
-    if (!gross_price) gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').attr('placeholder');
+    if (!net_price) net_price = $('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
+    if (!gross_price) gross_price = $('input[name^="gross_prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').attr('placeholder');
 
     $.each(currencies, function(i,currency_code){
-      if (currency_code == '<?php echo settings::get('site_currency_code'); ?>') return;
+      if (currency_code == '<?php echo settings::get('store_currency_code'); ?>') return;
 
       var currency_decimals = get_currency_decimals(currency_code),
           currency_net_price = net_price / get_currency_value(currency_code);
@@ -943,20 +943,20 @@
     <?php } ?>
 
     <?php foreach (currency::$currencies as $currency) { ?>
-    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
     <?php } ?>
   });
 
-  $('#table-campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]', function() {
+  $('#table-campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
     var parent = $(this).closest('tr');
-    var percentage = ($('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('site_currency_code'); ?>]"]').val() * 100;
+    var percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
     percentage = percentage.toFixed(2);
     $(parent).find('input[name$="[percentage]"]').val(percentage);
 
     <?php foreach (currency::$currencies as $currency) { ?>
     var value = 0;
-    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
+    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = value.toFixed(<?php echo $currency['decimals']; ?>);
     $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
     if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
@@ -964,7 +964,7 @@
     }
     <?php } ?>
   });
-  $('input[name^="campaigns"][name$="[<?php echo settings::get('site_currency_code'); ?>]"]').trigger('input');
+  $('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
 
   $('#table-campaigns').on('click', '.remove', function(e) {
     e.preventDefault();
@@ -984,12 +984,12 @@
                + '  <td>- %<br />'
                + '    <?php echo functions::escape_js(functions::form_draw_decimal_field('campaigns[new_campaign_i][percentage]', '', 2, 'min="0"')); ?>'
                + '  </td>'
-               + '  <td><?php echo functions::escape_js(settings::get('site_currency_code')); ?><br />'
-               + '    <?php echo functions::escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), '')); ?>'
+               + '  <td><?php echo functions::escape_js(settings::get('store_currency_code')); ?><br />'
+               + '    <?php echo functions::escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '')); ?>'
                + '  </td>'
 <?php
   foreach (array_keys(currency::$currencies) as $currency_code) {
-    if ($currency_code == settings::get('site_currency_code')) continue;
+    if ($currency_code == settings::get('store_currency_code')) continue;
 ?>
                + '  <td><?php echo functions::escape_js($currency_code); ?><br />'
                + '    <?php echo functions::escape_js(functions::form_draw_currency_field('campaigns[new_campaign_i]['. $currency_code .']', $currency_code, '')); ?>'
@@ -1121,10 +1121,10 @@
                + '  <td><?php echo functions::escape_js(functions::form_draw_select_field('stock_options[new_stock_item_i][price_operator]', ['+', '*', '%', '='], '+')); ?></td>'
                + '  <td>'
                + '    <div class="dropdown">'
-               + '      <?php echo functions::escape_js(functions::form_draw_currency_field('stock_options[new_stock_item_i][price]['. settings::get('site_currency_code') .']', settings::get('site_currency_code'), '', 'style="width: 125px;"')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_draw_currency_field('stock_options[new_stock_item_i][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>'
                + '      <ul class="dropdown-menu">'
                <?php foreach (currency::$currencies as $currency) { ?>
-               <?php if ($currency['code'] == settings::get('site_currency_code')) continue; ?>
+               <?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
                + '        <li><?php echo functions::escape_js(functions::form_draw_currency_field('stock_options[new_stock_item_i][price]['. $currency['code'] .']', $currency['code'], '', 'style="width: 125px;"')); ?></li>'
                <?php } ?>
                + '      </ul>'

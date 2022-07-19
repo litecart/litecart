@@ -14,7 +14,7 @@
 
     try {
 
-      if (empty($_POST['name'][settings::get('site_language_code')])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
+      if (empty($_POST['name'][settings::get('store_language_code')])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
       if (empty($_POST['sku'])) throw new Exception(language::translate('error_missing_sku', 'You must provide SKU'));
 
       if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) {

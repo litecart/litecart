@@ -37,7 +37,7 @@
         throw new Exception(language::translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
       }
 
-      if (empty($_POST['set_store']) && isset($language->data['code']) && $language->data['code'] == settings::get('site_language_code') && $language->data['code'] != $_POST['code']) {
+      if (empty($_POST['set_store']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code') && $language->data['code'] != $_POST['code']) {
         throw new Exception(language::translate('error_cannot_rename_store_language', 'You must change the store language before renaming it.'));
       }
 
@@ -45,7 +45,7 @@
         throw new Exception(language::translate('error_cannot_set_disabled_default_language', 'You cannot set a disabled language as default language.'));
       }
 
-      if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('site_language_code')) {
+      if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code')) {
         throw new Exception(language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
       }
 
@@ -100,7 +100,7 @@
       }
 
       if (!empty($_POST['set_store'])) {
-        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'site_language_code' limit 1;");
+        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_language_code' limit 1;");
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -327,7 +327,7 @@
       <div class="row">
         <div class="form-group col-md-6">
           <?php echo functions::form_draw_checkbox('set_default', ['1', language::translate('description_set_as_default_language', 'Set as default language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?>
-          <?php echo functions::form_draw_checkbox('set_store', ['1', language::translate('description_set_as_store_language', 'Set as store language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('site_language_code')) ? '1' : true); ?></label>
+          <?php echo functions::form_draw_checkbox('set_store', ['1', language::translate('description_set_as_store_language', 'Set as store language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true); ?></label>
         </div>
       </div>
 

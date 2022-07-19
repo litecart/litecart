@@ -95,8 +95,8 @@
       select product_id,
         case
           when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-          when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-          else `". database::input(settings::get('site_currency_code')) ."`
+          when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('store_currency_code')])))) ."
+          else `". database::input(settings::get('store_currency_code')) ."`
         end
       as price
       from ". DB_TABLE_PREFIX ."products_prices
@@ -106,8 +106,8 @@
       select product_id, min(
         case
           when `". database::input(currency::$selected['code']) ."` != 0 then `". database::input(currency::$selected['code']) ."` * ". currency::$selected['value'] ."
-          when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('site_currency_code')])))) ."
-          else `". database::input(settings::get('site_currency_code')) ."`
+          when ". implode(" when ", array_map(function($currency){ return "`". database::input($currency['code']) ."` != 0 then `". database::input($currency['code']) ."` * ". $currency['value'] . PHP_EOL; }, array_diff_key(currency::$currencies, array_flip([currency::$selected['code'], settings::get('store_currency_code')])))) ."
+          else `". database::input(settings::get('store_currency_code')) ."`
         end
       ) as campaign_price
       from ". DB_TABLE_PREFIX ."products_campaigns

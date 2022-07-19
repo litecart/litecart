@@ -2,7 +2,7 @@
   document::$layout = 'ajax';
 
   if (empty($_GET['product_id'])) return;
-  if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('site_currency_code');
+  if (empty($_GET['currency_code'])) $_GET['currency_code'] = settings::get('store_currency_code');
   if (empty($_GET['currency_value'])) $_GET['currency_value'] = currency::$currencies[$_GET['currency_code']]['value'];
 
   $product = reference::product($_GET['product_id'], $_GET['language_code'], $_GET['currency_code'], $_GET['customer']['id']);

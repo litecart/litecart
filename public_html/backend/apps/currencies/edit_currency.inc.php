@@ -24,7 +24,7 @@
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       if (empty($_POST['value'])) throw new Exception(language::translate('error_must_enter_value', 'You must enter a value'));
 
-      if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('site_currency_code')) && (float)$_POST['value'] != 1) {
+      if ((!empty($_POST['set_store']) || $_POST['code'] == settings::get('store_currency_code')) && (float)$_POST['value'] != 1) {
         throw new Exception(language::translate('error_store_currency_must_have_value_1', 'The store currency must always have the currency value 1.0.'));
       }
 
@@ -32,7 +32,7 @@
         throw new Exception(language::translate('error_cannot_rename_default_currency', 'You must change the default currency before renaming it.'));
       }
 
-      if (empty($_POST['set_store']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('site_currency_code') && $currency->data['code'] != $_POST['code']) {
+      if (empty($_POST['set_store']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('store_currency_code') && $currency->data['code'] != $_POST['code']) {
         throw new Exception(language::translate('error_cannot_rename_store_currency', 'You must change the store currency before renaming it.'));
       }
 
@@ -40,7 +40,7 @@
         throw new Exception(language::translate('error_cannot_set_disabled_default_currency', 'You cannot set a disabled currency as default currency.'));
       }
 
-      if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('site_currency_code')) {
+      if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($currency->data['code']) && $currency->data['code'] == settings::get('store_currency_code')) {
         throw new Exception(language::translate('error_cannot_set_disabled_store_currency', 'You cannot set a disabled currency as store currency.'));
       }
 
@@ -67,7 +67,7 @@
       }
 
       if (!empty($_POST['set_store'])) {
-        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'site_currency_code' limit 1;");
+        database::query("update ". DB_TABLE_PREFIX ."settings set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_currency_code' limit 1;");
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
@@ -95,7 +95,7 @@
     }
   }
 
-  $store_currency = reference::currency(settings::get('site_currency_code'));
+  $store_currency = reference::currency(settings::get('store_currency_code'));
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -173,7 +173,7 @@
 
         <div class="form-group col-md-6">
           <?php echo functions::form_draw_checkbox('set_default', ['1', language::translate('description_set_as_default_currency', 'Set as default currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?>
-          <?php echo functions::form_draw_checkbox('set_store', ['1', language::translate('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('site_currency_code')) ? '1' : true); ?>
+          <?php echo functions::form_draw_checkbox('set_store', ['1', language::translate('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?>
         </div>
       </div>
 
