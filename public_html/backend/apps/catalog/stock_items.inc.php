@@ -5,6 +5,25 @@
 
   breadcrumbs::add(language::translate('title_stock_items', 'Stock Items'));
 
+  if (isset($_POST['delete'])) {
+
+    try {
+      if (empty($_POST['stock_items'])) throw new Exception(language::translate('error_must_select_stock_items', 'You must select stock items'));
+
+      foreach ($_POST['stock_items'] as $stock_item_id) {
+        $stock_item = new ent_stock_item($stock_item_id);
+        $stock_item->delete();
+      }
+
+      notices::add('success', sprintf(language::translate('success_deleted_d_stock_items', 'Deleted %d stock_items'), count($_POST['stock_items'])));
+      header('Location: '. document::ilink());
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
+
 	if (!empty($_GET['query'])) {
 		$sql_where_query = [
 			"si.id = '". database::input($_GET['query']) ."'",
@@ -132,6 +151,33 @@
         </tr>
       </tfoot>
     </table>
+    <div class="card-body">
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
+        <ul class="list-inline">
+          <li>
+            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
+          </li>
+        </ul>
+      </fieldset>
+    </div>
 
   <?php echo functions::form_draw_form_end(); ?>
+
+  <?php if ($num_pages > 1) { ?>
+  <div class="card-footer">
+    <?php echo functions::draw_pagination($num_pages); ?>
+  </div>
+  <?php } ?>
 </div>
+
+<script>
+$('input[name="category_id"]').change(function(e){
+  $(this).closest('form').submit();
+});
+
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+</script>

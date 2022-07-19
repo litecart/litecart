@@ -1,9 +1,5 @@
 @import "framework/media.less";
 
-body {
-  background: #eee;
-}
-
 .loader-wrapper {
   position: fixed;
   top: 50%;
@@ -19,6 +15,7 @@ body {
   padding: 0;
   > form {
     > .row {
+      background: #eeeef3;
       height: 100vh;
       grid-gap: 0;
       margin-bottom: 0;
@@ -157,7 +154,10 @@ body {
 
   input[name$="_option[id]"] {
     &:checked + .option {
-      border-color: orange;
+      background: #fff5e1;
+      .thumbnail {
+        border-color: #ffaa00;
+      }
       .name {
         font-weight: bold;
       }
@@ -170,7 +170,7 @@ body {
         top: 15px;
         right: -25px;
         transform: rotate(45deg);
-        background: orange;
+        background: #ffaa00;
         width: 100px;
         font-size: .8em;
         text-align: center;

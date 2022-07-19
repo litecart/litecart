@@ -29,7 +29,9 @@
       if (empty($_POST['name'][language::$selected['code']])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       if (empty($_POST['categories'])) throw new Exception(language::translate('error_must_select_category', 'You must select a category'));
 
-      if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) {
+        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      }
 
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
@@ -94,8 +96,15 @@
 
       $product->save();
 
+      if (!empty($_GET['redirect_url'])) {
+        $_GET['redirect_url'] = new ent_link($_GET['redirect_url']);
+        $_GET['redirect_url']->host = '';
+      } else {
+        document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]);
+      }
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]));
+      header('Location: '. $_GET['redirect_url']);
       exit;
 
     } catch (Exception $e) {
@@ -181,7 +190,7 @@
     <?php echo functions::form_draw_form_begin('product_form', 'post', false, true); ?>
 
       <div class="tab-content">
-        <div id="tab-general" class="tab-pane active">
+        <div id="tab-general" class="tab-pane active" style="max-width: 1200px;">
 
           <div class="row">
             <div class="col-md-4">
@@ -323,9 +332,9 @@
 
         </div>
 
-        <div id="tab-information" class="tab-pane">
+        <div id="tab-information" class="tab-pane" style="max-width: 1200px;">
 
-          <ul class="nav nav-tabs">
+          <ul class="nav nav-tabs" style="padding-top:0; margin-top: -1em;">
             <?php foreach (language::$languages as $language) { ?>
               <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
             <?php } ?>
@@ -599,8 +608,8 @@
             <tfoot>
               <tr>
                 <td colspan="11">
-                  <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_stock_item', 'Add Stock Item'); ?></a>
                   <a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_create_new_stock_item', 'Create New Stock Item'); ?></a>
+                  <a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #6c6;"'); ?> <?php echo language::translate('title_add_existing_stock_item', 'Add Existing Stock Item'); ?></a>
                 </td>
               </tr>
             </tfoot>
@@ -741,7 +750,13 @@
 // Attributes
 
   $('select[name="new_attribute[group_id]"]').change(function(){
-    $('body').css('cursor', 'wait');
+
+    if ($(this).val() == '') {
+      $('select[name="new_attribute[value_id]"').html('').prop('disabled', true);
+      $(':input[name="new_attribute[custom_value]"]').prop('disabled', true);
+      return;
+    }
+
     $.ajax({
       url: '<?php echo document::ilink(__APP__.'/attribute_values.json'); ?>?group_id=' + $(this).val(),
       type: 'get',
@@ -753,21 +768,20 @@
       },
       success: function(data) {
         $('select[name="new_attribute[value_id]"').html('');
-        if ($('select[name="new_attribute[value_id]"').is(':disabled')) $('select[name="attribute[value_id]"]').prop('disabled', false);
         if (data) {
+          $('select[name="new_attribute[value_id]"]').prop('disabled', false);
+          $(':input[name="new_attribute[custom_value]"]').prop('disabled', false);
           $('select[name="new_attribute[value_id]"').append('<option value="0">-- <?php echo language::translate('title_select', 'Select'); ?> --</option>');
           $.each(data, function(i, zone) {
             $('select[name="new_attribute[value_id]"').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
         } else {
           $('select[name="new_attribute[value_id]"').prop('disabled', true);
+          $(':input[name="new_attribute[custom_value]"]').prop('disabled', false);
         }
       },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
     });
-  });
+  }).trigger('change');
 
   var new_attribute_i = 0;
   $('#tab-attributes button[name="add"]').click(function(){
@@ -1167,8 +1181,8 @@
             var value = stock_item.name;
           }
           break;
-        case 'quantity_adjust':
-          return;
+        case 'quantity_adjustment':
+          break;
         default:
           var value = stock_item[key];
           break;
@@ -1178,7 +1192,9 @@
       $output.find('.'+ key, output).text(value);
     });
 
-    if (!$('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {
+    if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {
+      $('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').replaceWith($output);
+    } else {
       $('#stock-options tbody').append($output);
     }
   }

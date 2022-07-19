@@ -142,9 +142,6 @@
   </div>
 
   <?php echo functions::form_draw_form_end(); ?>
-
-  <div class="card-footer">
-  </div>
 </div>
 
 

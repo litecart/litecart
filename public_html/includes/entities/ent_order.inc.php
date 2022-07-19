@@ -275,12 +275,15 @@
       );
 
     // Restock previous items
-      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->is_sale)) {
+      if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'])->stock_action == 'withdraw') {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['stock_item_id'])) continue;
-          $stock_item = new ent_stock_item($previous_order_item['stock_item_id']);
-          $stock_item->data['quantity_adjustment'] = $previous_order_item['quantity'];
-          $stock_item->save();
+          database::query(
+            "update ". DB_TABLE_PREFIX ."stock_items
+            set quantity = quantity + ". (float)$previous_order_item['quantity'] ."
+            where id = ". (int)$previous_order_item['stock_item_id'] ."
+            limit 1;"
+          );
         }
       }
 
@@ -315,13 +318,6 @@
           }
         }
 
-      // Withdraw stock
-        if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['stock_item_id'])) {
-          $stock_item = new ent_stock_item($item['stock_item_id']);
-          $stock_item->data['quantity_adjustment'] = -$item['quantity'];
-          $stock_item->save();
-        }
-
         database::query(
           "update ". DB_TABLE_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",
@@ -350,6 +346,18 @@
           and order_id = ". (int)$this->data['id'] ."
           limit 1;"
         );
+
+      // Withdraw stock
+        if (!empty($this->data['order_status_id']) && reference::order_status($this->data['order_status_id'])->stock_action == 'withdraw') {
+          if (!empty($item['stock_item_id'])) {
+            database::query(
+              "update ". DB_TABLE_PREFIX ."stock_items
+              set quantity = quantity - ". (float)$item['quantity'] ."
+              where id = ". (int)$item['stock_item_id'] ."
+              limit 1;"
+            );
+          }
+        }
       };
 
     // Delete order total rows

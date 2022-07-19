@@ -235,9 +235,10 @@ table .thumbnail {
           <th></th>
           <th></th>
           <th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th></th>
-          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th style="min-width: 64px;"></th>
           <th><?php echo language::translate('title_code', 'Code'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_stock_options', 'Stock Options'); ?></th>
           <th class="text-end"><?php echo language::translate('title_created', 'Created'); ?></th>
           <th></th>
         </tr>
@@ -251,16 +252,17 @@ table .thumbnail {
           <td class="warning"><?php echo !empty($product['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($product['warning']) .'"') : ''; ?></td>
           <td class="text-center"><?php echo $product['id']; ?></td>
           <td><img class="thumbnail" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . ($product['image'] ? $product['image'] : 'no_image.png'), 64, 64, 'FIT_USE_WHITESPACING')); ?>" alt="" /></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
           <td><?php echo $product['code']; ?></td>
+          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ? $product['name'] : '('. language::translate('title_untitled', 'Untitled') .')'; ?></a></td>
+          <td class="text-center"><?php echo $product['num_stock_items']; ?></td>
           <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($product['date_created'])); ?></td>
-          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+          <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="9"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="10"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo language::number_format($num_rows); ?></td>
         </tr>
       </tfoot>
     </table>

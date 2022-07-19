@@ -48,6 +48,7 @@
           $setting['key'] = rtrim($setting['key'], '[]');
           $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
+
         $object->status = (isset($object->settings['status']) && preg_match('#^(1|active|enabled|on|true|yes)$#i', $object->settings['status'])) ? 1 : 0;
         $object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
 

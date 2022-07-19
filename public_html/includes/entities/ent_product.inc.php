@@ -341,28 +341,27 @@
       if (!empty($this->data['stock_options'])) {
 
         $i = 0;
-        foreach ($this->data['stock_options'] as $key => $stock_item) {
+        foreach ($this->data['stock_options'] as $key => $stock_option) {
 
-          if (empty($stock_item['id'])) {
+          if (empty($stock_option['id'])) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_to_stock_items
               (product_id, stock_item_id)
-              values (". (int)$this->data['id'] .", ". (int)$stock_item['stock_item_id'] .");"
+              values (". (int)$this->data['id'] .", ". (int)$stock_option['stock_item_id'] .");"
             );
-            $this->data['stock_options'][$key]['id'] = $stock_item['id'] = database::insert_id();
+            $this->data['stock_options'][$key]['id'] = $stock_option['id'] = database::insert_id();
           }
 
           database::query(
             "update ". DB_TABLE_PREFIX ."products_to_stock_items
             set priority = ". (int)$i++ ."
             where product_id = ". (int)$this->data['id'] ."
-            and id = ". (int)$stock_item['id'] ."
+            and id = ". (int)$stock_option['id'] ."
             limit 1;"
           );
 
-          $ent_stock_item = new ent_stock_item($stock_item['stock_item_id']);
-          $ent_stock_item->data['quantity_adjust'] = $stock_item['quantity_adjustment'];
-          $ent_stock_item->data['backordered'] = $stock_item['backordered'];
+          $ent_stock_item = new ent_stock_item($stock_option['stock_item_id']);
+          $ent_stock_item->data['quantity_adjustment'] = $stock_option['quantity_adjustment'];
           $ent_stock_item->save();
         }
       }
@@ -510,7 +509,7 @@
       $this->save();
 
       database::query(
-        "delete p, pi, pa, pp, pc, po, pov, p2si, ptc
+        "delete p, pi, pa, pp, pc, p2si, ptc
         from ". DB_TABLE_PREFIX ."products p
         left join ". DB_TABLE_PREFIX ."products_info pi on (pi.id = p.id)
         left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)

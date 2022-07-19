@@ -30,9 +30,7 @@
 
       $this->selected = [];
 
-      if (empty($this->_options)) return;
-
-      $options = array_slice($this->_options, -1)[0];
+      if (!$options = $this->options()) return;
 
       if (($key = array_search($id, array_combine(array_keys($options), array_column($options, 'id')))) === false) return;
       if (!empty($this->data['options'][$key]['error'])) return;
@@ -74,8 +72,6 @@
       if (!empty($this->_cache[$checksum]['options'])) {
         return $this->_cache[$checksum]['options'];
       }
-
-      $this->_options = [];
 
       foreach ($this->modules as $module) {
 

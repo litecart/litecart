@@ -21,7 +21,9 @@
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
 
-      if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."brands where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."brands where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) {
+        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      }
 
       $fields = [
         'status',
@@ -103,11 +105,6 @@
             <?php echo functions::form_draw_text_field('code', true); ?>
           </div>
 
-          <div class="form-group">
-            <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php echo functions::form_draw_text_field('name', true); ?>
-          </div>
-
           <div id="image">
             <?php if (!empty($brand->data['image'])) { ?>
             <div style="margin-bottom: 15px;">
@@ -131,6 +128,12 @@
         </div>
 
         <div class="col-md-6">
+
+          <div class="form-group">
+            <label><?php echo language::translate('title_name', 'Name'); ?></label>
+            <?php echo functions::form_draw_text_field('name', true); ?>
+          </div>
+
           <ul class="nav nav-tabs">
             <?php foreach (language::$languages as $language) { ?>
               <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>

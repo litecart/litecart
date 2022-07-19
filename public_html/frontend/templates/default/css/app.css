@@ -39,6 +39,7 @@ body main {
   font-size: 0.8em;
   background: #bcbccb;
   padding: 0.25em 0.5em;
+  text-transform: none;
 }
 #site-navigation .search {
   order: -1;
@@ -55,9 +56,6 @@ body main {
 #site-navigation .shopping-cart .badge,
 #site-navigation .shopping-cart .checkout {
   display: none;
-}
-#site-navigation .shopping-cart.filled {
-  background-color: var(--navigation-cart-background-color);
 }
 #site-navigation .shopping-cart.filled .badge {
   display: inline-block;

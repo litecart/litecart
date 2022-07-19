@@ -1,7 +1,4 @@
 /* Media Breakpoints */
-body {
-  background: #eee;
-}
 .loader-wrapper {
   position: fixed;
   top: 50%;
@@ -16,6 +13,7 @@ body {
   padding: 0;
 }
 #box-checkout > form > .row {
+  background: #eeeef3;
   height: 100vh;
   grid-gap: 0;
   margin-bottom: 0;
@@ -143,7 +141,11 @@ body {
 }
 #box-checkout-shipping input[name$="_option[id]"]:checked + .option,
 #box-checkout-payment input[name$="_option[id]"]:checked + .option {
-  border-color: orange;
+  background: #fff5e1;
+}
+#box-checkout-shipping input[name$="_option[id]"]:checked + .option .thumbnail,
+#box-checkout-payment input[name$="_option[id]"]:checked + .option .thumbnail {
+  border-color: #ffaa00;
 }
 #box-checkout-shipping input[name$="_option[id]"]:checked + .option .name,
 #box-checkout-payment input[name$="_option[id]"]:checked + .option .name {
@@ -160,7 +162,7 @@ body {
   top: 15px;
   right: -25px;
   transform: rotate(45deg);
-  background: orange;
+  background: #ffaa00;
   width: 100px;
   font-size: 0.8em;
   text-align: center;

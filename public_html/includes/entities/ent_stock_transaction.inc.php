@@ -32,7 +32,7 @@
 
     public function load($transaction_id) {
 
-      if (!preg_match('#^[0-9]+$#', $transaction_id)) throw new Exception('Invalid stock transaction (ID: '. $transaction_id .')');
+      if (!preg_match('#^(system|[0-9]+)$#', $transaction_id)) throw new Exception('Invalid stock transaction (ID: '. $transaction_id .')');
 
       $this->reset();
 
@@ -142,7 +142,6 @@
           where id = ". (int)$content['stock_item_id'] ."
           limit 1;"
         );
-
       }
 
       $this->previous = $this->data;

@@ -87,7 +87,7 @@
         "select product_id from ". DB_TABLE_PREFIX ."products_to_categories
         where category_id = ". (int)$this->data['id'] ."
         order by product_id;"
-      )->fetch_all();
+      )->fetch_all('product_id');
 
       $this->previous = $this->data;
     }
@@ -235,7 +235,7 @@
       $image = new ent_image($file);
 
       if (empty($filename)) {
-        $filename = 'categories/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type();
+        $filename = 'categories/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
       }
 
       if (is_file('storage://images/' . $filename)) {

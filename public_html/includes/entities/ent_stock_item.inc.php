@@ -97,15 +97,6 @@
 
     public function save() {
 
-     // Create sku if missing
-      if (empty($this->data['sku'])) {
-        $i = 1;
-        while (true) {
-          $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('store_language_code')] ? strtoupper(substr($this->data['name'][settings::get('store_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
-          if (!database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;")->num_rows) break;
-        }
-      }
-
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."stock_items
@@ -113,6 +104,15 @@
           values ('". database::input($this->data['sku']) ."', '". database::input($this->data['mpn']) ."', '". database::input($this->data['gtin']) ."', '". ($this->data['date_created'] = date('c')) ."');"
         );
         $this->data['id'] = database::insert_id();
+      }
+
+     // Create sku if missing
+      if (empty($this->data['sku'])) {
+        $i = 1;
+        while (true) {
+          $this->data['sku'] = $this->data['id'] .'-'. ($this->data['name'][settings::get('store_language_code')] ? strtoupper(substr($this->data['name'][settings::get('store_language_code')], 0, 4)) : 'UNKN') .'-'. $i++;
+          if (!database::query("select id from ". DB_TABLE_PREFIX ."stock_items where sku = '". database::input($this->data['sku']) ."' limit 1;")->num_rows) break;
+        }
       }
 
       database::query(
@@ -142,9 +142,8 @@
           and language_code = '". database::input($language_code) ."'
           limit 1;"
         );
-        $stock_item_info = database::fetch($stock_items_info_query);
 
-        if (empty($stock_item_info)) {
+        if (!$stock_item_info = database::fetch($stock_items_info_query)) {
           database::query(
             "insert into ". DB_TABLE_PREFIX ."stock_items_info
             (stock_item_id, language_code)
@@ -161,19 +160,20 @@
         );
       }
 
-    // If new total quantity is set
-      if ($this->data['quantity_adjustment'] == 0 && $this->data['quantity'] != $this->previous['quantity']) {
-        $this->data['quantity_adjustment'] = $this->data['quantity'] - $this->previous['quantity'];
-      }
-
     // If quantity adjustment is set
       if (!empty($this->data['quantity_adjustment']) && $this->data['quantity_adjustment'] != 0) {
 
         $stock_transaction = new ent_stock_transaction('system');
 
-        if (($key = array_search($this->data['id'], array_column($stock_transaction->data['contents'], 'stock_item_id'))) !== false) {
-          $stock_transaction->data['contents'][$key]['quantity_adjustment'] += $this->data['quantity_adjustment'];
-        } else {
+        foreach ($stock_transaction->data['contents'] as $key => $row) {
+          if ($row['stock_item_id'] == $this->data['id']) {
+            $stock_transaction->data['contents'][$key]['quantity_adjustment'] += $this->data['quantity_adjustment'];
+            $updated_existing = true;
+            break;
+          }
+        }
+
+        if (empty($updated_existing)) {
           $stock_transaction->data['contents'][] = [
             'stock_item_id' => $this->data['id'],
             'quantity_adjustment' => $this->data['quantity_adjustment'],

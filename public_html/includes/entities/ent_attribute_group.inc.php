@@ -90,13 +90,11 @@
           }
         }
 
-        $product_option_values_query = database::query(
-          "select id from ". DB_TABLE_PREFIX ."products_options_values
+        $value['in_use'] = database::query(
+          "select id from ". DB_TABLE_PREFIX ."products_attributes
           where value_id = ". (int)$value['id'] ."
           limit 1;"
-        );
-
-        $value['in_use'] = database::num_rows($product_option_values_query) ? true : false;
+        )->num_rows ? true : false;
 
         $this->data['values'][] = $value;
       }

@@ -130,12 +130,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
         <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
 
-        <?php if ($stock_options) { ?>
+        <?php if (count($stock_options) > 1) { ?>
         <div class="form-group">
           <label><?php echo language::translate('text_select_desired_option', 'Select desired option'); ?></label>
           <?php echo form_draw_product_stock_options_list('stock_item_id', $product_id, true); ?>
         </div>
+        <?php } else if (count($stock_options) == 1) { ?>
+        <?php echo functions::form_draw_hidden_field('stock_item_id', $stock_options[0]['stock_item_id']); ?>
         <?php } ?>
+
 
         <div class="price-wrapper">
           <?php if ($campaign_price) { ?>

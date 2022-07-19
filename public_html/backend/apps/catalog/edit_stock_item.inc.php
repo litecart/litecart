@@ -15,11 +15,6 @@
     try {
 
       if (empty($_POST['name'][settings::get('store_language_code')])) throw new Exception(language::translate('error_name_missing', 'You must provide a name'));
-      if (empty($_POST['sku'])) throw new Exception(language::translate('error_missing_sku', 'You must provide SKU'));
-
-      if (!empty($_POST['code']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and code = '". database::input($_POST['code']) ."' limit 1;")->num_rows) {
-        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
-      }
 
       if (!empty($_POST['sku']) && database::query("select id from ". DB_TABLE_PREFIX ."stock_items where id != ". (int)$stock_item->data['id'] ." and sku = '". database::input($_POST['sku']) ."' limit 1;")->num_rows) {
         throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
@@ -321,6 +316,15 @@
 </div>
 
 <script>
+  <?php if (empty($stock_item->data['id'])) { ?>
+  $('form[name="stock_item_form"] input[name^="name"]').each(function() {
+    if ($(this).val() == '') {
+      var field = 'input[name="' + $(this).attr('name') + '"]';
+      $(this).val( $(field).not(this).val() );
+    }
+  });
+  <?php } ?>
+
   $('form[name="stock_item_form"] input[name="quantity"], form[name="stock_item_form"] input[name="quantity_adjustment"], form[name="stock_item_form"] input[name="backordered"]').on('blur', function(){
     $(this).val(parseFloat($(this).val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
   });
