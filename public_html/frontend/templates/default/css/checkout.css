@@ -110,7 +110,7 @@ body {
 #box-checkout-payment .option {
   display: block;
   position: relative;
-  padding: 0.25em;
+  padding: 0.5em;
   border: 1px solid var(--default-border-color);
   border-radius: var(--border-radius);
   user-select: none;
@@ -177,7 +177,7 @@ body {
 @media (min-width: 576px) {
   #box-checkout-shipping .option,
   #box-checkout-payment .option {
-    padding: 0.5em;
+    padding: 1em;
   }
 }
 .summary.wrapper {

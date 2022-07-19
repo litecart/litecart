@@ -17,11 +17,11 @@ input[name="payment_option[id]"]:checked + .option::after {
         <input name="payment_option[id]" value="<?php echo functions::escape_html($option['id']); ?>" type="radio" hidden<?php if (!empty($option['error'])) echo ' disabled'; ?><?php if (!empty($selected['id'])) echo ' checked'; ?> />
         <div class="option">
           <div class="header row" style="margin: 0;">
-            <div class="col-2" style="margin: 0;">
+            <div class="col-3" style="margin: 0;">
               <img class="thumbnail fit" src="<?php echo document::href_rlink(functions::image_thumbnail(FS_DIR_STORAGE . $option['icon'], 160, 80)); ?>"  style="aspect-ratio: 2/1;" />
             </div>
 
-            <div class="col-10" style="align-self: center;">
+            <div class="col-9" style="align-self: center;">
               <div class="name"><?php echo $option['name']; ?></div>
 
               <?php if (!empty($option['description'])) { ?>
