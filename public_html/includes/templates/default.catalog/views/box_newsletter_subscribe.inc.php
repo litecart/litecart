@@ -12,7 +12,7 @@
 
   <?php echo functions::form_draw_form_begin('newsletter_subscribe_form', 'post'); ?>
 
-    <h2 class="title" style="margin-top: 0;"><?php echo language::translate('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
+    <h2 class="title" style="margin-top: 0;"><?php echo language::translate('box_newsletter_subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
 
     <p><?php echo language::translate('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Subscribe now.'); ?></p>
 
