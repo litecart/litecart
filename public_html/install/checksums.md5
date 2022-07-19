@@ -3,7 +3,7 @@
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
 664e077ed384a0727fc22e67999f1323	admin/appearance.app/config.inc.php
 e935fd4c1c676c77664b7aead4014f79	admin/appearance.app/edit_styling.inc.php
-3ca4067cd322fae665a6ffd0fbc9669e	admin/appearance.app/logotype.inc.php
+8bf4f6b18b4b346bca5e080e08174063	admin/appearance.app/logotype.inc.php
 7454f905112e4c2643a172235e3f5798	admin/appearance.app/template.inc.php
 0e48b4777d3d46db09f9220d6db29804	admin/appearance.app/template_settings.inc.php
 fd0e67d9545603684b1605990a1a3915	admin/catalog.app/attribute_groups.inc.php
@@ -15,10 +15,10 @@ ca8ec15276fccb39cd6e094a052ff459	admin/catalog.app/category_picker.inc.php
 5c9704b58d0e0e72fac4d91de640198e	admin/catalog.app/csv.inc.php
 ed9722d8f691324f4de7c3706bf4d509	admin/catalog.app/delivery_statuses.inc.php
 644972fdc3ccd9eec1c2649c4c60b8a2	admin/catalog.app/edit_attribute_group.inc.php
-d91ab0cd1258a35c79035dd640875fc2	admin/catalog.app/edit_category.inc.php
+8f03554ce9851ff876849eb34436cad7	admin/catalog.app/edit_category.inc.php
 bb41e9ea57767cabdaaf8dec05b09e3c	admin/catalog.app/edit_delivery_status.inc.php
-b9db9adf3b5b23abb53007d0145b7357	admin/catalog.app/edit_manufacturer.inc.php
-e663a95f7cedba783770fd10e4df13a4	admin/catalog.app/edit_product.inc.php
+cf5d6e528409023c631195ed64ede14c	admin/catalog.app/edit_manufacturer.inc.php
+c1ca714c7d4b7d017814c2b422e98564	admin/catalog.app/edit_product.inc.php
 8d7ff8ab552c0a63d6dc94e814842e7b	admin/catalog.app/edit_quantity_unit.inc.php
 f0c65268d332492e37927f4271315868	admin/catalog.app/edit_sold_out_status.inc.php
 92ca9cc81467e693ee1b885c55408d41	admin/catalog.app/edit_supplier.inc.php
