@@ -1,3 +1,22 @@
+<style>
+#box-filter .filter {
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 1em;
+  grid-template-columns: 1fr;
+  margin-bottom: 1em;
+}
+@media (min-width: 480px) {
+  #box-filter .filter {
+    grid-auto-flow: column;
+  }
+}
+@media (min-width: 768px) {
+  #box-filter .filter {
+    grid-auto-flow: column;
+  }
+}
+</style>
 <main id="main" class="container">
   <div class="row layout">
     <div class="col-md-3">
@@ -19,24 +38,39 @@
 
           <div class="card-body">
             <?php if ($products) { ?>
-            <div class="btn-group float-end hidden-xs">
-<?php
-  $separator = false;
-  foreach ($sort_alternatives as $key => $value) {
-    if ($_GET['sort'] == $key) {
-      echo '<span class="btn btn-default active">'. $value .'</span>';
-    } else {
-      echo '<a class="btn btn-default" href="'. document::href_ilink(null, ['sort' => $key], true) .'">'. $value .'</a>';
-    }
-  }
-?>
-            </div>
+
+              <section id="box-filter">
+              <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+
+                <div class="filter">
+                  <div>
+                    <?php echo functions::form_draw_search_field('query', true, 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
+                  </div>
+
+                  <div>
+                    <div class="dropdown">
+                      <div class="form-select" data-toggle="dropdown">
+                        <?php echo language::translate('title_sort_by', 'Sort By'); ?>
+                      </div>
+                      <ul class="dropdown-menu">
+                        <?php foreach ($sort_alternatives as $key => $title) { ?>
+                        <li>
+                          <?php echo functions::form_draw_radio_button('sort', [$key, $title], true); ?>
+                        </li>
+                        <?php } ?>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              <?php echo functions::form_draw_form_end(); ?>
+            </section>
             <?php } ?>
 
 
             <?php if ($products) { ?>
-            <section class="listing products">
-              <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
+            <section class="listing products columns">
+              <?php foreach ($products as $product) echo functions::draw_listing_product($product, null); ?>
             </section>
             <?php } else { ?>
             <div><em><?php echo language::translate('text_no_matching_results', 'No matching results'); ?></em></div>

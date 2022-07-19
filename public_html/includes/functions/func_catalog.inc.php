@@ -225,9 +225,7 @@
       ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
     );
 
-    $products_query = database::query($query);
-
-    return $products_query;
+    return database::query($query);
   }
 
 // Search function using OR syntax
@@ -240,70 +238,169 @@
     if (!empty($filter['products'])) $filter['products'] = array_filter($filter['products']);
     if (!empty($filter['exclude_products'])) $filter['exclude_products'] = array_filter($filter['exclude_products']);
 
-    $sql_where_categories = '';
-    if (!empty($filter['categories'])) {
-      $sql_where_categories = (
-        "and p.id in (
-          select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
-          where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
-        )"
+    $sql_select_relevance = [];
+    $sql_inner_where = [];
+    $sql_where = [];
+    $sql_order_by = "relevance desc";
+
+    if (!empty($filter['query'])) {
+
+      $code_regex = functions::format_regex_code($_GET['query']);
+      $query_fulltext = functions::format_mysql_fulltext($_GET['query']);
+
+      $sql_select_relevance[] = "if(p.code regexp '". database::input($code_regex) ."', 5, 0)";
+      $sql_select_relevance[] = "if(p.sku regexp '". database::input($code_regex) ."', 5, 0)";
+      $sql_select_relevance[] = "if(p.mpn regexp '". database::input($code_regex) ."', 5, 0)";
+      $sql_select_relevance[] = "if(p.gtin regexp '". database::input($code_regex) ."', 5, 0)";
+
+      $sql_select_relevance[] = (
+        "if(p.id in (
+          select distinct product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
+          where stock_item_id in (
+            select id from ". DB_TABLE_PREFIX ."stock_items
+            where sku regexp '". database::input($code_regex) ."'
+          )
+        ), 5, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(id in (
+          select distinct product_id from ". DB_TABLE_PREFIX ."products_info
+          where match(name) against ('". database::input($query_fulltext) ."' in boolean mode)
+        ), 10, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(id in (
+          select distinct product_id from ". DB_TABLE_PREFIX ."products_info
+          where match(short_description) against ('". database::input($query_fulltext) ."' in boolean mode)
+        ), 10, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(id in (
+        select distinct product_id from ". DB_TABLE_PREFIX ."products_info
+        where match(description) against ('". database::input($query_fulltext) ."' in boolean mode)
+        ), 10, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(p.id in (
+          select distinct product_id
+          from ". DB_TABLE_PREFIX ."products_info
+          where name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+        ), 3, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(p.id in (
+          select distinct product_id
+          from ". DB_TABLE_PREFIX ."products_info
+          where short_description like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+        ), 2, 0)"
+      );
+
+      $sql_select_relevance[] = (
+        "if(p.id in (
+          select distinct product_id
+          from ". DB_TABLE_PREFIX ."products_info
+          where description like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+        ), 1, 0)"
       );
     }
 
-    $sql_where_attributes = [];
+    if (!empty($filter['product_name'])) {
+      $sql_select_relevance['product_name'] = (
+        "if(id in (
+          select distinct product_id
+          from ". DB_TABLE_PREFIX ."products_info
+          where name like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'
+        ), 1, 0)"
+      );
+    }
+
+    if (!empty($filter['products'])) {
+      $sql_select_relevance['categories'] = (
+        "if(id in ('". implode("', '", database::input($filter['products'])) ."'), 1, 0)"
+      );
+    }
+
+    if (!empty($filter['categories'])) {
+      $sql_select_relevance['categories'] = (
+        "if(id in (
+          select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
+          where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
+        ), 1, 0)"
+      );
+    }
+
+    if (!empty($filter['brands'])) {
+      $sql_select_relevance['brands'] = (
+        "if(brand_id in ('". implode("', '", database::input($filter['brands'])) ."'), 1, 0)"
+      );
+    }
+
     if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
-      foreach ($filter['attributes'] as $group => $values) {
-        if (empty($values) || !is_array($values)) continue;
-        foreach ($values as $value) {
-          $sql_where_attributes[$group][] = "find_in_set('". database::input($group.'-'.$value) ."', pa.attributes)";
-        }
-        $sql_where_attributes[$group] = "(". implode(" or ", $sql_where_attributes[$group]) .")";
-      }
-      $sql_where_attributes = "and (". implode(" and ", $sql_where_attributes) .")";
+      $sql_where['attributes'] = (
+        "if(id in (
+          select distinct product_id
+          from ". DB_TABLE_PREFIX ."products_attributes
+          where concat(group_id, '-', value_id) in ('". implode("', '", database::fetch($filter['attributes'])) ."')
+        ), 1, 0)"
+      );
     }
 
-    $sql_where_prices = [];
-    if (!empty($filter['price_ranges']) && is_array($filter['price_ranges'])) {
-      foreach ($filter['price_ranges'] as $price_range) {
-        list($min,$max) = explode('-', $price_range);
-        $sql_where_prices[] = "(if(pc.campaign_price, pc.campaign_price, pp.price) >= ". (float)$min ." and if(pc.campaign_price, pc.campaign_price, pp.price) <= ". (float)$max .")";
-      }
-      $sql_where_prices = "and (". implode(" or ", $sql_where_prices) .")";
+    if (!empty($filter['keywords'])) {
+      $sql_select_relevance['keywords'] = (
+        "if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)"
+      );
     }
 
-    $currencies = currency::$currencies;
-    uasort($currencies, function($a, $b){
-      if ($a['code'] == settings::get('store_currency_code')) return -3;
-      if ($a['code'] == currency::$selected['code']) return -2;
-    });
+    if (!empty($filter['exclude_products'])) {
+      $sql_inner_where['exclude_products'] = (
+        "and p.id not in ('". implode("', '", database::input($filter['exclude_products'])) ."')"
+      );
+    }
+
+    if (!empty($filter['campaigns'])) {
+      $sql_where['campaigns'] = (
+        "campaign_price > 0"
+      );
+    }
+
+    if (!empty($filter['sort'])) {
+      switch ($filter['sort']) {
+        case 'name':
+          $sql_order_by = "name asc";
+          break;
+        case 'price':
+          $sql_order_by = "final_price asc";
+          break;
+        case 'date':
+          $sql_order_by = "date_created desc";
+          break;
+        case 'rand':
+          $sql_order_by = "rand()";
+          break;
+        case 'popularity':
+          $sql_order_by = "(p.purchases / (datediff(now(), p.date_created)/7)) desc, (p.views / (datediff(now(), p.date_created)/7)) desc";
+          break;
+      }
+    }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, count(ptsi.stock_item_id) as quantity, pa.attributes, (0
-        ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
-        ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
-        ". (!empty($filter['keywords']) ? "+ if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)" : false) ."
-        ". (!empty($filter['products']) ? "+ if(p.id in ('". implode("', '", database::input($filter['products'])) ."'), 1, 0)" : false) ."
-      ) as occurrences
+      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, count(ptsi.stock_item_id) as quantity, pa.attributes
 
       from (
-        select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, group_concat(ptc.category_id separator ',') as categories, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created
+        select id, delivery_status_id, sold_out_status_id, code, brand_id, keywords, image, recommended_price, tax_class_id, quantity_unit_id, views, purchases, date_created, (
+        ". implode(" + ", $sql_select_relevance) ."
+        ) as relevance
         from ". DB_TABLE_PREFIX ."products p
-        left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (p.id = ptc.product_id)
-        left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
-        where p.status
-          and (p.id
-          ". (!empty($filter['products']) ? "or p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
-          ". fallback($sql_where_categories) ."
-          ". (!empty($filter['brands']) ? "or brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
-          ". fallback($sql_where_attributes) ."
-          ". (!empty($filter['keywords']) ? "or (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
-        )
-        and (p.date_valid_from is null or p.date_valid_from <= '". date('Y-m-d H:i:s') ."')
-        and (p.date_valid_to is null or p.date_valid_to >= '". date('Y-m-d H:i:s') ."')
-        ". (!empty($filter['purchased']) ? "and p.purchases" : null) ."
-        ". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : null) ."
-        group by ptc.product_id
-        ". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : "") ."
+        where status
+        ". (!empty($sql_inner_where) ? implode(" and ", $sql_inner_where) : "")."
+        and (date_valid_from is null or date_valid_from <= '". date('Y-m-d H:i:s') ."')
+        and (date_valid_to is null or date_valid_to >= '". date('Y-m-d H:i:s') ."')
+        having relevance > 0
       ) p
 
       left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
@@ -357,19 +454,14 @@
 
       where (p.id
         and (ptsi.num_stock_items = 0 or ptsi.quantity > 0 or ss.hidden != 1)
-        ". (!empty($filter['sql_where']) ? "or (". $filter['sql_where'] .")" : null) ."
-        ". (!empty($filter['product_name']) ? "or pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
-        ". (!empty($filter['campaign']) ? "or campaign_price > 0" : null) ."
-        ". fallback($sql_where_prices) ."
+        ". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
       )
 
       group by p.id
 
-      order by occurrences desc
-      ". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : null) . (int)$filter['limit'] : null) .";"
+      ". (!empty($sql_order_by) ? "order by ". $sql_order_by : "") ."
+      ". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
     );
 
-    $products_query = database::query($query);
-
-    return $products_query;
+    return database::query($query);
   }

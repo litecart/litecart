@@ -25,7 +25,6 @@
 
       $box_similar_products->snippets['products'] = [];
       while ($listing_product = database::fetch($products_query)) {
-        if (empty($listing_product['occurrences'])) break;
         $box_similar_products->snippets['products'][] = $listing_product;
       }
 
