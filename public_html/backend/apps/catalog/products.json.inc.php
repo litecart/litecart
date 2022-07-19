@@ -10,12 +10,12 @@
   if (!empty($_REQUEST['query'])) {
     $sql_find = [
       "p.id = '". database::input($_REQUEST['query']) ."'",
-      "p.code like '". database::input($_REQUEST['query']) ."%'",
+      "p.code like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
       "find_in_set(p.keywords, '". database::input($_REQUEST['query']) ."')",
-      "p.sku like '". database::input($_REQUEST['query']) ."%'",
-      "p.mpn like '". database::input($_REQUEST['query']) ."%'",
-      "p.gtin like '". database::input($_REQUEST['query']) ."%'",
-      "pi.name like '%". database::input($_REQUEST['query']) ."%'",
+      "p.sku like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
+      "p.mpn like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
+      "p.gtin like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
+      "pi.name like '%". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
     ];
   }
 

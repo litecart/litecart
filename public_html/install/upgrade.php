@@ -25,7 +25,7 @@
       'from_version::', 'development_type::', 'backup::'
     ];
 
-    $_REQUEST = getopt(null, $options);
+    $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
   }
@@ -110,7 +110,7 @@
 
     try {
 
-      echo '<h1>Upgrade</h1>' . PHP_EOL . PHP_EOL;
+      echo '<h1>Upgrade '. PLATFORM_VERSION .'</h1>' . PHP_EOL . PHP_EOL;
 
       ### PHP > Check Version ################################################
 
@@ -524,7 +524,7 @@ input[name="development_type"]:checked + div {
           .js + .min.js
         </div>
         <small class="description">
-          (Requires <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">Developer Kit</a>)
+          (Requires a <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">LESS compiler</a>)
         </small>
       </div>
     </label>

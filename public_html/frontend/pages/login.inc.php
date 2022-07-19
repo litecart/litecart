@@ -33,7 +33,7 @@
 
       $customer = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
-        where lower(email) = lower('". database::input($_POST['email']) ."')
+        where lower(email) = '". database::input(strtolower($_POST['email'])) ."'
         limit 1;"
       )->fetch();
 

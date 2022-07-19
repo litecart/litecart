@@ -100,10 +100,10 @@ module.exports = function(grunt) {
       frontend_default_minified: {
         options: {
           compress: true,
-          sourceMap: true,
-          sourceMapBasepath: 'public_html/frontend/templates/default/less/',
-          sourceMapRootpath: '../less/',
-          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
+          //sourceMap: false,
+          //sourceMapBasepath: 'public_html/ext/featherlight/',
+          //sourceMapRootpath: './',
+          //sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {

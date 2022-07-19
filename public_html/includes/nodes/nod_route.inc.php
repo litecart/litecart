@@ -300,7 +300,7 @@
 
     // Detect URL rewrite support
       $use_rewrite = false;
-      if (isset($_SERVER['MOD_REWRITE']) && in_array(strtolower($_SERVER['MOD_REWRITE']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
+      if (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && filter_var($_SERVER['REDIRECT_HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) {
         $use_rewrite = true;
 
       } else if (isset($_SERVER['REDIRECT_MOD_REWRITE']) && in_array(strtolower($_SERVER['REDIRECT_MOD_REWRITE']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {

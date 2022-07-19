@@ -129,7 +129,7 @@
     }
   }
 
-  function draw_listing_category($category) {
+  function draw_listing_category($category, $view='views/listing_category') {
 
     $listing_category = new ent_view(FS_DIR_TEMPLATE . 'partials/listing_category.inc.php');
 
@@ -156,7 +156,7 @@
     return (string)$listing_category;
   }
 
-  function draw_listing_product($product, $inherit_params=[]) {
+  function draw_listing_product($product, $inherit_params=[], $view='views/listing_product') {
 
     $listing_product = new ent_view(FS_DIR_TEMPLATE . 'partials/listing_product.inc.php');
 

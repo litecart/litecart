@@ -264,7 +264,8 @@
       }
 
       if (!($timestamp instanceof \DateTimeInterface)) {
-        throw new \InvalidArgumentException('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.');
+        trigger_error('$timestamp argument is neither a valid UNIX timestamp, a valid date-time string or a DateTime object.', E_USER_WARNING);
+        return 'n/a';
       }
 
       $intl_formats = [

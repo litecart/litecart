@@ -126,7 +126,7 @@
         }
       }
 
-      if (isset($this->data['settings']['status']) && in_array(strtolower($this->data['settings']['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
+      if (isset($this->data['settings']['status']) && preg_match('#^(1|active|enabled|on|true|yes)$#i', $this->data['settings']['status'])) {
         $this->data['status'] = 1;
       } else {
         $this->data['status'] = 0;

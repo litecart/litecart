@@ -33,7 +33,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: monospace;
   font-size: 1em;
 }
 a {
@@ -198,8 +198,7 @@ h3 {
   }
 }
 html {
-  font: var(--default-text-size)/1.5 var(--default-text-font);
-  line-height: var(--default-line-height);
+  font: var(--default-text-size)/var(--default-line-height) var(--default-text-font);
   color: var(--default-text-color);
 }
 html,
@@ -274,7 +273,7 @@ ul.breadcrumb li {
 ul.breadcrumb li:not(:last-child)::after {
   content: "\00bb";
   padding: 0 calc(var(--gutter-size)/2);
-  color: #bbb;
+  color: var(--breadcrumbs-text-color);
 }
 ul.breadcrumb li a {
   color: inherit;

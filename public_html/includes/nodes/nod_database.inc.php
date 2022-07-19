@@ -200,7 +200,9 @@
 
     public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
 
-      if (empty($string) || in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
+      if (empty($string)) return '';
+
+      if (in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
         return $string;
       }
 

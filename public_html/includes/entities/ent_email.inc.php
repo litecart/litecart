@@ -268,7 +268,7 @@
         'X-Sender' => $this->format_contact($this->data['sender']),
       ];
 
-    // Add "To"
+    // Add "To" header
       if (!empty($this->data['recipients'])) {
         $tos = [];
         foreach ($this->data['recipients'] as $to) {
@@ -277,7 +277,7 @@
         $headers['To'] = implode(', ', $tos);
       }
 
-    // Add "Cc"
+    // Add "Cc" header
       if (!empty($this->data['ccs'])) {
         $ccs = [];
         foreach ($this->data['ccs'] as $cc) {
@@ -286,7 +286,7 @@
         $headers['Cc'] = implode(', ', $ccs);
       }
 
-    // SMTP does not need a header for BCCs
+    // SMTP does not need a header for BCCs, we will add that for PHP mail() later
 
     // Prepare subject
       $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
@@ -319,15 +319,6 @@
         return false;
       }
 
-    // Prepare headers
-      array_walk($headers,
-        function (&$v, $k) {
-          $v = $k.': '.$v;
-        }
-      );
-
-      $headers = implode("\r\n", $headers);
-
     // Deliver via SMTP
       if (settings::get('smtp_status')) {
 
@@ -356,7 +347,9 @@
             $recipients[] = $bcc['email'];
           }
 
-          $data = $headers . "\r\n"
+          array_walk($headers, function (&$v, $k) { $v = "$k: $v"; });
+
+          $data = implode("\r\n", $headers) . "\r\n\r\n"
                 . $body;
 
           $result = $smtp->send(settings::get('site_email'), $recipients, $data);
@@ -370,8 +363,8 @@
     // Deliver via PHP mail()
       } else {
 
-        $headers = preg_replace('#To:.*?\r\n#', '', $headers);
-        $headers = preg_replace('#Subject:.*?\r\n#', '', $headers);
+        unset($headers['To']);
+        unset($headers['Subject']);
 
       // PHP mail() needs a header for BCCs
         if (!empty($this->data['bccs'])) {
@@ -379,7 +372,7 @@
           foreach ($this->data['bccs'] as $bcc) {
             $bccs[] = $this->format_contact($bcc);
           }
-          $headers .= 'Bcc: '. implode(', ', $bccs) . "\r\n";
+          $headers['Bcc'] = implode(', ', $bccs);
         }
 
         $recipients = [];
@@ -389,6 +382,9 @@
         $recipients = implode(', ', $recipients);
 
         $subject = mb_encode_mimeheader($this->data['subject']);
+
+        array_walk($headers, function (&$v, $k) { $v = "$k: $v"; });
+        $headers = implode("\r\n", $headers);
 
         if (!$result = mail($recipients, $subject, $body, $headers)) {
           trigger_error('Failed sending email "'. $this->data['subject'] .'"', E_USER_WARNING);

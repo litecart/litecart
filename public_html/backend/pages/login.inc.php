@@ -27,8 +27,8 @@
 
       $user = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
-        where (username != '' and lower(username) = lower('". database::input($_POST['username']) ."'))
-        or (email != '' and lower(email) = lower('". database::input($_POST['username']) ."'))
+        where lower(username) = '". database::input(strtolower($_POST['username'])) ."'
+        or lower(email) = '". database::input(strtolower($_POST['username'])) ."'
         limit 1;"
       )->fetch();
 

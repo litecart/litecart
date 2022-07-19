@@ -128,7 +128,7 @@
         where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
         ". (!empty($address['country_code']) ? "and (country_code = '' or country_code = '". database::input($address['country_code']) ."')" : "and (country_code = '' or country_code = '". database::input($this->_country_code) ."')") ."
         ". (!empty($address['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($address['zone_code']) ."')" : "and zone_code = ''") ."
-        ". (!empty($address['city']) ? "and (city = '' or city like '". database::input($address['city']) ."')" : "and city = ''") ."
+        ". (!empty($address['city']) ? "and (city = '' or city like '". addcslashes(database::input($address['city']), '%_') ."')" : "and city = ''") ."
         limit 1;"
       );
 

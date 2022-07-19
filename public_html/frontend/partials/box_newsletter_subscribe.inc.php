@@ -37,7 +37,7 @@
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-        where email like '". database::input($_POST['email']) ."';"
+        where email like '". addcslashes(database::input($_POST['email']), '%_') ."';"
       );
 
       if (empty(customer::$data['email'])) {
@@ -54,4 +54,13 @@
   }
 
   $box_newsletter_subscribe = new ent_view(FS_DIR_TEMPLATE . 'partials/box_newsletter_subscribe.inc.php');
+
+  $box_newsletter_subscribe->snippets = [
+    'privacy_policy_link' => null,
+  ];
+
+  if ($privacy_policy_id = settings::get('privacy_policy')) {
+      $box_newsletter_subscribe->snippets['privacy_policy_link'] = document::href_ilink('information', ['page_id' => $privacy_policy_id]);
+  }
+
   echo $box_newsletter_subscribe;

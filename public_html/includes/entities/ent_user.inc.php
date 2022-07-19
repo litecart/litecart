@@ -86,8 +86,8 @@
       database::query(
         "update ". DB_TABLE_PREFIX ."users
         set status = '". (empty($this->data['status']) ? 0 : 1) ."',
-          username = '". database::input($this->data['username']) ."',
-          email = '". database::input($this->data['email']) ."',
+        username = '". database::input(strtolower($this->data['username'])) ."',
+        email = '". database::input(strtolower($this->data['email'])) ."',
           apps = '". database::input(json_encode($this->data['apps'], JSON_UNESCAPED_SLASHES)) ."',
           widgets = '". database::input(json_encode($this->data['widgets'], JSON_UNESCAPED_SLASHES)) ."',
           date_valid_from = ". (empty($this->data['date_valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",

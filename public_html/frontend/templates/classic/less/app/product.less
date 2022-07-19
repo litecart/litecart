@@ -19,7 +19,9 @@
 
   .main-image {
     position: relative;
+    background: var(--whitespace-color);
     overflow: hidden;
+
     .sticker {
       color: #fff;
       font-size: 12px;
@@ -54,6 +56,9 @@
     color: #999;
   }
 
+  .offer-expires {
+  }
+
   .stock-available {
     .value {
       color: #009900;
@@ -69,16 +74,19 @@
       color: #cc0000;
     }
   }
+
   .out-of-stock-notice {
     background: var(--default-background-color);
     border: 1px solid var(--default-border-color);
     padding: var(--gutter-size);
     border-radius: var(--border-radius);
   }
+
   .social-bookmarks {
     font-size: 1.75em;
     margin: var(--gutter-size) 0;
   }
+
   .description {
     p:first-child {
       margin-top: 0;
@@ -87,6 +95,7 @@
       margin-bottom: 0;
     }
   }
+
   .technical-data {
     table {
       -webkit-column-break-inside: avoid;

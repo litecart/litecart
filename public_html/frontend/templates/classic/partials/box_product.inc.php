@@ -159,6 +159,12 @@
          <?php } ?>
         </div>
 
+        <?php if ($campaign_price_end_date) { ?>
+        <div class="offer-expires" style="margin-bottom: 1em;">
+          <?php echo strtr(language::translate('text_offer_expires_on_date', 'The offer expires on %datetime.'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($campaign_price_end_date))]); ?>
+        </div>
+        <?php } ?>
+
         <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
         <div class="form-group" style="margin-bottom: 0;">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
@@ -210,21 +216,17 @@
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
-      list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
+      list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
          . '  </tr>' . PHP_EOL;
-    } else if (trim($line) != '') {
-      echo '  <thead>' . PHP_EOL
-         . '    <tr>' . PHP_EOL
-         . '      <th colspan="2">'. $line .'</th>' . PHP_EOL
-         . '    </tr>' . PHP_EOL
-         . '  </thead>' . PHP_EOL
-         . '  <tbody>' . PHP_EOL;
+    } else if (trim($line)) {
+      echo '  <tr>' . PHP_EOL
+         . '    <th colspan="2" class="text-start">'. $line .'</th>' . PHP_EOL
+         . '  </tr>' . PHP_EOL;
     } else {
-      echo ' </tbody>' . PHP_EOL
-         . '</table>' . PHP_EOL
+      echo '</table>' . PHP_EOL
          . '<table class="table table-striped table-hover">' . PHP_EOL;
     }
   }

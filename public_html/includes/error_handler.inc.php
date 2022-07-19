@@ -52,15 +52,15 @@
       }
     }
 
-    if (preg_match('#^(1|on|true)$#i', ini_get('display_errors'))) {
-      if (preg_match('#^(0|off|false)$#i', ini_get('html_errors')) || PHP_SAPI == 'cli') {
+    if (filter_var(ini_get('display_errors'), FILTER_VALIDATE_BOOLEAN)) {
+      if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) || PHP_SAPI == 'cli') {
         echo strip_tags($output . (isset($_GET['debug']) ? $backtrace_output : ''));
       } else {
         echo $output . (isset($_GET['debug']) ? $backtrace_output : '');
       }
     }
 
-    if (preg_match('#^(1|on|true)$#i', ini_get('log_errors'))) {
+    if (filter_var(ini_get('log_errors'), FILTER_VALIDATE_BOOLEAN)) {
       error_log(
         strip_tags($output . $backtrace_output) .
         "Request: {$_SERVER['REQUEST_METHOD']} {$_SERVER['REQUEST_URI']} {$_SERVER['SERVER_PROTOCOL']}" . PHP_EOL .
