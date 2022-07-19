@@ -140,7 +140,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, count(ptsi.stock_item_id) as quantity, pa.attributes
+      "select p.*, pi.name, pi.short_description, b.id as brand_id, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, ifnull(ptsi.num_stock_items, 0) as num_stock_items, ptsi.quantity, ifnull(ptsi.quantity - oi.quantity_reserved, 0) as quantity_available, pa.attributes, ss.hidden
 
       from (
         select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.views, p.purchases, p.date_created
@@ -200,7 +200,7 @@
       ) ptsi on (ptsi.product_id = p.id)
 
       left join (
-        select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+        select oi.stock_item_id, sum(oi.quantity) as quantity_reserved from ". DB_TABLE_PREFIX ."orders_items oi
         left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
         where o.order_status_id in (
           select id from ". DB_TABLE_PREFIX ."order_statuses
@@ -212,7 +212,7 @@
       left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
       where (p.id
-        and (ptsi.num_stock_items = 0 or ptsi.quantity > 0 or ss.hidden != 1)
+        and (ifnull(ptsi.num_stock_items, 0) = 0 or (ptsi.quantity - oi.quantity_reserved) > 0 or ss.hidden != 1)
         ". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : null) ."
         ". (!empty($filter['product_name']) ? "and pi.name like '%". database::input($filter['product_name']) ."%'" : null) ."
         ". (!empty($filter['campaign']) ? "and campaign_price > 0" : null) ."
@@ -441,7 +441,7 @@
       ) ptsi on (ptsi.product_id = p.id)
 
       left join (
-        select oi.stock_item_id, sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+        select oi.stock_item_id, sum(oi.quantity) as quantity_reserved from ". DB_TABLE_PREFIX ."orders_items oi
         left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
         where o.order_status_id in (
           select id from ". DB_TABLE_PREFIX ."order_statuses
