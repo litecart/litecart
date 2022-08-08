@@ -3,7 +3,7 @@
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
 664e077ed384a0727fc22e67999f1323	admin/appearance.app/config.inc.php
 e935fd4c1c676c77664b7aead4014f79	admin/appearance.app/edit_styling.inc.php
-8bf4f6b18b4b346bca5e080e08174063	admin/appearance.app/logotype.inc.php
+e4ccc5e0bbc75cc6fbae3d2aedf853cc	admin/appearance.app/logotype.inc.php
 7454f905112e4c2643a172235e3f5798	admin/appearance.app/template.inc.php
 0e48b4777d3d46db09f9220d6db29804	admin/appearance.app/template_settings.inc.php
 fd0e67d9545603684b1605990a1a3915	admin/catalog.app/attribute_groups.inc.php
@@ -18,7 +18,7 @@ ed9722d8f691324f4de7c3706bf4d509	admin/catalog.app/delivery_statuses.inc.php
 8f03554ce9851ff876849eb34436cad7	admin/catalog.app/edit_category.inc.php
 bb41e9ea57767cabdaaf8dec05b09e3c	admin/catalog.app/edit_delivery_status.inc.php
 cf5d6e528409023c631195ed64ede14c	admin/catalog.app/edit_manufacturer.inc.php
-c1ca714c7d4b7d017814c2b422e98564	admin/catalog.app/edit_product.inc.php
+7c56fe82d1f63fa3b8186f9876e2a9a4	admin/catalog.app/edit_product.inc.php
 8d7ff8ab552c0a63d6dc94e814842e7b	admin/catalog.app/edit_quantity_unit.inc.php
 f0c65268d332492e37927f4271315868	admin/catalog.app/edit_sold_out_status.inc.php
 92ca9cc81467e693ee1b885c55408d41	admin/catalog.app/edit_supplier.inc.php
@@ -529,7 +529,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
 69fab51ea5885eb3066dce8c7e62841c	includes/functions/func_captcha.inc.php
 52b184fae7486c5fe1584c63ba92f4f5	includes/functions/func_catalog.inc.php
-0e53c6c4662f4fd8cca0a0cd7e70a31e	includes/functions/func_csv.inc.php
+e2af395923278bea690f1e656c401291	includes/functions/func_csv.inc.php
 bc6ef17ea48352616749fdd37406adbc	includes/functions/func_draw.inc.php
 2341090b7652ec1d4486dc35406ab975	includes/functions/func_escape.inc.php
 df65c32fcb65b48b0af03ede0fc9c618	includes/functions/func_form.inc.php
@@ -767,7 +767,7 @@ aa1c4e4050070764eef69eb69916017b	includes/templates/default.catalog/views/box_ma
 82619ca97d96cbda06fc5d81e9284eae	includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php
 af3cca1e93d18d1f86fb07a5209405d0	includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php
 5beab507e4858940defd268e775e5ac7	includes/templates/default.catalog/views/box_popular_products.inc.php
-fcae0d24d9eb85d10310de6b610c91cb	includes/templates/default.catalog/views/box_product.inc.php
+f6a54bc7f640fc21950c5cc0421e935a	includes/templates/default.catalog/views/box_product.inc.php
 3f23b0f2a5daf1827fc9162188df91fe	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 c2eda4079a017eb4a442f623cbad92be	includes/templates/default.catalog/views/box_region.inc.php
 9fe421af787539ad7333176ebaf881bb	includes/templates/default.catalog/views/box_similar_products.inc.php
