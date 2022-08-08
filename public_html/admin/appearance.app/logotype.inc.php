@@ -12,7 +12,7 @@
         throw new Exception(language::translate('error_missing_image', 'You must select an image'));
       }
 
-      if (!is_uploaded_file($_FILES['image']) || !empty($_FILES['image']['error'])) {
+      if (!is_uploaded_file($_FILES['image']['tmp_name']) || !empty($_FILES['image']['error'])) {
         throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
       }
 
