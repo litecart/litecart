@@ -63,6 +63,15 @@ body {
   text-align: end;
   border-radius: 0px 0px 0px 25px;
 }
+
+.btn-frontend {
+  color: inherit !important;
+  border: 1px solid transparent;
+}
+.btn-frontend:hover {
+  border-color: #ebecef;
+  text-decoration: none;
+}
 </style>
 
 <div class="loader-wrapper">
@@ -74,13 +83,14 @@ body {
   <div id="box-login" class="">
 
     <div class="header text-center">
-      <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></a>
+      <img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
     </div>
 
     <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
 
       <div class="content">
         <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
+        <?php echo functions::form_draw_hidden_field('login', 'true'); ?>
 
         {snippet:notices}
 
@@ -100,7 +110,7 @@ body {
       <div class="footer">
         <div class="row" style="margin-bottom: 0;">
           <div class="col-md-6 text-start">
-            <a class="btn btn-default" href="<?php echo document::href_ilink(''); ?>">
+            <a class="btn btn-frontend" href="<?php echo document::href_ilink(''); ?>">
               <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
             </a>
           </div>
