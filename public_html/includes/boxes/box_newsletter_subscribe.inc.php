@@ -20,7 +20,7 @@
       );
 
       $aliases = [
-        '%ip_address' => $_SERVER['REMOTE_ADDR'],
+        '%ipaddress' => $_SERVER['REMOTE_ADDR'],
         '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
         '%datetime' => language::strftime(language::$selected['format_datetime']),
       ];
