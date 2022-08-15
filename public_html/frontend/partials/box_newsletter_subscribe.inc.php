@@ -14,9 +14,23 @@
         values ('". database::input($_POST['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('c') ."');"
       );
 
-      if (empty(customer::$data['email'])) {
-        customer::$data['email'] = $_POST['email'];
-      }
+      $aliases = [
+        '%ipaddress' => $_SERVER['REMOTE_ADDR'],
+        '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+        '%datetime' => language::strftime(language::$selected['format_datetime']),
+      ];
+
+      $message = strtr(
+        language::translate('email_body:newsletter_subscription_confirmation', 'This is a confirmation that we have recieved your request to subscribe to our newsletter.') . "\r\n\r\n" .
+        language::translate('title_ip_address', 'IP Address') . ': %ipaddress' . "\r\n" .
+        language::translate('title_date', 'Date') . ': %datetime',
+      $aliases);
+
+      $email = new ent_email();
+      $email->add_recipient($_POST['email'])
+          ->set_subject(language::translate('email_subject:newsletter_subscription_confirmation', 'Confirmation of newsletter subscription'))
+          ->add_body($message)
+          ->send();
 
       notices::add('success', language::translate('success_subscribed_to_newsletter', 'Thank you for subscribing to our newsletter'));
       header('Location: '. $_SERVER['REQUEST_URI']);
@@ -39,10 +53,6 @@
         "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
         where email like '". addcslashes(database::input($_POST['email']), '%_') ."';"
       );
-
-      if (empty(customer::$data['email'])) {
-        customer::$data['email'] = $_POST['email'];
-      }
 
       notices::add('success', language::translate('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
       header('Location: '. $_SERVER['REQUEST_URI']);

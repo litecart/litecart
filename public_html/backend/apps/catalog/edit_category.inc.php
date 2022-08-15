@@ -59,7 +59,7 @@
 
       if (!empty($_POST['delete_image'])) $category->delete_image();
 
-      if (!empty($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+      if (!empty($_FILES['image']['tmp_name'])) {
         $category->save_image($_FILES['image']['tmp_name']);
       }
 
