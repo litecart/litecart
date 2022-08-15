@@ -12,7 +12,7 @@
     $version = !empty($xml->version) ? $xml->version : date('Y-m-d', filemtime($folder.'vmod.xml'));
 
   // Create temporary zip archive
-    $tmp_file = tempnam(sys_get_temp_dir(), '');
+    $tmp_file = functions::file_create_tempfile();
 
     $zip = new ZipArchive();
     if ($zip->open($tmp_file, ZipArchive::OVERWRITE) !== true) { // ZipArchive::CREATE throws an error with temp files in PHP 8.

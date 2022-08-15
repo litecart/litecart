@@ -155,9 +155,9 @@
       $data = $parse_as_string ? $file : file_get_contents($file);
 
       if ($parse_as_string) {
-        file_put_contents($tmpfile=tempnam(sys_get_temp_dir(), 'lc_'), $data);
-        $mime_type = mime_content_type($tmpfile);
-        unlink($tmpfile);
+        $tmp_file = functions::file_create_tempfile();
+        file_put_contents($tmp_file, $data);
+        $mime_type = mime_content_type($tmp_file);
       } else {
         $mime_type = mime_content_type($file);
       }

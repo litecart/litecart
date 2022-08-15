@@ -37,6 +37,13 @@
     return in_array(false, $results) ? false : true;
   }
 
+// PHP doesn't always clean up temp files, so let's create a function that does
+  function file_create_tempfile() {
+    $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+    register_shutdown_function('unlink', $tmp_file);
+    return $file;
+  }
+
   function file_delete($source, &$results=[]) {
 
     if (!isset($results) || !is_array($results)) {

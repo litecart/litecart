@@ -236,10 +236,10 @@
 
     public function load_from_string($binary) {
 
-      $file = stream_get_meta_data(tmpfile())['uri'];
-      file_put_contents($file, $binary);
+      $tmp_file = functions::file_create_tempfile();
+      file_put_contents($tmp_file, $binary);
 
-      $this->load($file);
+      $this->load($tmp_file);
     }
 
     public function resample($max_width=1024, $max_height=1024) {

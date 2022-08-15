@@ -303,7 +303,7 @@
 
       $errors = [];
 
-      $tmp_file = tempnam(sys_get_temp_dir(), '');
+      $tmp_file = functions::file_create_tempfile();
 
       file_put_contents($tmp_file, $this->_build_xml());
 
