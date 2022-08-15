@@ -2,10 +2,6 @@
 
   document::$layout = 'login';
 
-  if (empty($_POST['username']) && !empty($_SERVER['PHP_AUTH_USER'])) {
-    $_POST['username'] = fallback($_SERVER['PHP_AUTH_USER']);
-  }
-
   header('X-Robots-Tag: noindex');
 
   if (!empty(user::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));

@@ -226,7 +226,7 @@
       '+'  => '\\+',
       '^'  => '\\^',
       '$'  => '\\$',
-      '*'  => '.*',
+      '*'  => '[^/]*',
       '**' => '.*',
       '?'  => '.',
     ]);
@@ -243,7 +243,7 @@
 
     $regex = '#^'.$regex.'$#';
 
-    $results = [];
+    $folders = [];
     $files = [];
 
   // Open directory
@@ -261,15 +261,15 @@
 
       // Resolve double globstars
         if (strpos($pattern, '**') !== false) {
-          $results = array_merge($results, file_search($file .'/'. $pattern . $remains, $flags));
+          $folders = array_merge($folders, file_search($file .'/'. $pattern . $remains, $flags));
         }
 
-      // Add a matching folder
+      // Collect a matching folder
         if (preg_match($regex, basename($file)) || preg_match($regex, basename($file).'/')) {
           if ($remains) {
-            $results = array_merge($results, file_search($file .'/'. $remains, $flags));
+            $folders = array_merge($folders, file_search($file .'/'. $remains, $flags));
           } else {
-            $results[] = $file .'/';
+            $folders[] = $file .'/';
           }
         }
 
@@ -278,16 +278,15 @@
       // Skip if not a directory during GLOB_ONLYDIR
         if ($flags & GLOB_ONLYDIR) continue;
 
-      // Add a matching folder
+      // Collect a matching file
         if (preg_match($regex, basename($file))) {
-
           $files[] = $file;
         }
       }
     }
 
   // Merge folders and files into one and same result
-    $results = array_merge($results, $files);
+    $results = array_merge($folders, $files);
 
     return $results;
   }

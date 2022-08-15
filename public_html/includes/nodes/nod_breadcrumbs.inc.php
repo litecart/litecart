@@ -6,7 +6,7 @@
 
     public static function init() {
 
-      self::add(language::translate('title_home', 'Home'), WS_DIR_APP);
+      self::add(functions::draw_fonticon('fa-home', 'title="'. functions::escape_html(language::translate('title_home', 'Home')) .'"'), WS_DIR_APP);
 
       event::register('after_capture', [__CLASS__, 'after_capture']);
     }
