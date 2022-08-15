@@ -41,7 +41,7 @@
   function file_create_tempfile() {
     $tmp_file = stream_get_meta_data(tmpfile())['uri'];
     register_shutdown_function('unlink', $tmp_file);
-    return $file;
+    return $tmp_file;
   }
 
   function file_delete($source, &$results=[]) {
