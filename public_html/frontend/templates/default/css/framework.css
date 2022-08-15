@@ -280,23 +280,52 @@ hr {
 }
 /* Breadcrumbs - Bootstrap Compatible */
 ul.breadcrumb {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
   margin: 0 0 var(--gutter-size) 0;
-  padding: 0.5em 1em;
   list-style: none;
   background-color: var(--breadcrumbs-background-color);
+  color: var(--breadcrumbs-text-color);
   border: 1px solid var(--breadcrumbs-border-color);
   border-radius: var(--border-radius);
 }
 ul.breadcrumb li {
   display: inline-block;
 }
-ul.breadcrumb li::before {
-  content: "/\00a0";
-  padding: 0 5px;
-  color: var(--breadcrumbs-text-color);
+ul.breadcrumb .breadcrumb-item:empty {
+  display: none;
 }
-ul.breadcrumb li a {
+ul.breadcrumb .breadcrumb-item {
+  position: relative;
+  display: inline-block;
+  padding: 0.5em 1em 0.5em 2em;
   color: inherit;
+  transition: all 150ms linear;
+}
+ul.breadcrumb .breadcrumb-item:is(a):hover,
+ul.breadcrumb .breadcrumb-item:is(a):hover::after {
+  background: var(--breadcrumbs-background-color-hover);
+}
+ul.breadcrumb .breadcrumb-item::after,
+ul.breadcrumb .breadcrumb-item::before {
+  background: var(--breadcrumbs-background-color);
+  bottom: 0;
+  clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+  content: "";
+  left: 100%;
+  position: absolute;
+  top: 0;
+  transition: all 150ms linear;
+  width: 2em;
+  z-index: 1;
+}
+ul.breadcrumb .breadcrumb-item::before {
+  background: var(--breadcrumbs-border-color);
+  margin-left: 1px;
+}
+ul.breadcrumb a.breadcrumb-item:hover {
+  background-color: var(--breadcrumbs-background-color-hover);
 }
 @media (min-width: 768px) {
   ul.breadcrumb {

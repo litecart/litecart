@@ -1,23 +1,60 @@
 /* Breadcrumbs - Bootstrap Compatible */
 
 ul.breadcrumb {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
   margin: 0 0 var(--gutter-size) 0;
-  padding: .5em 1em;
   list-style: none;
   background-color: var(--breadcrumbs-background-color);
+  color: var(--breadcrumbs-text-color);
   border: 1px solid var(--breadcrumbs-border-color);
   border-radius: var(--border-radius);
+
   li {
     display: inline-block;
-    &::before {
-      content: "/\00a0";
-      padding: 0 5px;
-      color: var(--breadcrumbs-text-color);
+  }
+
+  .breadcrumb-item:empty {
+    display: none;
+  }
+
+  .breadcrumb-item {
+    position: relative;
+    display: inline-block;
+    padding: .5em 1.0em .5em 2em;
+    color: inherit;
+    transition: all 150ms linear;
+
+    &:is(a):hover,
+    &:is(a):hover::after {
+      background: var(--breadcrumbs-background-color-hover);
     }
-    a {
-      color: inherit;
+
+    &::after,
+    &::before {
+      background: var(--breadcrumbs-background-color);
+      bottom: 0;
+      clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+      content: "";
+      left: 100%;
+      position: absolute;
+      top: 0;
+      transition: all 150ms linear;
+      width: 2em;
+      z-index: 1;
+    }
+
+    &::before {
+      background: var(--breadcrumbs-border-color);
+      margin-left: 1px;
     }
   }
+
+  a.breadcrumb-item:hover {
+    background-color: var(--breadcrumbs-background-color-hover);
+  }
+
   @media(min-width: @media-breakpoint-md) {
     margin: 0 0 var(--gutter-size) 0;
   }
