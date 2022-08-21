@@ -71,43 +71,43 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+    <?php echo functions::form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
         <div class="form-group col-md-8">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+          <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('name['. $language_code .']', $language_code, true); ?>
         </div>
 
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_draw_number_field('priority', true); ?>
+          <?php echo functions::form_number_field('priority', true); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_description', 'Description'); ?></label>
-        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('description['. $language_code .']', $language_code, true); ?>
+        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('description['. $language_code .']', $language_code, true); ?>
       </div>
 
       <div class="row">
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
-          <?php echo functions::form_draw_number_field('decimals', true); ?>
+          <?php echo functions::form_number_field('decimals', true); ?>
         </div>
 
         <div class="form-group col-md-8">
           <br />
-          <?php echo functions::form_draw_checkbox('separate', ['1', language::translate('text_separate_added_cart_items', 'Separate added cart items')], true); ?>
+          <?php echo functions::form_checkbox('separate', ['1', language::translate('text_separate_added_cart_items', 'Separate added cart items')], true); ?>
         </div>
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($quantity_unit->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($quantity_unit->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>

@@ -194,40 +194,40 @@ html.dark-mode .operation {
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('vmod_form', 'post', false, true); ?>
+    <?php echo functions::form_begin('vmod_form', 'post', false, true); ?>
 
       <div class="row">
         <div class="col-md-4">
           <div class="form-group">
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', 'e/d', fallback($_POST['status'], '0')); ?>
+            <?php echo functions::form_toggle('status', 'e/d', fallback($_POST['status'], '0')); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_id', 'ID'); ?></label>
-            <?php echo functions::form_draw_text_field('id', true, 'required placeholder="my_awesome_vmod" pattern="\w+"'); ?>
+            <?php echo functions::form_text_field('id', true, 'required placeholder="my_awesome_vmod" pattern="\w+"'); ?>
           </div>
 
           <div class="row">
             <div class="form-group col-md-8">
               <label><?php echo language::translate('title_title', 'Title'); ?></label>
-              <?php echo functions::form_draw_text_field('title', true, 'required'); ?>
+              <?php echo functions::form_text_field('title', true, 'required'); ?>
             </div>
 
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_version', 'Version'); ?></label>
-              <?php echo functions::form_draw_text_field('version', true, 'placeholder="'. date('Y-m-d') .'"'); ?>
+              <?php echo functions::form_text_field('version', true, 'placeholder="'. date('Y-m-d') .'"'); ?>
             </div>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_author', 'Author'); ?></label>
-            <?php echo functions::form_draw_text_field('author', true, ''); ?>
+            <?php echo functions::form_text_field('author', true, ''); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_description', 'Description'); ?></label>
-            <?php echo functions::form_draw_text_field('description', true, ''); ?>
+            <?php echo functions::form_text_field('description', true, ''); ?>
           </div>
 
           <div class="form-group">
@@ -284,7 +284,7 @@ html.dark-mode .operation {
 
               <div class="form-group">
                 <label><?php echo language::translate('title_file_pattern', 'File Pattern'); ?></label>
-                <?php echo functions::form_draw_text_field('files['.$f.'][name]', true, 'placeholder="path/file.ext" list="scripts"'); ?>
+                <?php echo functions::form_text_field('files['.$f.'][name]', true, 'placeholder="path/file.ext" list="scripts"'); ?>
               </div>
 
               <div class="sources"></div>
@@ -306,38 +306,38 @@ html.dark-mode .operation {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
+                    <?php echo functions::form_code_field('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
                   </div>
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
-                    <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true); ?>
+                    <?php echo functions::form_select_field('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true); ?>
                   </div>
 
                   <div class="row" style="font-size: .8em;">
                     <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][regex]', 'y/n', true); ?>
+                      <?php echo functions::form_toggle('files['.$f.'][operations]['.$o.'][find][regex]', 'y/n', true); ?>
                     </div>
 
                     <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][trim]', 'y/n', true); ?>
+                      <?php echo functions::form_toggle('files['.$f.'][operations]['.$o.'][find][trim]', 'y/n', true); ?>
                     </div>
 
                     <div class="form-group col-md-2">
                       <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
-                      <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-before]', true, 'placeholder="0"'); ?>
+                      <?php echo functions::form_text_field('files['.$f.'][operations]['.$o.'][find][offset-before]', true, 'placeholder="0"'); ?>
                     </div>
 
                     <div class="form-group col-md-2">
                       <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
-                      <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-after]', true, 'placeholder="0"'); ?>
+                      <?php echo functions::form_text_field('files['.$f.'][operations]['.$o.'][find][offset-after]', true, 'placeholder="0"'); ?>
                     </div>
 
                     <div class="form-group col-md-2">
                       <label><?php echo language::translate('title_index', 'Index'); ?></label>
-                      <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
+                      <?php echo functions::form_text_field('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
                     </div>
                   </div>
 
@@ -345,18 +345,18 @@ html.dark-mode .operation {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
+                    <?php echo functions::form_code_field('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
                   </div>
 
                   <div class="row" style="font-size: .8em;">
                     <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][regex]', 'y/n', true); ?>
+                      <?php echo functions::form_toggle('files['.$f.'][operations]['.$o.'][ignoreif][regex]', 'y/n', true); ?>
                     </div>
 
                     <div class="form-group col-md-3">
                       <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][trim]', 'y/n', true); ?>
+                      <?php echo functions::form_toggle('files['.$f.'][operations]['.$o.'][ignoreif][trim]', 'y/n', true); ?>
                     </div>
                   </div>
 
@@ -364,23 +364,23 @@ html.dark-mode .operation {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 240px;;"'); ?>
+                    <?php echo functions::form_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 240px;;"'); ?>
                   </div>
 
                   <div class="row" style="font-size: .8em;">
                     <div class="form-group col-md-4">
                       <label><?php echo language::translate('title_position', 'Position'); ?></label>
-                      <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][insert][position]', $position_options, true); ?>
+                      <?php echo functions::form_select_field('files['.$f.'][operations]['.$o.'][insert][position]', $position_options, true); ?>
                     </div>
 
                     <div class="form-group col-md-4">
                       <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][regex]', 'y/n', true); ?>
+                      <?php echo functions::form_toggle('files['.$f.'][operations]['.$o.'][insert][regex]', 'y/n', true); ?>
                     </div>
 
                     <div class="form-group col-md-4">
                       <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][trim]', 'y/n', true); ?>
+                      <?php echo functions::form_toggle('files['.$f.'][operations]['.$o.'][insert][trim]', 'y/n', true); ?>
                     </div>
                   </div>
 
@@ -403,12 +403,12 @@ html.dark-mode .operation {
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($vmod->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($vmod->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 
@@ -420,7 +420,7 @@ html.dark-mode .operation {
 
         <div class="form-group">
           <label><?php echo language::translate('title_file_pattern', 'File Pattern'); ?></label>
-          <?php echo functions::form_draw_text_field('files[new_tab_i][name]', true, 'placeholder="path/file.ext" list="scripts"'); ?>
+          <?php echo functions::form_text_field('files[new_tab_i][name]', true, 'placeholder="path/file.ext" list="scripts"'); ?>
         </div>
 
         <div class="sources"></div>
@@ -453,38 +453,38 @@ html.dark-mode .operation {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_code_field('files[tab_i][operations][new_operation_i][find][content]', true, 'style="height: 100px;"'); ?>
+          <?php echo functions::form_code_field('files[tab_i][operations][new_operation_i][find][content]', true, 'style="height: 100px;"'); ?>
         </div>
 
         <div class="form-group ">
           <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
-          <?php echo functions::form_draw_select_field('files[tab_i][operations][new_operation_i][onerror]', $on_error_options, true); ?>
+          <?php echo functions::form_select_field('files[tab_i][operations][new_operation_i][onerror]', $on_error_options, true); ?>
         </div>
 
         <div class="row" style="font-size: .8em;">
           <div class="form-group col-md-2">
             <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
-            <?php echo functions::form_draw_text_field('files[tab_i][operations][new_operation_i][find][offset-before]', true, 'placeholder="0"'); ?>
+            <?php echo functions::form_text_field('files[tab_i][operations][new_operation_i][find][offset-before]', true, 'placeholder="0"'); ?>
           </div>
 
           <div class="form-group col-md-2">
             <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
-            <?php echo functions::form_draw_text_field('files[tab_i][operations][new_operation_i][find][offset-after]', true, 'placeholder="0"'); ?>
+            <?php echo functions::form_text_field('files[tab_i][operations][new_operation_i][find][offset-after]', true, 'placeholder="0"'); ?>
           </div>
 
           <div class="form-group col-md-2">
             <label><?php echo language::translate('title_index', 'Index'); ?></label>
-            <?php echo functions::form_draw_text_field('files[tab_i][operations][new_operation_i][find][index]', true, 'placeholder="1,3,.."'); ?>
+            <?php echo functions::form_text_field('files[tab_i][operations][new_operation_i][find][index]', true, 'placeholder="1,3,.."'); ?>
           </div>
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][regex]', 'y/n', true); ?>
+            <?php echo functions::form_toggle('files[tab_i][operations][new_operation_i][find][regex]', 'y/n', true); ?>
           </div>
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][trim]', 'y/n', true); ?>
+            <?php echo functions::form_toggle('files[tab_i][operations][new_operation_i][find][trim]', 'y/n', true); ?>
           </div>
         </div>
 
@@ -492,18 +492,18 @@ html.dark-mode .operation {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_code_field('files[tab_i][operations][new_operation_i][ignoreif][content]', true, 'style="height: 50px;"'); ?>
+          <?php echo functions::form_code_field('files[tab_i][operations][new_operation_i][ignoreif][content]', true, 'style="height: 50px;"'); ?>
         </div>
 
         <div class="row" style="font-size: .8em;">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][regex]', 'y/n', true); ?>
+            <?php echo functions::form_toggle('files[tab_i][operations][new_operation_i][ignoreif][regex]', 'y/n', true); ?>
           </div>
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][trim]', 'y/n', true); ?>
+            <?php echo functions::form_toggle('files[tab_i][operations][new_operation_i][ignoreif][trim]', 'y/n', true); ?>
           </div>
         </div>
       </div>
@@ -513,23 +513,23 @@ html.dark-mode .operation {
 
         <div class="form-group">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_code_field('files[tab_i][operations][new_operation_i][insert][content]', true, 'style="height: 240px;;"'); ?>
+          <?php echo functions::form_code_field('files[tab_i][operations][new_operation_i][insert][content]', true, 'style="height: 240px;;"'); ?>
         </div>
 
         <div class="row" style="font-size: .8em;">
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_position', 'Position'); ?></label>
-            <?php echo functions::form_draw_select_field('files[tab_i][operations][new_operation_i][insert][position]', $position_options, true); ?>
+            <?php echo functions::form_select_field('files[tab_i][operations][new_operation_i][insert][position]', $position_options, true); ?>
           </div>
 
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][regex]', 'y/n', true); ?>
+            <?php echo functions::form_toggle('files[tab_i][operations][new_operation_i][insert][regex]', 'y/n', true); ?>
           </div>
 
           <div class="form-group col-md-4">
             <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][trim]', 'y/n', true); ?>
+            <?php echo functions::form_toggle('files[tab_i][operations][new_operation_i][insert][trim]', 'y/n', true); ?>
           </div>
         </div>
       </div>

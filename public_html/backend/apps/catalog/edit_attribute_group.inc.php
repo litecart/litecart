@@ -82,25 +82,25 @@
   <div class="card-action">
   </div>
 
-  <?php echo functions::form_draw_form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+  <?php echo functions::form_begin('attribute_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="card-body">
 
     <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_code', 'Code'); ?></label>
-        <?php echo functions::form_draw_text_field('code', true); ?>
+        <?php echo functions::form_text_field('code', true); ?>
       </div>
 
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_sort_values', 'Sort Values'); ?></label>
-        <?php echo functions::form_draw_select_field('sort', $sort_options, true); ?>
+        <?php echo functions::form_select_field('sort', $sort_options, true); ?>
       </div>
     </div>
 
     <div class="form-group">
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('name['. $language_code .']', $language_code, true); ?>
     </div>
 
     <div id="product-values">
@@ -119,8 +119,8 @@
         <tbody>
           <?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
           <tr>
-            <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
-            <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
+            <td class="grabable"><?php echo $group_value['id']; ?><?php echo functions::form_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
+            <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
             <td class="text-center"><?php echo !empty($group_value['in_use']) ? language::translate('title_yes', 'Yes') : language::translate('title_no', 'No'); ?></td>
             <td class="text-end"><?php echo empty($group_value['in_use']) ? '<a href="#" class="remove" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"') .'</a>' : false; ?></td>
           </tr>
@@ -135,13 +135,13 @@
     </div>
 
     <div class="card-action">
-      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-      <?php echo (!empty($attribute_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+      <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+      <?php echo (!empty($attribute_group->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+      <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
     </div>
   </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 </div>
 
 
@@ -152,10 +152,10 @@
     while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
     $name_fields = '';
-    foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_draw_regional_text_field('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
+    foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text_field('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
 ?>
     var output = '<tr>'
-               + '  <td><?php echo functions::escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
+               + '  <td><?php echo functions::escape_js(functions::form_hidden_field('values[new_value_index][id]', '')); ?></td>'
                + '  <td><?php echo functions::escape_js($name_fields); ?></td>'
                + '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>'
                + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a></td>'

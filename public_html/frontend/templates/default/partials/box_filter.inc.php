@@ -40,12 +40,12 @@
 </style>
 
 <section id="box-filter">
-  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+  <?php echo functions::form_begin('filter_form', 'get'); ?>
 
     <div class="filter">
 
       <div>
-        <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_html(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
+        <?php echo functions::form_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_html(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
       </div>
 
       <?php if ($brands) { ?>
@@ -57,7 +57,7 @@
           <ul class="dropdown-menu">
             <?php foreach ($brands as $brand) { ?>
             <li>
-              <?php echo functions::form_draw_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?>
+              <?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. language::translate('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?>
             </li>
             <?php } ?>
           </ul>
@@ -74,7 +74,7 @@
           <ul class="dropdown-menu">
             <?php foreach ($group['values'] as $value) { ?>
             <li>
-              <?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"'); ?>
+              <?php echo !empty($group['select_multiple']) ? functions::form_checkbox('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"') : functions::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"'); ?>
             </li>
             <?php } ?>
           </ul>
@@ -90,7 +90,7 @@
           <ul class="dropdown-menu">
             <?php foreach ($sort_alternatives as $key => $title) { ?>
             <li>
-              <?php echo functions::form_draw_radio_button('sort', [$key, $title], true); ?>
+              <?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
             </li>
             <?php } ?>
           </ul>
@@ -108,7 +108,7 @@
 
     <div class="tokens"></div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 </section>
 
 <script>

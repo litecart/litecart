@@ -86,19 +86,19 @@
 
   <div class="card-action">
     <ul class="list-inline">
-      <li><?php echo functions::form_draw_button('add_recipient', language::translate('title_create_new_recipient', 'Create New Recipient'), 'button', '', 'add'); ?></li>
-      <li><?php echo functions::form_draw_link_button(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
+      <li><?php echo functions::form_button('add_recipient', language::translate('title_create_new_recipient', 'Create New Recipient'), 'button', '', 'add'); ?></li>
+      <li><?php echo functions::form_link_button(document::ilink(null, ['action' => 'export']), language::translate('title_export', 'Export'), 'target="_blank"'); ?></li>
     </ul>
   </div>
 
-  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+  <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
-  <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
+  <?php echo functions::form_begin('recipients_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -114,7 +114,7 @@
       <tbody>
         <?php foreach ($recipients as $recipient) { ?>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('recipients[]', $recipient['id']); ?></td>
+          <td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
           <td><?php echo $recipient['id']; ?></td>
           <td><?php echo $recipient['email']; ?></td>
           <td><?php echo $recipient['client_ip']; ?></td>
@@ -132,11 +132,11 @@
 
     <div class="card-body">
       <div class="btn-group">
-        <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
+        <?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
       </div>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
@@ -146,16 +146,16 @@
 </div>
 
 <div id="modal-add-recipients" class="modal fade" style="width: 640px; display: none;">
-  <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
+  <?php echo functions::form_begin('recipients_form', 'post'); ?>
 
     <div class="form-group">
       <label><?php echo language::translate('title_recipients', 'Recipients'); ?></label>
-      <?php echo functions::form_draw_textarea('recipients', '', 'style="height: 480px;"'); ?>
+      <?php echo functions::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
     </div>
 
-    <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
+    <?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 </div>
 
 <script>

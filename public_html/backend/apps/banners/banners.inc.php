@@ -44,15 +44,15 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+    <?php echo functions::form_begin('filter_form', 'get'); ?>
       <ul class="list-inline">
-        <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-        <li><?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
+        <li><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
+        <li><?php echo functions::form_link_button(document::ilink(__APP__.'/edit_banner'), language::translate('title_create_new_banner', 'Create New Banner'), '', 'add'); ?></li>
       </ul>
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('banners_form', 'post'); ?>
+  <?php echo functions::form_begin('banners_form', 'post'); ?>
 
     <table class="table table-striped data-table">
       <thead>
@@ -73,7 +73,7 @@
       <tbody>
         <?php foreach ($banners as $banner) { ?>
         <tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">
-          <td><?php echo functions::form_draw_checkbox('banners[]', $banner['id']); ?></td>
+          <td><?php echo functions::form_checkbox('banners[]', $banner['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($banner['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
           <td><?php echo $banner['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>
@@ -100,13 +100,13 @@
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
 
         <div class="btn-group">
-          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
         </div>
       </fieldset>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">

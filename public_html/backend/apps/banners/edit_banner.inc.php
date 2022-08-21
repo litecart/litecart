@@ -89,42 +89,42 @@ table th:last-child {
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('banner_form', 'post', '', true, 'style="max-width: 640px;"'); ?>
+    <?php echo functions::form_begin('banner_form', 'post', '', true, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
-          <?php echo functions::form_draw_toggle('status', 'e/d', true); ?>
+          <?php echo functions::form_toggle('status', 'e/d', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_draw_text_field('name', true); ?>
+          <?php echo functions::form_text_field('name', true); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-          <div><?php echo functions::form_draw_languages_list('languages[]', true); ?></div>
+          <div><?php echo functions::form_languages_list('languages[]', true); ?></div>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_image', 'Image'); ?></label>
-        <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
+        <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
         <?php echo (!empty($banner->data['image'])) ? '<div>' . $banner->data['image'] .'</div>' : ''; ?>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_link', 'Link'); ?></label>
-        <?php echo functions::form_draw_url_field('link', true); ?>
+        <?php echo functions::form_url_field('link', true); ?>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_html', 'HTML'); ?></label>
         <div class="form-control" style="padding: 0;">
-          <?php echo functions::form_draw_code_field('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
+          <?php echo functions::form_code_field('html', true, 'placeholder="'. functions::escape_html('<a href="$target_url"><img class="responsive" src="$image_url" /></a>') .'" style="height: 150px;"'); ?>
           <div style="padding: 0.5em; background: #efefef;">
             <?php echo language::translate('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
           </div>
@@ -133,28 +133,28 @@ table th:last-child {
 
       <div class="form-group">
         <label><?php echo language::translate('title_banner_pools', 'Banner Pools'); ?> / <?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-        <?php echo functions::form_draw_text_field('keywords', true, 'placeholder="banner1,banner2,banner3"'); ?>
+        <?php echo functions::form_text_field('keywords', true, 'placeholder="banner1,banner2,banner3"'); ?>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_valid_from', 'Date Valid From'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
+          <?php echo functions::form_datetime_field('date_valid_from', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_valid_to', 'Date Valid To'); ?></label>
-          <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
+          <?php echo functions::form_datetime_field('date_valid_to', true); ?>
         </div>
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($banner->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($banner->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 
@@ -179,9 +179,9 @@ table th:last-child {
     while ($(':input[name="keys[key_'+new_key_i+']"]').length) new_key_i++;
 
     var output = '<tr>' +
-                 '  <td><?php echo functions::form_draw_text_field('keys[key_new_key_i]', 'key_new_key_i', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>' +
+                 '  <td><?php echo functions::form_text_field('keys[key_new_key_i]', 'key_new_key_i', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>' +
                  <?php foreach (language::$languages as $language) { ?>
-                 '  <td><?php echo functions::form_draw_text_field('values['. $language['code'] .'][key_new_key_i]', true); ?></td>' +
+                 '  <td><?php echo functions::form_text_field('values['. $language['code'] .'][key_new_key_i]', true); ?></td>' +
                  <?php } ?>
                  '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
                  '</tr>';

@@ -2,7 +2,7 @@
   <div id="content" class="container">
     {{notices}}
 
-    <?php echo functions::form_draw_form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
+    <?php echo functions::form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
 
     <section id="box-checkout">
       <div class="cart wrapper"></div>
@@ -22,7 +22,7 @@
       <div class="summary wrapper"></div>
     </section>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </main>
 

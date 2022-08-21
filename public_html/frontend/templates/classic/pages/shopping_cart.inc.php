@@ -14,52 +14,52 @@
     <section id="box-checkout-region">
 
       <h2 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h2>
-      <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink('regional_settings', ['redirect_url' => document::link()]), false, 'style="max-width: 480px;"'); ?>
+      <?php echo functions::form_begin('region_form', 'post', document::ilink('regional_settings', ['redirect_url' => document::link()]), false, 'style="max-width: 480px;"'); ?>
 
         <?php if (count($languages) > 1) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_language', 'Language'); ?></label>
-          <?php echo functions::form_draw_select_field('language_code', $language_options, language::$selected['code']); ?>
+          <?php echo functions::form_select_field('language_code', $language_options, language::$selected['code']); ?>
         </div>
         <?php } ?>
 
         <?php if (count($currencies) > 1) { ?>
         <div class="form-group">
           <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-          <?php echo functions::form_draw_select_field('currency_code', $currency_options, currency::$selected['code']); ?>
+          <?php echo functions::form_select_field('currency_code', $currency_options, currency::$selected['code']); ?>
         </div>
         <?php } ?>
 
         <div class="form-group">
           <label><?php echo language::translate('title_country', 'Country'); ?></label>
-          <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?>
+          <?php echo functions::form_countries_list('country_code', customer::$data['country_code']); ?>
         </div>
 
         <div class="form-group">
           <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-          <?php echo functions::form_draw_zones_list('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
+          <?php echo functions::form_zones_list('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
         </div>
 
         <div class="form-group">
           <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
-          <?php echo functions::form_draw_text_field('postcode', customer::$data['postcode']); ?>
+          <?php echo functions::form_text_field('postcode', customer::$data['postcode']); ?>
         </div>
 
         <div class="form-group">
           <label><?php echo language::translate('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></label>
-          <?php echo functions::form_draw_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax'] ? '1' : '0'); ?>
+          <?php echo functions::form_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax'] ? '1' : '0'); ?>
         </div>
 
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-default btn-block"'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-default btn-block"'); ?>
 
-      <?php echo functions::form_draw_form_end(); ?>
+      <?php echo functions::form_end(); ?>
     </section>
   </aside>
 
   <div id="content">
     {{notices}}
 
-    <?php echo functions::form_draw_form_begin('shopping_cart_form', 'post'); ?>
+    <?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
 
       <section id="box-checkout-cart">
 
@@ -89,13 +89,13 @@
                         <div style="display: inline-flex;">
                           <?php if (!empty($item['quantity_unit']['name'])) { ?>
                           <div class="input-group" style="max-width: 150px;">
-                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0"'); ?>
+                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0"'); ?>
                             <?php echo $item['quantity_unit']['name']; ?>
                           </div>
                           <?php } else { ?>
-                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+                            <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 'min="0"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                           <?php } ?>
-                          <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+                          <?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
                         </div>
                       </div>
                     </div>
@@ -109,7 +109,7 @@
               </div>
 
               <div class="col-2 text-end">
-                <td><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+                <td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
               </div>
             </div>
           </li>
@@ -126,6 +126,6 @@
         <li><a class="btn btn-success btn-lg" href="<?php echo document::href_ilink('checkout/index'); ?>"><?php echo language::translate('title_checkout', 'Checkout'); ?></a></li>
       </ul>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </main>

@@ -174,7 +174,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('form_shopping_cart', 'post'); ?>
+    <?php echo functions::form_begin('form_shopping_cart', 'post'); ?>
 
       <section id="general" style="max-width: 980px;">
         <h2><?php echo language::translate('title_general', 'General'); ?></h2>
@@ -182,17 +182,17 @@
         <div class="row">
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_language', 'Language'); ?></label>
-            <?php echo functions::form_draw_languages_list('language_code', true); ?>
+            <?php echo functions::form_languages_list('language_code', true); ?>
           </div>
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-            <?php echo functions::form_draw_currencies_list('currency_code', true); ?>
+            <?php echo functions::form_currencies_list('currency_code', true); ?>
           </div>
 
           <div class="form-group col-md-3">
             <label><?php echo language::translate('title_lock_prices', 'Lock Prices'); ?></label>
-            <?php echo functions::form_draw_toggle('lock_prices', 'y/n', true); ?>
+            <?php echo functions::form_toggle('lock_prices', 'y/n', true); ?>
           </div>
 
           <?php if ($shopping_cart->data['client_ip']) { ?>
@@ -208,7 +208,7 @@
         <div class="form-group">
           <label><?php echo language::translate('title_link', 'Link'); ?></label>
           <?php if (!empty($shopping_cart->data['id'])) { ?>
-          <?php echo functions::form_draw_url_field('link', document::ilink('f:checkout/index', ['cart_uid' => $shopping_cart->data['uid'], 'public_key' => $shopping_cart->data['public_key']], 'readonly')); ?>
+          <?php echo functions::form_url_field('link', document::ilink('f:checkout/index', ['cart_uid' => $shopping_cart->data['uid'], 'public_key' => $shopping_cart->data['public_key']], 'readonly')); ?>
           <?php } else { ?>
           <div class="form-input">
             <em>(<?php echo language::translate('text_save_to_generate_link', 'Save to generate link'); ?>)</em>
@@ -226,80 +226,80 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="selected-account form-input"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo isset($_POST['customer']['id']) ? (int)$_POST['customer']['id'] : ''; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_ilink('customers/customer_picker'); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;"><?php echo language::translate('title_change', 'Change'); ?></a></div>
-                <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
-                <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
+                <?php echo functions::form_hidden_field('customer[id]', true); ?>
+                <?php echo functions::form_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[company]', true); ?>
+                <?php echo functions::form_text_field('customer[company]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_tax_id', 'Tax ID / VATIN'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[tax_id]', true); ?>
+                <?php echo functions::form_text_field('customer[tax_id]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[firstname]', true); ?>
+                <?php echo functions::form_text_field('customer[firstname]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[lastname]', true); ?>
+                <?php echo functions::form_text_field('customer[lastname]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[address1]', true); ?>
+                <?php echo functions::form_text_field('customer[address1]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[address2]', true); ?>
+                <?php echo functions::form_text_field('customer[address2]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[postcode]', true); ?>
+                <?php echo functions::form_text_field('customer[postcode]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_city', 'City'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[city]', true); ?>
+                <?php echo functions::form_text_field('customer[city]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                <?php echo functions::form_draw_countries_list('customer[country_code]', true); ?>
+                <?php echo functions::form_countries_list('customer[country_code]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo form_draw_zones_list('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
+                <?php echo form_zones_list('customer[zone_code]', fallback($_POST['customer']['country_code']), true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-                <?php echo functions::form_draw_email_field('customer[email]', true, 'required'); ?>
+                <?php echo functions::form_email_field('customer[email]', true, 'required'); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-                <?php echo functions::form_draw_phone_field('customer[phone]', true); ?>
+                <?php echo functions::form_phone_field('customer[phone]', true); ?>
               </div>
             </div>
           </div>
@@ -308,68 +308,68 @@
             <h2><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></h2>
 
             <div class="form-group">
-              <?php echo functions::form_draw_button('copy_billing_address', language::translate('title_copy_billing_address', 'Copy Billing Address'), 'button', 'class="btn btn-default btn-block"'); ?>
+              <?php echo functions::form_button('copy_billing_address', language::translate('title_copy_billing_address', 'Copy Billing Address'), 'button', 'class="btn btn-default btn-block"'); ?>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_company_name', 'Company Name'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[shipping_address][company]', true); ?>
+                <?php echo functions::form_text_field('customer[shipping_address][company]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[shipping_address][firstname]', true); ?>
+                <?php echo functions::form_text_field('customer[shipping_address][firstname]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[shipping_address][lastname]', true); ?>
+                <?php echo functions::form_text_field('customer[shipping_address][lastname]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[shipping_address][address1]', true); ?>
+                <?php echo functions::form_text_field('customer[shipping_address][address1]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_address2', 'Address 2'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[shipping_address][address2]', true); ?>
+                <?php echo functions::form_text_field('customer[shipping_address][address2]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[shipping_address][postcode]', true); ?>
+                <?php echo functions::form_text_field('customer[shipping_address][postcode]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_city', 'City'); ?></label>
-                <?php echo functions::form_draw_text_field('customer[shipping_address][city]', true); ?>
+                <?php echo functions::form_text_field('customer[shipping_address][city]', true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_country', 'Country'); ?></label>
-                <?php echo functions::form_draw_countries_list('customer[shipping_address][country_code]', true); ?>
+                <?php echo functions::form_countries_list('customer[shipping_address][country_code]', true); ?>
               </div>
 
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-                <?php echo form_draw_zones_list('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code']), true); ?>
+                <?php echo form_zones_list('customer[shipping_address][zone_code]', fallback($_POST['customer']['shipping_address']['country_code']), true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label><?php echo language::translate('title_phone_number', 'Phone Number'); ?></label>
-                <?php echo functions::form_draw_phone_field('customer[shipping_address][phone]', true); ?>
+                <?php echo functions::form_phone_field('customer[shipping_address][phone]', true); ?>
               </div>
             </div>
           </div>
@@ -398,13 +398,13 @@
               <tr class="item">
                 <td class="grabable">
                   <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
-                  <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
-                  <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
+                  <?php echo functions::form_hidden_field('items['.$key.'][id]', true); ?>
+                  <?php echo functions::form_hidden_field('items['.$key.'][product_id]', true); ?>
                 </td>
-                <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
-                <td><?php echo functions::form_draw_currency_field('items['. $key .'][price]', $_POST['currency_code'], true); ?></td>
-                <td><?php echo functions::form_draw_currency_field('items['. $key .'][discount]', $_POST['currency_code'], true); ?></td>
-                <td><?php echo functions::form_draw_currency_field('items['. $key .'][total]', $_POST['currency_code'], true, 'readonly'); ?></td>
+                <td><?php echo functions::form_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
+                <td><?php echo functions::form_currency_field('items['. $key .'][price]', $_POST['currency_code'], true); ?></td>
+                <td><?php echo functions::form_currency_field('items['. $key .'][discount]', $_POST['currency_code'], true); ?></td>
+                <td><?php echo functions::form_currency_field('items['. $key .'][total]', $_POST['currency_code'], true, 'readonly'); ?></td>
                 <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"'); ?></a></td>
                 <td><a class="edit btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
               </tr>
@@ -427,12 +427,12 @@
       </section>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($shopping_cart->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($shopping_cart->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 
@@ -442,7 +442,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'"'); ?>
+      <?php echo functions::form_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'"'); ?>
     </div>
 
     <div class="form-group results table-responsive">
@@ -472,35 +472,35 @@
     <div class="row">
       <div class="form-group col-md-9">
         <label><?php echo language::translate('title_name', 'Name'); ?></label>
-        <?php echo functions::form_draw_text_field('name', ''); ?>
+        <?php echo functions::form_text_field('name', ''); ?>
       </div>
 
       <div class="form-group col-md-3">
         <label><?php echo language::translate('title_product_id', 'Product ID'); ?></label>
-        <?php echo functions::form_draw_number_field('product_id', ''); ?>
+        <?php echo functions::form_number_field('product_id', ''); ?>
       </div>
     </div>
 
     <div class="row">
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-        <?php echo functions::form_draw_decimal_field('quantity', ''); ?>
+        <?php echo functions::form_decimal_field('quantity', ''); ?>
       </div>
 
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
-        <?php echo functions::form_draw_currency_field('price', $_POST['currency_code'], ''); ?>
+        <?php echo functions::form_currency_field('price', $_POST['currency_code'], ''); ?>
       </div>
 
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-        <?php echo functions::form_draw_currency_field('tax', $_POST['currency_code'], ''); ?>
+        <?php echo functions::form_currency_field('tax', $_POST['currency_code'], ''); ?>
       </div>
     </div>
 
     <div class="btn-group">
-      <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
-      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
+      <?php echo functions::form_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
+      <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
     </div>
   </div>
 </div>
@@ -514,35 +514,35 @@
     <div class="row">
       <div class="form-group col-md-9">
         <label><?php echo language::translate('title_name', 'Name'); ?></label>
-        <?php echo functions::form_draw_text_field('name', ''); ?>
+        <?php echo functions::form_text_field('name', ''); ?>
       </div>
 
       <div class="form-group col-md-3">
         <label><?php echo language::translate('title_product_id', 'Product ID'); ?></label>
-        <?php echo functions::form_draw_number_field('product_id', ''); ?>
+        <?php echo functions::form_number_field('product_id', ''); ?>
       </div>
     </div>
 
     <div class="row">
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-        <?php echo functions::form_draw_decimal_field('quantity', ''); ?>
+        <?php echo functions::form_decimal_field('quantity', ''); ?>
       </div>
 
         <div class="form-group col-md-4">
         <label><?php echo language::translate('title_price', 'Price'); ?></label>
-        <?php echo functions::form_draw_currency_field('price', $_POST['currency_code'], ''); ?>
+        <?php echo functions::form_currency_field('price', $_POST['currency_code'], ''); ?>
       </div>
 
       <div class="form-group col-md-4">
         <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-        <?php echo functions::form_draw_currency_field('tax', $_POST['currency_code'], ''); ?>
+        <?php echo functions::form_currency_field('tax', $_POST['currency_code'], ''); ?>
       </div>
     </div>
 
     <div>
-      <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
-      <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
+      <?php echo functions::form_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
+      <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
     </div>
   </div>
 </div>
@@ -814,14 +814,14 @@
 
     var output = '  <tr class="item">'
                + '    <td class="grabable">' + item.name
-               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][id]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][product_id]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_draw_hidden_field('items[new_item_index][description]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][id]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][product_id]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][name]', '')); ?>'
+               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][description]', '')); ?>'
                + '    </td>'
-               + '    <td><?php echo functions::escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_draw_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_draw_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>'
+               + '    <td><?php echo functions::escape_js(functions::form_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
+               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
+               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>'
                + '    <td class="text-end">'
                + '      <a class="edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>'
                + '      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>'

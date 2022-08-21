@@ -81,7 +81,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
+    <?php echo functions::form_begin('user_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
       <div class="row">
 
@@ -89,43 +89,43 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_status', 'Status'); ?></label>
-              <?php echo functions::form_draw_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+              <?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_username', 'Username'); ?></label>
-              <?php echo functions::form_draw_text_field('username', true, 'autocomplete="off" required'); ?>
+              <?php echo functions::form_text_field('username', true, 'autocomplete="off" required'); ?>
             </div>
 
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_email', 'Email'); ?></label>
-              <?php echo functions::form_draw_email_field('email', true, 'autocomplete="off"'); ?>
+              <?php echo functions::form_email_field('email', true, 'autocomplete="off"'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
-              <?php echo functions::form_draw_password_field('password', '', 'autocomplete="off"'); ?>
+              <?php echo functions::form_password_field('password', '', 'autocomplete="off"'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-              <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
+              <?php echo functions::form_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_valid_from', 'Valid From'); ?></label>
-              <?php echo functions::form_draw_datetime_field('date_valid_from', true); ?>
+              <?php echo functions::form_datetime_field('date_valid_from', true); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_valid_to', 'Valid To'); ?></label>
-              <?php echo functions::form_draw_datetime_field('date_valid_to', true); ?>
+              <?php echo functions::form_datetime_field('date_valid_to', true); ?>
             </div>
           </div>
 
@@ -133,19 +133,19 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_ip_address', 'Last IP Address'); ?></label>
-              <?php echo functions::form_draw_text_field('last_ip_address', true, 'readonly'); ?>
+              <?php echo functions::form_text_field('last_ip_address', true, 'readonly'); ?>
             </div>
 
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_hostname', 'Last Hostname'); ?></label>
-              <?php echo functions::form_draw_text_field('last_hostname', true, 'readonly'); ?>
+              <?php echo functions::form_text_field('last_hostname', true, 'readonly'); ?>
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_last_login', 'Last Login'); ?></label>
-              <?php echo functions::form_draw_text_field('date_login', true, 'readonly'); ?>
+              <?php echo functions::form_text_field('date_login', true, 'readonly'); ?>
             </div>
           </div>
           <?php } ?>
@@ -153,18 +153,18 @@
 
         <div class="col-md-4">
           <div class="form-group">
-            <?php echo functions::form_draw_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
+            <?php echo functions::form_checkbox('apps_toggle', ['1', language::translate('title_apps', 'Apps')]); ?>
             <div class="form-input" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
     echo '<li>' . PHP_EOL
-       . '  '. functions::form_draw_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
+       . '  '. functions::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true) . PHP_EOL;
     if (!empty($app['docs'])) {
       echo '  <ul class="list-unstyled">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '    <li>'. functions::form_draw_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) . PHP_EOL;
+        echo '    <li>'. functions::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) . PHP_EOL;
       }
       echo '  </ul>' . PHP_EOL;
     }
@@ -176,14 +176,14 @@
           </div>
 
           <div class="form-group">
-            <?php echo functions::form_draw_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
+            <?php echo functions::form_checkbox('widgets_toggle', ['1', language::translate('title_widgets', 'Widgets')]); ?>
             <div class="form-input" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">
 <?php
   $widgets = functions::admin_get_widgets();
   foreach ($widgets as $widget) {
     echo '<li>' . PHP_EOL
-       . '  '. functions::form_draw_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true) . PHP_EOL
+       . '  '. functions::form_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true) . PHP_EOL
        . '</li>' . PHP_EOL;
   }
 ?>
@@ -194,12 +194,12 @@
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($user->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 

@@ -34,7 +34,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('file_form', 'post'); ?>
+    <?php echo functions::form_begin('file_form', 'post'); ?>
 
       <div class="row" style="max-width: 640px;">
         <div class="form-group col-md-8">
@@ -45,14 +45,14 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_content', 'Content'); ?></label>
-        <?php echo functions::form_draw_code_field('content', true); ?>
+        <?php echo functions::form_code_field('content', true); ?>
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>

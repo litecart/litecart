@@ -266,23 +266,23 @@ table .fa-star:hover {
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+  <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <?php echo functions::form_draw_select_optgroup_field('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
+      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+      <?php echo functions::form_select_optgroup_field('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
       <div class="input-group" style="max-width: 380px;">
-        <?php echo functions::form_draw_date_field('date_from', true); ?>
+        <?php echo functions::form_date_field('date_from', true); ?>
         <span class="input-group-text"> - </span>
-        <?php echo functions::form_draw_date_field('date_to', true); ?>
+        <?php echo functions::form_date_field('date_to', true); ?>
       </div>
-      <?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+      <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
-  <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
+  <?php echo functions::form_begin('orders_form', 'post'); ?>
 
     <table class="table table-striped table-hover table-sortable data-table">
       <thead>
@@ -305,7 +305,7 @@ table .fa-star:hover {
       <tbody>
         <?php foreach ($orders as $order) { ?>
         <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
-          <td><?php echo functions::form_draw_checkbox('orders[]', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+          <td><?php echo functions::form_checkbox('orders[]', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
           <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
           <td class="text-end"><?php echo $order['no']; ?></td>
           <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
@@ -339,7 +339,7 @@ table .fa-star:hover {
             <legend><?php echo language::translate('title_set_order_status', 'Set Order Status'); ?></legend>
             <div class="form-group">
               <div class="input-group">
-                <?php echo functions::form_draw_order_statuses_list('order_status_id', true); ?>
+                <?php echo functions::form_order_statuses_list('order_status_id', true); ?>
                 <button class="btn btn-default" name="set_order_status" value="true" type="submit" formtarget="_self"><?php echo language::translate('title_set', 'Set'); ?></button>
               </div>
             </div>
@@ -350,7 +350,7 @@ table .fa-star:hover {
           <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
             <legend><?php echo $module['name']; ?></legend>
             <div class="btn-group">
-              <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
+              <?php foreach ($module['actions'] as $action) echo functions::form_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
             </div>
           </fieldset>
         </li>
@@ -358,7 +358,7 @@ table .fa-star:hover {
       </ul>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">

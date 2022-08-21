@@ -5,7 +5,7 @@
 
     <?php foreach ($options as $option) { ?>
     <label class="option btn btn-default btn-block<?php echo (!empty($selected) && $selected['module_id'] == $option['module_id'] && $selected['option_id'] == $option['option_id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
-      <?php echo functions::form_draw_radio_button('shipping_option_id', $option['id'], !empty($selected['id']) ? $selected['id'] .':'. $selected['option_id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
+      <?php echo functions::form_radio_button('shipping_option_id', $option['id'], !empty($selected['id']) ? $selected['id'] .':'. $selected['option_id'] : '', 'style="display: none;"' . (!empty($option['error']) ? ' disabled' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-sm-4 thumbnail" style="margin: 0;">
           <img src="<?php echo document::href_rlink(functions::image_thumbnail(FS_DIR_APP . $option['icon'], 140, 80)); ?>" />

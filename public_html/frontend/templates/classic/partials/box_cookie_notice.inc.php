@@ -9,8 +9,8 @@
     </div>
 
     <div class="buttons">
-      <?php echo functions::form_draw_button('accept_cookies', ['1', language::translate('text_accept_cookies', 'Accept Cookies') .' ('. language::translate('text_recommended', 'recommended') .')'], 'button', 'style="font-weight: bold;"'); ?>
-      <?php echo functions::form_draw_button('decline_cookies', ['0', language::translate('text_decline_cookies', 'Decline Cookies')], 'button'); ?>
+      <?php echo functions::form_button('accept_cookies', ['1', language::translate('text_accept_cookies', 'Accept Cookies') .' ('. language::translate('text_recommended', 'recommended') .')'], 'button', 'style="font-weight: bold;"'); ?>
+      <?php echo functions::form_button('decline_cookies', ['0', language::translate('text_decline_cookies', 'Decline Cookies')], 'button'); ?>
     </div>
   </div>
 </div>

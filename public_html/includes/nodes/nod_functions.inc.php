@@ -4,6 +4,19 @@
 
     public static function __callstatic($function, $arguments) {
 
+      $search_replace = [
+        '#^form_draw_(form_)?(.*)#' => 'form_$2',
+      ];
+
+      foreach ($search_replace as $search => $replace) {
+        if (preg_match($search, $function)) {
+          $new_function = preg_replace($search, $replace, $function);
+          trigger_error('Function '. $function.'() has been renamed to '. $new_function .'()', E_USER_DEPRECATED);
+          $function = $new_function;
+          break;
+        }
+      }
+
       if (!function_exists($function)) {
         $file = 'func_' . strtok($function, '_') .'.inc.php';
         include_once 'app://includes/functions/' . $file;

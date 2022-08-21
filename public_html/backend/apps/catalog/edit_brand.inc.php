@@ -85,24 +85,24 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('brand_form', 'post', false, true); ?>
+    <?php echo functions::form_begin('brand_form', 'post', false, true); ?>
 
 
       <div class="row">
         <div class="col-md-3">
           <div class="form-group">
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+            <?php echo functions::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_featured', 'Featured'); ?></label>
-            <?php echo functions::form_draw_toggle('featured', 'y/n', fallback($_POST['featured'], '1')); ?>
+            <?php echo functions::form_toggle('featured', 'y/n', fallback($_POST['featured'], '1')); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_code', 'Code'); ?></label>
-            <?php echo functions::form_draw_text_field('code', true); ?>
+            <?php echo functions::form_text_field('code', true); ?>
           </div>
 
           <div id="image">
@@ -114,16 +114,16 @@
 
             <div class="form-group">
               <label><?php echo !empty($brand->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></label>
-              <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
+              <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
               <?php if (!empty($brand->data['image'])) { ?>
-              <?php echo functions::form_draw_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
+              <?php echo functions::form_checkbox('delete_image', ['true', language::translate('title_delete', 'Delete')], true); ?>
               <?php } ?>
             </div>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-            <?php echo functions::form_draw_text_field('keywords', true); ?>
+            <?php echo functions::form_text_field('keywords', true); ?>
           </div>
         </div>
 
@@ -131,7 +131,7 @@
 
           <div class="form-group">
             <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php echo functions::form_draw_text_field('name', true); ?>
+            <?php echo functions::form_text_field('name', true); ?>
           </div>
 
           <ul class="nav nav-tabs">
@@ -147,33 +147,33 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
+                <?php echo functions::form_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_description', 'Description'); ?></label>
-                <?php echo functions::form_draw_regional_wysiwyg_field('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+                <?php echo functions::form_regional_wysiwyg_field('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_link', 'Link'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('link['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text_field('link['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                  <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true, ''); ?>
+                  <?php echo functions::form_regional_text_field('head_title['. $language_code .']', $language_code, true, ''); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                  <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
+                  <?php echo functions::form_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
                 </div>
               </div>
             </div>
@@ -184,12 +184,12 @@
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($brand->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($brand->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 

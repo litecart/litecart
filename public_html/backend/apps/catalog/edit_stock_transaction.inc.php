@@ -67,12 +67,12 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('form_stock_transaction', 'post'); ?>
+    <?php echo functions::form_begin('form_stock_transaction', 'post'); ?>
 
       <div class="row">
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_draw_text_field('name', true); ?>
+          <?php echo functions::form_text_field('name', true); ?>
         </div>
 
         <?php if (!empty($stock_transaction->data['id'])) { ?>
@@ -91,7 +91,7 @@
       <div class="row">
         <div class="form-group col-md-7">
           <label><?php echo language::translate('title_description', 'Description'); ?></label>
-          <?php echo functions::form_draw_textarea('description', true, 'style="height: 100px;"'); ?>
+          <?php echo functions::form_textarea('description', true, 'style="height: 100px;"'); ?>
         </div>
       </div>
 
@@ -112,24 +112,24 @@
           <?php if (!empty($_POST['contents'])) foreach (array_keys($_POST['contents']) as $key) { ?>
           <tr class="item">
             <td>
-              <?php echo functions::form_draw_hidden_field('contents['.$key.'][id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('contents['.$key.'][stock_item_id]', true); ?>
-              <?php echo functions::form_draw_hidden_field('contents['. $key .'][sku]', true); ?>
-              <?php echo functions::form_draw_hidden_field('contents['. $key .'][name]', true); ?>
+              <?php echo functions::form_hidden_field('contents['.$key.'][id]', true); ?>
+              <?php echo functions::form_hidden_field('contents['.$key.'][stock_item_id]', true); ?>
+              <?php echo functions::form_hidden_field('contents['. $key .'][sku]', true); ?>
+              <?php echo functions::form_hidden_field('contents['. $key .'][name]', true); ?>
               <?php echo functions::escape_html($_POST['contents'][$key]['sku']); ?>
             </td>
             <td><?php echo functions::escape_html($_POST['contents'][$key]['name']); ?></td>
-            <td><?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity]', true, 2, 'readonly'); ?></td>
+            <td><?php echo functions::form_decimal_field('contents['. $key .'][quantity]', true, 2, 'readonly'); ?></td>
             <td class="text-center">
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
-                <?php echo functions::form_draw_decimal_field('contents['. $key .'][quantity_adjustment]', true, 2); ?>
+                <?php echo functions::form_decimal_field('contents['. $key .'][quantity_adjustment]', true, 2); ?>
               </div>
             </td>
             <td class="text-center">
               <div class="input-group">
-                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                <?php echo functions::form_draw_decimal_field('contents['. $key .'][backordered]', true, 2); ?>
+                <?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                <?php echo functions::form_decimal_field('contents['. $key .'][backordered]', true, 2); ?>
               </div>
             </td>
             <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
@@ -138,22 +138,22 @@
         </tbody>
         <tfoot>
           <tr>
-            <td><?php echo functions::form_draw_text_field('new[sku]', true, 'list="available-stock-items"'); ?></td>
-            <td><?php echo functions::form_draw_text_field('new[name]', true, 'tabindex="-1"'); ?></td>
-            <td><?php echo functions::form_draw_decimal_field('new[quantity]', true, 2, 'tabindex="-1" readonly'); ?></td>
+            <td><?php echo functions::form_text_field('new[sku]', true, 'list="available-stock-items"'); ?></td>
+            <td><?php echo functions::form_text_field('new[name]', true, 'tabindex="-1"'); ?></td>
+            <td><?php echo functions::form_decimal_field('new[quantity]', true, 2, 'tabindex="-1" readonly'); ?></td>
             <td>
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
-                <?php echo functions::form_draw_decimal_field('new[quantity_adjustment]', true, 2); ?>
+                <?php echo functions::form_decimal_field('new[quantity_adjustment]', true, 2); ?>
               </div>
             </td>
             <td class="text-center">
               <div class="input-group">
-                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button', 'tabindex="-1"'); ?>
-                <?php echo functions::form_draw_decimal_field('new[backordered]', true, 2); ?>
+                <?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button', 'tabindex="-1"'); ?>
+                <?php echo functions::form_decimal_field('new[backordered]', true, 2); ?>
               </div>
             </td>
-            <td><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
+            <td><?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?></td>
           </tr>
         </tfoot>
       </table>
@@ -167,12 +167,12 @@
       </datalist>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($stock_transaction->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($stock_transaction->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 
@@ -223,23 +223,23 @@
     new_item_index++;
     var output = '  <tr class="item">'
               + '    <td>'
-              + '       <?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][id]', '')); ?>'
-              + '       <?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][item_id]', '')); ?>'
-              + '       <?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][sku]', '')); ?>'
+              + '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][id]', '')); ?>'
+              + '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][item_id]', '')); ?>'
+              + '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][sku]', '')); ?>'
               + '       ' + $(option).attr('value')
               + '    </td>'
-              + '    <td><?php echo functions::escape_js(functions::form_draw_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
-              + '    <td><?php echo functions::escape_js(functions::form_draw_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>'
+              + '    <td><?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
+              + '    <td><?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>'
               + '    <td>'
               + '      <div class="input-group">'
               + '        <span class="input-group-text">&plusmn;</span>'
-              + '        <?php echo functions::form_draw_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>'
+              + '        <?php echo functions::form_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>'
               + '      </div>'
               + '    </td>'
               + '    <td class="text-center">'
               + '      <div class="input-group">'
-              + '        <?php echo functions::escape_js(functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-              + '        <?php echo functions::escape_js(functions::form_draw_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>'
+              + '        <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
+              + '        <?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>'
               + '      </div>'
               + '    </td>'
               + '    <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'

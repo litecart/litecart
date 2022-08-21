@@ -42,7 +42,7 @@
       <div id="content">
         {{notices}}
 
-        <?php echo functions::form_draw_form_begin('shopping_cart_form', 'post'); ?>
+        <?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
 
           <section id="box-shopping-cart" class="card">
 
@@ -76,13 +76,13 @@
                               <div style="display: inline-flex;">
                                 <?php if (!empty($item['quantity_unit']->name)) { ?>
                                 <div class="input-group" style="max-width: 150px;">
-                                  <?php echo !empty($item['quantity_unit']->decimals) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"'); ?>
+                                  <?php echo !empty($item['quantity_unit']->decimals) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" max="'. ($item['quantity_max'] ? $item['quantity_max'] : '') .'" step="'. ($item['quantity_step'] ? $item['quantity_step'] : '') .'"'); ?>
                                   <?php echo $item['quantity_unit_name']; ?>
                                 </div>
                                 <?php } else { ?>
-                                  <?php echo !empty($item['quantity_unit']->decimals) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+                                  <?php echo !empty($item['quantity_unit']->decimals) ? functions::form_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_number_field('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
                                 <?php } ?>
-                                <?php echo functions::form_draw_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+                                <?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('fa-refresh')], 'submit', 'title="'. functions::escape_html(language::translate('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
                               </div>
                             </div>
                           </div>
@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="col-2 text-end">
-                      <td><?php echo functions::form_draw_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+                      <td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('fa-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_html(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
                     </div>
                   </div>
                 </li>
@@ -117,7 +117,7 @@
             </div>
           </section>
 
-        <?php echo functions::form_draw_form_end(); ?>
+        <?php echo functions::form_end(); ?>
     </div>
   </div>
 </main>

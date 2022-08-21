@@ -1,5 +1,5 @@
 <main id="box-checkout">
-  <?php echo functions::form_draw_form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
+  <?php echo functions::form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
 
     {{notices}}
 
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 </main>
 
 <script>

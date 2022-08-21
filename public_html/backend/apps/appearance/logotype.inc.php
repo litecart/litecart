@@ -46,7 +46,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true); ?>
+    <?php echo functions::form_begin('logotype_form', 'post', false, true); ?>
 
       <div style="max-width: 480px;">
         <img class="thumbnail fit" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/logotype.png', 480, 240)); ?>" alt="" style="margin: 0 0 2em 0;" />
@@ -55,11 +55,11 @@
       <div class="form-group" style="max-width: 480px;">
         <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
-          <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
+          <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
+          <?php echo functions::form_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
         </div>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>

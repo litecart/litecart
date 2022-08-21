@@ -85,40 +85,40 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+    <?php echo functions::form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_text_field('code', true); ?>
+          <?php echo functions::form_text_field('code', true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_draw_text_field('name', true); ?>
+          <?php echo functions::form_text_field('name', true); ?>
         </div>
       </div>
 
       <div class="form-group">
         <label><?php echo language::translate('title_description', 'Description'); ?></label>
-        <?php echo functions::form_draw_text_field('description', true); ?>
+        <?php echo functions::form_text_field('description', true); ?>
       </div>
 
       <div class="row">
         <div class="form-group col-md-5">
           <label><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></label>
-          <?php echo functions::form_draw_geo_zones_list('geo_zone_id', true); ?>
+          <?php echo functions::form_geo_zones_list('geo_zone_id', true); ?>
         </div>
 
         <div class="form-group col-md-4">
           <label><?php echo language::translate('title_tax_class', 'Tax Class'); ?></label>
-          <?php echo functions::form_draw_tax_classes_list('tax_class_id', true); ?>
+          <?php echo functions::form_tax_classes_list('tax_class_id', true); ?>
         </div>
 
         <div class="form-group col-md-3">
           <label><?php echo language::translate('title_rate', 'Rate'); ?></label>
           <div class="input-group">
-            <?php echo functions::form_draw_decimal_field('rate', true, 4); ?>
+            <?php echo functions::form_decimal_field('rate', true, 4); ?>
             <span class="input-group-text">%</span>
           </div>
         </div>
@@ -128,34 +128,34 @@
         <div class="form-group col-md-5">
           <label><?php echo language::translate('title_address_type', 'Address Type'); ?></label>
           <div>
-            <?php echo functions::form_draw_radio_button('address_type', ['shipping', language::translate('title_shipping_address', 'Shipping Address')], true); ?>
-            <?php echo functions::form_draw_radio_button('address_type', ['payment', language::translate('title_payment_address', 'Payment Address')], true); ?>
+            <?php echo functions::form_radio_button('address_type', ['shipping', language::translate('title_shipping_address', 'Shipping Address')], true); ?>
+            <?php echo functions::form_radio_button('address_type', ['payment', language::translate('title_payment_address', 'Payment Address')], true); ?>
           </div>
         </div>
 
         <div class="form-group col-md-7">
           <label><?php echo language::translate('title_conditions', 'Conditions'); ?></label>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_companies_with_tax_id', ['1', language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_companies_with_tax_id', ['1', language::translate('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_companies_without_tax_id', ['1', language::translate('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_companies_without_tax_id', ['1', language::translate('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_individuals_with_tax_id', ['1', language::translate('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_individuals_with_tax_id', ['1', language::translate('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID')], true); ?></label>
           </div>
           <div class="radio">
-            <label><?php echo functions::form_draw_checkbox('rule_individuals_without_tax_id', ['1', language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
+            <label><?php echo functions::form_checkbox('rule_individuals_without_tax_id', ['1', language::translate('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
           </div>
         </div>
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($tax_rate->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($tax_rate->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>

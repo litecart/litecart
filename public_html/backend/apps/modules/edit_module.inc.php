@@ -103,7 +103,7 @@
 
     <?php echo !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : ''; ?>
 
-    <?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
+    <?php echo functions::form_begin('module_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
       <table class="table table-striped">
         <tbody>
@@ -115,9 +115,9 @@
             </td>
             <td style="width: 50%">
               <?php if (!empty($setting['multiple'])) { ?>
-              <?php echo functions::form_draw_function('settings['.$setting['key'].'][]', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
+              <?php echo functions::form_function('settings['.$setting['key'].'][]', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
               <?php } else { ?>
-              <?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
+              <?php echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
               <?php } ?>
             </td>
           </tr>
@@ -134,12 +134,12 @@
       </table>
 
       <div class="card-action">
-          <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-          <?php if (!empty($module->data['id'])) echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
-          <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
+          <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+          <?php if (!empty($module->data['id'])) echo functions::form_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+          <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
 
     <?php if (!empty($module->data['last_log'])) { ?>
     <div id="box-last-log">

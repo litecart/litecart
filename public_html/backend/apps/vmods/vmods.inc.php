@@ -129,10 +129,10 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>
+  <?php echo functions::form_begin('vmod_form', 'post', '', true); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -152,7 +152,7 @@
       <tbody>
         <?php foreach ($vmods as $vmod) { ?>
         <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
-          <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['id']); ?></td>
+          <td><?php echo functions::form_checkbox('vmods[]', $vmod['id']); ?></td>
           <td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['title']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
@@ -184,12 +184,12 @@
             <ul class="list-inline">
               <li>
                 <div class="btn-group">
-                  <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-                  <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+                  <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+                  <?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
                 </div>
               </li>
               <li>
-                <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="'. functions::escape_html('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
+                <?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="'. functions::escape_html('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
               </li>
             </ul>
           </fieldset>
@@ -200,14 +200,14 @@
           <legend><?php echo language::translate('title_upload_new_vmod', 'Upload a New vMod'); ?>:</legend>
 
           <div class="input-group">
-            <?php echo functions::form_draw_file_field('vmod', 'accept="application/zip"'); ?>
-            <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
+            <?php echo functions::form_file_field('vmod', 'accept="application/zip"'); ?>
+            <?php echo functions::form_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
           </div>
         </fieldset>
       </div>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 </div>
 
 <script>

@@ -1149,7 +1149,7 @@
     <div class="row">
 
       <div class="col-sm-6 col-lg-4">
-        <?php echo functions::form_draw_form_begin('import_form', 'post', '', true); ?>
+        <?php echo functions::form_begin('import_form', 'post', '', true); ?>
 
           <fieldset>
             <legend><?php echo language::translate('title_import', 'Import'); ?></legend>
@@ -1157,57 +1157,57 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
-                <?php echo functions::form_draw_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
+                <?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
+                <?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true); ?>
+                <?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true); ?>
+                <?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true); ?>
+                <?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true); ?>
+                <?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>
 
             <div class="form-group">
               <label><?php echo language::translate('title_csv_file', 'CSV File'); ?></label>
-              <?php echo functions::form_draw_file_field('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
+              <?php echo functions::form_file_field('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
             </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', ['' => language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+                <?php echo functions::form_select_field('delimiter', ['' => language::translate('title_auto', 'Auto') .' ('. language::translate('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
+                <?php echo functions::form_select_field('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
+                <?php echo functions::form_select_field('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                <?php echo functions::form_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
               </div>
             </div>
 
             <div class="form-group">
-              <?php echo functions::form_draw_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
-              <?php echo functions::form_draw_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
-              <?php echo functions::form_draw_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
+              <?php echo functions::form_checkbox('reset', ['1', language::translate('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
+              <?php echo functions::form_checkbox('insert', ['1', language::translate('text_insert_new_entries', 'Insert new entries')], true); ?>
+              <?php echo functions::form_checkbox('overwrite', ['1', language::translate('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
             </div>
 
-            <?php echo functions::form_draw_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
+            <?php echo functions::form_button('import', language::translate('title_import', 'Import'), 'submit'); ?>
           </fieldset>
 
-        <?php echo functions::form_draw_form_end(); ?>
+        <?php echo functions::form_end(); ?>
       </div>
 
       <div class="col-sm-6 col-lg-4">
-        <?php echo functions::form_draw_form_begin('export_form', 'post'); ?>
+        <?php echo functions::form_begin('export_form', 'post'); ?>
 
           <fieldset>
             <legend><?php echo language::translate('title_export', 'Export'); ?></legend>
@@ -1215,64 +1215,64 @@
             <div class="form-group">
               <label><?php echo language::translate('title_type', 'Type'); ?></label>
               <div>
-                <?php echo functions::form_draw_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
-                <?php echo functions::form_draw_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
-                <?php echo functions::form_draw_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
+                <?php echo functions::form_radio_button('type', ['attributes', language::translate('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['campaigns', language::translate('title_campaigns', 'Campaigns')], true); ?>
+                <?php echo functions::form_radio_button('type', ['categories', language::translate('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['brands', language::translate('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['products', language::translate('title_products', 'Products')], true, 'data-dependencies="currency,language"'); ?>
+                <?php echo functions::form_radio_button('type', ['stock_items', language::translate('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
+                <?php echo functions::form_radio_button('type', ['suppliers', language::translate('title_suppliers', 'Suppliers')], true); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_language', 'Language'); ?></label>
-                <?php echo functions::form_draw_languages_list('language_code', true, 'required'); ?>
+                <?php echo functions::form_languages_list('language_code', true, 'required'); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-                <?php echo functions::form_draw_currencies_list('currency_code', true, 'required'); ?>
+                <?php echo functions::form_currencies_list('currency_code', true, 'required'); ?>
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_delimiter', 'Delimiter'); ?></label>
-                <?php echo functions::form_draw_select_field('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+                <?php echo functions::form_select_field('delimiter', [',' => ', ('. language::translate('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_enclosure', 'Enclosure'); ?></label>
-                <?php echo functions::form_draw_select_field('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
+                <?php echo functions::form_select_field('enclosure', ['"' => '" ('. language::translate('text_default', 'default') .')'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_escape_character', 'Escape Character'); ?></label>
-                <?php echo functions::form_draw_select_field('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
+                <?php echo functions::form_select_field('escapechar', ['"' => '" ('. language::translate('text_default', 'default') .')', '\\' => '\\'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-                <?php echo functions::form_draw_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+                <?php echo functions::form_encodings_list('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_line_ending', 'Line Ending'); ?></label>
-                <?php echo functions::form_draw_select_field('eol', ['Win', 'Mac', 'Linux'], true); ?>
+                <?php echo functions::form_select_field('eol', ['Win', 'Mac', 'Linux'], true); ?>
               </div>
 
               <div class="form-group col-sm-6">
                 <label><?php echo language::translate('title_output', 'Output'); ?></label>
-                <?php echo functions::form_draw_select_field('output', ['file' => language::translate('title_file', 'File'), 'screen' => language::translate('title_screen', 'Screen')], true); ?>
+                <?php echo functions::form_select_field('output', ['file' => language::translate('title_file', 'File'), 'screen' => language::translate('title_screen', 'Screen')], true); ?>
               </div>
             </div>
 
-            <?php echo functions::form_draw_button('export', language::translate('title_export', 'Export'), 'submit'); ?>
+            <?php echo functions::form_button('export', language::translate('title_export', 'Export'), 'submit'); ?>
           </fieldset>
 
-        <?php echo functions::form_draw_form_end(); ?>
+        <?php echo functions::form_end(); ?>
       </div>
 
     </div>

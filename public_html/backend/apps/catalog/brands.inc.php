@@ -46,10 +46,10 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_brand'), language::translate('title_create_new_brand', 'Create New Brand'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('brands_form', 'post'); ?>
+  <?php echo functions::form_begin('brands_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -66,7 +66,7 @@
       <tbody>
         <?php foreach ($brands as $brand) { ?>
         <tr class="<?php echo empty($brand['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('brands[]', $brand['id']); ?></td>
+          <td><?php echo functions::form_checkbox('brands[]', $brand['id']); ?></td>
           <td><?php echo functions::draw_fonticon($brand['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $brand['featured'] ? functions::draw_fonticon('fa-star', 'style="color: #ffd700;"') : ''; ?></td>
           <td><img class="fit" src="<?php echo document::href_rlink($brand['image'] ? functions::image_thumbnail('storage://images/' . $brand['image'], 16, 16) : ''); ?>" alt="" style="width: 16px; height: 16px; vertical-align: bottom;" /> <a href="<?php echo document::href_ilink(__APP__.'/edit_brand', ['brand_id' => $brand['id']]); ?>"><?php echo $brand['name']; ?></a></td>
@@ -87,13 +87,13 @@
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
 
         <div class="btn-group">
-          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
         </div>
       </fieldset>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">

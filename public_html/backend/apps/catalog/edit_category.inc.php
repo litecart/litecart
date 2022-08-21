@@ -106,7 +106,7 @@
   </ul>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('category_form', 'post', false, true); ?>
+    <?php echo functions::form_begin('category_form', 'post', false, true); ?>
 
       <div class="tab-content">
         <div id="tab-general" class="tab-pane active">
@@ -115,37 +115,37 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label><?php echo language::translate('title_status', 'Status'); ?></label>
-                <?php echo functions::form_draw_toggle('status', 'e/d', true); ?>
+                <?php echo functions::form_toggle('status', 'e/d', true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                <?php echo functions::form_draw_text_field('code', true); ?>
+                <?php echo functions::form_text_field('code', true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('name['. language::$selected['code'] .']', language::$selected['code'], true); ?>
+                <?php echo functions::form_regional_text_field('name['. language::$selected['code'] .']', language::$selected['code'], true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_parent_category', 'Parent Category'); ?></label>
-                <?php echo functions::form_draw_category_field('parent_id', true); ?>
+                <?php echo functions::form_category_field('parent_id', true); ?>
               </div>
 
               <div class="form-group col-md-5">
                 <label><?php echo language::translate('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="http://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                <?php echo functions::form_draw_number_field('google_taxonomy_id', true); ?>
+                <?php echo functions::form_number_field('google_taxonomy_id', true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-                <?php echo functions::form_draw_number_field('priority', true); ?>
+                <?php echo functions::form_number_field('priority', true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-                <?php echo functions::form_draw_text_field('keywords', true); ?>
+                <?php echo functions::form_text_field('keywords', true); ?>
               </div>
 
               <?php if (!empty($category->data['id'])) { ?>
@@ -171,10 +171,10 @@
 
                 <div class="form-group">
                   <label><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
-                  <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
+                  <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
                   <?php if (!empty($category->data['image'])) { ?><br />
                   <div><?php echo $category->data['image']; ?></div>
-                  <div><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
+                  <div><?php echo functions::form_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
                   <?php } ?>
                 </div>
               </div>
@@ -198,32 +198,32 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text_field('name['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text_field('short_description['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_description', 'Description'); ?></label>
-                <?php echo functions::form_draw_regional_wysiwyg_field('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+                <?php echo functions::form_regional_wysiwyg_field('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
+                <?php echo functions::form_regional_text_field('h1_title['. $language_code .']', $language_code, true, ''); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-                <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
+                <?php echo functions::form_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
               </div>
             </div>
             <?php } ?>
@@ -244,11 +244,11 @@
             <tbody>
               <?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
               <tr>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
-                <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
+                <?php echo functions::form_hidden_field('filters['.$key.'][id]', true); ?>
+                <?php echo functions::form_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
+                <?php echo functions::form_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
                 <td class="grabable"><?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?></td>
-                <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
+                <td class="grabable"><?php echo functions::form_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-end">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                   <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
@@ -260,19 +260,19 @@
           </table>
 
           <div class="input-group" style="max-width: 320px;">
-            <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-            <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
+            <?php echo functions::form_attribute_groups_list('new_attribute_group', true); ?>
+            <?php echo functions::form_button('add', language::translate('title_add', 'Add'), 'button'); ?>
           </div>
         </div>
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($category->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($category->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 
@@ -327,11 +327,11 @@
     }
 
     var output = '<tr class="grabable">'
-               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
-               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
-               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
                + '  <td>new_attribute_group_name</td>'
-               + '  <td><?php echo functions::escape_js(functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true)); ?></td>'
+               + '  <td><?php echo functions::escape_js(functions::form_checkbox('filters[new_attribute_filter_i][select_multiple]', true)); ?></td>'
                + '  <td class="text-end">'
                + '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
                + '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'

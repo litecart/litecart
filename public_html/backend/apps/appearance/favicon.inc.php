@@ -100,7 +100,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true); ?>
+    <?php echo functions::form_begin('logotype_form', 'post', false, true); ?>
 
       <div class="icons">
         <div class="icon">
@@ -127,13 +127,13 @@
       <div class="form-group" style="max-width: 480px;">
         <label><?php echo language::translate('title_new_icon', 'New Icon'); ?></label>
         <div class="input-group">
-          <?php echo functions::form_draw_file_field('image', 'accept=".ico,.png,.svg"'); ?>
-          <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
+          <?php echo functions::form_file_field('image', 'accept=".ico,.png,.svg"'); ?>
+          <?php echo functions::form_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
         </div>
       </div>
 
       <p><?php echo language::translate('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a 256 x 256px PNG image with alpha transparency.'); ?></p>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>

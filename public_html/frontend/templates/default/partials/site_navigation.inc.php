@@ -48,9 +48,9 @@
 
       <ul class="navbar-nav search">
         <li class="search">
-          <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search')); ?>
-            <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-          <?php echo functions::form_draw_form_end(); ?>
+          <?php echo functions::form_begin('search_form', 'get', document::ilink('search')); ?>
+            <?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
+          <?php echo functions::form_end(); ?>
         </li>
       </ul>
 
@@ -117,7 +117,7 @@
                     <div class="price"><?php echo currency::format($item['price']); ?></div>
                   </div>
                   <div class="col-1 text-end">
-                    <?php echo functions::form_draw_button('remove_cart_item', [$item['key'], functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
+                    <?php echo functions::form_button('remove_cart_item', [$item['key'], functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
                   </div>
                 </div>
               </div>

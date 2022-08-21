@@ -78,7 +78,7 @@ pre {
 
 		<h1><?php echo $id; ?></h1>
 
-		<?php echo functions::form_draw_form_begin('settings_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
+		<?php echo functions::form_begin('settings_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
 
 			<table class="table table-striped">
 				<tbody>
@@ -90,9 +90,9 @@ pre {
 						</td>
 						<td style="width: 50%">
 							<?php if (!empty($setting->multiple)) { ?>
-							<?php echo functions::form_draw_function('settings['.$setting->key.'][]', $setting->function, true); ?>
+							<?php echo functions::form_function('settings['.$setting->key.'][]', $setting->function, true); ?>
 							<?php } else { ?>
-							<?php echo functions::form_draw_function('settings['.$setting->key.']', $setting->function, true); ?>
+							<?php echo functions::form_function('settings['.$setting->key.']', $setting->function, true); ?>
 							<?php } ?>
 						</td>
 					</tr>
@@ -101,11 +101,11 @@ pre {
 			</table>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo functions::form_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
       </div>
 
-		<?php echo functions::form_draw_form_end(); ?>
+		<?php echo functions::form_end(); ?>
 	</div>
 </div>

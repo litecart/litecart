@@ -21,7 +21,7 @@
         <img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/letter.svg'); ?>"  />
       </div>
 
-      <?php echo functions::form_draw_form_begin('newsletter_subscribe_form', 'post'); ?>
+      <?php echo functions::form_begin('newsletter_subscribe_form', 'post'); ?>
 
         <h2><?php echo language::translate('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
 
@@ -29,12 +29,12 @@
 
         <div class="form-group">
           <div style="display: flex; flex-direction: row; gap: 1em">
-            <?php echo functions::form_draw_email_field('email', true, 'placeholder="your@email.com" required'); ?>
-            <?php echo functions::form_draw_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
+            <?php echo functions::form_email_field('email', true, 'placeholder="your@email.com" required'); ?>
+            <?php echo functions::form_button('subscribe', language::translate('title_subscribe', 'Subscribe')); ?>
           </div>
         </div>
 
-      <?php echo functions::form_draw_form_end(); ?>
+      <?php echo functions::form_end(); ?>
     </div>
 
   </div>

@@ -49,10 +49,10 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_geo_zone'), language::translate('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_geo_zone'), language::translate('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('geo_zones_form', 'post'); ?>
+  <?php echo functions::form_begin('geo_zones_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -68,7 +68,7 @@
       <tbody>
         <?php foreach ($geo_zones as $geo_zone) { ?>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
+          <td><?php echo functions::form_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
           <td><?php echo $geo_zone['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
           <td class="text-center"><?php echo database::query("select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")->num_rows; ?></td>
@@ -88,11 +88,11 @@
       <fieldset id="actions">
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-        <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'fa-file-copy'); ?>
+        <?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', 'fa-file-copy'); ?>
       </fieldset>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">

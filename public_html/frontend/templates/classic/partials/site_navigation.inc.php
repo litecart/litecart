@@ -1,9 +1,9 @@
 <nav id="site-navigation" class="navbar hidden-print">
 
   <div class="navbar-header">
-    <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-form"'); ?>
-      <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-form"'); ?>
+      <?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
+    <?php echo functions::form_end(); ?>
 
     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-menu">
       <span class="icon-bar"></span>
@@ -68,25 +68,25 @@
             <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
           <?php } else { ?>
             <li>
-              <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-                <?php echo functions::form_draw_hidden_field('redirect_url', document::link()); ?>
+              <?php echo functions::form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
+                <?php echo functions::form_hidden_field('redirect_url', document::link()); ?>
 
                 <div class="form-group">
-                  <?php echo functions::form_draw_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
+                  <?php echo functions::form_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
                 </div>
 
                 <div class="form-group">
-                  <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+                  <?php echo functions::form_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
                 </div>
 
                 <div class="form-group">
-                  <?php echo functions::form_draw_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
+                  <?php echo functions::form_checkbox('remember_me', ['1', language::translate('title_remember_me', 'Remember Me')], true); ?>
                 </div>
 
                 <div class="btn-group btn-block">
-                  <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
+                  <?php echo functions::form_button('login', language::translate('title_sign_in', 'Sign In')); ?>
                 </div>
-              <?php echo functions::form_draw_form_end(); ?>
+              <?php echo functions::form_end(); ?>
             </li>
 
             <li class="text-center">

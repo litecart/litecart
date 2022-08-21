@@ -76,19 +76,19 @@ form[name="filter_form"] li {
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+    <?php echo functions::form_begin('filter_form', 'get'); ?>
       <ul class="list-inline">
         <li>
           <div class="input-group" style="max-width: 380px;">
-            <?php echo functions::form_draw_date_field('date_from', true); ?>
+            <?php echo functions::form_date_field('date_from', true); ?>
             <span class="input-group-text"> - </span>
-            <?php echo functions::form_draw_date_field('date_to', true); ?>
+            <?php echo functions::form_date_field('date_to', true); ?>
           </div>
         </li>
-        <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
-        <li><?php echo functions::form_draw_button('download', language::translate('title_download', 'Download')); ?></li>
+        <li><?php echo functions::form_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
+        <li><?php echo functions::form_button('download', language::translate('title_download', 'Download')); ?></li>
       </ul>
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 
   <table class="table table-striped table-hover data-table">

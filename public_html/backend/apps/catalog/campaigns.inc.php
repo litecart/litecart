@@ -45,10 +45,10 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_campaign'), language::translate('title_create_new_campaign', 'Create New Campaign'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_campaign'), language::translate('title_create_new_campaign', 'Create New Campaign'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('campaigns_form', 'post'); ?>
+  <?php echo functions::form_begin('campaigns_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -65,7 +65,7 @@
       <tbody>
         <?php foreach ($campaigns as $campaign) { ?>
         <tr class="<?php echo (!empty($campaign['end_date']) && $campaign['end_date'] < date('Y-m-d H:i:s')) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('campaigns[]', $campaign['id']); ?></td>
+          <td><?php echo functions::form_checkbox('campaigns[]', $campaign['id']); ?></td>
           <td class="text-end"><?php echo (!empty($campaign['start_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['start_date'])) : ''; ?></td>
           <td class="text-end"><?php echo (!empty($campaign['end_date'])) ? language::strftime(language::$selected['format_date'], strtotime($campaign['end_date'])) : ''; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['product_name']; ?></a></td>
@@ -82,7 +82,7 @@
       </tfoot>
     </table>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-body">

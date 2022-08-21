@@ -40,10 +40,10 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_slide'), language::translate('title_create_new_slide', 'Create New Slide'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_slide'), language::translate('title_create_new_slide', 'Create New Slide'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('slides_form', 'post'); ?>
+  <?php echo functions::form_begin('slides_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -63,7 +63,7 @@
       <tbody>
         <?php foreach ($slides as $slide) { ?>
         <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('slides[]', $slide['id']); ?></td>
+          <td><?php echo functions::form_checkbox('slides[]', $slide['id']); ?></td>
           <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $slide['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>
@@ -88,13 +88,13 @@
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
         <div class="btn-group">
-          <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-          <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+          <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+          <?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
         </div>
       </fieldset>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">

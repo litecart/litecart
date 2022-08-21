@@ -76,7 +76,7 @@
     </div>
   </div>
 
-  <?php echo functions::form_draw_form_begin('mysql_collation_form', 'post'); ?>
+  <?php echo functions::form_begin('mysql_collation_form', 'post'); ?>
     <table class="table table-striped table-hover data-table">
       <thead>
         <tr>
@@ -90,7 +90,7 @@
       <tbody>
         <?php foreach ($tables as $table) { ?>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('tables[]', $table['TABLE_NAME'], true); ?></td>
+          <td><?php echo functions::form_checkbox('tables[]', $table['TABLE_NAME'], true); ?></td>
           <td><?php echo $table['TABLE_NAME']; ?></td>
           <td><?php echo $table['TABLE_COLLATION']; ?></td>
           <td><?php echo $table['ENGINE']; ?></td>
@@ -109,20 +109,20 @@
       <div style="width: 640px;">
         <div class="form-group">
           <label><?php echo language::translate('title_collation', 'Collation'); ?></label>
-          <?php echo functions::form_draw_mysql_collations_list('collation'); ?>
+          <?php echo functions::form_mysql_collations_list('collation'); ?>
         </div>
 
         <div class="form-group">
-          <?php echo functions::form_draw_checkbox('set_database_default', ['1', language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
+          <?php echo functions::form_checkbox('set_database_default', ['1', language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
         </div>
       </div>
 
       <p><?php echo language::translate('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.'); ?></p>
 
       <div class="btn-group">
-        <?php echo functions::form_draw_button('convert', language::translate('title_convert', 'Convert'), 'submit'); ?>
+        <?php echo functions::form_button('convert', language::translate('title_convert', 'Convert'), 'submit'); ?>
       </div>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 </div>

@@ -122,7 +122,7 @@
     </div>
   </div>
 
-  <?php echo functions::form_draw_form_begin('template_settings_form', 'post'); ?>
+  <?php echo functions::form_begin('template_settings_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -141,10 +141,10 @@
             <u><?php echo language::translate(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br />
             <?php echo language::translate(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
           </td>
-          <td><?php echo functions::form_draw_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
+          <td><?php echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
           <td class="text-end">
-            <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-            <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+            <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+            <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
           </td>
         </tr>
         <?php } else { ?>
@@ -168,5 +168,5 @@
       </tbody>
     </table>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 </div>

@@ -174,15 +174,15 @@ table.data-table td {
   <div class="card-body">
     <div class="row">
       <div class="col-md-4">
-        <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
+        <?php echo functions::form_begin('scan_form', 'post'); ?>
 
           <p><?php echo language::translate('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
 
-          <p><label><?php echo functions::form_draw_checkbox('update', ['1', language::translate('text_update_empty_translations', 'Update empty translations if applicable')]); ?></label></p>
+          <p><label><?php echo functions::form_checkbox('update', ['1', language::translate('text_update_empty_translations', 'Update empty translations if applicable')]); ?></label></p>
 
-          <p><?php echo functions::form_draw_button('scan', language::translate('title_scan', 'Scan'), 'submit'); ?></p>
+          <p><?php echo functions::form_button('scan', language::translate('title_scan', 'Scan'), 'submit'); ?></p>
 
-        <?php echo functions::form_draw_form_end(); ?>
+        <?php echo functions::form_end(); ?>
 
         <?php if (!empty($_POST['scan'])) { ?>
         <pre id="log">
@@ -196,7 +196,7 @@ table.data-table td {
 
         <h2><?php echo language::translate('title_orphan_translations', 'Orphan Translations'); ?></h2>
 
-          <?php echo functions::form_draw_form_begin('scan_form', 'post'); ?>
+          <?php echo functions::form_begin('scan_form', 'post'); ?>
 
           <table class="table table-striped data-table">
             <thead>
@@ -209,7 +209,7 @@ table.data-table td {
             <tbody>
               <?php foreach ($orphan as $row) { ?>
               <tr>
-                <td><?php echo functions::form_draw_checkbox('translations[]', $row['code'], true); ?></td>
+                <td><?php echo functions::form_checkbox('translations[]', $row['code'], true); ?></td>
                 <td><?php echo $row['code']; ?></td>
                 <td><?php echo (mb_strlen($row['text_'.language::$selected['code']]) > 100) ? mb_substr($row['text_'.language::$selected['code']], 0, 100) . '...' : $row['text_'.language::$selected['code']]; ?></td>
               </tr>
@@ -218,10 +218,10 @@ table.data-table td {
           </table>
 
           <div class="btn-group">
-            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+            <?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
           </div>
 
-        <?php echo functions::form_draw_form_end(); ?>
+        <?php echo functions::form_end(); ?>
 
       </div>
       <?php } ?>

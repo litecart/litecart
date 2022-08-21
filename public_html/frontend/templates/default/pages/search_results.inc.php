@@ -40,11 +40,11 @@
             <?php if ($products) { ?>
 
               <section id="box-filter">
-              <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+              <?php echo functions::form_begin('filter_form', 'get'); ?>
 
                 <div class="filter">
                   <div>
-                    <?php echo functions::form_draw_search_field('query', true, 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
+                    <?php echo functions::form_search_field('query', true, 'autocomplete="off" placeholder="'. functions::escape_html(language::translate('text_search_products', 'Search products')) .' ..."'); ?>
                   </div>
 
                   <div>
@@ -55,7 +55,7 @@
                       <ul class="dropdown-menu">
                         <?php foreach ($sort_alternatives as $key => $title) { ?>
                         <li>
-                          <?php echo functions::form_draw_radio_button('sort', [$key, $title], true); ?>
+                          <?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
                         </li>
                         <?php } ?>
                       </ul>
@@ -63,7 +63,7 @@
                   </div>
                 </div>
 
-              <?php echo functions::form_draw_form_end(); ?>
+              <?php echo functions::form_end(); ?>
             </section>
             <?php } ?>
 

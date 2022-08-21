@@ -73,16 +73,16 @@
   </div>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+    <?php echo functions::form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
-          <?php echo functions::form_draw_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+          <?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
         </div>
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-          <?php echo functions::form_draw_number_field('priority', true); ?>
+          <?php echo functions::form_number_field('priority', true); ?>
         </div>
       </div>
 
@@ -90,14 +90,14 @@
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
           <div>
-            <?php echo functions::form_draw_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
-            <?php echo functions::form_draw_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
+            <?php echo functions::form_checkbox('dock[]', ['menu', language::translate('text_dock_in_site_menu', 'Dock in site menu')], true); ?>
+            <?php echo functions::form_checkbox('dock[]', ['information', language::translate('text_dock_in_information', 'Dock in information')], true); ?>
           </div>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_parent', 'Parent'); ?></label>
-          <?php echo functions::form_draw_pages_list('parent_id', true); ?>
+          <?php echo functions::form_pages_list('parent_id', true); ?>
         </div>
       </div>
 
@@ -112,34 +112,34 @@
         <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
           <div class="form-group">
             <label><?php echo language::translate('title_title', 'Title'); ?></label>
-            <?php echo functions::form_draw_regional_text_field('title['. $language_code .']', $language_code, true, ''); ?>
+            <?php echo functions::form_regional_text_field('title['. $language_code .']', $language_code, true, ''); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_content', 'Content'); ?></label>
-            <?php echo functions::form_draw_regional_wysiwyg_field('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
+            <?php echo functions::form_regional_wysiwyg_field('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-            <?php echo functions::form_draw_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
+            <?php echo functions::form_regional_text_field('head_title['. $language_code .']', $language_code, true); ?>
           </div>
 
           <div class="form-group">
             <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-            <?php echo functions::form_draw_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
+            <?php echo functions::form_regional_text_field('meta_description['. $language_code .']', $language_code, true); ?>
           </div>
         </div>
         <?php } ?>
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($page->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($page->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 

@@ -215,18 +215,18 @@ table .thumbnail {
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_product'), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_product'), language::translate('title_create_new_product', 'Create New Product'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+  <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
-      <div style="min-width: 300px;"><?php echo functions::form_draw_category_field('category_id', true); ?></div>
-      <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
+      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+      <div style="min-width: 300px;"><?php echo functions::form_category_field('category_id', true); ?></div>
+      <div><?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
-  <?php echo functions::form_draw_form_begin('products_form', 'post'); ?>
+  <?php echo functions::form_begin('products_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -247,7 +247,7 @@ table .thumbnail {
       <tbody>
         <?php foreach ($products as $product) { ?>
         <tr class="<?php echo empty($product['status']) ? 'semi-transparent' : ''; ?>">
-          <td><?php echo functions::form_draw_checkbox('products[]', $product['id']); ?></td>
+          <td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
           <td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
           <td class="warning"><?php echo !empty($product['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($product['warning']) .'"') : ''; ?></td>
           <td class="text-center"><?php echo $product['id']; ?></td>
@@ -274,21 +274,21 @@ table .thumbnail {
         <ul class="list-inline">
           <li>
             <div class="btn-group">
-              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+              <?php echo functions::form_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+              <?php echo functions::form_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
             </div>
           </li>
           <li>
-            <?php echo functions::form_draw_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'fa-copy'); ?>
+            <?php echo functions::form_button('clone', language::translate('title_clone', 'Clone'), 'submit', '', 'fa-copy'); ?>
           </li>
           <li>
-            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
+            <?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"', 'delete'); ?>
           </li>
         </ul>
       </fieldset>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">

@@ -42,7 +42,7 @@
   <div class="comments form-group">
     <label><?php echo language::translate('title_comments', 'Comments'); ?></label>
     <div class="input-wrapper">
-      <?php echo functions::form_draw_textarea('comments', true, 'maxlength="512" rows="4"'); ?>
+      <?php echo functions::form_textarea('comments', true, 'maxlength="512" rows="4"'); ?>
       <small class="remaining"></small>
     </div>
   </div>
@@ -55,7 +55,7 @@
 
       <?php if (!$error && $consent) { ?>
       <div class="consent text-center" style="font-size: 1.25em; margin-top: 0.5em;">
-        <?php echo '<label>'. functions::form_draw_checkbox('terms_agreed', '1', true, 'required') .' '. $consent .'</label>'; ?>
+        <?php echo '<label>'. functions::form_checkbox('terms_agreed', '1', true, 'required') .' '. $consent .'</label>'; ?>
       </div>
       <?php } ?>
     </div>

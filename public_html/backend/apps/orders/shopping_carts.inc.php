@@ -76,17 +76,17 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_shopping_cart', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_shopping_cart', 'Create New Shopping Cart'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_shopping_cart', ['redirect_url' => $_SERVER['REQUEST_URI']]), language::translate('title_create_new_shopping_cart', 'Create New Shopping Cart'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
+  <?php echo functions::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
-      <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
+      <div class="expandable"><?php echo functions::form_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+      <?php echo functions::form_button('filter', language::translate('title_search', 'Search'), 'submit'); ?>
     </div>
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
-  <?php echo functions::form_draw_form_begin('shopping_carts_form', 'post'); ?>
+  <?php echo functions::form_begin('shopping_carts_form', 'post'); ?>
 
     <table class="table table-striped table-hover table-sortable data-table">
       <thead>
@@ -105,7 +105,7 @@
       <tbody>
         <?php foreach ($shopping_carts as $shopping_cart) { ?>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('shopping_carts['.$shopping_cart['id'].']', $shopping_cart['id'], (isset($_POST['shopping_carts']) && in_array($shopping_cart['id'], $_POST['shopping_carts'])) ? $shopping_cart['id'] : false); ?></td>
+          <td><?php echo functions::form_checkbox('shopping_carts['.$shopping_cart['id'].']', $shopping_cart['id'], (isset($_POST['shopping_carts']) && in_array($shopping_cart['id'], $_POST['shopping_carts'])) ? $shopping_cart['id'] : false); ?></td>
           <td><?php echo $shopping_cart['id']; ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_shopping_cart', ['cart_id' => $shopping_cart['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $shopping_cart['customer_company'] ? $shopping_cart['customer_company'] : $shopping_cart['customer_firstname'] .' '. $shopping_cart['customer_lastname']; ?><?php echo empty($shopping_cart['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $shopping_cart['customer_tax_id']; ?></span></td>
           <td><?php echo !empty($shopping_cart['customer_country_code']) ? reference::country($shopping_cart['customer_country_code'])->name : ''; ?></td>
@@ -129,12 +129,12 @@
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
 
         <ul class="list-inline">
-          <li><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+          <li><?php echo functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
         </ul>
       </fieldset>
     </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">

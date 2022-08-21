@@ -124,14 +124,14 @@
 
   <div class="card-body">
 
-    <?php echo functions::form_draw_form_begin('stock_item_form', 'post', false, true); ?>
+    <?php echo functions::form_begin('stock_item_form', 'post', false, true); ?>
 
       <div class="row">
         <div class="col-xl-6">
 
           <div class="form-group">
             <label><?php echo language::translate('title_name', 'Name'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_text_field('name['. $language_code .']', $language_code, true, ''); ?>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text_field('name['. $language_code .']', $language_code, true, ''); ?>
           </div>
 
           <div class="row">
@@ -150,10 +150,10 @@
                 </div>
 
                 <?php if (!empty($stock_item->data['image'])) { ?>
-                <small class="float-end"><?php echo functions::form_draw_checkbox('delete_image', ['1', language::translate('text_delete', 'Delete')], true); ?></small>
+                <small class="float-end"><?php echo functions::form_checkbox('delete_image', ['1', language::translate('text_delete', 'Delete')], true); ?></small>
                 <?php } ?>
 
-                <?php echo functions::form_draw_file_field('image', 'accept="image/*"'); ?>
+                <?php echo functions::form_file_field('image', 'accept="image/*"'); ?>
               </div>
             </div>
 
@@ -162,30 +162,30 @@
                 <label><?php echo language::translate('title_references', 'References'); ?></label>
                 <div class="input-group">
                   <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                  <?php echo functions::form_draw_text_field('sku', true, 'style="text-transform: uppercase;"'); ?>
+                  <?php echo functions::form_text_field('sku', true, 'style="text-transform: uppercase;"'); ?>
                 </div>
 
                 <div class="input-group">
                   <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                  <?php echo functions::form_draw_text_field('gtin', true); ?>
+                  <?php echo functions::form_text_field('gtin', true); ?>
                 </div>
 
                 <div class="input-group">
                   <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Brand_part_number" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                  <?php echo functions::form_draw_text_field('mpn', true); ?>
+                  <?php echo functions::form_text_field('mpn', true); ?>
                 </div>
 
                 <div class="input-group">
                   <label class="input-group-text" style="width: 125px;"><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-                  <?php echo functions::form_draw_text_field('taric', true); ?>
+                  <?php echo functions::form_text_field('taric', true); ?>
                 </div>
               </div>
 
               <div class="form-group">
                 <label><?php echo language::translate('title_purchase_price', 'Purchase Price'); ?></label>
                 <div class="input-group">
-                  <?php echo functions::form_draw_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
-                  <?php echo functions::form_draw_currencies_list('purchase_price_currency_code', true); ?>
+                  <?php echo functions::form_decimal_field('purchase_price', true, 2, 'min="0"'); ?>
+                  <?php echo functions::form_currencies_list('purchase_price_currency_code', true); ?>
                 </div>
               </div>
             </div>
@@ -202,8 +202,8 @@
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_stock_quantity', 'Stock Quantity'); ?></label>
               <div class="input-group">
-                <?php echo functions::form_draw_decimal_field('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
-                <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
+                <?php echo functions::form_decimal_field('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
+                <?php echo functions::form_quantity_units_list('quantity_unit_id', true); ?>
               </div>
             </div>
 
@@ -211,15 +211,15 @@
               <label><?php echo language::translate('title_quantity_adjustment', 'Quantity Adjustment'); ?></label>
               <div class="input-group">
                 <span class="input-group-text">&plusmn;</span>
-                <?php echo functions::form_draw_decimal_field('quantity_adjustment', true, 2); ?>
+                <?php echo functions::form_decimal_field('quantity_adjustment', true, 2); ?>
               </div>
             </div>
 
             <div class="form-group col-md-3">
               <label><?php echo language::translate('title_backordered', 'Backordered'); ?></label>
               <div class="input-group">
-                <?php echo functions::form_draw_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
-                <?php echo functions::form_draw_decimal_field('backordered', true, 2, 'min="0"'); ?>
+                <?php echo functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button'); ?>
+                <?php echo functions::form_decimal_field('backordered', true, 2, 'min="0"'); ?>
               </div>
             </div>
           </div>
@@ -228,20 +228,20 @@
             <div class="form-group col-md-4">
               <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
               <div class="input-group">
-                <?php echo functions::form_draw_decimal_field('weight', true, 3, 'min="0"'); ?>
-                <?php echo functions::form_draw_weight_units_list('weight_unit', true); ?>
+                <?php echo functions::form_decimal_field('weight', true, 3, 'min="0"'); ?>
+                <?php echo functions::form_weight_units_list('weight_unit', true); ?>
               </div>
             </div>
 
             <div class="form-group col-md-8">
               <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?></label>
               <div class="input-group">
-                <?php echo functions::form_draw_decimal_field('length', true, 3, 'min="0"'); ?>
+                <?php echo functions::form_decimal_field('length', true, 3, 'min="0"'); ?>
                 <span class="input-group-text">x</span>
-                <?php echo functions::form_draw_decimal_field('width', true, 3, 'min="0"'); ?>
+                <?php echo functions::form_decimal_field('width', true, 3, 'min="0"'); ?>
                 <span class="input-group-text">x</span>
-                <?php echo functions::form_draw_decimal_field('height', true, 3, 'min="0"'); ?>
-                <?php echo functions::form_draw_length_units_list('length_unit', true); ?>
+                <?php echo functions::form_decimal_field('height', true, 3, 'min="0"'); ?>
+                <?php echo functions::form_length_units_list('length_unit', true); ?>
               </div>
             </div>
           </div>
@@ -249,15 +249,15 @@
           <div class="row">
             <div class="form-group col-md-10">
               <label><?php echo language::translate('title_digital_item', 'Digital Item'); ?></label>
-              <?php echo functions::form_draw_file_field('file'); ?>
+              <?php echo functions::form_file_field('file'); ?>
               <?php if (!empty($stock_item->data['file'])) { ?>
-              <div><?php echo functions::form_draw_checkbox('delete_file', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
+              <div><?php echo functions::form_checkbox('delete_file', ['1', language::translate('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
               <?php } ?>
             </div>
 
             <div class="form-group col-md-2">
               <label><?php echo language::translate('title_downloads', 'Downloads'); ?></label>
-              <?php echo functions::form_draw_number_field('downloads', true, 'readonly'); ?>
+              <?php echo functions::form_number_field('downloads', true, 'readonly'); ?>
             </div>
           </div>
         </div>
@@ -277,17 +277,17 @@
                 <?php if (!empty($_POST['references'])) foreach (array_keys($_POST['references']) as $key) { ?>
                 <tr>
                   <td>
-                    <?php echo functions::form_draw_hidden_field('references['.$key.'][id]', true); ?>
+                    <?php echo functions::form_hidden_field('references['.$key.'][id]', true); ?>
                     <div class="input-group">
-                      <?php echo functions::form_draw_select_field('references['.$key.'][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true); ?>
-                      <?php echo functions::form_draw_brands_list('references['.$key.'][source]', true); ?>
-                      <?php echo functions::form_draw_suppliers_list('references['.$key.'][source]', true); ?>
+                      <?php echo functions::form_select_field('references['.$key.'][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true); ?>
+                      <?php echo functions::form_brands_list('references['.$key.'][source]', true); ?>
+                      <?php echo functions::form_suppliers_list('references['.$key.'][source]', true); ?>
                     </div>
                   </td>
                   <td>
                     <div class="input-group">
-                      <?php echo functions::form_draw_select_field('references['.$key.'][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true); ?>
-                      <?php echo functions::form_draw_text_field('references['.$key.'][code]', true); ?>
+                      <?php echo functions::form_select_field('references['.$key.'][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true); ?>
+                      <?php echo functions::form_text_field('references['.$key.'][code]', true); ?>
                     </div>
                   </td>
                   <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
@@ -306,12 +306,12 @@
       </div>
 
       <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($stock_item->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+        <?php echo functions::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+        <?php echo (!empty($stock_item->data['id'])) ? functions::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo functions::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 </div>
 
@@ -392,17 +392,17 @@
     e.preventDefault();
     var output = '<tr>'
                + '  <td>'
-               + '     <?php echo functions::escape_js(functions::form_draw_hidden_field('references[new_reference_i][id]', true)); ?>'
+               + '     <?php echo functions::escape_js(functions::form_hidden_field('references[new_reference_i][id]', true)); ?>'
                + '     <div class="input-group">'
-               + '       <?php echo functions::escape_js(functions::form_draw_select_field('references[new_reference_i][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_draw_brands_list('references[new_reference_i][source]', true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_draw_suppliers_list('references[new_reference_i][source]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_select_field('references[new_reference_i][source_type]', ['brand' => language::translate('title_brand', 'Brand'), 'supplier' => language::translate('title_supplier', 'Supplier')], true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_brands_list('references[new_reference_i][source]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_suppliers_list('references[new_reference_i][source]', true)); ?>'
                + '     </div>'
                + '   </td>'
                + '   <td>'
                + '     <div class="input-group">'
-               + '       <?php echo functions::escape_js(functions::form_draw_select_field('references[new_reference_i][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true)); ?>'
-               + '       <?php echo functions::escape_js(functions::form_draw_text_field('references[new_reference_i][code]', true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_select_field('references[new_reference_i][type]', ['sku' => language::translate('title_sku', 'SKU'), 'gtin' => language::translate('title_gtin', 'GTIN'), 'other' => language::translate('title_other', 'Other')], true)); ?>'
+               + '       <?php echo functions::escape_js(functions::form_text_field('references[new_reference_i][code]', true)); ?>'
                + '     </div>'
                + '   </td>'
                + '   <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'

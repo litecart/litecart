@@ -71,10 +71,10 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?>
+    <?php echo functions::form_link_button(document::ilink(__APP__.'/edit_order_status'), language::translate('title_create_new_order_status', 'Create New Order Status'), '', 'add'); ?>
   </div>
 
-  <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
+  <?php echo functions::form_begin('order_statuses_form', 'post'); ?>
 
     <table class="table table-striped table-hover data-table">
       <thead>
@@ -99,7 +99,7 @@
       <tbody>
         <?php foreach ($order_statuses as $order_status) { ?>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('order_statuses[]', $order_status['id']); ?></td>
+          <td><?php echo functions::form_checkbox('order_statuses[]', $order_status['id']); ?></td>
           <td><?php echo $order_status['id']; ?></td>
           <td class="text-center"><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
           <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
@@ -124,10 +124,10 @@
       </tfoot>
     </table>
 
-  <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_end(); ?>
 
   <div class="card-body">
-    <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
+    <?php echo functions::form_begin('order_statuses_form', 'post'); ?>
 
       <fieldset id="actions">
         <legend><?php echo language::translate('text_change_status_for_orders', 'Change status for orders'); ?></legend>
@@ -135,22 +135,22 @@
         <div class="row">
           <div class="col-md-2">
             <label><?php echo language::translate('title_from_order_status', 'From Order Status'); ?></label>
-            <?php echo functions::form_draw_order_statuses_list('from_order_status_id', true); ?>
+            <?php echo functions::form_order_statuses_list('from_order_status_id', true); ?>
           </div>
 
           <div class="col-md-2">
             <label><?php echo language::translate('title_to_order_status', 'To Order Status'); ?></label>
-            <?php echo functions::form_draw_order_statuses_list('to_order_status_id', true); ?>
+            <?php echo functions::form_order_statuses_list('to_order_status_id', true); ?>
           </div>
 
           <div class="col-md-1">
             <br />
-            <?php echo functions::form_draw_button('change', [1, language::translate('title_change', 'Change')], 'submit'); ?>
+            <?php echo functions::form_button('change', [1, language::translate('title_change', 'Change')], 'submit'); ?>
           </div>
         </div>
       </fieldset>
 
-    <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_end(); ?>
   </div>
 
   <?php if ($num_pages > 1) { ?>

@@ -64,13 +64,13 @@
   --table-border-color: #e6e8f0;
   --pagination-background-color: #fff;
   --pagination-background-color-hover: #c8cbd0;
-  --pagination-background-color-active: #788090;
+  --pagination-background-color-active: #e6e8ec;
   --pagination-border-color: var(--default-border-color);
   --pagination-border-color-hover: var(--default-border-color);
   --pagination-border-color-active: var(--default-border-color);
   --pagination-text-color: var(--default-text-color);
   --pagination-text-color-hover: var(--default-text-color);
-  --pagination-text-color-active: #fff;
+  --pagination-text-color-active: var(--default-text-color);
   --button-default-background-color: #f9f9fb;
   --button-default-background-color-hover: #eeeff3;
   --button-default-background-color-active: #dfdfe2;
