@@ -305,9 +305,7 @@
       '{DB_DATABASE}' => $_REQUEST['db_database'],
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
-      '{DB_PERSISTENT_CONNECTIONS}' => 'false',
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
-      '{PASSWORD_SALT}' => substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 128),
     ];
 
     $config = strtr($config, $map);
