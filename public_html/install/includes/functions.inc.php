@@ -42,14 +42,20 @@
   }
 
 // Function to modify file
-  function file_modify($files, $search, $replace) {
+  function file_modify($files, $search, $replace, $regex=false) {
 
     foreach (glob($files) as $file) {
       echo 'Modify '. $file . '<br />' . PHP_EOL;
 
       $contents = file_get_contents($file);
       $contents = preg_replace('#\R#u', PHP_EOL, $contents);
-      $contents = str_replace($search, $replace, $contents);
+
+      if ($regex) {
+        $contents = preg_replace($search, $replace, $contents);
+      } else {
+        $contents = str_replace($search, $replace, $contents);
+      }
+
       $result = file_put_contents($file, $contents);
     }
 
