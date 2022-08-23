@@ -335,7 +335,7 @@
           while ($order_item = database::fetch($order_items_query)) {
             database::query(
               "update ". DB_TABLE_PREFIX ."orders_items
-              set option_stock_combination = '". database::input(preg_replace('#(^|,)'. (int)$option_group['id'] .'-'. (int)$option_value['id'] .'(?=(?::|,|$))#', '$1'. (int)$attribute_group_id .'-'. (int)$attribute_value_id, $stock_option['option_stock_combination'])) ."'
+              set option_stock_combination = '". database::input(preg_replace('#(^|,)'. (int)$option_group['id'] .'-'. (int)$option_value['id'] .'(?=(?::|,|$))#', '$1'. (int)$attribute_group_id .'-'. (int)$attribute_value_id, $order_item['option_stock_combination'])) ."'
               where id = ". (int)$order_item['id'] .";"
             );
           }
