@@ -959,9 +959,9 @@
       </div>
 
         <div class="form-group col-md-4">
-        <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
-        <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', '0'); ?>
-      </div>
+          <label><?php echo language::translate('title_tax', 'Tax'); ?></label>
+          <?php echo functions::form_draw_currency_field($_POST['currency_code'], 'tax', '0'); ?>
+        </div>
     </div>
 
     <div class="btn-group">

@@ -69,9 +69,9 @@ c0fc0a54978a39a472c4eb39f2a40d07	admin/logout.php
 d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 0cea2560590e1a9ea62bb1b92f3e5123	admin/modules.app/modules.inc.php
 451c654ae359640d3822c0a31373257f	admin/modules.app/run_job.inc.php
-a5c971d5dfbbd41362ca05e7833b7c49	admin/orders.app/add_product.inc.php
+9e2604e7ce5e6724a104e5958af347b4	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-5e5bf42847daa62368a7a41f6dae0170	admin/orders.app/edit_order.inc.php
+0345dc9465f1a26b15382e0848d4ad48	admin/orders.app/edit_order.inc.php
 1a2c8d0d46ce49c3a08a0b51f9666d40	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 1e6a14c27271fd23c2213c5f1dd1fac4	admin/orders.app/order_statuses.inc.php
@@ -129,7 +129,7 @@ d41d8cd98f00b204e9800998ecf8427e	cache/index.html
 d41d8cd98f00b204e9800998ecf8427e	data/index.html
 930b04e1da4bf8cca10f4fa8b8805cbe	ext/chartist/LICENSE
 bc4ccda72c36a389b3bc14912926ddda	ext/chartist/chartist.min.css
-fd02689d42510683cb31f32f92a04e1b	ext/chartist/chartist.min.js
+84b5deca9f4af7c080be6117132c0c19	ext/chartist/chartist.min.js
 74515bb746f92e42d07478e64efc2250	ext/featherlight/featherlight.js
 f3cb38e8e9fb3ac51e08be6851ce601f	ext/featherlight/featherlight.less
 d1df3482ca7f2f2929cb0d0a8bc12245	ext/featherlight/featherlight.min.css
@@ -489,7 +489,7 @@ eddd47dec65761f916fd10687c156f41	includes/boxes/box_information_links.inc.php
 4fe80538bb3824bdd37151637527a47d	includes/boxes/box_latest_products.inc.php
 6c0e21fe7f999090ec6479f633dc7b60	includes/boxes/box_manufacturer_links.inc.php
 a0eba12c696bc47866f4ea3aedcd5480	includes/boxes/box_manufacturer_logotypes.inc.php
-65ec0735f8ee41798ffdd3e92d1a4ee8	includes/boxes/box_newsletter_subscribe.inc.php
+90faed45367aa172591ce5c9b5d00afc	includes/boxes/box_newsletter_subscribe.inc.php
 2ca15f1cb4b53a0838af78b7066224f2	includes/boxes/box_popular_products.inc.php
 db0379fe7582a5a788c0dd302e9d236b	includes/boxes/box_recently_viewed_products.inc.php
 37915227ca4df25f1f200bb67561c088	includes/boxes/box_region.inc.php
@@ -767,7 +767,7 @@ aa1c4e4050070764eef69eb69916017b	includes/templates/default.catalog/views/box_ma
 82619ca97d96cbda06fc5d81e9284eae	includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php
 af3cca1e93d18d1f86fb07a5209405d0	includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php
 5beab507e4858940defd268e775e5ac7	includes/templates/default.catalog/views/box_popular_products.inc.php
-f6a54bc7f640fc21950c5cc0421e935a	includes/templates/default.catalog/views/box_product.inc.php
+f5c346b8213b12cba94d0765a7b2a778	includes/templates/default.catalog/views/box_product.inc.php
 3f23b0f2a5daf1827fc9162188df91fe	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 c2eda4079a017eb4a442f623cbad92be	includes/templates/default.catalog/views/box_region.inc.php
 9fe421af787539ad7333176ebaf881bb	includes/templates/default.catalog/views/box_similar_products.inc.php
@@ -783,7 +783,7 @@ d488cfba20f275b0199d4745155c734f	includes/templates/default.catalog/views/listin
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 100e1b2e12679c05011e57a441d4ed91	includes/wrappers/wrap_http.inc.php
-36132c552b580bbbf0aceb4940a33788	includes/wrappers/wrap_smtp.inc.php
+17c6d846477631e914c42e9f3a9ded66	includes/wrappers/wrap_smtp.inc.php
 95c3c39e1f3a1b9e9c2cd5ab6be6db9a	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
 e23509b874e17922719a2f295cadb31d	install/config
@@ -798,6 +798,10 @@ e53c53a09e2ceb27bfd3cfe3e1196d82	install/data/LT/LT.sql
 f51116a7115ee4768accbd3c87374e0b	install/data/NL/NL.sql
 756740314bbfa12b28ae2506c62323fc	install/data/NO/NO.sql
 0232a389b6c43f36c4e013d64598a74f	install/data/SE/SE.sql
+c4675e7be677ac86b928504d3510e4b7	install/data/SE/public_html/ext/payson/.htaccess
+39972d0120644a364c67775bd3b23188	install/data/SE/public_html/ext/payson/callback.php
+582d6bd9ca69ce717fa8dc574450da85	install/data/SE/public_html/images/payment/payson.png
+3d5cfac922735b94cb9607f3cf18129d	install/data/SE/public_html/includes/modules/payment/pm_payson.inc.php
 d2120546c1fe83467afb76c52595fdcd	install/data/US/US.sql
 51a94416f1b50733f55abb52665f48ca	install/data/XX/zones_au.sql
 e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
@@ -893,7 +897,7 @@ f149dc818c9639f796173ebd39ca32a2	install/upgrade_patches/2.2.12.inc.php
 21cae28ef68ca0756077f102f752fd3c	install/upgrade_patches/2.2.3.5.inc.php
 55b13ee0c8cf990f366f9eb64716d4b9	install/upgrade_patches/2.2.3.6.inc.php
 92be3e55b734b29aec6dc4022bf6d2b8	install/upgrade_patches/2.2.3.6.sql
-7d8e4f6aaa505e3792cdfff7cca9d608	install/upgrade_patches/2.2.3.inc.php
+d7c91e3896dc2aea95591d3a7639e7a7	install/upgrade_patches/2.2.3.inc.php
 b3b6607e8b9249efc60d945e2244b4dd	install/upgrade_patches/2.2.3.sql
 5d6ea87799f6d2560cf3474a0f8d4ddb	install/upgrade_patches/2.2.4.inc.php
 2cc0d2a6c557883c74488b6eae07e360	install/upgrade_patches/2.2.4.sql

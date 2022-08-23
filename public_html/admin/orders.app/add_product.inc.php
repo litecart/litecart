@@ -183,17 +183,17 @@
       </div>
 
       <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
           <label><?php echo language::translate('title_sku', 'SKU'); ?></label>
           <?php echo functions::form_draw_text_field('sku', true); ?>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
           <label><?php echo language::translate('title_gtin', 'GTIN'); ?></label>
           <?php echo functions::form_draw_text_field('gtin', true); ?>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
           <label><?php echo language::translate('title_taric', 'TARIC'); ?></label>
           <?php echo functions::form_draw_text_field('taric', true); ?>
         </div>

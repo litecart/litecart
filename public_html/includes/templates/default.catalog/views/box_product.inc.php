@@ -102,7 +102,7 @@
       </div>
 
       <?php if ($recommended_price) { ?>
-      <div class="recommmended-price" style="margin: 1em 0;">
+      <div class="recommended-price" style="margin: 1em 0;">
         <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
         <span class="value"><?php echo currency::format($recommended_price); ?></span>
       </div>
