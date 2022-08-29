@@ -6,7 +6,7 @@
 
         <?php if (!empty($image)) { ?>
         <div style="margin-bottom: 2em;">
-          <img class="thumbnail" src="<?php echo document::href_rlink($image['thumbnail']); ?>" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
+          <img class="thumbnail fit" src="<?php echo document::href_rlink($image['thumbnail']); ?>" style="aspect-ratio: <?php echo $image['viewport']['ratio']; ?>;" />
         </div>
         <?php } ?>
 

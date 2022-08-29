@@ -254,10 +254,17 @@ html.dark-mode .operation {
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_file_storage', 'File Storage'); ?></label>
               <div class="file-browser form-input">
+                <?php if (!empty($vmod->data['id'])) { ?>
                 <ul class="list-unstyled">
                   <li><strong><?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #7ccdff;"'); ?> [<?php echo language::translate('title_root', 'Root'); ?>]</strong>
                     <?php echo $draw_folder_contents($vmod->data['location']); ?>
                   </li>
+                </ul>
+                <?php } else { ?>
+                  <div>
+                    <em><?php echo language::translate('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage'); ?></em>
+                  </div>
+                <?php } ?>
               </div>
             </div>
         </div>
@@ -283,6 +290,8 @@ html.dark-mode .operation {
           <div class="row">
             <div class="col-md-6">
 
+              <h3><?php echo language::translate('title_file_to_modify', 'File To Modify'); ?></h3>
+
               <div class="form-group">
                 <label><?php echo language::translate('title_file_pattern', 'File Pattern'); ?></label>
                 <?php echo functions::form_text_field('files['.$f.'][name]', true, 'placeholder="path/file.ext" list="scripts"'); ?>
@@ -292,6 +301,8 @@ html.dark-mode .operation {
             </div>
 
             <div class="col-md-6">
+
+              <h3><?php echo language::translate('title_operations', 'Operations'); ?></h3>
 
               <div class="operations">
                 <?php foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
@@ -303,7 +314,7 @@ html.dark-mode .operation {
                     <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
                   </div>
 
-                  <h3><?php echo language::translate('title_find', 'Find'); ?></h3>
+                  <h4><?php echo language::translate('title_find', 'Find'); ?></h4>
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
@@ -342,7 +353,7 @@ html.dark-mode .operation {
                     </div>
                   </div>
 
-                  <h3><?php echo language::translate('title_ignore_if', 'Ignore If'); ?></h3>
+                  <h4><?php echo language::translate('title_ignore_if', 'Ignore If'); ?></h4>
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
@@ -361,7 +372,7 @@ html.dark-mode .operation {
                     </div>
                   </div>
 
-                  <h3><?php echo language::translate('title_insert', 'Insert'); ?></h3>
+                  <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>

@@ -472,13 +472,13 @@ function escapeHTML(string) {
 
               $.getJSON(self.config.link, function(result) {
 
-                $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+                $(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
 
                 $.each(result.subcategories, function(i, category) {
                   $(dropdownMenu).append(
-                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
+                    '<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
                     '  ' + self.config.icons.folder +
-                    '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
+                    '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
                     '  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
                     '</li>'
                   );
@@ -507,17 +507,17 @@ function escapeHTML(string) {
               success: function(result) {
 
                 if (!result.subcategories.length) {
-                  $(dropdownMenu).html('<li class="list-item text-center no-results"><em>:(</em></li>');
+                  $(dropdownMenu).html('<li class="dropdown-item text-center no-results"><em>:(</em></li>');
                   return;
                 }
 
-                $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>');
+                $(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>');
 
                 $.each(result.subcategories, function(i, category) {
                   $(dropdownMenu).append(
-                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
+                    '<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
                     '  ' + self.config.icons.folder +
-                    '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
+                    '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
                     '  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
                     '</li>'
                   );
@@ -527,29 +527,29 @@ function escapeHTML(string) {
           }
       });
 
-      $(this).on('click', '.dropdown-menu .list-item a', function(e){
+      $(this).on('click', '.dropdown-menu .dropdown-item a', function(e){
         e.preventDefault();
 
         var dropdownMenu = $(this).closest('.dropdown-menu');
 
         $.getJSON($(this).data('link'), function(result) {
 
-          $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+          $(dropdownMenu).html('<li class="dropdown-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
 
           if (result.id) {
             $(dropdownMenu).append(
-              '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex; align-items: center;">' +
+              '<li class="dropdown-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex; align-items: center;">' +
               '  ' + self.config.icons.back +
-              '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
+              '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
               '</li>'
             );
           }
 
           $.each(result.subcategories, function(i, category) {
             $(dropdownMenu).append(
-              '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
+              '<li class="dropdown-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
               '  ' + self.config.icons.folder +
-              '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
+              '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
               '  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
               '</li>'
             );
@@ -557,7 +557,7 @@ function escapeHTML(string) {
         });
       });
 
-      $(this).on('click', '.dropdown-menu .list-item button.add', function(e){
+      $(this).on('click', '.dropdown-menu .dropdown-item button.add', function(e){
         e.preventDefault();
 
         var category = $(this).closest('li'),
@@ -573,7 +573,7 @@ function escapeHTML(string) {
         if (abort) return;
 
         $(self).find('.categories').append(
-          '<li class="list-item" style="display: flex; align-items: center;">' +
+          '<li class="dropdown-item" style="display: flex; align-items: center;">' +
           '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ $(category).data('name').replace(/"/, '&quote;') +'" />' +
           '  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
           '  <div><button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button></div>' +
