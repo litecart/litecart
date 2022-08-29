@@ -1,10 +1,10 @@
-<ul class="breadcrumb">
+<ul class="card breadcrumbs">
 <?php
   foreach ($breadcrumbs as $breadcrumb) {
     if (!empty($breadcrumb['link'])) {
-      echo '<li><a class="breadcrumb-item" href="'. functions::escape_html($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a></li>';
+      echo '<li class="breadcrumb"><a href="'. functions::escape_html($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a></li>';
     } else {
-      echo '<li><span class="breadcrumb-item">'. $breadcrumb['title'] .'</span></li>';
+      echo '<li class="breadcrumb"><span>'. $breadcrumb['title'] .'</span></li>';
     }
   }
 ?>

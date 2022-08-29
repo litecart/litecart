@@ -97,27 +97,58 @@
     }, 500);
   });
 
-// Bootstrap Compatible (data-toggle="tab")
-  $('body').on('click', '[data-toggle="tab"]', function(e) {
-    e.preventDefault();
-    history.replaceState(null, null, this.hash);
-    $(this).closest('ul').find('li').removeClass('active');
-    $(this).closest('li').addClass('active');
-    $($(this).attr('href')).show().siblings().hide();
-  });
+// Tabs (data-toggle="tab")
++function($) {
+  'use strict';
+  $.fn.Tabs = function(){
+    this.each(function(){
 
-  $('.nav-tabs').each(function(){
-    if (!$(this).find('.active').length) {
-      $(this).find('li:first').addClass('active');
-    }
-  });
+      var self = this;
 
-  $('.nav-tabs .active a').trigger('click');
-  if (document.location.hash != '') {
-    $('a[href="' + document.location.hash + '"]').click();
+      this.$element = $(this);
+
+      this.$element.find('[data-toggle="tab"]').each(function(){
+        var $link = $(this);
+
+        $link.on('select', function(){
+          self.$element.find('.active').removeClass('active');
+
+          if ($link.hasClass('nav-link')) {
+            $link.addClass('active');
+          }
+
+          $link.closest('.nav-item').addClass('active');
+
+          $($link.attr('href')).show().siblings().hide();
+        });
+
+        $link.on('click', function(e) {
+          e.preventDefault();
+          history.replaceState(null, null, this.hash);
+          $link.trigger('select');
+        });
+      });
+
+      if (!this.$element.find('.active').length) {
+        this.$element.find('[data-toggle="tab"]').first().select();
+      } else {
+        this.$element.find('[data-toggle="tab"].active').select();
+      }
+    });
   }
 
-// Bootstrap Compatible (data-toggle="buttons")
+  $('.nav-tabs').Tabs();
+
+  if (document.location.hash && document.location.hash.match(/^#tab-/)) {
+    $('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select');
+  }
+
+  $(document).on('ajaxcomplete', function(){
+    $('.nav-tabs').Tabs();
+  });
+}(jQuery);
+
+// Toggle Buttons (data-toggle="buttons")
   $('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');

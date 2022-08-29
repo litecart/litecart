@@ -2,7 +2,7 @@
   $draw_branch = function($category, &$category_path) use (&$draw_branch) {
 
     echo '<li class="category-'. $category['id'] .'">' . PHP_EOL
-       . '  <a class="nav-item'. (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'" href="'. functions::escape_html($category['link']) .'">'. functions::draw_fonticon(!empty($category['opened']) ? 'fa-angle-down fa-fw float-end' : 'fa-angle-right fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>' . PHP_EOL;
+       . '  <a class="nav-link'. (!empty($category['opened']) ? ' opened' : '') . (!empty($category['active']) ? ' active' : '') .'" href="'. functions::escape_html($category['link']) .'">'. functions::draw_fonticon(!empty($category['opened']) ? 'fa-angle-down fa-fw float-end' : 'fa-angle-right fa-fw float-end') .' '. $category['name'] . ((settings::get('category_tree_product_count') && $category['num_products']) ? ' <small class="float-end">('. $category['num_products'] .')</small>' : '') .'</a>' . PHP_EOL;
 
     if (!empty($category['subcategories'])) {
       echo '  <ul class="nav nav-stacked nav-pills">' . PHP_EOL;
@@ -38,7 +38,7 @@
 <?php if (!empty(document::$settings['compact_category_tree'])) { ?>
 <script>
   $('#box-category-tree > ul.compact').prepend(
-    '<li class="toggle"><a class="nav-item" href="#" data-toggle="showall"><?php echo functions::draw_fonticon('fa-caret-left fa-fw'); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
+    '<li class="toggle"><a class="nav-link" href="#" data-toggle="showall"><?php echo functions::draw_fonticon('fa-caret-left fa-fw'); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
   );
 
   $('#box-category-tree > ul.compact').on('click', 'a[data-toggle="showall"]', function(e){

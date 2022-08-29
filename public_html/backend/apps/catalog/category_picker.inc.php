@@ -27,37 +27,29 @@
       <?php echo language::translate('title_select', 'Select'); ?>
     </button>
 
-    <ul class="nav nav-pills" style="margin-bottom: 1em;">
-      <li>
-        <a class="nav-item" href="<?php echo document::href_ilink(null, ['parent_id' => 0], true); ?>" data-id="0">
-          <?php echo language::translate('title_root', 'Root'); ?>
-        </a>
-      </li>
+    <nav class="nav nav-pills" style="margin-bottom: 1em;">
+      <a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
+        <?php echo language::translate('title_root', 'Root'); ?>
+      </a>
       <?php foreach ($breadcrumbs as $category) { ?>
-      <li>
-        <a class="nav-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id'], true]); ?>" data-id="<?php echo $category['id']; ?>">
-          <?php echo $category['name']; ?>
-        </a>
-      </li>
+      <a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>" data-id="<?php echo $category['id']; ?>">
+        <?php echo $category['name']; ?>
+      </a>
       <?php } ?>
-    </ul>
+    </nav>
 
-		<ul class="nav nav-pills nav-stacked">
+		<nav class="nav nav-pills nav-stacked">
       <?php if (!empty($_GET['parent_id'])) { ?>
-      <li>
-        <a class="nav-item" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id], true); ?>">
-          <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
-        </a>
-      <li>
+      <a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
+        <?php echo functions::draw_fonticon('fa-arrow-left'); ?> <?php echo language::translate('title_back', 'Back'); ?>
+      </a>
       <?php } ?>
       <?php foreach ($categories as $category) { ?>
-      <li>
-        <a class="nav-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']], true); ?>">
-          <?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
-        </a>
-      <li>
+      <a class="nav-link" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
+        <?php echo functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66;"'); ?> <?php echo fallback($category['name'], '[untitled]'); ?>
+      </a>
       <?php } ?>
-		</ul>
+		</nav>
 	</div>
 
 </div>

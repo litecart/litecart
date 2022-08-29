@@ -265,14 +265,15 @@ html.dark-mode .operation {
 
       <h2><?php echo language::translate('title_modifications', 'Modifications'); ?></h2>
 
-      <ul class="nav nav-tabs">
+      <nav class="nav nav-tabs">
         <?php foreach (array_keys($vmod->data['files']) as $f) { ?>
-          <li><a data-toggle="tab" href="#tab-<?php echo $f; ?>">
-            <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span>
-          </a></li>
+        <a class="nav-link" data-toggle="tab" href="#tab-<?php echo $f; ?>">
+          <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span>
+          <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span>
+        </a>
         <?php } ?>
-          <li><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a></li>
-      </ul>
+        <a class="nav-link add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a>
+      </nav>
 
       <div class="tab-content">
 

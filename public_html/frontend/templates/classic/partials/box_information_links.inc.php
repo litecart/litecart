@@ -1,7 +1,7 @@
 <?php
   $draw_page = function($page, $page_path, $depth) use (&$draw_page) {
     echo '<li class="page-'. $page['id'] .'">' . PHP_EOL
-       . '  <a class="nav-item'. (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'" href="'. functions::escape_html($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;
+       . '  <a class="nav-link'. (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'" href="'. functions::escape_html($page['link']) .'">'. $page['title'] .'</a>' . PHP_EOL;
     if (!empty($page['subpages'])) {
       echo '  <ul class="nav nav-pills nav-stacked">' . PHP_EOL;
       foreach ($page['subpages'] as $subpage) {

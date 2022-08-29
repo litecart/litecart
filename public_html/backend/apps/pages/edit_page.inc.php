@@ -101,11 +101,11 @@
         </div>
       </div>
 
-      <ul class="nav nav-tabs">
+      <nav class="nav nav-tabs">
         <?php foreach (language::$languages as $language) { ?>
-          <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+        <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
         <?php } ?>
-      </ul>
+      </nav>
 
       <div class="tab-content">
         <?php foreach (array_keys(language::$languages) as $language_code) { ?>

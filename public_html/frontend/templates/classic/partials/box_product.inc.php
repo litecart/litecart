@@ -200,41 +200,58 @@
   </div>
 
   <?php if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') { ?>
-  <ul class="nav nav-tabs">
-    <?php if ($description) { ?><li><a data-toggle="tab" href="#tab-description"><?php echo language::translate('title_description', 'Description'); ?></a></li><?php } ?>
-    <?php if ($technical_data) { ?><li><a data-toggle="tab" href="#tab-technical-data"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></a></li><?php } ?>
-  </ul>
+  <?php if ($description || $technical_data) { ?>
+  <div class="card" style="margin: var(--gutter-size) 0;">
+    <div class="card-body">
+      <div class="row layout" style="margin-bottom: 0;">
 
-  <div class="tab-content">
-    <div id="tab-description" class="tab-pane description">
-      <?php echo $description; ?>
-    </div>
+        <?php if ($description) { ?>
+        <div class="col-md-<?php echo ($technical_data) ? 6 : 12; ?>">
+          <h2 style="margin-top: 0;"><?php echo language::translate('title_description', 'Description'); ?></h2>
 
-    <?php if ($technical_data) { ?>
-    <div id="tab-technical-data" class="tab-pane technical-data">
-      <table class="table table-striped table-hover">
+          <div class="description">
+            {{description}}
+          </div>
+        </div>
+        <?php } ?>
+
+        <?php if ($technical_data) { ?>
+        <div class="col-md-<?php echo ($description) ? 6 : 12; ?>">
+          <h2 style="margin-top: 0;"><?php echo language::translate('title_technical_data', 'Technical Data'); ?></h2>
+
+          <div class="technical-data" <?php echo (!$description) ? 'style="columns: 2 auto;"' : ''; ?>>
+            <table class="table table-striped table-hover">
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
-      list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
+      @list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
          . '  </tr>' . PHP_EOL;
-    } else if (trim($line)) {
-      echo '  <tr>' . PHP_EOL
-         . '    <th colspan="2" class="text-start">'. $line .'</th>' . PHP_EOL
-         . '  </tr>' . PHP_EOL;
+    } else if (trim($line) != '') {
+      echo '  <thead>' . PHP_EOL
+         . '    <tr>' . PHP_EOL
+         . '      <th colspan="2">'. $line .'</th>' . PHP_EOL
+         . '    </tr>' . PHP_EOL
+         . '  </thead>' . PHP_EOL
+         . '  <tbody>' . PHP_EOL;
     } else {
-      echo '</table>' . PHP_EOL
+      echo ' </tbody>' . PHP_EOL
+         . '</table>' . PHP_EOL
          . '<table class="table table-striped table-hover">' . PHP_EOL;
     }
   }
 ?>
-      </table>
+              </table>
+            </div>
+          </div>
+        <?php } ?>
+      </div>
+
     </div>
-    <?php } ?>
   </div>
+  <?php } ?>
   <?php } ?>
 
 </article>
