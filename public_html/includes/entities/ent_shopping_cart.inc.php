@@ -25,23 +25,23 @@
 
         switch (true) {
           case (preg_match('#^customer_#', $field['Field'])):
-            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case (preg_match('#^shipping_(?!option)#', $field['Field'])):
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case (preg_match('#^payment_option#', $field['Field'])):
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           case (preg_match('#^shipping_option#', $field['Field'])):
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field);
             break;
 
           default:
-            $this->data[$field['Field']] = database::create_variable($field['Type']);
+            $this->data[$field['Field']] = database::create_variable($field);
             break;
         }
       }

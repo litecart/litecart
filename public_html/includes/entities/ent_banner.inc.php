@@ -21,7 +21,7 @@
       );
 
       while ($field = database::fetch($categories_query)) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
+        $this->data[$field['Field']] = database::create_variable($field);
       }
     }
 

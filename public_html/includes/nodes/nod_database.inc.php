@@ -130,6 +130,7 @@
 
       return $result;
     }
+
     public static function multi_query($query, $link='default') {
 
       if (!isset(self::$_links[$link])) self::connect($link);
@@ -185,16 +186,41 @@
       return mysqli_info(self::$_links[$link]);
     }
 
-    public static function create_variable($column_type, $value='') {
-      switch (true) {
-        case (preg_match('#^(bit|int|tinyint|smallint|mediumint|bigint)#i', $column_type)):
-          return intval($value);
+    public static function create_variable($field, $value=null) {
 
-        case (preg_match('#^(decimal|double|float)#i', $column_type)):
-          return floatval($value);
+      if (empty($field)) return null;
+
+      if (is_string($field)) {
+        $field = [
+          'Type' => $field,
+          'Default' => null,
+        ];
+      }
+
+      if ($field['Default'] == "''") {
+        $field['Default'] = '';
+      }
+
+      if ($field['Default']) {
+
+        $search_replace = [
+          '#^\'\'$#' => '',
+          '#^null$#i' => null,
+          '#^(now|current_timestamp)(\(\))?$#i' => date('Y-m-d H:i:s'),
+        ];
+
+        $field['Default'] = preg_replace(array_keys($search_replace), array_values($search_replace), $field['Default']);
+      }
+
+      switch (true) {
+        case (preg_match('#^(bit|int|tinyint|smallint|mediumint|bigint)#i', $field['Type'])):
+          return intval(!is_null($value) ? $value : $field['Default']);
+
+        case (preg_match('#^(decimal|double|float)#i', $field['Type'])):
+          return floatval(!is_null($value) ? $value : $field['Default']);
 
         default:
-          return strval($value);
+          return strval(!is_null($value) ? $value : $field['Default']);
       }
     }
 
