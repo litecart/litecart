@@ -125,6 +125,79 @@
       notices::add('errors', $e->getMessage());
     }
   }
+
+  $date_format_options = [
+    [language::strftime('%e %b %Y'), '%e %b %Y'],
+    [language::strftime('%b %e %Y'), '%b %e %Y'],
+  ];
+
+  $time_format_options = [
+    [
+      'label' => '12-Hour Format',
+      'options' => [
+        [language::strftime('%I:%M %p'), '%I:%M %P'],
+      ],
+    ],
+    [
+      'label' => '24-Hour Format',
+      'options' => [
+        [language::strftime('%H:%M'), '%H:%M'],
+      ],
+    ],
+  ];
+
+  $raw_date_options = [
+    [
+      'label' => 'Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled',
+      'options' => [
+        [date('Y-m-d'), 'Y-m-d'],
+        [date('Y.m.d'), 'Y.m.d'],
+        [date('Y/m/d'), 'Y/m/d'],
+      ],
+    ],
+    [
+      'label' => 'Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled',
+      'options' => [
+        [date('d-m-Y'), 'd-m-Y'],
+        [date('d.m.Y'), 'd.m.Y'],
+        [date('d/m/Y'), 'd/m/Y'],
+      ],
+    ],
+    [
+      'label' => 'Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled',
+      'options' => [
+        [date('m/d/y'), 'm/d/y'],
+      ],
+    ],
+  ];
+
+  $raw_time_options = [
+    [
+      'label' => '12-hour format',
+      'options' => [
+        [date('h:i A'), 'h:i A'],
+      ],
+    ],
+    [
+      'label' => '24-hour format',
+      'options' => [
+        [date('H:i'), 'H:i'],
+      ]
+    ],
+  ];
+
+  $decimal_point_options = [
+    [language::translate('char_dot', 'Dot'), '.'],
+    [language::translate('char_comma', 'Comma'), ','],
+  ];
+
+  $thousands_separator_options = [
+    [language::translate('char_comma', 'Comma'), ','],
+    [language::translate('char_dot', 'Dot'), '.'],
+    [language::translate('char_space', 'Space'), ' '],
+    [language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '],
+    [language::translate('char_single_quote', 'Single quote'), '\''],
+  ];
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
@@ -201,115 +274,36 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-<?php
-  $options = [
-    [language::strftime('%e %b %Y'), '%e %b %Y'],
-    [language::strftime('%b %e %Y'), '%b %e %Y'],
-  ];
-  echo functions::form_draw_select_field('format_date', $options, true);
-?>
+          <?php echo functions::form_draw_select_field('format_date', $date_format_options, true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-<?php
-  $options = [
-    [
-      'label' => '12-Hour Format',
-      'options' => [
-        [language::strftime('%I:%M %p'), '%I:%M %P'],
-      ],
-    ],
-    [
-      'label' => '24-Hour Format',
-      'options' => [
-        [language::strftime('%H:%M'), '%H:%M'],
-      ],
-    ],
-  ];
-  echo functions::form_draw_select_optgroup_field('format_time', $options, true, false);
-?>
+          <?php echo functions::form_draw_select_optgroup_field('format_time', $time_format_options, true, false); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-<?php
-  $options = [
-    [
-      'label' => 'Big-endian (YMD)', 'null', 'style="font-weight: bold;" disabled',
-      'options' => [
-        [date('Y-m-d'), 'Y-m-d'],
-        [date('Y.m.d'), 'Y.m.d'],
-        [date('Y/m/d'), 'Y/m/d'],
-      ],
-    ],
-    [
-      'label' => 'Little-endian (DMY)', 'null', 'style="font-weight: bold;" disabled',
-      'options' => [
-        [date('d-m-Y'), 'd-m-Y'],
-        [date('d.m.Y'), 'd.m.Y'],
-        [date('d/m/Y'), 'd/m/Y'],
-      ],
-    ],
-    [
-      'label' => 'Middle-endian (MDY)', 'null', 'style="font-weight: bold;" disabled',
-      'options' => [
-        [date('m/d/y'), 'm/d/y'],
-      ],
-    ],
-  ];
-  echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false);
-?>
+          <?php echo functions::form_draw_select_optgroup_field('raw_date', $raw_date_options, true, false); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-<?php
-  $options = [
-    [
-      'label' => '12-hour format',
-      'options' => [
-        [date('h:i A'), 'h:i A'],
-      ],
-    ],
-    [
-      'label' => '24-hour format',
-      'options' => [
-        [date('H:i'), 'H:i'],
-      ]
-    ],
-  ];
-  echo functions::form_draw_select_optgroup_field('raw_time', $options, true, false);
-?>
+          <?php echo functions::form_draw_select_optgroup_field('raw_time', $raw_time_options, true, false); ?>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></label>
-<?php
-  $options = [
-    [language::translate('char_dot', 'Dot'), '.'],
-    [language::translate('char_comma', 'Comma'), ','],
-  ];
-  echo functions::form_draw_select_field('decimal_point', $options, true);
-?>
+          <?php echo functions::form_draw_select_field('decimal_point', $decimal_point_options, true); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></label>
-<?php
-  $options = [
-    [language::translate('char_comma', 'Comma'), ','],
-    [language::translate('char_dot', 'Dot'), '.'],
-    [language::translate('char_space', 'Space'), ' '],
-    [language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '],
-    [language::translate('char_single_quote', 'Single quote'), '\''],
-  ];
-  echo functions::form_draw_select_field('thousands_sep', $options, true);
-?>
+          <?php echo functions::form_draw_select_field('thousands_sep', $thousands_separator_options, true); ?>
         </div>
       </div>
 
