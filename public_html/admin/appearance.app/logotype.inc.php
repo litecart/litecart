@@ -56,7 +56,7 @@
 
       <div class="form-group">
         <label><?php echo language::translate('title_new_image', 'New Image'); ?></label>
-        <?php echo functions::form_draw_file_field('image', ''); ?>
+        <?php echo functions::form_draw_file_field('image'); ?>
       </div>
 
       <div class="btn-group">
