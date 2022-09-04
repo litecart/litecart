@@ -315,13 +315,13 @@
         // Update stock options
           $stock_options_query = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_options_stock
-            where combination regexp '(^|:|,)". $option_group['id'] ."-". $option_value['id'] ."(:|,|$)';"
+            where combination regexp '(^|,)". (int)$option_group['id'] ."-". (int)$option_value['id'] ."(,|$)';"
           );
 
           while ($stock_option = database::fetch($stock_options_query)) {
             database::query(
               "update ". DB_TABLE_PREFIX ."products_options_stock
-              set combination = '". database::input(preg_replace('#(^|:|,)'. (int)$option_group['id'] .'-'. (int)$option_value['id'] .'(?=(?::|,|$))#', '$1'. (int)$attribute_group_id .'-'. (int)$attribute_value_id, $stock_option['combination'])) ."'
+              set combination = '". database::input(preg_replace('#(^|.*,)'. (int)$option_group['id'] ."-". (int)$option_value['id'] .'(,.*|$)#', '${1}'. (int)$attribute_group_id .'-'. (int)$attribute_value_id . '${2}', $stock_option['combination'])) ."'
               where id = ". (int)$stock_option['id'] .";"
             );
           }
@@ -329,15 +329,18 @@
         // Update order items
           $order_items_query = database::query(
             "select * from ". DB_TABLE_PREFIX ."orders_items
-            where option_stock_combination regexp '(^|:|,)". (int)$option_group['id'] ."-". (int)$option_value['id'] ."(:|,|$)';"
+            where option_stock_combination regexp '(^|,)". (int)$option_group['id'] ."-". (int)$option_value['id'] ."(,|$)';"
           );
 
           while ($order_item = database::fetch($order_items_query)) {
             database::query(
               "update ". DB_TABLE_PREFIX ."orders_items
-              set option_stock_combination = '". database::input(preg_replace('#(^|,)'. (int)$option_group['id'] .'-'. (int)$option_value['id'] .'(?=(?::|,|$))#', '$1'. (int)$attribute_group_id .'-'. (int)$attribute_value_id, $order_item['option_stock_combination'])) ."'
+              set option_stock_combination = '". database::input(preg_replace('#(^|.*,)'. (int)$option_group['id'] ."-". (int)$option_value['id'] .'(,.*|$)#', '${1}'. (int)$attribute_group_id .'-'. (int)$attribute_value_id . '${2}', $order_item['option_stock_combination'])) ."'
               where id = ". (int)$order_item['id'] .";"
             );
+            if (!database::affected_rows()) {
+              trigger_error('Update order item option combination failed', E_USER_WARNING);
+            }
           }
         }
       }
