@@ -157,7 +157,7 @@
         </div>
         <?php } ?>
 
-        <div class="options-stock-notice"></div>
+        <div class="stock-notice"></div>
 
         <?php echo functions::form_draw_form_end(); ?>
       </div>

@@ -4,6 +4,7 @@
   $deleted_files = [
     FS_DIR_ADMIN . '.htaccess',
     FS_DIR_ADMIN . '.htpasswd',
+    FS_DIR_APP . 'vqmod/xml/product_options_stock_notice.xml',
   ];
 
   foreach ($deleted_files as $pattern) {
