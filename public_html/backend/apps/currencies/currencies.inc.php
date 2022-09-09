@@ -83,7 +83,7 @@
           <td><?php echo functions::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $currency['id']; ?></td>
           <td><?php echo $currency['code']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
           <td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
           <td class="text-center"><?php echo currency::format_html(1234.56, false, $currency['code'], 1); ?></td>
           <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>

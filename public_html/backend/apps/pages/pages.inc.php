@@ -142,7 +142,7 @@
           <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
-          <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
+          <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
@@ -194,7 +194,7 @@
           <td><?php echo functions::form_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $page['id']; ?></td>
-          <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
+          <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>

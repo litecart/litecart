@@ -102,7 +102,7 @@
           <td><?php echo functions::form_checkbox('order_statuses[]', $order_status['id']); ?></td>
           <td><?php echo $order_status['id']; ?></td>
           <td class="text-center"><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
           <td><?php echo strtr($order_status['state'], $states); ?></td>
           <td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => language::translate('title_none', 'None'), 'reserve' => language::translate('title_reserve_stock', 'Reserve Stock'), 'withdraw' => language::translate('title_withdraw_stock', 'Withdraw Stock')]); ?></td>
           <td class="text-center"><?php echo !empty($order_status['hidden']) ? functions::draw_fonticon('fa-check') : '-'; ?></td>

@@ -154,7 +154,7 @@
         <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_checkbox('vmods[]', $vmod['id']); ?></td>
           <td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['title']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>"><?php echo $vmod['title']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
           <td><?php echo $vmod['location']; ?></td>
           <td><?php echo $vmod['author']; ?></td>

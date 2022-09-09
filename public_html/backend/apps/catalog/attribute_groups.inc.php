@@ -45,7 +45,7 @@
           <td><?php echo functions::form_checkbox('attributes[]', $attribute_group['id']); ?></td>
           <td class="text-center"><?php echo $attribute_group['id']; ?></td>
           <td><?php echo $attribute_group['code']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>"><?php echo $attribute_group['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>"><?php echo $attribute_group['name']; ?></a></td>
           <td class="text-center"><?php echo database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where group_id = ". (int)$attribute_group['id'] .";")->num_rows; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_attribute_group', ['group_id' => $attribute_group['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>

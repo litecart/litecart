@@ -66,7 +66,7 @@
           <td><?php echo functions::form_checkbox('slides[]', $slide['id']); ?></td>
           <td><?php echo functions::draw_fonticon($slide['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $slide['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_slide', ['slide_id' => $slide['id']]); ?>"><?php echo $slide['name']; ?></a></td>
           <td class="text-end"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
           <td class="text-end"><?php echo !empty($slide['date_valid_from']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
           <td class="text-end"><?php echo !empty($slide['date_valid_to']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>

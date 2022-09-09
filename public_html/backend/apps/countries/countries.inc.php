@@ -79,7 +79,7 @@
           <td><?php echo functions::form_checkbox('countries['. $country['iso_code_2'] .']', $country['iso_code_2']); ?></td>
           <td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
           <td><?php echo $country['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>
           <td><?php echo $country['iso_code_1']; ?></td>
           <td><?php echo $country['iso_code_2']; ?></td>
           <td><?php echo $country['iso_code_3']; ?></td>

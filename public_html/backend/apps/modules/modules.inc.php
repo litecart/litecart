@@ -137,7 +137,7 @@
         <tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_checkbox('modules[]', $module['id']); ?></td>
           <td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
           <?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>
           <td class="text-center"><a href="<?php echo document::href_ilink(__APP__.'/run_job', ['module_id' => $module['id']]); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
           <?php } else { ?>

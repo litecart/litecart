@@ -42,7 +42,7 @@
         <tr>
           <td><?php echo functions::form_checkbox('delivery_statuses[]', $delivery_status['id']); ?></td>
           <td><?php echo $delivery_status['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>"><?php echo $delivery_status['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>"><?php echo $delivery_status['name']; ?></a></td>
           <td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
         </tr>
         <?php } ?>

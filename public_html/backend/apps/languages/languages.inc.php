@@ -77,7 +77,7 @@
           <td><?php echo functions::form_checkbox('languages[]', $language['code']); ?></td>
           <td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
           <td><?php echo $language['id']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
           <td><?php echo $language['code']; ?></td>
           <td><?php echo $language['code2']; ?></td>
           <td><?php echo $language['url_type']; ?></td>
