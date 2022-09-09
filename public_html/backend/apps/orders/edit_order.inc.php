@@ -1273,22 +1273,24 @@
 
   var new_comment_index = 0;
   $('#box-comments .add').click(function(e) {
-
     e.preventDefault();
-    while ($('input[name="comments[new_'+new_comment_index+'][id]"]').length) new_comment_index++;
-    var output = '  <div class="bubble local me">'
-               + '    <?php echo functions::form_hidden_field('comments[new_comment_index][id]', ''); ?>'
-               + '    <?php echo functions::form_hidden_field('comments[new_comment_index][author]', 'staff'); ?>'
-               + '    <?php echo functions::form_hidden_field('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>'
-               + '    <?php echo functions::escape_js(functions::form_textarea('comments[new_comment_index][text]', '')); ?>'
-               + '    <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>'
-               + '    <div class="actions">'
-               + '      <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>'
-               + '      <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>'
-               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>'
-               + '    </div>'
-               + '  </div>';
-    output = output.replace(/new_comment_index/g, 'new_' + new_comment_index);
+
+    var output = [
+      '<div class="bubble local me">'
+      '  <?php echo functions::form_hidden_field('comments[new_comment_index][id]', ''); ?>',
+      '  <?php echo functions::form_hidden_field('comments[new_comment_index][author]', 'staff'); ?>',
+      '  <?php echo functions::form_hidden_field('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>',
+      '  <?php echo functions::escape_js(functions::form_textarea('comments[new_comment_index][text]', '')); ?>',
+      '  <div class="date"><?php echo language::strftime(language::$selected['format_datetime']); ?></div>',
+      '  <div class="actions">',
+      '    <label class="notify" title="<?php echo functions::escape_html(language::translate('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][notify]', [1, functions::draw_fonticon('fa-envelope')], true)); ?> </label>',
+      '    <label class="private" title="<?php echo functions::escape_html(language::translate('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[new_comment_index][hidden]', [1, functions::draw_fonticon('fa-eye-slash')], true)); ?></label>',
+      '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw'); ?></a>',
+      '  </div>',
+      '</div>'
+    ].join('')
+    .replace(/new_comment_index/g, 'new_' + new_comment_index++);
+
     $(this).before(output);
     $(this).closest('#box-comments .bubbles textarea:last-child').focus();
   });
@@ -1485,48 +1487,49 @@
 
   var new_item_index = 0;
   window.addItem = function(item) {
-    new_item_index++;
 
-    var output = '  <tr class="item">'
-               + '    <td></td>'
-               + '    <td class="grabable">' + item.name
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][id]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][product_id]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][stock_item_id]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][name]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][description]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][data]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][sku]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][gtin]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][taric]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][weight]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][weight_unit]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][length]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][width]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][height]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][length_unit]', '')); ?>'
-               + '    </td>'
-               + '    <td class="grabable sku">'+ item.sku +'</td>'
-               + '    <td class="grabable">'
-               + '      <span class="weight"></span> <span class="weight_unit"></span>'
-               + '    </td>'
-               + '    <td class="grabable">'
-               + '      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>'
-               + '    </td>'
-               + '    <td><?php echo functions::escape_js(functions::form_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][discount]', $_POST['currency_code'], '')); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][sum]', $_POST['currency_code'], '', 'readonly')); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '', 'readonly')); ?></td>'
-               + '    <td class="text-end">'
-               + '      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>'
-               + '    </td>'
-               + '    <td class="text-end">'
-               + '      <a class="btn btn-default btn-sm edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>'
-               + '    </td>'
-               + '  </tr>';
+    var output = [
+      '  <tr class="item">'
+      '    <td></td>',
+      '    <td class="grabable">' + item.name,
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][id]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][product_id]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][stock_option_id]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][name]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][description]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][data]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][sku]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][gtin]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][taric]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][weight]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][weight_unit]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][length]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][width]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][height]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][length_unit]', '')); ?>',
+      '    </td>',
+      '    <td class="grabable sku">'+ item.sku +'</td>',
+      '    <td class="grabable">',
+      '      <span class="weight"></span> <span class="weight_unit"></span>',
+      '    </td>',
+      '    <td class="grabable">',
+      '      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
+      '    </td>',
+      '    <td><?php echo functions::escape_js(functions::form_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][discount]', $_POST['currency_code'], '')); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][sum]', $_POST['currency_code'], '', 'readonly')); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '', 'readonly')); ?></td>',
+      '    <td class="text-end">',
+      '      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>',
+      '    </td>',
+      '    <td class="text-end">',
+      '      <a class="btn btn-default btn-sm edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>',
+      '    </td>',
+      '  </tr>'
+    ].join('')
+    .replace(/new_item_index/g, 'new_' + new_item_index++);
 
-    output = output.replace(/new_item_index/g, 'new_' + new_item_index);
     $('#order-items tbody').append(output);
 
     var row = $('#order-items tbody tr.item').last();
@@ -1568,24 +1571,27 @@
 
   var new_ot_row_index = 0;
   $('#order-total').on('click', '.add', function(e) {
-    while ($('input[name="order_total['+new_ot_row_index+'][id]"]').length) new_ot_row_index++;
+
     e.preventDefault();
-    var output = '  <tr>'
-               + '    <td class="text-end"><a href="#" class="btn btn-default add" title="<?php echo functions::escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-plus', 'style="color: #6c6;"')); ?></a></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::escape_js(functions::form_text_field('order_total[new_ot_row_index][module_id]', '')); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_text_field('order_total[new_ot_row_index][title]', '', 'class="form-input text-end"')); ?></td>'
-               + '    <td>'
-               + '      <div class="input-group">'
-               + '        <span class="input-group-text"><?php echo functions::escape_js(functions::form_checkbox('order_total[new_ot_row_index][calculate]', ['1', functions::draw_fonticon('fa-calculator')], '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
-               + '        <?php echo functions::escape_js(functions::form_currency_field('order_total[new_ot_row_index][value]', $_POST['currency_code'], currency::format_raw(0))); ?>'
-               + '      </div>'
-               + '    </td>'
-               + '    <td><?php echo functions::escape_js(functions::form_currency_field('order_total[new_ot_row_index][tax]', $_POST['currency_code'], currency::format_raw(0))); ?></td>'
-               + '    <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a></td>'
-               + '  </tr>';
-  output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);
-  $(this).closest('tr').before(output);
-  new_ot_row_index++;
+
+    var output = [
+      '  <tr>'
+      '    <td class="text-end"><a href="#" class="btn btn-default add" title="<?php echo functions::escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-plus', 'style="color: #6c6;"')); ?></a></td>',
+      '    <td><?php echo functions::escape_js(functions::form_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::escape_js(functions::form_text_field('order_total[new_ot_row_index][module_id]', '')); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_text_field('order_total[new_ot_row_index][title]', '', 'class="form-input text-end"')); ?></td>',
+      '    <td>',
+      '      <div class="input-group">',
+      '        <span class="input-group-text"><?php echo functions::escape_js(functions::form_checkbox('order_total[new_ot_row_index][calculate]', ['1', functions::draw_fonticon('fa-calculator')], '1', 'title="'. functions::escape_html(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>',
+      '        <?php echo functions::escape_js(functions::form_currency_field('order_total[new_ot_row_index][value]', $_POST['currency_code'], currency::format_raw(0))); ?>',
+      '      </div>',
+      '    </td>',
+      '    <td><?php echo functions::escape_js(functions::form_currency_field('order_total[new_ot_row_index][tax]', $_POST['currency_code'], currency::format_raw(0))); ?></td>',
+      '    <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a></td>',
+      '  </tr>'
+    ].join('')
+    .replace(/new_ot_row_index/g, 'new_' + new_ot_row_index++);
+
+    $(this).closest('tr').before(output);
   });
 
   $('#order-total').on('click', '.remove', function(e) {

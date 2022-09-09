@@ -215,20 +215,23 @@
     );
   });
 
-  var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
+  var new_zone_index = 0;
   $('form[name="country_form"] .add').click(function(event) {
     event.preventDefault();
     if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
-    new_zone_i++;
-    var output = '    <tr>'
-               + '      <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-               + '      <td><?php echo functions::escape_js(functions::form_text_field('zones[new_zone_i][code]', '')); ?></td>'
-               + '      <td><?php echo functions::escape_js(functions::form_text_field('zones[new_zone_i][name]', '')); ?></td>'
-               + '      <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>'
-               + '    </tr>';
-    output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
-    output = output.replace(/new_zone_code/g, $('input[name="zone[code]"]').val());
-    output = output.replace(/new_zone_name/g, $('input[name="zone[name]"]').val());
+
+    var output = [
+      '<tr>'
+      '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][id]', '')); ?></td>',
+      '  <td><?php echo functions::escape_js(functions::form_text_field('zones[new_zone_index][code]', '')); ?></td>',
+      '  <td><?php echo functions::escape_js(functions::form_text_field('zones[new_zone_index][name]', '')); ?></td>',
+      '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
+      '</tr>'
+    ].join('')
+    .replace(/new_zone_index/g, 'new_' + new_zone_index++)
+    .replace(/new_zone_code/g, $('input[name="zone[code]"]').val())
+    .replace(/new_zone_name/g, $('input[name="zone[name]"]').val());
+
     $(this).closest('table').find('tbody').append(output);
   });
 

@@ -146,21 +146,24 @@
 
 
 <script>
-  var new_value_index = 1;
+  var new_value_index = 0;
   $('form[name="attribute_form"]').on('click', '.add', function(e) {
     e.preventDefault();
-    while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
+
 <?php
     $name_fields = '';
     foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text_field('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
 ?>
-    var output = '<tr>'
-               + '  <td><?php echo functions::escape_js(functions::form_hidden_field('values[new_value_index][id]', '')); ?></td>'
-               + '  <td><?php echo functions::escape_js($name_fields); ?></td>'
-               + '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>'
-               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a></td>'
-               + '</tr>';
-    output = output.replace(/new_value_index/g, 'new_' + new_value_index);
+    var output = [
+      '<tr>'
+      '  <td><?php echo functions::escape_js(functions::form_hidden_field('values[new_value_index][id]', '')); ?></td>',
+      '  <td><?php echo functions::escape_js($name_fields); ?></td>',
+      '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>',
+      '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #c33;"')); ?></a></td>',
+      '</tr>'
+    ].join('')
+    .replace(/new_value_index/g, 'new_' + new_value_index++);
+
     $(this).closest('table').find('tbody').append(output);
   });
 

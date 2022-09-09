@@ -86,9 +86,13 @@
     console.log('Updating ' + task.component);
 
     if (!$('body > .loader-wrapper').length) {
-      var loader = '<div class="loader-wrapper">'
-                 + '  <div class="loader" style="width: 256px; height: 256px;"></div>'
-                 + '</div>';
+
+      var loader = [
+        '<div class="loader-wrapper">'
+        '  <div class="loader" style="width: 256px; height: 256px;"></div>',
+        '</div>'
+      ].join('');
+
       $('body').append(loader);
     }
 

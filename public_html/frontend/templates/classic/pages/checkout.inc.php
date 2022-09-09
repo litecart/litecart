@@ -65,9 +65,13 @@
     if (console) console.log('Processing ' + task.component);
 
     if (!$('body > .loader-wrapper').length) {
-      var loader = '<div class="loader-wrapper">'
-                 + '  <div class="loader" style="width: 256px; height: 256px;"></div>'
-                 + '</div>';
+
+      var loader = [
+        '<div class="loader-wrapper">'
+        '  <div class="loader" style="width: 256px; height: 256px;"></div>',
+        '</div>'
+      ].join('');
+
       $('body').append(loader);
     }
 
@@ -155,8 +159,10 @@
 
   $('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e){
     e.preventDefault();
-    var data = $('#box-checkout-customer :input').serialize()
-             + '&save_customer_details=true';
+    var data = [
+      $('#box-checkout-customer :input').serialize(),
+      'save_customer_details=true'
+    ].join('&');
     window.queueUpdateTask('customer', data, true);
     window.queueUpdateTask('cart', null, true);
     window.queueUpdateTask('shipping', true, true);

@@ -810,36 +810,36 @@
 
   var new_item_index = 0;
   window.addItem = function(item) {
-    new_item_index++;
 
-    var output = '  <tr class="item">'
-               + '    <td class="grabable">' + item.name
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][id]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][product_id]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][name]', '')); ?>'
-               + '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][description]', '')); ?>'
-               + '    </td>'
-               + '    <td><?php echo functions::escape_js(functions::form_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>'
-               + '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>'
-               + '    <td class="text-end">'
-               + '      <a class="edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>'
-               + '      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>'
-               + '    </td>'
-               + '  </tr>';
+    var output = [
+      '  <tr class="item">'
+      '    <td class="grabable">' + item.name,
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][id]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][product_id]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][name]', '')); ?>',
+      '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][description]', '')); ?>',
+      '    </td>',
+      '    <td><?php echo functions::escape_js(functions::form_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][price]', $_POST['currency_code'], '')); ?></td>',
+      '    <td><?php echo functions::escape_js(functions::form_currency_field('items[new_item_index][tax]', $_POST['currency_code'], '')); ?></td>',
+      '    <td class="text-end">',
+      '      <a class="edit" href="#" title="<?php echo functions::escape_js(language::translate('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>',
+      '      <a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #c33;"')); ?></a>',
+      '    </td>',
+      '  </tr>'
+    ].join('')
+    .replace(/new_item_index/g, 'new_' + new_item_index++);
 
-    output = output.replace(/new_item_index/g, 'new_' + new_item_index);
-    $('#shopping-cart-items tbody').append(output);
+    $output = $(output);
+    $(output).find('*[name$="[product_id]"]').val(item.product_id);
+    $(output).find('*[name$="[stock_option_id]"]').val(item.stock_option_id);
+    $(output).find('*[name$="[name]"]').val(item.name);
+    $(output).find('*[name$="[quantity]"]').val(item.quantity);
+    $(output).find('*[name$="[price]"]').val(item.price);
+    $(output).find('*[name$="[tax]"]').val(item.tax);
+    $(output).find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
 
-    var row = $('#shopping-cart-items tbody tr.item').last();
-    $(row).find('*[name$="[product_id]"]').val(item.product_id);
-    $(row).find('*[name$="[stock_item_id]"]').val(item.stock_item_id);
-    $(row).find('*[name$="[name]"]').val(item.name);
-    $(row).find('*[name$="[quantity]"]').val(item.quantity);
-    $(row).find('*[name$="[price]"]').val(item.price);
-    $(row).find('*[name$="[tax]"]').val(item.tax);
-
-    $(row).find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
+    $('#shopping-cart-items tbody').append($output);
 
     calculate_total();
   }

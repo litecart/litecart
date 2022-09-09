@@ -172,21 +172,20 @@ table th:last-child {
     });
   });
 
-  var new_key_i = 1;
+  var new_key_index = 0;
   $('.data-table .add').click(function(e){
     e.preventDefault();
 
-    while ($(':input[name="keys[key_'+new_key_i+']"]').length) new_key_i++;
-
-    var output = '<tr>' +
-                 '  <td><?php echo functions::form_text_field('keys[key_new_key_i]', 'key_new_key_i', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>' +
-                 <?php foreach (language::$languages as $language) { ?>
-                 '  <td><?php echo functions::form_text_field('values['. $language['code'] .'][key_new_key_i]', true); ?></td>' +
-                 <?php } ?>
-                 '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
-                 '</tr>';
-
-    output = output.replace(/new_key_i/g, new_key_i);
+    var output = [
+      '<tr>',
+      '  <td><?php echo functions::form_text_field('keys[new_key_index]', 'new_key_index', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
+      <?php foreach (language::$languages as $language) { ?>
+      '  <td><?php echo functions::form_text_field('values['. $language['code'] .'][new_key_index]', true); ?></td>',
+      <?php } ?>
+      '  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>',
+      '</tr>'
+    ].join('')
+    .replace(/new_key_index/g, 'new_' + new_key_index++);
 
     $('.data-table tbody').append(output);
   });

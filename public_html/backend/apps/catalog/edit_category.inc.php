@@ -318,7 +318,7 @@
 
 // Filters
 
-  var new_attribute_filter_i = 0;
+  var new_attribute_filter_index = 0;
   $('#tab-filters button[name="add"]').click(function(){
 
     if ($('select[name="new_attribute_group"]').val() == '') {
@@ -326,24 +326,23 @@
       return;
     }
 
-    var output = '<tr class="grabable">'
-               + '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
-               + '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
-               + '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
-               + '  <td>new_attribute_group_name</td>'
-               + '  <td><?php echo functions::escape_js(functions::form_checkbox('filters[new_attribute_filter_i][select_multiple]', true)); ?></td>'
-               + '  <td class="text-end">'
-               + '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>'
-               + '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>'
-               + '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>'
-               + '  </td>'
-               + '</tr>';
-
-    while ($('input[name="filters[new_'+new_attribute_filter_i+']"]').length) new_attribute_filter_i++;
-    output = output.replace(/new_attribute_filter_i/g, 'new_' + new_attribute_filter_i);
-    output = output.replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val());
-    output = output.replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text());
-    new_attribute_filter_i++;
+    var output = [
+      '<tr class="grabable">'
+      '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_index][id]', '')); ?>',
+      '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_index][attribute_group_id]', 'new_attribute_group_id')); ?>',
+      '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_index][attribute_group_name]', 'new_attribute_group_name')); ?>',
+      '  <td>new_attribute_group_name</td>',
+      '  <td><?php echo functions::escape_js(functions::form_checkbox('filters[new_attribute_filter_index][select_multiple]', true)); ?></td>',
+      '  <td class="text-end">',
+      '    <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
+      '    <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>',
+      '    <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
+      '  </td>',
+      '</tr>'
+    ].join('')
+    .replace(/new_attribute_filter_index/g, 'new_' + new_attribute_filter_index++)
+    .replace(/new_attribute_group_id/g, $('select[name="new_attribute_group"] option:selected').val())
+    .replace(/new_attribute_group_name/g, $('select[name="new_attribute_group"] option:selected').text());
 
     $('#tab-filters tbody').append(output);
   });

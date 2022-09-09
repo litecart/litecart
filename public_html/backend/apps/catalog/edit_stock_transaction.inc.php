@@ -220,32 +220,32 @@
 
     var option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first');
 
-    new_item_index++;
-    var output = '  <tr class="item">'
-              + '    <td>'
-              + '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][id]', '')); ?>'
-              + '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][item_id]', '')); ?>'
-              + '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][sku]', '')); ?>'
-              + '       ' + $(option).attr('value')
-              + '    </td>'
-              + '    <td><?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>'
-              + '    <td><?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>'
-              + '    <td>'
-              + '      <div class="input-group">'
-              + '        <span class="input-group-text">&plusmn;</span>'
-              + '        <?php echo functions::form_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>'
-              + '      </div>'
-              + '    </td>'
-              + '    <td class="text-center">'
-              + '      <div class="input-group">'
-              + '        <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>'
-              + '        <?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>'
-              + '      </div>'
-              + '    </td>'
-              + '    <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>'
-              + '  </tr>';
-
-    output = output.replace(/new_item_index/g, 'new_' + new_item_index);
+    var output = [
+      '  <tr class="item">'
+      '    <td>',
+      '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][id]', '')); ?>',
+      '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][item_id]', '')); ?>',
+      '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][sku]', '')); ?>',
+      '       ' + $(option).attr('value'),
+      '    </td>',
+      '    <td><?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][name]', '')); ?>'+ $(option).data('name') +'</td>',
+      '    <td><?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][quantity]', '', 2, 'readonly')); ?></td>',
+      '    <td>',
+      '      <div class="input-group">',
+      '        <span class="input-group-text">&plusmn;</span>',
+      '        <?php echo functions::form_decimal_field('contents[new_item_index][quantity_adjustment]', true, 2, !empty($_POST['options_stock']) ? 'readonly' : ''); ?>',
+      '      </div>',
+      '    </td>',
+      '    <td class="text-center">',
+      '      <div class="input-group">',
+      '        <?php echo functions::escape_js(functions::form_button('transfer', functions::draw_fonticon('fa-arrow-left'), 'button')); ?>',
+      '        <?php echo functions::escape_js(functions::form_decimal_field('contents[new_item_index][backordered]', true, 2)); ?>',
+      '      </div>',
+      '    </td>',
+      '    <td><a class="remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle', 'style="color: #c33;"')); ?></a></td>',
+      '  </tr>'
+    ].join('')
+    .replace(/new_item_index/g, 'new_' + new_item_index++);
 
     var $output = $(output);
 

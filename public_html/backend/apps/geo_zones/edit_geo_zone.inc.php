@@ -168,7 +168,7 @@
     });
   });
 
-  var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
+  var new_zone_index = 0;
   $('form[name="form_geo_zone"]').on('click', 'button[name="add"]', function(e) {
     e.preventDefault();
 
@@ -188,15 +188,17 @@
 
     if (found) return;
 
-    var output = '    <tr>'
-               + '      <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-               + '      <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_i][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>'
-               + '      <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_i][zone_code]', '')); ?>' + $('select[name="new_zone[zone_code]"] option:selected').text() + '</td>'
-               + '      <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_i][city]', '')); ?>' + $('input[name="new_zone[city]"]').val() + '</td>'
-               + '      <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
-               + '    </tr>';
+    var output = [
+      '<tr>'
+      '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][id]', '')); ?></td>',
+      '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
+      '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][zone_code]', '')); ?>' + $('select[name="new_zone[zone_code]"] option:selected').text() + '</td>',
+      '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][city]', '')); ?>' + $('input[name="new_zone[city]"]').val() + '</td>',
+      '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>',
+      '</tr>'
+    ].join('')
+    .replace(/new_zone_index/g, 'new_' + new_zone_index++);
 
-    output = output.replace(/new_zone_i/g, 'new_' + new_zone_i++);
     $(this).closest('table').find('tbody').append(output);
 
     $('form[name="form_geo_zone"] tbody tr:last :input[name$="[country_code]"]').val($(':input[name="new_zone[country_code]"]').val());
