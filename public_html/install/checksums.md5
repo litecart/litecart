@@ -3,7 +3,7 @@
 d41d8cd98f00b204e9800998ecf8427e	admin/addons.widget/index.html
 664e077ed384a0727fc22e67999f1323	admin/appearance.app/config.inc.php
 e935fd4c1c676c77664b7aead4014f79	admin/appearance.app/edit_styling.inc.php
-e4ccc5e0bbc75cc6fbae3d2aedf853cc	admin/appearance.app/logotype.inc.php
+d0ca7ee49714f4ea7980f7fca85fda53	admin/appearance.app/logotype.inc.php
 7454f905112e4c2643a172235e3f5798	admin/appearance.app/template.inc.php
 0e48b4777d3d46db09f9220d6db29804	admin/appearance.app/template_settings.inc.php
 fd0e67d9545603684b1605990a1a3915	admin/catalog.app/attribute_groups.inc.php
@@ -35,7 +35,7 @@ dcb5c4a85eb670cfa74bf8c35e1ea8ec	admin/countries.app/edit_country.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/countries.app/index.html
 88eae3b0d3f9d5150ee9bb5faee59b5f	admin/currencies.app/config.inc.php
 3974501e31e1e9c01d421a48010a8aee	admin/currencies.app/currencies.inc.php
-a8e31856859db206b5aee37fd80ca0d2	admin/currencies.app/edit_currency.inc.php
+54752dd7d733e3ca71bf9f8eb5e95c87	admin/currencies.app/edit_currency.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/currencies.app/index.html
 3d7334d73acd32c1c1387a87a8282010	admin/customers.app/config.inc.php
 f0b36879dcd7556ef5beebe126b27d30	admin/customers.app/csv.inc.php
@@ -58,7 +58,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/geo_zones.app/index.html
 d41d8cd98f00b204e9800998ecf8427e	admin/graphs.widget/index.html
 10c5f140d5aca9dc30a538c277265c75	admin/index.php
 09e13f8724e32f092c66825d41a25926	admin/languages.app/config.inc.php
-7723b787a8a08bdaadfd296c51fc9ccb	admin/languages.app/edit_language.inc.php
+b2c5b9701b1ef23b4648222cf8ad48e2	admin/languages.app/edit_language.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/languages.app/index.html
 7a4e6e7f638b11b121827434b71cc3fe	admin/languages.app/languages.inc.php
 780aa147e01c73b9b5084ee1aaa63273	admin/languages.app/storage_encoding.inc.php
@@ -75,7 +75,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 1a2c8d0d46ce49c3a08a0b51f9666d40	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 1e6a14c27271fd23c2213c5f1dd1fac4	admin/orders.app/order_statuses.inc.php
-7252e7ff76e67d8491555973c4d1413c	admin/orders.app/orders.inc.php
+65cce229d869e4d9cf5eff71aac26223	admin/orders.app/orders.inc.php
 54223f4dcd61dbdfaf465bc3c26f861d	admin/orders.app/product_picker.inc.php
 1133a502b6a64250fc3a847b3bbd9863	admin/orders.widget/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.widget/index.html
@@ -95,7 +95,7 @@ caaff3f8682057a3e0d1d6088428adeb	admin/settings.app/config.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/settings.app/index.html
 fc5ef27267f5b62291ffa0edcc1950d9	admin/settings.app/settings.inc.php
 47f3da665e0d875350184e25a5c78902	admin/slides.app/config.inc.php
-be45d9eb9dbe349e63cc7f01119b701d	admin/slides.app/edit_slide.inc.php
+53b67d1c39b78297dfdea5c2178fd5aa	admin/slides.app/edit_slide.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/slides.app/index.html
 95d3f2ce13136510b9c103b3617be544	admin/slides.app/slides.inc.php
 7eca9481e7fd9f91d939782123ccf355	admin/stats.widget/config.inc.php
@@ -473,7 +473,7 @@ d41d8cd98f00b204e9800998ecf8427e	images/shipping/index.html
 d41d8cd98f00b204e9800998ecf8427e	images/slides/index.html
 17fd4de7d9e88047254c3fdd7371afa3	includes/abstracts/abs_module.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
-b9a58ea46df7037c0a340d7340052eaa	includes/app_footer.inc.php
+4fb8898a223f58b315f9c4223cd2538a	includes/app_footer.inc.php
 f7f92b1c47abd54c05625966fb6956ea	includes/app_header.inc.php
 3c352efd424702fb748a4cacef793de9	includes/autoloader.inc.php
 3762e4cb2077d20baa72f956c45735b6	includes/boxes/box_account_links.inc.php
@@ -500,17 +500,17 @@ f52b5b54dd63c5846ab6882b41586731	includes/boxes/box_site_footer.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/boxes/index.html
 1f8e6e30ae67af57c79c7761941e717e	includes/compatibility.inc.php
 25946492f88c91644b7b047201a37280	includes/entities/ent_attribute_group.inc.php
-8841b4cafdc5e7d98b04ab1b7a8782b9	includes/entities/ent_category.inc.php
+e8f28aac62ab9b02d12cb1895b59443f	includes/entities/ent_category.inc.php
 a1d8a9cb8aa1d450219036f82747f9d2	includes/entities/ent_country.inc.php
 49959c496534cee4fac3f43e6d9ac660	includes/entities/ent_currency.inc.php
 00a763a962cae8df30e00e4e4aca61df	includes/entities/ent_customer.inc.php
 89541941304e266a24797153fff5eb91	includes/entities/ent_delivery_status.inc.php
 3e224d6e5abfeab8b16cb298dd44b8e6	includes/entities/ent_email.inc.php
 37357c40ffce997a17b1cf50540b6e0d	includes/entities/ent_geo_zone.inc.php
-b217fda769d984db52402e013c973ff5	includes/entities/ent_image.inc.php
+8757f1c182e2d206ca983a264e19158c	includes/entities/ent_image.inc.php
 c161383835f0febc2b72975def1e4409	includes/entities/ent_language.inc.php
 6f43030dcab5c68fa42eafb03e919dd0	includes/entities/ent_link.inc.php
-0493589c7092ed52565892ce84ef5df1	includes/entities/ent_manufacturer.inc.php
+22a799c2e11ebe05a430c88a399d07f6	includes/entities/ent_manufacturer.inc.php
 1e2f7dff7c795e4129f8a615c2dd1134	includes/entities/ent_module.inc.php
 c108f33fd2746576b8c6b93af0f30592	includes/entities/ent_order.inc.php
 80efecf21c83da137feff5abb619a77d	includes/entities/ent_order_status.inc.php
@@ -519,7 +519,7 @@ c108f33fd2746576b8c6b93af0f30592	includes/entities/ent_order.inc.php
 9c02bb592f51f02573ec3134bce009d0	includes/entities/ent_quantity_unit.inc.php
 285d4595c9494d757fc8b1770fa676c5	includes/entities/ent_slide.inc.php
 305011d49b5846ca57461753b3d7ad44	includes/entities/ent_sold_out_status.inc.php
-dce2766dfc4d222e4fc2b45f2008a64b	includes/entities/ent_supplier.inc.php
+62c0986bd5b78a9b1b1136ae9ba82ded	includes/entities/ent_supplier.inc.php
 3a55f72d7ae067945305720d8f49ef37	includes/entities/ent_tax_class.inc.php
 86801d53d26a7db2b1e007ea6caf5671	includes/entities/ent_tax_rate.inc.php
 52e6e39f5d30922f2701ff248fc3347b	includes/entities/ent_user.inc.php
@@ -897,7 +897,7 @@ f149dc818c9639f796173ebd39ca32a2	install/upgrade_patches/2.2.12.inc.php
 21cae28ef68ca0756077f102f752fd3c	install/upgrade_patches/2.2.3.5.inc.php
 55b13ee0c8cf990f366f9eb64716d4b9	install/upgrade_patches/2.2.3.6.inc.php
 92be3e55b734b29aec6dc4022bf6d2b8	install/upgrade_patches/2.2.3.6.sql
-d7c91e3896dc2aea95591d3a7639e7a7	install/upgrade_patches/2.2.3.inc.php
+b1e079cbeff78ff66bc1b3aa91d639af	install/upgrade_patches/2.2.3.inc.php
 b3b6607e8b9249efc60d945e2244b4dd	install/upgrade_patches/2.2.3.sql
 5d6ea87799f6d2560cf3474a0f8d4ddb	install/upgrade_patches/2.2.4.inc.php
 2cc0d2a6c557883c74488b6eae07e360	install/upgrade_patches/2.2.4.sql
