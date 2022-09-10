@@ -133,18 +133,18 @@
 
   }).first().trigger('change');
 
-  var xhr_filter = null;
+  let xhr_filter = null;
   $('body').on('input', '#box-filter form[name="filter_form"]', function(){
     if (xhr_filter) xhr_filter.abort();
-    var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
+    let url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
     $('section.listing.products').hide();
     xhr_filter = $.ajax({
       type: 'get',
       url: url.href,
       dataType: 'html',
       success: function(response){
-        var content = $('section.listing.products', response)[0].outerHTML;
-        var pagination = $('.pagination', response).length ? $('.pagination', response)[0].outerHTML : '';
+        let content = $('section.listing.products', response)[0].outerHTML;
+        let pagination = $('.pagination', response).length ? $('.pagination', response)[0].outerHTML : '';
         $('.pagination').remove();
         $('section.listing.products').replaceWith(content).after(pagination);
         $('section.listing.products').after(pagination);
@@ -154,7 +154,7 @@
 
   $('body').on('click', '#box-filter form[name="filter_form"] .tokens .remove', function(e){
     e.preventDefault();
-    var token = $(this).closest('.token');
+    let token = $(this).closest('.token');
     switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
       case 'radio':
       case 'checkbox':

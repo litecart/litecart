@@ -61,8 +61,8 @@
   });
 
 	$('#modal-category-picker').on('click', 'button[name="select"]', function() {
-    var field = $.featherlight.current().$currentTarget.closest('.input-group');
-    var id = $(this).data('id'), name = $(this).data('name');
+    let field = $.featherlight.current().$currentTarget.closest('.input-group'),
+      id = $(this).data('id'), name = $(this).data('name');
 
     $(field).find(':input').val(id).trigger('change');
     $(field).find('.name').text(name);

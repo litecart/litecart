@@ -60,7 +60,7 @@ input[name="payment_option[id]"]:checked + .option::after {
     $('#box-checkout-payment .option:not(.active) .content :input').prop('disabled', true);
     $(this).closest('.option').find('.content :input').prop('disabled', false);
 
-    var formdata = $('#box-checkout-payment .option.active :input').serialize();
+    let formdata = $(this).closest('.option-wrapper :input').serialize();
 
     $('#box-checkout').trigger('update', [{component: 'payment', data: formdata + '&select_payment=true', refresh: false}])
                       .trigger('update', [{component: 'summary', refresh: true}]);

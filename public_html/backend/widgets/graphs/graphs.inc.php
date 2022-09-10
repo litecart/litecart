@@ -154,18 +154,18 @@
 
 <script>
 // Monthly Sales
-  var data = {
+  let data = {
     labels: <?php echo json_encode(array_column($monthly_sales[date('Y')], 'label'), JSON_UNESCAPED_SLASHES); ?>,
     series: <?php echo json_encode([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
-  var options = {
+  let options = {
     seriesBarDistance: 10,
     showArea: true,
     lineSmooth: true
   };
 
-  var responsiveOptions = [
+  let responsiveOptions = [
     ['screen and (max-width: 640px)', {
       seriesBarDistance: 5,
       axisX: {
@@ -176,7 +176,7 @@
     }]
   ];
 
-  var chart1 = new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+  let chart1 = new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
 
   // Offset x1 a tiny amount so that the straight stroke gets a bounding box
   // Straight lines don't get a bounding box
@@ -191,7 +191,7 @@
 
   // Create the gradient definition on created event (always after chart re-render)
   chart1.on('created', function(ctx) {
-    var defs = ctx.svg.elem('defs');
+    let defs = ctx.svg.elem('defs');
     defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
     .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
     .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });
@@ -199,16 +199,16 @@
 
 // Daily Sales
 
-  var data = {
+  let data = {
     labels: <?php echo json_encode(array_column($daily_sales, 'label'), JSON_UNESCAPED_SLASHES); ?>,
     series: <?php echo json_encode([array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')], JSON_UNESCAPED_SLASHES); ?>
   };
 
-  var options = {
+  let options = {
     seriesBarDistance: 10
   };
 
-  var responsiveOptions = [
+  let responsiveOptions = [
     ['screen and (max-width: 640px)', {
       seriesBarDistance: 5,
       axisX: {
@@ -219,7 +219,7 @@
     }]
   ];
 
-  var chart2 = new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+  let chart2 = new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
 
   // Offset x1 a tiny amount so that the straight stroke gets a bounding box
   // Straight lines don't get a bounding box
@@ -234,7 +234,7 @@
 
   // Create the gradient definition on created event (always after chart re-render)
   chart2.on('created', function(ctx) {
-    var defs = ctx.svg.elem('defs');
+    let defs = ctx.svg.elem('defs');
     defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
     .elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .8)' })
     .parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .8)' });

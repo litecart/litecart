@@ -119,13 +119,13 @@
 </div>
 
 <script>
-  var currencies = <?php echo json_encode($currencies); ?>;
+  let currencies = <?php echo json_encode($currencies); ?>;
 
   $('input[name="<?php echo settings::get('store_currency_code'); ?>"]').on('input', function(){
-    var campaign_price = $(this).val();
+    let campaign_price = $(this).val();
     $.each(currencies, function(i,currency){
       if (currency.code == '<?php echo settings::get('store_currency_code'); ?>') return;
-      var currency_campaign_price = parseFloat(Number(campaign_price / currency.value).toFixed(currency.decimals)) || '';
+      let currency_campaign_price = parseFloat(Number(campaign_price / currency.value).toFixed(currency.decimals)) || '';
       $('input[name="'+ currency.code +'"]').attr('placeholder', currency_campaign_price);
     });
   }).trigger('input');

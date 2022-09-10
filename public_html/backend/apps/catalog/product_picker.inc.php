@@ -36,7 +36,7 @@
 </div>
 
 <script>
-  var xhr_product_picker = null;
+  let xhr_product_picker = null;
   $('#modal-product-picker input[name="query"]').on('input', function(){
 
     if ($(this).val() == '') {
@@ -90,11 +90,11 @@
 
   $('#modal-product-picker tbody').on('click', 'td', function() {
 
-    var callback = $.featherlight.current().$currentTarget.data('callback');
+    let callback = $.featherlight.current().$currentTarget.data('callback');
 
-    var $tr = $(this).closest('tr');
+    let $tr = $(this).closest('tr');
 
-    var product = {
+    let product = {
       id: $tr.find('.id').text(),
       name: $tr.find('.name').text(),
       sku: $tr.find('.sku').text(),
@@ -105,7 +105,7 @@
     if (callback) {
       window[callback](product);
     } else if ($.featherlight.current().$currentTarget[0].closest('.input-group')) {
-      var field = $.featherlight.current().$currentTarget[0].closest('.input-group');
+      let field = $.featherlight.current().$currentTarget[0].closest('.input-group');
       $(field).find(':input').val(product.id).trigger('change');
       $(field).find('.id').text(product.id);
       $(field).find('.name').text(product.name);

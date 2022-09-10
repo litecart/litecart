@@ -178,7 +178,8 @@
 
 <script>
   $('input[name="new[sku]"]').on('input', function(e) {
-    var row = $(this).closest('tr');
+    let row = $(this).closest('tr');
+
     if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
       $(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
       $(row).find('input[name="new[quantity]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('quantity') || 0);
@@ -189,8 +190,9 @@
   });
 
   $('body').on('click', 'button[name="transfer"]', function(){
-    var quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-    var backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
+    let quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
+      backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
+
     $(quantity_field).val( Number($(quantity_field).val()) + Number($(backordered_field).val()) );
     $(backordered_field).val(0);
   });
@@ -207,21 +209,21 @@
     $(this).closest('tr').remove();
   });
 
-  var new_item_index = 0;
+  let new_item_index = 0;
   $('table tfoot button[name="add"]').click(function(e) {
     e.preventDefault();
 
-    var row = $(this).closest('tr');
+    let row = $(this).closest('tr');
 
     if (!$('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]').length) {
       alert('Uknown stock item');
       return;
     }
 
-    var option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first');
+    let option = $('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]:first');
 
-    var output = [
-      '  <tr class="item">'
+    let output = [
+      '  <tr class="item">',
       '    <td>',
       '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][id]', '')); ?>',
       '       <?php echo functions::escape_js(functions::form_hidden_field('contents[new_item_index][item_id]', '')); ?>',
@@ -247,10 +249,9 @@
     ].join('')
     .replace(/new_item_index/g, 'new_' + new_item_index++);
 
-    var $output = $(output);
+    let $output = $(output);
 
   // Insert values
-    var inserted = $('#transaction-contents tbody tr.item').last();
     $output.find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id') || '');
     $output.find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku') || '');
     $output.find('[name$="[name]"]').val($('input[name="new[name]"]').val() || '');

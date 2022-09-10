@@ -60,7 +60,7 @@ input[name="shipping_option[id]"]:checked + .option::after {
     $('#box-checkout-shipping .option:not(.active) .content :input').prop('disabled', true);
     $(this).closest('.option').find('.content :input').prop('disabled', false);
 
-    var formdata = $('#box-checkout-shipping .option.active :input').serialize();
+    let formdata = $(this).closest('.option-wrapper :input').serialize();
 
     $('#box-checkout').trigger('update', [{component: 'shipping', data: formdata + '&select_shipping=true', refresh: false}])
                       .trigger('update', [{component: 'payment', refresh: true}])

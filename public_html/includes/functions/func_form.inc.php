@@ -157,14 +157,14 @@
 <<<END
 $('table[data-toggle="csv"]').on('click', '.remove', function(e) {
   e.preventDefault();
-  var parent = $(this).closest('tbody');
+  let parent = $(this).closest('tbody');
   $(this).closest('tr').remove();
   $(parent).trigger('keyup');
 });
 
 $('table[data-toggle="csv"] .add-row').click(function(e) {
   e.preventDefault();
-  var n = $(this).closest('table').find('thead th:not(:last-child)').length;
+  let n = $(this).closest('table').find('thead th:not(:last-child)').length;
   $(this).closest('table').find('tbody').append(
     '<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="fa fa-times-circle" style="color: #d33;"></i></a></td>' +'</tr>'
   ).trigger('keyup');
@@ -172,8 +172,8 @@ $('table[data-toggle="csv"] .add-row').click(function(e) {
 
 $('table[data-toggle="csv"] .add-column').click(function(e) {
   e.preventDefault();
-  var table = $(this).closest('table');
-  var title = prompt("<?php echo language::translate('title_column_title', 'Column Title'); ?>");
+  let table = $(this).closest('table');
+  let title = prompt("<?php echo language::translate('title_column_title', 'Column Title'); ?>");
   if (!title) return;
   $(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>');
   $(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');
@@ -182,9 +182,9 @@ $('table[data-toggle="csv"] .add-column').click(function(e) {
 });
 
 $('table[data-toggle="csv"]').keyup(function(e) {
-   var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
+   let csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
       return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
-        var text = \$(col).text();
+        let text = \$(col).text();
         if (/("|,)/.test(text)) {
           return '"'+ text.replace(/"/g, '""') +'"';
         } else {

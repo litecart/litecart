@@ -119,13 +119,13 @@
   $('form[name="form_add_product"] button[name="ok"]').unbind('click').click(function(e){
     e.preventDefault();
 
-    var error = false,
+    let error = false,
         form = $(this).closest('form');
 
-    var item = {
+    let item = {
       id: '',
       product_id: $(form).find(':input[name="product_id"]').val(),
-      stock_item_id: $(form).find(':input[name="stock_item_id"]').val(),
+      stock_option_id: $(form).find(':input[name="stock_option_id"]').val(),
       name: $(form).find(':input[name="name"]').val(),
       sku: $(form).find(':input[name="sku"]').val(),
       gtin: $(form).find(':input[name="gtin"]').val(),

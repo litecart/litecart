@@ -1075,7 +1075,7 @@
 // Order
 
   $('select[name="order_status_id"]').change(function(e){
-    var color = $(this).find('option:selected').data('color');
+    let color = $(this).find('option:selected').data('color');
     $(this).css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
   }).trigger('change');
 
@@ -1240,7 +1240,7 @@
   }
 
   $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', function(){
-    var params = {
+    let params = {
       language_code: $('select[name="language_code"]').val(),
       currency_code: $('select[name="currency_code"]').val(),
       currency_value: $('input[name="currency_value"]').val(),
@@ -1271,12 +1271,12 @@
     $(this).height('auto').height('calc(' + $(this).prop('scrollHeight') + 'px + 1em) ');
   }).trigger('input');
 
-  var new_comment_index = 0;
+  let new_comment_index = 0;
   $('#box-comments .add').click(function(e) {
     e.preventDefault();
 
-    var output = [
-      '<div class="bubble local me">'
+    let output = [
+      '<div class="bubble local me">',
       '  <?php echo functions::form_hidden_field('comments[new_comment_index][id]', ''); ?>',
       '  <?php echo functions::form_hidden_field('comments[new_comment_index][author]', 'staff'); ?>',
       '  <?php echo functions::form_hidden_field('comments[new_comment_index][date_created]', language::strftime(language::$selected['format_datetime'])); ?>',
@@ -1318,7 +1318,7 @@
 
 // Tax Rates
 
-  var tax_rates = [];
+  let tax_rates = [];
 
   function get_tax(tax_class_id) {
     $.each(tax_rates, function(i, tax_rate) {
@@ -1345,7 +1345,7 @@
 // Order items
 
   $('#order-items').on('input change', ':input[name$="[quantity]"], :input[name$="[price]"], :input[name$="[tax_rate]"], :input[name$="[discount]"]', function(){
-    var row = $(this).closest('tr'),
+    let row = $(this).closest('tr'),
       quantity = parseFloat($(row).find(':input[name$="[quantity]"]').val() || 0),
       price = parseFloat($(row).find(':input[name$="[price]"]').val() || 0),
       tax_rate = parseFloat($(row).find(':input[name$="[tax_rate]"]').val() || 0),
@@ -1361,23 +1361,23 @@
   $('#order-items').on('click', '.edit', function(){
     $.featherlight('#modal-edit-order-item');
 
-    var modal = $('.featherlight.active'),
+    let modal = $('.featherlight.active'),
         row = $(this).closest('tr');
 
     $(modal).data('row', row);
 
     $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
-      var value = $(row).find(':input[name$="['+field+']"]').val();
+      let field = $(element).attr('name');
+      let value = $(row).find(':input[name$="['+field+']"]').val();
       if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value || 0);
       $(modal).find(':input[name="'+field+'"]').val(value);
     });
   });
 
   // Callback handler for product picker modal
-  var selectProduct = function(product) {
+  let selectProduct = function(product) {
 
-    var params = {
+    let params = {
       product_id: product.id,
       language_code: $('select[name="language_code"]').val(),
       currency_code: $('select[name="currency_code"]').val(),
@@ -1398,7 +1398,7 @@
       }
     }
 
-    var url = '<?php echo document::ilink(__APP__.'/add_product'); ?>?' + $.param(params);
+    let url = '<?php echo document::ilink(__APP__.'/add_product'); ?>?' + $.param(params);
 
     $.get(url, function(content) {
       $('.featherlight-modal').html(content);
@@ -1408,7 +1408,7 @@
   $('#order-items .add-custom-item').click(function(){
     $.featherlight('#modal-add-order-item');
 
-    var modal = $('.featherlight.active'),
+    let modal = $('.featherlight.active'),
         row = $(this).closest('tr');
 
     $(modal).data('row', '');
@@ -1416,9 +1416,9 @@
 
   $('#modal-edit-order-item button[name="ok"]').click(function(e){
 
-    var modal = $('.featherlight.active');
-    var row = $(modal).data('row');
-    var fields = [
+    let modal = $('.featherlight.active');
+    let row = $(modal).data('row');
+    let fields = [
       'name',
       'sku',
       'gtin',
@@ -1434,9 +1434,9 @@
     ];
 
     if (row == '') {
-      var item = {};
+      let item = {};
       $.each($(modal).find(':input'), function(i,element){
-        var field = $(element).attr('name');
+        let field = $(element).attr('name');
         item[field] = $(modal).find(':input[name="'+field+'"]').val();
       });
       addItem(item);
@@ -1446,8 +1446,8 @@
     $(modal).find(':input[name="length_unit"]').val('<?php echo settings::get('store_length_unit'); ?>');
 
     $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
-      var value = $(modal).find(':input[name="'+field+'"]').val();
+      let field = $(element).attr('name');
+      let value = $(modal).find(':input[name="'+field+'"]').val();
       $(row).find(':input[name$="['+field+']"]').val(value).trigger('keyup');
       $(row).find('.'+field).text(value);
     });
@@ -1457,10 +1457,10 @@
 
   $('#modal-add-order-item button[name="ok"]').click(function(e){
 
-    var modal = $('.featherlight.active');
-    var row = $(modal).data('row');
-    var item = {};
-    var fields = [
+    let modal = $('.featherlight.active');
+    let row = $(modal).data('row');
+    let item = {};
+    let fields = [
       'name',
       'sku',
       'gtin',
@@ -1476,7 +1476,7 @@
     ];
 
     $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
+      let field = $(element).attr('name');
       item[field] = $(modal).find(':input[name="'+field+'"]').val();
     });
 
@@ -1485,11 +1485,11 @@
     $.featherlight.close();
   });
 
-  var new_item_index = 0;
+  let new_item_index = 0;
   window.addItem = function(item) {
 
-    var output = [
-      '  <tr class="item">'
+    let output = [
+      '  <tr class="item">',
       '    <td></td>',
       '    <td class="grabable">' + item.name,
       '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][id]', '')); ?>',
@@ -1532,9 +1532,9 @@
 
     $('#order-items tbody').append(output);
 
-    var row = $('#order-items tbody tr.item').last();
+    let row = $('#order-items tbody tr.item').last();
     $(row).find('*[name$="[product_id]"]').val(item.product_id);
-    $(row).find('*[name$="[stock_item_id]"]').val(item.stock_item_id);
+    $(row).find('*[name$="[stock_option_id]"]').val(item.stock_option_id);
     $(row).find('*[name$="[sku]"]').val(item.sku);
     $(row).find('*[name$="[name]"]').val(item.name);
     $(row).find('*[name$="[gtin]"]').val(item.gtin);
@@ -1569,12 +1569,12 @@
 
 // Order Total
 
-  var new_ot_row_index = 0;
+  let new_ot_row_index = 0;
   $('#order-total').on('click', '.add', function(e) {
 
     e.preventDefault();
 
-    var output = [
+    let output = [
       '  <tr>'
       '    <td class="text-end"><a href="#" class="btn btn-default add" title="<?php echo functions::escape_js(language::translate('text_insert_before', 'Insert before'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-plus', 'style="color: #6c6;"')); ?></a></td>',
       '    <td><?php echo functions::escape_js(functions::form_hidden_field('order_total[new_ot_row_index][id]', '')); ?><?php echo functions::escape_js(functions::form_text_field('order_total[new_ot_row_index][module_id]', '')); ?></td>',
@@ -1601,7 +1601,7 @@
 
   function calculate_total() {
 
-    var subtotal = 0,
+    let subtotal = 0,
      subtotal_tax = 0,
      total = 0;
      total_tax = 0,
@@ -1618,7 +1618,7 @@
     total_tax += subtotal_tax;
 
     $('#order-total tbody tr').each(function() {
-      var row = this,
+      let row = this,
         amount = parseFloat($(row).find(':input[name$="[amount]"]').val() || 0),
         tax_rate = parseFloat($(row).find(':input[name$="[tax_rate]"]').val() || 0),
         discount = parseFloat($(row).find(':input[name$="[discount]"]').val() || 0),

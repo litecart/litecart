@@ -10,7 +10,7 @@
 
 <script>
 $('.rightArrow').click(function () {
-  var leftPos = $('.innerWrapper').scrollLeft();
+  let leftPos = $('.innerWrapper').scrollLeft();
   $('.innerWrapper').animate({scrollLeft: leftPos + 200}, 800);
 });
 </script>

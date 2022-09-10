@@ -394,8 +394,8 @@
 
 // Customer Form: Checksum
 
-  var customer_form_changed = false;
-  var customer_form_checksum = $('#box-checkout-customer :input').serialize();
+  let customer_form_changed = false;
+  let customer_form_checksum = $('#box-checkout-customer :input').serialize();
   $('#box-checkout-customer').on('input change', function(){
     if ($('#box-checkout-customer :input').serialize() != customer_form_checksum) {
       if (customer_form_checksum == null) return;
@@ -409,14 +409,14 @@
 
 // Customer Form: Auto-Save
 
-  var timerSubmitCustomer;
+  let timerSubmitCustomer;
   $('#box-checkout-customer').on('focusout', function(){
     timerSubmitCustomer = setTimeout(
       function() {
         if (!$(this).is(':focus')) {
           if (!customer_form_changed) return;
           console.log('Autosaving customer details');
-          var data = $('#box-checkout-customer :input').serialize();
+          let data = $('#box-checkout-customer :input').serialize();
           queueUpdateTask('customer', data, true);
           queueUpdateTask('cart', null, true);
           queueUpdateTask('shipping', true, true);

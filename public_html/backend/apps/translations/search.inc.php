@@ -204,14 +204,14 @@ th:not(:last-child) {
 
   $('body').on('change', '.featherlight select[name="to_language_code"]', function(e){
 
-     var from_language_code = $('.featherlight select[name="from_language_code"]').val(),
+     let from_language_code = $('.featherlight select[name="from_language_code"]').val(),
        to_language_code = $('.featherlight select[name="to_language_code"]').val(),
        translations = [];
 
     if (!from_language_code || !to_language_code) return;
 
     $.each($(':input[name$="[text_'+ from_language_code +']"]'), function(i){
-      var source = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'),
+      let source = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'),
         target = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]');
 
       if ($(source).val() && !$(target).val()) {
@@ -226,7 +226,7 @@ th:not(:last-child) {
 
   $('body').on('click', '.featherlight button[name="prefill_fields"]', function(){
 
-    var translated = $('.featherlight :input[name="result"]').val().split(/(?:\r|\n)+(?=\{[0-9]+\}: |$)/);
+    let translated = $('.featherlight :input[name="result"]').val().split(/(?:\r|\n)+(?=\{[0-9]+\}: |$)/);
 
     if ($('.featherlight select[name="to_language_code"]').val() == '') {
       alert('You must specify which language you are translating');
@@ -234,7 +234,7 @@ th:not(:last-child) {
     }
 
     $.each(translated, function(i){
-      var matches = translated[i].trim().match(/^\{([0-9]+)\}: (.*)$/),
+      let matches = translated[i].trim().match(/^\{([0-9]+)\}: (.*)$/),
        translation = matches[2].trim(),
        to_language_code = $('.featherlight select[name="to_language_code"]').val();
       $(':input[name$="[id]"][value="'+ matches[1] +'"]').closest('tr').find(':input[name$="[text_'+ to_language_code +']"]').val(translation).css('border', '1px solid #f00');
@@ -248,7 +248,7 @@ th:not(:last-child) {
 
     if (!window.confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;
 
-    var row = $(this).closest('tr');
+    let row = $(this).closest('tr');
 
     $.ajax({
       type: 'post',

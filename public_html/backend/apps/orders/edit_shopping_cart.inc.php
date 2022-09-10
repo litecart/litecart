@@ -708,7 +708,7 @@
   }
 
   $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], :input[name^="customer"]').on('input', function(){
-    var params = {
+    let params = {
       language_code: $('select[name="language_code"]').val(),
       currency_code: $('select[name="currency_code"]').val(),
       currency_value: $('input[name="currency_value"]').val(),
@@ -736,14 +736,14 @@
   $('#shopping-cart-items').on('click', '.edit', function(){
     $.featherlight('#modal-edit-cart-item');
 
-    var modal = $('.featherlight.active'),
+    let modal = $('.featherlight.active'),
         row = $(this).closest('tr');
 
     $(modal).data('row', row);
 
     $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
-      var value = $(row).find(':input[name$="['+field+']"]').val();
+      let field = $(element).attr('name');
+      let value = $(row).find(':input[name$="['+field+']"]').val();
       if ($(modal).find(':input[name="'+field+'"]').attr('type') == 'number') value = parseFloat(value);
       $(modal).find(':input[name="'+field+'"]').val(value);
     });
@@ -752,7 +752,7 @@
   $('#shopping-cart-items .add-custom-item').click(function(){
     $.featherlight('#modal-add-cart-item');
 
-    var modal = $('.featherlight.active'),
+    let modal = $('.featherlight.active'),
         row = $(this).closest('tr');
 
     $(modal).data('row', '');
@@ -760,26 +760,26 @@
 
   $('#modal-edit-cart-item button[name="ok"]').click(function(e){
 
-    var modal = $('.featherlight.active');
-    var row = $(modal).data('row');
-    var fields = [
+    let modal = $('.featherlight.active');
+    let row = $(modal).data('row');
+    let fields = [
       'name',
       'price',
       'tax',
     ];
 
     if (row == '') {
-      var item = {};
+      let item = {};
       $.each($(modal).find(':input'), function(i,element){
-        var field = $(element).attr('name');
+        let field = $(element).attr('name');
         item[field] = $(modal).find(':input[name="'+field+'"]').val();
       });
       addItem(item);
     }
 
     $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
-      var value = $(modal).find(':input[name="'+field+'"]').val();
+      let field = $(element).attr('name');
+      let value = $(modal).find(':input[name="'+field+'"]').val();
       $(row).find(':input[name$="['+field+']"]').val(value).trigger('keyup');
       $(row).find('.'+field).text(value);
     });
@@ -789,17 +789,17 @@
 
   $('#modal-add-cart-item button[name="ok"]').click(function(e){
 
-    var modal = $('.featherlight.active');
-    var row = $(modal).data('row');
-    var item = {};
-    var fields = [
+    let modal = $('.featherlight.active');
+    let row = $(modal).data('row');
+    let item = {};
+    let fields = [
       'name',
       'price',
       'tax',
     ];
 
     $.each($(modal).find(':input'), function(i,element){
-      var field = $(element).attr('name');
+      let field = $(element).attr('name');
       item[field] = $(modal).find(':input[name="'+field+'"]').val();
     });
 
@@ -808,11 +808,11 @@
     $.featherlight.close();
   });
 
-  var new_item_index = 0;
+  let new_item_index = 0;
   window.addItem = function(item) {
 
-    var output = [
-      '  <tr class="item">'
+    let output = [
+      '  <tr class="item">',
       '    <td class="grabable">' + item.name,
       '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][id]', '')); ?>',
       '      <?php echo functions::escape_js(functions::form_hidden_field('items[new_item_index][product_id]', '')); ?>',
@@ -850,7 +850,7 @@
   });
 
   Number.prototype.toMoney = function() {
-    var n = this,
+    let n = this,
       c = $('input[name="currency_code"]').data('decimals'),
       d = $('input[name="language_code"]').data('decimal_point'),
       t = $('input[name="language_code"]').data('thousands_sep'),
@@ -866,14 +866,14 @@
 
   function calculate_total() {
 
-    var subtotal = 0;
+    let subtotal = 0;
     $('input[name^="items["][name$="[price]"]').each(function() {
       subtotal += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });
     subtotal = parseFloat(subtotal.toFixed($('select[name="currency_code"] option:selected').data('decimals')));
     $('#box-shopping-cart-items .subtotal .value').val(subtotal.toMoney());
 
-    var subtotal_tax = 0;
+    let subtotal_tax = 0;
     $('input[name^="items["][name$="[tax]"]').each(function() {
       subtotal_tax += parseFloat($(this).val()) * parseFloat($(this).closest('tr').find('input[name^="items["][name$="[quantity]"]').val());
     });

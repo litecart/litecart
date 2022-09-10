@@ -82,7 +82,7 @@
                    . '<script>' . PHP_EOL;
 
                 if (!empty($gateway['delay'])) {
-                  echo '  var t=setTimeout(function(){' . PHP_EOL
+                  echo '  let t=setTimeout(function(){' . PHP_EOL
                      . '    document.forms["gateway_form"].submit();' . PHP_EOL
                      . '  }, '. ($gateway['delay']*1000) .');' . PHP_EOL;
                 } else {

@@ -25,11 +25,11 @@
   $(':input[required]').closest('.form-group').addClass('required');
 
 // AJAX Search
-  var timer_ajax_search = null;
-  var xhr_search = null;
+  let timer_ajax_search = null;
+  let xhr_search = null;
   $('#search input[name="query"]').on('input', function(){
 
-    var search_field = this;
+    let search_field = this;
 
     if (xhr_search) xhr_search.abort();
 
@@ -103,12 +103,12 @@
   $.fn.Tabs = function(){
     this.each(function(){
 
-      var self = this;
+      let self = this;
 
       this.$element = $(this);
 
       this.$element.find('[data-toggle="tab"]').each(function(){
-        var $link = $(this);
+        let $link = $(this);
 
         $link.on('select', function(){
           self.$element.find('.active').removeClass('active');
@@ -163,8 +163,8 @@
 
 // Dropdown select
   $('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-    var $dropdown = $(this).closest('.dropdown');
-    var $input = $dropdown.find(':input:checked');
+    let $dropdown = $(this).closest('.dropdown');
+    let $input = $dropdown.find(':input:checked');
 
     if (!$dropdown.find(':input:checked').length) return;
 
@@ -199,16 +199,16 @@
 
 // Data-Table Dragable
   $('body').on('mousedown', '.table-dragable tbody .grabable', function(e){
-    var tr = $(e.target).closest('tr'), sy = e.pageY, drag;
+    let tr = $(e.target).closest('tr'), sy = e.pageY, drag;
     if ($(e.target).is('tr')) tr = $(e.target);
-    var index = tr.index();
+    let index = tr.index();
     $(tr).addClass('grabbed');
     $(tr).closest('tbody').css('unser-input', 'unset');
     function move(e) {
       if (!drag && Math.abs(e.pageY - sy) < 10) return;
       drag = true;
       tr.siblings().each(function() {
-        var s = $(this), i = s.index(), y = s.offset().top;
+        let s = $(this), i = s.index(), y = s.offset().top;
         if (e.pageY >= y && e.pageY < y + s.outerHeight()) {
           if (i < tr.index()) s.insertAfter(tr);
           else s.insertBefore(tr);
@@ -229,7 +229,7 @@
 
 // Data-Table Sorting (Page Reload)
   $('.table-sortable thead th[data-sort]').click(function(){
-    var params = {};
+    let params = {};
 
     window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
       params[key] = value;
@@ -241,10 +241,10 @@
   });
 
 // Data-Table Shift Check Multiple Checkboxes
-  var lastTickedCheckbox = null;
+  let lastTickedCheckbox = null;
   $('.data-table td > .form-check > :checkbox').click(function(e){
 
-    var $chkboxes = $('.data-table td > .form-check > :checkbox');
+    let $chkboxes = $('.data-table td > .form-check > :checkbox');
 
     if (!lastTickedCheckbox) {
       lastTickedCheckbox = this;
@@ -252,8 +252,8 @@
     }
 
     if (e.shiftKey) {
-      var start = $chkboxes.index(this);
-      var end = $chkboxes.index(lastTickedCheckbox);
+      let start = $chkboxes.index(this);
+      let end = $chkboxes.index(lastTickedCheckbox);
       $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastTickedCheckbox.checked);
     }
 
@@ -261,7 +261,7 @@
   });
 
 // Keep-alive
-  var keepAlive = setInterval(function(){
+  let keepAlive = setInterval(function(){
     $.get({
       url: window._env.platform.path + 'ajax/cart.json',
       cache: false
@@ -290,7 +290,7 @@
         },
 
         'input': function(e){
-            var dropdownMenu = $(self).find('.dropdown-menu');
+            let dropdownMenu = $(self).find('.dropdown-menu');
 
             $(dropdownMenu).html('');
 
@@ -358,7 +358,7 @@
       $(this).on('click', '.dropdown-menu .list-item a', function(e){
         e.preventDefault();
 
-        var dropdownMenu = $(this).closest('.dropdown-menu');
+        let dropdownMenu = $(this).closest('.dropdown-menu');
 
         $.getJSON($(this).data('link'), function(result) {
 
@@ -388,7 +388,7 @@
       $(this).on('click', '.dropdown-menu .list-item button.add', function(e){
         e.preventDefault();
 
-        var category = $(this).closest('li');
+        let category = $(this).closest('li');
 
         $(self).find('.categories').append(
           '<li class="list-item" style="display: flex;">' +
@@ -427,7 +427,7 @@
  * Escape HTML
  */
 function escapeHTML(string) {
-  var entityMap = {
+  let entityMap = {
       "&": "&amp;",
       "<": "&lt;",
       ">": "&gt;",
@@ -462,7 +462,7 @@ function escapeHTML(string) {
         },
 
         'input': function(e){
-            var dropdownMenu = $(self).find('.dropdown-menu');
+            let dropdownMenu = $(self).find('.dropdown-menu');
 
             $(dropdownMenu).html('');
 
@@ -530,7 +530,7 @@ function escapeHTML(string) {
       $(this).on('click', '.dropdown-menu .dropdown-item a', function(e){
         e.preventDefault();
 
-        var dropdownMenu = $(this).closest('.dropdown-menu');
+        let dropdownMenu = $(this).closest('.dropdown-menu');
 
         $.getJSON($(this).data('link'), function(result) {
 
@@ -560,7 +560,7 @@ function escapeHTML(string) {
       $(this).on('click', '.dropdown-menu .dropdown-item button.add', function(e){
         e.preventDefault();
 
-        var category = $(this).closest('li'),
+        let category = $(this).closest('li'),
             abort = false;
 
         $(self).find('input[name="'+ self.config.inputName +'"]').each(function(){
@@ -619,23 +619,23 @@ function escapeHTML(string) {
   // DROPDOWN CLASS DEFINITION
   // =========================
 
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
+  let backdrop = '.dropdown-backdrop'
+  let toggle   = '[data-toggle="dropdown"]'
+  let Dropdown = function (element) {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
   Dropdown.VERSION = '3.3.7'
 
   function getParent($this) {
-    var selector = $this.attr('data-target')
+    let selector = $this.attr('data-target')
 
     if (!selector) {
       selector = $this.attr('href')
       selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = selector && $(selector)
+    let $parent = selector && $(selector)
 
     return $parent && $parent.length ? $parent : $this.closest('.dropdown')
   }
@@ -644,9 +644,9 @@ function escapeHTML(string) {
     if (e && e.which === 3) return
     $(backdrop).remove()
     $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
+      let $this         = $(this)
+      let $parent       = getParent($this)
+      let relatedTarget = { relatedTarget: this }
 
       if (!$parent.hasClass('open')) return
 
@@ -662,12 +662,12 @@ function escapeHTML(string) {
   }
 
   Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
+    let $this = $(this)
 
     if ($this.is('.disabled, :disabled')) return
 
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    let $parent  = getParent($this)
+    let isActive = $parent.hasClass('open')
 
     clearMenus()
 
@@ -680,7 +680,7 @@ function escapeHTML(string) {
           .on('click', clearMenus)
       }
 
-      var relatedTarget = { relatedTarget: this }
+      let relatedTarget = { relatedTarget: this }
       $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
 
       if (e.isDefaultPrevented()) return
@@ -700,27 +700,27 @@ function escapeHTML(string) {
   Dropdown.prototype.keydown = function (e) {
     if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
 
-    var $this = $(this)
+    let $this = $(this)
 
     e.preventDefault()
     e.stopPropagation()
 
     if ($this.is('.disabled, :disabled')) return
 
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    let $parent  = getParent($this)
+    let isActive = $parent.hasClass('open')
 
     if (!isActive && e.which != 27 || isActive && e.which == 27) {
       if (e.which == 27) $parent.find(toggle).trigger('focus')
       return $this.trigger('click')
     }
 
-    var desc = ' li:not(.disabled):visible a'
-    var $items = $parent.find('.dropdown-menu' + desc)
+    let desc = ' li:not(.disabled):visible a'
+    let $items = $parent.find('.dropdown-menu' + desc)
 
     if (!$items.length) return
 
-    var index = $items.index(e.target)
+    let index = $items.index(e.target)
 
     if (e.which == 38 && index > 0)                 index--         // up
     if (e.which == 40 && index < $items.length - 1) index++         // down
@@ -735,15 +735,15 @@ function escapeHTML(string) {
 
   function Plugin(option) {
     return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
+      let $this = $(this)
+      let data  = $this.data('bs.dropdown')
 
       if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
       if (typeof option == 'string') data[option].call($this)
     })
   }
 
-  var old = $.fn.dropdown
+  let old = $.fn.dropdown
 
   $.fn.dropdown             = Plugin
   $.fn.dropdown.Constructor = Dropdown

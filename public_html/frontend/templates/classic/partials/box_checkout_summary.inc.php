@@ -68,7 +68,7 @@
 
 <script>
   $('textarea[maxlength]').on('input', function() {
-    var remaining = $(this).attr('maxlength') - $(this).val().length;
+    let remaining = $(this).attr('maxlength') - $(this).val().length;
     $(this).closest('.input-wrapper').find('.remaining').text(remaining);
   });
 </script>

@@ -30,12 +30,12 @@
 // Sidebar parallax effect
   if (typeof(window._env) !== 'undefined' && window._env.template.settings.sidebar_parallax_effect == true) {
 
-    var $sidebar = $('#sidebar');
-    //var sidebar_max_offset = $sidebar.parent().height() - $sidebar.height() - 200; // Failsafe 30
+    let $sidebar = $('#sidebar');
+    //let sidebar_max_offset = $sidebar.parent().height() - $sidebar.height() - 200; // Failsafe 30
 
     $(window).on('resize scroll', function(e){
       if ($(window).width() >= 768 && ($sidebar.parent().height() - $sidebar.height()) > 500) {
-        var offset = $(this).scrollTop() * .6;
+        let offset = $(this).scrollTop() * .6;
         if (offset > 0) $sidebar.css('margin-top', offset + 'px');
       } else {
         $sidebar.css('margin-top', 0);
@@ -91,8 +91,8 @@
 
 // Dropdown select
   $('.dropdown .form-select + .dropdown-menu :input').on('input', function(e){
-    var dropdown = $(this).closest('.dropdown');
-    var input = $(dropdown).find(':input:checked');
+    let dropdown = $(this).closest('.dropdown');
+    let input = $(dropdown).find(':input:checked');
     $(dropdown).find('li.active').removeClass('active');
     if ($(dropdown).find(':input:checked').data('set-title')) {
       $(dropdown).find('.form-select').text($(input).data('set-title'));
@@ -115,7 +115,7 @@
 
     if ($(this).val() == '') return;
 
-    var numbers = ($(this).val().match(/[0-9]/g) || []).length,
+    let numbers = ($(this).val().match(/[0-9]/g) || []).length,
      lowercases = ($(this).val().match(/[a-z]/g) || []).length,
      uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
      symbols =   ($(this).val().match(/[^\w]/g) || []).length,
@@ -123,7 +123,7 @@
      score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
            + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0);
 
-    var meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
+    let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
       position: 'absolute',
       bottom: '-1em',
       width: '100%',
@@ -169,7 +169,7 @@
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
     e.preventDefault();
 
-    var $form = $(this)
+    let $form = $(this)
         $button = $(this).find('button[type="submit"]'),
         $target = $('#site-navigation .shopping-cart'),
         target_height = $target.innerHeight(),
@@ -244,7 +244,7 @@
           $('#site-navigation .shopping-cart').toggleClass('filled', result.items.length ? true : false);
           $('#site-navigation .shopping-cart ul .item').remove();
 
-          var html = '';
+          let html = '';
           $.each(result.items, function(key, item){
             html += '<div class="item">' +
                     '  <div class="row">' +
@@ -267,7 +267,7 @@
       });
     }
 
-    var timerCart = setInterval('updateCart()', 60e3); // Keeps session alive
+    let timerCart = setInterval('updateCart()', 60e3); // Keeps session alive
   }
 
 /*
@@ -277,7 +277,7 @@
 
 +function($) {
 
-  var Placeholders = [];
+  let Placeholders = [];
 
   $.fn.Placeholder = function(options){
     this.each(function(){
@@ -289,7 +289,7 @@
       }, options, this.$element.data());
 
       this.refresh = function(){
-        var width = this.$element.width(),
+        let width = this.$element.width(),
           height = width / this.settings.aspectRatio.replace(/^([0-9]*):[0-9]*$/, '$1') * this.settings.aspectRatio.replace(/^[0-9]*:([0-9]*)$/, '$1');
 
         width = Math.round(width);
@@ -326,7 +326,7 @@
   $.fn.momentumScroll = function() {
     this.each(function() {
 
-      var $self = $(this),
+      let $self = $(this),
         $content = $self.find('.scroll-content')
         direction = '',
         velX = 0,
@@ -336,7 +336,7 @@
         dragging = false,
         momentumID = null;
 
-      var momentumLoop = function() {
+      let momentumLoop = function() {
         if (direction == 'left') {
           $content.scrollLeft($content.scrollLeft() - velX); // Apply the velocity to the scroll position
         } else {
@@ -360,7 +360,7 @@
         'mousemove': function(e) {
           if (!clicked) return;
           dragging = true;
-          var prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
+          let prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
             currentDrag = (clickX - e.pageX);
           $content.scrollLeft(scrollX + (clickX - e.pageX));
           if (currentDrag > 0) {
@@ -451,7 +451,7 @@
   // CAROUSEL CLASS DEFINITION
   // =========================
 
-  var Carousel = function (element, options) {
+  let Carousel = function (element, options) {
     this.$element    = $(element)
     this.$indicators = this.$element.find('.carousel-indicators')
     this.options     = options
@@ -508,18 +508,18 @@
   }
 
   Carousel.prototype.getItemForDirection = function (direction, active) {
-    var activeIndex = this.getItemIndex(active)
-    var willWrap = (direction == 'prev' && activeIndex === 0)
+    let activeIndex = this.getItemIndex(active)
+    let willWrap = (direction == 'prev' && activeIndex === 0)
                 || (direction == 'next' && activeIndex == (this.$items.length - 1))
     if (willWrap && !this.options.wrap) return active
-    var delta = direction == 'prev' ? -1 : 1
-    var itemIndex = (activeIndex + delta) % this.$items.length
+    let delta = direction == 'prev' ? -1 : 1
+    let itemIndex = (activeIndex + delta) % this.$items.length
     return this.$items.eq(itemIndex)
   }
 
   Carousel.prototype.to = function (pos) {
-    var that        = this
-    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
+    let that        = this
+    let activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
 
     if (pos > (this.$items.length - 1) || pos < 0) return
 
@@ -553,16 +553,16 @@
   }
 
   Carousel.prototype.slide = function (type, next) {
-    var $active   = this.$element.find('.item.active')
-    var $next     = next || this.getItemForDirection(type, $active)
-    var isCycling = this.interval
-    var direction = type == 'next' ? 'left' : 'right'
-    var that      = this
+    let $active   = this.$element.find('.item.active')
+    let $next     = next || this.getItemForDirection(type, $active)
+    let isCycling = this.interval
+    let direction = type == 'next' ? 'left' : 'right'
+    let that      = this
 
     if ($next.hasClass('active')) return (this.sliding = false)
 
-    var relatedTarget = $next[0]
-    var slideEvent = $.Event('slide.bs.carousel', {
+    let relatedTarget = $next[0]
+    let slideEvent = $.Event('slide.bs.carousel', {
       relatedTarget: relatedTarget,
       direction: direction
     })
@@ -575,11 +575,11 @@
 
     if (this.$indicators.length) {
       this.$indicators.find('.active').removeClass('active')
-      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
+      let $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
       $nextIndicator && $nextIndicator.addClass('active')
     }
 
-    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
+    let slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
     if ($.support.transition && this.$element.hasClass('slide')) {
       $next.addClass(type)
       $next[0].offsetWidth // force reflow
@@ -612,10 +612,10 @@
 
   function Plugin(option) {
     return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.carousel')
-      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
-      var action  = typeof option == 'string' ? option : options.slide
+      let $this   = $(this)
+      let data    = $this.data('bs.carousel')
+      let options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      let action  = typeof option == 'string' ? option : options.slide
 
       if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
       if (typeof option == 'number') data.to(option)
@@ -624,7 +624,7 @@
     })
   }
 
-  var old = $.fn.carousel
+  let old = $.fn.carousel
 
   $.fn.carousel             = Plugin
   $.fn.carousel.Constructor = Carousel
@@ -640,13 +640,13 @@
   // CAROUSEL DATA-API
   // =================
 
-  var clickHandler = function (e) {
-    var href
-    var $this   = $(this)
-    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
+  let clickHandler = function (e) {
+    let href
+    let $this   = $(this)
+    let $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
     if (!$target.hasClass('carousel')) return
-    var options = $.extend({}, $target.data(), $this.data())
-    var slideIndex = $this.attr('data-slide-to')
+    let options = $.extend({}, $target.data(), $this.data())
+    let slideIndex = $this.attr('data-slide-to')
     if (slideIndex) options.interval = false
 
     Plugin.call($target, options)
@@ -664,7 +664,7 @@
 
   $(window).on('load', function () {
     $('[data-ride="carousel"]').each(function () {
-      var $carousel = $(this)
+      let $carousel = $(this)
       Plugin.call($carousel, $carousel.data())
     })
   })
@@ -685,23 +685,23 @@
   // DROPDOWN CLASS DEFINITION
   // =========================
 
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
+  let backdrop = '.dropdown-backdrop'
+  let toggle   = '[data-toggle="dropdown"]'
+  let Dropdown = function (element) {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
   Dropdown.VERSION = '3.3.7'
 
   function getParent($this) {
-    var selector = $this.attr('data-target')
+    let selector = $this.attr('data-target')
 
     if (!selector) {
       selector = $this.attr('href')
       selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = selector && $(selector)
+    let $parent = selector && $(selector)
 
     return $parent && $parent.length ? $parent : $this.parent()
   }
@@ -710,9 +710,9 @@
     if (e && e.which === 3) return
     $(backdrop).remove()
     $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
+      let $this         = $(this)
+      let $parent       = getParent($this)
+      let relatedTarget = { relatedTarget: this }
 
       if (!$parent.hasClass('open')) return
 
@@ -727,12 +727,12 @@
   }
 
   Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
+    let $this = $(this)
 
     if ($this.is('.disabled, :disabled')) return
 
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    let $parent  = getParent($this)
+    let isActive = $parent.hasClass('open')
 
     clearMenus()
 
@@ -745,7 +745,7 @@
           .on('click', clearMenus)
       }
 
-      var relatedTarget = { relatedTarget: this }
+      let relatedTarget = { relatedTarget: this }
       $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
 
       if (e.isDefaultPrevented()) return
@@ -763,27 +763,27 @@
   Dropdown.prototype.keydown = function (e) {
     if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
 
-    var $this = $(this)
+    let $this = $(this)
 
     e.preventDefault()
     e.stopPropagation()
 
     if ($this.is('.disabled, :disabled')) return
 
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    let $parent  = getParent($this)
+    let isActive = $parent.hasClass('open')
 
     if (!isActive && e.which != 27 || isActive && e.which == 27) {
       if (e.which == 27) $parent.find(toggle).trigger('focus')
       return $this.trigger('click')
     }
 
-    var desc = ' li:not(.disabled):visible a'
-    var $items = $parent.find('.dropdown-menu' + desc)
+    let desc = ' li:not(.disabled):visible a'
+    let $items = $parent.find('.dropdown-menu' + desc)
 
     if (!$items.length) return
 
-    var index = $items.index(e.target)
+    let index = $items.index(e.target)
 
     if (e.which == 38 && index > 0)                 index--         // up
     if (e.which == 40 && index < $items.length - 1) index++         // down
@@ -797,15 +797,15 @@
 
   function Plugin(option) {
     return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
+      let $this = $(this)
+      let data  = $this.data('bs.dropdown')
 
       if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
       if (typeof option == 'string') data[option].call($this)
     })
   }
 
-  var old = $.fn.dropdown
+  let old = $.fn.dropdown
 
   $.fn.dropdown             = Plugin
   $.fn.dropdown.Constructor = Dropdown

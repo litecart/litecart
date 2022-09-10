@@ -258,7 +258,7 @@
 
 <script>
   Number.prototype.toMoney = function() {
-    var n = this,
+    let n = this,
       c = <?php echo (int)currency::$selected['decimals']; ?>,
       d = '<?php echo language::$selected['decimal_point']; ?>',
       t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
@@ -273,8 +273,8 @@
   }
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] .form-input.dropdown :input').on('input', function(e){
-    var dropdown = $(this).closest('.dropdown');
-    var option = $(this).closest('label');
+    let dropdown = $(this).closest('.dropdown');
+    let option = $(this).closest('label');
     if ($(dropdown).find('.name').length) {
       $(dropdown).find('.title').text( $(option).find('.name').text() );
     }
@@ -282,8 +282,8 @@
   });
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] button[name="add_cart_product"]').click(function(e) {
-    if ($('input[name="stock_item_id"]').length) {
-      if (!$('input[name="stock_item_id"]:checked').length) {
+    if ($('input[name="stock_option_id"]').length) {
+      if (!$('input[name="stock_option_id"]:checked').length) {
         e.preventDefault();
         $(this).closest('form').find('.dropdown [data-toggle="dropdown"]').click();
         return false;
@@ -293,9 +293,9 @@
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] form[name=buy_now_form]').on('input', function(e) {
 
-    var regular_price = <?php echo currency::format_raw($regular_price); ?>;
-    var sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
-    var tax = <?php echo currency::format_raw($total_tax); ?>;
+    let regular_price = <?php echo currency::format_raw($regular_price); ?>;
+    let sales_price = <?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>;
+    let tax = <?php echo currency::format_raw($total_tax); ?>;
 
     $(this).find(':radio:checked, :checkbox:checked').each(function(){
       if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');

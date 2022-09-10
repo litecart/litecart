@@ -89,7 +89,7 @@
 <script>
   $('#box-checkout-cart button[name="remove_cart_item"]').click(function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
+    let data = 'token=' + $(':input[name="token"]').val()
              + '&' + $(this).closest('td').find(':input').serialize()
              + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
@@ -101,7 +101,7 @@
 
   $('#box-checkout-cart button[name="update_cart_item"]').click(function(e){
     e.preventDefault();
-    var data = 'token=' + $(':input[name="token"]').val()
+    let data = 'token=' + $(':input[name="token"]').val()
              + '&' + $(this).closest('td').find(':input').serialize()
              + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);

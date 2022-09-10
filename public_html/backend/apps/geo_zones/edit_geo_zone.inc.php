@@ -137,9 +137,9 @@
     $(this).html('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
   });
 
-  $('body').on('change', 'select[name="new_zone[country_code]"]', function() {
-    var zone_field = $(this).closest('tr').find("select[name='new_zone[zone_code]']");
-    $('body').css('cursor', 'wait');
+  $('select[name="new_zone[country_code]"]').on('change', function() {
+    let zone_field = $(this).closest('tr').find('select[name="new_zone[zone_code]"]');
+
     $.ajax({
       url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
       type: 'get',
@@ -168,19 +168,19 @@
     });
   });
 
-  var new_zone_index = 0;
-  $('form[name="form_geo_zone"]').on('click', 'button[name="add"]', function(e) {
+  let new_zone_index = 0;
+  $('tfoot button[name="add"]', function(e) {
     e.preventDefault();
 
     if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
 
-    var row = $(this).closest('tr');
+    let row = $(this).closest('tr');
 
-    var found = false;
-    $.each($('form[name="form_geo_zone"] tbody tr'), function(i, current){
-      if ($(current).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
-       && $(current).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
-       && $(current).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()) {
+    let found = false;
+    $.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row){
+      if ($(current_row).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
+       && $(current_row).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
+       && $(current_row).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()) {
          found = true;
          return;
        }
@@ -188,8 +188,8 @@
 
     if (found) return;
 
-    var output = [
-      '<tr>'
+    let output = [
+      '<tr>',
       '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][id]', '')); ?></td>',
       '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
       '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][zone_code]', '')); ?>' + $('select[name="new_zone[zone_code]"] option:selected').text() + '</td>',

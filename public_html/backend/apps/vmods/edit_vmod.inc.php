@@ -559,9 +559,9 @@ html.dark-mode .operation {
 <script>
 
   $('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function(){
-    var $tab = $(this).closest('.tab-pane');
-    var name = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val();
-    var url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, name);
+    let $tab = $(this).closest('.tab-pane');
+    let name = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val();
+    let url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, name);
 
     $.get(url, function(result) {
       $tab.find('.sources').html('');
@@ -580,18 +580,18 @@ html.dark-mode .operation {
   $(':input[name^="files"][name$="[name]"]').trigger('input');
 
   $('.tab-content').on('input', 'input[name^="files"][name$="[name]"]', function() {
-    var tab = $(this).closest('.tab-pane');
-    var tab_i = $(this).closest('.tab-pane').data('tab-index');
-    var tab_name = $(tab).find('input[name$="[name]"]').val();
+    let tab = $(this).closest('.tab-pane');
+    let tab_i = $(this).closest('.tab-pane').data('tab-index');
+    let tab_name = $(tab).find('input[name$="[name]"]').val();
     $('a[href="#tab-'+ tab_i +'"] .file').text(tab_name);
   });
 
-  var new_tab_i = 1;
+  let new_tab_i = 1;
   $('.nav-tabs .add').click(function(e){
     e.preventDefault();
     while ($(':input[name^="files['+ new_tab_i +']"]').length) new_tab_i++;
     $(this).closest('li').before('<li><a data-toggle="tab" href="#tab-'+ new_tab_i +'"><span class="file">new'+ new_tab_i  +'</span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a></li>');
-    var html = $('#new-tab-template').html().replace(/new_tab_i/g, new_tab_i);
+    let html = $('#new-tab-template').html().replace(/new_tab_i/g, new_tab_i);
     $('.tab-content').append(html);
     $(this).closest('li').prev().find('a').click();
     return false;
@@ -600,14 +600,14 @@ html.dark-mode .operation {
   $('.nav-tabs').on('click', '.remove', function(e) {
     e.preventDefault();
     if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
-    var tab = $(this).parent().attr('href');
+    let tab = $(this).parent().attr('href');
     $(tab).remove();
     $(this).closest('li').remove();
   });
 
   $('.tab-content').on('click', '.move-up, .move-down', function(e) {
     e.preventDefault();
-    var row = $(this).closest('.operation');
+    let row = $(this).closest('.operation');
     if ($(this).is('.move-up') && $(row).prevAll().length > 0) {
       $(row).insertBefore(row.prev());
     } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
@@ -615,13 +615,13 @@ html.dark-mode .operation {
     }
   });
 
-  var new_operation_i = 1;
+  let new_operation_i = 0;
   $('.tab-content').on('click', '.add', function(e) {
     e.preventDefault();
     while ($(':input[name*="[operations]['+ new_operation_i +']"]').length) new_operation_i++;
-    var list = $(this).closest('.tab-pane').find('.operations');
-    var html = $('#new-operation-template').html()
-    var tab_i = $(this).closest('.tab-pane').data('tab-index');
+    let list = $(this).closest('.tab-pane').find('.operations');
+    let html = $('#new-operation-template').html()
+    let tab_i = $(this).closest('.tab-pane').data('tab-index');
     html = html.replace(/tab_i/g, tab_i)
                .replace(/new_operation_i/g, new_operation_i);
     $(list).append(html);

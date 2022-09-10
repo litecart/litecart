@@ -38,7 +38,7 @@
 <script>
   $('#modal-customer-picker input[name="query"]').focus();
 
-  var xhr_customer_picker = null;
+  let xhr_customer_picker = null;
   $('#modal-customer-picker input[name="query"]').on('input', function(){
     if ($(this).val() == '') {
       $('#modal-customer-picker .results tbody').html('');
@@ -80,17 +80,17 @@
   });
 
   $('#modal-customer-picker tbody').on('click', 'td', function() {
-    var row = $(this).closest('tr');
+    let row = $(this).closest('tr');
 
-    var id = $(row).find('.id').text();
-    var name = $(row).find('.name').text();
+    let id = $(row).find('.id').text();
+    let name = $(row).find('.name').text();
 
     if (!id) {
       id = 0;
       name = '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)';
     }
 
-    var field = $.featherlight.current().$currentTarget.closest('.form-input');
+    let field = $.featherlight.current().$currentTarget.closest('.form-input');
 
     $(field).find(':input').val(id).trigger('change');
     $(field).find('.id').text(id);
@@ -100,7 +100,7 @@
 
   $('#modal-customer-picker .set-guest').click(function(){
 
-    var field = $.featherlight.current().$currentTarget.closest('.form-input');
+    let field = $.featherlight.current().$currentTarget.closest('.form-input');
 
     $(field).find(':input').val('0').trigger('change');
     $(field).find('.id').text('0');

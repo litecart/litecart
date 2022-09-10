@@ -385,7 +385,7 @@ table .fa-star:hover {
 
   $('table').on('click', '.fa-star-o', function(e){
     e.stopPropagation();
-    var star = this;
+    let star = this;
     $.post('', 'star&order_id='+$(star).closest('tr').data('id'), function(data) {
       $(star).replaceWith('<?php echo functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"'); ?>');
     });
@@ -393,7 +393,7 @@ table .fa-star:hover {
   });
 
   $('table').on('click', '.fa-star', function(e){
-    var star = this;
+    let star = this;
     $.post('', 'unstar&order_id='+$(star).closest('tr').data('id'), function(data) {
       $(star).replaceWith('<?php echo functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?>');
     });

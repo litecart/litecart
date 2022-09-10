@@ -10,15 +10,15 @@
 // Sidebar parallax effect
   if (typeof(window._env) !== 'undefined' && window._env.template.settings.sidebar_parallax_effect == true) {
 
-      var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
-      var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
+      let column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
+      let sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
       $(window).on('resize scroll', function(e){
         if (sidebar_max_offset) {
-          var parallax_rate = 0.4;
+          let parallax_rate = 0.4;
 
           if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
-            var offset = $(this).scrollTop() * parallax_rate;
+            let offset = $(this).scrollTop() * parallax_rate;
             if (offset > sidebar_max_offset) offset = sidebar_max_offset;
             if (offset > 0) $(column).css('margin-top', offset + 'px');
           } else {
@@ -31,7 +31,7 @@
 // Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
     e.preventDefault();
-    var form = $(this);
+    let form = $(this);
     $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
       pixels_per_second: 2000,
       initial_css: {
@@ -89,7 +89,7 @@
 
 // Dropdown Select
   $('body').on('change', '.dropdown :input', function() {
-    var title = $(this).data('title');
+    let title = $(this).data('title');
     if (title) $(this).closest('.dropdown-select').find('.form-control .title').text(title);
   }).first().trigger('change');
 
@@ -107,7 +107,7 @@
 
     if ($(this).val() == '') return;
 
-    var numbers = ($(this).val().match(/[0-9]/g) || []).length,
+    let numbers = ($(this).val().match(/[0-9]/g) || []).length,
      lowercases = ($(this).val().match(/[a-z]/g) || []).length,
      uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
      symbols =   ($(this).val().match(/[^\w]/g) || []).length,
@@ -115,7 +115,7 @@
      score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
            + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0);
 
-    var meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
+    let meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
       position: 'absolute',
       bottom: '-1em',
       width: '100%',
@@ -177,7 +177,7 @@
     });
   }
 
-  var timerCart = setInterval("updateCart()", 60e3); // Keeps session alive
+  let timerCart = setInterval("updateCart()", 60e3); // Keeps session alive
 
 /*
  * jQuery Animate From To plugin 1.0
@@ -200,10 +200,10 @@
   });
 
   function animate_from_to(sourceElm, targetElm, options) {
-    var source = $(sourceElm).eq(0),
+    let source = $(sourceElm).eq(0),
       target = $(targetElm).eq(0);
 
-    var defaults = {
+    let defaults = {
       pixels_per_second: 1000,
       initial_css: {
         "background": "#dddddd",
@@ -223,7 +223,7 @@
     }
     options = $.extend({}, defaults, options);
 
-    var target_height = target.innerHeight(),
+    let target_height = target.innerHeight(),
       target_width = target.innerWidth();
 
     if (options.square.toLowerCase() == 'height') {
@@ -232,7 +232,7 @@
       target_height = target_width;
     }
 
-    var dy = source.offset().top + source.width()/2 - target.offset().top,
+    let dy = source.offset().top + source.width()/2 - target.offset().top,
       dx = source.offset().left + source.height()/2 - target.offset().left,
       pixel_distance = Math.floor(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))),
       duration = (pixel_distance/options.pixels_per_second)*1000,
@@ -274,7 +274,7 @@
   // CAROUSEL CLASS DEFINITION
   // =========================
 
-  var Carousel = function (element, options) {
+  let Carousel = function (element, options) {
     this.$element    = $(element)
     this.$indicators = this.$element.find('.carousel-indicators')
     this.options     = options
@@ -331,18 +331,18 @@
   }
 
   Carousel.prototype.getItemForDirection = function (direction, active) {
-    var activeIndex = this.getItemIndex(active)
-    var willWrap = (direction == 'prev' && activeIndex === 0)
+    let activeIndex = this.getItemIndex(active)
+    let willWrap = (direction == 'prev' && activeIndex === 0)
                 || (direction == 'next' && activeIndex == (this.$items.length - 1))
     if (willWrap && !this.options.wrap) return active
-    var delta = direction == 'prev' ? -1 : 1
-    var itemIndex = (activeIndex + delta) % this.$items.length
+    let delta = direction == 'prev' ? -1 : 1
+    let itemIndex = (activeIndex + delta) % this.$items.length
     return this.$items.eq(itemIndex)
   }
 
   Carousel.prototype.to = function (pos) {
-    var that        = this
-    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
+    let that        = this
+    let activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
 
     if (pos > (this.$items.length - 1) || pos < 0) return
 
@@ -376,16 +376,16 @@
   }
 
   Carousel.prototype.slide = function (type, next) {
-    var $active   = this.$element.find('.item.active')
-    var $next     = next || this.getItemForDirection(type, $active)
-    var isCycling = this.interval
-    var direction = type == 'next' ? 'left' : 'right'
-    var that      = this
+    let $active   = this.$element.find('.item.active')
+    let $next     = next || this.getItemForDirection(type, $active)
+    let isCycling = this.interval
+    let direction = type == 'next' ? 'left' : 'right'
+    let that      = this
 
     if ($next.hasClass('active')) return (this.sliding = false)
 
-    var relatedTarget = $next[0]
-    var slideEvent = $.Event('slide.bs.carousel', {
+    let relatedTarget = $next[0]
+    let slideEvent = $.Event('slide.bs.carousel', {
       relatedTarget: relatedTarget,
       direction: direction
     })
@@ -398,11 +398,11 @@
 
     if (this.$indicators.length) {
       this.$indicators.find('.active').removeClass('active')
-      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
+      let $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
       $nextIndicator && $nextIndicator.addClass('active')
     }
 
-    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
+    let slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
     if ($.support.transition && this.$element.hasClass('slide')) {
       $next.addClass(type)
       $next[0].offsetWidth // force reflow
@@ -435,10 +435,10 @@
 
   function Plugin(option) {
     return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.carousel')
-      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
-      var action  = typeof option == 'string' ? option : options.slide
+      let $this   = $(this)
+      let data    = $this.data('bs.carousel')
+      let options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      let action  = typeof option == 'string' ? option : options.slide
 
       if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
       if (typeof option == 'number') data.to(option)
@@ -447,7 +447,7 @@
     })
   }
 
-  var old = $.fn.carousel
+  let old = $.fn.carousel
 
   $.fn.carousel             = Plugin
   $.fn.carousel.Constructor = Carousel
@@ -463,13 +463,13 @@
   // CAROUSEL DATA-API
   // =================
 
-  var clickHandler = function (e) {
-    var href
-    var $this   = $(this)
-    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
+  let clickHandler = function (e) {
+    let href
+    let $this   = $(this)
+    let $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
     if (!$target.hasClass('carousel')) return
-    var options = $.extend({}, $target.data(), $this.data())
-    var slideIndex = $this.attr('data-slide-to')
+    let options = $.extend({}, $target.data(), $this.data())
+    let slideIndex = $this.attr('data-slide-to')
     if (slideIndex) options.interval = false
 
     Plugin.call($target, options)
@@ -487,7 +487,7 @@
 
   $(window).on('load', function () {
     $('[data-ride="carousel"]').each(function () {
-      var $carousel = $(this)
+      let $carousel = $(this)
       Plugin.call($carousel, $carousel.data())
     })
   })
@@ -508,23 +508,23 @@
   // DROPDOWN CLASS DEFINITION
   // =========================
 
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
+  let backdrop = '.dropdown-backdrop'
+  let toggle   = '[data-toggle="dropdown"]'
+  let Dropdown = function (element) {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
   Dropdown.VERSION = '3.3.7'
 
   function getParent($this) {
-    var selector = $this.attr('data-target')
+    let selector = $this.attr('data-target')
 
     if (!selector) {
       selector = $this.attr('href')
       selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = selector && $(selector)
+    let $parent = selector && $(selector)
 
     return $parent && $parent.length ? $parent : $this.parent()
   }
@@ -533,9 +533,9 @@
     if (e && e.which === 3) return
     $(backdrop).remove()
     $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
+      let $this         = $(this)
+      let $parent       = getParent($this)
+      let relatedTarget = { relatedTarget: this }
 
       if (!$parent.hasClass('open')) return
 
@@ -550,12 +550,12 @@
   }
 
   Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
+    let $this = $(this)
 
     if ($this.is('.disabled, :disabled')) return
 
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    let $parent  = getParent($this)
+    let isActive = $parent.hasClass('open')
 
     clearMenus()
 
@@ -568,7 +568,7 @@
           .on('click', clearMenus)
       }
 
-      var relatedTarget = { relatedTarget: this }
+      let relatedTarget = { relatedTarget: this }
       $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
 
       if (e.isDefaultPrevented()) return
@@ -586,27 +586,27 @@
   Dropdown.prototype.keydown = function (e) {
     if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
 
-    var $this = $(this)
+    let $this = $(this)
 
     e.preventDefault()
     e.stopPropagation()
 
     if ($this.is('.disabled, :disabled')) return
 
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    let $parent  = getParent($this)
+    let isActive = $parent.hasClass('open')
 
     if (!isActive && e.which != 27 || isActive && e.which == 27) {
       if (e.which == 27) $parent.find(toggle).trigger('focus')
       return $this.trigger('click')
     }
 
-    var desc = ' li:not(.disabled):visible a'
-    var $items = $parent.find('.dropdown-menu' + desc)
+    let desc = ' li:not(.disabled):visible a'
+    let $items = $parent.find('.dropdown-menu' + desc)
 
     if (!$items.length) return
 
-    var index = $items.index(e.target)
+    let index = $items.index(e.target)
 
     if (e.which == 38 && index > 0)                 index--         // up
     if (e.which == 40 && index < $items.length - 1) index++         // down
@@ -620,15 +620,15 @@
 
   function Plugin(option) {
     return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
+      let $this = $(this)
+      let data  = $this.data('bs.dropdown')
 
       if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
       if (typeof option == 'string') data[option].call($this)
     })
   }
 
-  var old = $.fn.dropdown
+  let old = $.fn.dropdown
 
   $.fn.dropdown             = Plugin
   $.fn.dropdown.Constructor = Dropdown

@@ -449,7 +449,7 @@
 
 // Auto-Save
 
-  var timerSubmitCustomer;
+  let timerSubmitCustomer;
 
   $('#box-checkout-customer').on('focusout', function() {
     timerSubmitCustomer = setTimeout(function() {
@@ -458,7 +458,7 @@
 
           console.log('Autosaving customer details');
 
-          var formdata = $('#box-checkout-customer :input').serialize() + '&autosave=true';
+          let formdata = $('#box-checkout-customer :input').serialize() + '&autosave=true';
 
           $('#box-checkout').trigger('update', [{component: 'customer', data: formdata, refresh: true}])
                             .trigger('update', [{component: 'shipping', refresh: true}])
@@ -481,7 +481,7 @@
   $('#box-checkout-customer button[name="save_customer_details"]').click(function(e){
     e.preventDefault();
 
-    var formdata = $('#box-checkout-customer :input').serialize() + '&save_customer_details=true';
+    let formdata = $('#box-checkout-customer :input').serialize() + '&save_customer_details=true';
 
     $('#box-checkout').trigger('update', [{component: 'customer', data: formdata, refresh: true}])
                       .trigger('update', [{component: 'shipping', refresh: true}])

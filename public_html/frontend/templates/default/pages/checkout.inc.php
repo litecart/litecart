@@ -63,7 +63,7 @@
 
   $('#box-checkout').on('update', function(e, task) {
 
-    var updateQueue = $(this).data('updateQueue');
+    let updateQueue = $(this).data('updateQueue');
 
     if (task && task.component) {
       updateQueue = jQuery.grep(updateQueue, function(tasks) {
@@ -80,14 +80,14 @@
 
     $(this).prop('updateLock', true);
 
-    var task = updateQueue.shift();
+    let task = updateQueue.shift();
     $(this).data('updateQueue', updateQueue);
 
     console.log('Updating ' + task.component);
 
     if (!$('body > .loader-wrapper').length) {
 
-      var loader = [
+      let loader = [
         '<div class="loader-wrapper">'
         '  <div class="loader" style="width: 256px; height: 256px;"></div>',
         '</div>'
@@ -100,7 +100,7 @@
       $('#box-checkout .'+ task.component +'.wrapper').fadeTo('fast', 0.15);
     }
 
-    var url = '';
+    let url = '';
     switch (task.component) {
       case 'customer':
         url = '<?php echo document::ilink('checkout/customer'); ?>';
@@ -137,8 +137,8 @@
     }
 
     if (task.component == 'summary') {
-      var comments = $(':input[name="comments"]').val();
-      var terms_agreed = $(':input[name="terms_agreed"]').prop('checked');
+      let comments = $(':input[name="comments"]').val();
+      let terms_agreed = $(':input[name="terms_agreed"]').prop('checked');
     }
 
     $.ajax({

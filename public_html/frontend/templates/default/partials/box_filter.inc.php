@@ -121,10 +121,10 @@
 
   }).first().trigger('change');
 
-  var xhr_filter = null;
+  let xhr_filter = null;
   $('#box-filter form[name="filter_form"]').on('input', function(){
     if (xhr_filter) xhr_filter.abort();
-    var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
+    let url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
     history.replaceState(null, null, url);
     $('section.listing.products').hide();
     xhr_filter = $.ajax({
@@ -132,14 +132,14 @@
       url: url.href,
       dataType: 'html',
       success: function(response){
-        var html = $('section.listing.products', response)[0].outerHTML;
+        let html = $('section.listing.products', response)[0].outerHTML;
         $('section.listing.products').replaceWith(html).fadeIn('fast');
       }
     });
   });
 
   $('#box-filter form[name="filter_form"] .tokens').on('click', '.remove', function(){
-    var token = $(this).closest('.token');
+    let token = $(this).closest('.token');
     switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {
       case 'radio':
       case 'checkbox':

@@ -164,6 +164,17 @@
             </div>
 
             <div class="col-md-6">
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_code', 'Code'); ?></label>
+                <?php echo functions::form_text_field('code', true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php echo functions::form_regional_text_field('name['. language::$selected['code'] .']', language::$selected['code'], true); ?>
+              </div>
+
               <div id="image">
                 <div style="margin-bottom: 15px;">
                   <img class="thumbnail fit" src="<?php echo document::href_rlink(functions::image_thumbnail('storage://images/' . $category->data['image'], $category_image_width, $category_image_height)); ?>" alt="" style="aspect-ratio: <?php echo str_replace(':', '/', settings::get('category_image_ratio')); ?>;" />
@@ -285,7 +296,7 @@
 
   $('input[name="image"]').change(function(e) {
     if ($(this).val() != '') {
-      var oFReader = new FileReader();
+      let oFReader = new FileReader();
       oFReader.readAsDataURL(this.files[0]);
       oFReader.onload = function(e){
         $('#image img').attr('src', e.target.result);
@@ -302,7 +313,7 @@
   }).first().trigger('input');
 
   $('input[name^="name"]').on('input', function(e){
-    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
     $('input[name="name['+language_code+']"]').not(this).val($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
@@ -312,13 +323,13 @@
 // Meta Description
 
   $('input[name^="short_description"]').on('input', function(e){
-    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 
 // Filters
 
-  var new_attribute_filter_index = 0;
+  let new_attribute_filter_index = 0;
   $('#tab-filters button[name="add"]').click(function(){
 
     if ($('select[name="new_attribute_group"]').val() == '') {
@@ -326,7 +337,7 @@
       return;
     }
 
-    var output = [
+    let output = [
       '<tr class="grabable">'
       '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_index][id]', '')); ?>',
       '  <?php echo functions::escape_js(functions::form_hidden_field('filters[new_attribute_filter_index][attribute_group_id]', 'new_attribute_group_id')); ?>',
@@ -349,7 +360,7 @@
 
   $('#tab-filters').on('click', '.move-up, .move-down', function(event) {
     event.preventDefault();
-    var row = $(this).closest('tr');
+    let row = $(this).closest('tr');
 
     if ($(this).is('.move-up') && $(row).prevAll().length) {
       $(row).insertBefore($(row).prev());

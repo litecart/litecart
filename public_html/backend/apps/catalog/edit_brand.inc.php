@@ -201,7 +201,7 @@
 
   $('input[name="image"]').change(function(e) {
     if ($(this).val() != '') {
-      var oFReader = new FileReader();
+      let oFReader = new FileReader();
       oFReader.readAsDataURL(this.files[0]);
       oFReader.onload = function(e){
         $('#image img').attr('src', e.target.result);
@@ -212,7 +212,7 @@
   });
 
   $('input[name^="short_description"]').on('input', function(e){
-    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 </script>

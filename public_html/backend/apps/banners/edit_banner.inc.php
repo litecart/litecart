@@ -161,22 +161,22 @@ table th:last-child {
 <script>
   $('.data-table').on('input', ':input[name^="keys"]', function(){
 
-    var key = $(this).val();
-    var row = $(this).closest('tr');
+    let key = $(this).val();
+    let row = $(this).closest('tr');
 
     $(this).attr('name', $(this).attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'));
 
     $.each($(row).find(':input[name^="values["]'), function(i, field) {
-      var matches = $(field).attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/);
+      let matches = $(field).attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/);
       $(field).attr('name', 'values['+ matches[1] +']['+ key +']');
     });
   });
 
-  var new_key_index = 0;
+  let new_key_index = 0;
   $('.data-table .add').click(function(e){
     e.preventDefault();
 
-    var output = [
+    let output = [
       '<tr>',
       '  <td><?php echo functions::form_text_field('keys[new_key_index]', 'new_key_index', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
       <?php foreach (language::$languages as $language) { ?>

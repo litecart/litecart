@@ -146,7 +146,7 @@
 
 
 <script>
-  var new_value_index = 0;
+  let new_value_index = 0;
   $('form[name="attribute_form"]').on('click', '.add', function(e) {
     e.preventDefault();
 
@@ -154,7 +154,7 @@
     $name_fields = '';
     foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_regional_text_field('values[new_value_index][name]['. $language_code .']', $language_code, '', '');
 ?>
-    var output = [
+    let output = [
       '<tr>'
       '  <td><?php echo functions::escape_js(functions::form_hidden_field('values[new_value_index][id]', '')); ?></td>',
       '  <td><?php echo functions::escape_js($name_fields); ?></td>',

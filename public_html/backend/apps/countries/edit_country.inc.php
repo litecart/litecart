@@ -215,12 +215,12 @@
     );
   });
 
-  var new_zone_index = 0;
+  let new_zone_index = 0;
   $('form[name="country_form"] .add').click(function(event) {
     event.preventDefault();
     if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
 
-    var output = [
+    let output = [
       '<tr>'
       '  <td><?php echo functions::escape_js(functions::form_hidden_field('zones[new_zone_index][id]', '')); ?></td>',
       '  <td><?php echo functions::escape_js(functions::form_text_field('zones[new_zone_index][code]', '')); ?></td>',
