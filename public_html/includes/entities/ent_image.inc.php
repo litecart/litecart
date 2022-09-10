@@ -938,7 +938,9 @@
           break;
       }
 
-      if ($this->_width == 0) throw new Exception('Failed to detect image width');
+      if ($this->_width == 0) {
+        throw new Exception('Failed to detect image width');
+      }
 
       return $this->_width;
     }
@@ -970,7 +972,9 @@
           break;
       }
 
-      if ($this->_height == 0) throw new Exception('Failed to detect image height');
+      if ($this->_height == 0) {
+        throw new Exception('Failed to detect image height');
+      }
 
       return $this->_height;
     }
@@ -986,7 +990,11 @@
         }
 
         if (empty($image_type) && function_exists('getimagesize')) {
-          $params = getimagesize($this->_src);
+
+          if (!$params = getimagesize($this->_src)) {
+            throw new Exception('Failed decoding image');
+          }
+
           $this->_width = $params[0];
           $this->_height = $params[1];
           $image_type = $params[2];
