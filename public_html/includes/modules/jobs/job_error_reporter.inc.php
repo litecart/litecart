@@ -37,6 +37,8 @@
 
       $log_file = ini_get('error_log');
 
+      if (!is_file($log_file)) return;
+
       if (!$contents = file_get_contents($log_file)) return;
 
       $contents = preg_replace('#(\r\n?|\n)#', "\n", $contents);
@@ -101,7 +103,7 @@
           'key' => 'working_hours',
           'default_value' => '07:00-21:00',
           'title' => language::translate(__CLASS__.':title_working_hours', 'Working Hours'),
-          'description' => language::translate(__CLASS__.':description_working_hours', 'During what hours of the day the job would operate e.g. 07:00-21:00.'),
+          'description' => language::translate(__CLASS__.':description_working_hours', 'During which hours of the day the job should operate e.g. 07:00-21:00.'),
           'function' => 'text()',
         ],
         [

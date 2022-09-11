@@ -103,7 +103,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (101, 1, 'Iran, Islamic Republic of', '', '364', 'IR', 'IRN', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'fa', 'IRR', '98', NOW(), NOW()),
 (102, 1, 'Iraq', '', '368', 'IQ', 'IRQ', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'ar', 'IQD', '964', NOW(), NOW()),
 (103, 1, 'Ireland', '', '372', 'IE', 'IRL', '^(IE)?[0-9]S[0-9]{5}L$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'EUR', '353', NOW(), NOW()),
-(104, 1, 'Israel', '', '376', 'IL', 'ISR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'he', 'ILS', '972', NOW(), NOW()),
+(104, 1, 'Israel', '', '376', 'IL', 'ISR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{7}', 0, 'he', 'ILS', '972', NOW(), NOW()),
 (105, 1, 'Italy', '', '380', 'IT', 'ITA', '^(IT)?[0-9]{11}$', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'it', 'EUR', '39', NOW(), NOW()),
 (106, 1, 'Jamaica', '', '388', 'JM', 'JAM', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'JMD', '187', NOW(), NOW()),
 (107, 1, 'Japan', '', '392', 'JP', 'JPN', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{3}-[0-9]{4}', 0, 'ja', 'JPY', '81', NOW(), NOW()),
@@ -214,7 +214,7 @@ INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1
 (212, 1, 'Tonga', '', '776', 'TO', 'TON', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'to', 'TOP', '676', NOW(), NOW()),
 (213, 1, 'Trinidad and Tobago', '', '780', 'TT', 'TTO', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'TTD', '186', NOW(), NOW()),
 (214, 1, 'Tunisia', '', '788', 'TN', 'TUN', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{4}', 0, 'ar', 'TND', '216', NOW(), NOW()),
-(215, 1, 'Turkey', '', '792', 'TR', 'TUR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'tr', 'TRY', '90', NOW(), NOW()),
+(215, 1, 'Türkiye', '', '792', 'TR', 'TUR', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{5}', 0, 'tr', 'TRY', '90', NOW(), NOW()),
 (216, 1, 'Turkmenistan', '', '795', 'TM', 'TKM', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '[0-9]{6}', 0, 'tk', 'TMT', '993', NOW(), NOW()),
 (217, 1, 'Turks and Caicos Islands', '', '796', 'TC', 'TCA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', 'TKCA 1ZZ', 0, 'en', 'USD', '164', NOW(), NOW()),
 (218, 1, 'Tuvalu', '', '798', 'TV', 'TUV', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'en', 'AUD', '688', NOW(), NOW()),
@@ -368,13 +368,12 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('images', 'local', 'Whitespace Color', 'Set the color of any generated whitespace to the given RGB value. Default: 255,255,255', 'image_whitespace_color', '255,255,255', 'text()', '43', NOW(), NOW()),
 ('images', 'local', 'WebP Enabled', 'Use WebP images if supported by the browser.', 'webp_enabled', '0', 'toggle("e/d")', '44', NOW(), NOW()),
 ('checkout', 'local', 'Send Order Confirmation', 'Send order confirmations via email.', 'send_order_confirmation', '1', 'toggle("y/n")', 11, NOW(), NOW()),
-('checkout', 'local', 'Order Copy Recipients', 'Send an email of the order copy to the given recipients. Separated by coma or semicolon.', 'email_order_copy', '{STORE_EMAIL}', 'text()', 12, NOW(), NOW()),
+('checkout', 'local', 'BCC Order Copy Recipients', 'Send an email of the order copy to the given hidden BCC recipients. Separated by comma or semicolon.', 'email_order_copy', '{STORE_EMAIL}', 'text()', 12, NOW(), NOW()),
 ('checkout', 'global', 'Round Amounts', 'Round currency amounts to prevent exceeding decimals. Turns 29.9915 to 29.99', 'round_amounts', '1', 'toggle()', 13, NOW(), NOW()),
 ('advanced', 'global', 'System Cache Enabled', 'Enables the system cache module which caches frequently used data.', 'cache_enabled', '1', 'toggle()', 10, NOW(), NOW()),
 ('advanced', 'global', 'Clear System Cache', 'Remove all cached system information.', 'cache_clear', '0', 'toggle()', 11, NOW(), NOW()),
 ('advanced', 'global', 'GZIP Enabled', 'Compresses browser data. Increases the load on the server but decreases the bandwidth.', 'gzip_enabled', '1', 'toggle()', 15, NOW(), NOW()),
 ('advanced', 'global', 'Jobs Last Run', 'Time when background jobs were last executed.', 'jobs_last_run', NOW(), 'text()', 16, NOW(), NOW()),
-('advanced', 'local', 'Jobs Interval', 'The amount of minutes between each execution of jobs.', 'jobs_interval', '60', 'number()', 17, NOW(), NOW()),
 ('advanced', 'local', 'Control Panel Link', 'The URL to your control panel, e.g. cPanel.', 'control_panel_link', '?app=settings&doc=advanced&action=edit&key=control_panel_link', 'text()', 18, NOW(), NOW()),
 ('advanced', 'local', 'Database Admin Link', 'The URL to your database manager, e.g. phpMyAdmin.', 'database_admin_link', '?app=settings&doc=advanced&action=edit&key=database_admin_link', 'text()', 19, NOW(), NOW()),
 ('advanced', 'local', 'Webmail Link', 'The URL to your webmail client.', 'webmail_link', '?app=settings&doc=advanced&action=edit&key=webmail_link', 'text()', 20, NOW(), NOW()),
@@ -386,10 +385,10 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'text()', 0, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides` (`id`, `status`, `languages`, `name`, `image`, `priority`, `date_valid_from`, `date_valid_to`, `date_updated`, `date_created`) VALUES
-(1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), NOW());
+(1, 1, '', 'Rocket Cart', 'slides/1-rocket-cart.svg', 1, NULL, NULL, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_slides_info` (`id`, `slide_id`, `language_code`, `caption`, `link`) VALUES
-(1, 1, 'en', '', 'https://vheatris.tumblr.com/');
+(1, 1, 'en', '', '');
 -- --------------------------------------------------------
 INSERT INTO `lc_sold_out_statuses` (`id`, `orderable`, `date_updated`, `date_created`) VALUES
 (1, 0, NOW(), NOW()),

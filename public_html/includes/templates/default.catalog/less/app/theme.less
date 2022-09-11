@@ -1,26 +1,25 @@
 html {
-  background: @site-background;
+  background: var(--site-background-color);
 }
 
 #page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: @page-background;
-  box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
+  background: var(--page-background-color);
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
 }
 
 #header {
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
-  padding: @default-gutter-size/2;
-
+  padding: ~"calc(var(--gutter-size)/2)";
   @media (min-width: (@media-breakpoint-sm)) {
-    padding: @default-gutter-size;
+    padding: var(--gutter-size);
   }
   @media (min-width: @media-breakpoint-md) {
-    grid-template-columns: @default-sidebar-width auto @default-sidebar-width;
+    grid-template-columns: var(--sidebar-width) auto var(--sidebar-width);
   }
 
   .logotype img {
@@ -33,13 +32,13 @@ html {
 }
 
 #region {
-  background: @site-background;
+  background: var(--site-background-color);
   border-bottom: 1px solid #fff;
   border-collapse: collapse;
-  border-radius: @default-border-radius;
+  border-radius: var(--border-radius);
   border-right: 1px solid #fff;
-  box-shadow: inset 0 1px 2px @default-shadow-color;
-  color: @default-text-color;
+  box-shadow: inset 0 1px 2px var(--shadow-color);
+  color: var(--default-text-color);
   display: inline-block;
   font-size: 0.95em;
   padding: 5px 10px;
@@ -78,11 +77,11 @@ html {
     align-items: center;
     padding: 4px;
     border: 1px transparent solid;
-    border-radius: @default-border-radius;
+    border-radius: var(--border-radius);
     color: inherit;
     white-space: nowrap;
     &:hover {
-      border-color: @default-border-color;
+      border-color: var(--default-border-color);
       text-decoration: none;
     }
   }
@@ -115,24 +114,25 @@ html {
 }
 
 #site-menu {
-  margin: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
+  margin: 0 ~"calc(var(--gutter-size)/2)" var(--gutter-size) ~"calc(var(--gutter-size)/2)";
   @media (min-width: (@media-breakpoint-sm)) {
-    margin: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
+    margin: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
   }
   @media (max-width: (@media-breakpoint-sm - 1px)) {
     position: sticky;
     top: 0;
     z-index: 999;
+    font-size: 1.15em;
   }
 }
 
 #main {
   flex-grow: 1;
-  padding: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
+  padding: 0 ~"calc(var(--gutter-size)/2)" var(--gutter-size) ~"calc(var(--gutter-size)/2)";
   @media (min-width: (@media-breakpoint-sm)) {
-    padding: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
+    padding: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
     display: grid;
-    //grid-template-columns: @default-sidebar-width auto;
+    //grid-template-columns: var(--sidebar-width) auto;
     grid-template-columns: max-content;
     grid-template-areas: 'sidebar content';
     grid-template-rows: 1fr;
@@ -145,24 +145,31 @@ html {
     > *:first-child {
       margin-top: 0;
     }
-    width: @default-sidebar-width;
-    margin-inline-end: @default-gutter-size;
+    width: var(--sidebar-width);
+    margin-inline-end: var(--gutter-size);
   }
 }
 
 #content {
+  width: 100%;
   grid-area: content;
-  grid-gap: @default-gutter-size/2;
+  grid-gap: ~"calc(var(--gutter-size)/2)";
   @media (min-width: (@media-breakpoint-sm)) {
-    grid-gap: @default-gutter-size;
+    grid-gap: var(--gutter-size);
   }
 }
 
 #footer {
-  padding: 0 @default-gutter-size/2 @default-gutter-size @default-gutter-size/2;
+  padding: var(--gutter-size) ~"calc(var(--gutter-size)/2)";
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
 
   @media (min-width: (@media-breakpoint-sm)) {
-    padding: 0 @default-gutter-size @default-gutter-size @default-gutter-size;
+    padding: ~"calc(var(--gutter-size)*2)";
+  }
+
+  a {
+    color: inherit;
   }
 
   .columns {
@@ -179,16 +186,12 @@ html {
     }
   }
 
-  * {
-    color: @default-text-color;
-  }
-  a:hover {
-    color: @default-link-color;
-  }
   .title {
     font-size: 1.5em;
     margin: 0 0 0.75em 0;
+    color: var(--footer-title-color);
   }
+
   ul.list-vertical {
     li {
       padding: 0;
@@ -197,9 +200,13 @@ html {
 }
 
 #copyright {
+  background: var(--copyright-background-color);
+  color: var(--copyright-text-color);
+  a {
+    color: inherit;
+  }
   .notice {
-    color: @default-text-color;
-    padding: @default-gutter-size;
+    padding: var(--gutter-size);
     text-align: center;
   }
 }

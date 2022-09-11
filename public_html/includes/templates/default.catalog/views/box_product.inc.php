@@ -1,4 +1,4 @@
-<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
+<article id="box-product" class="box" data-id="<?php echo $product_id; ?>" data-sku="<?php echo functions::escape_html($sku); ?>" data-name="<?php echo functions::escape_html($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
   <div class="row">
     <div class="col-md-6">
@@ -6,7 +6,7 @@
 
         <div class="col-xs-12">
           <a class="main-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
             <?php echo $sticker; ?>
           </a>
         </div>
@@ -14,7 +14,7 @@
         <?php foreach ($extra_images as $extra_image) { ?>
         <div class="col-xs-4">
           <a class="extra-image thumbnail" href="<?php echo document::href_link(WS_DIR_APP . $extra_image['original']); ?>" data-toggle="lightbox" data-gallery="product">
-            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+            <img class="img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $extra_image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="" title="<?php echo functions::escape_html($name); ?>" />
           </a>
         </div>
         <?php } ?>
@@ -33,9 +33,9 @@
 
       <?php if (!empty($manufacturer)) { ?>
       <div class="manufacturer">
-        <a href="<?php echo htmlspecialchars($manufacturer['link']); ?>">
+        <a href="<?php echo functions::escape_html($manufacturer['link']); ?>">
           <?php if ($manufacturer['image']) { ?>
-          <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($manufacturer['name']); ?>" title="<?php echo htmlspecialchars($manufacturer['name']); ?>" />
+          <img src="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>" />
           <?php } else { ?>
           <h3><?php echo $manufacturer['name']; ?></h3>
           <?php } ?>
@@ -102,13 +102,11 @@
       </div>
 
       <?php if ($recommended_price) { ?>
-      <div class="recommmended-price" style="margin: 1em 0;">
+      <div class="recommended-price" style="margin: 1em 0;">
         <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
         <span class="value"><?php echo currency::format($recommended_price); ?></span>
       </div>
       <?php } ?>
-
-      <hr />
 
       <div class="buy_now" style="margin: 1em 0;">
         <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
@@ -133,7 +131,7 @@
           <?php } ?>
         </div>
 
-        <div class="tax" style="margin: 0 0 1em 0;">
+        <div class="tax" style="margin-bottom: 1em;">
          <?php if ($tax_rates) { ?>
           <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
          <?php } else { ?>
@@ -141,13 +139,19 @@
          <?php } ?>
         </div>
 
+        <?php if ($campaign_price_end_date) { ?>
+        <div class="offer-expires" style="margin-bottom: 1em;">
+          <?php echo strtr(language::translate('text_offer_expires_on_date', 'The offer expires on %datetime.'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($campaign_price_end_date))]); ?>
+        </div>
+        <?php } ?>
+
         <?php if (!settings::get('catalog_only_mode') && ($quantity > 0 || empty($sold_out_status) || !empty($sold_out_status['orderable']))) { ?>
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 0;">
           <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
           <div style="display: flex">
             <div class="input-group" style="flex: 0 1 150px;">
               <?php echo (!empty($quantity_unit['decimals'])) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], $quantity_min, $quantity_max, 'step="'. ($quantity_step ? $quantity_step : '') .'"') : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_min ? $quantity_min : '1', $quantity_max ? $quantity_max : null, 'step="'. ($quantity_step ? $quantity_step : '') .'"'); ?>
-              <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-addon">'. $quantity_unit['name'] .'</div>' : ''; ?>
+              <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
             </div>
 
             <div style="padding-inline-start: 1em;">
@@ -162,11 +166,9 @@
 
       <?php if ($quantity <= 0 && !empty($sold_out_status) && empty($sold_out_status['orderable'])) { ?>
       <div class="out-of-stock-notice">
-        <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and can not be purchased.'); ?>
+        <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and cannot be purchased.'); ?>
       </div>
       <?php } ?>
-
-      <hr />
 
       <div class="social-bookmarks text-center">
         <a class="link" href="#"><?php echo functions::draw_fonticon('fa-link', 'style="color: #333;"'); ?></a>
@@ -195,21 +197,17 @@
 <?php
   foreach ($technical_data as $line) {
     if (preg_match('#[:\t]#', $line)) {
-      list($key, $value) = preg_split('#([:\t]+)#', $line, -1, PREG_SPLIT_NO_EMPTY);
+      list($key, $value) = preg_split('# *[:\t]+ *#', $line, 2);
       echo '  <tr>' . PHP_EOL
          . '    <td>'. trim($key) .'</td>' . PHP_EOL
          . '    <td>'. trim($value) .'</td>' . PHP_EOL
          . '  </tr>' . PHP_EOL;
-    } else if (trim($line) != '') {
-      echo '  <thead>' . PHP_EOL
-         . '    <tr>' . PHP_EOL
-         . '      <th colspan="2">'. $line .'</th>' . PHP_EOL
-         . '    </tr>' . PHP_EOL
-         . '  </thead>' . PHP_EOL
-         . '  <tbody>' . PHP_EOL;
+    } else if (trim($line)) {
+      echo '  <tr>' . PHP_EOL
+         . '    <th colspan="2" class="text-start">'. $line .'</th>' . PHP_EOL
+         . '  </tr>' . PHP_EOL;
     } else {
-      echo ' </tbody>' . PHP_EOL
-         . '</table>' . PHP_EOL
+      echo '</table>' . PHP_EOL
          . '<table class="table table-striped table-hover">' . PHP_EOL;
     }
   }

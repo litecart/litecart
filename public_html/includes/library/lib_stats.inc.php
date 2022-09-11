@@ -3,7 +3,6 @@
   class stats {
 
     private static $_data;
-    private static $_page_parse_start;
     private static $_capture_parse_start;
 
     public static function init() {
@@ -19,9 +18,6 @@
         'output_optimization' => 0, // s
       ];
 
-    // Set time stamp for execution
-      self::$_page_parse_start = microtime(true);
-
       event::register('before_capture', [__CLASS__, 'before_capture']);
       event::register('after_capture', [__CLASS__, 'after_capture']);
       event::register('before_output', [__CLASS__, 'before_output']);
@@ -35,13 +31,13 @@
 
     public static function after_capture() {
 
-    // Capture parse time
-      $page_parse_time = microtime(true) - self::$_page_parse_start;
-      self::set('page_capture_time', $page_parse_time);
+      self::set('page_capture_time', microtime(true) - self::$_capture_parse_start);
 
-      if (self::get('page_parse_time') > 5) {
-        notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporarily overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
-        error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. $_SERVER['REQUEST_URI']);
+      $page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START;
+
+      if ($page_parse_time > 5) {
+        notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
+        error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. document::link(), 3, FS_DIR_APP . 'logs/performance.log');
       }
     }
 
@@ -51,7 +47,7 @@
       self::set('memory_peak_usage', memory_get_peak_usage(true) / 1e6);
 
     // Page parse time
-      $page_parse_time = microtime(true) - self::$_page_parse_start;
+      $page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START;
       self::set('page_parse_time', $page_parse_time);
 
     // Output stats

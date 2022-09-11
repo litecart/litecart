@@ -48,14 +48,14 @@
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
             <th><?php echo language::translate('title_name', 'Name'); ?></th>
             <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($tax_classes as $tax_class) { ?>
           <tr>
-            <td><?php echo functions::form_draw_checkbox('tax_classes['. $tax_class['id'] .']', $tax_class['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('tax_classes[]', $tax_class['id']); ?></td>
             <td><?php echo $tax_class['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
             <td style="color: #999;"><?php echo $tax_class['description']; ?></td>

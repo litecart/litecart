@@ -39,3 +39,24 @@
       die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
     }
   }
+
+// Connect guest orders to account (if applicable)
+  $orders_query = database::query(
+    "select customer_id, customer_email from ". DB_TABLE_PREFIX ."orders
+    where customer_id = 0;"
+  );
+
+  while ($order = database::fetch($orders_query)) {
+    $customers_query = database::query(
+      "select id from ". DB_TABLE_PREFIX ."customers
+      where lower(email) = lower('". database::input($order['customer_email']) ."');"
+    );
+
+    if ($customer = database::fetch($customers_query)) {
+      database::query(
+        "update ". DB_TABLE_PREFIX ."orders
+        set customer_id = '". database::input($customer['id']) ."'
+        where lower(customer_email) = lower('". database::input($order['customer_email']) ."');"
+      );
+    }
+  }

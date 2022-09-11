@@ -96,6 +96,13 @@
         case 'head_title':
         case 'meta_description':
 
+          $this->_data['name'] = '';
+          $this->_data['short_description'] = '';
+          $this->_data['description'] = '';
+          $this->_data['technical_data'] = '';
+          $this->_data['head_title'] = '';
+          $this->_data['meta_description'] = '';
+
           $query = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_info
             where product_id = ". (int)$this->_data['id'] ."
@@ -121,12 +128,15 @@
             from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-            and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
-            limit 1;"
+            and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."');"
           );
 
-          if ($campaign = database::fetch($campaigns_query)) {
-            $this->_data['campaign'] = $campaign;
+          while ($campaign = database::fetch($campaigns_query)) {
+            if ($campaign['price'] < $this->price) {
+              if (!isset($this->_data['campaign']['price']) || $campaign['price'] < $this->_data['campaign']['price']) {
+                $this->_data['campaign'] = $campaign;
+              }
+            }
           }
 
           break;
@@ -160,7 +170,7 @@
 
         case 'default_category':
 
-          $this->_data['default_category'] = false;
+          $this->_data['default_category'] = 0;
 
           if (empty($this->default_category_id)) return;
 
@@ -203,6 +213,7 @@
             where product_id = ". (int)$this->_data['id'] ."
             order by priority asc, id asc;"
           );
+
           while ($row = database::fetch($query)) {
             $this->_data['images'][$row['id']] = $row['filename'];
           }
@@ -286,9 +297,8 @@
                 switch ($value['price_operator']) {
 
                   case '+':
-
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = (float)currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
+                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
                       $value['price_adjust'] = (float)$value[settings::get('store_currency_code')];
                     }
@@ -296,15 +306,15 @@
 
                   case '%':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $this->price * ((float)$value[$this->_currency_code] / 100);
+                      $value['price_adjust'] = $this->price * currency::convert((float)$value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) / 100;
                     } else {
-                      $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')] / 100;
+                      $value['price_adjust'] = $this->price * (float)$value[settings::get('store_currency_code')] / 100;
                     }
                     break;
 
                   case '*':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $this->price * $value[$this->_currency_code];
+                      $value['price_adjust'] = $this->price * currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code'));
                     } else {
                       $value['price_adjust'] = $this->price * $value[settings::get('store_currency_code')];
                     }
@@ -312,7 +322,7 @@
 
                   case '=':
                     if ((float)$value[$this->_currency_code] != 0) {
-                      $value['price_adjust'] = $value[$this->_currency_code] - $this->price;
+                      $value['price_adjust'] = currency::convert($value[$this->_currency_code], $this->_currency_code, settings::get('store_currency_code')) - $this->price;
                     } else {
                       $value['price_adjust'] = $value[settings::get('store_currency_code')] - $this->price;
                     }
@@ -322,6 +332,10 @@
                     trigger_error('Unknown price operator for option', E_USER_WARNING);
                     break;
                 }
+              }
+
+              if ($value['price_adjust'] && !empty($this->campaign['price'])) {
+                $value['price_adjust'] = $value['price_adjust'] * $this->campaign['price'] / $this->price;
               }
 
               $option['values'][$value['id']] = $value;
@@ -378,20 +392,29 @@
             foreach (explode(',', $row['combination']) as $combination) {
               list($group_id, $value_id) = explode('-', $combination);
 
-              $options_values_query = database::query(
-                "select * from ". DB_TABLE_PREFIX ."products_options_values pov
-                left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
-                where pov.value_id = ". (int)$value_id ."
-                and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
-                order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
-              );
+              if (preg_match('#^0:"?(.*?)"?$#', $value_id, $matches)) {
 
-              while ($option_value_info = database::fetch($options_values_query)) {
-                foreach ($option_value_info as $key => $value) {
-                  if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
-                  if (!is_array(empty($row[$key][$option_value_info['value_id']]))) continue;
-                  if (empty($row[$key][$option_value_info['value_id']])) {
-                    $row[$key][$option_value_info['value_id']] = $value;
+                foreach (array_keys(language::$languages) as $language_code) {
+                  $row['name'][$language_code] = $matches[1];
+                }
+
+              } else {
+
+                $options_values_query = database::query(
+                  "select * from ". DB_TABLE_PREFIX ."products_options_values pov
+                  left join ". DB_TABLE_PREFIX ."attribute_values_info avi on (avi.value_id = pov.value_id)
+                  where pov.value_id = ". (int)$value_id ."
+                  and avi.language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+                  order by field(avi.language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
+                );
+
+                while ($option_value_info = database::fetch($options_values_query)) {
+                  foreach ($option_value_info as $key => $value) {
+                    if (in_array($key, ['id', 'value_id', 'language_code'])) continue;
+                    if (!is_array(empty($row[$key][$option_value_info['value_id']]))) continue;
+                    if (empty($row[$key][$option_value_info['value_id']])) {
+                      $row[$key][$option_value_info['value_id']] = $value;
+                    }
                   }
                 }
               }

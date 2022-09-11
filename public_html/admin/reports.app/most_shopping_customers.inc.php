@@ -34,8 +34,8 @@
       select id from ". DB_TABLE_PREFIX ."order_statuses
       where is_sale
     )
-    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : "") ."
-    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : "") ."
+    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
+    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
     group by if(o.customer_id, o.customer_id, o.customer_email)
     order by total_amount desc;"
   );
@@ -83,7 +83,7 @@ form[name="filter_form"] li {
         <li>
           <div class="input-group" style="max-width: 380px;">
             <?php echo functions::form_draw_date_field('date_from', true); ?>
-            <span class="input-group-addon"> - </span>
+            <span class="input-group-text"> - </span>
             <?php echo functions::form_draw_date_field('date_to', true); ?>
           </div>
         </li>
@@ -106,7 +106,7 @@ form[name="filter_form"] li {
       <tbody>
         <?php foreach ($customers as $customer) { ?>
         <tr>
-          <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+          <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]) .'">'. functions::escape_html($customer['name']) .'</a>' : functions::escape_html($customer['name']) .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
           <td><?php echo $customer['email']; ?></td>
           <td style="text-align: end;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
         </tr>

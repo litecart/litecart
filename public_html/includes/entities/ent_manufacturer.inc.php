@@ -22,7 +22,7 @@
       );
 
       while ($field = database::fetch($manufacturer_query)) {
-        $this->data[$field['Field']] = null;
+        $this->data[$field['Field']] = database::create_variable($field['Type']);
       }
 
       $manufacturer_info_query = database::query(
@@ -33,7 +33,7 @@
 
         $this->data[$field['Field']] = [];
         foreach (array_keys(language::$languages) as $language_code) {
-          $this->data[$field['Field']][$language_code] = null;
+          $this->data[$field['Field']][$language_code] = database::create_variable($field['Type']);
         }
       }
 
@@ -198,10 +198,8 @@
         limit 1;"
       );
 
-      if (database::num_rows($products_query) > 0) {
-        notices::add('errors', language::translate('error_delete_manufacturer_not_empty_products', 'The manufacturer could not be deleted because there are products linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
+      if (database::num_rows($products_query)) {
+        throw new Exception(language::translate('error_cannot_delete_manfacturer_while_used_by_products', 'The manufacturer could not be deleted because there are products linked to it.'));
       }
 
       if (!empty($this->data['image']) && is_file(FS_DIR_APP . 'images/manufacturers/' . $this->data['image'])) {

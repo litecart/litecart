@@ -29,6 +29,11 @@
         }
       }
 
+      if (isset($_POST['postcode'])) {
+        customer::$data['postcode'] = $_POST['postcode'];
+        customer::$data['shipping_address']['postcode'] = $_POST['postcode'];
+      }
+
       if (isset($_POST['display_prices_including_tax'])) {
         customer::$data['display_prices_including_tax'] = (bool)$_POST['display_prices_including_tax'];
         if (!empty($_COOKIE['cookies_accepted']) || !settings::get('cookie_policy')) {
@@ -36,12 +41,15 @@
         }
       }
 
-      if (empty($_GET['redirect_url'])) {
-        $_GET['redirect_url'] = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
+      if (!empty($_GET['redirect_url'])) {
+        $redirect_url = new ent_link($_GET['redirect_url']);
+        $redirect_url->host = '';
+      } else {
+        $redirect_url = document::ilink('', [], null, [], !empty($_POST['language_code']) ? $_POST['language_code'] : '');
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. $_GET['redirect_url']);
+      header('Location: '. $redirect_url);
       exit;
 
     } catch (Exception $e) {

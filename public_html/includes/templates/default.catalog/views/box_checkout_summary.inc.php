@@ -50,7 +50,7 @@
   <div class="confirm row">
     <div class="col-md-9">
       <?php if ($error) { ?>
-      <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+      <div class="alert alert-danger"><?php echo functions::escape_html($error); ?></div>
       <?php } ?>
 
       <?php if (!$error && $consent) { ?>
@@ -67,7 +67,7 @@
 </section>
 
 <script>
-  $('textarea[maxlength]').bind('input', function() {
+  $('textarea[maxlength]').on('input', function() {
     var remaining = $(this).attr('maxlength') - $(this).val().length;
     $(this).closest('.input-wrapper').find('.remaining').text(remaining);
   });

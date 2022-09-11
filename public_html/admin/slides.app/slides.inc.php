@@ -30,7 +30,7 @@
 
   $slides_query = database::query(
     "select * from ". DB_TABLE_PREFIX ."slides
-    order by priority, name;"
+    order by status desc, priority, name;"
   );
 
   if ($_GET['page'] > 1) database::seek($slides_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
@@ -73,20 +73,20 @@
             <th class="text-center"><?php echo language::translate('title_valid_from', 'Valid From'); ?></th>
             <th class="text-center"><?php echo language::translate('title_valid_to', 'Valid To'); ?></th>
             <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($slides as $slide) { ?>
           <tr class="<?php echo empty($slide['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('slides[]', $slide['id']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><?php echo $slide['id']; ?></td>
             <td><a href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>"><?php echo $slide['name']; ?></a></td>
             <td class="text-end"><?php echo !empty($slide['languages']) ? str_replace(',', ', ', $slide['languages']) : language::translate('title_all', 'All'); ?></td>
-            <td class="text-end"><?php echo (date('Y', strtotime($slide['date_valid_from'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
-            <td class="text-end"><?php echo (date('Y', strtotime($slide['date_valid_to'])) > '1970') ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
+            <td class="text-end"><?php echo !empty($slide['date_valid_from']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_from'])) : '-'; ?></td>
+            <td class="text-end"><?php echo !empty($slide['date_valid_to']) ? language::strftime(language::$selected['format_datetime'], strtotime($slide['date_valid_to'])) : '-'; ?></td>
             <td class="text-end"><?php echo $slide['priority']; ?></td>
             <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_slide', 'slide_id' => $slide['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
           </tr>

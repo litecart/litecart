@@ -44,7 +44,7 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   background: @form-input-background;
   border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .form-control {
@@ -70,26 +70,22 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   }
 }
 
-.select-wrapper {
-  position: relative;
-  width: 100%;
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 50%;
-    width: 0;
-    height: 0;
-    right: @form-input-padding * 2;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #000;
-    z-index: 1;
-  }
-  select.form-control {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding-inline-end: @default-gutter-size * 2;
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1em center;
+  background-size: .8em;
+  padding-inline-end: 2.5em !important;
+
+  &.multiple {
+    padding: 0;
+    option {
+      padding: var(--input-padding-y) var(--input-padding-x);
+    }
   }
 }
 
@@ -118,14 +114,14 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   .input-field();
   display: flex;
   .form-control {
-    background: none;
-    box-shadow: none;
-    border-radius: 0;
+    flex: 1 1 auto;
+    background-color: unset;
     border: none;
-    margin-inline-start: -1px;
+    border-radius: 0;
+    box-shadow: none;
   }
-  .input-group-addon {
-    flex: 1 0 auto;
+  .input-group-text {
+    flex: 0 1 auto;
     margin: 0 -1px;
     padding: @form-input-padding @form-input-padding * 2;
     background-color: @default-color;
@@ -135,51 +131,30 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
-    .select-wrapper {
-      background: none;
-      margin: -@form-input-padding -@form-input-padding * 2;
-      &:before {
-        right: -@form-input-padding * 2;
-      }
-    }
-    select {
-      width: auto;
-      background: none;
-      border: none;
-    }
   }
   .input-group-icon {
-    flex: 1 0 auto;
+    flex: 0 1 auto;
     padding: @form-input-padding @form-input-padding * 2;
     margin-inline-end: -12px;
+    align-self: center;
   }
-  .input-group-btn {
-    flex: 1 0 auto;
-    .btn {
-      border-top: none;
-      border-bottom: none;
-    }
-    .form-control {
-      padding: .4em 1em;
-    }
-  }
-  .form-control:first-child,
-  .input-group-addon:first-child,
-  .input-group-btn:first-child > .btn,
-  .input-group-btn:first-child > .btn-group > .btn,
-  .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-    border-radius: @default-border-radius 0 0 @default-border-radius;
-  }
-  .form-control:last-child,
-  .input-group-addon:last-child,
-  .input-group-btn:last-child > .btn,
-  .input-group-btn:last-child > .btn-group > .btn,
-  .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-    margin-inline-end: -1px;
-    border-radius: 0 @default-border-radius @default-border-radius 0;
+  > .btn {
+    margin: -1px;
   }
   + .input-group {
     margin-top: -1px;
+  }
+  .form-control + .form-control {
+    border-left: 1px solid @default-border-color;
+  }
+  .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
+  .input-group-text:first-child {
+    border-radius: @default-border-radius 0 0 @default-border-radius;
+  }
+  .form-control:last-child, .input-group-btn:last-child .btn,
+  .input-group-text:last-child {
+    margin-inline-end: -1px;
+    border-radius: 0 @default-border-radius @default-border-radius 0;
   }
 }
 

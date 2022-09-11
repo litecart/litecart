@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($category->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $category->data;
 
     if (empty($category->data['id']) && !empty($_GET['parent_id'])) {
       $_POST['parent_id'] = $_GET['parent_id'];
@@ -29,6 +27,10 @@
 
       if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."categories where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) {
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      }
+
+      if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']) && !empty($_FILES['image']['error'])) {
+        throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
       }
 
       if (empty($_POST['filters'])) $_POST['filters'] = [];
@@ -57,7 +59,7 @@
 
       if (!empty($_POST['delete_image'])) $category->delete_image();
 
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+      if (!empty($_FILES['image']['tmp_name'])) {
         $category->save_image($_FILES['image']['tmp_name']);
       }
 
@@ -204,6 +206,11 @@
             <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 
               <div class="form-group">
+                <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                <?php echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+              </div>
+
+              <div class="form-group">
                 <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
                 <?php echo functions::form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, ''); ?>
               </div>
@@ -252,7 +259,7 @@
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-                <td class="grabable"><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
+                <td class="grabable"><?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?></td>
                 <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-end">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
@@ -266,9 +273,7 @@
 
           <div class="input-group" style="max-width: 320px;">
             <?php echo functions::form_draw_attribute_groups_list('new_attribute_group', true); ?>
-            <span class="input-group-btn">
-              <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
-            </span>
+            <?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'button'); ?>
           </div>
         </div>
       </div>
@@ -276,7 +281,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($category->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (isset($category->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -298,21 +303,23 @@
         $('#image img').attr('src', e.target.result);
       };
     } else {
-      $('#image img').attr('src', '<?php echo functions::image_thumbnail(FS_DIR_ADMIN . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping')); ?>');
+      $('#image img').attr('src', '<?php echo document::link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $category->data['image'], $category_image_width, $category_image_height, settings::get('category_image_clipping'))); ?>');
     }
   });
 
 // Head Title & H1 Title
 
-  $('input[name^="name"]').bind('input propertyChange', function(e){
+  $('input[name^="name"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="name['+language_code+']"]').not(this).val($(this).val());
     $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
     $('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
 
 // Meta Description
 
-  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');
@@ -328,9 +335,9 @@
     }
 
     var output = '<tr class="grabable">'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
-               + '  <?php echo functions::general_escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][id]', '')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_id]', 'new_attribute_group_id')); ?>'
+               + '  <?php echo functions::escape_js(functions::form_draw_hidden_field('filters[new_attribute_filter_i][attribute_group_name]', 'new_attribute_group_name')); ?>'
                + '  <td>new_attribute_group_name</td>'
                + '  <td><?php echo functions::form_draw_checkbox('filters[new_attribute_filter_i][select_multiple]', true); ?></td>'
                + '  <td class="text-end">'

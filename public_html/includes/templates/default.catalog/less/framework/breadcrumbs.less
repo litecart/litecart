@@ -1,18 +1,17 @@
 /* Breadcrumbs - Bootstrap Compatible */
 
 ul.breadcrumb {
-  margin: 0 0 @default-gutter-size 0;
-  padding: @default-gutter-size/2 @default-gutter-size;
-  margin-bottom: @default-gutter-size;
+  padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+  margin-bottom: var(--gutter-size);
   list-style: none;
-  background-color: @breadcrumbs-background-color;
-  border-radius: @default-border-radius;
+  background-color: var(--breadcrumbs-background-color);
+  border-radius: var(--border-radius);
   li {
     display: inline-block;
-    &::before {
-      content: "/\00a0";
-      padding: 0 5px;
-      color: #ccc;
+    &:not(:last-child)::after {
+      content: "\00bb";
+      padding: 0 ~"calc(var(--gutter-size)/2)";
+      color: var(--breadcrumbs-text-color);
     }
     a {
       color: inherit;

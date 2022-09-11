@@ -1,27 +1,40 @@
 #box-recently-viewed-products .listing {
-  grid-template-columns: repeat(auto-fit, minmax(48px, .5fr));
+  grid-template-columns: repeat(auto-fill, minmax(48px, .5fr));
 }
 
 .listing {
   display: grid;
+  grid-gap: ~"calc(var(--gutter-size)/2)";
+
+  @media (min-width: (@media-breakpoint-sm)) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: var(--gutter-size);
+  }
 
   &.products {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: @default-gutter-size/2;
-
-    @media (min-width: (@media-breakpoint-sm)) {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      grid-gap: @default-gutter-size;
+    &.columns {
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      @media (min-width: (@media-breakpoint-sm)) {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+    }
+    &.rows {
+      grid-auto-flow: row;
+      grid-template-columns: initial;
     }
   }
 
   &.categories {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: @default-gutter-size/2;
-
     @media (min-width: (@media-breakpoint-sm)) {
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      grid-gap: @default-gutter-size;
+    }
+  }
+
+  &.manufacturers {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    @media (min-width: (@media-breakpoint-sm)) {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
   }
 
@@ -35,13 +48,13 @@
     text-decoration: none;
   }
 
-  .category, .manufacturer, .product-column, .product-row {
+  .category, .manufacturer, .product {
     position: relative;
     overflow: hidden;
 
-    background: @image-whitespace-color;
-    border: 1px solid @default-border-color;
-    border-radius: @default-border-radius;
+    background: var(--image-whitespace-color);
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--border-radius);
     transform: scale(1);
     transition: all 100ms linear;
 
@@ -50,7 +63,7 @@
 
     @media (min-width: (@media-breakpoint-sm)) {
       &:hover {
-        box-shadow: 0 @default-gutter-size/4 @default-gutter-size/2 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)" 0 rgba(0, 0, 0, 0.15);
         transform: scale(1.01);
       }
     }
@@ -59,8 +72,8 @@
   .category {
     .caption {
       background: #f2f2f2;
-      padding: @default-gutter-size/2 @default-gutter-size;
-      color: @default-text-color;
+      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
+      color: var(--default-text-color);
       text-align: center;
       * {
         color: inherit;
@@ -73,19 +86,19 @@
     img {
       width: 100%;
       height: auto;
-      padding: @default-gutter-size/2;
+      padding: ~"calc(var(--gutter-size)/2)";
     }
 
     .caption {
       margin: 0;
-      padding: @default-gutter-size / 2;
+      padding: ~"calc(var(--gutter-size)/2)";
       background: #f2f2f2;
-      color: @default-text-color;
+      color: var(--default-text-color);
       text-align: center;
     }
   }
 
-  .product-column, .product-row {
+  .product {
     position: relative;
 
     .link {
@@ -93,14 +106,14 @@
     }
 
     .image-wrapper {
-      background: @image-whitespace-color;
+      background: var(--image-whitespace-color);
 
       .sticker {
         position: absolute;
         top: 20px;
         left: -32px;
         width: 125px;
-        padding: @default-gutter-size/4 @default-gutter-size/2;
+        padding: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)";
         color: #fff;
         font-size: 12px;
         font-weight: bold;
@@ -130,12 +143,17 @@
     }
 
     .manufacturer-name {
-      color: lighten(@default-text-color, 25%);
+      color: var(--default-text-color);
       font-size: 0.9em;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       line-height: 200%;
+      opacity: .75;
+    }
+
+    .description {
+      text-align: left;
     }
 
     .price-wrapper {
@@ -146,7 +164,7 @@
         white-space: nowrap;
       }
       .regular-price, .recommended-price {
-        color: @default-text-color;
+        color: var(--default-text-color);
         font-size: 0.75em;
         font-weight: normal;
         white-space: nowrap;
@@ -178,15 +196,19 @@
     }
   }
 
-  .product-column {
+  &.columns .product {
     .image {
       width: 100%;
       height: auto;
     }
 
     .info {
-      padding: @default-gutter-size/2;
+      padding: ~"calc(var(--gutter-size)/2)";
       text-align: center;
+    }
+
+    .description {
+      display: none;
     }
 
     .price-wrapper {
@@ -194,40 +216,47 @@
     }
   }
 
-  .product-row {
-    grid-column: span 4;
+  &.rows .product {
+    //grid-column: 1/-1;
     height: 175px;
+
     .info {
       position: absolute;
       top: 0;
-      left: 100px + @default-gutter-size;
-      padding: @default-gutter-size/2;
+      left: ~"calc(var(--gutter-size) + 100px)";
+      right: 0;
+      bottom: 0;
+      padding: ~"calc(var(--gutter-size)/2)";
       @media (min-width: (@media-breakpoint-sm)) {
-        left: 160px + @default-gutter-size;
+        left: ~"calc(160px + var(--gutter-size))";
       }
     }
+
     .image-wrapper {
       display: inline-block;
     }
+
     .image {
       max-width: 100px;
       @media (min-width: (@media-breakpoint-sm)) {
         max-width: 160px;
       }
     }
+
     .price-wrapper {
       position: absolute;
       bottom: 0;
       right: 0;
       font-size: 1.25em;
       background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 100%);
-      padding: @default-gutter-size/2;
-      padding-inline-start: @default-gutter-size * 2;
+      padding: ~"calc(var(--gutter-size)/2)";
+      padding-inline-start: ~"calc(var(--gutter-size) * 2)";
     }
+
     @media (min-width: (@media-breakpoint-sm)) {
       height: auto;
       .description {
-        margin-top: @default-gutter-size;
+        margin-top: var(--gutter-size);
       }
     }
   }

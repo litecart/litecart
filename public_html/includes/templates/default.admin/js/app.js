@@ -26,7 +26,7 @@
           type: 'get',
           async: true,
           cache: false,
-          url: 'search_results.json.php?query=' + query,
+          url: 'search_results.json.php?query=' + encodeURIComponent(query),
           dataType: 'json',
           beforeSend: function(jqXHR) {
             jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -138,7 +138,7 @@
       if (drag && index != tr.index()) {
         drag = false;
       }
-      $(document).unbind('mousemove', move).unbind('mouseup', up);
+      $(document).off('mousemove', move).off('mouseup', up);
       $(tr).removeClass('grabbed');
       $(tr).closest('tbody').css('unser-input', '');
     }
@@ -181,10 +181,27 @@
 // Keep-alive
   var keepAlive = setInterval(function(){
     $.get({
-      url: window._env.platform.url + 'ajax/cart.json',
+      url: window._env.platform.path + 'ajax/cart.json',
       cache: false
     });
   }, 60000);
+
+/*
+ * Escape HTML
+ */
+function escapeHTML(string) {
+  var entityMap = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': '&quot;',
+      "'": '&#39;',
+      "/": '&#x2F;'
+  };
+  return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+  });
+};
 
 /*
  * jQuery Category Picker
@@ -222,10 +239,10 @@
 
                 $.each(result.subcategories, function(i, category) {
                   $(dropdownMenu).append(
-                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
+                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
                     '  ' + self.config.icons.folder +
                     '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
-                    '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
+                    '  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
                     '</li>'
                   );
                 });
@@ -261,10 +278,10 @@
 
                 $.each(result.subcategories, function(i, category) {
                   $(dropdownMenu).append(
-                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
+                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
                     '  ' + self.config.icons.folder +
                     '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
-                    '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
+                    '  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
                     '</li>'
                   );
                 });
@@ -284,7 +301,7 @@
 
           if (result.id) {
             $(dropdownMenu).append(
-              '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex;">' +
+              '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex; align-items: center;">' +
               '  ' + self.config.icons.back +
               '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
               '</li>'
@@ -293,10 +310,10 @@
 
           $.each(result.subcategories, function(i, category) {
             $(dropdownMenu).append(
-              '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
+              '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex; align-items: center;">' +
               '  ' + self.config.icons.folder +
               '  <a href="#" data-link="'+ self.config.link +'&parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
-              '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
+              '  <div><button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button></div>' +
               '</li>'
             );
           });
@@ -306,13 +323,23 @@
       $(this).on('click', '.dropdown-menu .list-item button.add', function(e){
         e.preventDefault();
 
-        var category = $(this).closest('li');
+        var category = $(this).closest('li'),
+            abort = false;
+
+        $(self).find('input[name="'+ self.config.inputName +'"]').each(function(){
+          if ($(this).val() == category.data('id')) {
+            abort = true;
+            return;
+          }
+        });
+
+        if (abort) return;
 
         $(self).find('.categories').append(
-          '<li class="list-item" style="display: flex;">' +
-          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'" />' +
+          '<li class="list-item" style="display: flex; align-items: center;">' +
+          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ $(category).data('name').replace(/"/, '&quote;') +'" />' +
           '  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
-          '  <button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button>' +
+          '  <div><button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button></div>' +
           '</li>'
         );
 

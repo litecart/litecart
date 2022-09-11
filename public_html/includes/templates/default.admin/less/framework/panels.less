@@ -5,35 +5,32 @@
   background-color: #fff;
   border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
   > .panel-heading {
+    background: #ebecef;
     color: #333;
-    background-color: #f5f5f5;
-    border-color: @default-border-color;
+    border-bottom: 1px solid @default-border-color;
   }
 
   .panel-body {
-    padding: 15px;
+    padding: 1em;
   }
 
   .panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
+    padding: 1em 1em;
     border-top-left-radius: @default-border-radius;
     border-top-right-radius: @default-border-radius;
     .panel-title {
       margin-top: 0;
       margin-bottom: 0;
-      font-size: 16px;
+      font-size: @default-text-size;
       color: inherit;
     }
   }
 
   .panel-footer {
-    padding: 10px 15px;
+    padding: 1em 1em;
     background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
     border-bottom-right-radius: @default-border-radius;
     border-bottom-left-radius: @default-border-radius;
   }
@@ -64,13 +61,13 @@
   .panel-filter {
     display: flex;
     padding: @default-gutter-size/2;
+    gap: @default-gutter-size/2;
     margin-top: @default-gutter-size;
     background: @default-color;
     border: 1px solid @default-border-color;
     border-radius: @default-border-radius;
     > * {
       flex: 0 1 auto;
-      padding: 0 @default-gutter-size/2;
       &.expandable {
         flex-grow: 1;
       }
@@ -79,5 +76,12 @@
 
   > .panel-body {
     margin: @default-gutter-size 0;
+  }
+}
+
+html[dir="rtl"] {
+  .panel-app .panel-action {
+    left: 0;
+    right: auto;
   }
 }

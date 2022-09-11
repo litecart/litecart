@@ -47,9 +47,9 @@
   if (isset($_POST['save'])) {
 
     try {
-      foreach (array_keys($_POST['settings']) as $key) {
-        if (in_array($key, ['id', 'date_updated', 'date_created'])) continue;
-        if (isset($module->data['settings'][$key])) $module->data['settings'][$key] = $_POST['settings'][$key];
+      foreach (array_keys($module->data['settings']) as $key) {
+        if (in_array($key, array('id', 'date_updated', 'date_created'))) continue;
+        $module->data['settings'][$key] = isset($_POST['settings'][$key]) ? $_POST['settings'][$key] : '';
       }
 
       $module->save();
@@ -113,9 +113,9 @@
             </td>
             <td style="width: 50%">
               <?php if (!empty($setting['multiple'])) { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['placeholder']) ? ' placeholder="'. htmlspecialchars($setting['placeholder']) .'"' : ''); ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].'][]', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
               <?php } else { ?>
-              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['placeholder']) ? ' placeholder="'. htmlspecialchars($setting['placeholder']) .'"' : ''); ?>
+              <?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true, !empty($setting['placeholder']) ? ' placeholder="'. functions::escape_html($setting['placeholder']) .'"' : ''); ?>
               <?php } ?>
             </td>
           </tr>

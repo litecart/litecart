@@ -41,7 +41,7 @@
       }
 
       if (empty($headers['Content-Length'])) {
-        $headers['Content-Length'] = mb_strlen($data);
+        $headers['Content-Length'] = ($data != '') ? mb_strlen($data) : 0;
       }
 
       if (empty($headers['Connection'])) {
@@ -84,7 +84,7 @@
 
       fclose($socket);
 
-      $response_headers = substr($response, 0, strpos($response, "\r\n\r\n") - 2);
+      $response_headers = substr($response, 0, strpos($response, "\r\n\r\n") + 2);
       $response_body = substr($response, strpos($response, "\r\n\r\n") + 4);
 
     // Decode chunked data
@@ -106,11 +106,11 @@
 
       file_put_contents(FS_DIR_APP . 'logs/http_request_last-'. $parts['host'] .'.log',
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
-        $this->last_request['head'] . PHP_EOL .
-        $this->last_request['body'] . PHP_EOL . PHP_EOL .
+        $this->last_request['head'] . "\r\n" .
+        $this->last_request['body'] . "\r\n\r\n" .
         '##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. (float)$this->last_response['bytes'] .' bytes transferred in '. (float)$this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT) . PHP_EOL . PHP_EOL .
-        $this->last_response['head'] . PHP_EOL .
-        $this->last_response['body'] . PHP_EOL . PHP_EOL
+        $this->last_response['head'] . "\r\n" .
+        $this->last_response['body']
       );
 
       if (class_exists('stats', false)) {
@@ -122,7 +122,7 @@
       if ($status_code == 301) {
         if (!$this->follow_redirects) {
           trigger_error('Destination is redirecting to another destination but follow_redirects is disabled', E_USER_WARNING);
-        } else if (preg_match('#^Location:\s?(.*)?$#im', $line, $matches)) {
+        } else if (preg_match('#^Location:\s?(.*)?$#im', $response_headers, $matches)) {
           $redirect_url = !empty($matches[1]) ? trim($matches[1]) : $url;
           return $this->call($method, $redirect_url, $data, $headers);
         } else {

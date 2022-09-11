@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($slide->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $slide->data;
   }
 
   document::$snippets['title'][] = !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide');
@@ -20,7 +18,12 @@
   if (isset($_POST['save'])) {
 
     try {
+
       if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
+
+      if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']) && !empty($_FILES['image']['error'])) {
+        throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+      }
 
       if (empty($_POST['status'])) $_POST['status'] = 0;
       if (empty($_POST['languages'])) $_POST['languages'] = [];
@@ -40,7 +43,9 @@
         if (isset($_POST[$field])) $slide->data[$field] = $_POST[$field];
       }
 
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) $slide->save_image($_FILES['image']['tmp_name']);
+      if (!empty($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+        $slide->save_image($_FILES['image']['tmp_name']);
+      }
 
       $slide->save();
 
@@ -82,20 +87,16 @@
           <label><?php echo language::translate('title_status', 'Status'); ?></label>
           <?php echo functions::form_draw_toggle('status', (file_get_contents('php://input') != '') ? true : '1', 'e/d'); ?>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
-          <div><?php echo functions::form_draw_languages_list('languages[]', true, true); ?></div>
-        </div>
-      </div>
-
-      <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_name', 'Name'); ?></label>
           <?php echo functions::form_draw_text_field('name', true); ?>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_languages', 'Languages'); ?> <em>(<?php echo language::translate('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></label>
+        <div><?php echo functions::form_draw_languages_list('languages[]', true, true); ?></div>
       </div>
 
       <?php if (!empty($slide->data['image'])) echo '<p><img src="'. document::href_link('images/' . $slide->data['image']) .'" alt="" class="img-responsive" /></p>'; ?>
@@ -150,9 +151,17 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($slide->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (isset($slide->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 </div>
+
+<script>
+  $('input[name^="caption"]').on('input', function(e){
+    var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+    $('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+    $('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+  }).trigger('input');
+</script>

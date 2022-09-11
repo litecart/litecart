@@ -3,8 +3,8 @@
 .pagination {
   display: inline-flex;
   padding-inline-start: 0;
-  margin: @default-gutter-size 0;
-  border-radius: @default-border-radius;
+  margin: var(--gutter-size) 0;
+  border-radius: var(--border-radius);
   flex-wrap: wrap;
 
   > li {
@@ -12,50 +12,49 @@
     > a, > span {
       position: relative;
       display: inline-block;
-      padding: @form-input-padding @form-input-padding*2;
+      padding: var(--input-padding-y) var(--input-padding-x);
       text-decoration: none;
-      color: inherit;
-      background-color: #fff;
-      border: 1px solid @default-border-color;
+      color: var(--pagination-text-color);
+      background: var(--pagination-background-color);
+      border: 1px solid var(--default-border-color);
       margin-inline-start: -1px;
     }
     &:first-child {
       > a, > span {
         margin-inline-start: 0;
-        border-top-left-radius: @default-border-radius;
-        border-bottom-left-radius: @default-border-radius;
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
       }
     }
     &:last-child {
       > a, > span {
-        border-top-right-radius: @default-border-radius;
-        border-bottom-right-radius: @default-border-radius;
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
       }
     }
   }
 
   > li > a, > li > span {
-    &:hover,
-    &:focus {
+    &:hover, &:focus {
       z-index: 2;
-      color: inherit;
-      background-color: #eee;
+      color: var(--pagination-hover-text-color);
+      background-color: var(--pagination-hover-background-color);
     }
   }
 
   > .active > a, > .active > span {
     &, &:hover, &:focus {
       z-index: 3;
-      color: #fff;
-      background-color: @primary-color;
-      border-color: @primary-color;
+      color: var(--pagination-active-text-color);
+      background-color: var(--pagination-active-background-color);
+      border-color: var(--pagination-active-background-color);
       cursor: default;
     }
   }
 
   > .disabled {
     > span, > span:hover, > span:focus, > a, > a:hover, > a:focus {
-      opacity: 0.5;
+      opacity: .5;
       cursor: not-allowed;
     }
   }

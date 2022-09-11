@@ -32,7 +32,8 @@
       $output = [];
 
       $pages_query = database::query(
-        "select p.id, p.parent_id, pi.title, p.priority, p.date_updated from ". DB_TABLE_PREFIX ."pages p
+        "select p.id, p.parent_id, pi.title, p.priority, p.date_updated
+        from ". DB_TABLE_PREFIX ."pages p
         left join ". DB_TABLE_PREFIX ."pages_info pi on (pi.page_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
         where p.status
         ". (!empty($parent_id) ? "and p.parent_id = ". (int)$parent_id ."" : "and find_in_set('customer_service', p.dock)") ."

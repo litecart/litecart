@@ -105,7 +105,7 @@
 
       $args = func_get_args();
 
-      if (is_numeric($args[1]) || (is_array($args[1]) && is_numeric($args[1][0]))) {
+      if (is_numeric($args[1]) || (is_array($args[1]) && count($args[1]) === count(array_filter($args[1], 'is_array')) && count($args[1]) === count(array_filter($args[1], 'is_numeric')))) {
         trigger_error('Passing geo zone last preceeded by zone is deprecated. Instead do \$country->in_geo_zones($geo_zones, $address)', E_USER_DEPRECATED);
         list($zone_code, $geo_zones) = $args;
         $address = [
@@ -122,7 +122,7 @@
         where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
         ". (!empty($address['country_code']) ? "and (country_code = '' or country_code = '". database::input($address['country_code']) ."')" : "and (country_code = '' or country_code = '". database::input($this->_country_code) ."')") ."
         ". (!empty($address['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($address['zone_code']) ."')" : "and zone_code = ''") ."
-        ". (!empty($address['city']) ? "and (city = '' or city like '". database::input($address['city']) ."')" : "and city = ''") ."
+        ". (!empty($address['city']) ? "and (city = '' or city like '". addcslashes(database::input($address['city']), '%_') ."')" : "and city = ''") ."
         limit 1;"
       );
 

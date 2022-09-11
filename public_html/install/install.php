@@ -3,7 +3,7 @@
   if (php_sapi_name() == 'cli') {
 
     if ((!isset($argv[1])) || ($argv[1] == 'help') || ($argv[1] == '-h') || ($argv[1] == '--help')) {
-      echo "\nLiteCart® 2.3.0\n"
+      echo "\nLiteCart® 2.4.4\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -152,7 +152,7 @@
 
     echo '<p>Checking for PHP extensions... ';
 
-    $extensions = ['apcu', 'dom', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'SimpleXML', 'zip'];
+    $extensions = ['apcu', 'dom', 'fileinfo', 'gd', 'imagick', 'intl', 'json', 'libxml', 'mbstring', 'mysqli', 'mysqlnd', 'openssl', 'SimpleXML', 'zip'];
 
     if ($missing_extensions = array_diff($extensions, get_loaded_extensions())) {
       echo '<span class="warning">[Warning] Some important PHP extensions are missing ('. implode(', ', $missing_extensions) .'). It is recommended that you enable them in php.ini.</span></p>' . PHP_EOL . PHP_EOL;
@@ -194,6 +194,44 @@
         echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning]</span> There is a problem with your web server configuration causing $_SERVER["DOCUMENT_ROOT"] and __DIR__ to return conflicting paths. Contact your web host and have them correcting this.</p>' . PHP_EOL  . PHP_EOL;
+      }
+    }
+
+    ### Installer > Update ########################################
+
+    echo '<p>Checking for updates... ';
+
+    require_once FS_DIR_APP . 'includes/wrappers/wrap_http.inc.php';
+    $client = new wrap_http();
+
+    $update_file = function($file) use ($client) {
+      $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+      if ($client->last_response['status_code'] != 200) return false;
+      if (!is_dir(dirname(FS_DIR_APP . $file))) {
+        mkdir(dirname(FS_DIR_APP . $file), 0777, true);
+      }
+      file_put_contents(FS_DIR_APP . $file, $response);
+      return true;
+    };
+
+    $calculate_md5 = function($file) {
+      if (!is_file(FS_DIR_APP . $file)) return;
+      $contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $file));
+      return md5($contents);
+    };
+
+    if ($update_file('install/checksums.md5')) {
+
+      $files_updated = 0;
+      foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        list($checksum, $file) = explode("\t", $line);
+        if ($calculate_md5($file) != $checksum) {
+          if ($update_file($file)) $files_updated++;
+        }
+      }
+
+      if (!empty($files_updated)) {
+        echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
     }
 
@@ -259,7 +297,7 @@
     $config = file_get_contents('config');
 
     $map = [
-      '{ADMIN_FOLDER}' => rtrim($_REQUEST['admin_folder'], '/'),
+      '{ADMIN_FOLDER}' => $_REQUEST['admin_folder'],
       '{DB_TYPE}' => 'mysql',
       '{DB_SERVER}' => $_REQUEST['db_server'],
       '{DB_USERNAME}' => $_REQUEST['db_username'],
@@ -371,7 +409,7 @@
 
     $htaccess = strtr($htaccess, [
       '{BASE_DIR}' => WS_DIR_APP,
-      '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'],
+      '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'] .'/',
     ]);
 
     if (file_put_contents('../.htaccess', $htaccess)) {
@@ -537,6 +575,14 @@
 
     echo '<p>Preparing CSS files...<br />' . PHP_EOL;
 
+    $files_to_delete = [
+      '../includes/templates/default.admin/less/',
+    ];
+
+    foreach ($files_to_delete as $file) {
+      file_delete($file);
+    }
+
     if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
       $files_to_delete = [
@@ -577,6 +623,44 @@
         file_put_contents($file, strtr($contents, $search_replace));
       }
     }
+
+    ### Scan translations #########################################
+
+    echo "<p>Scanning installation for translations...";
+
+    $translations = [];
+
+    $dir_iterator = new RecursiveDirectoryIterator(FS_DIR_APP);
+    $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+
+    foreach ($iterator as $file) {
+      if (!preg_match('#\.php$#', $file)) continue;
+      if (preg_match('#vqmod/vqcache/#', $file)) continue;
+
+      $pattern = '#'. implode(['language::translate\((?:(?!\$)', '(?:(__CLASS__)?\.)?', '(?:[\'"])([^\'"]+)(?:[\'"])', '(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?', '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?', ')\)']) .'#';
+
+      if (!preg_match_all($pattern, file_get_contents($file), $matches)) continue;;
+
+      for ($i=0; $i<count($matches[0]); $i++) {
+        if ($matches[1][$i]) {
+          $code = substr(pathinfo($file, PATHINFO_BASENAME), 0, strpos(pathinfo($file, PATHINFO_BASENAME), '.')) . $matches[2][$i];
+        } else {
+          $code = $matches[2][$i];
+        }
+        $translations[$code] = strtr($matches[3][$i], ["\\r" => "\r", "\\n" => "\n"]);
+      }
+
+    }
+
+    foreach ($translations as $code => $translation) {
+      database::query(
+        "insert into ". $_REQUEST['db_table_prefix'] ."translations
+        (code, text_en, html, date_created)
+        values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
+      );
+    }
+
+    echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
     ### Set cache breakpoint ######################################
 
@@ -622,9 +706,7 @@
          . '  <div class="form-group">' . PHP_EOL
          . '    <div class="input-group">' . PHP_EOL
          . '      <input type="text" class="form-control" name="text" value="Woohoo! I just installed #LiteCart and I am super excited! :)" />' . PHP_EOL
-         . '      <span class="input-group-btn">' . PHP_EOL
-         . '        <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
-         . '      </span>' . PHP_EOL
+         . '      <button class="btn btn-primary" type="submit">Tweet!</button>' . PHP_EOL
          . '    </div>' . PHP_EOL
          . '  </div>' . PHP_EOL
          . '</form>' . PHP_EOL;

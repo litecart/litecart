@@ -7,8 +7,13 @@
   if (isset($_POST['import'])) {
 
     try {
+
       if (!isset($_FILES['file']['tmp_name']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
+      }
+
+      if (!empty($_FILES['file']['error'])) {
+        throw new Exception(language::translate('error_uploaded_file_rejected', 'An uploaded file was rejected for unknown reason'));
       }
 
       $csv = file_get_contents($_FILES['file']['tmp_name']);
@@ -218,7 +223,7 @@
 
             <div class="form-group">
               <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
-              <?php echo functions::form_draw_languages_list('language_codes[]', true, true).' '; ?></td>
+              <?php echo functions::form_draw_languages_list('language_codes[]', true, true); ?></td>
             </div>
 
             <div class="row">

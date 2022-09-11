@@ -5,13 +5,7 @@
 
   $_GET['query'] = trim($_GET['query']);
 
-  if (empty($_GET['query'])) {
-    http_response_code(400);
-    include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
-    return;
-  }
-
-  document::$snippets['title'][] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])) : language::translate('title_search_results', 'Search Results');
+  document::$snippets['title'][] = !empty($_GET['query']) ? sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])) : language::translate('title_search_results', 'Search Results');
 
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
   breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all_products', 'All Products'));
@@ -20,7 +14,7 @@
 
   $_page = new ent_view();
   $_page->snippets = [
-    'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),
+    'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), functions::escape_html($_GET['query'])),
     'products' => [],
     'sort_alternatives' => [
       'relevance' => language::translate('title_relevance', 'Relevance'),

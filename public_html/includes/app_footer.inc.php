@@ -24,17 +24,16 @@
   event::fire('before_output');
 
 // Output page
-  header('Content-Language: '. language::$selected['code']);
   echo $GLOBALS['output'];
 
 // Run after processes
   event::fire('shutdown');
 
 // Execute background jobs
-  if (strtotime(settings::get('jobs_last_push')) < strtotime('-'. (settings::get('jobs_interval')+1) .' minutes')) {
-    if (strtotime(settings::get('jobs_last_run')) < strtotime('-'. (settings::get('jobs_interval')+1) .' minutes')) {
+  if (date('Ymdh', strtotime(settings::get('jobs_last_run'))) != date('Ymdh')) {
+    if (strtotime(settings::get('jobs_last_push')) < strtotime('-5 minutes')) {
 
-      // To avoid this push method, set up a cron job calling www.yoursite.com/index.php/push_jobs
+      // To avoid this push method, set up a cron job calling https://www.yoursite.com/index.php/push_jobs
 
       database::query(
         "update ". DB_TABLE_PREFIX ."settings

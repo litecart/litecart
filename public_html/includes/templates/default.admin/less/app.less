@@ -9,14 +9,12 @@
 #sidebar {
   flex: 0 0 250px;
   background: @sidebar-background-color;
-  transition: all 150ms ease-out;
 }
 
 #main {
   flex: 1 1 auto;
-  background: #fff;
+  background: @main-background-color;
   box-shadow: 0 0px 10px rgba(0, 0, 0, .15);
-  transition: all 150ms ease-out;
 }
 
 #sidebar-compressed:checked {
@@ -81,7 +79,7 @@
 
   .nav-toggle {
     padding: 5px 10px;
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: @default-border-radius;
   }
 }

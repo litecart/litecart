@@ -28,12 +28,12 @@
       <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_new_password', 'New Password'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
-          <?php echo functions::form_draw_password_field('new_password', ''); ?>
+          <?php echo functions::form_draw_password_field('new_password', '', 'autocomplete="new-password" data-toggle="password-strength"'); ?>
         </div>
 
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_confirm_new_password', 'Confirm New Password'); ?></label>
-          <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
+          <?php echo functions::form_draw_password_field('confirmed_password', '', 'autocomplete="off"'); ?>
         </div>
       </div>
 

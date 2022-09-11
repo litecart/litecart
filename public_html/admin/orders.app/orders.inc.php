@@ -4,19 +4,6 @@
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (empty($_GET['sort'])) $_GET['sort'] = 'date_created';
 
-  $_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
-  $_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
-
-  if ($_GET['date_from'] > $_GET['date_to']) list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
-
-  $date_first_order = database::fetch(database::query("select min(date_created) from ". DB_TABLE_PREFIX ."orders limit 1;"));
-  $date_first_order = date('Y-m-d', strtotime($date_first_order['min(date_created)']));
-  if (empty($date_first_order)) $date_first_order = date('Y-m-d');
-  if ($_GET['date_from'] < $date_first_order) $_GET['date_from'] = $date_first_order;
-
-  if ($_GET['date_from'] > date('Y-m-d')) $_GET['date_from'] = date('Y-m-d');
-  if ($_GET['date_to'] > date('Y-m-d')) $_GET['date_to'] = date('Y-m-d');
-
   document::$snippets['title'][] = language::translate('title_orders', 'Orders');
 
   breadcrumbs::add(language::translate('title_orders', 'Orders'));
@@ -76,23 +63,42 @@
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
       "o.uid = '". database::input($_GET['query']) ."'",
-      "o.reference like '%". database::input($_GET['query']) ."%'",
-      "o.customer_email like '%". database::input($_GET['query']) ."%'",
-      "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
-      "concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". database::input($_GET['query']) ."%'",
-      "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
-      "o.payment_option_id like '%". database::input($_GET['query']) ."%'",
-      "o.payment_option_name like '%". database::input($_GET['query']) ."%'",
-      "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
-      "o.shipping_option_id like '%". database::input($_GET['query']) ."%'",
-      "o.shipping_option_name like '%". database::input($_GET['query']) ."%'",
-      "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
+      "o.reference like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.customer_email like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.customer_tax_id like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.payment_option_id like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.payment_option_name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.payment_transaction_id like '". addcslashes(database::input($_GET['query']), '%_') ."'",
+      "o.shipping_option_id like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.shipping_option_name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.shipping_tracking_id like '". addcslashes(database::input($_GET['query']), '%_') ."'",
       "o.id in (
         select distinct order_id from ". DB_TABLE_PREFIX ."orders_items
-        where name like '%". database::input($_GET['query']) ."%'
-        or sku like '%". database::input($_GET['query']) ."%'
+        where name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+        or sku like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+      )",
+      "o.order_status_id in (
+        select distinct order_status_id from ". DB_TABLE_PREFIX ."order_statuses_info
+        where language_code = '". database::input(language::$selected['code']) ."'
+        and name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
       )",
     ];
+  }
+
+  switch($_GET['order_status_id']) {
+    case '':
+      $sql_where_order_status = "and (o.order_status_id = 0 or os.is_archived = 0 or unread = 1)";
+      break;
+    case 'archived':
+      $sql_where_order_status = "and (os.is_archived = 1)";
+      break;
+    case 'all':
+      break;
+    default:
+      $sql_where_order_status =  "and o.order_status_id = ". (int)$_GET['order_status_id'];
+      break;
   }
 
   switch($_GET['sort']) {
@@ -106,7 +112,7 @@
       $sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
       break;
     case 'order_status':
-      $sql_sort = "o.starred desc, os.name asc";
+      $sql_sort = "o.starred desc, osi.name asc";
       break;
     case 'payment_method':
       $sql_sort = "o.starred desc, o.payment_option_name asc";
@@ -122,9 +128,9 @@
     left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". database::input(language::$selected['code']) ."')
     where o.id
     ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = ". (int)$_GET['order_status_id'] ."" : (empty($_GET['query']) ? "and (os.is_archived is null or os.is_archived = 0 or unread = 1)" : "")) ."
-    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
-    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
+    ". (!empty($sql_where_order_status) ? $sql_where_order_status : "") ."
+    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
+    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
     order by $sql_sort;"
   );
 
@@ -155,6 +161,38 @@
 
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+
+// Order Statuses
+  $order_status_options = [
+    [
+      'label' => language::translate('title_collections', 'Collections'),
+      'options' => [
+        [language::translate('title_current', 'Current Orders'), ''],
+        [language::translate('title_archived_orders', 'Archived Orders'), 'archived'],
+        [language::translate('title_all_orders', 'All Orders'), 'all'],
+      ],
+    ],
+    [
+      'label' => language::translate('title_order_statuses', 'Order Statuses'),
+      'options' => [],
+    ],
+  ];
+
+  $order_statuses_query = database::query(
+    "select os.*, osi.name, o.num_orders from ". DB_TABLE_PREFIX ."order_statuses os
+    left join ". DB_TABLE_PREFIX ."order_statuses_info osi on (os.id = osi.order_status_id and language_code = '". database::input(language::$selected['code']) ."')
+    left join (
+      select order_status_id, count(id) as num_orders
+      from ". DB_TABLE_PREFIX ."orders
+      group by order_status_id
+    ) o on (o.order_status_id = os.id)
+    order by os.priority, osi.name;"
+  );
+
+  while ($order_status = database::fetch($order_statuses_query)) {
+    $order_status_options[1]['options'][] = [$order_status['name'] . ' ('. language::number_format((int)$order_status['num_orders'], 0) .')', $order_status['id']];
+  }
 
 // Actions
   $order_actions = [];
@@ -206,11 +244,11 @@ table .fa-star:hover {
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
     <div class="panel-filter">
       <div class="expandable"><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
-      <div><?php echo functions::form_draw_order_status_list('order_status_id', true, false); ?></div>
-      <div class="input-group" style="max-width: 380px;">
-        <?php echo functions::form_draw_date_field('date_from', true); ?>
-        <span class="input-group-addon"> - </span>
-        <?php echo functions::form_draw_date_field('date_to', true); ?>
+      <div><?php echo functions::form_draw_select_optgroup_field('order_status_id', $order_status_options, true, false, 'style="width: auto;"'); ?></div>
+      <div class="input-group" style="max-width: 450px;">
+        <?php echo functions::form_draw_datetime_field('date_from', true); ?>
+        <span class="input-group-text"> - </span>
+        <?php echo functions::form_draw_datetime_field('date_to', true); ?>
       </div>
       <div><?php echo functions::form_draw_button('filter', language::translate('title_search', 'Search'), 'submit'); ?></div>
     </div>
@@ -223,9 +261,9 @@ table .fa-star:hover {
         <thead>
           <tr>
             <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
             <th data-sort="id"><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
             <th data-sort="customer" class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
             <th data-sort="country"><?php echo language::translate('title_country', 'Country'); ?></th>
             <th data-sort="payment_method"><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
@@ -233,18 +271,18 @@ table .fa-star:hover {
             <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
             <th data-sort="order_status" class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
             <th data-sort="date_created"><?php echo language::translate('title_date', 'Date'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($orders as $order) { ?>
           <tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
-            <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+            <td><?php echo functions::form_draw_checkbox('orders[]', $order['id'], true); ?></td>
             <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
             <td><?php echo $order['id']; ?></td>
             <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
-            <td><a href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
+            <td><a href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo functions::escape_html($order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']); ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo functions::escape_html($order['customer_tax_id']); ?></span></td>
             <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
             <td><?php echo $order['payment_option_name']; ?></td>
             <td class="text-end"><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>
@@ -271,10 +309,10 @@ table .fa-star:hover {
         <ul id="order-actions" class="list-inline">
           <?php foreach ($order_actions as $module) { ?>
           <li>
-            <fieldset title="<?php echo htmlspecialchars($module['description']); ?>">
+            <fieldset title="<?php echo functions::escape_html($module['description']); ?>">
               <legend><?php echo $module['name']; ?></legend>
               <div class="btn-group">
-                <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. htmlspecialchars($action['target']) .'" title="'. htmlspecialchars($action['description']) .'"'); ?>
+                <?php foreach ($module['actions'] as $action) echo functions::form_draw_button('order_action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. functions::escape_html($action['target']) .'" title="'. functions::escape_html($action['description']) .'"'); ?>
               </div>
             </fieldset>
           </li>
@@ -291,8 +329,6 @@ table .fa-star:hover {
 </div>
 
 <script>
-  $('select[name="order_status_id"] option[value=""]').text('-- <?php echo language::translate('title_order_status', ''); ?> --');
-
   $('input[name="query"]').keypress(function(e) {
     if (e.which == 13) {
       e.preventDefault();

@@ -8,24 +8,26 @@
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
 // Sidebar parallax effect
-  if (window._env.template.settings.sidebar_parallax_effect == true) {
+  if (typeof window._env != 'undefined') {
+    if (window._env.template.settings.sidebar_parallax_effect == true) {
 
-    var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
-    var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
+      var column = $('#sidebar > *:first-child'), sidebar = $('#sidebar');
+      var sidebar_max_offset = $(sidebar).outerHeight(true) - $(column).height() - 20; // 20 = failsafe
 
-    $(window).bind('resize scroll', function(e){
-      if (sidebar_max_offset) {
-        var parallax_rate = 0.4;
+      $(window).on('resize scroll', function(e){
+        if (sidebar_max_offset) {
+          var parallax_rate = 0.4;
 
-        if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
-          var offset = $(this).scrollTop() * parallax_rate;
-          if (offset > sidebar_max_offset) offset = sidebar_max_offset;
-          if (offset > 0) $(column).css('margin-top', offset + 'px');
-        } else {
-          $(column).css('margin', 0);
+          if ($(window).width() >= 768 && ($(column).outerHeight(true) < $(sidebar).height())) {
+            var offset = $(this).scrollTop() * parallax_rate;
+            if (offset > sidebar_max_offset) offset = sidebar_max_offset;
+            if (offset > 0) $(column).css('margin-top', offset + 'px');
+          } else {
+            $(column).css('margin', 0);
+          }
         }
-      }
-    }).trigger('resize');
+      }).trigger('resize');
+    }
   }
 
 // Add to cart animation
@@ -92,6 +94,31 @@
     if ($(e.target).is('a, a *')) return;
     if ($(e.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
+  });
+
+// Password Strength
+  $('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function(){
+
+    $(this).siblings('meter').remove();
+
+    if ($(this).val() == '') return;
+
+    var numbers = ($(this).val().match(/[0-9]/g) || []).length,
+     lowercases = ($(this).val().match(/[a-z]/g) || []).length,
+     uppercases = ($(this).val().match(/[A-Z]/g) || []).length,
+     symbols =   ($(this).val().match(/[^\w]/g) || []).length,
+
+     score = (numbers * 9) + (lowercases * 11.25) + (uppercases * 11.25) + (symbols * 15)
+           + (numbers ? 10 : 0) + (lowercases ? 10 : 0) + (uppercases ? 10 : 0) + (symbols ? 10 : 0);
+
+    var meter = $('<meter min="0" low="80" high="120" optimum="150" max="150" value="'+ score +'"></meter>').css({
+      position: 'absolute',
+      bottom: '-1em',
+      width: '100%',
+      height: '1em'
+    });
+
+    $(this).after(meter);
   });
 
 // Scroll Up
@@ -752,9 +779,9 @@
     if (!isActive) {
       if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
         // if mobile we use a backdrop because click events don't delegate
-        $(document.createElement('div'))
+        $('<div></div>')
           .addClass('dropdown-backdrop')
-          .insertAfter($(this))
+          .insertAfter($parent)
           .on('click', clearMenus)
       }
 

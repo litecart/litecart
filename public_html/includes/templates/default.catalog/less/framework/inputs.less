@@ -11,8 +11,56 @@ input[type="number"] {
   text-align: end;
 }
 input[type="number"]::-webkit-inner-spin-button {
-  margin-inline-start: @form-input-padding;
+  margin-inline-start: var(--input-padding-x);
 }
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  position: relative;
+  background: var(--input-background-color);
+  height: 1em;
+  width: 1em;
+  border: 1px solid var(--default-border-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  border-radius: var(--border-radius);
+  vertical-align: middle;
+  vertical-align: baseline;
+  &:active, &:checked:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  &:checked {
+    background-color: #999;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/></svg>");
+  }
+  &:hover {
+    box-shadow: 0 0 0 0.25rem #ccc;
+  }
+}
+
+input[type="radio"] {
+  display: inline-block;
+  position: relative;
+  -webkit-appearance: none;
+  background: var(--input-background-color);
+  height: 1.25em;
+  width: 1.25em;
+  border: 1px solid var(--default-border-color);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  vertical-align: text-bottom;
+  margin-inline-end: .25em;
+  &:active, &:checked:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  &:checked {
+    background-color: #999;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='%23fff'/></svg>");
+  }
+  &:hover {
+    box-shadow: 0 0 0 0.25rem #ccc;
+  }
+}
+
 
 .form-group {
   &.required > label::after {
@@ -20,20 +68,20 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #f00;
   }
   &:not([class*="col-"]) {
-    margin-bottom: @default-gutter-size;
+    margin-bottom: var(--gutter-size);
   }
   > label {
-    display: inline-block;
-    padding-bottom: @form-input-padding/2;
+    display: block;
+    padding-bottom: var(--input-padding-y);
   }
 }
 
 .input-field() {
   position: relative;
   color: #555;
-  background: @form-input-background;
-  border: 1px solid @default-border-color;
-  border-radius: @default-border-radius;
+  background: var(--input-background-color);
+  border: 1px solid var(--default-border-color);
+  border-radius: var(--border-radius);
 }
 
 .form-control {
@@ -41,9 +89,10 @@ input[type="number"]::-webkit-inner-spin-button {
   display: block;
   width: 100%;
   min-width: 1px; // Firefox fix
-  padding: @form-input-padding @form-input-padding * 2;
+  padding: var(--input-padding-y) var(--input-padding-x);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: all 50ms;
+  cursor: default;
 
   &[type="color"] {
     height: 37px;
@@ -57,38 +106,44 @@ input[type="number"]::-webkit-inner-spin-button {
   &[readonly] {
     color: #999;
   }
-}
 
-.select-wrapper {
-  position: relative;
-  width: 100%;
-  background: @form-input-background;
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 50%;
-    width: 0;
-    height: 0;
-    right: @form-input-padding * 2;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #000;
-  }
-  select.form-control {
-    background: transparent;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding-inline-end: @default-gutter-size * 2;
+  .dropdown-menu li label:hover {
+    background: var(--default-background-color);
   }
 }
 
-.select-wrapper.multiple {
-  .form-control {
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1em center;
+  background-size: .8em;
+  padding-inline-end: 2.5em !important;
+
+  &.multiple {
     padding: 0;
+    option {
+      padding: var(--input-padding-y) var(--input-padding-x);
+    }
   }
-  option {
-    padding: @form-input-padding @form-input-padding*2;
+}
+
+.form-control .dropdown-menu {
+  user-select: none;
+  li > label {
+    display: block;
+    padding: var(--input-padding-y) var(--input-padding-x);
+    cursor: pointer;
+    &:hover {
+      background: rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  [type="radio"]:checked + *, [type="checkbox"]:checked + * {
+    font-weight: bold;
   }
 }
 
@@ -101,76 +156,51 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .checkbox, .radio {
-  padding: @form-input-padding @form-input-padding * 2;
-}
-.form-control .checkbox {
-  padding: @form-input-padding 0;
+  padding: var(--input-padding-y) 0;
 }
 
 .input-group {
   .input-field();
   display: flex;
   .form-control {
-    background: none;
-    box-shadow: none;
-    border-radius: 0;
+    flex: 1 1 auto;
+    background-color: unset;
     border: none;
-    margin-inline-start: -1px;
+    border-radius: 0;
+    box-shadow: none;
   }
-  .input-group-addon {
-    flex: 1 0 auto;
+  .input-group-text {
+    flex: 0 1 auto;
     margin: 0 -1px;
-    padding: @form-input-padding @form-input-padding * 2;
-    background-color: @default-color;
-    border-left: 1px solid @default-border-color;
-    border-right: 1px solid @default-border-color;
+    padding: var(--input-padding-y) var(--input-padding-x);
+    background-color: var(--default-background-color);
+    border-left: 1px solid var(--default-border-color);
+    border-right: 1px solid var(--default-border-color);
     color: #555;
     white-space: nowrap;
     font-weight: normal;
     text-align: center;
-    .select-wrapper {
-      background: none;
-      margin: -@form-input-padding -@form-input-padding * 2;
-      &:before {
-        right: -@form-input-padding * 2;
-      }
-      select {
-        width: auto;
-        background: none;
-        border: none;
-      }
-    }
   }
   .input-group-icon {
-    flex: 1 0 auto;
-    padding: @form-input-padding @form-input-padding * 2;
+    flex: 0 1 auto;
+    padding: var(--input-padding-y) var(--input-padding-x);
     margin-inline-end: -12px;
+    align-self: center;
   }
-  .input-group-btn {
-    flex: 1 0 auto;
-    .btn {
-      border-top: none;
-      border-bottom: none;
-      padding: 7px 12px;
-    }
-  }
-  .form-control:first-child,
-  .input-group-addon:first-child,
-  .input-group-btn:first-child > .btn,
-  .input-group-btn:first-child > .btn-group > .btn,
-  .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-    border-radius: @default-border-radius 0 0 @default-border-radius;
-  }
-  .form-control:last-child,
-  .input-group-addon:last-child,
-  .input-group-btn:last-child > .btn,
-  .input-group-btn:last-child > .btn-group > .btn,
-  .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-    margin-inline-end: -1px;
-    border-radius: 0 @default-border-radius @default-border-radius 0;
+  > .btn {
+    margin: -1px;
   }
   + .input-group {
     margin-top: -1px;
+  }
+  .form-control:first-child, .btn:first-child, .input-group-btn:first-child .btn,
+  .input-group-text:first-child {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+  }
+  .form-control:last-child, .input-group-btn:last-child .btn,
+  .input-group-text:last-child {
+    margin-inline-end: -1px;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
 }
 

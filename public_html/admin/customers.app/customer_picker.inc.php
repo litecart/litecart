@@ -15,7 +15,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+      <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
     <div class="form-group results table-responsive">
@@ -36,8 +36,10 @@
 </div>
 
 <script>
+  $('#modal-customer-picker input[name="query"]').focus();
+
   var xhr_customer_picker = null;
-  $('#modal-customer-picker input[name="query"]').bind('propertyChange input', function(){
+  $('#modal-customer-picker input[name="query"]').on('input', function(){
     if ($(this).val() == '') {
       $('#modal-customer-picker .results tbody').html('');
       xhr_customer_picker = null;
@@ -47,7 +49,7 @@
       type: 'get',
       async: true,
       cache: false,
-      url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customers.json']); ?>&query=' + $(this).val(),
+      url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'customers.json']); ?>&query=' + encodeURIComponent($(this).val()),
       dataType: 'json',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -71,7 +73,7 @@
           }
         });
         if ($('#modal-customer-picker .results tbody').html() == '') {
-          $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+          $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
         }
       },
     });
@@ -85,10 +87,10 @@
 
     if (!id) {
       id = 0;
-      name = '(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)';
+      name = '(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)';
     }
 
-    var field = $.featherlight.current().$currentTarget.closest('.input-group');
+    var field = $.featherlight.current().$currentTarget.closest('.form-control');
 
     $(field).find(':input').val(id).trigger('change');
     $(field).find('.id').text(id);
@@ -98,11 +100,11 @@
 
   $('#modal-customer-picker .set-guest').click(function(){
 
-    var field = $.featherlight.current().$currentTarget.closest('.input-group');
+    var field = $.featherlight.current().$currentTarget.closest('.form-control');
 
     $(field).find(':input').val('0').trigger('change');
     $(field).find('.id').text('0');
-    $(field).find('.name').text('(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)');
+    $(field).find('.name').text('(<?php echo functions::escape_js(language::translate('title_guest', 'Guest')); ?>)');
     $.featherlight.close();
   });
 </script>

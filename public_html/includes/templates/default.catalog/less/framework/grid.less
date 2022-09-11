@@ -28,12 +28,11 @@ html[dir="rtl"] {
   margin: 0 auto;
 }
 
-
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: @default-gutter-size/2;
-  margin-bottom: @default-gutter-size/2;
+  grid-gap: ~"calc(var(--gutter-size)/2)";
+  margin-bottom: ~"calc(var(--gutter-size)/2)";
   &.column {
     flex-direction: column;
   }
@@ -48,8 +47,8 @@ html[dir="rtl"] {
     grid-column: span 12;
   }
   @media (min-width: @media-breakpoint-sm) {
-    grid-gap: @default-gutter-size;
-    margin-bottom: @default-gutter-size;
+    grid-gap: var(--gutter-size);
+    margin-bottom: var(--gutter-size);
   }
 }
 
@@ -82,19 +81,27 @@ html[dir="rtl"] {
   .make-grid-columns(lg);
 }
 
+@media (min-width: @media-breakpoint-xl) {
+  .make-grid-columns(xl);
+}
+
+@media (min-width: @media-breakpoint-xxl) {
+  .make-grid-columns(xxl);
+}
+
 // Hidden
 
 @media (max-width: (@media-breakpoint-sm - 1px)) {
   .hidden-xs { display: none !important; }
 }
 @media (min-width: (@media-breakpoint-sm)) and (max-width: (@media-breakpoint-md - 1px)) {
-  .hidden-sm { display: none; }
+  .hidden-sm { display: none !important; }
 }
 @media (min-width: @media-breakpoint-md) and (max-width: (@media-breakpoint-lg - 1px)) {
-  .hidden-md { display: none; }
+  .hidden-md { display: none !important; }
 }
 @media (min-width: @media-breakpoint-lg) {
-  .hidden-lg { display: none; }
+  .hidden-lg { display: none !important; }
 }
 
 @media print {

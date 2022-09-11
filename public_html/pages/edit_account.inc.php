@@ -17,10 +17,8 @@
 
   $customer = new ent_customer(customer::$data['id']);
 
-  if (empty($_POST)) {
-    foreach ($customer->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+  if (!$_POST) {
+    $_POST = $customer->data;
   }
 
   if (isset($_POST['save_account'])) {
@@ -39,6 +37,7 @@
       if (!empty($_POST['new_password'])) {
         if (empty($_POST['confirmed_password'])) throw new Exception(language::translate('error_missing_confirmed_password', 'You must confirm your password.'));
         if (isset($_POST['new_password']) && isset($_POST['confirmed_password']) && $_POST['new_password'] != $_POST['confirmed_password']) throw new Exception(language::translate('error_passwords_missmatch', 'The passwords did not match.'));
+        if (!functions::password_check_strength($_POST['password'])) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
       }
 
       $fields = [
@@ -53,13 +52,14 @@
         $customer->set_password($_POST['new_password']);
       }
 
+      $customer->data['password_reset_token'] = '';
       $customer->data['date_expire_sessions'] = date('Y-m-d H:i:s');
-
       $customer->save();
-      customer::$data = $customer->data;
+
+      customer::load($customer->data['id']);
 
       session::regenerate_id();
-      session::$data['security.timestamp'] = strtotime($customer->data['date_expire_sessions']);
+      session::$data['customer_security_timestamp'] = strtotime($customer->data['date_expire_sessions']);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link());

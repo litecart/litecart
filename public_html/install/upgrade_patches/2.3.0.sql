@@ -3,11 +3,11 @@ UPDATE `lc_settings` SET `value` = '5' WHERE `key` IN ('box_also_purchased_produ
 UPDATE `lc_settings` SET `value` = '10' WHERE `key` IN ('box_also_purchased_products_num_items', 'box_campaign_products_num_items', 'box_latest_products_num_items', 'box_popular_products_num_items', 'box_similar_products_num_items') AND `value` = '8';
 -- --------------------------------------------------------
 CREATE TABLE `lc_newsletter_recipients` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`email` VARCHAR(128) NOT NULL DEFAULT '',
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(128) NOT NULL DEFAULT '',
   `client_ip` VARCHAR(45) NOT NULL DEFAULT '',
-	`date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`),
+  `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `email` (`email`)
 );
 -- --------------------------------------------------------
@@ -29,6 +29,9 @@ ADD COLUMN `quantity_step` DECIMAL(11,4) UNSIGNED NOT NULL DEFAULT '0.0000' AFTE
 -- --------------------------------------------------------
 ALTER TABLE `lc_languages`
 ADD COLUMN `direction` ENUM('ltr','rtl') NOT NULL DEFAULT 'ltr' AFTER `name`;
+-- --------------------------------------------------------
+ALTER TABLE `lc_users`
+ADD COLUMN `date_expire_sessions` TIMESTAMP NULL DEFAULT NULL AFTER `total_logins`;
 -- --------------------------------------------------------
 ALTER TABLE `lc_zones_to_geo_zones`
 ADD COLUMN `city` VARCHAR(32) NOT NULL DEFAULT '' AFTER `zone_code`,

@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($tax_rate->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $tax_rate->data;
 
     if (empty($tax_rate->data['id'])) {
       $_POST['address_type'] = 'shipping';
@@ -122,7 +120,7 @@
           <label><?php echo language::translate('title_rate', 'Rate'); ?></label>
           <div class="input-group">
             <?php echo functions::form_draw_decimal_field('rate', true, 4); ?>
-            <span class="input-group-btn"><?php echo functions::form_draw_select_field('type', [['percent'], ['fixed']], true, 'style="width: 150px;"'); ?></span>
+            <?php echo functions::form_draw_select_field('type', [['percent'], ['fixed']], true, 'style="width: 150px;"'); ?>
           </div>
         </div>
       </div>
@@ -158,7 +156,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (isset($tax_rate->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (isset($tax_rate->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

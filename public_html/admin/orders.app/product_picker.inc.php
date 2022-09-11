@@ -13,7 +13,7 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+      <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
     </div>
 
     <div class="form-group results table-responsive">
@@ -38,7 +38,7 @@
 
 <script>
   var xhr_product_picker = null;
-  $('#modal-product-picker input[name="query"]').bind('propertyChange input', function(){
+  $('#modal-product-picker input[name="query"]').on('input', function(){
     if ($(this).val() == '') {
       $('#modal-product-picker .results tbody').html('');
       xhr_product_picker = null;
@@ -48,7 +48,7 @@
       type: 'get',
       async: true,
       cache: false,
-      url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'products.json']); ?>&query=' + $(this).val(),
+      url: '<?php echo document::link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'products.json']); ?>&query=' + encodeURIComponent($(this).val()),
       dataType: 'json',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -73,7 +73,7 @@
           }
         });
         if ($('#modal-product-picker .results tbody').html() == '') {
-          $('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+          $('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
         }
       },
     });

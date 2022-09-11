@@ -8,5 +8,3 @@
     <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
   </div>
 </div>
-
-<?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_categories.inc.php'); ?>

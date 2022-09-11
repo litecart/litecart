@@ -22,7 +22,7 @@
       <div class="<?php echo $image ? 'col-md-8' : 'col-md-12'; ?>">
         <h1 class="title"><?php echo $h1_title; ?></h1>
 
-        <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
+        <?php if ($_GET['page'] == 1 && $description) { ?>
         <p class="description"><?php echo $description; ?></p>
         <?php } ?>
       </div>
@@ -36,8 +36,8 @@
 
     <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
 
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], ['category_id']); ?>
+    <section class="listing products <?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? 'rows' : 'columns'; ?>">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['category_id']); ?>
     </section>
 
     <?php echo $pagination; ?>

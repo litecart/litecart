@@ -29,7 +29,8 @@
 
       $user_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
-        where lower(username) = lower('". database::input($_POST['username']) ."')
+        where lower(username) = '". database::input(strtolower($_POST['username'])) ."'
+        or lower(email) = '". database::input(strtolower($_POST['username'])) ."'
         limit 1;"
       );
 
@@ -73,7 +74,7 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), 3 - $user['login_attempts']));
+          throw new Exception(sprintf(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), 3 - $user['login_attempts']));
 
         } else {
 
@@ -85,7 +86,37 @@
             limit 1;"
           );
 
-          notices::add('errors', sprintf(language::translate('error_account_has_been_blocked', 'This account has been temporarily blocked for %d minutes.'), 15));
+          if (!empty($user['email'])) {
+
+            $aliases = [
+              '%store_name' => settings::get('store_name'),
+              '%store_link' => document::ilink(''),
+              '%username' => $user['username'],
+              '%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
+              '%ip_address' => $_SERVER['REMOTE_ADDR'],
+              '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+              '%user_agent' => $_SERVER['HTTP_USER_AGENT'],
+            ];
+
+            $subject = language::translate('user_account_blocked:email_subject', 'User Account Blocked');
+            $message = strtr(language::translate('user_account_blocked:email_body',
+              "Your user account %username has been blocked until %expires because of too many invalid attempts.\r\n"
+            . "\r\n"
+            . "Client: %hostname (%ip_address)\r\n"
+            . "%user_agent\r\n"
+            . "\r\n"
+            . "%store_name\r\n"
+            . "%store_link"
+            ), $aliases);
+
+            $email = new ent_email();
+            $email->add_recipient($user['email'], $user['username'])
+                  ->set_subject($subject)
+                  ->add_body($message)
+                  ->send();
+          }
+
+          throw new Exception(sprintf(language::translate('error_account_has_been_blocked_x_minutes', 'This account has been temporarily blocked for %d minutes.'), 15));
         }
 
         throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
@@ -118,6 +149,7 @@
 
       user::load($user['id']);
 
+      session::$data['user_security_timestamp'] = time();
       session::regenerate_id();
 
       if (!empty($_POST['remember_me'])) {
@@ -127,12 +159,15 @@
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
-      if (empty($_POST['redirect_url']) || preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
-        $_POST['redirect_url'] = document::link(WS_DIR_ADMIN);
+      if (!empty($_POST['redirect_url']) && !preg_match('#^' . preg_quote(WS_DIR_ADMIN, '#') . 'index\.php#', $_POST['redirect_url'])) {
+        $redirect_url = new ent_link($_POST['redirect_url']);
+        $redirect_url->host = '';
+      } else {
+        $redirect_url = document::link(WS_DIR_ADMIN);
       }
 
       notices::add('success', str_replace(['%username'], [user::$data['username']], language::translate('success_now_logged_in_as', 'You are now logged in as %username')));
-      header('Location: '. $_POST['redirect_url']);
+      header('Location: '. $redirect_url);
       exit;
 
     } catch (Exception $e) {

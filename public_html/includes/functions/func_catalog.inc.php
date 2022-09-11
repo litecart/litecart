@@ -124,7 +124,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, group_concat(concat(pa.group_id, '-', if(pa.custom_value != '', pa.custom_value, pa.value_id)) separator ',') as attributes
+      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes
 
       from (
         select p.id, p.sold_out_status_id, p.code, p.sku, p.mpn, p.gtin, p.manufacturer_id, p.keywords, p.image, p.recommended_price, p.tax_class_id, p.quantity, p.views, p.purchases, p.date_created
@@ -153,7 +153,12 @@
 
       left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
 
-      left join ". DB_TABLE_PREFIX ."products_attributes pa on (p.id = pa.product_id)
+      left join (
+        select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
+        from ". DB_TABLE_PREFIX ."products_attributes
+        group by product_id
+        order by id
+      ) pa on (p.id = pa.product_id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price
@@ -208,7 +213,7 @@
     }
 
     $query = (
-      "select p.*, pi.name, pi.short_description, m.id as manufacturer_id, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, group_concat(concat(pa.group_id, '-', if(pa.custom_value != '', pa.custom_value, pa.value_id)) separator ',') as attributes, (0
+      "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price, pa.attributes, (0
         ". (!empty($filter['product_name']) ? "+ if(pi.name like '%". database::input($filter['product_name']) ."%', 1, 0)" : false) ."
         ". (!empty($filter['sql_where']) ? "+ if(". $filter['sql_where'] .", 1, 0)" : false) ."
         ". (!empty($filter['categories']) ? "+ if(find_in_set('". implode("', categories), 1, 0) + if(find_in_set('", database::input($filter['categories'])) ."', categories), 1, 0)" : false) ."
@@ -242,7 +247,12 @@
 
       left join ". DB_TABLE_PREFIX ."manufacturers m on (m.id = p.manufacturer_id)
 
-      left join ". DB_TABLE_PREFIX ."products_attributes pa on (p.id = pa.product_id)
+      left join (
+        select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
+        from ". DB_TABLE_PREFIX ."products_attributes
+        group by product_id
+        order by id
+      ) pa on (p.id = pa.product_id)
 
       left join (
         select product_id, if(`". database::input(currency::$selected['code']) ."`, `". database::input(currency::$selected['code']) ."` * ". (float)currency::$selected['value'] .", `". database::input(settings::get('store_currency_code')) ."`) as price

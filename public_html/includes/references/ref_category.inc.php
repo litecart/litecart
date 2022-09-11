@@ -82,12 +82,9 @@
 
           $current = $this;
           while ($current->parent_id) {
-
-            $this->_data['path'][$current->parent_id] = $current->parent;
+            $this->_data['path'] = [$current->parent_id => $current->parent] + $this->_data['path'];
             $current = $current->parent;
           }
-
-          $this->_data['path'] = array_reverse($this->_data['path'], true);
 
           break;
 
@@ -145,7 +142,7 @@
             where status
             and id in (
               select product_id from ". DB_TABLE_PREFIX ."products_to_categories
-              where category_id = ". $this->_data['id'] ."
+              where category_id = ". (int)$this->_data['id'] ."
               ". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
             )
             and (quantity > 0 or sold_out_status_id in (

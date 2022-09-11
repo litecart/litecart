@@ -100,7 +100,9 @@
             break;
 
           case 'endpoint':
-            $hash_string .= preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? 'backend' : 'frontend';
+            if (!empty(route::$request)) {
+              $hash_string .= preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? 'backend' : 'frontend';
+            }
             break;
 
           case 'get':

@@ -35,45 +35,32 @@
   }
 }
 
-.navbar(@gradient-from: @default-color, @gradient-to: @default-color, @color: @default-text-color) {
-  background: linear-gradient(to bottom, @gradient-from 0%, @gradient-to 100%);
-  color: @color;
-  li.open > a {
-    background: rgba(0, 0, 0, .15) !important;
-  }
-  li:not(.open) > a:hover {
-    background: rgba(0, 0, 0, .05);
-  }
-  @media (min-width: @media-breakpoint-sm) {
-    .dropdown-menu {
-      background: lighten(@gradient-from, 5%);
-      border: none;
-    }
-  }
-}
-
 .navbar {
   display: flex;
   flex-direction: column;
   position: relative;
-  border-radius: @default-border-radius;
+  border-radius: var(--border-radius);
+  background-color: var(--navigation-background-color);
+  color: var(--navigation-text-color);
+
+  li:not(.open) > a:hover {
+    background-color: var(--navigation-background-color-hover);
+  }
+  li.open > a {
+    background-color: var(--navigation-background-color-active) !important;
+  }
+
+  @media (min-width: @media-breakpoint-sm) {
+    .dropdown-menu {
+      background-color: #fff;
+      border: none;
+    }
+  }
+
   .navbar-nav {
     > li > a {
       color: inherit;
       transition: all 125ms linear;
-    }
-  }
-
-  &.navbar-bordered {
-    min-height: 52px;
-    border: 1px solid darken(@menu-background-gradient-from, 10%);
-    .navbar-nav {
-      > li > a {
-        border-left: 1px solid darken(@menu-background-gradient-from, 10%);
-      }
-      &:not(.navbar-right) {
-        border-right: 1px solid darken(@menu-background-gradient-from, 10%);
-      }
     }
   }
 
@@ -84,7 +71,7 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     li > a {
-      padding: @default-gutter-size/2 @default-gutter-size;
+      padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
     }
   }
 
@@ -106,9 +93,6 @@
       box-shadow: none;
     }
   }
-
-  .navbar(@menu-background-gradient-from, @menu-background-gradient-to, @menu-text-color);
-  //&.navbar-default { .navbar(@menu-background-gradient-from, @menu-background-gradient-to, @menu-text-color); }
 }
 
 .navbar-header {
@@ -116,14 +100,14 @@
   width: 100%;
   @media (min-width: @media-breakpoint-sm) {
     float: left;
-    width: @default-sidebar-width + (@default-gutter-size/4);
+    width: ~"calc(var(--sidebar-width) + var(--gutter-size)/4)";
   }
   > * {
     flex: 1 1 auto;
   }
 
   .navbar-brand {
-    padding: @default-gutter-size;
+    padding: var(--gutter-size);
     font-size: 18px;
     &:hover, &:focus {
       text-decoration: none;
@@ -136,12 +120,12 @@
   .navbar-toggle {
     position: relative;
     flex: 0 1 auto;
-    padding: @default-gutter-size/4;
-    margin: @default-gutter-size/4 @default-gutter-size/4 @default-gutter-size/4 0;
+    padding: ~"calc(var(--gutter-size)/4)";
+    margin: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/4)" 0;
     background-color: rgba(0, 0, 0, 0.05);
     background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
     border: none;
-    border-radius: @default-border-radius;
+    border-radius: var(--border-radius);
     &:focus {
       outline: 0;
     }
@@ -158,16 +142,16 @@
 }
 
 .navbar-form {
-  margin: @default-gutter-size/4;
+  margin: ~"calc(var(--gutter-size)/4)";
   @media (min-width: @media-breakpoint-sm) {
-    margin: ~"calc((@{default-gutter-size}/4) + 1px)";
+    margin: .5em 11px 0 11px
   }
 }
 
 .navbar-toggle {
   .icon-bar {
     position: relative;
-    background-color: @menu-text-color;
+    background-color: var(--navigation-text-color);
     display: block;
     width: 22px;
     height: 2px;

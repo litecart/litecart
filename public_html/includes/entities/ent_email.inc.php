@@ -24,7 +24,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = null;
+        $this->data[$field['Field']] = database::create_variable($field['Type']);
       }
 
       $this->data['sender'] = [
@@ -93,9 +93,9 @@
         ccs = '". database::input(json_encode($this->data['ccs'], JSON_UNESCAPED_SLASHES)) ."',
         bccs = '". database::input(json_encode($this->data['bccs'], JSON_UNESCAPED_SLASHES)) ."',
         subject = '". database::input($this->data['subject']) ."',
-        multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES)) ."',
-        date_scheduled = '". database::input($this->data['date_scheduled']) ."',
-        date_sent = '". database::input($this->data['date_sent']) ."',
+        multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES), true) ."',
+        date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "null") .",
+        date_sent = ". (!empty($this->data['date_sent']) ? "'". database::input($this->data['date_sent']) ."'" : "null") .",
         date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] .";"
       );
@@ -131,13 +131,6 @@
       return $this;
     }
 
-    public function set_multiparts($multiparts) {
-
-      $this->data['multiparts'] = $multiparts;
-
-      return $this;
-    }
-
     public function add_body($content, $html=false, $charset=null) {
 
       if (empty($content)) {
@@ -147,9 +140,13 @@
 
       if (!$charset) $charset = $this->data['charset'];
 
-      $this->data['multiparts'][] = 'Content-Type: '. ($html ? 'text/html' : 'text/plain') .'; charset='. $charset . "\r\n"
-                                  . 'Content-Transfer-Encoding: 8bit' . "\r\n\r\n"
-                                  . trim($content);
+      $this->data['multiparts'][] = [
+        'headers' => [
+          'Content-Type' => ($html ? 'text/html' : 'text/plain') .'; charset='. $charset,
+          'Content-Transfer-Encoding' => '8bit',
+        ],
+        'body' => trim($content),
+      ];
 
       return $this;
     }
@@ -168,10 +165,14 @@
         $mime_type = mime_content_type($file);
       }
 
-      $this->data['multiparts'][] = 'Content-Type: '. $mime_type . "\r\n"
-                                   . 'Content-Disposition: attachment; filename="'. basename($filename) . '"' . "\r\n"
-                                   . 'Content-Transfer-Encoding: base64' . "\r\n\r\n"
-                                   . chunk_split(base64_encode($data)) . "\r\n\r\n";
+      $this->data['multiparts'][] = [
+        'headers' => [
+          'Content-Type' => $mime_type,
+          'Content-Disposition' => 'attachment; filename="'. basename($filename) . '"',
+          'Content-Transfer-Encoding' => 'base64',
+        ],
+        'body' => chunk_split(base64_encode($data)) . "\r\n\r\n",
+      ];
 
       return $this;
     }
@@ -270,13 +271,15 @@
       $headers = [
         'Date' => date('r'),
         'From' => $this->format_contact(['name' => settings::get('store_name'), 'email' => settings::get('store_email')]),
+        'Sender' => $this->format_contact($this->data['sender']),
         'Reply-To' => $this->format_contact($this->data['sender']),
         'Return-Path' => settings::get('store_email'),
         'MIME-Version' => '1.0',
         'X-Mailer' => PLATFORM_NAME .'/'. PLATFORM_VERSION,
+        'X-Sender' => $this->format_contact($this->data['sender']),
       ];
 
-    // Add "To"
+    // Add "To" header
       if (!empty($this->data['recipients'])) {
         $tos = [];
         foreach ($this->data['recipients'] as $to) {
@@ -285,7 +288,7 @@
         $headers['To'] = implode(', ', $tos);
       }
 
-    // Add "Cc"
+    // Add "Cc" header
       if (!empty($this->data['ccs'])) {
         $ccs = [];
         foreach ($this->data['ccs'] as $cc) {
@@ -294,27 +297,32 @@
         $headers['Cc'] = implode(', ', $ccs);
       }
 
-    // SMTP does not need a header for BCCs
+    // SMTP does not need a header for BCCs, we will add that for PHP mail() later
 
     // Prepare subject
       $headers['Subject'] = mb_encode_mimeheader($this->data['subject']);
 
-      $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
-      $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
+      if (count($this->data['multiparts']) > 1) {
+        $multipart_boundary_string = '==Multipart_Boundary_x'. md5(time()) .'x';
+        $headers['Content-Type'] = 'multipart/mixed; boundary="'. $multipart_boundary_string . '"' . "\r\n";
+      }
 
-      array_walk($headers,
-        function (&$v, $k) {
-          $v = $k.': '.$v;
-        }
-      );
-
-      $headers = implode("\r\n", $headers);
-
-    // Prepare body
       $body = '';
-      foreach ($this->data['multiparts'] as $multipart) {
+
+    // Prepare several multiparts
+      if (count($this->data['multiparts']) > 1) {
+        foreach ($this->data['multiparts'] as $multipart) {
           $body .= '--'. $multipart_boundary_string . "\r\n"
-                 . $multipart . "\r\n\r\n";
+                 . implode("\r\n", array_map(function($v, $k) { return $k.':'.$v; }, $multipart['headers'], array_keys($multipart['headers']))) . "\r\n"
+                 . $multipart['body'] . "\r\n\r\n";
+        }
+
+        $body .= '--'. $multipart_boundary_string .'--';
+
+    // Prepare one multipart only
+      } else {
+        $headers = array_merge($headers, $this->data['multiparts'][0]['headers']);
+        $body .= $this->data['multiparts'][0]['body'];
       }
 
       if (empty($body)) {
@@ -350,7 +358,9 @@
             $recipients[] = $bcc['email'];
           }
 
-          $data = $headers . "\r\n"
+          array_walk($headers, function (&$v, $k) { $v = "$k: $v"; });
+
+          $data = implode("\r\n", $headers) . "\r\n\r\n"
                 . $body;
 
           $result = $smtp->send(settings::get('store_email'), $recipients, $data);
@@ -364,8 +374,8 @@
     // Deliver via PHP mail()
       } else {
 
-        $headers = preg_replace('#To:.*?\r\n#', '', $headers);
-        $headers = preg_replace('#Subject:.*?\r\n#', '', $headers);
+        unset($headers['To']);
+        unset($headers['Subject']);
 
       // PHP mail() needs a header for BCCs
         if (!empty($this->data['bccs'])) {
@@ -373,7 +383,7 @@
           foreach ($this->data['bccs'] as $bcc) {
             $bccs[] = $this->format_contact($bcc);
           }
-          $headers .= 'Bcc: '. implode(', ', $bccs) . "\r\n";
+          $headers['Bcc'] = implode(', ', $bccs);
         }
 
         $recipients = [];
@@ -383,6 +393,9 @@
         $recipients = implode(', ', $recipients);
 
         $subject = mb_encode_mimeheader($this->data['subject']);
+
+        array_walk($headers, function (&$v, $k) { $v = "$k: $v"; });
+        $headers = implode("\r\n", $headers);
 
         if (!$result = mail($recipients, $subject, $body, $headers)) {
           trigger_error('Failed sending email "'. $this->data['subject'] .'"', E_USER_WARNING);

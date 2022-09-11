@@ -32,7 +32,7 @@ module.exports = function(grunt) {
     },
 
     less: {
-      litecart_admin_template_minified: {
+      backend_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -47,7 +47,8 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.admin/css/printable.min.css' : 'public_html/includes/templates/default.admin/less/printable.less',
         }
       },
-      litecart_catalog_template: {
+
+      frontend: {
         options: {
           compress: false,
           sourceMap: false,
@@ -58,9 +59,11 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/css/checkout.css'  : 'public_html/includes/templates/default.catalog/less/checkout.less',
           'public_html/includes/templates/default.catalog/css/framework.css' : 'public_html/includes/templates/default.catalog/less/framework.less',
           'public_html/includes/templates/default.catalog/css/printable.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
+          'public_html/includes/templates/default.catalog/css/variables.css' : 'public_html/includes/templates/default.catalog/less/variables.less',
         }
       },
-      litecart_catalog_template_minified: {
+
+      frontend_minified: {
         options: {
           compress: true,
           sourceMap: true,
@@ -76,13 +79,14 @@ module.exports = function(grunt) {
           'public_html/includes/templates/default.catalog/css/printable.min.css' : 'public_html/includes/templates/default.catalog/less/printable.less',
         }
       },
+
       featherlight_minified: {
         options: {
           compress: true,
-          sourceMap: true,
-          sourceMapBasepath: 'public_html/ext/featherlight/',
-          sourceMapRootpath: './',
-          sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
+          //sourceMap: false,
+          //sourceMapBasepath: 'public_html/ext/featherlight/',
+          //sourceMapRootpath: './',
+          //sourceMapURL: function(path) { return path.replace(/.*\//, '') + '.map'; },
           relativeUrls: true
         },
         files: {
@@ -91,11 +95,10 @@ module.exports = function(grunt) {
       },
     },
 
-    sass: {
+    'dart-sass': {
       trumbowyg_minified: {
         options: {
-          implementation: require('node-sass'),
-          sourceMap: true,
+          sourceMap: false,
           outputStyle: 'compressed',
           compass: false
         },
@@ -108,7 +111,7 @@ module.exports = function(grunt) {
     uglify: {
       featherlight: {
         options: {
-          sourceMap: true,
+          sourceMap: false,
         },
         files: {
           'public_html/ext/featherlight/featherlight.min.js'   : ['public_html/ext/featherlight/featherlight.js'],
@@ -141,6 +144,7 @@ module.exports = function(grunt) {
         ],
         tasks: ['replace']
       },
+
       less: {
         files: [
           'public_html/ext/featherlight/featherlight.less',
@@ -148,6 +152,7 @@ module.exports = function(grunt) {
         ],
         tasks: ['less']
       },
+
       javascripts: {
         files: [
           'public_html/ext/featherlight/featherlight.js',
@@ -155,6 +160,7 @@ module.exports = function(grunt) {
         ],
         tasks: ['uglify']
       },
+
       sass: {
         files: [
           'public_html/ext/trumbowyg/ui/trumbowyg.scss',
@@ -167,10 +173,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-dart-sass');
   grunt.loadNpmTasks('grunt-text-replace');
 
-  grunt.registerTask('default', ['replace', 'less', 'sass', 'uglify']);
+  grunt.registerTask('default', ['replace', 'less', 'dart-sass', 'uglify']);
+  grunt.registerTask('compile', ['less', 'dart-sass', 'uglify']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);

@@ -314,34 +314,6 @@ main {
       </div>
 
       <div class="form-group col-md-3">
-        <label>File</label>
-        <input type="file" class="form-control" />
-      </div>
-
-      <div class="form-group col-md-3">
-        <label>Color</label>
-        <input type="color" class="form-control" placeholder="#fff" />
-      </div>
-
-      <div class="form-group col-md-3">
-        <label>Input Group</label>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-          <input type="email" class="form-control" placeholder="Email" />
-        </div>
-      </div>
-
-      <div class="form-group col-md-3">
-        <label>Input Group With Button</label>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Text" />
-          <span class="input-group-btn">
-            <button class="btn btn-default">Button</button>
-          </span>
-        </div>
-      </div>
-
-      <div class="form-group col-md-3">
         <label>Select</label>
         <select class="form-control">
           <option>-- Select --</option>
@@ -352,16 +324,54 @@ main {
       </div>
 
       <div class="form-group col-md-3">
-        <label>Checkbox</label>
-        <div class="checkbox">
-          <input type="checkbox" checked="checked" /> Value
+        <label>File</label>
+        <input type="file" class="form-control" />
+      </div>
+
+      <div class="form-group col-md-3">
+        <label>Input Group w/ Icon</label>
+        <div class="input-group">
+          <span class="input-group-icon"><i class="fa fa-search"></i></span>
+          <input type="search" class="form-control" placeholder="Search" />
         </div>
       </div>
 
       <div class="form-group col-md-3">
+        <label>Input Group w/ Text</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa fa-envelope-o"></i></span>
+          <input type="email" class="form-control" placeholder="Email" />
+        </div>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label>Input Group w/ Button</label>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Text" />
+          <span class="input-group-btn">
+            <button class="btn btn-default">Button</button>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label>Color</label>
+        <input type="color" class="form-control" placeholder="#fff" />
+      </div>
+
+      <div class="form-group col-md-1">
+        <label>Checkbox</label>
+        <div class="checkbox">
+          <input type="checkbox" onclick="return false;" />
+          <input type="checkbox" checked />
+        </div>
+      </div>
+
+      <div class="form-group col-md-1">
         <label>Radio</label>
         <div class="checkbox">
-          <input type="radio" checked="checked" /> Value
+          <input type="radio" onclick="return false;" />
+          <input type="radio" checked />
         </div>
       </div>
     </div>
@@ -454,7 +464,7 @@ main {
 
     <h3>Button Dropdown</h3>
 
-    <div class="btn-group">
+    <div class="dropdown">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         Action <span class="caret"></span>
       </button>
@@ -507,7 +517,7 @@ main {
   </section>
 </main>
 
-<script src="public_html/ext/jquery/jquery-3.5.1.min.js"></script>
+<script src="public_html/ext/jquery/jquery-3.6.0.min.js"></script>
 <script src="public_html/includes/templates/default.catalog/js/app.min.js"></script>
 </body>
 </html>

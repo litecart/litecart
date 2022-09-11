@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($attribute_group->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $attribute_group->data;
   }
 
   document::$snippets['title'][] = !empty($attribute_group->data['id']) ? language::translate('title_edit_attribute_group', 'Edit Attribute Group') : language::translate('title_create_new_attribute_group', 'Create New Attribute Group');
@@ -108,7 +106,7 @@
               <th><?php echo language::translate('title_id', 'ID'); ?></th>
               <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
               <th><?php echo language::translate('title_in_use', 'In Use'); ?></th>
-              <th>&nbsp;</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -133,7 +131,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (!empty($attribute_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (!empty($attribute_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -150,10 +148,10 @@
     foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', '');
 ?>
     var output = '<tr>'
-               + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
-               + '  <td><?php echo functions::general_escape_js($name_fields); ?></td>'
+               + '  <td><?php echo functions::escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'
+               + '  <td><?php echo functions::escape_js($name_fields); ?></td>'
                + '  <td class="text-center"><?php echo language::translate('title_no', 'No'); ?></td>'
-               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '  <td class="text-end"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     output = output.replace(/new_value_index/g, 'new_' + new_value_index);
     $(this).closest('table').find('tbody').append(output);

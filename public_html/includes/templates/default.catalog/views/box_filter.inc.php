@@ -54,14 +54,14 @@
     <div class="filter">
 
       <div>
-        <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. htmlspecialchars(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
+        <?php echo functions::form_draw_search_field('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. language::translate('title_name', 'Name') .'" placeholder="'. functions::escape_html(language::translate('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
       </div>
 
       <?php if ($manufacturers) { ?>
       <div>
         <div class="dropdown">
           <div class="form-control" data-toggle="dropdown">
-            <?php echo language::translate('title_manufacturers', 'Brands'); ?> <span class="caret right"></span>
+            <?php echo language::translate('title_manufacturers', 'Brands'); ?>
           </div>
           <ul class="dropdown-menu">
             <?php foreach ($manufacturers as $manufacturer) { ?>
@@ -80,12 +80,12 @@
       <div>
         <div class="dropdown">
           <div class="form-control" data-toggle="dropdown">
-            <?php echo $group['name']; ?> <span class="caret right"></span>
+            <?php echo $group['name']; ?>
           </div>
           <ul class="dropdown-menu">
             <?php foreach ($group['values'] as $value) { ?>
             <li>
-              <label class="option"><?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. htmlspecialchars($group['name']) .'" data-token-value="'. htmlspecialchars($value['value']) .'"'); ?>
+              <label class="option"><?php echo !empty($group['select_multiple']) ? functions::form_draw_checkbox('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"') : functions::form_draw_radio_button('attributes['. $group['id'] .'][]', $value['id'], true, 'data-token-group="attribute-'. $group['id'] .'" data-token-title="'. functions::escape_html($group['name']) .'" data-token-value="'. functions::escape_html($value['value']) .'"'); ?>
                 <span class="title"><?php echo $value['value']; ?></span>
               </label>
             </li>
@@ -98,7 +98,7 @@
       <div>
         <div class="dropdown">
           <div class="form-control" data-toggle="dropdown">
-            <?php echo language::translate('title_sort_by', 'Sort By'); ?> <span class="caret right"></span>
+            <?php echo language::translate('title_sort_by', 'Sort By'); ?>
           </div>
           <ul class="dropdown-menu">
             <?php foreach ($sort_alternatives as $key => $title) { ?>
@@ -113,6 +113,13 @@
         </div>
       </div>
 
+      <div>
+        <div class="btn-group btn-group-inline float-end" data-toggle="buttons">
+          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'columns') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="columns"<?php echo (!isset($_GET['list_style']) || $_GET['list_style'] == 'columns') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th'); ?></label>
+          <label class="btn btn-default<?php echo ($_GET['list_style'] == 'rows') ? ' active' : ''; ?>"><input type="radio" name="list_style" value="rows"<?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? ' checked' : ''; ?> /><?php echo functions::draw_fonticon('fa-th-list'); ?></label>
+        </div>
+      </div>
+
     </div>
 
     <div class="tokens"></div>
@@ -121,7 +128,7 @@
 </section>
 
 <script>
-  $('#box-filter form[name="filter_form"] :input').on('input', function(){
+  $('body').on('input', '#box-filter form[name="filter_form"] :input', function(){
     $('#box-filter .tokens').html('');
 
     $.each($('#box-filter input[data-token-title][type="search"]'), function(i,el) {
@@ -131,14 +138,14 @@
 
     $.each($('#box-filter input[data-token-title][type="checkbox"]:checked, #box-filter input[data-token-title][type="radio"]:checked'), function(i,el) {
       if (!$(this).val()) return;
-      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">×</a></span>');
+      $('#box-filter .tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">&times;</a></span>');
     });
   });
 
   $('#box-filter form[name="filter_form"] input[name="product_name"]').trigger('input');
 
   var xhr_filter = null;
-  $('#box-filter form[name="filter_form"]').on('input', function(){
+  $('body').on('input', '#box-filter form[name="filter_form"]', function(){
     if (xhr_filter) xhr_filter.abort();
     var url = new URL(location.protocol + '//' + location.host + location.pathname + '?' + $('form[name="filter_form"]').serialize());
     history.replaceState(null, null, url);
@@ -148,13 +155,16 @@
       url: url.href,
       dataType: 'html',
       success: function(response){
-        var html = $('section.listing.products', response)[0].outerHTML;
-        $('section.listing.products').replaceWith(html).fadeIn('fast');
+        var content = $('section.listing.products', response)[0].outerHTML;
+        var pagination = $('.pagination', response).length ? $('.pagination', response)[0].outerHTML : '';
+        $('.pagination').remove();
+        $('section.listing.products').replaceWith(content).after(pagination);
+        $('section.listing.products').after(pagination);
       }
     });
   });
 
-  $('#box-filter form[name="filter_form"] .tokens').on('click', '.remove', function(e){
+  $('body').on('click', '#box-filter form[name="filter_form"] .tokens .remove', function(e){
     e.preventDefault();
     var token = $(this).closest('.token');
     switch ($(':input[name="'+ $(token).data('name') +'"]').attr('type')) {

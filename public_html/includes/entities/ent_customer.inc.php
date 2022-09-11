@@ -23,14 +23,14 @@
 
       while ($field = database::fetch($fields_query)) {
         if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
-          $this->data['shipping_address'][$matches[1]] = '';
+          $this->data['shipping_address'][$matches[1]] = database::create_variable($field['Type']);
         } else {
-          $this->data[$field['Field']] = null;
+          $this->data[$field['Field']] = database::create_variable($field['Type']);
         }
       }
 
       $this->data['status'] = 1;
-      $this->data['newsletter'] = null;
+      $this->data['newsletter'] = '';
 
       $this->previous = $this->data;
     }
@@ -63,7 +63,7 @@
 
       if (empty($this->data['different_shipping_address'])) {
         foreach (array_keys($this->data['shipping_address']) as $key) {
-          $this->data['shipping_address'][$key] = null;
+          $this->data['shipping_address'][$key] = '';
         }
         $this->data['shipping_address']['country_code'] = $this->data['country_code'];
         $this->data['shipping_address']['zone_code'] = $this->data['zone_code'];
@@ -76,9 +76,9 @@
       );
 
       if (database::num_rows($newsletter_recipient_query)) {
-        $this->data['newsletter'] = true;
+        $this->data['newsletter'] = 1;
       } else {
-        $this->data['newsletter'] = false;
+        $this->data['newsletter'] = 0;
       }
 
       $this->previous = $this->data;
@@ -94,6 +94,13 @@
         );
 
         $this->data['id'] = database::insert_id();
+
+        database::query(
+          "update ". DB_TABLE_PREFIX ."orders
+          set customer_id = ". (int)$this->data['id'] ."
+          where lower(customer_email) = '". database::input(strtolower($this->data['email'])) ."'
+          and customer_id = 0;"
+        );
       }
 
       database::query(
@@ -101,7 +108,7 @@
         set
           code = '". database::input($this->data['code']) ."',
           status = '". (!empty($this->data['status']) ? '1' : '0') ."',
-          email = '". database::input($this->data['email']) ."',
+          email = '". database::input(strtolower($this->data['email'])) ."',
           tax_id = '". database::input($this->data['tax_id']) ."',
           company = '". database::input($this->data['company']) ."',
           firstname = '". database::input($this->data['firstname']) ."',
@@ -125,6 +132,7 @@
           shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
           shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
           notes = '". database::input($this->data['notes']) ."',
+          password_reset_token = '". database::input($this->data['password_reset_token']) ."',
           date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "NULL") .",
           date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "NULL") .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
@@ -135,8 +143,8 @@
       if (!empty($this->previous['email']) && $this->previous['email'] != $this->data['email']) {
         database::query(
           "update ". DB_TABLE_PREFIX ."newsletter_recipients
-          set email = '". database::input($this->data['email']) ."'
-          where email = '". database::input($this->previous['email']) ."';"
+          set email = '". database::input(strtolower($this->data['email'])) ."'
+          where lower(email) = '". database::input(strtolower($this->previous['email'])) ."';"
         );
       }
 
@@ -144,12 +152,12 @@
         database::query(
           "insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
           (email, client_ip, date_created)
-          values ('". database::input($this->data['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
+          values ('". database::input(strtolower($this->data['email'])) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."');"
         );
       } else if (!empty($this->previous['id'])) {
         database::query(
           "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-          where email = '". database::input($this->data['email']) ."';"
+          where lower(email) = '". database::input(strtolower($this->data['email'])) ."';"
         );
       }
 

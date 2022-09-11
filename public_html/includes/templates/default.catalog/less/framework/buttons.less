@@ -1,40 +1,35 @@
 /* Buttons & Button Groups - Bootstrap Compatible */
 
-.btn(@background-color: #f8f8f8, @color: #555, @border-color: @default-border-color) {
-  background: @background-color;
-  color: @color;
+.btn(@type) {
+  background-color: ~"var(--@{type}-button-background-color)";
+  color: ~"var(--@{type}-button-text-color)";
+  border: 1px solid ~"var(--@{type}-button-border-color)";
   text-decoration: none;
-  border: 1px solid @default-border-color;
   &:hover:not(.active):not(.disabled):not([disabled]) {
-    background: darken(@background-color, 2.5%);
-  }
-  &.active {
-    background: darken(@background-color, 5%);
-    border-color: transparent;
+    background-color: ~"var(--@{type}-button-background-color-hover)";
   }
 }
 
 .btn {
   cursor: pointer;
   display: inline-block;
-  padding: @form-input-padding @form-input-padding*2;
+  padding: var(--input-padding-y) var(--input-padding-x);
   text-decoration:  none;
   font-weight: normal;
-  border-radius: @default-border-radius;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   text-align: center;
+  white-space: nowrap;
 
-  &.btn-default { .btn(@default-color, #555); }
-  &.btn-primary { .btn(@primary-color, #fff); }
-  //&.btn-info { .btn(@info-color, #fff); }
-  &.btn-success { .btn(@success-color, #fff); }
-  //&.btn-warning { .btn(@warning-color, #fff); }
-  &.btn-danger { .btn(@danger-color, #fff); }
+  &.btn-default { .btn("default"); }
+  &.btn-primary { .btn("primary"); }
+  &.btn-success { .btn("success"); }
+  &.btn-danger { .btn("danger"); }
 
   &.btn-sm { font-size: 0.8em; }
   &.btn-lg { font-size: 1.25em; }
 
-  &.active, &:active { box-shadow: inset 1px 1px 1px rgba(0,0,0,0.25) !important; }
+  &.active, &:active { box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25) !important; }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
   [data-type="toggle"] { display: none; }
 }
@@ -45,19 +40,19 @@
 
 .btn-group {
   display: inline-flex;
-  border-radius: @default-border-radius;
+  border-radius: var(--border-radius);
   .btn {
     flex: 1 0 auto;
     border-radius: 0;
     font-size: inherit;
     margin-inline-start: -1px;
     &:first-child {
-      border-top-left-radius: @default-border-radius;
-      border-bottom-left-radius: @default-border-radius;
+      border-top-left-radius: var(--border-radius);
+      border-bottom-left-radius: var(--border-radius);
     }
     &:last-child {
-      border-top-right-radius: @default-border-radius;
-      border-bottom-right-radius: @default-border-radius;
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
     }
   }
 }
@@ -69,12 +64,12 @@
     font-size: inherit;
     margin-top: -1px;
     &:first-child {
-      border-top-left-radius: @default-border-radius;
-      border-top-right-radius: @default-border-radius;
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
     }
     &:last-child {
-      border-bottom-left-radius: @default-border-radius;
-      border-bottom-right-radius: @default-border-radius;
+      border-bottom-left-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
     }
   }
 }

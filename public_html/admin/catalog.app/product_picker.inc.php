@@ -13,7 +13,7 @@
 
 	<div class="modal-body">
 		<div class="form-group">
-			<?php echo functions::form_draw_text_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
+			<?php echo functions::form_draw_text_field('query', true, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'" autocomplete="off"'); ?>
 		</div>
 
 		<div class="form-group results table-responsive">
@@ -37,8 +37,10 @@
 </div>
 
 <script>
+  $('#modal-product-picker input[name="query"]').focus();
+
 	var xhr_product_picker = null;
-	$('#modal-product-picker input[name="query"]').bind('propertyChange input', function(){
+	$('#modal-product-picker input[name="query"]').on('input', function(){
 		if ($(this).val() == '') {
 			$('#modal-product-picker .results tbody').html('');
 			xhr_product_picker = null;
@@ -48,7 +50,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::link('', ['app' => 'catalog', 'doc' => 'products.json']); ?>&query=' + $(this).val(),
+			url: '<?php echo document::link('', ['app' => 'catalog', 'doc' => 'products.json']); ?>&query=' + encodeURIComponent($(this).val()),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -61,40 +63,38 @@
 				$.each(json, function(i, row){
 					if (row) {
 						$('#modal-product-picker .results tbody').append(
-							'<tr>' +
+							'<tr data-id="' + row.id + '" data-sku="' + row.name + '" data-name="' + row.name + '" data-price="' + row.price.value + '" data-price-formatted="' + row.price.formatted + '" data-quantity="' + row.quantity + '">' +
 							'  <td class="id">' + row.id + '</td>' +
 							'  <td class="name">' + row.name + '</td>' +
 							'  <td class="sku">' + row.sku + '</td>' +
-							'  <td class="quantity text-end">' + row.quantity + '</td>' +
-							'  <td class="price text-end">' + row.price.formatted + '</td>' +
-							'  <td class="date-created">' + row.date_created + '</td>' +
+							'  <td class="text-right">' + row.quantity + '</td>' +
+							'  <td class="text-right">' + row.price.formatted + '</td>' +
+							'  <td>' + row.date_created + '</td>' +
 							'</tr>'
 						);
 					}
 				});
 				if ($('#modal-product-picker .results tbody').html() == '') {
-					$('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+					$('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
 				}
 			},
 		});
 	}).focus();
 
   $('#modal-product-picker tbody').on('click', 'td', function() {
-    var row = $(this).closest('tr');
+    var $input_group = $.featherlight.current().$currentTarget.closest('.input-group'),
+      $field = $input_group.find(':input');
 
-    var id = $(row).find('.id').text();
-    var name = $(row).find('.name').text();
+    var product = $(this).closest('tr').data();
 
-    if (!id) {
-      id = 0;
-      name = '(<?php echo functions::general_escape_js(language::translate('title_no_product', 'No Product')); ?>)';
-    }
+    $field.val(product.id || 0)
+      .data('sku', product.sku || '')
+      .data('price', product.price.amount || 0)
+      .data('price-formatted', product.priceFormatted || '')
+      .trigger('change');
 
-    var field = $.featherlight.current().$currentTarget.closest('.input-group');
-
-    $(field).find(':input').val(id).trigger('change');
-    $(field).find('.id').text(id);
-    $(field).find('.name').text(name);
+    $input_group.find('.id').text(product.id || 0);
+    $input_group.find('.name').text(product.name || '(<?php echo functions::escape_js(language::translate('title_no_product', 'No Product')); ?>)');
     $.featherlight.close();
   });
 </script>

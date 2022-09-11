@@ -9,12 +9,7 @@
         document::$snippets['head_tags']['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />';
         return '<i class="bi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
-    // Fontawesome (Deprecated)
-      case (substr($class, 0, 3) == 'fa '):
-        trigger_error('Fonticon syntax "fa " is deprecated, use instead "fa-"', E_USER_DEPRECATED);
-        return draw_fonticon(substr($class, 3), $parameters);
-
-    // Fontawesome
+    // Fontawesome 4
       case (substr($class, 0, 3) == 'fa-'):
         //document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css" />'; // Uncomment if removed from lib_document
         return '<i class="fa '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
@@ -34,13 +29,18 @@
         document::$snippets['head_tags']['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css" />';
         return '<i class="'. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
+    // Material Design Icons
+      case (substr($class, 0, 4) == 'mdi-'):
+        document::$snippets['head_tags']['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css" />';
+        return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+
       default:
         trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);
         return;
     }
   }
 
-  function draw_listing_category($category) {
+  function draw_listing_category($category, $view='views/listing_category') {
 
     $listing_category = new ent_view();
 
@@ -63,10 +63,10 @@
       'short_description' => $category['short_description'],
     ];
 
-    return $listing_category->stitch('views/listing_category');
+    return $listing_category->stitch($view);
   }
 
-  function draw_listing_product($product, $listing_type='column', $inherit_params=[]) {
+  function draw_listing_product($product, $inherit_params=[], $view='views/listing_product') {
 
     $listing_product = new ent_view();
 
@@ -104,6 +104,7 @@
       'recommended_price' => tax::get_price($product['recommended_price'], $product['tax_class_id']),
       'regular_price' => tax::get_price($product['price'], $product['tax_class_id']),
       'campaign_price' => (float)$product['campaign_price'] ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
+      'final_price' => tax::get_price($product['final_price'], $product['tax_class_id']),
       'tax' => tax::get_tax($product['price'], $product['tax_class_id']),
       'tax_class_id' => $product['tax_class_id'],
     ];
@@ -120,15 +121,15 @@
       $listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
     }
 
-    return $listing_product->stitch('views/listing_product_'.$listing_type);
+    return $listing_product->stitch($view);
   }
 
-  function draw_lightbox($selector='', $params=[]) {
+  function draw_lightbox($selector='', $parameters=[]) {
 
     $selector = str_replace("'", '"', $selector);
 
-    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. WS_DIR_APP .'ext/featherlight/featherlight.min.css" />';
-    document::$snippets['foot_tags']['featherlight'] = '<script src="'. WS_DIR_APP .'ext/featherlight/featherlight.min.js"></script>';
+    document::$snippets['head_tags']['featherlight'] = '<link rel="stylesheet" href="'. document::href_rlink(FS_DIR_APP . 'ext/featherlight/featherlight.min.css') .'" />';
+    document::$snippets['foot_tags']['featherlight'] = '<script src="'. document::href_rlink(FS_DIR_APP . 'ext/featherlight/featherlight.min.js') .'"></script>';
     document::$snippets['javascript']['featherlight'] = '  $.featherlight.autoBind = \'[data-toggle="lightbox"]\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.loading = \'<div class="loader" style="width: 128px; height: 128px; opacity: 0.5;"></div>\';' . PHP_EOL
                                                       . '  $.featherlight.defaults.closeIcon = \'&#x2716;\';' . PHP_EOL
@@ -141,28 +142,31 @@
       $js = '  $(\''. $selector .'\').featherlight({' . PHP_EOL;
     }
 
-    foreach ($params as $key => $value) {
-      switch (gettype($params[$key])) {
+    foreach ($parameters as $key => $value) {
+      switch (gettype($parameters[$key])) {
+
         case 'NULL':
           $js .= '    '. $key .': null,' . PHP_EOL;
           break;
+
         case 'boolean':
           $js .= '    '. $key .': '. ($value ? 'true' : 'false') .',' . PHP_EOL;
           break;
+
         case 'integer':
           $js .= '    '. $key .': '. $value .',' . PHP_EOL;
           break;
+
         case 'string':
-          if (preg_match('#^function\s?\(#', $value)) {
+          if (preg_match('#^function\s*\(#', $value)) {
             $js .= '    '. $key .': '. $value .',' . PHP_EOL;
-          } else if (preg_match('#^undefined$#', $value)) {
-            $js .= '    '. $key .': undefined,' . PHP_EOL;
           } else {
-            $js .= '    '. $key .': \''. addslashes($value) .'\',' . PHP_EOL;
+            $js .= '    '. $key .': "'. addslashes($value) .'",' . PHP_EOL;
           }
           break;
+
         case 'array':
-          $js .= '    '. $key .': [\''. implode('\', \'', $value) .'\'],' . PHP_EOL;
+          $js .= '    '. $key .': ["'. implode('", "', $value) .'"],' . PHP_EOL;
           break;
       }
     }
@@ -181,16 +185,16 @@
 
     if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) $_GET['page'] = 1;
 
-    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link(null, ['page' => $_GET['page']-1], true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link(null, ['page' => $_GET['page']+1], true) .'" />';
+    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'" />';
 
     $pagination = new ent_view();
 
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']-1,
       'title' => language::translate('title_previous', 'Previous'),
-      'link' => document::link(null, ['page' => $_GET['page']-1], true),
+      'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]),
       'disabled' => ($_GET['page'] <= 1) ? true : false,
       'active' => false,
     ];
@@ -203,7 +207,7 @@
           $pagination->snippets['items'][] = [
             'page' => $rewind,
             'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
-            'link' => document::link(null, ['page' => $rewind], true),
+            'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $rewind]),
             'disabled' => false,
             'active' => false,
           ];
@@ -218,7 +222,7 @@
           $pagination->snippets['items'][] = [
             'page' => $forward,
             'title' => ($forward == $_GET['page']+2) ? $forward : '...',
-            'link' => document::link(null, ['page' => $forward], true),
+            'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $forward]),
             'disabled' => false,
             'active' => false,
           ];
@@ -229,7 +233,7 @@
       $pagination->snippets['items'][] = [
         'page' => $i,
         'title' => $i,
-        'link' => document::link(null, ['page' => $i], true),
+        'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $i]),
         'disabled' => false,
         'active' => ($i == $_GET['page']) ? true : false,
       ];
@@ -238,7 +242,7 @@
     $pagination->snippets['items'][] = [
       'page' => $_GET['page']+1,
       'title' => language::translate('title_next', 'Next'),
-      'link' => document::link(null, ['page' => $_GET['page']+1], true),
+      'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]),
       'disabled' => ($_GET['page'] >= $pages) ? true : false,
       'active' => false,
     ];

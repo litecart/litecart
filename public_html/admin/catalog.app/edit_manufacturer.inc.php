@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($manufacturer->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $manufacturer->data;
   }
 
   document::$snippets['title'][] = !empty($manufacturer->data['id']) ? language::translate('title_edit_manufacturer', 'Edit Manufacturer') :  language::translate('title_add_new_manufacturer', 'Add New Manufacturer');
@@ -23,7 +21,13 @@
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
 
-      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      }
+
+      if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']) && !empty($_FILES['image']['error'])) {
+        throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+      }
 
       $fields = [
         'status',
@@ -47,7 +51,7 @@
 
       if (!empty($_POST['delete_image'])) $manufacturer->delete_image();
 
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+      if (!empty($_FILES['image']['tmp_name'])) {
         $manufacturer->save_image($_FILES['image']['tmp_name']);
       }
 
@@ -195,7 +199,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (!empty($manufacturer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (!empty($manufacturer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -203,7 +207,7 @@
 </div>
 
 <script>
-  $('input[name="name"]').bind('input propertyChange', function(e){
+  $('input[name="name"]').on('input', function(e){
     $('input[name^="head_title"]').attr('placeholder', $(this).val());
     $('input[name^="h1_title"]').attr('placeholder', $(this).val());
   }).trigger('input');
@@ -220,7 +224,7 @@
     }
   });
 
-  $('input[name^="short_description"]').bind('input propertyChange', function(e){
+  $('input[name^="short_description"]').on('input', function(e){
     var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
     $('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
   }).trigger('input');

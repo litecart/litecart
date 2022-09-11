@@ -10,13 +10,14 @@
       if (empty($_POST['vqmods'])) throw new Exception(language::translate('error_must_select_vqmods', 'You must select vQmods'));
 
       foreach ($_POST['vqmods'] as $vqmod) {
+        $vqmod = pathinfo($vqmod, PATHINFO_FILENAME);
 
         if (!empty($_POST['enable'])) {
-          if (!is_file(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled')) continue;
-          rename(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml');
+          if (!is_file(FS_DIR_APP . "vqmod/xml/$vqmod.disabled")) continue;
+          rename(FS_DIR_APP . "vqmod/xml/$vqmod.disabled", FS_DIR_APP . "vqmod/xml/$vqmod.xml");
         } else {
-          if (!is_file(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml')) continue;
-          rename(FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.xml', FS_DIR_APP . 'vqmod/xml/' . pathinfo($vqmod, PATHINFO_FILENAME) .'.disabled');
+          if (!is_file(FS_DIR_APP . "vqmod/xml/$vqmod.xml")) continue;
+          rename(FS_DIR_APP . "vqmod/xml/$vqmod.xml", FS_DIR_APP . "vqmod/xml/$vqmod.disabled");
         }
       }
 
@@ -119,14 +120,14 @@
             <th></th>
             <th><?php echo language::translate('title_version', 'Version'); ?></th>
             <th><?php echo language::translate('title_author', 'Author'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($vqmods as $vqmod) { ?>
           <tr class="<?php echo $vqmod['enabled'] ? null : 'semi-transparent'; ?>">
-            <td><?php echo functions::form_draw_checkbox('vqmods['. $vqmod['filename'] .']', $vqmod['filename']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('vqmods[]', $vqmod['filename']); ?></td>
             <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($vqmod['enabled'] ? '#88cc44' : '#ff6644') .';"'); ?></td>
             <td><a href="<?php echo document::link(null,  ['doc' => 'view', 'vqmod' => $vqmod['filename']], true); ?>"><?php echo $vqmod['filename']; ?></a></td>
             <td><?php echo $vqmod['id']; ?></td>
@@ -154,7 +155,7 @@
           </div>
         </li>
         <li>
-          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
+          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="'. functions::escape_js('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
         </li>
       </p>
       <?php } ?>
@@ -166,7 +167,7 @@
         <label><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</label>
         <div class="input-group">
           <?php echo functions::form_draw_file_field('vqmod', 'accept="application/xml"'); ?>
-          <span class="input-group-btn"><?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?></span>
+          <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
         </div>
       </div>
     <?php echo functions::form_draw_form_end(); ?>

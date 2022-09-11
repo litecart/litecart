@@ -5,8 +5,8 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=1600">
-<link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
+<link rel="stylesheet" href="<?php echo document::rlink(FS_DIR_TEMPLATE . 'css/framework.min.css'); ?>" />
+<link rel="stylesheet" href="<?php echo document::rlink(FS_DIR_TEMPLATE . 'css/app.min.css'); ?>" />
 {snippet:head_tags}
 {snippet:style}
 </head>
@@ -24,7 +24,7 @@
     </div>
 
     <div id="search" class="container-fluid">
-      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
+      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. functions::escape_html(language::translate('title_search', 'Search')) .'&hellip;" autocomplete="off"'); ?>
       <div class="results"></div>
     </div>
 
@@ -54,7 +54,7 @@
       <li style="flex-grow: 1;"></li>
 
       <li class="language dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. language::$selected['code'] .'.png'); ?>" alt="<?php echo language::$selected['code']; ?>" title="<?php echo htmlspecialchars(language::$selected['name']); ?>" style="max-height: 1em;" /> <b class="caret"></b></a>
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img src="<?php echo document::href_link(WS_DIR_APP . 'images/languages/'. language::$selected['code'] .'.png'); ?>" alt="<?php echo language::$selected['code']; ?>" title="<?php echo functions::escape_html(language::$selected['name']); ?>" style="max-height: 1em;" /> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php foreach (language::$languages as $language) { ?>
           <li>
@@ -68,7 +68,7 @@
 
 <!--
       <li>
-        <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>" title="<?php echo htmlspecialchars(language::translate('title_dashboard', 'Dashboard')); ?>">
+        <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>" title="<?php echo functions::escape_html(language::translate('title_dashboard', 'Dashboard')); ?>">
           <?php echo functions::draw_fonticon('fa-dashboard'); ?>
         </a>
       </li>
@@ -127,7 +127,7 @@
 </div>
 
 {snippet:foot_tags}
-<script src="{snippet:template_path}js/app.min.js"></script>
+<script src="<?php echo document::rlink(FS_DIR_TEMPLATE . 'js/app.min.js'); ?>"></script>
 {snippet:javascript}
 </body>
 </html>

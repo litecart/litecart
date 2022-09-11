@@ -1,14 +1,14 @@
-# Formatting and Standards
+# Syntax Formatting and Code Standards
 
 ## Code Compliance
 
- - PHP code must comply with PHP 5.4+ using E_STRICT.
+ - PHP code must comply with minimum PHP 5.4+ E_STRICT.
 
  - HTML code must comply with HTML 5.
 
  - Style definitions must be compliant with CSS 3.
 
- - Any use of JavaScript should honor the jQuery framework.
+ - Any use of JavaScript should honour the jQuery framework.
 
 
 ## Character Encoding
@@ -16,19 +16,55 @@
   UTF-8 without Byte Order Mark (BOM)
 
 
-## Line Breaks
+## PHP File Paths
 
-  We use Linux line feed (LF) \n for new lines in the source code.
-  Do not use more than one empty line for separating logic.
+  ALWAYS use Linux/Unix directory separator slash (/) as it also work on Mac and Windows.
+  Windows backslash (\) does not work on Mac or Linux.
 
   Incorrect:
 
-    \r\n
-    \r
+    C:\path\to\file.php
 
   Correct:
 
-    \n
+    /C/path/to/file
+    C:/path/to/file
+
+
+## File Naming
+
+  The filename of the files should be all lowercase characters with underscore (_) for
+  word separation. No more than 31 characters to be Apple/Mac compatible.
+
+  When files can be grouped. Attempt to give them the same preceeding names.
+
+  Incorrect:
+
+    red-background-box.png
+    greenBoxBackground.png
+    blue_background_box.png
+
+  Correct:
+
+    box_background_red.png
+    box_background_green.png
+    box_background_blue.png
+
+
+## File Extensions
+
+  Scripts that output something other than HTML should be named by their output format extension like the following:
+
+    myjsonoutput.json.php
+
+  Included files should be named .inc.php:
+
+    .php  >>  .inc.php
+
+
+## Line Breaks in Code
+
+  Use no more than one empty line when line separating logic.
 
 
 ## Outputting Line Breaks
@@ -44,7 +80,8 @@
     echo '<p>Hello World!</br />' . PHP_EOL
        . 'This is a new row</p>';
 
-  For emails we use Windows style Carriage Return + Line Feed (CRLF) \r\n for new lines because the standard tells us to.
+  For emails and HTTP headers we always use Windows style Carriage Return + Line Feed (CRLF) \r\n
+  for new lines because the standard tells us to.
 
     Content-Type: text/plain\r\n
     Content-Length: 128\r\n
@@ -60,8 +97,9 @@
   Incorrect:
 
     <?php
-    ··echo·$variable;\n·····
+    ··echo·$variable;·····\n
     ··\n
+    \n
     \EOF
 
   Correct:
@@ -72,36 +110,38 @@
     \EOF
 
   Note: Most code editors offer a way to trim trailing whitespace upon save.
+  This is also covered by .editorconfig.
 
 
 ## Indentation
 
-  Indentation of logic should be 2 whitespace characters.
+  Committed code should use an indentation of 2 blankspace characters. This is supported by .editorconfig.
+  Make sure your code editor has enabled support for .editorconfig. See https://editorconfig.org/
+
+  Incorrect (using TABs):
+
+    Level 1
+    	Level 2
+    		Level 3
+    			Level 4
+
+  Correct (using spaces):
 
     Level 1
       Level 2
         Level 3
           Level 4
 
-  TABs should not be used.
-
-		Level 1
-			Level 2
-				Level 3
-					Level 4
-
-  The indentation of comments is subtracted one level, sticking out just like the bookmarks in a book:
+  The indentation of comments is subtracted one level, sticking out like bookmarks in a book:
 
     // This is a comment
       echo 'Hello World!';
 
-  Code is indented after opening a PHP tag:
+  Code is immediately indented after opening a PHP tag:
 
     <?php
       ...
     ?>
-
-  Note: Your code editor should have the indentation format as a setting.
 
 
 ## PHP Tags
@@ -136,50 +176,6 @@
     ··...\n
     ··last_line_of_code();\n
     \EOF
-
-
-## File Paths
-
-  ALWAYS use Linux/Unix directory separator / as it also work on Windows - Windows \ does not work on Linux.
-
-  Incorrect:
-
-    C:\path\to\file.php
-
-  Correct:
-
-    /C/path/to/file
-
-
-## File Naming
-
-  The filename of the files must be all lowercase characters and contain no more
-  than 31 characters to be Apple/Mac compatible. Word separation by underscore.
-
-  Name files that are grouped with a prefix e.g:
-
-  Incorrect:
-
-    red_background_box.png
-    green_background_box.png
-    blue_background_box.png
-
-  Correct:
-
-    box_background_red.png
-    box_background_green.png
-    box_background_blue.png
-
-
-## File Extensions
-
-  Scripts that output something other than HTML should be named by their output format extension like the following:
-
-    myjsonoutput.json.php
-
-  Included files should be named .inc.php:
-
-    .php  >>  .inc.php
 
 
 ## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
@@ -220,9 +216,22 @@
     echo "Hello $name\r\n";
 
 
+## Escaping HTML Parameters
+
+  HTML Parameters that contains special characters or user data must be escaped.
+
+  Incorrect:
+
+    <img src="..." alt="<?php echo $title; ?>" />
+
+  Correct:
+
+    <img src="..." alt="<?php echo htmlspecialchars($title); ?>" />
+
+
 ## PHP Variable Scope
 
-  Do not EVER use register_globals as we use PHP Superglobals.
+  Do not EVER enable register_globals in your PHP configuration as we use PHP Superglobals to access user data.
 
     $_GET['variable']
     $_POST['variable']
@@ -250,6 +259,22 @@
     $customer['address1']
 
 
+## No Variable Duplication
+
+  No variable duplication should be used. Unless there is a certain need for duplicating variables.
+  One common case for variable duplication is during santizing.
+
+  Incorrect:
+
+    $name = $_POST['name'];
+    $trimmed_name = trim($name);
+    $trimmed_and_lowercase_name = lowercase($trimmed_name);
+
+  Correct:
+
+    $_POST['name'] = strtolower(trim($_POST['name']));  // We most likely will not ever use the unsanitized data
+
+
 ## Naming of CSS IDs and Classes
 
   Same rules as the naming of variables but we use dash - for separating words rather than underscore _.
@@ -269,44 +294,31 @@
       <div class="text">...</div>
     </div>
 
-  How to reference a subclass:
+  How to reference a class:
 
     jQuery: $('#box-dummy .title')
+    jQuery: $('.box.white')
 
     CSS: #box-dummy .title {}
+    CSS: .box.white {}
 
-  Note: Some predefined CSS classes are not following this guideline as they are Bootstrap compatible.
-
-
-## No Variable Duplication
-
-  Unless there is a certain need for duplicating variables, no variable duplication should be used:
-
-  Incorrect:
-
-    $name = $_POST['name'];
-    $trimmed_name = trim($name);
-    $trimmed_and_lowercase_name = lowercase($trimmed_name);
-
-  Correct:
-
-    $_POST['name'] = strtolower(trim($_POST['name']));
+  Note: Some predefined CSS classes are not following this guideline as they are third party components or compatible with third party components.
 
 
 ## PHP Arrays
 
   Inline arrays
 
-    my_function(array('this', 'that'));
+    $variable = my_function(param, ['this', 'that']);
 
   Defining a variable with more than a handful of values
 
-    $variable = array(
+    $variable = [
       'this',
       'that',
       ...
       'last', // <-- Make note of the ending comma
-    );
+    ];
 
 
 ## Code Brackets
@@ -323,8 +335,6 @@
     {
       ...
     }
-
-
 
   Correct:
 
@@ -346,7 +356,6 @@
     endif;
 
     if ('happy' == $my_mood) {
-
 
   Correct:
 
@@ -387,13 +396,13 @@
       return $string;
     }
 
-  Local functions that are just used in a single local script file should be anonymous functions:
+  Functions in a local variable scope that are just used inside the scope should be anonymous functions:
 
-    $iterator = function() {
+    $my_function = function() {
       ...
     };
 
-    $variable = $iterator();
+    $variable = $my_function();
 
 
 ## Repetitive Statements in PHP
@@ -410,11 +419,11 @@
       ....
     }
 
-  Walking through an array and back reference the source variable:
+  Walking through an array and overwriting a source variable:
 
-    foreach ($array as &$item) {
-      $item['param'] = 'value';
-    } unset($item);
+    foreach ($array as $key => $node) {
+      $node[$key] = 'newvalue';
+    }
 
 
 ## Iterators
@@ -436,7 +445,7 @@
       if ($node['first'] == 'a') {
         if ($node['second'] == 'b') {
           if ($node['third'] == 'c') {
-            return true;
+            // Do some stuff
           }
         }
       }
@@ -448,7 +457,7 @@
       if ($node['first'] != 'a') continue;
       if ($node['second'] != 'b') continue;
       if ($node['third'] != 'c') continue;
-      return true;
+      // Do some stuff
     }
 
 
@@ -459,14 +468,14 @@
   Incorrect:
 
     $string = sprintf('Text with %2$s %1$s', $b, $a);
-    $string = str_replace(array('%a', %b), array($a, $b), 'Text with %a %b');
+    $string = str_replace(['%a', %b], [$a, $b], 'Text with %a %b');
 
   Correct:
 
-    $string = strtr('Text with %b %a', array(
+    $string = strtr('Text with %b %a', [
       '%a' => $a,
       '%b' => $b,
-    ));
+    ]);
 
 
 ## Database Queries in PHP

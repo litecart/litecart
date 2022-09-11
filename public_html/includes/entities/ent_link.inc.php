@@ -62,7 +62,7 @@
 
           if (empty($value)) {
             if ($this->host == $_SERVER['HTTP_HOST']) {
-              if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) {
+              if ((isset($_SERVER['HTTPS']) && filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) || $_SERVER['SERVER_PORT'] == 443) {
                 $value = 'https';
               } else {
                 $value = 'http';
@@ -172,8 +172,9 @@
       return $output;
     }
 
+    #[\ReturnTypeWillChange] // Fix PHP 8.1
     public function jsonSerialize() {
-      return (string)$this;
+      return $this->__toString();
     }
 
   // Workaround as overloaded array items cannot be set

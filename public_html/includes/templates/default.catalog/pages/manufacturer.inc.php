@@ -29,8 +29,8 @@
     <?php } ?>
 
     <?php if ($products) { ?>
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', ['manufacturer_id']); ?>
+    <section class="listing products columns">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, ['manufacturer_id']); ?>
     </section>
     <?php } ?>
 

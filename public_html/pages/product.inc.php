@@ -28,10 +28,7 @@
   }
 
   if (empty($_GET['category_id']) && empty($_GET['manufacturer_id'])) {
-    if ($product->category_ids) {
-      $category_ids = array_values($product->category_ids);
-      $_GET['category_id'] = array_shift($category_ids);
-    }
+    $_GET['category_id'] = $product->default_category_id;
   }
 
   database::query(
@@ -96,7 +93,7 @@
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
       'price' => (float)currency::format_raw(tax::get_price($product->final_price, $product->tax_class_id)),
-      'priceValidUntil' => (!empty($product->campaign) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
+      'priceValidUntil' => (!empty($product->campaign['end_date']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       'url' => document::link(),
@@ -115,7 +112,7 @@
     'name' => $product->name,
     'short_description' => !empty($product->short_description) ? $product->short_description : '',
     'description' => !empty($product->description) ? $product->description : '<em style="opacity: 0.65;">'. language::translate('text_no_product_description', 'There is no description for this product yet.') . '</em>',
-    'technical_data' => preg_split('#\r\n?|\n#', $product->technical_data, -1, PREG_SPLIT_NO_EMPTY),
+    'technical_data' => preg_split('#\r\n?|\n#', trim($product->technical_data)),
     'head_title' => !empty($product->head_title) ? $product->head_title : $product->name,
     'meta_description' => !empty($product->meta_description) ? $product->meta_description : $product->short_description,
     'attributes' => $product->attributes,
@@ -136,6 +133,8 @@
     'recommended_price' => tax::get_price((float)$product->recommended_price, $product->tax_class_id),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
+    'campaign_price_end_date' => !empty($product->campaign['end_date']) ? $product->campaign['end_date'] : null,
+    'final_price' => tax::get_price($product->final_price, $product->tax_class_id),
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => $product->tax,
@@ -208,7 +207,7 @@
   }
 
 // Stock Status
-  if ($product->quantity_unit) {
+  if (!empty($product->quantity_unit['name'])) {
     $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : language::translate('title_in_stock', 'In Stock');
   } else {
     $_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity, 0) : language::translate('title_in_stock', 'In Stock');

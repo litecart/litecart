@@ -16,11 +16,7 @@
       require_once self::$_root . 'vqmod/vqmod.php';
 
       VQMod::$replaces['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_';
-
-      $config = file_get_contents(self::$_root.'includes/config.inc.php');
-      preg_match('#define\(\'BACKEND_ALIAS\',\s+\'(.*?)\'\);#', $config, $matches);
-      VQMod::$replaces['#^admin/#'] = $matches[1] . '/';
-
+      VQMod::$replaces['#^admin/#'] = BACKEND_ALIAS . '/';
       VQMod::bootup();
 
       self::$_time_elapsed += microtime(true) - $timestamp;

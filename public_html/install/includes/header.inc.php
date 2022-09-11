@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <title>LiteCart Installer</title>
+<link rel="stylesheet" href="../includes/templates/default.catalog/css/variables.css" />
 <link rel="stylesheet" href="../includes/templates/default.catalog/css/framework.min.css" />
 <style>
 html {
   background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%);
-  font: 14px Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 body {

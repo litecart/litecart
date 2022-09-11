@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($user->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $user->data;
   }
 
   document::$snippets['title'][] = !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User');
@@ -45,6 +43,8 @@
       }
 
       if (!empty($_POST['password'])) $user->set_password($_POST['password']);
+
+      $user->data['user_security_timestamp'] = date('Y-m-d H:i:s');
 
       $user->save();
 
@@ -94,12 +94,12 @@
           <div class="row">
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_username', 'Username'); ?></label>
-              <?php echo functions::form_draw_text_field('username', true, 'required'); ?>
+              <?php echo functions::form_draw_text_field('username', true, 'autocomplete="off" required'); ?>
             </div>
 
             <div class="form-group col-sm-6">
               <label><?php echo language::translate('title_email', 'Email'); ?></label>
-              <?php echo functions::form_draw_email_field('email', true); ?>
+              <?php echo functions::form_draw_email_field('email', true, 'autocomplete="off"'); ?>
             </div>
           </div>
 
@@ -194,7 +194,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (!empty($user->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>

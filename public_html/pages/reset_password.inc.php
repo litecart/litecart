@@ -39,6 +39,8 @@
         if ($_POST['new_password'] != $_POST['confirmed_password']) {
           throw new Exception(language::translate('error_passwords_did_not_match', 'Passwords did not match'));
         }
+
+        if (!functions::password_check_strength($_POST['new_password'], 6)) throw new Exception(language::translate('error_password_not_strong_enough', 'The password is not strong enough'));
       }
 
       if (settings::get('captcha_enabled')) {
@@ -84,15 +86,9 @@
 
       } else {
 
-        database::query(
-          "update ". DB_TABLE_PREFIX ."customers
-          set password_reset_token = ''
-          where id = ". (int)$customer['id'] ."
-          limit 1;"
-        );
-
         $customer = new ent_customer($customer['id']);
         $customer->set_password($_POST['new_password']);
+        $customer->data['password_reset_token'] = '';
 
         notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
         header('Location: '. document::ilink('login', ['email' => $customer->data['email']]));

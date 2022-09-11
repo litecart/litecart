@@ -21,46 +21,10 @@ SET @GB_VAT_ZONE = LAST_INSERT_ID();
 INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`, `date_updated`, `date_created`) VALUES
 (@GB_VAT_ZONE, 'GB', '', NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_geo_zones` (`name`, `description`, `date_updated`, `date_created`) VALUES
-('EU VAT Zone', 'European Union excl. GB', NOW(), NOW());
--- --------------------------------------------------------
-SET @EU_VAT_ZONE = LAST_INSERT_ID();
--- --------------------------------------------------------
-INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`, `date_updated`, `date_created`) VALUES
-(@EU_VAT_ZONE, 'AT', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'BE', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'BG', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'CY', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'CZ', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'DE', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'DK', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'EE', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'ES', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'FR', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'FI', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'GR', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'HR', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'HU', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'IE', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'IT', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'LV', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'LT', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'LU', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'MT', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'NL', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'PL', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'PT', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'RO', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'SE', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'SI', '', NOW(), NOW()),
-(@EU_VAT_ZONE, 'SK', '', NOW(), NOW());
--- --------------------------------------------------------
 INSERT INTO `lc_tax_classes` (`name`, `description`, `date_updated`, `date_created`) VALUES
 ('Standard', '', NOW(), NOW()),
 ('Reduced', '', NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `type`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `date_updated`, `date_created`) VALUES
-(1, @GB_VAT_ZONE, 'percent', 'UK VAT 20%', '', 20.0000, 1, 1, 1, 1, NOW(), NOW()),
-(1, @EU_VAT_ZONE, 'percent', 'UK VAT 20%', '', 20.0000, 0, 1, 1, 1, NOW(), NOW()),
-(2, @GB_VAT_ZONE, 'percent', 'UK VAT 5%', '', 5.0000, 1, 1, 1, 1, NOW(), NOW()),
-(2, @EU_VAT_ZONE, 'percent', 'UK VAT 5%', '', 5.0000, 0, 1, 1, 1, NOW(), NOW());
+(1, @GB_VAT_ZONE, 'percent', 'GB VAT 20%', '', 20.0000, 1, 1, 1, 1, NOW(), NOW()),
+(2, @GB_VAT_ZONE, 'percent', 'GB VAT 5%', '', 5.0000, 1, 1, 1, 1, NOW(), NOW());

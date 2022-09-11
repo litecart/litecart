@@ -7,15 +7,36 @@
   }
 
   if (empty($_POST)) {
-    foreach ($customer->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $customer->data;
   }
 
   document::$snippets['title'][] = !empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer');
 
   breadcrumbs::add(language::translate('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, ['doc' => 'customers'], ['app']));
   breadcrumbs::add(!empty($customer->data['id']) ? language::translate('title_edit_customer', 'Edit Customer') : language::translate('title_add_new_customer', 'Add New Customer'));
+
+  if (isset($_POST['sign_in'])) {
+
+    try {
+
+      customer::load($_GET['customer_id']);
+
+      session::$data['security.timestamp'] = time();
+      session::regenerate_id();
+
+      notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), [
+        '%email' => customer::$data['email'],
+        '%firstname' => customer::$data['firstname'],
+        '%lastname' => customer::$data['lastname'],
+      ]));
+
+      header('Location: '. document::ilink(''));
+      exit;
+
+    } catch (Exception $e) {
+      notices::add('errors', $e->getMessage());
+    }
+  }
 
   if (isset($_POST['save'])) {
 
@@ -137,6 +158,12 @@
             </div>
           </div>
 
+          <?php if (!empty($customer->data['id'])) { ?>
+          <div class="form-group">
+            <?php echo functions::form_draw_button('sign_in', ['true', language::translate('text_sign_in_as_customer', 'Sign in as customer')], 'submit', 'class="btn btn-default btn-block"'); ?>
+          </div>
+          <?php } ?>
+
           <div class="row">
             <div class="form-group col-md-6">
               <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
@@ -189,13 +216,13 @@
 
           <div class="row">
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_city', 'City'); ?></label>
-              <?php echo functions::form_draw_text_field('city', true); ?>
+              <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+              <?php echo functions::form_draw_text_field('postcode', true); ?>
             </div>
 
             <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
-              <?php echo functions::form_draw_text_field('postcode', true); ?>
+              <label><?php echo language::translate('title_city', 'City'); ?></label>
+              <?php echo functions::form_draw_text_field('city', true); ?>
             </div>
           </div>
 
@@ -315,7 +342,7 @@
           <div class="panel-action btn-group">
             <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
             <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-            <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+            <?php echo (isset($customer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
           </div>
         </div>
 

@@ -21,6 +21,7 @@
 
     foreach ($iterator as $file) {
       if (!preg_match('#\.php$#', $file)) continue;
+      if (preg_match('#vqmod/vqcache/#', $file)) continue;
 
       $found_files++;
       $contents = file_get_contents($file);
@@ -33,7 +34,7 @@
         '(?:,?\s+?(?:[\'"])([^\'"]+)?(?:[\'"]))?',
         ')\)',
       ];
-      $regexp = '/'. implode('', $regexp) .'/s';
+      $regexp = '/'. implode($regexp) .'/s';
 
       preg_match_all($regexp, $contents, $matches);
       $translations = [];

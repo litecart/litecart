@@ -196,7 +196,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-            <?php echo functions::form_draw_password_field('password', '', 'autocomplete="new-password"'); ?>
+            <?php echo functions::form_draw_password_field('password', '', 'autocomplete="new-password" data-toggle="password-strength"'); ?>
           </div>
         </div>
 
@@ -221,7 +221,7 @@
 
 <script>
   <?php if (!empty(notices::$data['errors'])) { ?>
-  alert("<?php echo functions::general_escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
+  alert("<?php echo functions::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
   <?php } ?>
 
 // Initiate fields

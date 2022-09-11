@@ -78,6 +78,7 @@
 
   foreach ($order->data['items'] as $item) {
     $box_checkout_summary->snippets['items'][] = [
+      'product_id' => $item['product_id'],
       'link' => document::ilink('product', ['product_id' => $item['product_id']]),
       'name' => $item['name'],
       'sku' => $item['sku'],
@@ -126,11 +127,14 @@
       break;
   }
 
-  $aliases = [
-    '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
-    '%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
-  ];
+  if (!empty($box_checkout_summary->snippets['consent'])) {
 
-  $box_checkout_summary->snippets['consent'] = strtr($box_checkout_summary->snippets['consent'], $aliases);
+    $aliases = [
+      '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+      '%terms_of_purchase_link' => document::href_ilink('information', ['page_id' => $terms_of_purchase_id]),
+    ];
+
+    $box_checkout_summary->snippets['consent'] = strtr($box_checkout_summary->snippets['consent'], $aliases);
+  }
 
   echo $box_checkout_summary->stitch('views/box_checkout_summary');

@@ -6,11 +6,11 @@
     <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 
     <div class="form-group">
-      <?php echo functions::form_draw_email_field('email', true, 'placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
+      <?php echo functions::form_draw_email_field('email', true, 'required autofocus placeholder="'. language::translate('title_email_address', 'Email Address') .'" autocomplete="email"'); ?>
     </div>
 
     <div class="form-group">
-      <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+      <?php echo functions::form_draw_password_field('password', '', 'required placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
     </div>
 
     <div class="checkbox">

@@ -60,7 +60,7 @@ INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, 
 (4, 1, 'system', 'Order status changed to Dispatched', 1, NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `option_stock_combination`, `options`, `name`, `sku`, `quantity`, `price`, `tax`, `weight`, `weight_class`) VALUES
-(1, 1, 1, '1-1', 'a:1:{s:4:"Size";s:5:"Small";}', 'Yellow Duck', 'RD001-S', '1.0000', '8', '0', '1.0000', 'kg');
+(1, 1, 1, '2-6', 'a:1:{s:4:"Size";s:5:"Small";}', 'Yellow Duck', 'RD001-S', '1.0000', '8', '0', '1.0000', 'kg');
 -- --------------------------------------------------------
 INSERT INTO `lc_orders_totals` (`id`, `order_id`, `module_id`, `title`, `value`, `tax`, `calculate`, `priority`) VALUES
 (1, 1, 'ot_subtotal', 'Subtotal', 8, 0, 0, 1),

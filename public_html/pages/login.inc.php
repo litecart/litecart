@@ -11,8 +11,11 @@
     return;
   }
 
+  if (!$_POST) {
+    $_POST['email'] = customer::$data['email'];
+  }
+
   if (empty($_POST['remember_me'])) $_POST['remember_me'] = false;
-  if (empty($_REQUEST['redirect_url'])) $_REQUEST['redirect_url'] = document::ilink('');
 
   if (!empty(customer::$data['id'])) notices::add('notice', language::translate('text_already_logged_in', 'You are already logged in'));
 
@@ -30,7 +33,7 @@
 
       $customer_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
-        where lower(email) = lower('". database::input($_POST['email']) ."')
+        where lower(email) = '". database::input(strtolower($_POST['email'])) ."'
         limit 1;"
       );
 
@@ -96,7 +99,7 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."customers set
-          num_logins = num_logins + 1,
+          total_logins = total_logins + 1,
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
           last_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
@@ -107,7 +110,7 @@
 
       customer::load($customer['id']);
 
-      session::$data['security.timestamp'] = time();
+      session::$data['customer_security_timestamp'] = time();
       session::regenerate_id();
 
       if (!empty($_POST['remember_me'])) {
@@ -121,7 +124,14 @@
         '%lastname' => customer::$data['lastname'],
       ]));
 
-      header('Location: '. $_REQUEST['redirect_url']);
+      if (!empty($_POST['redirect_url'])) {
+        $redirect_url = new ent_link($_POST['redirect_url']);
+        $redirect_url->host = '';
+      } else {
+        $redirect_url = document::ilink('');
+      }
+
+      header('Location: '. $redirect_url);
       exit;
 
     } catch (Exception $e) {

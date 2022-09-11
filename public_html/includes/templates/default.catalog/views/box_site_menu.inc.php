@@ -24,7 +24,7 @@
         <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_categories', 'Categories'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php foreach ($categories as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+          <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
           <?php } ?>
         </ul>
       </li>
@@ -35,7 +35,7 @@
         <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php foreach ($manufacturers as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+          <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
           <?php } ?>
         </ul>
       </li>
@@ -46,7 +46,7 @@
         <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php foreach ($pages as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+          <li><a href="<?php echo functions::escape_html($item['link']); ?>"><?php echo $item['title']; ?></a></li>
           <?php } ?>
         </ul>
       </li>
@@ -60,7 +60,7 @@
 
       <?php if (settings::get('accounts_enabled')) { ?>
       <li class="account dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? functions::escape_html(customer::$data['firstname']) : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <?php if (!empty(customer::$data['id'])) { ?>
             <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
@@ -69,7 +69,7 @@
           <?php } else { ?>
             <li>
               <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-                <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link()); ?>
+                <?php echo functions::form_draw_hidden_field('redirect_url', document::link()); ?>
 
                 <div class="form-group">
                   <?php echo functions::form_draw_email_field('email', true, 'required placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>

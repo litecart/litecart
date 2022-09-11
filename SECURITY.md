@@ -1,7 +1,64 @@
-## Do you think you have found a vulnerability?
+## Have found a vulnerability?
 
-Any suspicion of vulnerabilities or reports of security threats or breaches can be sent to security@litecart.net.
+Reports of vulnerabilities, security threats, or suspicion of breaches can be sent to security@litecart.net.
 
-Do NOT go posting your reports in public forums!
+**Do NOT post your reports in public forums!**
 
-It is standard praxis to await a security fix released before registering a CVE record for the vulnerability.
+Do not register a public CVE record until security fixes are released.
+
+## PGP Public Key
+
+```
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+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
+gxh7kooA4YmvUDvmGadajA==
+=gyNv
+-----END PGP PUBLIC KEY BLOCK-----
+```

@@ -72,8 +72,8 @@
 
             // Trim
               if ($search_node->getAttribute('trim') != 'false') {
-                $search = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $search); // Trim beginning of CDATA
-                $search = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $search); // Trim end of CDATA
+                $search = preg_replace('#^\s*#s', '', $search); // Trim beginning of CDATA
+                $search = preg_replace('#\s*$#s', '$1', $search); // Trim end of CDATA
               }
 
             // Whitespace
@@ -81,14 +81,14 @@
                 $search = preg_split('#(\r\n?|\n)#', $search);
                 for ($i=0; $i<count($search); $i++) {
                   if ($search[$i] = trim($search[$i])) {
-                    $search[$i] = '(?:[ \\t]+)?' . preg_quote($search[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                    $search[$i] = '[ \\t]*' . preg_quote($search[$i], '#') . '[ \\t]*';
                   } else if ($i != count($search)-1) {
-                    $search[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                    $search[$i] = '[ \\t]*(?:\r\n?|\n)';
                   }
                 }
-                $search = implode('', $search);
+                $search = implode($search);
               } else {
-                $search = '(?:[ \\t]+)?' . preg_quote(trim($search), '#') . '(?:[ \\t]+)?';
+                $search = '[ \\t]*' . preg_quote(trim($search), '#') . '[ \\t]*';
               }
 
             // Offset
@@ -129,22 +129,22 @@
               } else {
 
                 if ($ignoreif_node->getAttribute('trim') != 'false') {
-                  $ignoreif = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $ignoreif); // Trim beginning of CDATA
-                  $ignoreif = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $ignoreif); // Trim end of CDATA
+                  $ignoreif = preg_replace('#^\s*#s', '', $ignoreif); // Trim beginning of CDATA
+                  $ignoreif = preg_replace('#\s*$#s', '$1', $ignoreif); // Trim end of CDATA
                 }
 
                 if (preg_match('#[\r\n]#', $ignoreif)) {
                   $ignoreif = preg_split('#(\r\n?|\n)#', $ignoreif);
                   for ($i=0; $i<count($ignoreif); $i++) {
                     if ($ignoreif[$i] = trim($ignoreif[$i])) {
-                      $ignoreif[$i] = '(?:[ \\t]+)?' . preg_quote($ignoreif[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                      $ignoreif[$i] = '[ \\t]*' . preg_quote($ignoreif[$i], '#') . '[ \\t]*(?:\r\n?|\n)';
                     } else if ($i != count($ignoreif)-1) {
-                      $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                      $ignoreif[$i] = '[ \\t]*(?:\r\n?|\n)';
                     }
                   }
-                  $ignoreif = implode('', $ignoreif);
+                  $ignoreif = implode($ignoreif);
                 } else {
-                  $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
+                  $ignoreif = '[ \\t]*' . preg_quote(trim($ignoreif), '#') . '[ \\t]*';
                 }
               }
             }
@@ -159,8 +159,8 @@
             } else {
 
               if ($add_node->getAttribute('trim') != 'false') {
-                $add = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $add); // Trim beginning of CDATA
-                $add = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $add); // Trim end of CDATA
+                $add = preg_replace('#^\s*#s', '', $add); // Trim beginning of CDATA
+                $add = preg_replace('#\s*$#s', '$1', $add); // Trim end of CDATA
               }
 
               switch($search_node->getAttribute('position')) {
@@ -238,7 +238,7 @@ table td {
 </style>
 
 <h1><?php echo $app_icon; ?> <?php echo language::translate('title_test_vqmod', 'Test vQmod'); ?></h1>
-<h2><?php echo htmlspecialchars($dom->getElementsByTagName('id')->item(0)->textContent); ?></h2>
+<h2><?php echo functions::escape_html($dom->getElementsByTagName('id')->item(0)->textContent); ?></h2>
 
 <table class="table table-striped table-hover data-table">
   <thead>

@@ -1,45 +1,28 @@
 /* Notices (Alerts) - Bootstrap Compatible */
 
-.alert(@background-color, @color) {
-  background-color: @background-color;
-  color: @color;
-  //border: 1px solid darken(@background-color, 5%);
+.alert(@type) {
+  background-color: ~"var(--@{type}-notice-background-color)";
+  color: ~"var(--@{type}-notice-text-color)";
+  border: 1px solid ~"var(--@{type}-notice-border-color)";
 }
 
 .alert {
-  border-radius: @default-border-radius;
-  margin-bottom: @default-gutter-size;
-  padding: @form-input-padding @form-input-padding*2;
+  border-radius: var(--border-radius);
+  margin-bottom: var(--gutter-size);
+  padding: var(--input-padding-y) var(--input-padding-x);
   .close {
     float: right;
-    font-size: 1.5em;
-    font-weight: bold;
+    font-size: 1.25em;
+    color: inherit;
     line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: .2;
     &:hover {
       text-decoration: none;
     }
   }
 
-  &.alert-default {
-    .alert(#fff6bf, @default-text-color);
-  }
-
-  &.alert-info {
-    .alert(#eeeeee, lighten(@default-text-color, 25%));
-  }
-
-  &.alert-success {
-    .alert(#d6eca6, #567d00);
-  }
-
-  &.alert-warning {
-    .alert(#ffcc66, #aa0000);
-  }
-
-  &.alert-danger {
-    .alert(#ffcccc, #cc4444);
-  }
+  &.alert-default { .alert("default"); }
+  &.alert-success { .alert("success"); }
+  &.alert-warning { .alert("warning"); }
+  &.alert-info { .alert("info"); }
+  &.alert-danger { .alert("danger"); }
 }

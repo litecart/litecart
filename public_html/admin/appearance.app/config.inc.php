@@ -19,8 +19,14 @@
         'doc' => 'logotype',
         'params' => [],
       ],
+      [
+        'title' => language::translate('title_edit_styling', 'Edit Styling'),
+        'doc' => 'edit_styling',
+        'params' => [],
+      ],
     ],
     'docs' => [
+      'edit_styling' => 'edit_styling.inc.php',
       'logotype' => 'logotype.inc.php',
       'template' => 'template.inc.php',
       'template_settings' => 'template_settings.inc.php',

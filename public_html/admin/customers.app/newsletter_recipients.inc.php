@@ -20,7 +20,7 @@
       }
 
       notices::add('success', strtr(language::translate('success_added_n_new_recipients', 'Added %n new recipients'), ['%n' => $added]));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -39,7 +39,7 @@
       );
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -127,26 +127,24 @@
             <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
             <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
             <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-            <th>&nbsp;</th>
           </tr>
         </thead>
 
         <tbody>
           <?php foreach ($recipients as $recipient) { ?>
           <tr>
-            <td><?php echo functions::form_draw_checkbox('recipients['.$recipient['id'].']', $recipient['id']); ?></td>
+            <td><?php echo functions::form_draw_checkbox('recipients[]', $recipient['id']); ?></td>
             <td><?php echo $recipient['id']; ?></td>
             <td><?php echo $recipient['email']; ?></td>
             <td><?php echo $recipient['client_ip']; ?></td>
             <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
-            <td class="text-end"><a href="<?php echo document::href_ilink('customers/edit_recipient', ['recipient_id' => $recipient['id']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
           </tr>
           <?php } ?>
         </tbody>
 
         <tfoot>
           <tr>
-            <td colspan="6"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
+            <td colspan="5"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
           </tr>
         </tfoot>
       </table>

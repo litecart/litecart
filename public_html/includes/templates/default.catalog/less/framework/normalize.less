@@ -1,4 +1,7 @@
-/* normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
+/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
+* {
+  box-sizing: border-box;
+}
 button, hr, input {
   overflow: visible;
 }
@@ -22,7 +25,7 @@ hr {
   height: 0;
 }
 code, kbd, pre, samp {
-  font-family: monospace, monospace;
+  font-family: monospace;
   font-size: 1em;
 }
 a {
@@ -105,7 +108,7 @@ summary {
   display: list-item;
 }
 [hidden], template {
-  display: none;
+  display: none !important;
 }
 
 /* Extras */
@@ -128,7 +131,7 @@ summary {
 a:active, a:hover {
   outline-width: 0;
 }
-h1,h2,h3 {
+h1, h2, h3 {
   margin: .67em 0;
 }
 h1 {

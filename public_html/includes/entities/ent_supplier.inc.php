@@ -22,7 +22,7 @@
       );
 
       while ($field = database::fetch($fields_query)) {
-        $this->data[$field['Field']] = null;
+        $this->data[$field['Field']] = database::create_variable($field['Type']);
       }
 
       $this->previous = $this->data;
@@ -88,10 +88,8 @@
         limit 1;"
       );
 
-      if (database::num_rows($products_query) > 0) {
-        notices::add('errors', language::translate('error_delete_supplier_not_empty_products', 'The supplier could not be deleted because there are products linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
+      if (database::num_rows($products_query)) {
+        throw new Exception(language::translate('error_cannot_delete_supplier_while_used_by_products', 'The supplier could not be deleted because there are products linked to it.'));
       }
 
       database::query(

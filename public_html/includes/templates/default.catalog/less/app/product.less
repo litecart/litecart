@@ -1,25 +1,34 @@
 #view-full-page {
   float: right;
   display: inline-block;
-  padding: @default-gutter-size/2 @default-gutter-size;
+  padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
 }
 
 #box-product {
 
+  form[name="buy_now_form"] {
+    padding: var(--gutter-size);
+    margin: 1em 0;
+    border: 1px solid var(--default-border-color);
+    border-radius: var(--border-radius);
+  }
+
   .images {
-    margin-bottom: @default-gutter-size*2;
+    margin-bottom: ~"calc(var(--gutter-size)*2)";
   }
 
   .main-image {
     position: relative;
+    background: var(--whitespace-color);
     overflow: hidden;
+
     .sticker {
       color: #fff;
       font-size: 12px;
       font-weight: bold;
       top: 15px;
       left: -35px;
-      padding: @default-gutter-size/4 @default-gutter-size/2;
+      padding: ~"calc(var(--gutter-size)/4)" ~"calc(var(--gutter-size)/2)";
       position: absolute;
       text-align: center;
       text-transform: uppercase;
@@ -44,7 +53,10 @@
     }
   }
   .tax {
-    color: #999999;
+    color: #999;
+  }
+
+  .offer-expires {
   }
 
   .stock-available {
@@ -62,16 +74,19 @@
       color: #cc0000;
     }
   }
+
   .out-of-stock-notice {
-    background: @default-color;
-    border: 1px solid @default-border-color;
-    padding: @default-gutter-size;
-    border-radius: @default-border-radius;
+    background: var(--default-background-color);
+    border: 1px solid var(--default-border-color);
+    padding: var(--gutter-size);
+    border-radius: var(--border-radius);
   }
+
   .social-bookmarks {
     font-size: 1.75em;
-    margin: @default-gutter-size 0;
+    margin: var(--gutter-size) 0;
   }
+
   .description {
     p:first-child {
       margin-top: 0;
@@ -80,6 +95,7 @@
       margin-bottom: 0;
     }
   }
+
   .technical-data {
     table {
       -webkit-column-break-inside: avoid;

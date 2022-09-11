@@ -37,7 +37,7 @@
           case 'customer_country_code':
           case 'customer_zone_code':
           case 'customer_phone':
-            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = null;
+            $this->data['customer'][preg_replace('#^(customer_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case 'shipping_company':
@@ -50,21 +50,21 @@
           case 'shipping_country_code':
           case 'shipping_zone_code':
           case 'shipping_phone':
-            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = null;
+            $this->data['customer']['shipping_address'][preg_replace('#^(shipping_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case 'payment_option_id':
           case 'payment_option_name':
-            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = null;
+            $this->data['payment_option'][preg_replace('#^(payment_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           case 'shipping_option_id':
           case 'shipping_option_name':
-            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = null;
+            $this->data['shipping_option'][preg_replace('#^(shipping_option_)#', '', $field['Field'])] = database::create_variable($field['Type']);
             break;
 
           default:
-            $this->data[$field['Field']] = null;
+            $this->data[$field['Field']] = database::create_variable($field['Type']);
             break;
         }
       }
@@ -195,7 +195,10 @@
       if (!empty($this->previous['id']) && ($this->data['order_status_id'] != $this->previous['order_status_id'])) {
         $this->data['comments'][] = [
           'author' => 'system',
-          'text' => strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status'), ['%new_status' => reference::order_status($this->data['order_status_id'])->name]),
+          'text' => strtr(language::translate('text_user_changed_order_status_to_new_status', 'Order status changed to %new_status by %username', settings::get('store_language_code')), [
+            '%username' => !empty(user::$data['username']) ? user::$data['username'] : 'system',
+            '%new_status' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
+          ]),
           'hidden' => 1,
         ];
       }
@@ -279,11 +282,11 @@
       );
 
     // Restock previous items
-      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'])->is_sale)) {
+      if (!empty($this->previous['order_status_id']) && !empty(reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->is_sale)) {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
           $product = new ent_product($previous_order_item['product_id']);
-          $product->adjust_quantity($previous_order_item['quantity'], $previous_order_item['option_stock_combination']);
+          $product->adjust_quantity((float)$previous_order_item['quantity'], $previous_order_item['option_stock_combination']);
         }
       }
 
@@ -318,7 +321,7 @@
       // Withdraw stock
         if (!empty($this->data['order_status_id']) && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
           $product = new ent_product($item['product_id']);
-          $product->adjust_quantity(-$item['quantity'], $item['option_stock_combination']);
+          $product->adjust_quantity(-(float)$item['quantity'], $item['option_stock_combination']);
         }
 
         database::query(
@@ -459,22 +462,22 @@
       $this->data['weight_total'] = 0;
 
       foreach ($this->data['items'] as $item) {
-        $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
-        $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
-        $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
-        $this->data['tax_total'] += $item['tax'] * $item['quantity'];
-        $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+        $this->data['subtotal']['amount'] += (float)$item['price'] * (float)$item['quantity'];
+        $this->data['subtotal']['tax'] += (float)$item['tax'] * (float)$item['quantity'];
+        $this->data['payment_due'] += ((float)$item['price'] + (float)$item['tax']) * (float)$item['quantity'];
+        $this->data['tax_total'] += (float)$item['tax'] * (float)$item['quantity'];
+        $this->data['weight_total'] += weight::convert((float)$item['weight'], $item['weight_class'], $this->data['weight_class']) * (float)$item['quantity'];
       }
 
       foreach ($this->data['order_total'] as &$row) {
         if ($row['module_id'] == 'ot_subtotal') {
-          $row['value'] = $this->data['subtotal']['amount'];
-          $row['tax'] = $this->data['subtotal']['tax'];
+          $row['value'] = (float)$this->data['subtotal']['amount'];
+          $row['tax'] = (float)$this->data['subtotal']['tax'];
         }
 
         if (empty($row['calculate'])) continue;
-        $this->data['payment_due'] += $row['value'] + $row['tax'];
-        $this->data['tax_total'] += $row['tax'];
+        $this->data['payment_due'] += (float)$row['value'] + (float)$row['tax'];
+        $this->data['tax_total'] += (float)$row['tax'];
       } unset($row);
     }
 
@@ -504,17 +507,17 @@
       while (isset($this->data['items']['new_'.$i])) $i++;
       $item_key = 'new_'.$i;
 
-      $this->data['items']['new_'.$i]['id'] = null;
+      $this->data['items']['new_'.$i]['id'] = '';
 
       foreach ($fields as $field) {
-        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : null;
+        $this->data['items']['new_'.$i][$field] = isset($item[$field]) ? $item[$field] : '';
       }
 
-      $this->data['subtotal']['amount'] += $item['price'] * $item['quantity'];
-      $this->data['subtotal']['tax'] += $item['tax'] * $item['quantity'];
-      $this->data['payment_due'] += ($item['price'] + $item['tax']) * $item['quantity'];
-      $this->data['tax_total'] += $item['tax'] * $item['quantity'];
-      $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
+      $this->data['subtotal']['amount'] += (float)$item['price'] * (float)$item['quantity'];
+      $this->data['subtotal']['tax'] += (float)$item['tax'] * (float)$item['quantity'];
+      $this->data['payment_due'] += ((float)$item['price'] + (float)$item['tax']) * (float)$item['quantity'];
+      $this->data['tax_total'] += (float)$item['tax'] * (float)$item['quantity'];
+      $this->data['weight_total'] += weight::convert((float)$item['weight'], $item['weight_class'], $this->data['weight_class']) * (float)$item['quantity'];
     }
 
     public function add_ot_row($row) {
@@ -523,8 +526,8 @@
         'id' => 0,
         'module_id' => $row['id'],
         'title' =>  $row['title'],
-        'value' => $row['value'],
-        'tax' => $row['tax'],
+        'value' => (float)$row['value'],
+        'tax' => (float)$row['tax'],
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       ];
 
@@ -679,7 +682,7 @@
       if (empty($recipient)) return;
       if (empty($language_code)) $language_code = $this->data['language_code'];
 
-      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : null;
+      $order_status = $this->data['order_status_id'] ? reference::order_status($this->data['order_status_id'], $language_code) : '';
 
       $aliases = [
         '%order_id' => $this->data['id'],
@@ -758,6 +761,7 @@
 
       $aliases = [
         '%order_id' => $this->data['id'],
+        '%new_status' => $order_status->name,
         '%firstname' => $this->data['customer']['firstname'],
         '%lastname' => $this->data['customer']['lastname'],
         '%billing_address' => nl2br(functions::format_address($this->data['customer'])),
@@ -796,7 +800,7 @@
       $message = strtr($order_status->email_message, $aliases);
 
       if (empty($subject)) $subject = '['. language::translate('title_order', 'Order', $this->data['language_code']) .' #'. $this->data['id'] .'] '. $order_status->name;
-      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), ['%new_status' => $order_status->name]);
+      if (empty($message)) $message = strtr(language::translate('text_order_status_changed_to_new_status', 'Order status changed to %new_status', $this->data['language_code']), $aliases);
 
       if (!empty(language::$languages[$this->data['language_code']]) && language::$languages[$this->data['language_code']]['direction'] == 'rtl') {
         $message = '<div dir="rtl">' . PHP_EOL

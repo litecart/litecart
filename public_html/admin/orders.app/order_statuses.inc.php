@@ -57,14 +57,14 @@
           <th><?php echo language::translate('title_archived', 'Archived'); ?></th>
           <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
           <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-          <th>&nbsp;</th>
+          <th></th>
         </tr>
       </thead>
 
       <tbody>
         <?php foreach ($order_statuses as $order_status) { ?>
         <tr>
-          <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
+          <td><?php echo functions::form_draw_checkbox('order_statuses[]', $order_status['id']); ?></td>
           <td><?php echo $order_status['id']; ?></td>
           <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
           <td><a href="<?php echo document::href_link('', ['doc' => 'edit_order_status', 'order_status_id' => $order_status['id']], true); ?>"><?php echo $order_status['name']; ?></a></td>

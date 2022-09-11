@@ -13,6 +13,8 @@
 
   $category = reference::category($_GET['category_id']);
 
+  if (empty($_GET['list_style'])) $_GET['list_style'] = !empty($category->list_style) ? $category->list_style : 'columns';
+
   if (empty($category->id)) {
     http_response_code(410);
     include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
@@ -46,13 +48,14 @@
       'id' => $category->id,
       'name' => $category->name,
       'short_description' => $category->short_description,
-      'description' => $category->description,
+      'description' => (!empty($category->description) && trim(strip_tags($category->description))) ? $category->description : '',
       'h1_title' => $category->h1_title ? $category->h1_title : $category->name,
       'head_title' => $category->head_title ? $category->head_title : $category->name,
       'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
       'image' => [],
       'subcategories' => [],
       'products' => [],
+      'list_style' => $category->list_style,
       'sort_alternatives' => [
         'name' => language::translate('title_name', 'Name'),
         'price' => language::translate('title_price', 'Price'),
@@ -82,16 +85,6 @@
     }
 
   // Products
-    switch ($category->list_style) {
-      case 'rows':
-        $items_per_page = 10;
-        break;
-      case 'columns':
-      default:
-        $items_per_page = settings::get('items_per_page');
-        break;
-    }
-
     $products_query = functions::catalog_products_query([
       'categories' => [$category->id],
       'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
@@ -102,28 +95,18 @@
     ]);
 
     if (database::num_rows($products_query)) {
-      if ($_GET['page'] > 1) database::seek($products_query, $items_per_page * ($_GET['page'] - 1));
+      if ($_GET['page'] > 1) database::seek($products_query, settings::get('items_per_page') * ($_GET['page'] - 1));
 
       $page_items = 0;
       while ($listing_product = database::fetch($products_query)) {
-        switch($category->list_style) {
-          case 'rows':
-            $listing_product['listing_type'] = 'row';
-            $_page->snippets['products'][] = $listing_product;
-            break;
-          default:
-          case 'columns':
-            $listing_product['listing_type'] = 'column';
-            $_page->snippets['products'][] = $listing_product;
-            break;
-        }
-        if (++$page_items == $items_per_page) break;
+        $_page->snippets['products'][] = $listing_product;
+        if (++$page_items == settings::get('items_per_page')) break;
       }
     }
 
     $_page->snippets['num_products_page'] = count($_page->snippets['products']);
     $_page->snippets['num_products_total'] = (int)database::num_rows($products_query);
-    $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/$items_per_page));
+    $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));
 
     cache::set($box_category_cache_token, $_page->snippets);
   }

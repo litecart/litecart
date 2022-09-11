@@ -7,9 +7,16 @@
 
       <?php echo functions::form_draw_form_begin('contact_form', 'post'); ?>
 
-        <div class="form-group">
-          <label><?php echo language::translate('title_name', 'Name'); ?></label>
-          <?php echo functions::form_draw_text_field('name', true, 'required'); ?>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
+            <?php echo functions::form_draw_text_field('firstname', true, 'required'); ?>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_lastname', 'Last Name'); ?></label>
+            <?php echo functions::form_draw_text_field('lastname', true, 'required'); ?>
+          </div>
         </div>
 
         <div class="form-group">

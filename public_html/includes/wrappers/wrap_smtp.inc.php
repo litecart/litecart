@@ -1,12 +1,13 @@
 <?php
 
   class wrap_smtp {
-    private $_socket = null;
-    private $_host = null;
-    private $_port = null;
-    private $_log_handle = '';
+    private $_socket;
+    private $_host;
+    private $_username;
+    private $_password;
+    private $_log_handle;
 
-    function __construct($host, $port, $username='', $password='') {
+    function __construct($host, $port=25, $username='', $password='') {
 
       if ($port == 465) {
         $this->_host = "ssl://$host:$port";
@@ -22,25 +23,6 @@
 
     function __destruct() {
       if (is_resource($this->_socket)) $this->disconnect();
-    }
-
-    public function send($sender, $recipients, $data='') {
-
-      if (!is_array($recipients)) $recipients = [$recipients];
-
-      if (!is_resource($this->_socket)) $this->connect();
-
-      $this->write("MAIL FROM: <$sender>\r\n", 250);
-
-      foreach ($recipients as $recipient) {
-        $this->write("RCPT TO: <$recipient>\r\n", 250);
-      }
-
-      $this->write("DATA\r\n", 354)
-           ->write("$data\r\n")
-           ->write(".\r\n", 250);
-
-      return true;
     }
 
     public function connect() {
@@ -133,7 +115,10 @@
 
       $this->_last_response = $response;
 
-      if (substr($response, 0, 3) != $expected_response) throw new Exception('Unexpected socket response; '. $response);
+      if (substr($response, 0, 3) != $expected_response) {
+        copy(FS_DIR_APP . 'logs/last_smtp.log', FS_DIR_APP . 'logs/last_smtp_error.log');
+        throw new Exception('Unexpected socket response; '. $response);
+      }
 
       return $this;
     }
@@ -148,5 +133,26 @@
       }
 
       return $this;
+    }
+
+    ###################################################################
+
+    public function send($sender, $recipients, $data='') {
+
+      if (!is_array($recipients)) $recipients = [$recipients];
+
+      if (!is_resource($this->_socket)) $this->connect();
+
+      $this->write("MAIL FROM: <$sender>\r\n", 250);
+
+      foreach ($recipients as $recipient) {
+        $this->write("RCPT TO: <$recipient>\r\n", 250);
+      }
+
+      $this->write("DATA\r\n", 354)
+           ->write("$data\r\n")
+           ->write(".\r\n", 250);
+
+      return true;
     }
   }

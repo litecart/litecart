@@ -76,14 +76,14 @@ table.items tbody tr:nth-child(11) {
         <div class="col-xs-6 shipping-address">
           <div class="rounded-rectangle">
             <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
-            <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
+            <div class="value"><?php echo nl2br(functions::escape_html(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address']))); ?></div>
           </div>
 
           <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
+          <div class="value"><?php echo !empty($order['customer']['email']) ? functions::escape_html($order['customer']['email']) : '-'; ?></div>
 
           <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['shipping_address']['phone']) ? $order['customer']['shipping_address']['phone'] : '-'; ?></div>
+          <div class="value"><?php echo !empty($order['customer']['shipping_address']['phone']) ? functions::escape_html($order['customer']['shipping_address']['phone']) : '-'; ?></div>
         </div>
       </div>
     </div>
@@ -124,6 +124,17 @@ table.items tbody tr:nth-child(11) {
         <?php } ?>
       </tbody>
     </table>
+
+    <?php if ($comments) { ?>
+    <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
+
+    <ul class="comments list-unstyled">
+      <?php foreach ($order['comments'] as $comment) { ?>
+      <li><?php echo date(language::$selected['raw_date'], strtotime($comment['date_created'])); ?>: <?php echo $comment['text']; ?></li>
+      <?php } ?>
+    </ul>
+    <?php } ?>
+
   </div>
 
   <?php if (count($order['items']) <= 10) { ?>

@@ -48,21 +48,19 @@
       $name = language::translate(__CLASS__.':title_option_name_zone_x', '');
 
       if (empty($options)) {
-        if (!empty($this->settings['weight_rate_table_x'])) {
-          $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
+        if (empty($this->settings['weight_rate_table_x'])) return;
 
-          $options[] = [
-            'id' => 'zone_x',
-            'icon' => $this->settings['icon'],
-            'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
-            'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
-            'fields' => '',
-            'cost' => $cost + $this->settings['handling_fee'],
-            'tax_class_id' => $this->settings['tax_class_id'],
-          ];
-        } else {
-          return;
-        }
+        $cost = $this->calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
+
+        $options[] = [
+          'id' => 'zone_x',
+          'icon' => $this->settings['icon'],
+          'name' => !empty($name) ? $name : reference::country($customer['shipping_address']['country_code'])->name,
+          'description' => language::translate(__CLASS__.':title_option_description_zone_x', ''),
+          'fields' => '',
+          'cost' => $cost + $this->settings['handling_fee'],
+          'tax_class_id' => $this->settings['tax_class_id'],
+        ];
       }
 
       $options = [

@@ -33,14 +33,16 @@
 
 <div id="widget-discussions" class="widget panel panel-default">
   <div class="panel-heading">
-    <?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
+    <div class="panel-title">
+      <?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
+    </div>
   </div>
 
   <div class="panel-body">
       <div class="row">
       <?php foreach ($discussions as $item) { ?>
       <div class="col-sm-6 col-md-4 col-lg-3">
-        <div class="title"><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a></div>
+        <div class="title"><a href="<?php echo functions::escape_html((string)$item->link); ?>" target="_blank"><?php echo functions::escape_html((string)$item->title); ?></a></div>
         <div class="description"><?php echo language::strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></div>
       </div>
       <?php } ?>

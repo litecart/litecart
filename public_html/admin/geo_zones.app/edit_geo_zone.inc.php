@@ -7,9 +7,7 @@
   }
 
   if (empty($_POST)) {
-    foreach ($geo_zone->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
+    $_POST = $geo_zone->data;
   }
 
   document::$snippets['title'][] = !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone');
@@ -97,17 +95,17 @@
             <th><?php echo language::translate('title_country', 'Country'); ?></th>
             <th><?php echo language::translate('title_zone', 'Zone'); ?></th>
             <th><?php echo language::translate('title_city', 'City'); ?></th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
           <?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
           <tr>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.language::translate('title_all_zones', 'All Zones') .' --'; ?></td>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][city]', true); ?> <?php echo !empty($_POST['zones'][$key]['city']) ? $_POST['zones'][$key]['city'] : '-- '.language::translate('title_all_cities', 'All Cities') .' --'; ?></td>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo functions::escape_html($_POST['zones'][$key]['id']); ?></td>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][country_code]', true); ?> <?php echo functions::escape_html(reference::country($_POST['zones'][$key]['country_code'])->name); ?></td>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? functions::escape_html(reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name']) : '-- '.language::translate('title_all_zones', 'All Zones') .' --'; ?></td>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][city]', true); ?> <?php echo !empty($_POST['zones'][$key]['city']) ? functions::escape_html($_POST['zones'][$key]['city']) : '-- '.language::translate('title_all_cities', 'All Cities') .' --'; ?></td>
             <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
           </tr>
           <?php } ?>
@@ -127,7 +125,7 @@
       <div class="panel-action btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
-        <?php echo (!empty($geo_zone->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (!empty($geo_zone->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
       </div>
 
     <?php echo functions::form_draw_form_end(); ?>
@@ -136,7 +134,7 @@
 
 <script>
   $('select[name$="new_zone[zone_code]"][disabled]').each(function() {
-    $(this).html('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
+    $(this).html('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
   });
 
   $('body').on('change', 'select[name="new_zone[country_code]"]', function() {
@@ -154,13 +152,13 @@
       success: function(data) {
         $(zone_field).html('');
         if (data) {
-          $(zone_field).append('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
+          $(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
           $.each(data, function(i, zone) {
             $(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
           $(zone_field).prop('disabled', false);
         } else {
-          $(zone_field).append('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
+          $(zone_field).append('<option value="">-- <?php echo functions::escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
           $(zone_field).prop('disabled', true);
         }
       },
@@ -191,11 +189,11 @@
     if (found) return;
 
     var output = '    <tr>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][zone_code]', '')); ?>' + $('select[name="new_zone[zone_code]"] option:selected').text() + '</td>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][city]', '')); ?>' + $('input[name="new_zone[city]"]').val() + '</td>'
-               + '      <td style="text-align: end;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <td><?php echo functions::escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
+               + '      <td><?php echo functions::escape_js(functions::form_draw_hidden_field('zones[new_zone_i][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>'
+               + '      <td><?php echo functions::escape_js(functions::form_draw_hidden_field('zones[new_zone_i][zone_code]', '')); ?>' + $('select[name="new_zone[zone_code]"] option:selected').text() + '</td>'
+               + '      <td><?php echo functions::escape_js(functions::form_draw_hidden_field('zones[new_zone_i][city]', '')); ?>' + $('input[name="new_zone[city]"]').val() + '</td>'
+               + '      <td style="text-align: end;"><a class="remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '    </tr>';
 
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i++);

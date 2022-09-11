@@ -21,8 +21,9 @@
   font-weight: normal;
   border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
-  //box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  //box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   text-align: center;
+  white-space: nowrap;
 
   &.btn-default { .btn(@default-color, #555); }
   &.btn-primary { .btn(@primary-color, #fff); }
@@ -34,7 +35,7 @@
   &.btn-sm { padding: 2px 5px; font-size: 0.8em; line-height: 1em; }
   &.btn-lg { padding: 12px 18px; font-size: 1.25em; line-height: 1em; }
 
-  &.active, &:active { box-shadow: inset 1px 1px 1px rgba(0,0,0,0.25) !important; }
+  &.active, &:active { box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25) !important; }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
   [data-type="toggle"] { display: none; }
 }

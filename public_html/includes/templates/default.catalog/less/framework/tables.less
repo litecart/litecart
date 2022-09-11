@@ -3,33 +3,34 @@
 .table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: @default-gutter-size;
+  margin-bottom: var(--gutter-size);
   background-color: transparent;
   border-spacing: 0;
   border-collapse: collapse;
 
   td, th {
-    padding: @default-gutter-size/2 @default-gutter-size;
+    padding: ~"calc(var(--gutter-size)/2)" var(--gutter-size);
   }
 
   > * > tr > td,
   > * > tr > th {
     padding: 6px 12px;
-    line-height: @default-line-height;
+    line-height: var(--default-line-height);
     vertical-align: top;
 
     &.border-top {
-      border-top: 1px solid @default-border-color;
+      border-top: 1px solid var(--default-border-color);
     }
     &.border-left {
-      border-left: 1px solid @default-border-color;
+      border-left: 1px solid var(--default-border-color);
     }
     &.border-right {
-      border-right: 1px solid @default-border-color;
+      border-right: 1px solid var(--default-border-color);
     }
     &.border-bottom {
-      border-bottom: 1px solid @default-border-color;
+      border-bottom: 1px solid var(--default-border-color);
     }
+
     @media print {
       &.border-top, &.border-left, &.border-right, &.border-bottom {
         border-color: #000 !important;
@@ -38,10 +39,10 @@
   }
 
   > thead > tr > th {
-    padding: 6px 12px;
+    padding: 12px;
     text-align: start;
     vertical-align: bottom;
-    border-bottom: 2px solid @default-border-color;
+    border-bottom: 2px solid var(--default-border-color);
     @media print {
       border-color: #000 !important;
     }
@@ -53,16 +54,16 @@
   > tfoot {
     padding: 6px 12px;
     text-align: start;
-    border-top: 1px solid @default-border-color;
+    border-top: 1px solid var(--default-border-color);
     @media print {
       border-color: #000 !important;
     }
   }
 
   &.table-bordered {
-    border: 1px solid @default-border-color;
+    border: 1px solid var(--default-border-color);
     > * > tr > td {
-      border-top: 1px solid @default-border-color;
+      border-top: 1px solid var(--default-border-color);
       @media print {
         border-color: #000 !important;
       }
@@ -71,10 +72,10 @@
 
   &.table-striped {
     > tbody > tr:nth-of-type(odd) {
-      background: @table-striped-row-background-odd;
+      background: var(--table-striped-row-background-odd);
     }
     > tbody > tr:nth-of-type(even) {
-      background: @table-striped-row-background-even;
+      background: var(--table-striped-row-background-even);
     }
     @media print {
       > tbody > tr {
@@ -87,7 +88,7 @@
     > tbody > tr {
       transition: background 125ms linear;
       &:hover {
-        background: @table-row-hover-background;
+        background: var(--table-row-hover-background);
       }
     }
   }
