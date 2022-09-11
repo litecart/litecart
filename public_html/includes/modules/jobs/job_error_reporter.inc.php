@@ -8,6 +8,7 @@
     public $version = '1.0';
     public $website = 'https://www.litecart.net';
     public $priority = 0;
+    public $settings = [];
 
     public function process($force, $last_run) {
 

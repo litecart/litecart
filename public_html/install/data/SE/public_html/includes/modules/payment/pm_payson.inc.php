@@ -9,6 +9,9 @@
     public $support_link = 'https://api.payson.se/';
     public $website = 'https://www.payson.se';
     public $priority = 0;
+    public $settings = [];
+    public $_last_request;
+    public $_last_response;
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
 

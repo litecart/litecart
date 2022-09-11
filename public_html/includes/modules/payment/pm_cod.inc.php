@@ -9,6 +9,8 @@
     public $support_link = 'https://www.litecart.net';
     public $website = 'https://www.litecart.net';
     public $priority = 0;
+    public $settings = [];
+
 
     public function __construct() {
       $this->name = language::translate(__CLASS__.':title', 'Cash on Delivery');
