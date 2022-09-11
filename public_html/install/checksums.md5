@@ -474,7 +474,7 @@ d41d8cd98f00b204e9800998ecf8427e	images/slides/index.html
 17fd4de7d9e88047254c3fdd7371afa3	includes/abstracts/abs_module.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
 4fb8898a223f58b315f9c4223cd2538a	includes/app_footer.inc.php
-f7f92b1c47abd54c05625966fb6956ea	includes/app_header.inc.php
+e377d0a0b258e0ec4b13087168e0bbd6	includes/app_header.inc.php
 3c352efd424702fb748a4cacef793de9	includes/autoloader.inc.php
 3762e4cb2077d20baa72f956c45735b6	includes/boxes/box_account_links.inc.php
 50f177914578386923c2baba35a54bb8	includes/boxes/box_also_purchased_products.inc.php
@@ -784,7 +784,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 100e1b2e12679c05011e57a441d4ed91	includes/wrappers/wrap_http.inc.php
 17c6d846477631e914c42e9f3a9ded66	includes/wrappers/wrap_smtp.inc.php
-95c3c39e1f3a1b9e9c2cd5ab6be6db9a	index.php
+2dd337c4e364b35ffb762fb04c487890	index.php
 0016b8b6a91d572e9f4c9a8a9099f522	install/clean.sql
 e23509b874e17922719a2f295cadb31d	install/config
 fc81f146248617fd4b66779a7df554ee	install/data.sql
@@ -824,9 +824,9 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 a14a70917b41ba9127d14a2fe1473858	install/includes/functions.inc.php
 f6e3fd49a163d4af16f255941ccdeac1	install/includes/header.inc.php
 315222bb4001f1d6f94b92d05cf6ba6e	install/index.php
-662b46e104477805d27722756795c6aa	install/install.php
+7c8773fe05350a5877ca9396f7a2fef4	install/install.php
 c02da8eb41654196e080f517416f568b	install/structure.sql
-e2bf096d77d5a145e80c7eba4600e65c	install/upgrade.php
+e78b195c362afd691ce5a702684115e5	install/upgrade.php
 2ce261713a375a16fe2305c1ea6772c4	install/upgrade_patches/1.0.1.3.inc.php
 d6fc90da968f9154fb0bca5d97717b0c	install/upgrade_patches/1.0.1.4.inc.php
 d98723df3fe55a1b8f995781327b6a38	install/upgrade_patches/1.0.1.5.inc.php
@@ -923,6 +923,7 @@ df3b470a3918b5f15e6a7717ab112fc9	install/upgrade_patches/2.4.0.inc.php
 3d4c810a79d1a4433cd9a87aa93bc35f	install/upgrade_patches/2.4.2.inc.php
 028147ba82f58e958c1b62ae43bf8e06	install/upgrade_patches/2.4.2.sql
 fd6e3e619663eb1b88791b8f20feee0c	install/upgrade_patches/2.4.3.inc.php
+fd11eee50b3585d2c64de0480dcffa9e	install/upgrade_patches/2.4.4.inc.php
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 c1f6b4f5415e8862da2f742ab0cc159a	pages/ajax/cart.json.inc.php
