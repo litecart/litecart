@@ -1,9 +1,16 @@
 <?php
 
+// Move vQmods to vMod
+
+  foreach (glob(FS_DIR_APP . 'vqmod/*.{xml,disabled}', GLOB_BRACE) as $file) {
+    rename($file, FS_DIR_APP . 'vmods/' . basename($file));
+  }
+
 // Delete old files
   $deleted_files = [
     FS_DIR_ADMIN . '.htaccess',
     FS_DIR_ADMIN . '.htpasswd',
+    FS_DIR_APP . 'vqmod/',
     FS_DIR_APP . 'vqmod/xml/product_options_stock_notice.xml',
   ];
 
@@ -35,6 +42,12 @@
       'search'  => "~// Password Encryption Salt\R+"
                  . "  define('PASSWORD_SALT', '[^']+');\R+~s",
       'replace' => "",
+      'regex' => true,
+    ],
+    [
+      'file'    => FS_DIR_APP . 'includes/config.inc.php',
+      'search'  => "~\s*\?>\s*$~",
+      'replace' => PHP_EOL,
       'regex' => true,
     ],
   ];

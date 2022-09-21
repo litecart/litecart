@@ -6,7 +6,7 @@ public_html/cache/*
 public_html/data/*
 public_html/images/*
 public_html/logs/*
-public_html/vqmod/vqcache/*
+public_html/vmod/.cache/*
 
 !public_html/**/index.html
 !public_html/**/.htaccess
@@ -21,8 +21,8 @@ public_html/.user.ini
 public_html/favicon.ico
 public_html/php.ini
 public_html/robots.txt
-public_html/vqmod/checked.cache
-public_html/vqmod/mods.cache
+public_html/vmod/.installed
+public_html/vmod/.settings
 
 #####################
 # Development files #

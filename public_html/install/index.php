@@ -368,11 +368,12 @@ input[name="development_type"]:checked + div {
     'data/',
     'images/',
     'includes/config.inc.php',
-    'vqmod/',
-    'vqmod/xml/',
-    'vqmod/vqcache/',
-    'vqmod/checked.cache',
-    'vqmod/mods.cache',
+    'vmods/',
+    'vmods/.cache/',
+    'vmods/.cache/.checked',
+    'vmods/.cache/.modifications',
+    'vmods/.installed',
+    'vmods/.settings',
     '.htaccess',
   ];
   foreach ($paths as $path) {

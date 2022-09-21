@@ -62,7 +62,7 @@
              . '  - Network Requests: ' . self::get('http_requests') . PHP_EOL
              . '  - Network Requests Duration: ' . number_format(self::get('http_duration')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('http_duration')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
              . '  - Output Optimization: ' . number_format(self::get('output_optimization')*1000, 0, '.', ' ') . ' ms (' . number_format(self::get('output_optimization')/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
-             . '  - vQmod: ' . number_format(vmod::get_time_elapsed()*1000, 0, '.', ' ') . ' ms (' . number_format(vmod::get_time_elapsed()/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
+             . '  - vMod: ' . number_format(vmod::$time_elapsed*1000, 0, '.', ' ') . ' ms (' . number_format(vmod::$time_elapsed/self::get('page_parse_time')*100, 0, '.', ' ') . ' %)' . PHP_EOL
              . '-->';
 
       $GLOBALS['output'] = preg_replace('#</html>$#', '</html>' . PHP_EOL . $stats, $GLOBALS['output']);
