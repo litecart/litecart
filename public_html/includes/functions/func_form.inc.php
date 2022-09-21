@@ -647,6 +647,10 @@
       case 'email':
         return form_draw_email_field($name, $input, $parameters);
 
+      case 'file':
+      case 'files':
+        return form_draw_files_list($name, $options[0], $input, $parameters);
+
       case 'geo_zone':
         return form_draw_geo_zones_list($name, $input, false, $parameters);
 
@@ -1060,6 +1064,27 @@
     if ($multiple) {
       return form_draw_select_multiple_field($name, $options, $input, $parameters);
     } else {
+      return form_draw_select_field($name, $options, $input, $parameters);
+    }
+  }
+
+  function form_draw_files_list($name, $glob, $input=true, $parameters='') {
+
+    $options = [];
+
+    foreach (glob(FS_DIR_APP . $glob) as $file) {
+      $file = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+      if (is_dir(FS_DIR_APP . $file)) {
+        $options[] = [basename($file).'/', $file.'/'];
+      } else {
+        $options[] = [basename($file), $file];
+      }
+    }
+
+    if (preg_match('#\[\]$#', $name)) {
+      return form_draw_select_multiple_field($name, $options, $input, $parameters);
+    } else {
+      array_unshift($options, ['-- '. language::translate('title_select', 'Select') . ' --', '']);
       return form_draw_select_field($name, $options, $input, $parameters);
     }
   }
