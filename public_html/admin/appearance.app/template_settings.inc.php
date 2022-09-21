@@ -117,7 +117,9 @@
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?>
+    </div>
   </div>
 
   <div class="panel-body">

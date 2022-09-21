@@ -90,7 +90,9 @@
 <div class="widget">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-title"><?php echo language::translate('title_statistics', 'Statistics'); ?></div>
+      <div class="panel-title">
+        <div class="panel-title"><?php echo language::translate('title_statistics', 'Statistics'); ?></div>
+      </div>
     </div>
 
     <div class="panel-body table-responsive">

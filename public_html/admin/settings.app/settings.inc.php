@@ -129,7 +129,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings').' &ndash; '.language::translate('settings_group:title_'.$settings_group['key'], $settings_group['name']); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_settings', 'Settings').' &ndash; '.language::translate('settings_group:title_'.$settings_group['key'], $settings_group['name']); ?>
+    </div>
   </div>
 
   <div class="panel-body">

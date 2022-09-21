@@ -58,7 +58,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>
+    </div>
   </div>
 
   <div class="panel-action">

@@ -31,7 +31,9 @@
 ?>
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_attribute_groups', 'Attribute Groups'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_attribute_groups', 'Attribute Groups'); ?>
+    </div>
   </div>
 
   <div class="panel-action">

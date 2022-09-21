@@ -108,7 +108,9 @@ th:not(:last-child) {
 
 <div class="panel panel-app">
   <div class="panel-heading">
-    <?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?>
+    <div class="panel-title">
+      <?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?>
+    </div>
   </div>
 
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
