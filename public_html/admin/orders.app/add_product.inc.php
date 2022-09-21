@@ -267,7 +267,7 @@
         <?php } ?>
       </div>
 
-      <div class="btn-group">
+      <div>
         <?php echo functions::form_draw_button('ok', language::translate('title_ok', 'OK'), 'button', '', 'ok'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="$.featherlight.close();"', 'cancel'); ?>
       </div>
