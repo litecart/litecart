@@ -60,10 +60,10 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('delivery_statuses[]', $sold_out_status['id']); ?></td>
           <td><?php echo $sold_out_status['id']; ?></td>
-          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
           <td class="text-center"><?php echo !empty($sold_out_status['hidden']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo !empty($sold_out_status['orderable']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td style="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

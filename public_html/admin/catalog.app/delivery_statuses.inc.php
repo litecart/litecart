@@ -58,8 +58,8 @@
         <tr>
           <td><?php echo functions::form_draw_checkbox('delivery_statuses[]', $delivery_status['id']); ?></td>
           <td><?php echo $delivery_status['id']; ?></td>
-          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']], true); ?>"><?php echo $delivery_status['name']; ?></a></td>
-          <td style="text-align: end;"><a href="<?php echo document::href_link('', ['doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']], true); ?>"><?php echo $delivery_status['name']; ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_delivery_status', 'delivery_status_id' => $delivery_status['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

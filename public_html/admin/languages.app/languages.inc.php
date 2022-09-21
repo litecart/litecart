@@ -91,12 +91,12 @@
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $language['status_color'] .';"'); ?></td>
           <td><?php echo $language['id']; ?></td>
           <td><?php echo $language['code']; ?></td>
-          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>"><?php echo $language['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>"><?php echo $language['name']; ?></a></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td><?php echo strtr($language['url_type'], ['none' => language::translate('title_none', 'None'), 'path' => language::translate('title_path_prefix', 'Path Prefix'), 'domain' => language::translate('title_domain', 'Domain')]); ?></td>
           <td class="text-center"><?php echo $language['priority']; ?></td>
-          <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

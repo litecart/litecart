@@ -106,12 +106,12 @@
           <td><?php echo functions::form_draw_checkbox('users[]', $user['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td class="warning"><?php echo !empty($user['warning']) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($user['warning']) .'"') : ''; ?></td>
-          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>"><?php echo $user['username']; ?></a></td>
           <td><?php echo $user['email']; ?></td>
           <td><?php echo ($user['date_valid_from'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from'])) : '-'; ?></td>
           <td><?php echo ($user['date_valid_to'] > 1970) ? language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to'])) : '-'; ?></td>
           <td><?php echo (json_decode($user['apps'], true)) ? language::translate('title_restricted', 'Restricted') : language::translate('title_full_access', 'Full Access'); ?></td>
-          <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_user', 'user_id' => $user['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php }?>
       </tbody>

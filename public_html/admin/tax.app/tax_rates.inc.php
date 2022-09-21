@@ -66,11 +66,11 @@
           <td><?php echo $tax_rate['id']; ?></td>
           <td><?php echo $tax_rate['tax_class']; ?></td>
           <td><?php echo $tax_rate['geo_zone']; ?></td>
-          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
           <td><?php echo $tax_rate['description']; ?></td>
           <td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
           <td><?php echo $tax_rate['type']; ?></td>
-          <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+          <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
         <?php } ?>
       </tbody>

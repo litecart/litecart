@@ -134,7 +134,7 @@
         <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
           <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['title']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['title']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
           <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
