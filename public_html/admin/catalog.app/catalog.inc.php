@@ -221,7 +221,7 @@
   }
 ?>
 <style>
-.warning {
+.warning .fa {
   color: #f00;
 }
 </style>
@@ -411,9 +411,9 @@
                  . '  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('fa-exclamation-triangle', 'title="'. functions::escape_html($warning) .'"') : '') .'</td>' . PHP_EOL;
 
         if ($display_images) {
-          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 16, 16, 'FIT_USE_WHITESPACING')) .'" style="margin-inline-start: '. ($depth*16) .'px; width: 16px; height: 16px; vertical-align: bottom;" /> <a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td><img src="'. document::href_link(WS_DIR_APP . functions::image_thumbnail(FS_DIR_APP . 'images/' . $product['image'], 20, 20, 'FIT_USE_WHITESPACING')) .'" style="margin-inline-start: '. ($depth*25) .'px; width: 20px; height: 20px; vertical-align: bottom;" /> <a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. ($product['name'] ? $product['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*16) .'px;">&nbsp;<a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
+          $output .= '  <td><span style="margin-inline-start: '. (($depth+1)*25) .'px;">&nbsp;<a href="'. document::href_link('', ['app' => $_GET['app'], 'doc' => 'edit_product', 'category_id' => $category_id, 'product_id' => $product['id']]) .'">'. $product['name'] .'</a></span></td>' . PHP_EOL;
         }
 
         $output .= '  <td>'. $product['sku'] .'</td>' . PHP_EOL
@@ -461,11 +461,11 @@
                  . '  <td></td>' . PHP_EOL;
 
         if ($category['id'] == $_GET['category_id']) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <strong><a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cccc66; margin-inline-start: '. ($depth*25) .'px;"') .' <strong><a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></strong></td>' . PHP_EOL;
         } else if (in_array($category['id'], $category_trail)) {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder-open fa-lg', 'style="color: #cccc66; margin-inline-start: '. ($depth*25) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         } else {
-          $output .= '  <td>'. functions::draw_fonticon('fa-folder', 'style="color: #cccc66; margin-inline-start: '. ($depth*16) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
+          $output .= '  <td>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-inline-start: '. ($depth*25) .'px;"') .' <a href="'. document::href_link('', ['category_id' => $category['id']], true) .'">'. ($category['name'] ? $category['name'] : '[untitled]') .'</a></td>' . PHP_EOL;
         }
 
         $output .= '  <td></td>' . PHP_EOL
@@ -491,7 +491,7 @@
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
-                     . '  <td><em style="margin-inline-start: '. (($depth+1)*16) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
+                     . '  <td><em style="margin-inline-start: '. (($depth+1)*25) .'px;">'. language::translate('title_empty', 'Empty') .'</em></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL
                      . '  <td></td>' . PHP_EOL

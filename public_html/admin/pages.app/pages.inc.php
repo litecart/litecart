@@ -168,7 +168,8 @@
       }
     }
 
-    $num_pages = database::num_rows($pages_query);
+    $num_rows = database::num_rows($pages_query);
+    $num_pages = $num_rows / settings::get('data_table_rows_per_page');
 
   } else {
 
@@ -184,7 +185,7 @@
 
       if (empty($parent_id)) {
         if ($_GET['page'] > 1) database::seek($pages_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
-        $num_pages = database::num_rows($pages_query);
+        $num_rows = database::num_rows($pages_query);
       }
 
       $page_items = 0;
@@ -198,7 +199,7 @@
           order by p.priority, pi.title;"
         );
 
-        if (database::num_rows($subpages_query) > 0) {
+        if (database::num_rows($subpages_query)) {
           if (!in_array($page['id'], $_GET['expanded'])) {
             $expanded = array_merge($_GET['expanded'], [$page['id']]);
             $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-plus-square-o fa-fw') . '</a>';
@@ -207,9 +208,8 @@
             $expanded = array_diff($_GET['expanded'], [$page['id']]);
             $icon = '<a href="'. document::href_link(WS_DIR_ADMIN, ['expanded' => $expanded], ['app', 'doc', 'page']) .'">'. functions::draw_fonticon('fa-minus-square-o fa-fw') .'</a>';
           }
-
         } else {
-          $icon = functions::draw_fonticon('fa-file-o fa-fw');
+          $icon = '';
         }
 ?>
         <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
@@ -233,8 +233,8 @@
       }
     };
 
-    $num_pages = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages"));
-    $num_root_pages = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;"));
+    $num_rows = database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages"));
+    $num_pages = ceil(database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id = 0;")) / settings::get('data_table_rows_per_page'));
     $iterator(0, 0);
   }
 ?>
@@ -242,7 +242,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_pages; ?></td>
+          <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>
@@ -282,7 +282,7 @@
 
   <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
-    <?php echo functions::draw_pagination(ceil((!empty($num_root_pages) ? $num_root_pages : $num_pages)/settings::get('data_table_rows_per_page'))); ?>
+    <?php echo functions::draw_pagination($num_pages); ?>
   </div>
   <?php } ?>
 </div>

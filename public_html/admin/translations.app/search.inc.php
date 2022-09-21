@@ -136,52 +136,52 @@ th:not(:last-child) {
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
     <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th><?php echo language::translate('title_code', 'Code'); ?></th>
-              <?php foreach ($_GET['languages'] as $language_code) echo '<th style="width: 480px;">'. $languages[$language_code]['name'] .'</th>'; ?>
-              <th></th>
-            </tr>
-          </thead>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th><?php echo language::translate('title_code', 'Code'); ?></th>
+          <?php foreach ($_GET['languages'] as $language_code) echo '<th style="width: 480px;">'. $languages[$language_code]['name'] .'</th>'; ?>
+          <th></th>
+        </tr>
+      </thead>
 
-          <tbody>
-            <?php foreach ($translations as $translation) { ?>
-            <tr>
-              <td><?php echo $translation['code']; ?><br />
-                <small style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $translation['code'] .'][html]', '1', (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
-              </td>
-              <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
-              <td>
-                <?php echo functions::form_draw_hidden_field('translations['. $translation['code'] .'][id]', $translation['id']); ?>
-                <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
-              </td>
-              <?php } ?>
-              <td style="text-align: end;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-            </tr>
-            <?php } ?>
-          </tbody>
+      <tbody>
+        <?php foreach ($translations as $translation) { ?>
+        <tr>
+          <td><?php echo $translation['code']; ?><br />
+            <small style="color: #999;"><?php echo functions::form_draw_checkbox('translations['. $translation['code'] .'][html]', '1', (isset($_POST['translations'][$translation['code']]['html']) ? $_POST['translations'][$translation['code']]['html'] : $translation['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
+          </td>
+          <?php foreach ($_GET['languages'] as $key => $language_code) { ?>
+          <td>
+            <?php echo functions::form_draw_hidden_field('translations['. $translation['code'] .'][id]', $translation['id']); ?>
+            <?php echo functions::form_draw_textarea('translations['. $translation['code'] .'][text_'.$language_code.']', $translation['text_'.$language_code], 'rows="2" dir="'. language::$languages[$language_code]['direction'] .'" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"'); ?>
+          </td>
+          <?php } ?>
+          <td style="text-align: end;"><a class="delete" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-          <tfoot>
-            <tr>
-              <td colspan="<?php echo 3 + count($_GET['languages']); ?>"><?php echo language::translate('title_translations', 'Translations'); ?>: <?php echo $num_rows; ?></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+      <tfoot>
+        <tr>
+          <td colspan="<?php echo 3 + count($_GET['languages']); ?>"><?php echo language::translate('title_translations', 'Translations'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="card-action">
-        <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
-      </div>
+    <div class="card-action">
+      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_draw_form_end(); ?>
 
-    <?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
+  <?php if ($num_pages > 1) { ?>
+  <div class="card-footer">
+    <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
 
 <div id="translator-tool" style="display: none;">
