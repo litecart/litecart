@@ -101,23 +101,23 @@
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('pages_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('pages_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_title', 'Title'); ?></th>
-            <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
-            <th><?php echo language::translate('title_information', 'Information'); ?></th>
-            <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_title', 'Title'); ?></th>
+          <th><?php echo language::translate('title_site_menu', 'Site Menu'); ?></th>
+          <th><?php echo language::translate('title_information', 'Information'); ?></th>
+          <th><?php echo language::translate('title_customer_service', 'Customer Service'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
 <?php
   if (!empty($_GET['query'])) {
     $sql_where_query = [
@@ -153,16 +153,16 @@
         );
 
 ?>
-          <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-            <td><?php echo $page['id']; ?></td>
-            <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
-            <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-          </tr>
+        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
+          <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
+          <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+          <td><?php echo $page['id']; ?></td>
+          <td><?php echo functions::draw_fonticon('fa-file-o fa-fw'); ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
+          <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        </tr>
 <?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
       }
@@ -212,16 +212,16 @@
           $icon = functions::draw_fonticon('fa-file-o fa-fw');
         }
 ?>
-          <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
-            <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
-            <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-            <td><?php echo $page['id']; ?></td>
-            <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
-            <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-          </tr>
+        <tr class="<?php echo empty($page['status']) ? 'semi-transparent' : null; ?>">
+          <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
+          <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+          <td><?php echo $page['id']; ?></td>
+          <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
+          <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+          <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        </tr>
 <?php
         if (in_array($page['id'], $_GET['expanded'])) {
           $iterator($page['id'], $depth + 1);
@@ -238,46 +238,53 @@
     $iterator(0, 0);
   }
 ?>
-        </tbody>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_pages; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="8"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo $num_pages; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <ul class="list-inline">
-        <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-            <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
-          </div>
-        </li>
-        <li>
-          <div>
-            <?php echo functions::form_draw_pages_list('page_id', isset($_POST['page_id']) ? $_POST['page_id'] : ''); ?>
-          </div>
-        </li>
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-          </div>
-        </li>
-        <li>
-          <div class="btn-group">
-            <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
-          </div>
-        </li>
-      </ul>
+    <div class="card-body">
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+        <ul class="list-inline">
+          <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+              <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+            </div>
+          </li>
+          <li>
+            <div>
+              <?php echo functions::form_draw_pages_list('page_id', isset($_POST['page_id']) ? $_POST['page_id'] : ''); ?>
+            </div>
+          </li>
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+            </div>
+          </li>
+          <li>
+            <div class="btn-group">
+              <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?>
+            </div>
+          </li>
+        </ul>
+      </fieldset>
+    </div>
 
+  <?php echo functions::form_draw_form_end(); ?>
+
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination(ceil((!empty($num_root_pages) ? $num_root_pages : $num_pages)/settings::get('data_table_rows_per_page'))); ?>
   </div>
+  <?php } ?>
 </div>
 
 <script>
@@ -291,4 +298,8 @@
   $('form[name="search_form"] select').change(function(){
     $(this).closest('form').submit();
   });
+
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
 </script>

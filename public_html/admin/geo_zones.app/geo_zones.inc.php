@@ -69,45 +69,57 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('geo_zones_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('geo_zones_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($geo_zones as $geo_zone) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
-            <td><?php echo $geo_zone['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>"><?php echo $geo_zone['name']; ?></a></td>
-            <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($geo_zones as $geo_zone) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
+          <td><?php echo $geo_zone['id']; ?></td>
+          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>"><?php echo $geo_zone['name']; ?></a></td>
+          <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones where geo_zone_id = ". (int)$geo_zone['id'] ."")); ?></td>
+          <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="5"><?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="5"><?php echo language::translate('title_geo_zones', 'Geo Zones'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?>
+    <div class="card-body">
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+        <?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit', 'fa-file-copy'); ?>
+      </fieldset>
+    </div>
 
+  <?php echo functions::form_draw_form_end(); ?>
+
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
+
+<script>
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+</script>

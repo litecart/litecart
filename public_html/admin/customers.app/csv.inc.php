@@ -273,3 +273,9 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('form[name="import_form"] input[name="insert"]').change(function(){
+    $('form[name="import_form"] input[name="reset"]').prop('checked', false).prop('disabled', !$(this).is(':checked'));
+  }).trigger('change');
+</script>

@@ -94,12 +94,11 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
           <th></th>
@@ -177,6 +176,7 @@
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
   <?php } ?>
+
 </div>
 
 <script>

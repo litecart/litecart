@@ -40,43 +40,43 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('tax_classs_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('tax_classs_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
-            <th></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
+          <th></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($tax_classes as $tax_class) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('tax_classes[]', $tax_class['id']); ?></td>
-            <td><?php echo $tax_class['id']; ?></td>
-            <td><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
-            <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-            <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($tax_classes as $tax_class) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('tax_classes[]', $tax_class['id']); ?></td>
+          <td><?php echo $tax_class['id']; ?></td>
+          <td><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>"><?php echo $tax_class['name']; ?></a></td>
+          <td style="color: #999;"><?php echo $tax_class['description']; ?></td>
+          <td class="text-end"><a href="<?php echo document::href_link('', ['doc' => 'edit_tax_class', 'tax_class_id' => $tax_class['id']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="5"><?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="5"><?php echo language::translate('title_tax_classes', 'Tax Classes'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>

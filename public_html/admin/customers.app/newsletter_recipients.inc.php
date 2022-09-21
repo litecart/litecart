@@ -115,53 +115,57 @@
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
+  <?php echo functions::form_draw_form_begin('recipients_form', 'post'); ?>
 
-      <table class="table table-striped table-hover data-table">
-        <thead>
-          <tr>
-            <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-            <th><?php echo language::translate('title_id', 'ID'); ?></th>
-            <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
-            <th><?php echo language::translate('title_name', 'Name'); ?></th>
-            <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
-            <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
-          </tr>
-        </thead>
+    <table class="table table-striped table-hover data-table">
+      <thead>
+        <tr>
+          <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
+          <th><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th><?php echo language::translate('title_client_ip', 'Client IP'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <?php foreach ($recipients as $recipient) { ?>
-          <tr>
-            <td><?php echo functions::form_draw_checkbox('recipients[]', $recipient['id']); ?></td>
-            <td><?php echo $recipient['id']; ?></td>
-            <td><?php echo $recipient['email']; ?></td>
-            <td><?php echo $recipient['name']; ?></td>
-            <td><?php echo $recipient['client_ip']; ?></td>
-            <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
-          </tr>
-          <?php } ?>
-        </tbody>
+      <tbody>
+        <?php foreach ($recipients as $recipient) { ?>
+        <tr>
+          <td><?php echo functions::form_draw_checkbox('recipients[]', $recipient['id']); ?></td>
+          <td><?php echo $recipient['id']; ?></td>
+          <td><?php echo $recipient['email']; ?></td>
+          <td><?php echo $recipient['name']; ?></td>
+          <td><?php echo $recipient['client_ip']; ?></td>
+          <td class="text-end"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($recipient['date_created'])); ?></td>
+        </tr>
+        <?php } ?>
+      </tbody>
 
-        <tfoot>
-          <tr>
-            <td colspan="5"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
-          </tr>
-        </tfoot>
-      </table>
+      <tfoot>
+        <tr>
+          <td colspan="6"><?php echo language::translate('title_recipients', 'Customers'); ?>: <?php echo $num_rows; ?></td>
+        </tr>
+      </tfoot>
+    </table>
 
-      <div class="card-body">
+    <div class="card-body">
+      <fieldset id="actions">
+        <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
+
         <div class="btn-group">
-          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', '', 'delete'); ?>
+          <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'class="btn btn-danger"', 'delete'); ?>
         </div>
-      </div>
+      </fieldset>
+    </div>
 
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+  <?php echo functions::form_draw_form_end(); ?>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
 
 <div id="modal-add-recipients" class="modal fade" style="width: 640px; display: none;">
@@ -182,4 +186,8 @@
     $.featherlight('#modal-add-recipients');
     $('textarea[name="recipients"]').attr('placeholder', 'user@email.com\nanother@email.com');
   })
+
+  $('.data-table :checkbox').change(function() {
+    $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
 </script>

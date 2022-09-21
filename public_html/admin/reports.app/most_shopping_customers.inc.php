@@ -95,29 +95,29 @@ form[name="filter_form"] li {
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="card-body">
-    <table class="table table-striped table-hover data-table">
-      <thead>
-        <tr>
-          <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
-          <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
-          <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
-        </tr>
-      </thead>
+  <table class="table table-striped table-hover data-table">
+    <thead>
+      <tr>
+        <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
+        <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
+        <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
+      </tr>
+    </thead>
 
-      <tbody>
-        <?php foreach ($customers as $customer) { ?>
-        <tr>
-          <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
-          <td><?php echo $customer['email']; ?></td>
-          <td style="text-align: end;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
-        </tr>
-        <?php } ?>
-      </tbody>
-    </table>
-  </div>
+    <tbody>
+      <?php foreach ($customers as $customer) { ?>
+      <tr>
+        <td><?php echo !empty($customer['id']) ? '<a href="'. document::link(WS_DIR_ADMIN, ['app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+        <td><?php echo $customer['email']; ?></td>
+        <td style="text-align: end;"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
+      </tr>
+      <?php } ?>
+    </tbody>
+  </table>
 
+  <?php if ($num_pages > 1) { ?>
   <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
+  <?php } ?>
 </div>
