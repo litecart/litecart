@@ -760,6 +760,9 @@
       case 'tax_classes':
         return form_draw_tax_classes_list($name, $input, true, $parameters);
 
+      case 'upload':
+        return form_draw_file_field($name, $parameters);
+
       case 'user':
         return form_draw_users_list($name, $input, false, $parameters);
 
