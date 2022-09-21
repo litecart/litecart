@@ -88,14 +88,14 @@
     $stats['total_stock_value'] = $stock['total_value'];
 ?>
 <div class="widget">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">
-        <div class="panel-title"><?php echo language::translate('title_statistics', 'Statistics'); ?></div>
+  <div class="card card-default">
+    <div class="card-header">
+      <div class="card-title">
+        <div class="card-title"><?php echo language::translate('title_statistics', 'Statistics'); ?></div>
       </div>
     </div>
 
-    <div class="panel-body table-responsive">
+    <div class="card-body table-responsive">
       <div class="row" style="margin-bottom: 0;">
         <div class="col-md-6">
           <table class="table table-striped table-hover data-table" style="margin-bottom: 0;">

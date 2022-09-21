@@ -238,25 +238,25 @@
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('form_order', 'post'); ?>
 
       <div class="row">
         <div class="col-lg-9">
 
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h2 class="panel-title"><?php echo language::translate('title_order_information', 'Order Information'); ?></h2>
+          <div class="card card-default">
+            <div class="card-header">
+              <h2 class="card-title"><?php echo language::translate('title_order_information', 'Order Information'); ?></h2>
             </div>
 
-            <div class="panel-body">
+            <div class="card-body">
               <div class="row">
 
                 <div class="form-group col-md-3">
@@ -305,12 +305,12 @@
             </div>
           </div>
 
-          <div id="customer-details" class="panel panel-default">
-            <div class="panel-heading">
-              <h2 class="panel-title"><?php echo language::translate('title_customer_information', 'Customer Information'); ?></h2>
+          <div id="customer-details" class="card card-default">
+            <div class="card-header">
+              <h2 class="card-title"><?php echo language::translate('title_customer_information', 'Customer Information'); ?></h2>
             </div>
 
-            <div class="panel-body">
+            <div class="card-body">
               <div class="row" style="margin-bottom: 0;">
                 <div class="col-md-6 customer-details">
                   <h3><?php echo language::translate('title_billing_address', 'Billing Address'); ?></h3>
@@ -476,12 +476,12 @@
 
           <div class="row" style="margin-bottom: 0;">
             <div class="col-md-6">
-              <div class="panel panel-default" style="margin-bottom: 0;">
-                <div class="panel-heading">
-                  <h2 class="panel-title"><?php echo language::translate('title_payment_information', 'Payment Information'); ?></h2>
+              <div class="card card-default" style="margin-bottom: 0;">
+                <div class="card-header">
+                  <h2 class="card-title"><?php echo language::translate('title_payment_information', 'Payment Information'); ?></h2>
                 </div>
 
-                <div class="panel-body">
+                <div class="card-body">
                   <div class="row">
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_option_id', 'Option ID'); ?></label>
@@ -503,12 +503,12 @@
             </div>
 
             <div class="col-md-6">
-              <div class="panel panel-default" style="margin-bottom: 0;">
-                <div class="panel-heading">
-                  <h2 class="panel-title"><?php echo language::translate('title_shipping_information', 'Shipping Information'); ?></h2>
+              <div class="card card-default" style="margin-bottom: 0;">
+                <div class="card-header">
+                  <h2 class="card-title"><?php echo language::translate('title_shipping_information', 'Shipping Information'); ?></h2>
                 </div>
 
-                <div class="panel-body">
+                <div class="card-body">
                   <div class="row">
                     <div class="form-group col-md-6">
                       <label><?php echo language::translate('title_option_id', 'Option ID'); ?></label>
@@ -542,12 +542,12 @@
         </div>
 
         <div class="col-lg-3">
-          <div id="box-comments" class="panel panel-default" style="margin-bottom: 0;">
-            <div class="panel-heading">
-              <h2 class="panel-title"><?php echo language::translate('title_comments', 'Comments'); ?></h2>
+          <div id="box-comments" class="card card-default" style="margin-bottom: 0;">
+            <div class="card-header">
+              <h2 class="card-title"><?php echo language::translate('title_comments', 'Comments'); ?></h2>
             </div>
 
-            <div class="panel-body bubbles">
+            <div class="card-body bubbles">
 <?php
   foreach (array_keys($_POST['comments']) as $key) {
 
@@ -589,12 +589,12 @@
         </div>
       </div>
 
-      <div id="order-items" class="panel panel-default">
-        <div class="panel-heading">
-          <h2 class="panel-title"><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
+      <div id="order-items" class="card card-default">
+        <div class="card-header">
+          <h2 class="card-title"><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
         </div>
 
-        <div class="panel-body table-responsive">
+        <div class="card-body table-responsive">
           <table class="table table-striped table-hover table-input">
             <thead>
               <tr>
@@ -677,12 +677,12 @@
       </div>
     </div>
 
-      <div id="order-total" class="panel panel-default">
-        <div class="panel-heading">
-          <h2 class="panel-title"><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
+      <div id="order-total" class="card card-default">
+        <div class="card-header">
+          <h2 class="card-title"><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
         </div>
 
-        <div class="panel-body table-responsive">
+        <div class="card-body table-responsive">
           <table class="table table-striped table-hover">
             <thead>
               <tr>
@@ -758,7 +758,7 @@
         </div>
       </div>
 
-      <div class="panel-action">
+      <div class="card-action">
         <ul class="list-inline">
           <li>
             <div class="checkbox">

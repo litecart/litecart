@@ -38,20 +38,20 @@
 // Number of Rows
   $num_rows = database::num_rows($countries_query);
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_countries', 'Countries'); ?>
     </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_country'], true), language::translate('title_add_new_country', 'Add New Country'), '', 'add'); ?></li>
     </ul>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('countries_form', 'post'); ?>
 
       <table class="table table-striped table-hover data-table">

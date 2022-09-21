@@ -75,14 +75,14 @@
   }
 
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_template', 'Template'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('template_form', 'post', null, false, 'style="max-width: 320px;"'); ?>
 
       <div class="form-group">

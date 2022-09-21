@@ -28,12 +28,12 @@
   $num_rows = database::num_rows($orders_query);
 ?>
 <div id="widget-orders" class="widget">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><?php echo language::translate('title_orders', 'Orders'); ?></h3>
+  <div class="card card-default">
+    <div class="card-header">
+      <h3 class="card-title"><?php echo language::translate('title_orders', 'Orders'); ?></h3>
     </div>
 
-    <div class="panel-body table-responsive">
+    <div class="card-body table-responsive">
     <table class="table table-striped table-hover data-table">
       <thead>
         <tr>

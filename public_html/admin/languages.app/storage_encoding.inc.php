@@ -74,14 +74,14 @@
   }
 
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_storage_encoding', 'Storage Encoding'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <p><?php echo language::translate('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.'); ?></p>
 
     <?php echo functions::form_draw_form_begin('mysql_collation_form', 'post'); ?>

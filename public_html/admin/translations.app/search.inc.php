@@ -106,9 +106,9 @@ th:not(:last-child) {
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?>
     </div>
   </div>
@@ -116,7 +116,7 @@ th:not(:last-child) {
   <?php echo functions::form_draw_form_begin('search_form', 'get'); ?>
     <?php echo functions::form_draw_hidden_field('app', true); ?>
     <?php echo functions::form_draw_hidden_field('doc', true); ?>
-    <div class="panel-filter">
+    <div class="card-filter">
       <?php if (count($_GET['languages']) > 1) { ?>
       <div>
         <button type="button" class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button>
@@ -136,7 +136,7 @@ th:not(:last-child) {
     </div>
   <?php echo functions::form_draw_form_end(); ?>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
       <div class="table-responsive">
@@ -174,7 +174,7 @@ th:not(:last-child) {
         </table>
       </div>
 
-      <div class="panel-action">
+      <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
       </div>
 

@@ -129,24 +129,24 @@
 <div id="widget-graphs" class="widget">
   <div class="row" style="margin-bottom: 0;">
     <div class="col-md-8">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
+      <div class="card card-default">
+        <div class="card-header">
+          <div class="card-title"><?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></div>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
           <div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
         </div>
       </div>
     </div>
 
     <div class="widget col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
+      <div class="card card-default">
+        <div class="card-header">
+          <div class="card-title"><?php echo language::translate('title_daily_sales', 'Daily Sales'); ?></div>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
           <div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
         </div>
       </div>

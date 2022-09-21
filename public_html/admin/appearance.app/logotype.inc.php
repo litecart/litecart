@@ -38,14 +38,14 @@
     }
   }
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_logotype', 'Logotype'); ?>
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true, 'style="max-width: 320px;"'); ?>
 
       <div class="thumbnail" style="padding: 1em; display: inline-block;  margin-top: 1em;">

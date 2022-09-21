@@ -68,14 +68,14 @@ form[name="filter_form"] li {
 }
 </style>
 
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_most_sold_products', 'Most Sold Products'); ?>
     </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
       <?php echo functions::form_draw_hidden_field('app'); ?>
       <?php echo functions::form_draw_hidden_field('doc'); ?>
@@ -94,7 +94,7 @@ form[name="filter_form"] li {
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <table class="table table-striped table-hover data-table">
       <thead>
         <tr>
@@ -117,7 +117,7 @@ form[name="filter_form"] li {
     </table>
   </div>
 
-  <div class="panel-footer">
+  <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
 </div>

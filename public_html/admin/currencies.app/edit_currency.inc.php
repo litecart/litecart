@@ -97,17 +97,14 @@
 
   $store_currency = reference::currency(settings::get('store_currency_code'));
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? language::translate('title_edit_currency', 'Edit Currency') : language::translate('title_add_new_currency', 'Add New Currency'); ?>
     </div>
   </div>
 
-  <div class="panel-nav">
-  </div>
-
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('currency_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
       <div class="row">
@@ -181,7 +178,7 @@
         </div>
       </div>
 
-      <div class="panel-action">
+      <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
         <?php echo (isset($currency->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>

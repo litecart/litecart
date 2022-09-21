@@ -28,20 +28,20 @@
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
 ?>
-<div class="panel panel-app">
-  <div class="panel-heading">
-    <div class="panel-title">
+<div class="card card-app">
+  <div class="card-header">
+    <div class="card-title">
       <?php echo $app_icon; ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?>
     </div>
   </div>
 
-  <div class="panel-action">
+  <div class="card-action">
     <ul class="list-inline">
       <li><?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'edit_supplier']), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
     </ul>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <?php echo functions::form_draw_form_begin('suppliers_form', 'post'); ?>
 
       <table class="table table-striped table-hover data-table">
@@ -73,7 +73,7 @@
     <?php echo functions::form_draw_form_end(); ?>
   </div>
 
-  <div class="panel-footer">
+  <div class="card-footer">
     <?php echo functions::draw_pagination($num_pages); ?>
   </div>
 </div>
