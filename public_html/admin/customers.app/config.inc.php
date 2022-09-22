@@ -5,7 +5,7 @@
     'default' => 'customers',
     'priority' => 0,
     'theme' => [
-      'color' => '#37b776',
+      'color' => '#50c187',
       'icon' => 'fa-user',
     ],
     'menu' => [
