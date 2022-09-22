@@ -47,45 +47,13 @@
 
   function form_draw_button($name, $value, $type='submit', $parameters='', $icon='') {
 
-    if (!empty($icon)) {
-      switch($icon) {
-        case 'add':
-          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
-          break;
-        case 'cancel':
-          $icon = functions::draw_fonticon('fa-times');
-          break;
-        case 'remove':
-        case 'delete':
-          $icon = functions::draw_fonticon('fa-trash-o');
-          break;
-        case 'ok':
-          $icon = functions::draw_fonticon('fa-check');
-          break;
-        case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-          break;
-        case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-          break;
-        case 'save':
-          $icon = functions::draw_fonticon('fa-floppy-o');
-          break;
-        case 'send':
-          $icon = functions::draw_fonticon('fa-paper-plane');
-          break;
-        default:
-          $icon = functions::draw_fonticon($icon);
-      }
-    }
-
     if (is_array($value)) {
       list($value, $title) = $value;
     } else {
       $title = $value;
     }
 
-    return '<button '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : '') . $title .'</button>';
+    return '<button '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' type="'. functions::escape_html($type) .'" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? functions::draw_fonticon($icon) . ' ' : '') . $title .'</button>';
   }
 
   function form_draw_captcha_field($name, $id, $parameters='') {
@@ -265,32 +233,7 @@
       $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
 
-    if (!empty($icon)) {
-      switch($icon) {
-        case 'add':
-          $icon = functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"');
-          break;
-        case 'cancel':
-          $icon = functions::draw_fonticon('fa-times');
-          break;
-        case 'delete':
-          $icon = functions::draw_fonticon('fa-trash-o');
-          break;
-        case 'on':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #88cc44;"');
-          break;
-        case 'off':
-          $icon = functions::draw_fonticon('fa-circle', 'style="font-size: 0.75em; color: #ff6644;"');
-          break;
-        case 'save':
-          $icon = functions::draw_fonticon('fa-floppy-o');
-          break;
-        default:
-          $icon = functions::draw_fonticon($icon);
-      }
-    }
-
-    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. (!empty($icon) ? $icon . ' ' : false) . $title .'</a>';
+    return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. (!empty($icon) ? functions::draw_fonticon($icon) . ' ' : false) . $title .'</a>';
   }
 
   function form_draw_month_field($name, $value=true, $parameters='') {

@@ -2,7 +2,7 @@
 
   function draw_fonticon($class, $parameters=null) {
 
-    switch(true) {
+    switch (true) {
 
     // Bootstrap Icons
       case (substr($class, 0, 3) == 'bi-'):
@@ -33,10 +33,27 @@
       case (substr($class, 0, 4) == 'mdi-'):
         document::$snippets['head_tags']['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css" />';
         return '<i class="mdi '. $class .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+    }
 
-      default:
-        trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);
-        return;
+    switch ($class) {
+      case 'add':         return draw_fonticon('fa-plus');
+      case 'cancel':      return draw_fonticon('fa-times');
+      case 'edit':        return draw_fonticon('fa-pencil');
+      case 'fail':        return draw_fonticon('fa-times', 'color: #c00;"');
+      case 'folder':      return draw_fonticon('fa-folder', 'style="color: #cc6;"');
+      case 'folder-open': return draw_fonticon('fa-folder-open', 'style="color: #cc6;"');
+      case 'remove':      return draw_fonticon('fa-times', 'style="color: #c33;"');
+      case 'delete':      return draw_fonticon('fa-trash-o');
+      case 'move-up':     return draw_fonticon('fa-arrow-up', 'style="color: #39c;"');
+      case 'move-down':   return draw_fonticon('fa-arrow-down', 'style="color: #39c;"');
+      case 'ok':          return draw_fonticon('fa-check', 'style="color: #8c4;"');
+      case 'on':          return draw_fonticon('fa-circle', 'style="color: #8c4;"');
+      case 'off':         return draw_fonticon('fa-circle', 'style="color: #f64;"');
+      case 'semi-off':    return draw_fonticon('fa-circle', 'style="color: #ded90f;"');
+      case 'save':        return draw_fonticon('fa-floppy-o');
+      case 'send':        return draw_fonticon('fa-paper-plane');
+      case 'warning':     return draw_fonticon('fa-exclamation-triangle', 'color: #c00;"');
+      default: trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING); return;
     }
   }
 
