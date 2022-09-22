@@ -36,9 +36,6 @@
   class_exists('compression');
   class_exists('notices');
   class_exists('stats');
-  if (file_get_contents('php://input')) {
-    class_exists('form');
-  }
 
 // Run operations before capture
   event::fire('before_capture');
