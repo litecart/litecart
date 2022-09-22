@@ -15,6 +15,11 @@
         'params' => [],
       ],
       [
+        'title' => language::translate('title_favicon', 'Favicon'),
+        'doc' => 'favicon',
+        'params' => [],
+      ],
+      [
         'title' => language::translate('title_logotype', 'Logotype'),
         'doc' => 'logotype',
         'params' => [],
@@ -28,6 +33,7 @@
     'docs' => [
       'edit_styling' => 'edit_styling.inc.php',
       'logotype' => 'logotype.inc.php',
+      'favicon' => 'favicon.inc.php',
       'template' => 'template.inc.php',
       'template_settings' => 'template_settings.inc.php',
     ],

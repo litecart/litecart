@@ -65,3 +65,6 @@
       die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
     }
   }
+
+// Copy some files
+  file_xcopy(FS_DIR_APP . 'install/data/default/public_html/images/favicons', FS_DIR_APP . 'images/');
