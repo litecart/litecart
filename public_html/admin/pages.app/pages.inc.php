@@ -216,7 +216,7 @@
           <td><?php echo functions::form_draw_checkbox('pages[]', $page['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><?php echo $page['id']; ?></td>
-          <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><?php echo $icon; ?> <a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a></td>
+          <td style="padding-inline-start: <?php echo $depth * 30; ?>px"><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_page', 'page_id' => $page['id']], true); ?>"><?php echo $page['title']; ?></a> <?php echo $icon; ?></td>
           <td class="text-center"><?php echo in_array('menu', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('information', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo in_array('customer_service', $page['dock']) ? functions::draw_fonticon('fa-check') : ''; ?></td>
