@@ -172,14 +172,14 @@
     </div>
   </div>
 
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a></li>
-  </ul>
+  <nav class="nav nav-tabs">
+    <a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-attributes"><?php echo language::translate('title_attributes', 'Attributes'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-stock"><?php echo language::translate('title_stock', 'Stock'); ?></a>
+  </nav>
 
   <div class="card-body">
     <?php echo functions::form_draw_form_begin('product_form', 'post', false, true); ?>
@@ -348,11 +348,11 @@
 
         <div id="tab-information" class="tab-pane">
 
-          <ul class="nav nav-tabs">
+          <nav class="nav nav-tabs" style="padding-top:0; margin-top: -1em;">
             <?php foreach (language::$languages as $language) { ?>
-              <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+            <a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
             <?php } ?>
-          </ul>
+          </nav>
 
           <div class="tab-content">
 

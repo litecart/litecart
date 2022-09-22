@@ -95,11 +95,11 @@
     </div>
   </div>
 
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-    <li><a data-toggle="tab" href="#tab-filters"><?php echo language::translate('title_filters', 'Filters'); ?></a></li>
-  </ul>
+  <nav class="nav nav-tabs">
+    <a class="nav-link active" data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a>
+    <a class="nav-link" data-toggle="tab" href="#tab-filters"><?php echo language::translate('title_filters', 'Filters'); ?></a>
+  </nav>
 
   <div class="card-body">
     <?php echo functions::form_draw_form_begin('category_form', 'post', false, true); ?>
