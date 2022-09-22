@@ -103,7 +103,7 @@
     </table>
 
     <div class="card-body">
-      <fieldset id="actions">
+      <fieldset id="actions" disabled>
         <legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
 
         <div class="btn-group">

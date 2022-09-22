@@ -147,7 +147,7 @@
   <div class="card-body">
     <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
 
-      <fieldset id="actions">
+      <fieldset id="actions" disabled>
         <legend><?php echo language::translate('text_change_status_for_orders', 'Change status for orders'); ?></legend>
 
         <div class="row">
