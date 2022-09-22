@@ -8,16 +8,16 @@
       foreach ($_POST['vmods'] as $vmod) {
 
         if (!empty($_POST['enable'])) {
-          if (!is_file('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
-          rename('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', 'storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
+          if (!is_file(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled')) continue;
+          rename(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled', FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml');
         } else {
-          if (!is_file('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
-          rename('storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', 'storage://vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
+          if (!is_file(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml')) continue;
+          rename(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.xml', FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_FILENAME) .'.disabled');
         }
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -31,11 +31,11 @@
       if (empty($_POST['vmods'])) throw new Exception(language::translate('error_must_select_vmods', 'You must select vMods'));
 
       foreach ($_POST['vmods'] as $vmod) {
-        unlink('storage://vmods/' . pathinfo($vmod, PATHINFO_BASENAME));
+        unlink(FS_DIR_APP . 'vmods/' . pathinfo($vmod, PATHINFO_BASENAME));
       }
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -62,7 +62,7 @@
         throw new Exception(language::translate('error_xml_file_is_not_valid_vmod', 'XML file is not a valid vMod file'));
       }
 
-      $filename = 'storage://vmods/' . pathinfo($_FILES['vmod']['name'], PATHINFO_FILENAME) .'.xml';
+      $filename = FS_DIR_APP . 'vmods/' . pathinfo($_FILES['vmod']['name'], PATHINFO_FILENAME) .'.xml';
 
       if (is_file($filename)) {
         unlink($filename);
@@ -71,7 +71,7 @@
       move_uploaded_file($_FILES['vmod']['tmp_name'], $filename);
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink());
+      header('Location: '. document::link());
       exit;
 
     } catch (Exception $e) {
@@ -82,7 +82,7 @@
 // Table Rows
   $vmods = [];
 
-  foreach (glob('storage://vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
+  foreach (glob(FS_DIR_APP . 'vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
     $xml = simplexml_load_file($file);
     $vmods[] = [
       'filename' => pathinfo($file, PATHINFO_BASENAME),
@@ -107,7 +107,7 @@
   </div>
 
   <div class="card-action">
-    <?php echo functions::form_draw_link_button(document::ilink(__APP__.'/edit_vmod'), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
+    <?php echo functions::form_draw_link_button(document::link(WS_DIR_ADMIN, ['doc' => 'edit_vmod'], ['app']), language::translate('title_create_new_vmod', 'Create New vMod'), '', 'add'); ?>
   </div>
 
   <?php echo functions::form_draw_form_begin('vmod_form', 'post', '', true); ?>
@@ -133,18 +133,18 @@
         <?php foreach ($vmods as $vmod) { ?>
         <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
-          <td><?php echo functions::draw_fonticon($vmod['enabled'] ? 'on' : 'off'); ?></td>
-          <td><a class="link" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['title']; ?></a></td>
+          <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($vmod['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+          <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['title']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
           <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
           <td class="text-center"><?php echo $vmod['type']; ?></td>
-          <td><a href="<?php echo document::href_ilink(__APP__.'/test', ['vmod' => $vmod['filename']]); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
-          <td><?php if ($vmod['configurable']) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
-          <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
+          <td><a href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'test', 'vmod' => $vmod['filename']], ['app']); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+          <td><?php if ($vmod['configurable']) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
+          <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
           <td>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
-            <a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['filename']]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'download', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>
+            <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
           </td>
         </tr>
         <?php } ?>
@@ -152,7 +152,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo language::number_format($num_rows); ?></td>
+          <td colspan="11"><?php echo language::translate('title_vmods', 'vMods'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

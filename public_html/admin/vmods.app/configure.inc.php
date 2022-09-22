@@ -4,7 +4,7 @@
 	try {
 		if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
 
-		$file = 'storage://vmods/' . basename($_GET['vmod']);
+		$file = FS_DIR_APP . 'vmods/' . basename($_GET['vmod']);
 
 		if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
 
@@ -16,7 +16,7 @@
 			throw new Exception(language::translate('error_nothing_to_configure', 'Nothing to configure'));
 		}
 
-		if ($json = @json_decode(file_get_contents('storage://vmods/' . '.settings'), true)) {
+		if ($json = @json_decode(file_get_contents(FS_DIR_APP . 'vmods/' . '.settings'), true)) {
 			$settings = $json;
 		} else {
 			$settings = [];
@@ -39,10 +39,10 @@
 
 			$settings[$id] = $_POST['settings'];
 
-			file_put_contents('storage://vmods/' . '.settings', json_encode($settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
+			file_put_contents(FS_DIR_APP . 'vmods/' . '.settings', json_encode($settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
 
 			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/vmods'));
+			header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
 			exit;
 
 		} catch (Exception $e) {
@@ -102,7 +102,7 @@ pre {
 
       <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+        <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
       </div>
 

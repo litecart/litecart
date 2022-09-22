@@ -47,7 +47,7 @@
       $vmod->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(__APP__.'/vmods'));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -63,7 +63,7 @@
       $vmod->delete();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::ilink(__APP__.'/vmods'));
+      header('Location: '. document::link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
       exit;
 
     } catch (Exception $e) {
@@ -121,7 +121,7 @@ textarea {
         <div class="col-md-4">
           <div class="form-group">
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', 'e/d', fallback($_POST['status'], '0')); ?>
+            <?php echo functions::form_draw_toggle('status', 'e/d', true); ?>
           </div>
 
           <div class="form-group">
@@ -193,9 +193,9 @@ textarea {
             <div class="operation">
 
               <div class="float-end">
-                <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
-                <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
-                <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
+                <a class="btn btn-default btn-sm move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                <a class="btn btn-default btn-sm move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                <a class="btn btn-default btn-sm remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
               </div>
 
               <div class="row">
@@ -205,7 +205,7 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
+                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
                   </div>
 
                   <div class="form-group">
@@ -244,7 +244,7 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
+                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
                   </div>
 
                   <div class="row" style="font-size: .8em;">
@@ -267,7 +267,7 @@ textarea {
 
                   <div class="form-group">
                     <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_textarea('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 375px;"'); ?>
+                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 375px;"'); ?>
                   </div>
 
                   <div class="row" style="font-size: .8em;">
@@ -303,7 +303,7 @@ textarea {
 
       <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($vmod->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+        <?php echo (!empty($vmod->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
 
@@ -338,9 +338,9 @@ textarea {
   <div class="operation">
 
     <div class="float-end">
-      <a class="move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
-      <a class="move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
-      <a class="remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
+      <a class="btn btn-default btn-sm move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
+      <a class="btn btn-default btn-sm move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
+      <a class="btn btn-default btn-sm remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
     </div>
 
     <div class="row">

@@ -1,7 +1,7 @@
 <?php
   $_GET['vmod'] = basename($_GET['vmod']);
 
-  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_ilink(__APP__.'/vmods'));
+  breadcrumbs::add(language::translate('title_vMods', 'vMods'), document::href_link(WS_DIR_ADMIN, ['doc' => 'vmods'], ['app']));
   breadcrumbs::add(language::translate('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']));
 
   document::$snippets['title'][] = language::translate('title_view_vmod', 'View vMod');
@@ -9,7 +9,7 @@
   try {
     if (empty($_GET['vmod'])) throw new Exception(language::translate('error_must_provide_vmod', 'You must provide a vMod'));
 
-    $file = 'storage://vmods/' . basename($_GET['vmod']);
+    $file = FS_DIR_APP . 'vmods/' . basename($_GET['vmod']);
 
     if (!is_file($file)) throw new Exception(language::translate('error_file_could_not_be_found', 'The file could not be found'));
 
