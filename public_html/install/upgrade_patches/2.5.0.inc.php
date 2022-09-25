@@ -2,7 +2,7 @@
 
 // Move vQmods to vMod
 
-  foreach (glob(FS_DIR_APP . 'vqmod/*.{xml,disabled}', GLOB_BRACE) as $file) {
+  foreach (glob(FS_DIR_APP . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE) as $file) {
     rename($file, FS_DIR_APP . 'vmods/' . basename($file));
   }
 
@@ -63,4 +63,4 @@
   }
 
 // Copy some files
-  file_xcopy(FS_DIR_APP . 'install/data/default/public_html/images/favicons', FS_DIR_APP . 'images/');
+  file_xcopy(FS_DIR_APP . 'install/data/default/public_html/images/favicons/', FS_DIR_APP . 'images/favicons/');
