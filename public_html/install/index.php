@@ -260,7 +260,7 @@
   <p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead</a></p>
 </div>
 
-<script src="../ext/jquery/jquery-3.6.0.min.js"></script>
+<script src="../ext/jquery/jquery-3.6.1.min.js"></script>
 <script src="../ext/featherlight/featherlight.min.js"></script>
 <script>
   $.featherlight.autoBind = '[data-toggle="lightbox"]';
