@@ -37,15 +37,19 @@
       }
 
     // If no cache is requested by browser
-      //if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-      //  $last_modified = time();
-      //}
+      if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
+        $last_modified = time();
+      }
 
     // Load installed
       $installed_file = FS_DIR_APP . 'vmods/.installed';
       if (is_file($installed_file)) {
-        foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $vmod_id) {
-          self::$_installed[] = $vmod_id;
+        foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
+          list($id, $version) = explode(';', $installed);
+          self::$_installed[] = [
+            'id' => $id,
+            'version' => $version,
+          ];
         }
       }
 
@@ -76,6 +80,14 @@
 
     // Load modifications from disk
       if (empty(self::$_modifications)) {
+
+      // Load vQmods for backwards compatibility
+        if (is_dir(FS_DIR_APP . 'vqmods/xml/')) {
+          foreach (glob(FS_DIR_APP . 'vqmods/xml/*.xml') as $file) {
+            self::load($file);
+          }
+        }
+
         foreach (glob(FS_DIR_APP . 'vmods/*.xml') as $file) {
           self::load($file);
         }
@@ -181,13 +193,13 @@
             if (!$found) {
               switch ($operation['onerror']) {
                 case 'abort':
-                  trigger_error("Modification \"$vmod[title]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
+                  trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
                   continue 3;
                 case 'ignore':
                   continue 2;
                 case 'warning':
                 default:
-                  trigger_error("Modification \"$vmod[title]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
+                  trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
                   continue 2;
               }
             }
@@ -277,6 +289,10 @@
         $vmod['id'] = basename($file);
         $vmod['date_modified'] = filemtime($file);
 
+        if (empty($vmod['version'])) {
+          $vmod['version'] = date('Y-m-d', $vmod['date_modified']);
+        }
+
         self::$_modifications[$vmod['id']] = $vmod;
 
       // Create cross reference for file patterns
@@ -300,17 +316,57 @@
         }
 
       // Run install for previously not installed modifications
-        if (!in_array($vmod['id'], self::$_installed)) {
+        if (!in_array($vmod['id'], array_column(self::$_installed, 'id'))) {
 
-        // Exceute install in an isolated scope
+        // Exceute install
           if (!empty($vmod['install'])) {
-            (function(){
-              eval(func_get_args()[0]);
-            })($vmod['install']);
+
+            $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+            file_put_contents($tmp_file, "<?php\r\n" . $vmod['install']);
+
+            (function() {
+              include func_get_arg(0);
+            })($tmp_file);
           }
 
-          file_put_contents(FS_DIR_APP . 'vmods/.installed', $vmod['id'] . PHP_EOL, FILE_APPEND | LOCK_EX);
-          self::$_installed[] = $vmod['id'];
+          file_put_contents(FS_DIR_APP . 'vmods/.installed', $vmod['id'] .';'. $vmod['version'] . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+          self::$_installed[] = [
+            'id' => $vmod['id'],
+            'version' => $vmod['version'],
+          ];
+        }
+
+      // Run upgrades if a previous version is installed
+        if (!empty($vmod['upgrades'])) {
+          if ($installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+
+            foreach ($vmod['upgrades'] as $upgrade) {
+
+              if (version_compare($upgrade['version'], $installed_version, '<=')) continue;
+
+            // Exceute upgrade in an isolated scope
+              $tmp_file = stream_get_meta_data(tmpfile())['uri'];
+              file_put_contents($tmp_file, "<?php\r\n" . $upgrade['script']);
+
+              (function() {
+                include func_get_arg(0);
+              })($tmp_file);
+
+              foreach (self::$_installed as $key => $installed) {
+                if ($installed['id'] == $vmod['id']) {
+                  self::$_installed[$key]['version'] = $upgrade['version'];
+                  break;
+                }
+              }
+
+              $new_contents = implode(PHP_EOL, array_map(function($vmod){
+                return $vmod['id'] .';'. $vmod['version'];
+              }, self::$_installed));
+
+              file_put_contents(FS_DIR_APP . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
+            }
+          }
         }
 
       } catch (\Exception $e) {
@@ -324,21 +380,46 @@
         throw new \Exception('File is not a valid vmod');
       }
 
-      if (empty($dom->getElementsByTagName('title')->item(0))) {
-        throw new \Exception('File is missing the title element');
+      if (empty($dom->getElementsByTagName('name')->item(0))) {
+        throw new \Exception('File is missing the name element');
       }
 
       $vmod = [
         'type' => 'vmod',
         'id' => pathinfo($file, PATHINFO_FILENAME),
-        'title' => $dom->getElementsByTagName('title')->item(0)->textContent,
+        'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
+        'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'files' => [],
         'install' => null,
+        'upgrades' => [],
         'settings' => [],
       ];
 
-      if ($dom->getElementsByTagName('install')->length > 0) {
-        $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
+      if (!$installed_version = array_search($vmod['id'], array_column(self::$_installed, 'id', 'version'))) {
+
+        if ($dom->getElementsByTagName('install')->length > 0) {
+          $vmod['install'] = $dom->getElementsByTagName('install')->item(0)->textContent;
+        }
+
+      } else {
+
+        if (!empty($dom->getElementsByTagName('upgrade'))) {
+          foreach ($dom->getElementsByTagName('upgrade') as $upgrade_node) {
+
+            $upgrade_version = $upgrade_node->getAttribute('version');
+
+            if (version_compare($vmod['version'], $upgrade_version, '<=')) {
+              $vmod['upgrades'][] = [
+                'version' => $upgrade_version,
+                'script' => $upgrade_node->textContent,
+              ];
+            }
+          }
+        }
+
+        uasort($vmod['upgrades'], function($a, $b){
+          return version_compare($a['version'], $b['version']);
+        });
       }
 
       $aliases = [];
@@ -520,7 +601,8 @@
 
       $mod = [
         'type' => 'vqmod',
-        'title' => $dom->getElementsByTagName('id')->item(0)->textContent,
+        'name' => $dom->getElementsByTagName('id')->item(0)->textContent,
+        'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
         'files' => [],
       ];
 

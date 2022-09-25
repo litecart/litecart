@@ -88,7 +88,7 @@
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'type' => ($xml->getName() == 'vmod') ? 'vMod' : 'VQmod',
       'enabled' => preg_match('#\.xml$#', $file) ? true : false,
-      'title' => $xml->title,
+      'name' => $xml->name,
       'version' => $xml->version,
       'author' => $xml->author,
       'configurable' => !empty($xml->setting) ? true : false,
@@ -134,7 +134,7 @@
         <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($vmod['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-          <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['title']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['name']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
           <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
