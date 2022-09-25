@@ -57,11 +57,6 @@
 
       echo 'Modify '. $file . '<br />' . PHP_EOL;
 
-      $contents = file_get_contents($file);
-      $contents = preg_replace('#\R#u', PHP_EOL, $contents);
-      $contents = preg_replace($search, $replace, $contents);
-      $result = file_put_contents($file, $contents);
-
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'], !empty($modification['regex']))) {
       die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
     }

@@ -60,7 +60,7 @@ html.dark-mode body {
       <h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
 
       <div class="form-group">
-        <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
+        <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>
       </div>
 
       <div class="form-group">
