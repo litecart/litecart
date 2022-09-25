@@ -34,7 +34,7 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   }
   > label {
     display: inline-block;
-    padding-bottom: @form-input-padding/2;
+    padding-bottom: calc(@form-input-padding / 2);
   }
 }
 
@@ -52,14 +52,14 @@ input[data-type="number"]::-webkit-inner-spin-button, input[data-type="decimal"]
   display: block;
   width: 100%;
   min-width: 1px; // Firefox fix
-  padding: @form-input-padding @form-input-padding * 2;
+  padding: @form-input-padding calc(@form-input-padding * 2);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   &[type="color"] {
     height: 37px;
   }
   &[type="file"] {
     font-size: 12px;
-    padding: 4px @form-input-padding/2;
+    padding: 4px calc(@form-input-padding / 2);
   }
   &[disabled] {
     opacity: .5;
@@ -94,7 +94,7 @@ select.form-control {
     padding: 0;
   }
   option {
-    padding: @form-input-padding @form-input-padding*2;
+    padding: @form-input-padding calc(@form-input-padding * 2);
   }
 }
 
@@ -123,7 +123,7 @@ select.form-control {
   .input-group-text {
     flex: 0 1 auto;
     margin: 0 -1px;
-    padding: @form-input-padding @form-input-padding * 2;
+    padding: @form-input-padding calc(@form-input-padding * 2);
     background-color: @default-color;
     border-left: 1px solid @default-border-color;
     border-right: 1px solid @default-border-color;
@@ -134,7 +134,7 @@ select.form-control {
   }
   .input-group-icon {
     flex: 0 1 auto;
-    padding: @form-input-padding @form-input-padding * 2;
+    padding: @form-input-padding calc(@form-input-padding * 2);
     margin-inline-end: -12px;
     align-self: center;
   }

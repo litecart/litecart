@@ -24,7 +24,6 @@
   event::fire('before_output');
 
 // Output page
-  header('Content-Language: '. language::$selected['code']);
   echo $GLOBALS['output'];
 
 // Run after processes

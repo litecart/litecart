@@ -33,20 +33,20 @@
       max-width: none;
     }
     li > a {
-      padding-top: @default-gutter-size/2;
-      padding-bottom: @default-gutter-size/2;
+      padding-top: calc(@default-gutter-size / 2);
+      padding-bottom: calc(@default-gutter-size / 2);
     }
     > ul {
       list-style: none;
       padding: 0;
       > li > a {
-        padding-inline-start: @default-gutter-size * 2;
+        padding-inline-start: calc(@default-gutter-size * 2);
       }
       > li > ul > li > a {
-        padding-inline-start: @default-gutter-size * 3;
+        padding-inline-start: calc(@default-gutter-size * 3);
       }
       > li > ul > li > ul > li > a {
-        padding-inline-start: @default-gutter-size * 4;
+        padding-inline-start: calc(@default-gutter-size * 4);
       }
     }
   }
@@ -81,8 +81,8 @@
   li a {
     margin: 1px 0;
     background: #f3f3f3;
-    padding-top: @default-gutter-size/2;
-    padding-bottom: @default-gutter-size/2;
+    padding-top: calc(@default-gutter-size / 2);
+    padding-bottom: calc(@default-gutter-size / 2);
     border-radius: @default-border-radius;
     &:hover {
       background: darken(#f3f3f3, 5%);
@@ -99,13 +99,13 @@
 .nav-tabs {
   background: @default-color;
   border-bottom: 1px solid @default-border-color;
-  padding-top: @default-gutter-size/4;
+  padding-top: calc(@default-gutter-size / 4);
   > li {
     > a {
       margin-inline-end: 2px;
       line-height: 1.42857143;
       border-radius: @default-border-radius @default-border-radius 0 0;
-      padding: @default-gutter-size/2 @default-gutter-size;
+      padding: calc(@default-gutter-size / 2) @default-gutter-size;
     }
     &.active a {
       background: #fff;

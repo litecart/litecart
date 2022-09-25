@@ -31,7 +31,7 @@
           $row[$column] = $enclosure . str_replace($enclosure, $escape.$enclosure, $row[$column]) . $enclosure;
         }
       }
-      $output .= implode($delimiter, $row) . $eol; // Don't use fputcsv as EOL and escape char can not be customized
+      $output .= implode($delimiter, $row) . $eol; // Don't use fputcsv(); as the EOL and escape char cannot be customized
     }
 
   // Convert charset

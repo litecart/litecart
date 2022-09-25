@@ -272,10 +272,8 @@
         limit 1;"
       );
 
-      if (database::num_rows($products_query) > 0) {
-        notices::add('errors', language::translate('error_delete_category_not_empty_products', 'The category could not be deleted because there are products linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
+      if (database::num_rows($products_query)) {
+        throw new Exception(language::translate('error_cannot_delete_category_while_it_contains_products', 'The category could not be deleted because it contains products.'));
       }
 
       $subcategories_query = database::query(
@@ -284,10 +282,8 @@
         limit 1;"
       );
 
-      if (database::num_rows($subcategories_query) > 0) {
-        notices::add('errors', language::translate('error_delete_category_not_empty_subcategories', 'The category could not be deleted because there are subcategories linked to it.'));
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit;
+      if (database::num_rows($subcategories_query)) {
+        throw new Exception(language::translate('error_cannot_delete_category_while_it_contains_subcategories', 'The category could not be deleted because it contains subcategories.'));
       }
 
       $this->data['filters'] = [];

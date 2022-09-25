@@ -102,7 +102,7 @@
       </div>
 
       <?php if ($recommended_price) { ?>
-      <div class="recommmended-price" style="margin: 1em 0;">
+      <div class="recommended-price" style="margin: 1em 0;">
         <?php echo language::translate('title_recommended_price', 'Recommended Price'); ?>:
         <span class="value"><?php echo currency::format($recommended_price); ?></span>
       </div>
@@ -166,7 +166,7 @@
 
       <?php if ($quantity <= 0 && !empty($sold_out_status) && empty($sold_out_status['orderable'])) { ?>
       <div class="out-of-stock-notice">
-        <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and can not be purchased.'); ?>
+        <?php echo language::translate('description_item_is_out_of_stock', 'This item is currently out of stock and cannot be purchased.'); ?>
       </div>
       <?php } ?>
 

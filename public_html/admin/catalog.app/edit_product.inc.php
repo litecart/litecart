@@ -1304,7 +1304,7 @@
     } else {
       if ($(customValueElement).val() != '') {
         console.log($(valueElement).val(), $(customValueElement).val());
-        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>");
+        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value'); ?>");
         return;
       }
     }

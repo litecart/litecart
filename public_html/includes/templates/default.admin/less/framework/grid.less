@@ -23,7 +23,7 @@ html[dir="rtl"] {
   grid-gap: @default-gutter-size;
   margin-bottom: @default-gutter-size;
   &.half-gutter {
-    grid-gap: @default-gutter-size/2;
+    grid-gap: calc(@default-gutter-size / 2);
   }
   &.column {
     flex-direction: column;
@@ -64,13 +64,13 @@ html[dir="rtl"] {
 
 // Hidden
 
-@media (max-width: (@media-breakpoint-sm - 1px)) {
+@media (max-width: calc(@media-breakpoint-sm - 1px)) {
   .hidden-xs { display: none !important; }
 }
-@media (min-width: (@media-breakpoint-sm)) and (max-width: (@media-breakpoint-md - 1px)) {
+@media (min-width: (@media-breakpoint-sm)) and (max-width: calc(@media-breakpoint-md - 1px)) {
   .hidden-sm { display: none; }
 }
-@media (min-width: @media-breakpoint-md) and (max-width: (@media-breakpoint-lg - 1px)) {
+@media (min-width: @media-breakpoint-md) and (max-width: calc(@media-breakpoint-lg - 1px)) {
   .hidden-md { display: none; }
 }
 @media (min-width: @media-breakpoint-lg) {
