@@ -123,7 +123,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group_value', 'Add Group Value'); ?></a></td>
+              <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_group_value', 'Add Group Value'); ?></a></td>
             </tr>
           </tfoot>
         </table>

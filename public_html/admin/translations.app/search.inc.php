@@ -172,7 +172,7 @@ th:not(:last-child) {
     </table>
 
     <div class="card-action">
-      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
+      <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success" tabindex="9999"', 'save'); ?>
     </div>
 
   <?php echo functions::form_draw_form_end(); ?>

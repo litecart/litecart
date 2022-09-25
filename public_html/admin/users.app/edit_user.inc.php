@@ -159,12 +159,12 @@
 <?php
   $apps = functions::admin_get_apps();
   foreach ($apps as $app) {
-    echo '  <li>' . PHP_EOL
+    echo '  <li data-app="'. functions::escape_html($app['code']) .'">' . PHP_EOL
        . '    <label>'. functions::form_draw_checkbox('apps['.$app['code'].'][status]', '1', true) .' '. $app['name'] .'</label>' . PHP_EOL;
     if (!empty($app['docs'])) {
-      echo '    <ul class="">' . PHP_EOL;
+      echo '    <ul class="list-unstyled">' . PHP_EOL;
       foreach ($app['docs'] as $doc => $file) {
-        echo '      <li><label>'. functions::form_draw_checkbox('apps['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
+        echo '      <li data-doc="'. functions::escape_html($doc) .'"><label>'. functions::form_draw_checkbox('apps['.$app['code'].'][docs][]', $doc, true) .' '. $doc .'</label>' . PHP_EOL;
       }
       echo '    </ul>' . PHP_EOL;
     }
@@ -205,30 +205,27 @@
 
 <script>
   $('input[name="apps_toggle"]').change(function(){
-    if ($(this).is(':checked')) {
-      $('input[name^="apps"][name$="[status]"]').prop('disabled', false);
-      $('input[name^="apps"][name$="[docs][]"]').prop('disabled', false);
-    } else {
-      $('input[name^="apps"][name$="[status]"]').prop('disabled', true);
-      $('input[name^="apps"][name$="[docs][]"]').prop('disabled', true);
-    }
+    $('input[name^="apps"][name$="[status]"]').prop('disabled', !$(this).is(':checked'));
+    $('input[name^="apps"][name$="[docs][]"]').prop('disabled', !$(this).is(':checked'));
   }).trigger('change');
 
-  $('input[name^="apps"][name$="[status]"]').change(function(){
-    if ($(this).is(':checked')) {
-      if (!$(this).closest('li').find('input[name^="apps"][name$="[docs][]"]:checked').length) {
-        $(this).closest('li').find('input[name^="apps"][name$="[docs][]"]').prop('checked', true);
+  $('input[name^="apps"][name$="[status]"]').change(function() {
+    if ($(this).prop('checked')) {
+      if (!$(this).closest('[data-app]').find('ul :input:checked').length) {
+        $(this).closest('[data-app]').find('ul :input').prop('checked', true);
       }
     } else {
-      $(this).closest('li').find('input[name^="apps"][name$="[docs][]"]').prop('checked', false);
+      $(this).closest('[data-app]').find('ul :input').prop('checked', false);
     }
-  }).trigger('change');
+  });
+
+  $('input[name^="apps"][name$="[docs][]"]').change(function() {
+    if ($(this).is(':checked')) {
+      $(this).closest('ul').closest('[data-app]').children().not('ul').find(':input').prop('checked', true);
+    }
+  });
 
   $('input[name="widgets_toggle"]').change(function(){
-    if ($(this).is(':checked')) {
-      $('input[name^="widgets["]').prop('disabled', false);
-    } else {
-      $('input[name^="widgets["]').prop('disabled', true);
-    }
+    $('input[name^="widgets["]').prop('disabled', !$(this).is(':checked'));
   }).trigger('change');
 </script>
