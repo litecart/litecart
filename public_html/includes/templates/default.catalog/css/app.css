@@ -112,7 +112,7 @@ html {
 #cart .badge:empty {
   display: none;
 }
-@media (max-width: 767px) {
+@media (max-width: calc(768px - 1px)) {
   #cart .details {
     display: none;
   }
@@ -125,7 +125,7 @@ html {
     margin: 0 var(--gutter-size) var(--gutter-size) var(--gutter-size);
   }
 }
-@media (max-width: 767px) {
+@media (max-width: calc(768px - 1px)) {
   #site-menu {
     position: sticky;
     top: 0;
@@ -522,6 +522,7 @@ html {
 }
 #box-product .main-image {
   position: relative;
+  background: var(--whitespace-color);
   overflow: hidden;
 }
 #box-product .main-image .sticker {

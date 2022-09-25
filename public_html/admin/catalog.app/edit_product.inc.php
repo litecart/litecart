@@ -9,8 +9,6 @@
   if (empty($_POST)) {
     $_POST = $product->data;
 
-    $_POST['keywords'] = implode(',', $_POST['keywords']);
-
     if (empty($product->data['id']) && isset($_GET['category_id'])) {
       $_POST['categories'][] = $_GET['category_id'];
     }
@@ -31,12 +29,29 @@
       if (empty($_POST['options'])) $_POST['options'] = [];
       if (empty($_POST['options_stock'])) $_POST['options_stock'] = [];
 
-      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
-      if (!empty($_POST['sku'])  && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and sku = '". database::input($_POST['sku']) ."' limit 1;")))   throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
-      if (!empty($_POST['mpn'])  && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;")))   throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
-      if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      }
 
-      $_POST['keywords'] = preg_split('#\s*,\s*#', $_POST['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+      if (!empty($_POST['sku'])  && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and sku = '". database::input($_POST['sku']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_sku_database_conflict', 'Another entry with the given SKU already exists in the database'));
+      }
+
+      if (!empty($_POST['mpn']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and mpn = '". database::input($_POST['mpn']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_mpn_database_conflict', 'Another entry with the given MPN already exists in the database'));
+      }
+
+      if (!empty($_POST['gtin']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."products where id != '". (int)$product->data['id'] ."' and gtin = '". database::input($_POST['gtin']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_gtin_database_conflict', 'Another entry with the given GTIN already exists in the database'));
+      }
+
+      if (!empty($_FILES['new_images']['tmp_name'])) {
+        foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
+          if (is_uploaded_file($_FILES['new_images']['tmp_name'][$key]) && !empty($_FILES['new_images']['error'][$key])) {
+            throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+          }
+        }
+      }
 
       $fields = [
         'status',
@@ -90,7 +105,9 @@
 
       if (!empty($_FILES['new_images']['tmp_name'])) {
         foreach (array_keys($_FILES['new_images']['tmp_name']) as $key) {
-          $product->add_image($_FILES['new_images']['tmp_name'][$key]);
+          if (!empty($_FILES['new_images']['tmp_name'][$key])) {
+            $product->add_image($_FILES['new_images']['tmp_name'][$key]);
+          }
         }
       }
 
@@ -424,9 +441,9 @@
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][value_name]', true); ?>
                 <?php echo functions::form_draw_hidden_field('attributes['.$key.'][custom_value]', true); ?>
-                <td><?php echo $_POST['attributes'][$key]['group_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['value_name']; ?></td>
-                <td><?php echo $_POST['attributes'][$key]['custom_value']; ?></td>
+                <td><?php echo functions::escape_html($_POST['attributes'][$key]['group_name']); ?></td>
+                <td><?php echo functions::escape_html($_POST['attributes'][$key]['value_name']); ?></td>
+                <td><?php echo functions::escape_html($_POST['attributes'][$key]['custom_value']); ?></td>
                 <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
               </tr>
               <?php } ?>
@@ -738,7 +755,7 @@
                 <tr>
                   <td><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][id]', true); ?><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][combination]', true); ?>
                     <?php echo functions::form_draw_hidden_field('options_stock['.$key.'][name]['. language::$selected['name'] .']', true); ?>
-                    <?php echo $_POST['options_stock'][$key]['name'][language::$selected['code']]; ?></td>
+                    <?php echo functions::escape_html($_POST['options_stock'][$key]['name'][language::$selected['code']]); ?></td>
                   <td><?php echo functions::form_draw_text_field('options_stock['.$key.'][sku]', true); ?></td>
                   <td>
                     <div class="input-group">
@@ -1044,7 +1061,7 @@
     }
 
     update_currency_prices();
-  }).trigger('change');
+  }).trigger('input');
 
 // Update net price
   $('input[name^="gross_prices"]').on('input', function() {
@@ -1289,7 +1306,7 @@
     } else {
       if ($(customValueElement).val() != '') {
         console.log($(valueElement).val(), $(customValueElement).val());
-        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You can not define both a value and a custom value'); ?>");
+        alert("<?php echo language::translate('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value'); ?>");
         return;
       }
     }

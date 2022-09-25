@@ -96,6 +96,13 @@
         case 'head_title':
         case 'meta_description':
 
+          $this->_data['name'] = '';
+          $this->_data['short_description'] = '';
+          $this->_data['description'] = '';
+          $this->_data['technical_data'] = '';
+          $this->_data['head_title'] = '';
+          $this->_data['meta_description'] = '';
+
           $query = database::query(
             "select * from ". DB_TABLE_PREFIX ."products_info
             where product_id = ". (int)$this->_data['id'] ."
@@ -121,12 +128,15 @@
             from ". DB_TABLE_PREFIX ."products_campaigns
             where product_id = ". (int)$this->_data['id'] ."
             and (start_date is null or start_date <= '". date('Y-m-d H:i:s') ."')
-            and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."')
-            limit 1;"
+            and (end_date is null or year(end_date) < '1971' or end_date >= '". date('Y-m-d H:i:s') ."');"
           );
 
-          if ($campaign = database::fetch($campaigns_query)) {
-            $this->_data['campaign'] = $campaign;
+          while ($campaign = database::fetch($campaigns_query)) {
+            if ($campaign['price'] < $this->price) {
+              if (!isset($this->_data['campaign']['price']) || $campaign['price'] < $this->_data['campaign']['price']) {
+                $this->_data['campaign'] = $campaign;
+              }
+            }
           }
 
           break;
@@ -160,7 +170,7 @@
 
         case 'default_category':
 
-          $this->_data['default_category'] = false;
+          $this->_data['default_category'] = 0;
 
           if (empty($this->default_category_id)) return;
 

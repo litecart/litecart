@@ -40,7 +40,6 @@
 
       $this->data['categories'] = [];
       $this->data['attributes'] = [];
-      $this->data['keywords'] = [];
       $this->data['images'] = [];
       $this->data['prices'] = [];
       $this->data['campaigns'] = [];
@@ -72,8 +71,6 @@
       foreach ($product as $key => $value) {
         $this->data[$key] = $value;
       }
-
-      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
 
     // Categories
       $categories_query = database::query(
@@ -236,9 +233,11 @@
       $this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
       $this->data['categories'] = array_unique($this->data['categories']);
 
+      $this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
       $this->data['keywords'] = array_map('trim', $this->data['keywords']);
       $this->data['keywords'] = array_filter($this->data['keywords']);
       $this->data['keywords'] = array_unique($this->data['keywords']);
+      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       if (empty($this->data['default_category_id']) || !in_array($this->data['default_category_id'], $this->data['categories'])) {
         $this->data['default_category_id'] = reset($this->data['categories']);
@@ -252,7 +251,7 @@
         delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
         sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
         default_category_id = ". (int)$this->data['default_category_id'] .",
-        keywords = '". database::input(implode(',', $this->data['keywords'])) ."',
+        keywords = '". database::input($this->data['keywords']) ."',
         quantity_min = ". (float)$this->data['quantity_min'] .",
         quantity_max = ". (float)$this->data['quantity_max'] .",
         quantity_step = ". (float)$this->data['quantity_step'] .",
@@ -721,7 +720,9 @@
 
     public function add_image($file, $filename='') {
 
-      if (empty($file)) return;
+      if (empty($file)) {
+        throw new Exception('Missing image');
+      };
 
       $checksum = md5_file($file);
       if (in_array($checksum, array_column($this->data['images'], 'checksum'))) return false;
@@ -734,7 +735,9 @@
 
       if (!is_dir(FS_DIR_APP . 'images/products/')) mkdir(FS_DIR_APP . 'images/products/', 0777);
 
-      if (!$image = new ent_image($file)) return false;
+      if (!$image = new ent_image($file)) {
+        throw new Exception('Failed decoding image');
+      }
 
     // 456-Fancy-product-title-N.jpg
       $i=1;
@@ -749,7 +752,9 @@
         $image->resample($width, $height, 'FIT_ONLY_BIGGER');
       }
 
-      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 90)) return false;
+      if (!$image->write(FS_DIR_APP . 'images/' . $filename, 90)) {
+        throw new Exception('Failed writing image to folder');
+      }
 
       functions::image_delete_cache(FS_DIR_APP . 'images/' . $filename);
 

@@ -98,7 +98,7 @@
         database::query(
           "update ". DB_TABLE_PREFIX ."orders
           set customer_id = ". (int)$this->data['id'] ."
-          where lower(customer_email) = lower('". database::input($this->data['email']) ."')
+          where lower(customer_email) = '". database::input(strtolower($this->data['email'])) ."'
           and customer_id = 0;"
         );
       }
@@ -108,7 +108,7 @@
         set
           code = '". database::input($this->data['code']) ."',
           status = '". (!empty($this->data['status']) ? '1' : '0') ."',
-          email = '". database::input($this->data['email']) ."',
+          email = '". database::input(strtolower($this->data['email'])) ."',
           tax_id = '". database::input($this->data['tax_id']) ."',
           company = '". database::input($this->data['company']) ."',
           firstname = '". database::input($this->data['firstname']) ."',
@@ -143,10 +143,10 @@
       if (!empty($this->previous['email']) && $this->previous['email'] != $this->data['email']) {
         database::query(
           "update ". DB_TABLE_PREFIX ."newsletter_recipients
-          set email = '". database::input($this->data['email']) ."'
+          set email = '". database::input(strtolower($this->data['email'])) ."'
             firstname = '". database::input($this->data['firstname']) ."',
             lastname = '". database::input($this->data['lastname']) ."'
-          where email = '". database::input($this->previous['email']) ."';"
+          where lower(email) = '". database::input(strtolower($this->previous['email'])) ."';"
         );
       }
 
@@ -159,7 +159,7 @@
       } else if (!empty($this->previous['id'])) {
         database::query(
           "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-          where email = '". database::input($this->data['email']) ."';"
+          where lower(email) = '". database::input(strtolower($this->data['email'])) ."';"
         );
       }
 

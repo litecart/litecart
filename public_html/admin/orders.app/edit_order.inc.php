@@ -550,7 +550,7 @@
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][author]', true); ?>
               <?php echo functions::form_draw_hidden_field('comments['. $key .'][text]', true); ?>
 
-              <div class="text"><?php echo nl2br($_POST['comments'][$key]['text']); ?></div>
+                <div class="text"><?php echo nl2br(functions::escape_html($_POST['comments'][$key]['text'])); ?></div>
 
               <div class="date"><?php echo language::strftime(language::$selected['format_datetime'], !empty($_POST['comments'][$key]['date_created']) ? strtotime($_POST['comments'][$key]['date_created']) : 0); ?></div>
 
@@ -608,7 +608,7 @@
         <?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
         <tr class="item">
           <td>
-            <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
+                  <?php echo !empty($_POST['items'][$key]['product_id']) ? '<a href="'. document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. functions::escape_html($_POST['items'][$key]['name']) .'</a>' : functions::escape_html($_POST['items'][$key]['name']); ?> <?php echo '<a class="float-end" href="'. document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. functions::draw_fonticon('fa-external-link') .'</a>'; ?>
             <?php echo functions::form_draw_hidden_field('items['.$key.'][id]', true); ?>
             <?php echo functions::form_draw_hidden_field('items['.$key.'][product_id]', true); ?>
             <?php echo functions::form_draw_hidden_field('items['.$key.'][option_stock_combination]', true); ?>
@@ -626,16 +626,16 @@
       if (!empty($_POST['items'][$key]['options'])) {
         foreach (array_keys($_POST['items'][$key]['options']) as $field) {
           echo '<div>' . PHP_EOL
-             . ' - '. $field .': ' . PHP_EOL;
+             . ' - '. functions::escape_html($field) .': ' . PHP_EOL;
           if (is_array($_POST['items'][$key]['options'][$field])) {
             $use_comma = false;
             foreach (array_keys($_POST['items'][$key]['options'][$field]) as $k) {
-              echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']['.$k.']', true) . $_POST['items'][$key]['options'][$field][$k];
+              echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']['.$k.']', true) . functions::escape_html($_POST['items'][$key]['options'][$field][$k]);
               if ($use_comma) echo ', ';
               $use_comma = true;
             }
           } else {
-            echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']', true) . $_POST['items'][$key]['options'][$field];
+            echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']', true) . functions::escape_html($_POST['items'][$key]['options'][$field]);
           }
           echo '</div>' . PHP_EOL;
         }
@@ -644,12 +644,12 @@
       }
 ?>
           </td>
-          <td class="sku"><?php echo $_POST['items'][$key]['sku']; ?></td>
+              <td class="sku"><?php echo functions::escape_html($_POST['items'][$key]['sku']); ?></td>
           <td>
-            <span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_class"><?php echo $_POST['items'][$key]['weight_class']; ?></span>
+                <span class="weight"><?php echo (float)$_POST['items'][$key]['weight']; ?></span> <span class="weight_class"><?php echo functions::escape_html($_POST['items'][$key]['weight_class']); ?></span>
           </td>
           <td>
-            <span class="dim_x"><?php echo (float)$_POST['items'][$key]['dim_x']; ?></span> x <span class="dim_y"><?php echo (float)$_POST['items'][$key]['dim_y']; ?></span> x <span class="dim_z"><?php echo (float)$_POST['items'][$key]['dim_z']; ?></span> <span class="dim_class"><?php echo $_POST['items'][$key]['dim_class']; ?></span>
+                <span class="dim_x"><?php echo (float)$_POST['items'][$key]['dim_x']; ?></span> x <span class="dim_y"><?php echo (float)$_POST['items'][$key]['dim_y']; ?></span> x <span class="dim_z"><?php echo (float)$_POST['items'][$key]['dim_z']; ?></span> <span class="dim_class"><?php echo functions::escape_html($_POST['items'][$key]['dim_class']); ?></span>
           </td>
           <td><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
           <td><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
@@ -928,7 +928,7 @@
 
     <div class="row">
         <div class="form-group col-md-4">
-        <label><?php echo language::translate('title_quantity', 'quantity'); ?></label>
+        <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
         <?php echo functions::form_draw_decimal_field('quantity', '0'); ?>
       </div>
 

@@ -270,14 +270,16 @@
 
     public static function input($string, $allowable_tags=false, $trim=true, $link='default') {
 
-      if (empty($string) || in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
-        return $string;
-      }
-
       if (is_array($string)) {
         foreach (array_keys($string) as $key) {
           $string[$key] = self::input($string[$key], $allowable_tags, $trim, $link);
         }
+        return $string;
+      }
+
+      if (empty($string)) return '';
+
+      if (in_array(gettype($string), ['null', 'boolean', 'double', 'integer', 'float'])) {
         return $string;
       }
 

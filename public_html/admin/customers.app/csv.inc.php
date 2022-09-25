@@ -12,6 +12,10 @@
         throw new Exception(language::translate('error_must_select_file_to_upload', 'You must select a file to upload'));
       }
 
+      if (!empty($_FILES['file']['error'])) {
+        throw new Exception(language::translate('error_uploaded_file_rejected', 'An uploaded file was rejected for unknown reason'));
+      }
+
       $csv = file_get_contents($_FILES['file']['tmp_name']);
 
       if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {

@@ -10,8 +10,8 @@ ul.breadcrumb {
     display: inline-block;
     &:not(:last-child)::after {
       content: "\00bb";
-      padding: 0 (~"calc(var(--gutter-size)/2)");
-      color: #bbb;
+      padding: 0 ~"calc(var(--gutter-size)/2)";
+      color: var(--breadcrumbs-text-color);
     }
     a {
       color: inherit;

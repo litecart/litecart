@@ -55,16 +55,17 @@
       background-color: #e5e5e5;
     }
 
-    > li > a, > li > span, > li > label {
+    > li > a, > li > span,
+    > li > label {
       display: block;
       padding: ~"calc(var(--gutter-size)/4)" var(--gutter-size);
       clear: both;
       font-weight: normal;
       line-height: 1.42857143;
-      color: #333;
+      color: inherit;
       white-space: nowrap;
-      &a:hover,
-      &a:focus {
+      &:hover,
+      &:focus {
         text-decoration: none;
         color: #262626;
         background-color: #f5f5f5;
@@ -110,7 +111,7 @@
     }
   }
 
-  @media (max-width: @media-breakpoint-sm - 1px) {
+  @media (max-width: calc(@media-breakpoint-sm - 1px)) {
     .dropdown-menu {
       display: none;
     }

@@ -244,6 +244,7 @@
     $_SERVER['SERVER_PROTOCOL'] = 'https';
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['REQUEST_URI'] = '/';
+    $_SERVER['SERVER_SOFTWARE'] = 'CLI';
   }
 
   if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = 'off';

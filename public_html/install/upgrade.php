@@ -18,7 +18,7 @@
       'from_version::', 'development_type::'
     ];
 
-    $_REQUEST = getopt(null, $options);
+    $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
   } else {

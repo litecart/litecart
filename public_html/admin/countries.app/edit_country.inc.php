@@ -173,7 +173,7 @@
         <tbody>
           <?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
           <tr>
-            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
+            <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo functions::escape_html($_POST['zones'][$key]['id']); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][code]', true); ?></td>
             <td><?php echo functions::form_draw_text_field('zones['. $key .'][name]', true); ?></td>
             <td class="text-end"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>

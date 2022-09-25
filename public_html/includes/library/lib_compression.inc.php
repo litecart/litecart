@@ -10,7 +10,7 @@
 
     // Initialize GZIP compression to reduce bandwidth.
       if (!headers_sent() && settings::get('gzip_enabled')) {
-        if (in_array(strtolower(ini_get('zlib.output_compression')), ['', '0', 'off', 'no', 'false', 'disabled'])) {
+        if (filter_var(ini_get('zlib.output_compression'), FILTER_VALIDATE_BOOLEAN)) {
           ob_start('ob_gzhandler');
         }
       }

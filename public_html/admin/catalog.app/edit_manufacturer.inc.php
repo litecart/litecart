@@ -21,7 +21,13 @@
     try {
       if (empty($_POST['name'])) throw new Exception(language::translate('error_name_missing', 'You must enter a name.'));
 
-      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      if (!empty($_POST['code']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."manufacturers where id != '". (isset($_GET['manufacturer_id']) ? (int)$_GET['manufacturer_id'] : 0) ."' and code = '". database::input($_POST['code']) ."' limit 1;"))) {
+        throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
+      }
+
+      if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']) && !empty($_FILES['image']['error'])) {
+        throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+      }
 
       $fields = [
         'status',
@@ -45,7 +51,7 @@
 
       if (!empty($_POST['delete_image'])) $manufacturer->delete_image();
 
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+      if (!empty($_FILES['image']['tmp_name'])) {
         $manufacturer->save_image($_FILES['image']['tmp_name']);
       }
 

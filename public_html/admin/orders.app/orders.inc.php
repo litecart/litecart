@@ -63,26 +63,26 @@
     $sql_where_query = [
       "o.id = '". database::input($_GET['query']) ."'",
       "o.uid = '". database::input($_GET['query']) ."'",
-      "o.reference like '%". database::input($_GET['query']) ."%'",
-      "o.customer_email like '%". database::input($_GET['query']) ."%'",
-      "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
-      "concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". database::input($_GET['query']) ."%'",
-      "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". database::input($_GET['query']) ."%'",
-      "o.payment_option_id like '%". database::input($_GET['query']) ."%'",
-      "o.payment_option_name like '%". database::input($_GET['query']) ."%'",
-      "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
-      "o.shipping_option_id like '%". database::input($_GET['query']) ."%'",
-      "o.shipping_option_name like '%". database::input($_GET['query']) ."%'",
-      "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
+      "o.reference like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.customer_email like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.customer_tax_id like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "concat(o.customer_company, '\\n', o.customer_firstname, ' ', o.customer_lastname, '\\n', o.customer_address1, '\\n', o.customer_address2, '\\n', o.customer_postcode, '\\n', o.customer_city) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "concat(o.shipping_company, '\\n', o.shipping_firstname, ' ', o.shipping_lastname, '\\n', o.shipping_address1, '\\n', o.shipping_address2, '\\n', o.shipping_postcode, '\\n', o.shipping_city) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.payment_option_id like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.payment_option_name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.payment_transaction_id like '". addcslashes(database::input($_GET['query']), '%_') ."'",
+      "o.shipping_option_id like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.shipping_option_name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'",
+      "o.shipping_tracking_id like '". addcslashes(database::input($_GET['query']), '%_') ."'",
       "o.id in (
         select distinct order_id from ". DB_TABLE_PREFIX ."orders_items
-        where name like '%". database::input($_GET['query']) ."%'
-        or sku like '%". database::input($_GET['query']) ."%'
+        where name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+        or sku like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
       )",
       "o.order_status_id in (
         select distinct order_status_id from ". DB_TABLE_PREFIX ."order_statuses_info
         where language_code = '". database::input(language::$selected['code']) ."'
-        and name like '%". database::input($_GET['query']) ."%'
+        and name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
       )",
     ];
   }
@@ -112,7 +112,7 @@
       $sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
       break;
     case 'order_status':
-      $sql_sort = "o.starred desc, os.name asc";
+      $sql_sort = "o.starred desc, osi.name asc";
       break;
     case 'payment_method':
       $sql_sort = "o.starred desc, o.payment_option_name asc";
@@ -283,7 +283,7 @@ table .fa-star:hover {
           <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
           <td><?php echo $order['id']; ?></td>
           <td><?php echo (!empty($order['starred'])) ? functions::draw_fonticon('fa-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('fa-star-o', 'style="color: #ccc;"'); ?></td>
-          <td><a class="link" href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
+          <td><a class="link" href="<?php echo document::href_link('', ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>"><?php echo functions::escape_html($order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']); ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo functions::escape_html($order['customer_tax_id']); ?></span></td>
           <td><?php echo !empty($order['customer_country_code']) ? reference::country($order['customer_country_code'])->name : ''; ?></td>
           <td><?php echo $order['payment_option_name']; ?></td>
           <td class="text-end"><?php echo currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']); ?></td>

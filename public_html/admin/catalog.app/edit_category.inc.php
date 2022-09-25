@@ -29,6 +29,10 @@
         throw new Exception(language::translate('error_code_database_conflict', 'Another entry with the given code already exists in the database'));
       }
 
+      if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name']) && !empty($_FILES['image']['error'])) {
+        throw new Exception(language::translate('error_uploaded_image_rejected', 'An uploaded image was rejected for unknown reason'));
+      }
+
       if (empty($_POST['filters'])) $_POST['filters'] = [];
 
       $fields = [
@@ -55,7 +59,7 @@
 
       if (!empty($_POST['delete_image'])) $category->delete_image();
 
-      if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+      if (!empty($_FILES['image']['tmp_name'])) {
         $category->save_image($_FILES['image']['tmp_name']);
       }
 
@@ -257,7 +261,7 @@
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_id]', true); ?>
                 <?php echo functions::form_draw_hidden_field('filters['.$key.'][attribute_group_name]', true); ?>
-                <td class="grabable"><?php echo $_POST['filters'][$key]['attribute_group_name']; ?></td>
+                <td class="grabable"><?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?></td>
                 <td class="grabable"><?php echo functions::form_draw_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
                 <td class="text-end">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>

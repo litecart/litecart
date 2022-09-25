@@ -20,9 +20,11 @@
       );
 
       $aliases = [
-        '%ip_address' => $_SERVER['REMOTE_ADDR'],
+        '%ipaddress' => $_SERVER['REMOTE_ADDR'],
         '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
         '%datetime' => language::strftime(language::$selected['format_datetime']),
+        '%store_name' => settings::get('store_name'),
+        '%store_link' => document::ilink(),
       ];
 
       $message = strtr(
@@ -61,7 +63,7 @@
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-        where email like '". database::input($_POST['email']) ."';"
+        where email like '". addcslashes(database::input($_POST['email']), '%_') ."';"
       );
 
       notices::add('success', language::translate('success_unsubscribed_from_newsletter', 'You have been unsubscribed from the newsletter'));
@@ -74,4 +76,13 @@
   }
 
   $box_newsletter_subscribe = new ent_view();
+
+  $box_newsletter_subscribe->snippets = [
+    'privacy_policy_link' => null,
+  ];
+
+  if ($privacy_policy_id = settings::get('privacy_policy')) {
+      $box_newsletter_subscribe->snippets['privacy_policy_link'] = document::href_ilink('information', ['page_id' => $privacy_policy_id]);
+  }
+
   echo $box_newsletter_subscribe->stitch('views/box_newsletter_subscribe');
