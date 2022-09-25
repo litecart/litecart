@@ -1,7 +1,7 @@
 /* Input Fields & Input Groups - Bootstrap Compatible */
 
 .input-field() {
-  padding: ~"calc(var(--input-padding-y) + 1px)" ~"calc(var(--input-padding-x) + 1px)";
+  padding: ~"calc(var(--input-padding-y))" ~"calc(var(--input-padding-x))";
   position: relative;
   color: var(--input-text-color);
   background: var(--input-background-color);
@@ -28,7 +28,7 @@ fieldset {
 input, button, select, textarea {
   font-family: inherit;
   font-size: inherit;
-  line-height: inherit;
+  line-height: var(--input-line-height);
   outline: 0;
 }
 
@@ -289,9 +289,6 @@ label.form-check {
   margin-top: -1px; // Compensate for border
 }
 
-.table .form-check {
-  line-height: 100%;
-}
 .table-striped .form-control,
 .table-striped .form-select {
   background-color: var(--whitespace-color);

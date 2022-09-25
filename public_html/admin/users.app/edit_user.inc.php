@@ -73,6 +73,13 @@
     }
   }
 ?>
+<style>
+#app-permissions li,
+#widget-permissions li {
+  padding: .25em 0;
+}
+</style>
+
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
@@ -152,7 +159,7 @@
         </div>
 
         <div class="col-md-4">
-          <div class="form-group">
+          <div id="app-permissions" class="form-group">
             <label><?php echo functions::form_draw_checkbox('apps_toggle', '1', !empty($_POST['apps']) ? '1' : '0'); ?> <?php echo language::translate('title_apps', 'Apps'); ?></label>
             <div class="form-control" style="height: 400px; overflow-y: scroll;">
               <ul class="list-unstyled">
@@ -175,7 +182,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div id="widget-permissions" class="form-group">
             <label><?php echo functions::form_draw_checkbox('widgets_toggle', '1', !empty($_POST['widgets']) ? '1' : '0'); ?> <?php echo language::translate('title_widgets', 'Widgets'); ?></label>
             <div class="form-control" style="height: 150px; overflow-y: scroll;">
               <ul class="list-unstyled">

@@ -60,6 +60,8 @@
   --table-row-background-color-odd: #f9f9f9;
   --table-row-background-color-even: #fff;
   --table-row-background-color-hover: #ececec;
+  --table-link-background-color: #e3ebf3;
+  --table-link-background-color-hover: #cfddeb;
   --table-footer-background-color: #f3f3f3;
   --table-border-color: #e6e8f0;
   --pagination-background-color: #fff;
@@ -91,6 +93,7 @@
   --input-code-background-color: #313b50;
   --input-code-text-color: #fff;
   --input-text-color: #000;
+  --input-line-height: 1.333;
   --input-border-color: #e7e9f0;
   --input-border-color-focus: #e7e9f0;
   --input-padding-x: 1em;
@@ -136,6 +139,8 @@ html.dark-mode {
   --table-row-background-color-odd: #2d374c;
   --table-row-background-color-even: #283246;
   --table-row-background-color-hover: #3c4861;
+  --table-link-background-color: #1a2133;
+  --table-link-background-color-hover: #333b4e;
   --table-footer-background-color: #252e42;
   --table-border-color: #1c243a;
   --pagination-background-color: var(--default-background-color);
