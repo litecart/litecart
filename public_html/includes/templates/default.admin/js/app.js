@@ -5,7 +5,7 @@
   });
 
 // Form required asterix
-  $(':input[required="required"]').closest('.form-group').addClass('required');
+  $(':input[required]').closest('.form-group').addClass('required');
 
 // AJAX Search
   var timer_ajax_search = null;
@@ -26,7 +26,7 @@
           type: 'get',
           async: true,
           cache: false,
-          url: 'search_results.json.php?query=' + query,
+          url: 'search_results.json.php?query=' + encodeURIComponent(query),
           dataType: 'json',
           beforeSend: function(jqXHR) {
             jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -69,27 +69,60 @@
     }
   });
 
-// Bootstrap Compatible (data-toggle="tab")
-  $('body').on('click', '[data-toggle="tab"]', function(e) {
-    e.preventDefault();
-    $(this).closest('ul').find('li').removeClass('active');
-    $(this).closest('li').addClass('active');
-    $($(this).attr('href')).show().siblings().hide();
-  });
 
-  $('.nav-tabs').each(function(){
-    if (!$(this).find('.active').length) {
-      $(this).find('li:first').addClass('active');
-    }
-  });
+// Tabs (data-toggle="tab")
++function($) {
+  'use strict';
+  $.fn.Tabs = function(){
+    this.each(function(){
 
-  $('.nav-tabs .active a').trigger('click');
-  if (document.location.hash != '') {
-    $('a[href="' + document.location.hash + '"]').click();
+      let self = this;
+
+      this.$element = $(this);
+
+      this.$element.find('[data-toggle="tab"]').each(function(){
+        let $link = $(this);
+
+        $link.on('select', function(){
+          self.$element.find('.active').removeClass('active');
+
+          if ($link.hasClass('nav-link')) {
+            $link.addClass('active');
+          }
+
+          $link.closest('.nav-item').addClass('active');
+
+          $($link.attr('href')).show().siblings().hide();
+        });
+
+        $link.on('click', function(e) {
+          e.preventDefault();
+          history.replaceState(null, null, this.hash);
+          $link.trigger('select');
+        });
+      });
+
+      if (!this.$element.find('.active').length) {
+        this.$element.find('[data-toggle="tab"]').first().select();
+      } else {
+        this.$element.find('[data-toggle="tab"].active').select();
+      }
+    });
   }
 
-// Bootstrap Compatible (data-toggle="buttons")
-  $('body').on('click', '[data-toggle="buttons"] input[type="checkbox"]', function(){
+  $('.nav-tabs').Tabs();
+
+  if (document.location.hash && document.location.hash.match(/^#tab-/)) {
+    $('[data-toggle="tab"][href="' + document.location.hash +'"]').trigger('select');
+  }
+
+  $(document).on('ajaxcomplete', function(){
+    $('.nav-tabs').Tabs();
+  });
+}(jQuery);
+
+// Toggle Buttons (data-toggle="buttons")
+  $('body').on('click', '[data-toggle="buttons"] :checkbox', function(){
     if ($(this).is(':checked')) {
       $(this).closest('.btn').addClass('active');
     } else {
@@ -97,22 +130,22 @@
     }
   });
 
-  $('body').on('click', '[data-toggle="buttons"] input[type="radio"]', function(){
+  $('body').on('click', '[data-toggle="buttons"] :radio', function(){
     $(this).closest('.btn').addClass('active').siblings().removeClass('active');
   });
 
 // Data-Table Toggle Checkboxes
   $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
-    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
+    $(this).closest('.data-table').find('tbody td > .form-check > :checkbox').each(function() {
       $(this).prop('checked', !$(this).prop('checked'));
     });
     return false;
   });
 
-  $('.data-table tbody').on('click', 'tr', function(e) {
-    if ($(e.target).is('a, .btn, :input, th')) return;
-    if ($(e.target).is('.fa-star, .fa-star-o')) return;
-    $(this).find('input:checkbox').trigger('click');
+  $('body').on('click', '.data-table tbody tr', function(e) {
+    if ($(e.target).is('a') || $(e.target).closest('a').length) return;
+    if ($(e.target).is('.btn, :input, th, .fa-star, .fa-star-o')) return;
+    $(this).find(':checkbox, :radio').trigger('click');
   });
 
 // Data-Table Dragable
@@ -184,7 +217,185 @@
       url: window._env.platform.path + 'ajax/cart.json',
       cache: false
     });
-  }, 60000);
+  }, 60e3);
+
+/*
+ * jQuery Category Picker
+ * by LiteCart
+ */
+
++function($) {
+
+  $.fn.categoryPicker = function(config){
+    this.each(function(){
+
+      this.xhr = null;
+      this.config = config;
+
+      self = this;
+
+      $(this).find('.dropdown input[type="search"]').on({
+
+        'focus': function(e){
+          $(self).find('.dropdown').addClass('open');
+        },
+
+        'input': function(e){
+            let dropdownMenu = $(self).find('.dropdown-menu');
+
+            $(dropdownMenu).html('');
+
+            if (self.xhr) self.xhr.abort();
+
+            if ($(this).val() == '') {
+
+              $.getJSON(self.config.link+'?parent_id=0', function(result) {
+
+                $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+
+                $.each(result.subcategories, function(i, category) {
+                  $(dropdownMenu).append(
+                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
+                    '  ' + self.config.icons.folder +
+                    '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
+                    '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
+                    '</li>'
+                  );
+                });
+              });
+
+              return;
+            }
+
+            self.xhr = $.ajax({
+              type: 'get',
+              async: true,
+              cache: true,
+              url: self.config.link + '?query=' + $(this).val(),
+              dataType: 'json',
+
+              beforeSend: function(jqXHR) {
+                jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+              },
+
+              error: function(jqXHR, textStatus, errorThrown) {
+                if (errorThrown == 'abort') return;
+                alert(errorThrown);
+              },
+
+              success: function(result) {
+
+                if (!result.subcategories.length) {
+                  $(dropdownMenu).html('<li class="list-item text-center no-results"><em>:(</em></li>');
+                  return;
+                }
+
+                $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ self.config.translations.search_results +'</h3></li>');
+
+                $.each(result.subcategories, function(i, category) {
+                  $(dropdownMenu).append(
+                    '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
+                    '  ' + self.config.icons.folder +
+                    '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
+                    '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
+                    '</li>'
+                  );
+                });
+              },
+            });
+          }
+      });
+
+      $(this).on('click', '.dropdown-menu .list-item a', function(e){
+        e.preventDefault();
+
+        let dropdownMenu = $(this).closest('.dropdown-menu');
+
+        $.getJSON($(this).data('link'), function(result) {
+
+          $(dropdownMenu).html('<li class="list-item"><h3 style="margin-top: 0;">'+ result.name +'</h3></li>');
+
+          if (result.id) {
+            $(dropdownMenu).append(
+              '<li class="list-item" data-id="'+ result.parent.id +'" data-name="'+ result.parent.name +'" style="display: flex;">' +
+              '  ' + self.config.icons.back +
+              '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ result.parent.id +'" style="flex-grow: 1;">'+ result.parent.name +'</a>' +
+              '</li>'
+            );
+          }
+
+          $.each(result.subcategories, function(i, category) {
+            $(dropdownMenu).append(
+              '<li class="list-item" data-id="'+ category.id +'" data-name="'+ category.path.join(' &gt; ') +'" style="display: flex;">' +
+              '  ' + self.config.icons.folder +
+              '  <a href="#" data-link="'+ self.config.link +'?parent_id='+ category.id +'" style="flex-grow: 1;">'+ category.name +'</a>' +
+              '  <button class="add btn btn-default btn-sm" type="button">'+ self.config.translations.add +'</button>' +
+              '</li>'
+            );
+          });
+        });
+      });
+
+      $(this).on('click', '.dropdown-menu .list-item button.add', function(e){
+        e.preventDefault();
+
+        let category = $(this).closest('li');
+
+        $(self).find('.categories').append(
+          '<li class="list-item" style="display: flex;">' +
+          '  <input type="hidden" name="'+ self.config.inputName +'" value="'+ $(category).data('id') +'" data-name="'+ escape($(category).data('name')) +'" />' +
+          '  <div style="flex-grow: 1;">' + self.config.icons.folder +' '+ $(category).data('name') +'</div>' +
+          '  <button class="remove btn btn-default btn-sm" type="button">'+ self.config.translations.remove +'</button>' +
+          '</li>'
+        );
+
+        $(self).trigger('change');
+
+        $('.dropdown.open').removeClass('open');
+
+        return false;
+      });
+
+      $(this).find('.categories').on('click', '.remove', function(e){
+        $(this).closest('li').remove();
+        $(self).trigger('change');
+      });
+
+      $('body').on('mousedown', function(e){
+        if ($('.dropdown.open').has(e.target).length === 0) {
+          $('.dropdown.open').removeClass('open');
+        }
+      });
+
+      $(this).find('input[type="search"]').trigger('input');
+
+    });
+  }
+
+}(jQuery);
+
+/*
+ * jQuery Context Menu
+ * by LiteCart
+ */
+
++function($) {
+
+  $.fn.contextMenu = function(config){
+    this.each(function(){
+
+      this.config = config;
+
+      self = this;
+
+      $(this).on('contextmenu').on({
+
+      });
+
+    });
+  }
+
+}(jQuery);
 
 /*
  * Escape HTML

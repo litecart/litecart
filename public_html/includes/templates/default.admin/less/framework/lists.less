@@ -1,13 +1,11 @@
 /* Lists - Bootstrap Compatible */
 
 ul.list-unstyled {
+  display: flex;
+  flex-flow: column nowrap;
   margin: 0;
   padding: 0;
-  li {
-    margin: 0;
-    padding: @default-gutter-size/4 0;
-    list-style: none;
-  }
+  list-style: none;
   ul {
     margin-inline-start: 18px;
     padding: 0;
@@ -15,28 +13,36 @@ ul.list-unstyled {
 }
 
 ul.list-inline {
+  display: flex;
+  flex-flow: row wrap;
+  gap: ~"calc(var(--gutter-size)/2)";
   margin: 0;
   padding: 0;
+  list-style: none;
+  align-items: center;
   li {
     display: inline-block;
-    margin: 0;
-    padding: @default-gutter-size/4;
-    list-style: none;
   }
 }
 
 .list-group {
-  padding-inline-start: 0;
-  margin-bottom: 0;
-  .list-group-item:first-child {
-    border-radius: @default-border-radius;
-  }
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   .list-group-item {
     position: relative;
     display: block;
-    padding: @default-gutter-size/2 @default-gutter-size;
+    padding: ~"calc(var(--gutter-size)/2)";
     margin-bottom: -1px;
     background-color: #fff;
-    border: 1px solid @default-border-color;
+    border: 1px solid var(--default-border-color);
+    &:first-child {
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+    }
+    &:last-child {
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
   }
 }

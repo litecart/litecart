@@ -1,59 +1,60 @@
 /* Pagination - Bootstrap Compatible */
 
 .pagination {
-  display: inline-flex;
+  display: flex;
   padding-inline-start: 0;
-  margin: @default-gutter-size 0;
-  border-radius: @default-border-radius;
+  margin: var(--gutter-size) 0;
+  border-radius: var(--border-radius);
+  flex-wrap: wrap;
 
   > li {
     display: inline;
+    align-self: center;
     > a, > span {
       position: relative;
-      padding: @form-input-padding @form-input-padding*2;
+      display: inline-block;
+      padding: .5em 1em;
+      background: var(--pagination-background-color);
+      border: 1px solid var(--default-border-color);
+      color: var(--pagination-text-color);
       text-decoration: none;
-      color: inherit;
-      background-color: #fff;
-      border: 1px solid @default-border-color;
       margin-inline-start: -1px;
     }
     &:first-child {
       > a, > span {
         margin-inline-start: 0;
-        border-top-left-radius: @default-border-radius;
-        border-bottom-left-radius: @default-border-radius;
+        border-start-start-radius: var(--border-radius);
+        border-end-start-radius: var(--border-radius);
       }
     }
     &:last-child {
       > a, > span {
-        border-top-right-radius: @default-border-radius;
-        border-bottom-right-radius: @default-border-radius;
+        border-start-end-radius: var(--border-radius);
+        border-end-end-radius: var(--border-radius);
       }
     }
   }
 
-  > li > a, > li > span {
-    &:hover,
-    &:focus {
+  > li:not(.disabled):not(.active) > a {
+    &:hover, &:focus {
       z-index: 2;
-      color: inherit;
-      background-color: #eee;
+      background-color: var(--pagination-background-color-hover);
+      border-color: var(--pagination-border-color-hover);
+      color: var(--pagination-text-color-hover);
     }
   }
 
   > .active > a, > .active > span {
-    &, &:hover, &:focus {
-      z-index: 3;
-      color: #fff;
-      background-color: @primary-color;
-      border-color: @primary-color;
-      cursor: default;
-    }
+    z-index: 3;
+    background-color: var(--pagination-background-color-active);
+    border-color: var(--pagination-background-color-active);
+    color: var(--pagination-text-color-active);
+    cursor: default;
   }
 
   > .disabled {
     > span, > span:hover, > span:focus, > a, > a:hover, > a:focus {
-      opacity: 0.5;
+      opacity: .5;
       cursor: not-allowed;
     }
   }

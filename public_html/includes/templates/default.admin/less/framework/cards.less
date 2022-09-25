@@ -1,0 +1,116 @@
+/* Panels - Bootstrap Compatible */
+
+.card,
+.panel {
+  margin-bottom: var(--gutter-size);
+  background-color: var(--card-background-color);
+  //border: 1px solid var(--card-border-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px .25rem rgba(0, 0, 0, .15);
+  color: var(--card-text-color);
+
+  .card-header, .card-filter, .card-body, .card-footer,
+  .panel-heading, .panel-filter, .panel-body, .panel-footer {
+    padding: 2em;
+  }
+
+  .card-filter, .card-body,
+  .panel-filter, .panel-body {
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+
+  .card-header,
+  .panel-heading {
+    color: var(--card-header-text-color);
+    background-color: var(--card-header-background-color);
+    border-bottom: 0px solid var(--card-border-color);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    .card-title,
+    .panel-title {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+  }
+
+  .card-body,
+  .panel-body {
+    padding-bottom: 2em;
+    background-color: var(--card-body-background-color);
+  }
+
+  .card-footer,
+  .panel-footer {
+    padding-bottom: 2em;
+    background-color: var(--card-footer-background-color);
+    border-top: 1px solid var(--card-border-color);
+    border-end-end-radius: var(--border-radius);
+    border-end-start-radius: var(--border-radius);
+    box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, .25);
+  }
+}
+
+.card-app,
+.panel-app {
+  position: relative;
+  overflow: hidden;
+
+  > .card-header,
+  > .panel-heading {
+    .icon-wrapper {
+      font-size: 24px;
+    }
+  }
+
+  .card-action,
+  .panel-action {
+    position: absolute;
+    top: var(--gutter-size);
+    right: var(--gutter-size);
+    display: flex;
+    gap: .5em;
+  }
+
+  .card-filter,
+  .panel-filter {
+    display: flex;
+    gap: ~"calc(var(--gutter-size) / 2)";
+    > * {
+      &.expandable {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  .data-table {
+    margin: 0;
+  }
+
+  .card-footer,
+  .panel-footer {
+    > *:last-child {
+      margin-bottom: 0;
+    }
+    &:blank {
+      display: none;
+    }
+  }
+
+  #actions {
+    width: fit-content;
+    margin-right: auto;
+  }
+}
+
+.featherlight .card-app,
+.featherlight .panel-app {
+  .app-icon {
+    display: none;
+  }
+  .card-action,
+  .panel-action {
+    //position: initial !important;
+    //top: auto;
+    //right: auto;
+  }
+}

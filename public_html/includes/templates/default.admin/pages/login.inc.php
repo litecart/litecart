@@ -1,18 +1,17 @@
 <style>
-html, body {
-}
-
 html {
-  display: table;
-  width: 100%;
-  height: 100%;
   background: #f8f8f8;
 }
 
 body {
-  display: table-row;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
   background: url({snippet:template_path}images/background.svg);
   background-size: cover;
+}
+html.dark-mode body {
+  background: #1a2133;
 }
 
 .loader-wrapper {
@@ -24,53 +23,19 @@ body {
   margin-inline-start: -64px;
 }
 
-#box-login-wrapper {
-  position: relative;
-  display: table-cell;
-  height: 100%;
-  vertical-align: middle;
-  padding: 30px;
-}
-
 #box-login {
-  max-width: 360px;
+  width: 360px;
   margin: auto;
-  padding: 0px;
-  background: #fff;
   border-radius: 0px 25px 0px 25px;
   box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
 }
-
-#box-login .header {
-  padding: 10px;
+#box-login .card-header a {
+  display: block;
 }
-#box-login .header img {
-  margin: 1em;
+#box-login .card-header img {
+  margin: 0 auto;
   max-width: 250px;
   max-height: 100px;
-}
-
-#box-login .content {
-  padding: 0 30px;
-  margin: 0 auto;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-
-#box-login .footer {
-  border-top: 1px solid rgba(255,255,255,0.8);
-  background: #f6f6f6;
-  padding: 2em;
-  text-align: end;
-  border-radius: 0px 0px 0px 25px;
-}
-
-.btn-frontend {
-  color: inherit !important;
-  border: 1px solid transparent;
-}
-.btn-frontend:hover {
-  border-color: #ebecef;
-  text-decoration: none;
 }
 </style>
 
@@ -78,51 +43,49 @@ body {
   <div class="loader" style="width: 128px; height: 128px;"></div>
 </div>
 
-<div id="box-login-wrapper">
 
-  <div id="box-login" class="">
-
-    <div class="header text-center">
-      <img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
-    </div>
-
-    <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
-
-      <div class="content">
-        <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
-        <?php echo functions::form_draw_hidden_field('login', 'true'); ?>
-
-        {snippet:notices}
-
-        <div class="form-group">
-          <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>
-        </div>
-
-        <div class="form-group">
-          <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
-        </div>
-
-        <div class="form-group checkbox text-center">
-          <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
-        </div>
-      </div>
-
-      <div class="footer">
-        <div class="row" style="margin-bottom: 0;">
-          <div class="col-md-6 text-start">
-            <a class="btn btn-frontend" href="<?php echo document::href_ilink(''); ?>">
-              <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
-            </a>
-          </div>
-          <div class="col-md-6 text-end">
-            <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default"'); ?>
-          </div>
-        </div>
-      </div>
-
-    <?php echo functions::form_draw_form_end(); ?>
+<div id="box-login" class="card">
+  <div class="card-header text-center">
+    <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></a>
   </div>
 
+  <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
+    <?php echo functions::form_draw_hidden_field('login', 'true'); ?>
+    <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
+
+    <div class="card-body">
+
+      {snippet:notices}
+
+      <h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
+
+      <div class="form-group">
+        <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
+      </div>
+
+      <div class="form-group">
+        <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'" autocomplete="current-password"'); ?>
+      </div>
+
+      <div class="form-group checkbox text-center">
+        <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-md-6 text-start">
+          <a class="btn btn-hover-outline btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
+            <?php echo functions::draw_fonticon('fa-chevron-left'); ?> <?php echo language::translate('title_go_to_frontend', 'Go To Frontend'); ?>
+          </a>
+        </div>
+        <div class="col-md-6 text-end">
+          <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+        </div>
+      </div>
+    </div>
+
+  <?php echo functions::form_draw_form_end(); ?>
 </div>
 
 <script>
@@ -134,10 +97,10 @@ body {
 
   $('form[name="login_form"]').submit(function(e) {
     e.preventDefault();
-    var form = this;
-    $('#box-login-wrapper .content').slideUp(250, function(){
-      $('#box-login-wrapper').fadeOut(500, function(){
-        $('.loader-wrapper').fadeIn(250, function(){
+    let form = this;
+    $('#box-login .card-body').slideUp(100, function(){
+      $('#box-login').fadeOut(250, function(){
+        $('.loader-wrapper').fadeIn(100, function(){
           form.submit();
         });
       });

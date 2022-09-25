@@ -1,10 +1,9 @@
 <style>
-#content {
-  background: linear-gradient(135deg, rgba(<?php echo implode(', ', sscanf($theme['color'], "#%02x%02x%02x")); ?>, 1) 0px, rgba(255,255,255,1) 100px);
+#main {
+  --app-color: <?php echo $theme['color']; ?>;
 }
-
-#content > .panel-app > .panel-heading {
-  border-color: <?php echo $theme['color']; ?>;
+#top-bar {
+  border-bottom: 5px solid var(--app-color);
 }
 </style>
 
