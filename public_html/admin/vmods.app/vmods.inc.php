@@ -88,21 +88,121 @@
       'filename' => pathinfo($file, PATHINFO_BASENAME),
       'type' => ($xml->getName() == 'vmod') ? 'vMod' : 'VQmod',
       'enabled' => preg_match('#\.xml$#', $file) ? true : false,
-      'name' => $xml->name,
+      'name' => isset($xml->name) ? $xml->name : $xml->title,
       'version' => $xml->version,
       'author' => $xml->author,
       'configurable' => !empty($xml->setting) ? true : false,
+      'errors' => null,
     ];
   }
 
 // Number of Rows
   $num_rows = count($vmods);
+
+// Tests
+
+  foreach ($vmods as $vmod_key => $vmod) {
+
+    try {
+
+      $vmod_file = FS_DIR_APP . 'vmods/' . $vmod['filename'];
+
+      $dom = new \DOMDocument('1.0', 'UTF-8');
+      $dom->preserveWhiteSpace = false;
+
+      if (!$dom->loadXml(file_get_contents($vmod_file))) {
+        throw new Exception(libxml_get_last_error());
+      }
+
+      switch ($dom->documentElement->tagName) {
+
+        case 'vmod': // vMod
+          $parsed_vmod = vmod::parse_vmod($dom, $vmod_file);
+          break;
+
+        case 'modification': // vQmod
+          $parsed_vmod = vmod::parse_vqmod($dom);
+          break;
+
+        default:
+          throw new Exception("File ($file) is not a valid vmod or vQmod");
+      }
+
+      foreach (array_keys($parsed_vmod['files']) as $key) {
+        $patterns = explode(',', $parsed_vmod['files'][$key]['name']);
+
+        foreach ($patterns as $pattern) {
+          $path_and_file = $parsed_vmod['files'][$key]['path'].$pattern;
+
+        // Apply path aliases
+          if (!empty(vmod::$aliases)) {
+            $path_and_file = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $path_and_file);
+          }
+
+          $files = glob(FS_DIR_APP . $path_and_file);
+
+          if (empty($files)) {
+            throw new Exception('No files matching pattern');
+          }
+
+          foreach ($files as $file) {
+
+            if (!is_file($file)) throw new Exception('File does not exist');
+
+            $buffer = file_get_contents($file);
+
+            foreach ($parsed_vmod['files'][$key]['operations'] as $i => $operation) {
+
+              if (!empty($operation['ignoreif']) && preg_match($operation['ignoreif'], $buffer)) {
+                continue;
+              }
+
+              if (!preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE)) {
+                switch ($operation['onerror']) {
+                  case 'ignore':
+                    continue 2;
+                  case 'abort':
+                  case 'warning':
+                  default:
+                    throw new Exception('Search not found', E_USER_WARNING);
+                    continue 2;
+                }
+              }
+
+              if (!empty($operation['find']['indexes'])) {
+                rsort($operation['find']['indexes']);
+
+                foreach ($operation['find']['indexes'] as $index) {
+                  $index = $index - 1; // [0] is the 1st in computer language
+
+                  if ($found > $index) {
+                    $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+                  }
+                }
+
+              } else {
+                $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
+
+                if (!$count && $operation['onerror'] != 'skip') {
+                  throw new Exception("Failed to perform insert");
+                  continue;
+                }
+              }
+            }
+          }
+        }
+      }
+
+    } catch (Exception $e) {
+      $vmods[$vmod_key]['errors'] = $e->getMessage();
+    }
+  }
 ?>
 
 <div class="card card-app">
   <div class="card-header">
     <div class="card-title">
-      <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>
+      <?php echo $app_icon; ?> <?php echo language::translate('title_vmods', 'vMods'); ?>™
     </div>
   </div>
 
@@ -134,12 +234,20 @@
         <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($vmod['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
-          <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['name']; ?></a></td>
+          <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['name']; ?></a></td>
           <td><?php echo $vmod['version']; ?></td>
           <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
           <td class="text-center"><?php echo $vmod['type']; ?></td>
-          <td><a href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'test', 'vmod' => $vmod['filename']], ['app']); ?>"><strong><?php echo language::translate('title_test_now', 'Test Now'); ?></strong></a></td>
+          <td class="text-center">
+            <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'test', 'vmod' => $vmod['filename']], ['app']); ?>">
+              <?php if (empty($vmod['errors'])) { ?>
+              <span style="color: #8c4"><?php echo functions::draw_fonticon('ok'); ?> <?php echo language::translate('title_ok', 'OK'); ?></span>
+              <?php } else { ?>
+              <span style="color: #c00"><?php echo functions::draw_fonticon('warning'); ?> <?php echo language::translate('title_fail', 'Fail'); ?></span>
+              <?php } ?>
+            </a>
+          </td>
           <td><?php if ($vmod['configurable']) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
           <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
           <td>

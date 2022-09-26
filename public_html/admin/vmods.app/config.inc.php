@@ -1,7 +1,7 @@
 <?php
 
   return $app_config = [
-    'name' => language::translate('title_vMods', 'vMods'),
+    'name' => language::translate('title_vMods', 'vMods').'™',
     'default' => 'vmods',
     'priority' => 0,
 
