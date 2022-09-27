@@ -10,6 +10,7 @@
   $deleted_files = [
     FS_DIR_ADMIN . '.htaccess',
     FS_DIR_ADMIN . '.htpasswd',
+    FS_DIR_ADMIN . 'vqmods.app/',
     FS_DIR_APP . 'ext/jquery/jquery-3.6.0.min.js',
     FS_DIR_APP . 'vqmod/',
     FS_DIR_APP . 'vqmod/xml/product_options_stock_notice.xml',
