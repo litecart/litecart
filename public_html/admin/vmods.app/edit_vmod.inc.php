@@ -16,25 +16,23 @@
 
     try {
 
-      if (empty($_POST['title'])) throw new Exception(language::translate('error_must_enter_filename', 'You must enter a filename'));
-      if (empty($_POST['title'])) throw new Exception(language::translate('error_must_enter_title', 'You must enter a title'));
+      if (empty($_POST['id'])) throw new Exception(language::translate('error_must_enter_id', 'You must enter an ID'));
+      if (empty($_POST['name'])) throw new Exception(language::translate('error_must_enter_name', 'You must enter a name'));
       if (empty($_POST['files'])) throw new Exception(language::translate('error_must_define_files', 'You must define files'));
 
       foreach (array_keys($_POST['files']) as $f) {
         foreach (array_keys($_POST['files'][$f]['operations']) as $o) {
-          if (empty($_POST['files'][$f]['operations'][$o]['find']['regex'])) $_POST['files'][$f]['operations'][$o]['find']['regex'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['find']['trim'])) $_POST['files'][$f]['operations'][$o]['find']['trim'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['insert']['regex'])) $_POST['files'][$f]['operations'][$o]['insert']['regex'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['insert']['trim'])) $_POST['files'][$f]['operations'][$o]['insert']['trim'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['regex'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['regex'] = 'true';
-          if (empty($_POST['files'][$f]['operations'][$o]['ignoreif']['trim'])) $_POST['files'][$f]['operations'][$o]['ignoreif']['trim'] = 'true';
+          if (!isset($_POST['files'][$f]['operations'][$o]['find']['regex'])) $_POST['files'][$f]['operations'][$o]['find']['regex'] = 'false';
+          if (!isset($_POST['files'][$f]['operations'][$o]['find']['trim'])) $_POST['files'][$f]['operations'][$o]['find']['trim'] = 'true';
+          if (!isset($_POST['files'][$f]['operations'][$o]['insert']['regex'])) $_POST['files'][$f]['operations'][$o]['insert']['regex'] = 'false';
+          if (!isset($_POST['files'][$f]['operations'][$o]['insert']['trim'])) $_POST['files'][$f]['operations'][$o]['insert']['trim'] = 'true';
         }
       }
 
       $fields = [
-        'filename',
+        'id',
         'status',
-        'title',
+        'name',
         'description',
         'version',
         'files',
@@ -72,18 +70,46 @@
   }
 
   $on_error_options = [
-    'warning' => language::translate('title_warning', 'Warning'),
-    'ignore' => language::translate('title_ignore', 'Ignore'),
-    'cancel' => language::translate('title_cancel', 'Cancel'),
+    [language::translate('title_warning', 'Warning'), 'warning'],
+    [language::translate('title_ignore', 'Ignore'), 'ignore'],
+    [language::translate('title_cancel', 'Cancel'), 'cancel'],
   ];
 
-  $position_options = [
-    'replace' => language::translate('title_replace', 'Replace'),
-    'before' => language::translate('title_before', 'Before'),
-    'after' => language::translate('title_after', 'After'),
-    'top' => language::translate('title_top', 'Top'),
-    'bottom' => language::translate('title_bottom', 'Bottom'),
+  $method_options = [
+    [language::translate('title_replace', 'Replace'), 'replace'],
+    [language::translate('title_before', 'Before'), 'before'],
+    [language::translate('title_after', 'After'), 'after'],
+    [language::translate('title_top', 'Top'), 'top'],
+    [language::translate('title_bottom', 'Bottom'), 'bottom'],
   ];
+
+// List of files
+  $files_datalist = [];
+
+  $skip_list = [
+    '#.*(?<!\.inc\.php)$#',
+    '#^assets/#',
+    '#^index.php$#',
+    '#^includes/app_header.inc.php$#',
+    '#^includes/nodes/nod_vmod.inc.php$#',
+    '#^includes/wrappers/wrap_app.inc.php$#',
+    '#^includes/wrappers/wrap_storage.inc.php$#',
+    '#^install/#',
+    '#^storage/#',
+  ];
+
+  $scripts = functions::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
+
+  foreach ($scripts as $script) {
+
+    $relative_path = functions::file_relative_path($script);
+
+    foreach ($skip_list as $pattern) {
+      if (preg_match($pattern, $relative_path)) continue 2;
+    }
+
+    $files_datalist[] = $relative_path;
+  }
 
 ?>
 
@@ -101,9 +127,54 @@
 .fa-plus {
   color: #0c0;
 }
+.operations {
+  position: sticky;
+  top: 0;
+}
 
-textarea {
-  font-family: monospace;
+.script {
+  position: relative;
+}
+.script .script-filename {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  right: 2em;
+  padding: .5em 1em;
+  border-radius: 0 0 4px 4px;
+  background: #fff3;
+  color: #fffc
+}
+
+.sources .form-code {
+  height: max-content;
+  max-height: 100vh;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+}
+
+textarea[name*="[find]"][name$="[content]"],
+textarea[name*="[insert]"][name$="[content]"] {
+  height: auto;
+  transition: all 100ms linear;
+}
+textarea[name*="[find]"][name$="[content]"] {
+  min-height: 50px;
+  max-height: 50px;
+}
+textarea[name*="[find]"][name$="[content]"]:focus {
+  max-height: 250px;
+}
+
+textarea[name*="[insert]"][name$="[content]"] {
+  min-height: 100px;
+  max-height: 100px;
+}
+textarea[name*="[insert]"][name$="[content]"]:focus {
+  max-height: 250px;
 }
 </style>
 
@@ -114,177 +185,176 @@ textarea {
     </div>
   </div>
 
-  <div class="card-body">
-    <?php echo functions::form_draw_form_begin('vmod_form', 'post', false, true); ?>
+  <?php echo functions::form_draw_form_begin('vmod_form', 'post', false, true); ?>
 
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group">
-            <label><?php echo language::translate('title_status', 'Status'); ?></label>
-            <?php echo functions::form_draw_toggle('status', 'e/d', true); ?>
-          </div>
+    <nav class="nav nav-tabs">
+      <a class="nav-link active" href="#tab-general" data-toggle="tab"><?php echo language::translate('title_general', 'General'); ?></a>
+      <a class="nav-link" href="#tab-settings" data-toggle="tab"><?php echo language::translate('title_settings', 'Settings'); ?></a>
+      <a class="nav-link" href="#tab-install" data-toggle="tab"><?php echo language::translate('title_install_uninstall', 'Install/Uninstall'); ?></a>
+    </nav>
 
-          <div class="form-group">
-            <label><?php echo language::translate('title_filename', 'Filename'); ?></label>
-            <?php echo functions::form_draw_text_field('filename', true, 'required placeholder="example.xml"'); ?>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-8">
-              <label><?php echo language::translate('title_title', 'Title'); ?></label>
-              <?php echo functions::form_draw_text_field('title', true, ''); ?>
-            </div>
-
-            <div class="form-group col-md-4">
-              <label><?php echo language::translate('title_version', 'Version'); ?></label>
-              <?php echo functions::form_draw_text_field('version', true, 'placeholder="'. date('Y-m-d') .'"'); ?>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label><?php echo language::translate('title_description', 'Description'); ?></label>
-            <?php echo functions::form_draw_text_field('description', true, ''); ?>
-          </div>
-
-          <?php if (!empty($vmod->data['id'])) { ?>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
-              <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($vmod->data['date_created'])); ?></div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
-              <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($vmod->data['date_updated'])); ?></div>
-            </div>
-          </div>
-          <?php } ?>
-        </div>
-      </div>
-
-      <h2><?php echo language::translate('title_modifications', 'Modifications'); ?></h2>
-
-      <nav class="nav nav-tabs">
-        <?php foreach (array_keys($vmod->data['files']) as $f) { ?>
-        <a class="nav-link data-toggle="tab" href="#tab-<?php echo $f; ?>"><?php echo $_POST['files'][$f]['name']; ?> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a>
-        <?php } ?>
-        <a class="nav-link add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a>
-      </nav>
-
+    <div class="card-body">
       <div class="tab-content">
-
-        <?php foreach (array_keys($_POST['files']) as $f) { ?>
-        <div id="tab-<?php echo $f; ?>" data-tab-index="<?php echo $f; ?>" class="tab-pane fade in">
+        <div id="tab-general" class="tab-pane active">
 
           <div class="row">
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_path', 'Path'); ?></label>
-              <?php echo functions::form_draw_text_field('files['.$f.'][path]', true, 'placeholder="path/to/dir/"'); ?>
-            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label><?php echo language::translate('title_status', 'Status'); ?></label>
+                <?php echo functions::form_draw_toggle('status', true, 'e/d'); ?>
+              </div>
 
-            <div class="form-group col-md-3">
-              <label><?php echo language::translate('title_filename', 'Filename'); ?></label>
-              <?php echo functions::form_draw_text_field('files['.$f.'][name]', true, 'placeholder="file.ext,file2.ext"'); ?>
+              <div class="form-group">
+                <label><?php echo language::translate('title_id', 'ID'); ?></label>
+                <?php echo functions::form_draw_text_field('id', true, 'required placeholder="my_fancy_mod" pattern="^[0-9a-zA-Z_-]+$"'); ?>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-8">
+                  <label><?php echo language::translate('title_name', 'Name'); ?></label>
+                  <?php echo functions::form_draw_text_field('name', true, 'required placeholder="My Fancy Mod"'); ?>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_version', 'Version'); ?></label>
+                  <?php echo functions::form_draw_text_field('version', true, 'placeholder="'. date('Y-m-d') .'"'); ?>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_description', 'Description'); ?></label>
+                <?php echo functions::form_draw_text_field('description', true); ?>
+              </div>
+
+              <?php if (!empty($vmod->data['id'])) { ?>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_created', 'Date Created'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($vmod->data['date_created'])); ?></div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_date_updated', 'Date Updated'); ?></label>
+                  <div><?php echo language::strftime('%e %b %Y %H:%M', strtotime($vmod->data['date_updated'])); ?></div>
+                </div>
+              </div>
+              <?php } ?>
             </div>
           </div>
 
-          <div class="operations">
-            <?php foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
-            <div class="operation">
+          <h2><?php echo language::translate('title_modifications', 'Modifications'); ?></h2>
 
-              <div class="float-end">
-                <a class="btn btn-default btn-sm move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
-                <a class="btn btn-default btn-sm move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
-                <a class="btn btn-default btn-sm remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
-              </div>
+          <nav class="nav nav-tabs">
+            <?php foreach (array_keys($vmod->data['files']) as $f) { ?>
+            <a class="nav-link" data-toggle="tab" href="#tab-<?php echo $f; ?>">
+              <span class="file"><?php echo functions::escape_html($_POST['files'][$f]['name']); ?></span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span>
+            </a>
+            <?php } ?>
+            <a class="nav-link add" href="#"><?php echo functions::draw_fonticon('fa-plus'); ?></a>
+          </nav>
+
+          <div id="files" class="tab-content">
+
+            <?php if (!empty($_POST['files'])) foreach (array_keys($_POST['files']) as $f) { ?>
+            <div id="tab-<?php echo $f; ?>" class="tab-pane">
 
               <div class="row">
                 <div class="col-md-6">
 
-                  <h3><?php echo language::translate('title_find', 'Find'); ?></h3>
+                  <h3><?php echo language::translate('title_file_to_modify', 'File To Modify'); ?></h3>
 
                   <div class="form-group">
-                    <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][find][content]', true, 'style="height: 100px;"'); ?>
+                    <label><?php echo language::translate('title_file_pattern', 'File Pattern'); ?></label>
+                    <?php echo functions::form_draw_text_field('files['.$f.'][name]', true, 'placeholder="path/to/file.php" list="scripts"'); ?>
                   </div>
 
-                  <div class="form-group">
-                    <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
-                    <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true); ?>
-                  </div>
-
-                  <div class="row" style="font-size: .8em;">
-                    <div class="form-group col-md-3">
-                      <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][regex]', 'y/n', true); ?>
-                    </div>
-
-                    <div class="form-group col-md-3">
-                      <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][trim]', 'y/n', true); ?>
-                    </div>
-
-                    <div class="form-group col-md-2">
-                      <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
-                      <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-before]', true, 'placeholder="0"'); ?>
-                    </div>
-
-                    <div class="form-group col-md-2">
-                      <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
-                      <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-after]', true, 'placeholder="0"'); ?>
-                    </div>
-
-                    <div class="form-group col-md-2">
-                      <label><?php echo language::translate('title_index', 'Index'); ?></label>
-                      <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
-                    </div>
-                  </div>
-
-                  <h3><?php echo language::translate('title_ignore_if', 'Ignore If'); ?></h3>
-
-                  <div class="form-group">
-                    <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][ignoreif][content]', true, 'style="height: 50px;"'); ?>
-                  </div>
-
-                  <div class="row" style="font-size: .8em;">
-                    <div class="form-group col-md-3">
-                      <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][regex]', 'y/n', true); ?>
-                    </div>
-
-                    <div class="form-group col-md-3">
-                      <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][ignoreif][trim]', 'y/n', true); ?>
-                    </div>
-                  </div>
-
+                  <div class="sources"></div>
                 </div>
 
                 <div class="col-md-6">
 
-                  <h3><?php echo language::translate('title_insert', 'Insert'); ?></h3>
+                  <h3><?php echo language::translate('title_operations', 'Operations'); ?></h3>
 
-                  <div class="form-group">
-                    <label><?php echo language::translate('title_code', 'Code'); ?></label>
-                    <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true, 'style="height: 375px;"'); ?>
+                  <div class="operations">
+                    <?php foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
+                    <fieldset class="operation">
+
+                      <div class="float-end">
+                        <a class="btn btn-default btn-sm move-up" href="#"><?php echo functions::draw_fonticon('move-up'); ?></a>
+                        <a class="btn btn-default btn-sm move-down" href="#"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                        <a class="btn btn-default btn-sm remove" href="#"><?php echo functions::draw_fonticon('remove'); ?></a>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group col-md-4">
+                          <label><?php echo language::translate('title_method', 'Method'); ?></label>
+                          <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][method]', $method_options, true); ?>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
+                          <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true); ?>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <h4><?php echo language::translate('title_find', 'Find'); ?></h4>
+                        <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][find][content]', true); ?>
+                      </div>
+
+                      <div class="row" style="font-size: .8em;">
+                        <div class="form-group col-md-3">
+                          <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
+                          <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][regex]', true, 'y/n'); ?>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
+                          <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][find][trim]', true, 'y/n'); ?>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
+                          <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-before]', true, 'placeholder="0"'); ?>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
+                          <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][offset-after]', true, 'placeholder="0"'); ?>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label><?php echo language::translate('title_index', 'Index'); ?></label>
+                          <?php echo functions::form_draw_text_field('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
+                        <?php echo functions::form_draw_code_field('files['.$f.'][operations]['.$o.'][insert][content]', true); ?>
+                      </div>
+
+                      <div class="row" style="font-size: .8em;">
+                        <div class="form-group col-md-4">
+                          <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
+                          <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][regex]', true, 'y/n'); ?>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
+                          <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][trim]', true, 'y/n'); ?>
+                        </div>
+                      </div>
+
+                    </fieldset>
+                    <?php } ?>
+
                   </div>
 
-                  <div class="row" style="font-size: .8em;">
-                    <div class="form-group col-md-4">
-                      <label><?php echo language::translate('title_position', 'Position'); ?></label>
-                      <?php echo functions::form_draw_select_field('files['.$f.'][operations]['.$o.'][insert][position]', $position_options, true); ?>
-                    </div>
-
-                    <div class="form-group col-md-4">
-                      <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][regex]', 'y/n', true); ?>
-                    </div>
-
-                    <div class="form-group col-md-4">
-                      <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-                      <?php echo functions::form_draw_toggle('files['.$f.'][operations]['.$o.'][insert][trim]', 'y/n', true); ?>
-                    </div>
+                  <div class="text-end">
+                    <a class="btn btn-default add" href="#">
+                      <?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?>
+                    </a>
                   </div>
 
                 </div>
@@ -292,44 +362,151 @@ textarea {
 
             </div>
             <?php } ?>
+          </div>
+        </div>
 
+        <div id="tab-settings" class="tab-pane">
+
+          <h2><?php echo language::translate('title_settings', 'Settings'); ?></h2>
+
+          <div class="settings">
+            <?php if (!empty($_POST['settings'])) foreach (array_keys($_POST['settings']) as $key) { ?>
+            <fieldset class="setting">
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_title', 'Title'); ?></label>
+                  <?php echo functions::form_draw_text_field('settings['.$key.'][title]', true, 'required'); ?>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_description', 'Description'); ?></label>
+                  <?php echo functions::form_draw_text_field('settings['.$key.'][description]', true, 'required'); ?>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_function', 'Function'); ?></label>
+                  <?php echo functions::form_draw_text_field('settings['.$key.'][function]', true, 'required placeholder="text()"'); ?>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_key', 'Key'); ?></label>
+                  <div class="input-group">
+                    <span class="input-group-text">{$</span>
+                    <?php echo functions::form_draw_text_field('settings['.$key.'][key]', true, 'required'); ?>
+                    <span class="input-group-text">}</span>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label><?php echo language::translate('title_default_Value', 'Default Value'); ?></label>
+                  <?php echo functions::form_draw_text_field('settings['.$key.'][default_value]', true); ?>
+                </div>
+              </div>
+            </fieldset>
+            <?php } ?>
           </div>
 
-          <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
+          <div class="form-group" style="margin-top: 2em;">
+            <?php echo functions::form_draw_button('add_setting', language::translate('title_add_setting', 'Add Setting'), 'button', 'class="btn btn-default"', 'add'); ?>
+          </div>
 
         </div>
-        <?php } ?>
+
+        <div id="tab-install" class="tab-pane">
+
+          <div class="row">
+            <div class="col-md-6">
+              <h2><?php echo language::translate('title_install', 'Install'); ?></h2>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_script', 'Script'); ?></label>
+                <?php echo functions::form_draw_code_field('install', true, 'style="height: 200px;"'); ?>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <h2><?php echo language::translate('title_uninstall', 'Uninstall'); ?></h2>
+              <div class="form-group">
+                <label><?php echo language::translate('title_script', 'Script'); ?></label>
+                <?php echo functions::form_draw_code_field('uninstall', true, 'style="height: 200px;"'); ?>
+              </div>
+            </div>
+          </div>
+
+          <h2><?php echo language::translate('title_upgrade_patches', 'Upgrade Patches'); ?></h2>
+
+          <div class="upgrades">
+            <?php if (!empty($_POST['upgrades'])) foreach (array_keys($_POST['upgrades']) as $key) { ?>
+            <fieldset class="upgrade">
+              <div class="form-group" style="max-width: 250px;">
+                <label><?php echo language::translate('title_version', 'Version'); ?></label>
+                <?php echo functions::form_draw_text_field('upgrades['.$key.'][version]', true); ?>
+              </div>
+
+              <div class="form-group">
+                <label><?php echo language::translate('title_script', 'Script'); ?></label>
+                <?php echo functions::form_draw_code_field('upgrades['.$key.'][script]', true, 'style="height: 200px;"'); ?>
+              </div>
+            </fieldset>
+            <?php } ?>
+          </div>
+
+          <div class="form-group" style="margin-top: 2em;">
+            <?php echo functions::form_draw_button('add_patch', language::translate('title_add_patch', 'Add Patch'), 'button', 'class="btn btn-default"', 'add'); ?>
+          </div>
+
+        </div>
       </div>
 
       <div class="card-action">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-        <?php echo (!empty($vmod->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\\"'. language::translate('text_are_you_sure', 'Are you sure?') .'\\")) return false;"', 'delete') : ''; ?>
+        <?php echo (!empty($vmod->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'button', 'class="btn btn-danger"', 'delete') : ''; ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
       </div>
-
-    <?php echo functions::form_draw_form_end(); ?>
-  </div>
+    </div>
+  <?php echo functions::form_draw_form_end(); ?>
 </div>
 
-<div id="new-tab-template" style="display: none;">
-  <div id="tab-new_tab_i" class="tab-pane fade in" data-tab-index="new_tab_i">
+<div id="modal-uninstall" style="display: none;">
+  <?php echo functions::form_draw_form_begin('uninstall_form', 'post'); ?>
+
+    <div class="card card-default">
+      <div class="card-header">
+        <h2><?php echo language::translate('title_uninstall_vmod', 'Uninstall vMod'); ?></h2>
+      </div>
+
+      <div class="card-body">
+        <p><label><?php echo functions::form_draw_checkbox('clean', '1', ''); ?> <?php echo language::translate('text_remove_all_traces_of_the_vmod', 'Remove all traces of the vMod such as database tables, settings, etc.'); ?></label></p>
+      </div>
+
+      <div>
+        <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger"'); ?>
+        <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'submit'); ?>
+      </div>
+    </div>
+
+  <?php echo functions::form_draw_form_end(); ?>
+</div>
+
+<div id="new-tab-pane-template" style="display: none;">
+  <div id="tab-new_tab_index" class="tab-pane">
 
     <div class="row">
-      <div class="form-group col-md-3">
-        <label><?php echo language::translate('title_path', 'Path'); ?></label>
-        <?php echo functions::form_draw_text_field('files[new_tab_i][path]', true, 'placeholder="path/to/dir/"'); ?>
+      <div class="col-md-6">
+
+        <div class="form-group">
+          <label><?php echo language::translate('title_file_pattern', 'File Pattern'); ?></label>
+          <?php echo functions::form_draw_text_field('files[new_tab_index][name]', true, 'placeholder="path/to/file.php" list="scripts"'); ?>
+       </div>
+
+        <div class="sources"></div>
       </div>
 
-      <div class="form-group col-md-3">
-        <label><?php echo language::translate('title_filename', 'Filename'); ?></label>
-        <?php echo functions::form_draw_text_field('files[new_tab_i][name]', true, 'placeholder="file.ext,file2.ext"'); ?>
+      <div class="col-md-6">
+        <div class="operations"></div>
+        <div><a class="btn btn-default add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
       </div>
     </div>
-
-    <div class="operations">
-    </div>
-
-    <div><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #0c0;"'); ?> <?php echo language::translate('title_add_operation', 'Add Operation'); ?></a></div>
 
   </div>
 </div>
@@ -344,127 +521,174 @@ textarea {
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-
-        <h3><?php echo language::translate('title_find', 'Find'); ?></h3>
-
-        <div class="form-group">
-          <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][find][content]', true, 'style="height: 100px;"'); ?>
-        </div>
-
-        <div class="form-group ">
-          <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
-          <?php echo functions::form_draw_select_field('files[tab_i][operations][new_operation_i][onerror]', $on_error_options, true); ?>
-        </div>
-
-        <div class="row" style="font-size: .8em;">
-          <div class="form-group col-md-2">
-            <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
-            <?php echo functions::form_draw_text_field('files[tab_i][operations][new_operation_i][find][offset-before]', true, 'placeholder="0"'); ?>
-          </div>
-
-          <div class="form-group col-md-2">
-            <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
-            <?php echo functions::form_draw_text_field('files[tab_i][operations][new_operation_i][find][offset-after]', true, 'placeholder="0"'); ?>
-          </div>
-
-          <div class="form-group col-md-2">
-            <label><?php echo language::translate('title_index', 'Index'); ?></label>
-            <?php echo functions::form_draw_text_field('files[tab_i][operations][new_operation_i][find][index]', true, 'placeholder="1,3,.."'); ?>
-          </div>
-
-          <div class="form-group col-md-3">
-            <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][regex]', 'y/n', true); ?>
-          </div>
-
-          <div class="form-group col-md-3">
-            <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][find][trim]', 'y/n', true); ?>
-          </div>
-        </div>
-
-        <h3><?php echo language::translate('title_ignore_if', 'Ignore If'); ?></h3>
-
-        <div class="form-group">
-          <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][ignoreif][content]', true, 'style="height: 50px;"'); ?>
-        </div>
-
-        <div class="row" style="font-size: .8em;">
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][regex]', 'y/n', true); ?>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][ignoreif][trim]', 'y/n', true); ?>
-          </div>
-        </div>
+      <div class="form-group col-md-4">
+        <label><?php echo language::translate('title_method', 'Method'); ?></label>
+        <?php echo functions::form_draw_select_field('files[new_tab_index][operations][new_operation_index][method]', $method_options, true); ?>
       </div>
 
-      <div class="col-md-6">
-        <h3><?php echo language::translate('title_insert', 'Insert'); ?></h3>
-
-        <div class="form-group">
-          <label><?php echo language::translate('title_code', 'Code'); ?></label>
-          <?php echo functions::form_draw_textarea('files[tab_i][operations][new_operation_i][insert][content]', true, 'style="height: 375px;"'); ?>
-        </div>
-
-        <div class="row" style="font-size: .8em;">
-          <div class="form-group col-md-4">
-            <label><?php echo language::translate('title_position', 'Position'); ?></label>
-            <?php echo functions::form_draw_select_field('files[tab_i][operations][new_operation_i][insert][position]', $position_options, true); ?>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][regex]', 'y/n', true); ?>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
-            <?php echo functions::form_draw_toggle('files[tab_i][operations][new_operation_i][insert][trim]', 'y/n', true); ?>
-          </div>
-        </div>
+      <div class="form-group ">
+        <label><?php echo language::translate('title_on_error', 'On Error'); ?></label>
+        <?php echo functions::form_draw_select_field('files[new_tab_index][operations][new_operation_index][onerror]', $on_error_options, true); ?>
       </div>
-
     </div>
+
+    <div class="form-group">
+      <h4><?php echo language::translate('title_find', 'Find'); ?></h4>
+      <?php echo functions::form_draw_code_field('files[new_tab_index][operations][new_operation_index][find][content]', true); ?>
+    </div>
+
+    <div class="row" style="font-size: .8em;">
+      <div class="form-group col-md-2">
+        <label><?php echo language::translate('title_offset_before', 'Offset Before'); ?></label>
+        <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][find][offset-before]', true, 'placeholder="0"'); ?>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label><?php echo language::translate('title_offset_after', 'Offset After'); ?></label>
+        <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][find][offset-after]', true, 'placeholder="0"'); ?>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label><?php echo language::translate('title_index', 'Index'); ?></label>
+        <?php echo functions::form_draw_text_field('files[new_tab_index][operations][new_operation_index][find][index]', true, 'placeholder="1,3,.."'); ?>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
+        <?php echo functions::form_draw_toggle('files[new_tab_index][operations][new_operation_index][find][regex]', true, 'y/n'); ?>
+      </div>
+
+      <div class="form-group col-md-3">
+        <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
+        <?php echo functions::form_draw_toggle('files[new_tab_index][operations][new_operation_index][find][trim]', true, 'y/n'); ?>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h4><?php echo language::translate('title_insert', 'Insert'); ?></h4>
+      <?php echo functions::form_draw_code_field('files[new_tab_index][operations][new_operation_index][insert][content]', true); ?>
+    </div>
+
+    <div class="row" style="font-size: .8em;">
+
+
+      <div class="form-group col-md-4">
+        <label><?php echo language::translate('title_regular_expression', 'Regular Expression'); ?></label>
+        <?php echo functions::form_draw_toggle('files[new_tab_index][operations][new_operation_index][insert][regex]', true, 'y/n'); ?>
+      </div>
+
+      <div class="form-group col-md-4">
+        <label><?php echo language::translate('title_trim', 'Trim'); ?></label>
+        <?php echo functions::form_draw_toggle('files[new_tab_index][operations][new_operation_index][insert][trim]', true, 'y/n'); ?>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<script>
-  $('.tab-content').on('input', 'input[name$="[path]"], input[name$="[name]"]', function() {
-    var tab = $(this).closest('.tab-pane');
-    var tab_i = $(this).closest('.tab-pane').data('tab-index');
-    var tab_name = $(tab).find('input[name$="[path]"]').val() + $(tab).find('input[name$="[name]"]').val();
-    $('a[href="#tab-'+ tab_i +'"]').text(tab_name);
-  })
+<datalist id="scripts">
+  <?php foreach ($files_datalist as $option) { ?>
+  <option><?php echo $option; ?></option>
+  <?php } ?>
+</datalist>
 
-  var new_tab_i = 1;
+<script>
+// Tabs
+
+  let new_tab_index = 0;
+  while ($('.tab-pane[id="tab-'+new_tab_index+'"]').length) new_tab_index++;
+
   $('.nav-tabs .add').click(function(e){
     e.preventDefault();
-    while ($(':input[name^="files['+ new_tab_i +']"]').length) new_tab_i++;
-    $(this).closest('li').before('<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_i +'">new'+ new_tab_i  +' <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a>');
-    var html = $('#new-tab-template').html().replace(/new_tab_i/g, new_tab_i);
-    $('.tab-content').append(html);
-    $(this).closest('li').prev().find('a').click();
-    return false;
+
+    let tab = '<a class="nav-link" data-toggle="tab" href="#tab-'+ new_tab_index +'"><span class="file">new'+ new_tab_index +'</span> <span class="remove" title="<?php language::translate('title_remove', 'Remove')?>"><?php echo functions::draw_fonticon('fa-times-circle'); ?></span></a>'
+      .replace(/new_tab_index/g, new_tab_index);
+
+    let tab_pane = $('#new-tab-pane-template').html()
+      .replace(/new_tab_index/g, new_tab_index++);
+
+    $tab_pane = $(tab_pane).hide();
+
+    $(this).before(tab);
+    $('#files').append($tab_pane);
+
+    $(this).prev().click();
   });
 
   $('.nav-tabs').on('click', '.remove', function(e) {
     e.preventDefault();
+
     if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return false;
-    var tab = $(this).parent().attr('href');
-    $(tab).remove();
-    $(this).closest('li').remove();
+
+    let $tab = $(this).closest('.nav-link'),
+      tab_pane = $(this).closest('.nav-link').attr('href');
+
+    if ($tab.prev('[data-toggle="tab"]').length) {
+      $tab.prev('[data-toggle="tab"]').trigger('click');
+
+    } else if ($tab.next('[data-toggle="tab"]').length) {
+      $tab.next('[data-toggle="tab"').trigger('click');
+    }
+
+    $(tab_pane).remove();
+    $(this).closest('.nav-link').remove();
   });
 
-  $('.tab-content').on('click', '.move-up, .move-down', function(e) {
+  $('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function(){
+    let $tab_pane = $(this).closest('.tab-pane'),
+     tab_index = $(this).closest('.tab-pane').attr('id').replace(/^tab-/, ''),
+     tab_name = $tab_pane.find('input[name$="[name]"]').val();
+
+    $('a[href="#tab-'+ tab_index +'"] .file').text(tab_name);
+
+    let file_pattern = $(this).closest('.row').find(':input[name^="files"][name$="[name]"]').val(),
+      url = '<?php echo document::link(WS_DIR_ADMIN, ['doc' => 'sources', 'pattern' => 'thepattern'], ['app']); ?>'.replace(/thepattern/, file_pattern);
+
+    $.get(url, function(result) {
+      $tab_pane.find('.sources').html('');
+
+      $.each(result, function(file, source_code){
+        $tab_pane.find('.sources').append(
+          $('<div class="script">').html(
+            $('<div class="form-code"></div>').text(source_code).prop('outerHTML') +
+            $('<div class="script-filename"></div>').text(file).prop('outerHTML')
+          )
+        );
+      });
+    });
+  });
+
+  $(':input[name^="files"][name$="[name]"]').trigger('input');
+
+  let new_operation_index = 0;
+  while ($(':input[name~="files\[[^\]]+\][operations]['+new_operation_index+']"]').length) new_operation_index++;
+
+  $('#files').on('click', '.add', function(e) {
     e.preventDefault();
-    var row = $(this).closest('.operation');
+
+    let $operations = $(this).closest('.tab-pane').find('.operations'),
+      tab_index = $(this).closest('.tab-pane').data('tab-index');
+
+     let output = $('#new-operation-template').html()
+       .replace(/tab_index/g, tab_index)
+       .replace(/new_operation_index/g, new_operation_index++);
+
+    $operations.append(output);
+  });
+
+  $('#files').on('click', '.remove', function(e) {
+    e.preventDefault();
+
+    if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
+
+    $(this).closest('.operation').remove();
+  });
+
+  $('#files').on('click', '.move-up, .move-down', function(e) {
+    e.preventDefault();
+
+    let row = $(this).closest('.operation');
+
     if ($(this).is('.move-up') && $(row).prevAll().length > 0) {
       $(row).insertBefore(row.prev());
     } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
@@ -472,21 +696,84 @@ textarea {
     }
   });
 
-  var new_operation_i = 1;
-  $('.tab-content').on('click', '.add', function(e) {
-    e.preventDefault();
-    while ($(':input[name*="[operations]['+ new_operation_i +']"]').length) new_operation_i++;
-    var list = $(this).closest('.tab-pane').find('.operations');
-    var html = $('#new-operation-template').html()
-    var tab_i = $(this).closest('.tab-pane').data('tab-index');
-    html = html.replace(/tab_i/g, tab_i)
-               .replace(/new_operation_i/g, new_operation_i);
-    $(list).append(html);
+  $('body').on('input', '.form-code', function() {
+    $(this).css('height', 'auto');
+    $(this).height(this.scrollHeight);
+  }).input();
+
+// Settings
+  let new_setting_key_index = 0;
+  while ($(':input[name^="settings['+new_setting_key_index+']"]').length) new_setting_key_index++;
+
+  $('button[name="add_setting"]').click(function(){
+
+    let output = [
+      '<fieldset class="setting">',
+      '  <div class="row">',
+      '    <div class="form-group col-md-4">',
+      '      <label><?php echo functions::escape_js(language::translate('title_title', 'Title')); ?></label>',
+      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_key_index][title]', '', 'required')); ?>',
+      '    </div>',
+      '',
+      '    <div class="form-group col-md-4">',
+      '      <label><?php echo functions::escape_js(language::translate('title_description', 'Description')); ?></label>',
+      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_key_index][description]', '', 'required')); ?>',
+      '    </div>',
+      '',
+      '    <div class="form-group col-md-4">',
+      '      <label><?php echo functions::escape_js(language::translate('title_function', 'Function')); ?></label>',
+      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_key_index][function]', '', 'required')); ?>',
+      '    </div>',
+      '',
+      '    <div class="form-group col-md-4">',
+      '      <label><?php echo functions::escape_js(language::translate('title_key', 'Key')); ?></label>',
+      '      <div class="input-group">',
+      '        <span class="input-group-text">{$</span>',
+      '        <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_key_index][key]', '', 'required')); ?>',
+      '        <span class="input-group-text">}</span>',
+      '      </div>',
+      '    </div>',
+      '',
+      '    <div class="form-group col-md-4">',
+      '      <label><?php echo functions::escape_js(language::translate('title_default_value', 'Default Value')); ?></label>',
+      '      <?php echo functions::escape_js(functions::form_draw_text_field('settings[new_setting_key_index][default_value]', '')); ?>',
+      '    </div>',
+      '  </div>',
+      '</fieldset>'
+    ].join('\n')
+    .replace(/new_setting_key_index/, 'new_' + new_setting_key_index++);
+
+    $('.settings').append(output);
   });
 
-  $('.tab-content').on('click', '.remove', function(e) {
+// Upgrade Patches
+  let new_upgrade_patch_index = 0;
+  while ($(':input[name^="upgrades['+new_upgrade_patch_index+']"]').length) new_upgrade_patch_index++;
+
+  $('button[name="add_patch"]').click(function(){
+
+    let output = [
+      '<fieldset class="upgrade">',
+      '  <div class="form-group" style="max-width: 250px;">',
+      '    <label><?php echo functions::escape_js(language::translate('title_version', 'Version')); ?></label>',
+      '    <?php echo functions::escape_js(functions::form_draw_text_field('upgrades[new_upgrade_patch_index][version]', '')); ?>',
+      '  </div>',
+      '',
+      '  <div class="form-group">',
+      '    <label><?php echo functions::escape_js(language::translate('title_script', 'Script')); ?></label>',
+      '    <?php echo functions::escape_js(functions::form_draw_code_field('upgrades[new_upgrade_patch_index][script]', '', 'style="height: 200px;"')); ?>',
+      '  </div>',
+      '</fieldset>'
+    ].join('\n')
+    .replace(/new_upgrade_patch_index/g, 'new_' + new_upgrade_patch_index);
+
+    $('.upgrades').append(output);
+  });
+
+  $('.card-action button[name="delete"]').click(function(e){
     e.preventDefault();
-    if (!confirm("<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>")) return;
-    $(this).closest('.operation').remove();
+    $.featherlight('#modal-uninstall', {
+      seamless: true,
+    });
   });
 </script>

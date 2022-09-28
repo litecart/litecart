@@ -83,63 +83,47 @@
   $vmods = [];
 
   foreach (glob(FS_DIR_APP . 'vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
-    $xml = simplexml_load_file($file);
-    $vmods[] = [
+
+		$dom = new \DOMDocument('1.0', 'UTF-8');
+		$dom->preserveWhiteSpace = false;
+
+		if (!$dom->loadXml(file_get_contents($file))) {
+			throw new Exception(libxml_get_last_error());
+		}
+
+		switch ($dom->documentElement->tagName) {
+
+			case 'vmod': // vMod
+				$vmod = vmod::parse_vmod($dom, $file);
+				break;
+
+			case 'modification': // vQmod
+				$vmod = vmod::parse_vqmod($dom, $file);
+				break;
+
+			default:
+				throw new Exception("File ($file) is not a valid vmod or vQmod");
+		}
+
+		$vmod = array_merge($vmod, [
       'filename' => pathinfo($file, PATHINFO_BASENAME),
-      'type' => ($xml->getName() == 'vmod') ? 'vMod' : 'VQmod',
-      'enabled' => preg_match('#\.xml$#', $file) ? true : false,
-      'name' => isset($xml->name) ? $xml->name : $xml->title,
-      'version' => $xml->version,
-      'author' => $xml->author,
-      'configurable' => !empty($xml->setting) ? true : false,
+      'status' => preg_match('#\.xml$#', $file) ? true : false,
       'errors' => null,
-    ];
-  }
+    ]);
 
-// Number of Rows
-  $num_rows = count($vmods);
-
-// Tests
-
-  foreach ($vmods as $vmod_key => $vmod) {
-
+	// Check for errors
     try {
 
-      $vmod_file = FS_DIR_APP . 'vmods/' . $vmod['filename'];
+      foreach (array_keys($vmod['files']) as $key) {
 
-      $dom = new \DOMDocument('1.0', 'UTF-8');
-      $dom->preserveWhiteSpace = false;
-
-      if (!$dom->loadXml(file_get_contents($vmod_file))) {
-        throw new Exception(libxml_get_last_error());
-      }
-
-      switch ($dom->documentElement->tagName) {
-
-        case 'vmod': // vMod
-          $parsed_vmod = vmod::parse_vmod($dom, $vmod_file);
-          break;
-
-        case 'modification': // vQmod
-          $parsed_vmod = vmod::parse_vqmod($dom);
-          break;
-
-        default:
-          throw new Exception("File ($file) is not a valid vmod or vQmod");
-      }
-
-      foreach (array_keys($parsed_vmod['files']) as $key) {
-        $patterns = explode(',', $parsed_vmod['files'][$key]['name']);
-
-        foreach ($patterns as $pattern) {
-          $path_and_file = $parsed_vmod['files'][$key]['path'].$pattern;
+        foreach (explode(',', $vmod['files'][$key]['name']) as $pattern) {
 
         // Apply path aliases
           if (!empty(vmod::$aliases)) {
-            $path_and_file = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $path_and_file);
+            $pattern = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $pattern);
           }
 
-          $files = glob(FS_DIR_APP . $path_and_file);
+          $files = glob(FS_DIR_APP . $pattern);
 
           if (empty($files)) {
             throw new Exception('No files matching pattern');
@@ -151,13 +135,11 @@
 
             $buffer = file_get_contents($file);
 
-            foreach ($parsed_vmod['files'][$key]['operations'] as $i => $operation) {
+            foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
 
-              if (!empty($operation['ignoreif']) && preg_match($operation['ignoreif'], $buffer)) {
-                continue;
-              }
+							$found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
 
-              if (!preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE)) {
+							if (!$found) {
                 switch ($operation['onerror']) {
                   case 'ignore':
                     continue 2;
@@ -194,9 +176,14 @@
       }
 
     } catch (Exception $e) {
-      $vmods[$vmod_key]['errors'] = $e->getMessage();
+      $vmod['errors'] = $e->getMessage();
     }
+
+		$vmods[] = $vmod;
   }
+
+// Number of Rows
+  $num_rows = count($vmods);
 ?>
 
 <div class="card card-app">
@@ -231,7 +218,7 @@
 
       <tbody>
         <?php foreach ($vmods as $vmod) { ?>
-        <tr class="<?php echo $vmod['enabled'] ? null : 'semi-transparent'; ?>">
+        <tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($vmod['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['name']; ?></a></td>
@@ -248,7 +235,7 @@
               <?php } ?>
             </a>
           </td>
-          <td><?php if ($vmod['configurable']) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
+          <td><?php if (!empty($vmod['settings'])) { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'configure', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('fa-cog'); ?></a><?php } ?></td>
           <td><?php if ($vmod['type'] == 'vMod') { ?><a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'view', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('fa-search'); ?></a><?php } ?></td>
           <td>
             <a class="btn btn-default btn-sm" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'download', 'vmod' => $vmod['filename']], ['app']); ?>" title="<?php echo language::translate('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('fa-download'); ?></a>

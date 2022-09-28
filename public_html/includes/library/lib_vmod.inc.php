@@ -81,13 +81,6 @@
     // Load modifications from disk
       if (empty(self::$_modifications)) {
 
-      // Load vQmods for backwards compatibility
-        if (is_dir(FS_DIR_APP . 'vqmods/xml/')) {
-          foreach (glob(FS_DIR_APP . 'vqmods/xml/*.xml') as $file) {
-            self::load($file);
-          }
-        }
-
         foreach (glob(FS_DIR_APP . 'vmods/*.xml') as $file) {
           self::load($file);
         }
@@ -139,18 +132,18 @@
         return self::$_checked[$relative_path];
       }
 
+    // Return original file if there are no modifications
+      if (empty(self::$_files_to_modifications[$relative_path])) {
+        return $file;
+      }
+
     // Add modifications to queue and calculate checksum
       $queue = [];
       $digest = [filemtime($file)];
 
-      foreach (self::$_files_to_modifications as $pattern => $modifications) {
-        if (!fnmatch($pattern, $relative_path)) continue;
-
-        foreach ($modifications as $modification) {
-          $digest[] = strtotime($modification['date_modified']);
-        }
-
-        $queue[] = $modifications;
+      foreach (self::$_files_to_modifications[$relative_path] as $modification) {
+        $digest[] = strtotime($modification['date_modified']);
+        $queue[] = $modification;
       }
 
       $checksum = md5(implode($digest));
@@ -175,58 +168,52 @@
         $original = $buffer = null;
       }
 
-      foreach ($queue as $modifications) {
-        foreach ($modifications as $modification) {
+      foreach ($queue as $modification) {
 
-          if (!$vmod = self::$_modifications[$modification['id']]) continue;
-          if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations']) continue;
+        if (!$vmod = self::$_modifications[$modification['id']]) continue;
+        if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations']) continue;
 
-          $tmp = $buffer;
-          foreach ($operations as $i => $operation) {
+        $tmp = $buffer;
+        foreach ($operations as $i => $operation) {
 
-            if (!empty($operation['ignoreif']) && preg_match($operation['ignoreif'], $tmp)) {
-              continue;
-            }
+          $found = preg_match_all($operation['find']['pattern'], $tmp, $matches, PREG_OFFSET_CAPTURE);
 
-            $found = preg_match_all($operation['find']['pattern'], $tmp, $matches, PREG_OFFSET_CAPTURE);
-
-            if (!$found) {
-              switch ($operation['onerror']) {
-                case 'abort':
-                  trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
-                  continue 3;
-                case 'ignore':
-                  continue 2;
-                case 'warning':
-                default:
-                  trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
-                  continue 2;
-              }
-            }
-
-            if (!empty($operation['find']['indexes'])) {
-              rsort($operation['find']['indexes']);
-
-              foreach ($operation['find']['indexes'] as $index) {
-                $index = $index - 1; // [0] is the 1st in computer language
-
-                if ($found > $index) {
-                  $tmp = substr_replace($tmp, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
-                }
-              }
-
-            } else {
-              $tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
-
-              if (!$count && $operation['onerror'] != 'skip') {
-                trigger_error("Vmod failed to perform insert", E_USER_ERROR);
+          if (!$found) {
+            switch ($operation['onerror']) {
+              case 'abort':
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found [ABORTED]", E_USER_WARNING);
+                continue 3;
+              case 'ignore':
                 continue 2;
-              }
+              case 'warning':
+              default:
+                trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $relative_path: Search not found", E_USER_WARNING);
+                continue 2;
             }
           }
 
-          $buffer = $tmp;
+          if (!empty($operation['find']['indexes'])) {
+            rsort($operation['find']['indexes']);
+
+            foreach ($operation['find']['indexes'] as $index) {
+              $index = $index - 1; // [0] is the 1st in computer language
+
+              if ($found > $index) {
+                $tmp = substr_replace($tmp, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+              }
+            }
+
+          } else {
+            $tmp = preg_replace($operation['find']['pattern'], $operation['insert'], $tmp, -1, $count);
+
+            if (!$count && $operation['onerror'] != 'skip') {
+              trigger_error("Vmod failed to perform insert", E_USER_ERROR);
+              continue 2;
+            }
+          }
         }
+
+        $buffer = $tmp;
       }
 
     // Create cache folder for modified files if missing
@@ -279,14 +266,13 @@
             break;
 
           case 'modification': // vQmod
-            $vmod = self::parse_vqmod($dom);
+            $vmod = self::parse_vqmod($dom, $file);
             break;
 
           default:
             throw new \Exception("File ($file) is not a valid vmod or vQmod");
         }
 
-        $vmod['id'] = basename($file);
         $vmod['date_modified'] = filemtime($file);
 
         if (empty($vmod['version'])) {
@@ -297,17 +283,18 @@
 
       // Create cross reference for file patterns
         foreach (array_keys($vmod['files']) as $key) {
-          $patterns = explode(',', $vmod['files'][$key]['name']);
 
-          foreach ($patterns as $pattern) {
-            $path_and_file = $vmod['files'][$key]['path'].$pattern;
+          $glob_pattern = $vmod['files'][$key]['name'];
 
-          // Apply path aliases
-            if (!empty(self::$aliases)) {
-              $path_and_file = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $path_and_file);
-            }
+        // Apply path aliases
+          if (!empty(self::$aliases)) {
+            $glob_pattern = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $glob_pattern);
+          }
 
-            self::$_files_to_modifications[$path_and_file][] = [
+          foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
+            $relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
+
+            self::$_files_to_modifications[$relative_path][] = [
               'id' => $vmod['id'],
               'key' => $key,
               'date_modified' => $vmod['date_modified'],
@@ -386,9 +373,10 @@
 
       $vmod = [
         'type' => 'vmod',
-        'id' => pathinfo($file, PATHINFO_FILENAME),
+        'id' => preg_replace('#\.(xml|disabled)$#', '', pathinfo($file, PATHINFO_FILENAME)),
         'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
+        'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
         'files' => [],
         'install' => null,
         'upgrades' => [],
@@ -434,7 +422,6 @@
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
         $vmod_file = [
-          'path' => $file_node->getAttribute('path'),
           'name' => $file_node->getAttribute('name'),
           'operations' => [],
         ];
@@ -487,36 +474,6 @@
             $indexes = preg_split('#, ?#', $indexes);
           }
 
-        // Ignoreif
-          if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
-            $ignoreif = strtr($ignoreif_node->textContent, $aliases);
-
-            if ($ignoreif_node->getAttribute('regex') == 'true') {
-              $ignoreif = trim($ignoreif);
-
-            } else {
-
-              if ($ignoreif_node->getAttribute('trim') != 'false') {
-                $ignoreif = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $ignoreif); // Trim beginning of CDATA
-                $ignoreif = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $ignoreif); // Trim end of CDATA
-              }
-
-              if (preg_match('#[\r\n]#', $ignoreif)) {
-                $ignoreif = preg_split('#(\r\n?|\n)#', $ignoreif);
-                for ($i=0; $i<count($ignoreif); $i++) {
-                  if ($ignoreif[$i] = trim($ignoreif[$i])) {
-                    $ignoreif[$i] = '(?:[ \\t]+)?' . preg_quote($ignoreif[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
-                  } else if ($i != count($ignoreif)-1) {
-                    $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
-                  }
-                }
-                $ignoreif = implode($ignoreif);
-              } else {
-                $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
-              }
-            }
-          }
-
         // Insert
           $insert_node = $operation_node->getElementsByTagName('insert')->item(0);
           $insert = strtr($insert_node->textContent, $aliases);
@@ -537,7 +494,7 @@
               $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
             }
 
-            switch($position = $insert_node->getAttribute('position')) {
+            switch ($method = $operation_node->getAttribute('method')) {
 
               case 'before':
               case 'prepend':
@@ -566,7 +523,7 @@
                 break;
 
               default:
-                throw new \Exception("Unknown value \"$position\" for attribute position (replace|before|after|all)");
+                throw new \Exception("Unknown value \"$method\" for operation method (before|after|replace|bottom|top)");
                 continue 2;
             }
           }
@@ -578,18 +535,17 @@
               'pattern' => $find,
               'indexes' => $indexes,
             ],
-            'ignoreif' => !empty($ignoreif) ? $ignoreif : false,
             'insert' => $insert,
           ];
         }
 
-        $vmod['files'][$vmod_file['path'].$vmod_file['name']] = $vmod_file;
+        $vmod['files'][$vmod_file['name']] = $vmod_file;
       }
 
       return $vmod;
     }
 
-    public static function parse_vqmod($dom) {
+    public static function parse_vqmod($dom, $file) {
 
       if ($dom->documentElement->tagName != 'modification') {
         throw new \Exception("File is not a valid vQmod");
@@ -600,9 +556,11 @@
       }
 
       $mod = [
+        'id' => preg_replace('#\.(xml|disabled)$#', '', pathinfo($file, PATHINFO_FILENAME)),
         'type' => 'vqmod',
         'name' => $dom->getElementsByTagName('id')->item(0)->textContent,
         'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
+        'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
         'files' => [],
       ];
 
@@ -612,9 +570,13 @@
 
       foreach ($dom->getElementsByTagName('file') as $file_node) {
 
+        $patterns = [];
+        foreach (explode(',', $file_node->getAttribute('name')) as $pattern) {
+          $patterns[] = $file_node->getAttribute('path') . $pattern;
+        }
+
         $mod_file = [
-          'path' => $file_node->getAttribute('path'),
-          'name' => $file_node->getAttribute('name'),
+          'name' => implode(',', $patterns),
           'operations' => []
         ];
 
@@ -695,36 +657,6 @@
             $indexes = preg_split('#, ?#', $indexes);
           }
 
-        // Ignoreif
-          if ($ignoreif_node = $operation_node->getElementsByTagName('ignoreif')->item(0)) {
-            $ignoreif = $ignoreif_node->textContent;
-
-            if ($ignoreif_node->getAttribute('regex') == 'true') {
-              $ignoreif = trim($ignoreif);
-
-            } else {
-
-              if ($ignoreif_node->getAttribute('trim') != 'false') {
-                $ignoreif = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $ignoreif); // Trim beginning of CDATA
-                $ignoreif = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $ignoreif); // Trim end of CDATA
-              }
-
-              if (preg_match('#[\r\n]#', $ignoreif)) {
-                $ignoreif = preg_split('#(\r\n?|\n)#', $ignoreif);
-                for ($i=0; $i<count($ignoreif); $i++) {
-                  if ($ignoreif[$i] = trim($ignoreif[$i])) {
-                    $ignoreif[$i] = '(?:[ \\t]+)?' . preg_quote($ignoreif[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
-                  } else if ($i != count($ignoreif)-1) {
-                    $ignoreif[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
-                  }
-                }
-                $ignoreif = implode($ignoreif);
-              } else {
-                $ignoreif = '(?:[ \\t]+)?' . preg_quote(trim($ignoreif), '#') . '(?:[ \\t]+)?';
-              }
-            }
-          }
-
         // Add
           $add_node = $operation_node->getElementsByTagName('add')->item(0);
           $add = $add_node->textContent;
@@ -739,7 +671,7 @@
               $add = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $add); // Trim end of CDATA
             }
 
-            switch($search_node->getAttribute('position')) {
+            switch ($search_node->getAttribute('position')) {
 
               case 'before':
               case 'ibefore':
@@ -775,7 +707,7 @@
                 break;
 
               default:
-                throw new \Exception('Unknown value ('. $search_node->getAttribute('position') .') for attribute position (replace|before|after|ireplace|ibefore|iafter)');
+                throw new \Exception('Unknown value ('. $search_node->getAttribute('position') .') for attribute position (replace|before|after|ireplace|ibefore|iafter|all)');
                 continue 2;
             }
           }
@@ -787,12 +719,11 @@
               'pattern' => $search,
               'indexes' => $indexes,
             ],
-            'ignoreif' => !empty($ignoreif) ? $ignoreif : false,
             'insert' => $add,
           ];
         }
 
-        $mod['files'][$mod_file['path'].$mod_file['name']] = $mod_file;
+        $mod['files'][$mod_file['name']] = $mod_file;
       }
 
       return $mod;
