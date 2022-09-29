@@ -130,6 +130,7 @@
     </ul>
 
     <div id="content">
+      {snippet:notices}
       {snippet:content}
     </div>
   </main>
