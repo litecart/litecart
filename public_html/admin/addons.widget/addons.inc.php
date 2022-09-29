@@ -37,8 +37,20 @@
         }
 ?>
 <style>
-#widget-addons .row [class^="col-"] .description {
+#widget-addons .addons {
+  columns: 4 275px;
+}
+#widget-addons .addon {
+  margin-bottom: 1em;
+  break-inside: avoid;
+}
+#widget-addons .description {
   opacity: 0.85;
+}
+#widget-addons .title, #widget-addons .description {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 
@@ -50,9 +62,9 @@
   </div>
 
   <div class="card-body">
-    <div class="row">
+    <div class="addons">
       <?php foreach ($addons as $item) { ?>
-      <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="addon">
         <div class="title"><a href="<?php echo functions::escape_html((string)$item->link); ?>" target="_blank"><?php echo functions::escape_html((string)$item->title); ?></a></div>
         <div class="description"><?php echo (string)$item->description; ?></div>
       </div>
