@@ -9,21 +9,24 @@
   $tables = [];
 
   $tables_query = database::query(
-    "select * from `information_schema`.`TABLES`
-    where TABLE_SCHEMA = '". DB_DATABASE ."'
+    "SELECT * FROM information_schema.TABLES
+    WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
     order by TABLE_NAME;"
   );
 
+  $tables = [];
+  $defined_tables = [];
+
   while ($table = database::fetch($tables_query)) {
-    if (preg_match('#^'. preg_quote(DB_TABLE_PREFIX, '#') .'#', $table['TABLE_NAME'])) {
-      $tables[] = $table;
+    $tables[] = $table;
+    if (preg_match('#^'.preg_quote(DB_TABLE_PREFIX, '#').'#', $table['TABLE_NAME'])) {
+      $defined_tables[] = $table['TABLE_NAME'];
     }
   }
 
-// Number of Rows
-  $num_rows = database::num_rows($tables_query);
-
-  if (empty($_POST)) $_POST['tables'] = array_column($tables, 'TABLE_NAME');
+  if (!$_POST) {
+    $_POST['tables'] = $defined_tables;
+  }
 
   if (isset($_POST['convert'])) {
 
@@ -31,8 +34,10 @@
       if (empty($_POST['tables'])) throw new Exception(language::translate('error_must_select_tables', 'You must select tables'));
       if (empty($_POST['collation']) && empty($_POST['engine'])) throw new Exception(language::translate('error_must_select_action_to_perform', 'You must select an action to perform'));
 
+      $table_names = array_column($tables, 'TABLE_NAME');
+
       foreach ($_POST['tables'] as $table) {
-        if (!in_array($table, $tables)) throw new Exception(strtr(language::translate('error_unknown_application_database_table_x', 'Unknown application database table (%table)'), ['%table' => $table]));
+        if (!in_array($table, $table_names)) throw new Exception(strtr(language::translate('error_unknown_table_x', 'Unknown table (%table)')), ['%table' => $table]);
       }
 
       $_POST['collation'] = preg_replace('#[^a-z0-9_]#', '', $_POST['collation']);
@@ -41,7 +46,7 @@
         database::query(
           "alter database `". DB_DATABASE ."`
           default character set ". database::input(preg_replace('#^([^_]+).*$#', '$1', $_POST['collation'])) ."
-          collate = ". database::input($_POST['collation']) .";"
+          collate ". database::input($_POST['collation']) .";"
         );
       }
 
@@ -73,6 +78,8 @@
     }
   }
 
+// Number of Rows
+  $num_rows = count($tables);
 ?>
 <div class="card card-app">
   <div class="card-header">
