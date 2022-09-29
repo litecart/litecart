@@ -108,9 +108,9 @@
   });
 
 // Data-Table Toggle Checkboxes
-  $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"]', function() {
-    $(this).closest('.data-table').find('tbody td > .form-check > :checkbox').each(function() {
-      $(this).prop('checked', !$(this).prop('checked'));
+  $('body').on('click', '.data-table *[data-toggle="checkbox-toggle"], .data-table .checkbox-toggle', function() {
+    $(this).closest('.data-table').find('tbody td:first-child :checkbox').each(function() {
+      $(this).prop('checked', !$(this).prop('checked')).trigger('change');
     });
     return false;
   });
