@@ -134,6 +134,7 @@
 
     // Return original file if there are no modifications
       if (empty(self::$_files_to_modifications[$relative_path])) {
+        self::$time_elapsed += microtime(true) - $timestamp;
         return $file;
       }
 
@@ -173,8 +174,8 @@
         if (!$vmod = self::$_modifications[$modification['id']]) continue;
         if (!$operations = self::$_modifications[$modification['id']]['files'][$modification['key']]['operations']) continue;
 
-        $tmp = $buffer;
-        foreach ($operations as $i => $operation) {
+        $tmp = $buffer; $i = 1;
+        foreach ($operations as $operation) {
 
           $found = preg_match_all($operation['find']['pattern'], $tmp, $matches, PREG_OFFSET_CAPTURE);
 
@@ -211,6 +212,8 @@
               continue 2;
             }
           }
+
+          $i++;
         }
 
         $buffer = $tmp;
@@ -241,7 +244,6 @@
       file_put_contents(FS_DIR_APP . 'vmods/.cache/.checked', $relative_path .';'. $modified_relative_path .';'. $checksum . PHP_EOL, FILE_APPEND | LOCK_EX);
 
       self::$time_elapsed += microtime(true) - $timestamp;
-
       return $modified_file;
     }
 
@@ -276,7 +278,7 @@
         $vmod['date_modified'] = filemtime($file);
 
         if (empty($vmod['version'])) {
-          $vmod['version'] = date('Y-m-d', $vmod['date_modified']);
+          $vmod['version'] = date('Y-m-d', filemtime($file));
         }
 
         self::$_modifications[$vmod['id']] = $vmod;
@@ -435,43 +437,51 @@
           $find_node = $operation_node->getElementsByTagName('find')->item(0);
           $find = strtr($find_node->textContent, $aliases);
 
-          if ($find_node->getAttribute('regex') == 'true') {
+        // Trim
+          if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
             $find = trim($find);
 
-          } else {
+          } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
+            $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
+            $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
+          }
 
-          // Trim
-            if ($find_node->getAttribute('trim') != 'false') {
-              $find = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $find); // Trim beginning of CDATA
-              $find = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $find); // Trim end of CDATA
-            }
+        // Cook the regex pattern
+          if ($operation_node->getAttribute('type') != 'regex') {
 
-          // Whitespace
-            if (preg_match('#[\r\n]#', $find)) {
+            if ($operation_node->getAttribute('type') == 'inline') {
+              $find = preg_quote($find, '#');
+
+            } else {
+
+            // Whitespace
               $find = preg_split('#(\r\n?|\n)#', $find);
               for ($i=0; $i<count($find); $i++) {
                 if ($find[$i] = trim($find[$i])) {
-                  $find[$i] = '(?:[ \\t]+)?' . preg_quote($find[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  $find[$i] = '[ \\t]*' . preg_quote($find[$i], '#') . '[ \\t]*(?:\r\n?|\n)';
                 } else if ($i != count($find)-1) {
-                  $find[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  $find[$i] = '[ \\t]*(?:\r\n?|\n)';
                 }
               }
               $find = implode($find);
-            } else {
-              $find = '(?:[ \\t]+)?' . preg_quote(trim($find), '#') . '(?:[ \\t]+)?';
+
+            // Offset
+              if ($find_node->getAttribute('offset-before') != '') {
+                $find = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}' . $find;
+              }
+
+              if ($find_node->getAttribute('offset-after') != '') {
+                $find = $find . '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
+              }
             }
 
-          // Offset
-            $offset_before = '(?:.*?(?:\r\n?|\n)){'. (int)$find_node->getAttribute('offset-before') .'}';
-            $offset_after = '(?:.*?(?:\r\n?|\n|$)){0,'. (int)$find_node->getAttribute('offset-after') .'}';
-
-          // Glue
-            $find = '#'. $offset_before . $find . $offset_after .'#';
+          // Encapsulate regex
+            $find = '#'. $find .'#';
           }
 
         // Indexes
           if ($indexes = $find_node->getAttribute('index')) {
-            $indexes = preg_split('#, ?#', $indexes);
+            $indexes = preg_split('#\s*,\s*#', $indexes, -1, PREG_SPLIT_NO_EMPTY);
           }
 
         // Insert
@@ -484,12 +494,9 @@
             }
           }
 
-          if ($insert_node->getAttribute('regex') == 'true') {
-            $insert = trim($insert);
+          if ($operation_node->getAttribute('type') != 'regex') {
 
-          } else {
-
-            if ($insert_node->getAttribute('trim') != 'false') {
+            if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
               $insert = preg_replace('#^[ \\t]*(\r\n?|\n)?#s', '', $insert); // Trim beginning of CDATA
               $insert = preg_replace('#(\r\n?|\n)?[ \\t]*$#s', '$1', $insert); // Trim end of CDATA
             }
@@ -497,23 +504,21 @@
             switch ($method = $operation_node->getAttribute('method')) {
 
               case 'before':
-              case 'prepend':
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'after':
-              case 'append':
                 $insert = '$0'. addcslashes($insert, '\\$');
                 break;
 
               case 'top':
-                $find = '#^.*$#s';
+                $find = '#^#s';
                 $indexes = '';
                 $insert = addcslashes($insert, '\\$').'$0';
                 break;
 
               case 'bottom':
-                $find = '#^.*$#s';
+                $find = '#$#s';
                 $indexes = '';
                 $insert = '$0'.addcslashes($insert, '\\$');
                 break;
@@ -619,14 +624,14 @@
               $search = preg_split('#(\r\n?|\n)#', $search);
               for ($i=0; $i<count($search); $i++) {
                 if ($search[$i] = trim($search[$i])) {
-                  $search[$i] = '(?:[ \\t]+)?' . preg_quote($search[$i], '#') . '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  $search[$i] = '[ \\t]*' . preg_quote($search[$i], '#') . '[ \\t]*(?:\r\n?|\n)';
                 } else if ($i != count($search)-1) {
-                  $search[$i] = '(?:[ \\t]+)?(?:\r\n?|\n)';
+                  $search[$i] = '[ \\t]*(?:\r\n?|\n)';
                 }
               }
               $search = implode($search);
             } else {
-              $search = '(?:[ \\t]+)?' . preg_quote(trim($search), '#') . '(?:[ \\t]+)?';
+              $search = '[ \\t]*' . preg_quote(trim($search), '#') . '[ \\t]*';
             }
 
           // Offset

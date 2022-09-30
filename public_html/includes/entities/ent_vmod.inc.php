@@ -7,7 +7,7 @@
     public function __construct($filename=null) {
 
       if (!empty($filename)) {
-        $this->load($filename);
+        $this->load(basename($filename));
       } else {
         $this->reset();
       }
@@ -56,17 +56,18 @@
 
       $this->data['id'] = preg_replace('#\.(xml|disabled)?$#', '', $filename);
       $this->data['status'] = !preg_match('#\.disabled$#', $filename) ? '1' : '0';
+      $this->data['filename'] = $filename;
       $this->data['date_created'] = date('Y-m-d H:i:s', filectime(FS_DIR_APP . 'vmods/' . $filename));
       $this->data['date_updated'] = date('Y-m-d H:i:s', filemtime(FS_DIR_APP . 'vmods/' . $filename));
 
       switch ($dom->documentElement->tagName) {
 
         case 'vmod': // LiteCart Modification
-          $vmod = $this->_load_vmod($dom);
+          $this->_load_vmod($dom);
           break;
 
         case 'modification': // vQmod
-          $vmod = $this->_load_vqmod($dom);
+          $this->_load_vqmod($dom);
           break;
 
         default:
@@ -78,10 +79,10 @@
 
     private function _load_vmod($dom) {
 
-      $this->data['name'] = !empty($dom->getElementsByTagName('name')->item(0)) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
-      $this->data['description'] = !empty($dom->getElementsByTagName('description')->item(0)) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
-      $this->data['version'] = !empty($dom->getElementsByTagName('version')->item(0)) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
-      $this->data['author'] = !empty($dom->getElementsByTagName('author')->item(0)) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
+      $this->data['name'] = !empty($dom->getElementsByTagName('name')) ? $dom->getElementsByTagName('name')->item(0)->textContent : '';
+      $this->data['description'] = !empty($dom->getElementsByTagName('description')) ? $dom->getElementsByTagName('description')->item(0)->textContent : '';
+      $this->data['version'] = !empty($dom->getElementsByTagName('version')) ? $dom->getElementsByTagName('version')->item(0)->textContent : '';
+      $this->data['author'] = !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '';
 
       foreach ($dom->getElementsByTagName('alias') as $alias_node) {
         $this->data['aliases'][$alias_node->getAttribute('key')] = $alias_node->getAttribute('value');
@@ -99,6 +100,7 @@
         foreach ($file_node->getElementsByTagName('operation') as $operation_node) {
 
           $this->data['files'][$f]['operations'][$o] = [
+            'type' => $operation_node->getAttribute('type'),
             'method' => $operation_node->getAttribute('method'),
             'find' => [],
             'insert' => [],
@@ -107,32 +109,34 @@
 
           if ($find_node = $operation_node->getElementsByTagName('find')->item(0)) {
 
-            if ($find_node->getAttribute('trim') == '' || filter_var($find_node->getAttribute('trim'), FILTER_VALIDATE_BOOLEAN)) {
+            if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
+              $find_node->textContent = trim($find_node->textContent);
+
+            } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
               $find_node->textContent = preg_replace('#^(\r\n?|\n)?#s', '', $find_node->textContent); // Trim beginning of CDATA
               $find_node->textContent = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $find_node->textContent); // Trim end of CDATA
             }
 
             $this->data['files'][$f]['operations'][$o]['find'] = [
               'content' => $find_node->textContent,
-              'regex' => $find_node->getAttribute('regex'),
+              'index' => $find_node->getAttribute('index'),
               'offset-before' => $find_node->getAttribute('offset-before'),
               'offset-after' => $find_node->getAttribute('offset-after'),
-              'index' => $find_node->getAttribute('index'),
-              'trim' => $find_node->getAttribute('trim'),
             ];
           }
 
           if ($insert_node = $operation_node->getElementsByTagName('insert')->item(0)) {
 
-            if ($insert_node->getAttribute('trim') == '' || filter_var($insert_node->getAttribute('trim'), FILTER_VALIDATE_BOOLEAN)) {
+            if (in_array($operation_node->getAttribute('type'), ['inline', 'regex'])) {
+              $insert_node->textContent = trim($insert_node->textContent);
+
+            } else if (in_array($operation_node->getAttribute('type'), ['multiline', ''])) {
               $insert_node->textContent = preg_replace('#^(\r\n?|\n)#s', '', $insert_node->textContent); // Trim beginning of CDATA
               $insert_node->textContent = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $insert_node->textContent); // Trim end of CDATA
             }
 
             $this->data['files'][$f]['operations'][$o]['insert'] = [
               'content' => $insert_node->textContent,
-              'regex' => $insert_node->getAttribute('regex'),
-              'trim' => $insert_node->getAttribute('trim'),
             ];
           }
 
@@ -194,18 +198,22 @@
               $search_node->textContent = preg_replace('#(\r\n?|\n)[\t ]*$#s', '', $search_node->textContent); // Trim end of CDATA
             }
 
+            if ($search_node->getAttribute('regex') == 'true') {
+              $this->data['files'][$f]['operations'][$o]['type'] = 'regex';
+            } else if (in_array($search_node->getAttribute('position'), ['ibefore', 'iafter'])) {
+              $this->data['files'][$f]['operations'][$o]['type'] = 'inline';
+            } else {
+              $this->data['files'][$f]['operations'][$o]['type'] = 'multiline';
+            }
+
             $this->data['files'][$f]['operations'][$o]['method'] = strtr($search_node->getAttribute('position'), [
               'ibefore' => 'before',
               'iafter' => 'after',
-              'prepend' => 'before',
-              'append' => 'after',
             ]);
 
             $this->data['files'][$f]['operations'][$o]['find'] = [
               'content' => $search_node->textContent,
-              'regex' => $search_node->getAttribute('regex'),
               'index' => $search_node->getAttribute('index'),
-              'trim' => $search_node->getAttribute('trim'),
               'offset-before' => ($search_node->getAttribute('position') == 'before') ? (int)$search_node->getAttribute('offset') : 0,
               'offset-after' => ($search_node->getAttribute('position') == 'after') ? (int)$search_node->getAttribute('offset') : 0,
             ];
@@ -220,8 +228,6 @@
 
             $this->data['files'][$f]['operations'][$o]['insert'] = [
               'content' => $add_node->textContent,
-              'regex' => $add_node->getAttribute('regex'),
-              'trim' => $add_node->getAttribute('trim'),
             ];
           }
 
@@ -298,7 +304,7 @@
         foreach ($file['operations'] as $operation) {
           $operation_node = $dom->createElement('operation');
 
-          foreach (['onerror', 'method'] as $attribute_name) {
+          foreach (['type', 'method', 'onerror'] as $attribute_name) {
             if (!empty($operation[$attribute_name])) {
               $attribute = $dom->createAttribute($attribute_name);
               $attribute->value = $operation[$attribute_name];
@@ -307,57 +313,32 @@
           }
 
         // Find
-          $find_node = $dom->createElement('find');
+          if (!in_array($operation['method'], ['top', 'bottom'])) {
 
-          foreach (['offset-before', 'offset-after', 'index'] as $attribute_name) {
-            if (!empty($operation['find'][$attribute_name])) {
-              $attribute = $dom->createAttribute($attribute_name);
-              $attribute->value = $operation['find'][$attribute_name];
-              $find_node->appendChild($attribute);
+            $find_node = $dom->createElement('find');
+
+            foreach (['offset-before', 'offset-after', 'index'] as $attribute_name) {
+              if (!empty($operation['find'][$attribute_name])) {
+                $attribute = $dom->createAttribute($attribute_name);
+                $attribute->value = $operation['find'][$attribute_name];
+                $find_node->appendChild($attribute);
+              }
             }
-          }
 
-          if (!empty($operation['find']['regex'])) {
-            $attribute = $dom->createAttribute('regex');
-            $attribute->value = filter_var($operation['find']['regex'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
-            $find_node->appendChild($attribute);
-          } else {
-            $attribute = $dom->createAttribute('regex');
-            $attribute->value = 'false';
-            $find_node->appendChild($attribute);
-          }
+            if (in_array($operation['type'], ['inline', 'regex'])) {
+              $find_node->appendChild( $dom->createCDATASection($operation['find']['content']) );
+            } else {
+              $find_node->appendChild( $dom->createCDATASection(PHP_EOL . $operation['find']['content'] . PHP_EOL . str_repeat(' ', 6)) );
+            }
 
-          if (!empty($operation['find']['trim'])) {
-            $attribute = $dom->createAttribute('trim');
-            $attribute->value = filter_var($operation['find']['trim'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
-            $find_node->appendChild($attribute);
-          } else {
-            $attribute = $dom->createAttribute('trim');
-            $attribute->value = 'true';
-            $find_node->appendChild($attribute);
+            $operation_node->appendChild($find_node);
           }
-
-          if (filter_var($operation['insert']['regex'], FILTER_VALIDATE_BOOLEAN)) {
-            $find_node->appendChild( $dom->createCDATASection($operation['find']['content']) );
-          } else {
-            $find_node->appendChild( $dom->createCDATASection(PHP_EOL . $operation['find']['content'] . PHP_EOL . str_repeat(' ', 6)) );
-          }
-
-          $operation_node->appendChild($find_node);
 
         // Insert
           $insert_node = $dom->createElement('insert');
 
-          foreach (['regex', 'trim'] as $attribute_name) {
-            if (!empty($operation['insert'][$attribute_name])) {
-              $attribute = $dom->createAttribute($attribute_name);
-              $attribute->value = $operation['insert'][$attribute_name];
-              $insert_node->appendChild($attribute);
-            }
-          }
-
-          if (filter_var($operation['insert']['regex'], FILTER_VALIDATE_BOOLEAN)) {
-            $insert_node->appendChild( $dom->createCDATASection(@$operation['insert']['content']) );
+          if (in_array($operation['type'], ['inline', 'regex'])) {
+            $insert_node->appendChild( $dom->createCDATASection($operation['insert']['content']) );
           } else {
             $insert_node->appendChild( $dom->createCDATASection(PHP_EOL . $operation['insert']['content'] . PHP_EOL . str_repeat(' ', 6)) );
           }
@@ -375,7 +356,7 @@
       $xml = $dom->saveXML();
 
     // Pretty print
-      $xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|find)[^>]*>)#m', PHP_EOL . '$1', $xml);
+      $xml = preg_replace('#^( +<(alias|setting|install|uninstall|upgrade|file|operation|insert)[^>]*>)#m', PHP_EOL . '$1', $xml);
       $xml = preg_replace('#^(\n|\r\n?){2,}#m', PHP_EOL, $xml);
 
       if (!empty($this->previous['filename'])) {
@@ -392,7 +373,6 @@
     public function delete($cleanup=false) {
 
       if (empty($this->previous['filename'])) return;
-
       if (!empty($this->data['uninstall'])) {
         $tmp_file = stream_get_meta_data(tmpfile())['uri'];
         file_put_contents($tmp_file, "<?php\r\n" . $this->data['uninstall']);

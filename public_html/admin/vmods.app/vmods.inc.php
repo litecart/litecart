@@ -111,6 +111,10 @@
       'errors' => null,
     ]);
 
+    if (empty($vmod['version'])) {
+      $vmod['version'] = date('Y-m-d', filemtime($file));
+    }
+
 	// Check for errors
     try {
 
@@ -205,11 +209,11 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
-          <th><?php echo language::translate('title_version', 'Version'); ?></th>
+          <th class="text-center"><?php echo language::translate('title_version', 'Version'); ?></th>
           <th><?php echo language::translate('title_filename', 'Filename'); ?></th>
           <th><?php echo language::translate('title_author', 'Author'); ?></th>
           <th><?php echo language::translate('title_type', 'Type'); ?></th>
-          <th></th>
+          <th><?php echo language::translate('title_health', 'Health'); ?></th>
           <th></th>
           <th></th>
           <th></th>
@@ -222,7 +226,7 @@
           <td><?php echo functions::form_draw_checkbox('vmods[]', $vmod['filename']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($vmod['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
           <td><a class="link" href="<?php echo document::href_link(WS_DIR_ADMIN, ['doc' => 'edit_vmod', 'vmod' => $vmod['filename']], ['app']); ?>"><?php echo $vmod['name']; ?></a></td>
-          <td><?php echo $vmod['version']; ?></td>
+          <td class="text-center"><?php echo $vmod['version']; ?></td>
           <td><?php echo $vmod['filename']; ?></td>
           <td><?php echo $vmod['author']; ?></td>
           <td class="text-center"><?php echo $vmod['type']; ?></td>

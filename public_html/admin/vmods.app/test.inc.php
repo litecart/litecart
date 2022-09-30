@@ -70,63 +70,54 @@
         'error' => '',
       ];
 
-      try {
+      $buffer = file_get_contents($file);
 
-        if (!is_file($file)) throw new Exception('File does not exist');
+      foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
 
-        $buffer = file_get_contents($file);
+        try {
 
-        foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
+          $result['pathfiles'][$glob_pattern]['files'][$short_file]['operations'][$i] = [
+            'error' => '',
+          ];
 
-          try {
-
-            $result['pathfiles'][$glob_pattern]['files'][$short_file]['operations'][$i] = [
-              'error' => '',
-            ];
-
-            $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
-
-            if (!$found) {
-              switch ($operation['onerror']) {
-                case 'ignore':
-                  continue 2;
-                case 'abort':
-                case 'warning':
-                default:
-                  throw new Exception('Search not found', E_USER_WARNING);
-                  continue 2;
-              }
+          $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
+          if (!$found) {
+            switch ($operation['onerror']) {
+              case 'ignore':
+                continue 2;
+              case 'abort':
+              case 'warning':
+              default:
+                throw new Exception('Search not found', E_USER_WARNING);
+                continue 2;
             }
-
-            if (!empty($operation['find']['indexes'])) {
-              rsort($operation['find']['indexes']);
-
-              foreach ($operation['find']['indexes'] as $index) {
-                $index = $index - 1; // [0] is the 1st in computer language
-
-                if ($found > $index) {
-                  $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
-                }
-              }
-
-            } else {
-              $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
-
-              if (!$count && $operation['onerror'] != 'skip') {
-                throw new Exception('Failed to perform insert', E_USER_ERROR);
-                continue;
-              }
-            }
-
-          } catch (Exception $e) {
-            $result['pathfiles'][$glob_pattern]['files'][$short_file]['operations'][$i]['error'] = $e->getMessage();
-            throw new Exception('Directive contains errors', $e->getCode());
           }
-        }
 
-      } catch (Exception $e) {
-        $result['pathfiles'][$glob_pattern]['files'][$short_file]['error'] = 'Directive contains errors';
-        $result['pathfiles'][$glob_pattern]['error'] = 'Directive contains errors';
+          if (!empty($operation['find']['indexes'])) {
+            rsort($operation['find']['indexes']);
+
+            foreach ($operation['find']['indexes'] as $index) {
+              $index = $index - 1; // [0] is the 1st in computer language
+
+              if ($found > $index) {
+                $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
+              }
+            }
+
+          } else {
+            $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
+
+            if (!$count && $operation['onerror'] != 'skip') {
+              throw new Exception('Failed to perform insert', E_USER_ERROR);
+              continue;
+            }
+          }
+
+        } catch (Exception $e) {
+          $result['pathfiles'][$glob_pattern]['files'][$short_file]['operations'][$i]['error'] = $e->getMessage();
+          $result['pathfiles'][$glob_pattern]['files'][$short_file]['error'] = 'Directive contains errors';
+          $result['pathfiles'][$glob_pattern]['error'] = 'Directive contains errors';
+        }
       }
     }
   }
@@ -159,7 +150,7 @@
           <div><?php echo functions::escape_html($file['file']); ?> <?php echo empty($file['error']) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"'); ?></div>
           <ul>
             <?php foreach ($file['operations'] as $i => $operation) { ?>
-            <li>Operation #<?php echo $i; ?> <?php echo empty($operation['error']) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"') .'<br />'. $operation['error']; ?></li>
+            <li>Operation #<?php echo $i+1; ?> <?php echo empty($operation['error']) ? functions::draw_fonticon('fa-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('fa-times', 'style="color: #c00;"') .'<br />'. $operation['error']; ?></li>
             <?php } ?>
           </ul>
           <?php } ?>
