@@ -40,7 +40,7 @@
   --breadcrumbs-text-color: #3c3c3c;
   --breadcrumbs-border-color: transparent;
   --card-background-color: #fff;
-  --card-text-color: #444;
+  --card-text-color: var(--default-text-color);
   --card-border-color: transparent;
   --card-header-background-color: transparent;
   --card-header-text-color: var(--card-text-color);
@@ -124,10 +124,8 @@ html.dark-mode {
   --default-input-color: #fff;
   --card-background-color: #283144;
   --card-header-background-color: transparent;
-  --card-header-text-color: #fff;
   --card-body-background-color: transparent;
   --card-footer-background-color: #212836;
-  --card-text-color: #acb6c2;
   --card-border-color: #253046;
   --pills-background-color: #333c4e;
   --tab-nav-background-color: #1c243a;
@@ -172,7 +170,6 @@ html.dark-mode {
   --input-border-color-focus: #555e74;
   --input-addon-background-color: #3d485e;
   --input-text-color: #acb6c2;
-  --breadcrumbs-text-color: var(--default-text-color);
   --copyright-text-color: #acb6c2;
   --link-text-color: #acb6c7;
   --whitespace-color: #1a2133;
