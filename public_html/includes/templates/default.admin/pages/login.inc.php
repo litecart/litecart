@@ -37,6 +37,34 @@ html.dark-mode body {
   max-width: 250px;
   max-height: 100px;
 }
+
+@keyframes bounce-in {
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
+  20% { transform: scale3d(1.1, 1.1, 1.1); }
+  40% { transform: scale3d(0.9, 0.9, 0.9); }
+  60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+  80% { transform: scale3d(0.97, 0.97, 0.97); }
+  to { opacity: 1; transform: scale3d(1, 1, 1); }
+}
+
+
+@keyframes flip-out {
+  from { transform: perspective(400px); }
+  30% { transform: perspective(400px) rotate3d(1, 0, 0, -20deg); opacity: 1; }
+  to { transform: perspective(400px) rotate3d(1, 0, 0, 90deg); opacity: 0; }
+}
+
+.bounce-in {
+  animation: bounce-in 250ms;
+}
+.flip-out {
+  animation: flip-out 500ms forwards !important;
+  backface-visibility: visible !important;
+}
 </style>
 
 <div class="loader-wrapper">
@@ -44,7 +72,7 @@ html.dark-mode body {
 </div>
 
 
-<div id="box-login" class="card">
+<div id="box-login" class="card bounce-in">
   <div class="card-header text-center">
     <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo document::href_link(WS_DIR_TEMPLATE . 'images/logotype.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" /></a>
   </div>
@@ -95,15 +123,11 @@ html.dark-mode body {
     $('input[name="password"]').focus();
   }
 
-  $('form[name="login_form"]').submit(function(e) {
-    e.preventDefault();
+  $('form[name="login_form"]').submit(function() {
     let form = this;
+    $('#box-login').removeClass('bounce-in');
     $('#box-login .card-body').slideUp(100, function(){
-      $('#box-login').fadeOut(250, function(){
-        $('.loader-wrapper').fadeIn(100, function(){
-          form.submit();
-        });
-      });
+      $('#box-login').addClass('flip-out');
     });
- });
+  });
 </script>
