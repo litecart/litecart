@@ -43,19 +43,19 @@ html.dark-mode body {
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
-  0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
+  0%  { transform: scale3d(0.3, 0.3, 0.3); opacity: 0; }
   20% { transform: scale3d(1.1, 1.1, 1.1); }
   40% { transform: scale3d(0.9, 0.9, 0.9); }
-  60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+  60% { transform: scale3d(1.03, 1.03, 1.03); opacity: 1; }
   80% { transform: scale3d(0.97, 0.97, 0.97); }
-  to { opacity: 1; transform: scale3d(1, 1, 1); }
+  to  { transform: scale3d(1, 1, 1); opacity: 1; }
 }
 
 
 @keyframes flip-out {
   from { transform: perspective(400px); }
-  30% { transform: perspective(400px) rotate3d(1, 0, 0, -20deg); opacity: 1; }
-  to { transform: perspective(400px) rotate3d(1, 0, 0, 90deg); opacity: 0; }
+  30%  { transform: perspective(400px) rotate3d(1, 0, 0, -20deg); opacity: 1; }
+  to   { transform: perspective(400px) rotate3d(1, 0, 0, 90deg); opacity: 0; }
 }
 
 .bounce-in {
