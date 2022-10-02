@@ -108,11 +108,6 @@
                 <label><?php echo language::translate('title_order_state', 'State'); ?></label>
                 <?php echo functions::form_draw_select_field('state', $state_options, true); ?>
               </div>
-
-              <div class="form-group">
-                <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-                <?php echo functions::form_draw_number_field('priority', true); ?>
-              </div>
             </div>
           </div>
 
