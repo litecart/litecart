@@ -219,7 +219,7 @@
               <?php if (empty($vmod['errors'])) { ?>
               <span style="color: #8c4"><?php echo functions::draw_fonticon('ok'); ?> <?php echo language::translate('title_ok', 'OK'); ?></span>
               <?php } else { ?>
-              <span style="color: #c00"><?php echo functions::draw_fonticon('warning'); ?> <?php echo language::translate('title_fail', 'Fail'); ?></span>
+              <span style="color: #c00" title="<?php echo functions::escape_html($vmod['errors']); ?>"><?php echo functions::draw_fonticon('warning'); ?> <?php echo language::translate('title_fail', 'Fail'); ?></span>
               <?php } ?>
             </a>
           </td>
