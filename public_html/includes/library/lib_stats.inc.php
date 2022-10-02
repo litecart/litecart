@@ -37,7 +37,7 @@
 
       if ($page_parse_time > 5) {
         notices::add('warnings', sprintf(language::translate('text_long_execution_time', 'We apologize for the inconvenience that the server seems temporary overloaded right now.'), number_format($page_parse_time, 1, ',', ' ')));
-        error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. document::link(), 3, FS_DIR_APP . 'logs/performance.log');
+        error_log('Warning: Long page execution time '. number_format($page_parse_time, 3, ',', ' ') .' s - '. document::link() . PHP_EOL, 3, FS_DIR_APP . 'logs/performance.log');
       }
     }
 
