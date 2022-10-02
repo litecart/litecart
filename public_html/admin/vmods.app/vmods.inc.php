@@ -120,59 +120,43 @@
 
       foreach (array_keys($vmod['files']) as $key) {
 
-        foreach (explode(',', $vmod['files'][$key]['name']) as $pattern) {
+        foreach (glob(FS_DIR_APP . $vmod['files'][$key]['name'], GLOB_BRACE) as $file) {
 
-        // Apply path aliases
-          if (!empty(vmod::$aliases)) {
-            $pattern = preg_replace(array_keys(vmod::$aliases), array_values(vmod::$aliases), $pattern);
-          }
+          $buffer = file_get_contents($file);
 
-          $files = glob(FS_DIR_APP . $pattern);
+          foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
 
-          if (empty($files)) {
-            throw new Exception('No files matching pattern');
-          }
+            $found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
 
-          foreach ($files as $file) {
+            if (!$found) {
+              switch ($operation['onerror']) {
+                case 'ignore':
+                  continue 2;
+                case 'abort':
+                case 'warning':
+                default:
+                  throw new Exception('Operation #'. $i+1 .' failed in '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file), E_USER_WARNING);
+                  continue 2;
+              }
+            }
 
-            if (!is_file($file)) throw new Exception('File does not exist');
+            if (!empty($operation['find']['indexes'])) {
+              rsort($operation['find']['indexes']);
 
-            $buffer = file_get_contents($file);
+              foreach ($operation['find']['indexes'] as $index) {
+                $index = $index - 1; // [0] is the 1st in computer language
 
-            foreach ($vmod['files'][$key]['operations'] as $i => $operation) {
-
-							$found = preg_match_all($operation['find']['pattern'], $buffer, $matches, PREG_OFFSET_CAPTURE);
-
-							if (!$found) {
-                switch ($operation['onerror']) {
-                  case 'ignore':
-                    continue 2;
-                  case 'abort':
-                  case 'warning':
-                  default:
-                    throw new Exception('Search not found', E_USER_WARNING);
-                    continue 2;
+                if ($found > $index) {
+                  $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
                 }
               }
 
-              if (!empty($operation['find']['indexes'])) {
-                rsort($operation['find']['indexes']);
+            } else {
+              $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
 
-                foreach ($operation['find']['indexes'] as $index) {
-                  $index = $index - 1; // [0] is the 1st in computer language
-
-                  if ($found > $index) {
-                    $buffer = substr_replace($buffer, preg_replace($operation['find']['pattern'], $operation['insert'], $matches[0][$index][0]), $matches[0][$index][1], strlen($matches[0][$index][0]));
-                  }
-                }
-
-              } else {
-                $buffer = preg_replace($operation['find']['pattern'], $operation['insert'], $buffer, -1, $count);
-
-                if (!$count && $operation['onerror'] != 'skip') {
-                  throw new Exception("Failed to perform insert");
-                  continue;
-                }
+              if (!$count && $operation['onerror'] != 'skip') {
+                throw new Exception("Failed to perform insert");
+                continue;
               }
             }
           }
