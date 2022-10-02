@@ -5,7 +5,7 @@
     return functions::escape_js($string);
   }
 
-  function general_path_friendly($text, $language_code=null) {
+  function general_path_friendly($string, $language_code=null) {
     trigger_error('general_path_friendly() has been deprecated. Instead use functions::format_path_friendly()', E_USER_DEPRECATED);
     return functions::format_path_friendly($string);
   }
