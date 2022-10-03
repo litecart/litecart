@@ -82,10 +82,10 @@
 
   foreach ($modified_files as $modification) {
 
-      echo 'Modify '. $file . '<br />' . PHP_EOL;
+    echo 'Modify '. $file . '<br />' . PHP_EOL;
 
     if (!file_modify($modification['file'], $modification['search'], $modification['replace'], !empty($modification['regex']))) {
-      die('<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>');
+      echo '<span class="error">[Error]</span><br />Could not find: '. $modification['search'] .'</p>';
     }
   }
 
