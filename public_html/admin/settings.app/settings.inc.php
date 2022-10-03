@@ -139,7 +139,7 @@
     <table class="table table-striped table-hover data-table">
       <thead>
         <tr>
-          <th><?php echo language::translate('title_key', 'Key'); ?></th>
+          <th style="width: 35%;"><?php echo language::translate('title_key', 'Key'); ?></th>
           <th><?php echo language::translate('title_value', 'Value'); ?></th>
           <th></th>
         </tr>
@@ -150,7 +150,7 @@
         <?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
         <tr>
           <td>
-            <u><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></u><br />
+            <strong><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></strong><br />
             <?php echo language::translate('settings_key:description_'.$setting['key'], $setting['description']); ?>
           </td>
           <td><?php echo functions::form_draw_function($setting['function'], 'settings['.$setting['key'].']', true); ?></td>
@@ -161,7 +161,7 @@
         </tr>
         <?php } else { ?>
         <tr>
-          <td class="text-start"><a href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
+          <td class="text-start"><a class="link" href="<?php echo document::href_link('', ['action' => 'edit', 'key' => $setting['key']], true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo language::translate('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
           <td style="white-space: normal;">
             <div style="max-height: 200px; overflow-y: auto;" title="<?php echo functions::escape_html(language::translate('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
               <?php echo nl2br($setting['value']); ?>
