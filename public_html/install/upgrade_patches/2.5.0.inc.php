@@ -25,6 +25,12 @@
 // Modify some files
   $modified_files = [
     [
+      'file'    => FS_DIR_APP . '.htaccess',
+      'search'  => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
+      'replace' => "  RewriteRule ^.*$ index.php [QSA,L]",
+      'regex'   => false,
+    ],
+    [
       'file'    => FS_DIR_APP . 'includes/config.inc.php',
       'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');",
       'replace' => "  define('FS_DIR_STORAGE',     FS_DIR_APP);" . PHP_EOL

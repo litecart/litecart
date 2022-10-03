@@ -57,7 +57,7 @@ ErrorDocument 500 "Internal Server Error"
   RewriteCond %{REQUEST_FILENAME} -l
   RewriteRule ^ - [L]
 
-  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]
+  RewriteRule ^ index.php [QSA,L]
 </IfModule>
 
 # Deny access to content
